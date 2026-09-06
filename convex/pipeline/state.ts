@@ -88,11 +88,11 @@ export const PUBLICATION_WORKFLOW_NAME = 'reviewAndPublishCandidateV1'
 
 export const ISSUE_BUILD_PROCESSOR_VERSION = 'v1'
 
-export const ISSUE_LINK_PROMPT_VERSION = 'v1.5'
+export const ISSUE_LINK_PROMPT_VERSION = 'v1.6'
 
 export const ISSUE_LINK_SCHEMA_VERSION = 'v1'
 
-export const ISSUE_REVIEW_PROMPT_VERSION = 'v1'
+export const ISSUE_REVIEW_PROMPT_VERSION = 'v1.1'
 
 export const ISSUE_REVIEW_SCHEMA_VERSION = 'v1'
 

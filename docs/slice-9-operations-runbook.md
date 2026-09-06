@@ -204,3 +204,19 @@ capacity. Raise the shared limit and the affected body limits together, size
 them from pending work and measured calls, then reassess after catch-up. These
 are provider admission caps, not dollar budgets. Evidence gates, approved
 hosts, per-run bounds, and the deployment kill switch still apply.
+
+## Interrupted issue processing
+
+The 15-minute recovery job resumes budget-paused issue proposals from their
+accepted scan cursor and matches. A preflight waits for both admission windows;
+the model steps still reserve their own calls. Malformed responses and
+interrupted scans get at most two automatic recovery attempts. Evidence
+rejection, ambiguous membership, and scan-capacity limits require inspection.
+A withheld issue never enters this retry queue.
+
+After inspecting a failed proposal, the owner can call `issues/proposals:retry`
+with its `proposalId`. The retry records the owner and a new monitoring
+authorization run linked to the original publication run. It requires the same
+current accepted publication and an enabled, promoted source. It cannot resume
+a paused body or change the original publication history. Old workflow
+completion callbacks cannot overwrite a newer retry.

@@ -122,7 +122,7 @@ export const runIssueReview = internalAction({
         role: 'MODEL_FAST',
         messages: prompt.messages,
         schemaName: schemaNameForIssueReviewV1(),
-        jsonSchema: issueReviewJsonSchemaV1,
+        jsonSchema: { ...issueReviewJsonSchemaV1, properties: { ...issueReviewJsonSchemaV1.properties, checks: { ...issueReviewJsonSchemaV1.properties.checks, minItems: context.facts.length, maxItems: context.facts.length, items: { ...issueReviewJsonSchemaV1.properties.checks.items, properties: { ...issueReviewJsonSchemaV1.properties.checks.items.properties, fieldPath: { type: 'string', enum: context.facts.map(fact => fact.fieldPath) } } } } } },
         reasoningEffort: 'high',
         maxCompletionTokens: 8_000,
       },
