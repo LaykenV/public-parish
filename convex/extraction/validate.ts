@@ -325,7 +325,6 @@ export const runValidation = internalAction({
         const proved = (snapshot.pageMap ?? []).some((entry) => {
           if (
             entry.page !== fact.page ||
-            sourceText === null ||
             entry.startOffset < 0 ||
             entry.endOffset <= entry.startOffset ||
             entry.endOffset > sourceText.length
