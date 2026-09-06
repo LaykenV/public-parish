@@ -548,3 +548,12 @@ test('a gateway pause retains inventory progress and makes the snapshot due at i
   await f.t.mutation(internal.monitoring.ledger.deferDocument, { runId: f.runId, documentId: target.documentId })
   expect((await f.t.run(ctx => ctx.db.get(target.documentId)))!.nextCheckAt - Date.now()).toBeGreaterThan(DAY - 1_000)
 })
+
+
+test('inventory normalizes a printed date without accepting missing dates or altered evidence', () => {
+  expect(inventoryContract(inventory, text, 'Test Council')).toBeNull()
+  for (const meetingDate of [null, 'September 4, 2026', '2026-09-04T00:00:00Z', '2026-02-30']) {
+    expect(inventoryContract({ ...inventory, meetingDate }, text, 'Test Council')).toMatch(/YYYY-MM-DD/)
+  }
+  expect(inventoryContract({ ...inventory, dateExcerpt: '2026-09-04' }, text, 'Test Council')).toMatch(/date citation/)
+})

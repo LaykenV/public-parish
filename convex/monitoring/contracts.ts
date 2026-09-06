@@ -38,7 +38,7 @@ export function inventoryContract(value: InventoryResult, source: string, bodyNa
   if (value.targets.length && allowedSourceKinds && !allowedSourceKinds.includes(value.sourceKind)) return 'This source kind is outside the approved inventory scope. Preserve its actual source kind and return no targets for background documents; do not relabel them as agendas or minutes.'
   if (value.targets.length > MAX_TARGETS_PER_CHUNK) return 'Inventory target overflow.'
   if (value.targets.length && (!value.meetingDate || !/^\d{4}-\d{2}-\d{2}$/.test(value.meetingDate) || !Number.isFinite(Date.parse(value.meetingDate)) || new Date(value.meetingDate).toISOString().slice(0, 10) !== value.meetingDate)) {
-    return 'Decision inventory needs a source-backed date.'
+    return 'Decision inventory needs a real source-backed meeting date in YYYY-MM-DD format. Normalize the printed date into that format and keep its exact original text in dateExcerpt. Use null only for an empty inventory when no meeting date is established.'
   }
   const normalized = normalizeForMatch(source)
   if (value.meetingDate && (!value.dateExcerpt || !normalized.includes(normalizeForMatch(value.dateExcerpt)))) return 'Inventory date citation does not resolve.'
@@ -61,7 +61,7 @@ export const inventoryJsonSchema = {
   properties: {
     complete: { type: 'boolean' }, reason: { type: 'string', maxLength: 500 }, bodyName: { type: 'string' },
     sourceKind: { type: 'string', enum: ['agenda', 'minutes', 'ordinance', 'resolution', 'notice', 'calendar', 'packet', 'planning_case', 'other'] },
-    meetingDate: { type: ['string', 'null'] }, dateExcerpt: { type: ['string', 'null'] },
+    meetingDate: { type: ['string', 'null'], pattern: '^\\d{4}-\\d{2}-\\d{2}$', description: 'The source-backed meeting date normalized as YYYY-MM-DD. Preserve the original printed date in dateExcerpt. Null is allowed when no meeting date is established for an empty inventory.' }, dateExcerpt: { type: ['string', 'null'] },
     targets: { type: 'array', items: { type: 'object', additionalProperties: false,
       required: ['printedId', 'title', 'excerpt'], properties: {
         printedId: { type: ['string', 'null'], maxLength: 100 }, title: { type: 'string', maxLength: 300 }, excerpt: { type: 'string', maxLength: 240 },
