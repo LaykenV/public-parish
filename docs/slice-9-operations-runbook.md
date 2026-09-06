@@ -220,3 +220,10 @@ authorization run linked to the original publication run. It requires the same
 current accepted publication and an enabled, promoted source. It cannot resume
 a paused body or change the original publication history. Old workflow
 completion callbacks cannot overwrite a newer retry.
+
+After repairing an inventory failure, the owner can call
+`monitoring/ledger:retryDocument` with one `documentId` to bring its next check
+forward. The normal monitoring workflow resumes accepted chunks and retains
+existing targets and quota usage. A stopped deployment or disabled policy
+rejects the retry. This does not certify incomplete documents or reset their
+history.

@@ -337,7 +337,7 @@ export const saveInventory = internalMutation({
         if (days && observedAt <= Date.now() && observedAt + days * DAY_MS > (expectation.expectedFrom ?? 0)) await ctx.db.patch(expectation._id, { expectedFrom: observedAt + days * DAY_MS, expectedBy: observedAt + (days + 7) * DAY_MS, matchedSnapshotId: document.snapshotId, basis: 'inferred' })
       }
     }
-    await ctx.db.patch(document._id, { completedChunks: args.chunk + 1, chunkCount: args.chunks, inventoryComplete: args.chunk + 1 === args.chunks, ...(args.chunk + 1 === args.chunks ? { nextCheckAt: Date.now() + policy.intervalHours * 3_600_000 } : {}) })
+    await ctx.db.patch(document._id, { completedChunks: args.chunk + 1, chunkCount: args.chunks, inventoryComplete: args.chunk + 1 === args.chunks, ...(args.chunk + 1 === args.chunks ? { nextCheckAt: Date.now() + policy.intervalHours * 3_600_000, errorClass: undefined } : {}) })
     return added
   },
 })
@@ -523,18 +523,6 @@ export const discoveryAttention = internalMutation({
   },
 })
 
-export const retryDocument = mutation({
-  args: { documentId: v.id('monitoredDocuments') }, returns: v.boolean(),
-  handler: async (ctx, args) => {
-    await requireOwner(ctx)
-    const document = await ctx.db.get(args.documentId)
-    const policy = document ? await ctx.db.get(document.policyId) : null
-    if (!document || !policy?.enabled) return false
-    await ctx.db.patch(document._id, { nextCheckAt: 0, errorClass: undefined })
-    return true
-  },
-})
-
 export const pipelineBudget = internalMutation({
   args: { runId: v.id('pipelineRuns') }, returns: v.object({ ok: v.boolean(), retryAt: v.number() }),
   handler: async (ctx, args) => {
@@ -543,5 +531,24 @@ export const pipelineBudget = internalMutation({
     const policy = run?.monitorPolicyId ? await ctx.db.get(run.monitorPolicyId) : null
     if (!policy) return { ok: true, retryAt: Date.now() }
     return processingBudget(ctx, policy, 2)
+  },
+})
+
+export const retryDocument = mutation({
+  args: { documentId: v.id('monitoredDocuments') }, returns: v.boolean(),
+  handler: async (ctx, args) => {
+    await requireOwner(ctx)
+    const document = await ctx.db.get(args.documentId)
+    const policy = document ? await ctx.db.get(document.policyId) : null
+    const proposal = policy ? await ctx.db.get(policy.proposalId) : null
+    const registry = policy ? await ctx.db.get(policy.registryId) : null
+    if (env.SOURCE_MONITORING_ENABLED !== 'true' || !document || !policy?.enabled || proposal?.status !== 'promoted' || !registry || !['supported', 'degraded'].includes(registry.status)) throw new Error('monitoring_stopped')
+    const now = Date.now()
+    // Revisit a repaired source through the normal workflow. Keep its immutable
+    // snapshot, accepted chunks, targets, quota usage, and retry history.
+    await ctx.db.patch(document._id, { nextCheckAt: now })
+    await ctx.db.patch(policy._id, { nextCheckAt: now, updatedAt: now })
+    await startRun(ctx, policy._id)
+    return true
   },
 })
