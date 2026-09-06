@@ -70,6 +70,35 @@ async function monitoringFixture() {
   return { t, ...ids }
 }
 
+test('a verified old meeting leaves the current window without losing future inventory eligibility', async () => {
+  const f = await monitoringFixture()
+  const target = await queuedTarget(f, 'old-meeting', false)
+  await f.t.run(async ctx => {
+    await ctx.db.patch(f.policyId, { startsAt: Date.parse('2026-09-05') })
+    await ctx.db.patch(target.documentId, { completedChunks: 0 })
+  })
+  await f.t.mutation(internal.monitoring.ledger.saveInventory, { runId: f.runId, documentId: target.documentId, chunk: 0, chunks: 1, inventory: { ...inventory, targets: [] } })
+  expect(await f.t.run(ctx => ctx.db.get(target.documentId))).toMatchObject({ sourceMeetingDate: '2026-09-04', completedChunks: 0, inventoryComplete: false })
+  expect(await f.t.query(internal.monitoring.ledger.dueDocuments, { runId: f.runId })).toEqual([])
+  vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
+  expect(await f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.classifyOfficialMeetingDates, { policyId: f.policyId, paginationOpts: { numItems: 50, cursor: null } })).toMatchObject({ classified: 0 })
+  expect((await f.t.run(ctx => ctx.db.get(target.documentId)))?.sourceMeetingDate).toBe('2026-09-04')
+  expect(await f.t.run(ctx => ctx.db.get(target.targetId))).not.toBeNull()
+  await f.t.run(ctx => ctx.db.patch(f.policyId, { startsAt: Date.parse('2026-09-01') }))
+  expect((await f.t.query(internal.monitoring.ledger.dueDocuments, { runId: f.runId })).map(d => d._id)).toEqual([target.documentId])
+  expect(inventoryContract({ ...inventory, meetingDate: '2026-02-30', targets: [] }, text, 'Test Council')).toMatch(/real source-backed meeting date/)
+  expect(officialMeetingDate('https://www.brla.gov/AgendaCenter/ViewFile/ArchivedMinutes/_04302026-3326')).toBe('2026-04-30')
+})
+
+test('old-meeting exclusion requires a matching printed date in the header', () => {
+  const old = { ...inventory, targets: [] }
+  const startsAt = Date.parse('2026-09-05')
+  expect(inventoryContract(old, text, 'Test Council', [], ['agenda'], startsAt)).toBeNull()
+  expect(inventoryContract({ ...old, meetingDate: '2026-08-04' }, text, 'Test Council', [], ['agenda'], startsAt)).toMatch(/printed date matching/)
+  expect(inventoryContract(old, 'Current meeting header. '.repeat(100) + text, 'Test Council', [], ['agenda'], startsAt)).toMatch(/first 2000/)
+  for (const dateExcerpt of ['2026-09-04', '09/04/2026', 'September 4, 2026']) expect(inventoryContract({ ...old, dateExcerpt }, `Test Council. ${dateExcerpt}`, 'Test Council', [], ['agenda'], startsAt)).toBeNull()
+})
+
 test('a failed document backs off so the next approved document can run', async () => {
   const { t, runId } = await monitoringFixture()
   await t.mutation(internal.monitoring.ledger.addDocuments, { runId, urls: ['https://www.lafayettela.gov/dead-agenda.pdf', 'https://www.lafayettela.gov/good-agenda.pdf', 'https://unapproved.example/agenda.pdf'] })

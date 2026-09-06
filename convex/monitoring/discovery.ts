@@ -5,7 +5,7 @@ export function officialMeetingDate(raw: string): string | undefined {
   let url: URL
   try { url = new URL(raw) } catch { return undefined }
   if (url.protocol !== 'https:' || url.hostname !== 'www.brla.gov' || url.port || url.username || url.password) return undefined
-  const match = /^\/AgendaCenter\/ViewFile\/(?:Agenda|Minutes|ArchivedAgenda)\/_(\d{2})(\d{2})(20\d{2})-\d+\/?$/i.exec(url.pathname)
+  const match = /^\/AgendaCenter\/ViewFile\/(?:Agenda|Minutes|ArchivedAgenda|ArchivedMinutes)\/_(\d{2})(\d{2})(20\d{2})-\d+\/?$/i.exec(url.pathname)
   if (!match) return undefined
   const date = `${match[3]}-${match[1]}-${match[2]}`
   const parsed = Date.parse(date)
