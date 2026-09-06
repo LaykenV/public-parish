@@ -1,5 +1,8 @@
 /// <reference types="vite/client" />
 
+import { DOCX_CONTENT_TYPE } from './sources/rawArtifact'
+import { testDocxBytes } from './testFixtures/docx'
+
 import firecrawlTest from '@firecrawl/firecrawl-convex/test'
 import { convexTest } from 'convex-test'
 import { afterEach, expect, test, vi } from 'vitest'
@@ -885,4 +888,39 @@ test('seeding is idempotent by slug', async () => {
       status: 'candidate',
     },
   })
+})
+
+
+test.each(['stable', 'changed_bytes', 'changed_type'] as const)('official DOCX keeps its original identity through Firecrawl extraction: %s', async variant => {
+  const t = initTest()
+  const bytes = testDocxBytes()
+  let rawDownloads = 0
+  let scrapes = 0
+  vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+    const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
+    if (url === PDF_URL) {
+      const body = bytes.slice()
+      if (variant === 'changed_bytes' && rawDownloads > 0) body[10] ^= 1
+      rawDownloads++
+      const response = new Response(body, { headers: { 'content-type': DOCX_CONTENT_TYPE } })
+      Object.defineProperty(response, 'url', { value: PDF_URL })
+      return response
+    }
+    scrapes++
+    return new Response(JSON.stringify({ success: true, data: { markdown: '# Official agenda\nSeptember 21, 2026', metadata: { sourceURL: PDF_URL, url: PDF_URL, statusCode: 200, contentType: variant === 'changed_type' && scrapes > 1 ? 'application/pdf' : DOCX_CONTENT_TYPE } } }), { status: 200 })
+  }))
+  const { registryId } = await t.mutation(internal.operations.seed.seedLaunchCoverage, {})
+  const result = await t.action(internal.operations.ingest.ingestRegistrySource, { registryId, urlOverride: PDF_URL })
+  const snapshots = await t.query(internal.sources.snapshots.listForRegistry, { registryId })
+  if (variant === 'stable') {
+    expect(result).toMatchObject({ outcome: 'created' })
+    expect(snapshots).toHaveLength(1)
+    expect(snapshots[0]).toMatchObject({ contentType: DOCX_CONTENT_TYPE, rawContentType: DOCX_CONTENT_TYPE, rawByteLength: bytes.length, normalizedContentType: 'text/markdown', truncation: { truncated: false } })
+    expect(rawDownloads).toBe(2)
+    expect(scrapes).toBe(2)
+    expect(await t.run(ctx => ctx.storage.get(snapshots[0].rawStorageId).then(blob => blob!.arrayBuffer()))).toEqual(bytes.buffer)
+  } else {
+    expect(result).toMatchObject({ outcome: 'failed', errorClass: 'source_changed_during_retrieval' })
+    expect(snapshots).toHaveLength(0)
+  }
 })
