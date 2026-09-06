@@ -106,8 +106,10 @@ test('changing a daily limit preserves admissions already used in the window', a
   rateLimiterTest.register(t)
   expect(await t.mutation(internal.monitoring.ledger.reserve, { runId, units: 6 })).toBe(true)
   const rate = new RateLimiter(components.rateLimiter, {})
+  const original = await t.run(ctx => ctx.db.get(policyId))
   for (const dailyCallLimit of [1_000, 5_000, 10]) {
-    await t.run(ctx => configurePolicy(ctx, { proposalId, enabled: true, intervalHours: 24, documentsPerRun: 1, targetsPerRun: 1, dailyCallLimit, startsAt: Date.now() - DAY }))
+    await t.run(ctx => configurePolicy(ctx, { proposalId, enabled: true, intervalHours: 24, documentsPerRun: 1, targetsPerRun: 1, dailyCallLimit, startsAt: original!.startsAt }))
+    expect(await t.run(ctx => ctx.db.get(policyId))).toMatchObject({ generation: original!.generation, activeRunId: runId })
     const remaining = await t.run(async ctx => {
       const value = await rate.getValue(ctx, 'calls', { key: policyId, config: { kind: 'fixed window', rate: dailyCallLimit, period: DAY } })
       return calculateRateLimit(value, value.config).value
