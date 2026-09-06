@@ -566,3 +566,21 @@ test('approved-source discovery recognizes DOCX agendas without broadening to ex
   expect(isDocumentUrl('https://www.lafayettela.gov/media/agenda.doc')).toBe(false)
   expect(isDocumentUrl('https://www.lafayettela.gov/media/agenda.docx.exe')).toBe(false)
 })
+
+test.each([false, true])('target reconciliation retries a Gateway outage without relaxing evidence failures: mixed=%s', async mixed => {
+  const f = await monitoringFixture()
+  const target = await queuedTarget(f, 'provider-paused-target')
+  await f.t.run(async ctx => {
+    await ctx.db.patch(target.targetId, { state: 'running', attempts: 3, pipelineRunId: target.pipelineRunId })
+    await ctx.db.patch(target.pipelineRunId, { state: 'failed_terminal' })
+    const stages = await ctx.db.query('pipelineStages').withIndex('by_run_and_stage', q => q.eq('runId', target.pipelineRunId)).collect()
+    for (const stage of stages) await ctx.db.patch(stage._id, { state: 'failed_terminal', errorClass: mixed && stage.stage === 'validate' ? 'validation_failed' : 'extraction_step_failed', errorDetail: mixed && stage.stage === 'validate' ? 'citation_not_found' : 'Uncaught Error: model_transient:ai_gateway_unavailable:The model provider is temporarily unavailable' })
+  })
+  await f.t.mutation(internal.monitoring.ledger.reconcileTargets, { policyId: f.policyId })
+  const result = await f.t.run(ctx => ctx.db.get(target.targetId))
+  expect(result).toMatchObject({ state: mixed ? 'failed' : 'pending', attempts: mixed ? 3 : 2, pipelineRunId: target.pipelineRunId })
+  expect(result!.retryAt! - Date.now()).toBeGreaterThan((mixed ? DAY : 900_000) - 1_000)
+  expect(result!.retryAt! - Date.now()).toBeLessThanOrEqual(mixed ? DAY : 900_000)
+  await f.t.mutation(internal.monitoring.ledger.reconcileTargets, { policyId: f.policyId })
+  expect((await f.t.run(ctx => ctx.db.get(target.targetId)))?.attempts).toBe(mixed ? 3 : 2)
+})

@@ -16,6 +16,7 @@ import { sha256HexOfText } from '../sources/hashing'
 import schema from '../schema'
 import { isBeforeSourceWindow, officialMeetingDate } from './discovery'
 import { eligibleMonitoringDocuments } from './documents'
+import { isGatewayOnlyFailure } from './providerFailures'
 import { sourceKindUnion } from '../pipeline/state'
 import { matchesLafayetteBody, monitoringListingAllowed } from './lafayette'
 import { isPinevilleListing } from './pineville'
@@ -457,11 +458,12 @@ export const reservePipelineCall = internalMutation({
 async function retryFailedTarget(ctx: MutationCtx, target: Doc<'documentInventoryTargets'>, runId?: Id<'pipelineRuns'>) {
   const stages = runId ? await ctx.db.query('pipelineStages').withIndex('by_run_and_stage', q => q.eq('runId', runId)).take(8) : []
   const budgetPaused = stages.some(stage => stage.errorClass === 'monitoring_daily_limit' || stage.errorDetail?.includes('monitoring_daily_limit'))
+  const gatewayPaused = isGatewayOnlyFailure(stages)
   const policy = budgetPaused ? await ctx.db.get(target.policyId) : null
-  const attempts = budgetPaused ? Math.max(0, (target.attempts ?? 1) - 1) : target.attempts ?? 1
+  const attempts = budgetPaused || gatewayPaused ? Math.max(0, (target.attempts ?? 1) - 1) : target.attempts ?? 1
   await ctx.db.patch(target._id, {
-    state: budgetPaused || attempts < 3 ? 'pending' : 'failed', attempts,
-    retryAt: policy ? (await processingBudget(ctx, policy)).retryAt : Date.now() + DAY_MS,
+    state: budgetPaused || gatewayPaused || attempts < 3 ? 'pending' : 'failed', attempts,
+    retryAt: policy ? (await processingBudget(ctx, policy)).retryAt : Date.now() + (gatewayPaused ? 900_000 : DAY_MS),
     updatedAt: Date.now(),
   })
 }
