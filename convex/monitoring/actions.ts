@@ -5,6 +5,7 @@ import { components, internal } from '../_generated/api'
 import { env, internalAction } from '../_generated/server'
 import { completeStructured } from '../ai/provider'
 import { estimateCostUsd } from '../ai/types'
+import { rethrowMonitoringProviderError } from './providerFailures'
 import { resolveRootManifest } from '../coverage/roots'
 import { classifyHost } from '../coverage/rootGate'
 import { canonicalizeCandidateUrl } from '../coverage/candidates'
@@ -126,7 +127,7 @@ export const inventoryChunk = internalAction({
         responseValidator: role === 'MODEL_FAST' ? inventoryReview : inventoryResult,
         contractCheck: parsed => role === 'MODEL_FAST' ? ((parsed as typeof inventoryReview.type).accepted ? null : (parsed as typeof inventoryReview.type).reason) : inventoryContract(parsed as InventoryResult, text, bodyName, priorLocators, allowedSourceKinds),
         onAttempt: async attempt => { await ctx.runMutation(internal.monitoring.ledger.recordCall, { runId: args.runId, operation: role === 'MODEL_STRONG' ? 'inventory' : 'inventory_review', provider: attempt.route, status: attempt.status, modelId: attempt.modelId, modelRole: role, promptTokens: attempt.usage?.promptTokens ?? undefined, completionTokens: attempt.usage?.completionTokens ?? undefined, estimatedCostUsd: attempt.usage ? estimateCostUsd(role, attempt.usage) ?? undefined : undefined, errorClass: attempt.errorClass ?? undefined, errorDetail: attempt.errorDetail?.slice(0, 500), latencyMs: attempt.latencyMs }) },
-      })
+      }).catch(rethrowMonitoringProviderError)
       if (outcome.outcome !== 'success') {
         repair = { reason: outcome.failure.detail, previous: outcome.failure.content }
         break

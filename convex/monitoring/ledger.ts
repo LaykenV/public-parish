@@ -406,10 +406,11 @@ export const finish = internalMutation({
       const overdue = policy.baselineComplete && expectations.some(item => item.expectedBy !== undefined && item.expectedBy < now)
       const healthy = args.state === 'completed' && !overdue
       const providerPaused = args.errorClass === 'monitoring_provider_rate_limit'
-      const budgetPaused = args.errorClass === 'monitoring_daily_limit' || providerPaused
-      const nextCheckAt = providerPaused ? now + 60_000 : budgetPaused ? (await processingBudget(ctx, policy)).retryAt : now + (remaining || pending || running || listingPending || !healthy ? 900_000 : policy.intervalHours * 3_600_000)
+      const gatewayPaused = args.errorClass === 'monitoring_ai_gateway_unavailable'
+      const budgetPaused = args.errorClass === 'monitoring_daily_limit' || providerPaused || gatewayPaused
+      const nextCheckAt = providerPaused ? now + 60_000 : gatewayPaused ? now + 900_000 : budgetPaused ? (await processingBudget(ctx, policy)).retryAt : now + (remaining || pending || running || listingPending || !healthy ? 900_000 : policy.intervalHours * 3_600_000)
       await ctx.db.patch(policy._id, { activeRunId: undefined, baselineComplete: policy.baselineComplete || (healthy && !remaining && !unfinished && !pending && !running && !listingPending), nextCheckAt, failures: healthy ? 0 : budgetPaused || args.state === 'stopped' ? policy.failures : policy.failures + 1, ...(healthy && !remaining && !unfinished && !pending && !running && !listingPending ? { lastCompletedAt: now } : {}), updatedAt: now })
-      if (providerPaused) await ctx.scheduler.runAt(nextCheckAt, internal.monitoring.ledger.wake, { policyId: policy._id, generation: policy.generation })
+      if (providerPaused || gatewayPaused) await ctx.scheduler.runAt(nextCheckAt, internal.monitoring.ledger.wake, { policyId: policy._id, generation: policy.generation })
       if (!healthy && !budgetPaused && args.state !== 'stopped') await recordIncident(ctx, policy.registryId, overdue ? 'expected_artifact_missing' : args.errorClass ?? 'monitoring_failed')
     }
     return null
@@ -495,12 +496,12 @@ export const reconcileTargets = internalMutation({
 })
 
 export const deferDocument = internalMutation({
-  args: { runId: v.id('sourceMonitoringRuns'), documentId: v.id('monitoredDocuments') }, returns: v.null(),
+  args: { runId: v.id('sourceMonitoringRuns'), documentId: v.id('monitoredDocuments'), reason: v.optional(v.literal('monitoring_ai_gateway_unavailable')) }, returns: v.null(),
   handler: async (ctx, args) => {
     const { policy } = await assertMonitoringRun(ctx, args.runId)
     const document = await ctx.db.get(args.documentId)
     if (!document || document.policyId !== policy._id) throw new Error('Monitoring document mismatch.')
-    await ctx.db.patch(document._id, { nextCheckAt: Date.now() + Math.max(DAY_MS, policy.intervalHours * 3_600_000), errorClass: 'source_check_incomplete' })
+    await ctx.db.patch(document._id, { nextCheckAt: Date.now() + (args.reason ? 900_000 : Math.max(DAY_MS, policy.intervalHours * 3_600_000)), errorClass: args.reason ?? 'source_check_incomplete' })
     return null
   },
 })
