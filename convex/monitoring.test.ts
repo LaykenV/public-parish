@@ -7,7 +7,7 @@ import { configurePolicy } from './monitoring/ledger'
 import { convexTest } from 'convex-test'
 import { afterEach, expect, test, vi } from 'vitest'
 import { api, components, internal } from './_generated/api'
-import { isBeforeSourceWindow, isDocumentUrl } from './monitoring/discovery'
+import { isBeforeSourceWindow, isDocumentUrl, officialMeetingDate } from './monitoring/discovery'
 import { inventoryContract, inventoryIdentity, inventorySourceSection, isBeforeMeetingWindow } from './monitoring/contracts'
 import type { InventoryResult } from './monitoring/contracts'
 import schema from './schema'
@@ -433,6 +433,40 @@ test('provider throttling schedules a bounded continuation without degrading the
   expect(await t.run(ctx => ctx.db.query('sourceMonitoringRuns').collect())).toHaveLength(1)
 })
 
+
+test('official Baton Rouge meeting dates exclude only meetings before the approved day', () => {
+  const startsAt = Date.parse('2026-08-07T18:30:00Z')
+  expect(officialMeetingDate('https://www.brla.gov/AgendaCenter/ViewFile/ArchivedAgenda/_01262026-3182')).toBe('2026-01-26')
+  expect(isBeforeSourceWindow('https://www.brla.gov/AgendaCenter/ViewFile/Agenda/_08062026-2400', startsAt)).toBe(true)
+  expect(isBeforeSourceWindow('https://www.brla.gov/AgendaCenter/ViewFile/Minutes/_08072026-2400', startsAt)).toBe(false)
+  expect(isBeforeSourceWindow('https://www.brla.gov/AgendaCenter/ViewFile/ArchivedAgenda/_09092026-3415', startsAt)).toBe(false)
+  for (const url of [
+    'https://www.brla.gov/AgendaCenter/ViewFile/Agenda/_02302026-2400',
+    'https://unapproved.example/AgendaCenter/ViewFile/Agenda/_01262026-2400',
+    'https://www.brla.gov/Documents/_01262026-2400',
+    'https://www.brla.gov/uploads/2026/01/current-agenda.pdf',
+  ]) expect(officialMeetingDate(url)).toBeUndefined()
+})
+
+test('classifying existing meeting dates preserves inventory history and follows changed source windows', async () => {
+  const f = await monitoringFixture()
+  vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
+  const ids = await f.t.run(async ctx => {
+    await ctx.db.patch(f.policyId, { startsAt: Date.parse('2026-08-07'), documentsPerRun: 3 })
+    const fields = { policyId: f.policyId, registryId: f.registryId, nextCheckAt: 0, firstSeenAt: 1, notificationEligible: false, inventoryComplete: false, errorClass: 'source_check_incomplete' }
+    const old = await ctx.db.insert('monitoredDocuments', { ...fields, canonicalUrl: 'https://www.brla.gov/AgendaCenter/ViewFile/Agenda/_01262026-3182', completedChunks: 1, chunkCount: 2 })
+    const current = await ctx.db.insert('monitoredDocuments', { ...fields, canonicalUrl: 'https://www.brla.gov/AgendaCenter/ViewFile/Minutes/_08122026-2419' })
+    const opaque = await ctx.db.insert('monitoredDocuments', { ...fields, canonicalUrl: 'https://www.lafayettela.gov/current-agenda.pdf' })
+    return { old, current, opaque }
+  })
+  const args = { policyId: f.policyId, paginationOpts: { numItems: 50, cursor: null } }
+  await expect(f.t.mutation(api.monitoring.ledger.classifyOfficialMeetingDates, args)).rejects.toThrow()
+  expect(await f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.classifyOfficialMeetingDates, args)).toMatchObject({ classified: 2, isDone: true })
+  expect(await f.t.run(ctx => ctx.db.get(ids.old))).toMatchObject({ sourceMeetingDate: '2026-01-26', inventoryComplete: false, completedChunks: 1, chunkCount: 2, errorClass: 'source_check_incomplete' })
+  expect((await f.t.query(internal.monitoring.ledger.dueDocuments, { runId: f.runId })).map(d => d._id)).toEqual([ids.current, ids.opaque])
+  await f.t.run(ctx => ctx.db.patch(f.policyId, { startsAt: Date.parse('2026-01-01') }))
+  expect((await f.t.query(internal.monitoring.ledger.dueDocuments, { runId: f.runId })).map(d => d._id)).toEqual([ids.old, ids.current, ids.opaque])
+})
 
 test.each(['policy', 'registry'] as const)('monitoring dispatch replaces extraction with stale %s authority', async changed => {
   const f = await monitoringFixture()
