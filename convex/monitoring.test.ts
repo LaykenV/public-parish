@@ -353,3 +353,18 @@ test('proposal recovery waits for the shared budget without consuming calls', as
   await t.run(ctx => ctx.db.patch(policyId, { enabled: false }))
   await expect(t.mutation(internal.monitoring.ledger.pipelineBudget, { runId: pipelineRunId })).rejects.toThrow('monitoring_stopped')
 })
+
+test('owner document retry preserves accepted inventory progress', async () => {
+  const f = await monitoringFixture()
+  const target = await queuedTarget(f, 'retry-inventory', false)
+  await f.t.run(ctx => ctx.db.patch(target.documentId, { completedChunks: 1, chunkCount: 2, nextCheckAt: Date.now() + DAY }))
+  await expect(f.t.mutation(api.monitoring.ledger.retryDocument, { documentId: target.documentId })).rejects.toThrow()
+  vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
+  await f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.retryDocument, { documentId: target.documentId })
+  const document = await f.t.run(ctx => ctx.db.get(target.documentId))
+  expect(document).toMatchObject({ completedChunks: 1, chunkCount: 2, inventoryComplete: false })
+  expect(document!.nextCheckAt).toBeLessThanOrEqual(Date.now())
+  expect((await f.t.run(ctx => ctx.db.get(target.targetId)))?.state).toBe('pending')
+  await f.t.run(ctx => ctx.db.patch(f.policyId, { enabled: false }))
+  await expect(f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.retryDocument, { documentId: target.documentId })).rejects.toThrow('monitoring_stopped')
+})

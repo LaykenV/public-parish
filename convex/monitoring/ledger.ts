@@ -545,3 +545,22 @@ export const pipelineBudget = internalMutation({
     return processingBudget(ctx, policy, 2)
   },
 })
+
+export const retryDocument = mutation({
+  args: { documentId: v.id('monitoredDocuments') }, returns: v.null(),
+  handler: async (ctx, args) => {
+    await requireOwner(ctx)
+    const document = await ctx.db.get(args.documentId)
+    const policy = document ? await ctx.db.get(document.policyId) : null
+    const proposal = policy ? await ctx.db.get(policy.proposalId) : null
+    const registry = policy ? await ctx.db.get(policy.registryId) : null
+    if (env.SOURCE_MONITORING_ENABLED !== 'true' || !document || !policy?.enabled || proposal?.status !== 'promoted' || !registry || !['supported', 'degraded'].includes(registry.status)) throw new Error('monitoring_stopped')
+    const now = Date.now()
+    // Revisit a repaired source through the normal workflow. Keep its immutable
+    // snapshot, accepted chunks, targets, quota usage, and retry history.
+    await ctx.db.patch(document._id, { nextCheckAt: now })
+    await ctx.db.patch(policy._id, { nextCheckAt: now, updatedAt: now })
+    await startRun(ctx, policy._id)
+    return null
+  },
+})
