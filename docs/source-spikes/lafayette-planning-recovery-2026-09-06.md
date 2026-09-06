@@ -62,3 +62,22 @@ The v3 root manifest uses that official body name and retains the Lafayette
 Parish jurisdiction, body key, root URL, and approved hosts. The v2 manifest
 remains resolvable for earlier runs. This avoids adding an unsupported word to
 the cited body name; it does not relax the independent review or body check.
+
+## Automatic discovery adapter
+
+The September 6 calendar recheck found September 10 BOZA and September 11
+Hearing Examiner event attachments beyond the certification samples. Shared
+calendar month pages expose dated event links, but the existing generic crawler
+ignored opaque attachment identifiers and did not inspect PDF URI annotations.
+The earlier event-service failures and PDF-only outcome links justify the
+bounded Lafayette discovery adapter.
+
+The adapter checks months within the approved source window, at most the last
+year through next month. It separates event slugs for all five bodies, checkpoints
+listing progress, and uses Firecrawl for calendar and event retrieval. Month
+listings are an explicit discovery-only allowance; document host permissions do
+not expand. PDF URI discovery reads the hash-verified stored raw artifact and
+never executes embedded actions. Discovered documents still need ordinary
+Firecrawl retrieval, complete inventories, exact citations, and independent
+review before publication. Tests cover body separation, calendar bounds, opaque
+attachments, and PDF annotation links. Runtime evidence is recorded separately.

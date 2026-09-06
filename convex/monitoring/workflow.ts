@@ -33,6 +33,7 @@ export const checkSources = extractionWorkflowManager.define({
       if (retrieval.outcome === 'failed') throw new Error(retrieval.errorClass)
       reused = await step.runMutation(internal.monitoring.ledger.setSnapshot, { ...args, documentId: document._id, snapshotId: retrieval.snapshotId })
       }
+      await step.runAction(internal.monitoring.actions.discoverPdfLinks, { ...args, documentId: document._id }, { retry: false })
       if (!reused) {
         const current = await step.runQuery(internal.monitoring.ledger.documentContext, { ...args, documentId: document._id })
         let chunks = current.document.chunkCount ?? 1

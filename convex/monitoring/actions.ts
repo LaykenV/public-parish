@@ -8,7 +8,9 @@ import { resolveRootManifest } from '../coverage/roots'
 import { classifyHost } from '../coverage/rootGate'
 import { canonicalizeCandidateUrl } from '../coverage/candidates'
 import { isBeforeSourceWindow, isDocumentUrl } from './discovery'
-import { sha256HexOfText } from '../sources/hashing'
+import { lafayetteCalendarUrls, matchesLafayetteBody, monitoringListingAllowed, usesLafayetteEvents } from './lafayette'
+import { pdfAnnotationLinks } from './pdfLinks'
+import { sha256HexOfBytes, sha256HexOfText } from '../sources/hashing'
 import { INVENTORY_CHARS, MAX_DOCUMENT_CHARS, inventoryContract, inventorySourceSection, inventoryJsonSchema, inventoryResult } from './contracts'
 import type { InventoryResult } from './contracts'
 
@@ -26,8 +28,9 @@ export const discover = internalAction({
     await ctx.runMutation(internal.monitoring.ledger.addDocuments, { ...args, urls: registry.seedUrls })
     const manifest = resolveRootManifest(proposal.bodyKey, proposal.rootManifestVersion)
     if (!manifest) throw new Error('monitoring_manifest_missing')
-    const roots = [...new Set([manifest.approvedRootUrl, ...manifest.identityEvidenceUrls, ...registry.seedUrls.filter(url => !isDocumentUrl(url))])].filter(url => classifyHost(manifest, url) !== 'unapproved' && !isBeforeSourceWindow(url, policy.startsAt))
-    if (roots.length > 10) throw new Error('monitoring_seed_limit')
+    const calendars = lafayetteCalendarUrls(proposal.bodyKey, policy.startsAt, Date.now())
+    const roots = [...new Set(calendars.length ? calendars : [manifest.approvedRootUrl, ...manifest.identityEvidenceUrls, ...registry.seedUrls.filter(url => !isDocumentUrl(url))])].filter(url => monitoringListingAllowed(manifest, url, policy.startsAt, Date.now()) && !isBeforeSourceWindow(url, policy.startsAt))
+    if (roots.length > 25) throw new Error('monitoring_seed_limit')
     const resumed = Boolean(policy.discoveryPendingUrls?.length)
     const listingUrls = [...(resumed ? policy.discoveryPendingUrls! : roots)]
     let failures = 0
@@ -40,25 +43,27 @@ export const discover = internalAction({
       const started = Date.now()
       let status = 'failed'
       let creditsUsed: number | undefined
+      let errorDetail: string | undefined
       try {
         const page = await firecrawl.scrape(ctx, url, { formats: ['links'], onlyMainContent: false, skipTlsVerification: false })
         const metadata = page.metadata
         creditsUsed = typeof metadata?.creditsUsed === 'number' ? metadata.creditsUsed : undefined
         if (page.warning || (typeof metadata?.statusCode === 'number' && metadata.statusCode >= 400)) throw new Error('monitoring_listing_incomplete')
-        const links = [...new Set((page.links ?? []).map(canonicalizeCandidateUrl).filter((url): url is string => Boolean(url)))].filter(link => (isDocumentUrl(link) || /(?:agenda|minute|ordinance|resolution|meeting|packet|planning)/i.test(link)) && classifyHost(manifest, link) !== 'unapproved' && !isBeforeSourceWindow(link, policy.startsAt))
+        const links = [...new Set((page.links ?? []).map(canonicalizeCandidateUrl).filter((url): url is string => Boolean(url)))].filter(link => (isDocumentUrl(link) || /(?:agenda|minute|ordinance|resolution|meeting|packet|planning)/i.test(link)) && classifyHost(manifest, link) !== 'unapproved' && matchesLafayetteBody(proposal.bodyKey, link) && !isBeforeSourceWindow(link, policy.startsAt))
         if (links.length > 500) throw new Error('monitoring_listing_overflow')
         const documents = links.filter(isDocumentUrl)
         for (let start = 0; start < documents.length; start += 100) await ctx.runMutation(internal.monitoring.ledger.addDocuments, { ...args, urls: documents.slice(start, start + 100) })
         visited.add(url)
-        for (const link of links.filter(candidate => !isDocumentUrl(candidate) && /(?:20\d{2}.*(?:meeting|agenda|minute)|(?:meeting|agenda|minute).*20\d{2})/i.test(candidate))) if (!visited.has(link) && !listingUrls.includes(link) && !failed.includes(link)) listingUrls.push(link)
+        for (const link of links.filter(candidate => !isDocumentUrl(candidate) && (usesLafayetteEvents(proposal.bodyKey) && new URL(candidate).hostname === 'events.lafayettela.gov' || /(?:20\d{2}.*(?:meeting|agenda|minute)|(?:meeting|agenda|minute).*20\d{2})/i.test(candidate)))) if (!visited.has(link) && !listingUrls.includes(link) && !failed.includes(link)) listingUrls.push(link)
         if (visited.size + listingUrls.length > 500) throw new Error('monitoring_listing_capacity')
         status = 'succeeded'
-      } catch {
+      } catch (error) {
+        errorDetail = String(error).slice(0, 500)
         visited.delete(url)
         failed.push(url)
         failures++
       } finally {
-        await ctx.runMutation(internal.monitoring.ledger.recordCall, { ...args, operation: 'listing', provider: 'firecrawl', status, creditsUsed, latencyMs: Date.now() - started })
+        await ctx.runMutation(internal.monitoring.ledger.recordCall, { ...args, operation: 'listing', provider: 'firecrawl', status, creditsUsed, errorDetail, latencyMs: Date.now() - started })
         await ctx.runMutation(internal.monitoring.ledger.saveDiscoveryProgress, { ...args, pending: [...listingUrls, ...failed], visited: [...visited] })
       }
     }
@@ -113,5 +118,23 @@ export const inventoryChunk = internalAction({
     }
     if (!inventory || !reviewed) throw new Error('monitoring_inventory_rejected')
     return { inventory, chunks }
+  },
+})
+
+
+export const discoverPdfLinks = internalAction({
+  args: { runId: v.id('sourceMonitoringRuns'), documentId: v.id('monitoredDocuments') }, returns: v.null(),
+  handler: async (ctx, args) => {
+    const { proposal } = await ctx.runQuery(internal.monitoring.ledger.context, { runId: args.runId })
+    if (!usesLafayetteEvents(proposal.bodyKey)) return null
+    const { snapshot } = await ctx.runQuery(internal.monitoring.ledger.documentContext, args)
+    if (!snapshot) throw new Error('monitoring_snapshot_missing')
+    const blob = await ctx.storage.get(snapshot.rawStorageId)
+    if (!blob) throw new Error('monitoring_snapshot_missing')
+    const bytes = new Uint8Array(await blob.arrayBuffer())
+    if (await sha256HexOfBytes(bytes) !== snapshot.contentHash) throw new Error('monitoring_snapshot_hash')
+    const links = (await pdfAnnotationLinks(bytes)).map(raw => { try { return new URL(raw, snapshot.canonicalUrl).href } catch { return '' } }).filter(url => isDocumentUrl(url) && matchesLafayetteBody(proposal.bodyKey, url))
+    for (let offset = 0; offset < links.length; offset += 100) await ctx.runMutation(internal.monitoring.ledger.addDocuments, { runId: args.runId, urls: links.slice(offset, offset + 100) })
+    return null
   },
 })

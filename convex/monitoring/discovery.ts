@@ -1,3 +1,5 @@
+import { isLafayetteEventAttachment } from './lafayette'
+
 /** Only an explicit year in a URL can exclude an archive before retrieval. */
 export function isBeforeSourceWindow(raw: string, startsAt: number): boolean {
   let path: string
@@ -6,5 +8,5 @@ export function isBeforeSourceWindow(raw: string, startsAt: number): boolean {
   return years.length > 0 && Math.max(...years) < new Date(startsAt).getUTCFullYear()
 }
 export function isDocumentUrl(url: string): boolean {
-  return /(?:\.pdf(?:\?|$)|ViewFile|munidocDownload|\/Document\/|adaHtmlDocument)/i.test(url)
+  return isLafayetteEventAttachment(url) || /(?:\.pdf(?:\?|$)|ViewFile|munidocDownload|\/Document\/|adaHtmlDocument)/i.test(url)
 }

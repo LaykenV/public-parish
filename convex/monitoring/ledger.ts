@@ -15,6 +15,7 @@ import { resolveRootManifest } from '../coverage/roots'
 import { sha256HexOfText } from '../sources/hashing'
 import schema from '../schema'
 import { isBeforeSourceWindow } from './discovery'
+import { matchesLafayetteBody, monitoringListingAllowed } from './lafayette'
 import { DAY_MS, inventoryIdentity, inventoryResult, isBeforeMeetingWindow, MONITOR_VERSION, monitorState } from './contracts'
 
 const limiter = new RateLimiter(components.rateLimiter, {})
@@ -223,7 +224,7 @@ export const addDocuments = internalMutation({
     let count = 0
     for (const raw of args.urls) {
       const url = canonicalizeCandidateUrl(raw)
-      if (!url || isBeforeSourceWindow(url, policy.startsAt) || classifyHost(manifest, url) === 'unapproved' || !isRegisteredSourceUrl(url, registry.officialDomains, registry.seedUrls, registry.approvedDocumentHosts)) continue
+      if (!url || !matchesLafayetteBody(proposal.bodyKey, url) || isBeforeSourceWindow(url, policy.startsAt) || classifyHost(manifest, url) === 'unapproved' || !isRegisteredSourceUrl(url, registry.officialDomains, registry.seedUrls, registry.approvedDocumentHosts)) continue
       const existing = await ctx.db.query('monitoredDocuments').withIndex('by_policy_id_and_url', q => q.eq('policyId', run.policyId).eq('canonicalUrl', url)).unique()
       if (!existing) {
         await ctx.db.insert('monitoredDocuments', { policyId: run.policyId, registryId: registry._id, canonicalUrl: url, nextCheckAt: 0, firstSeenAt: Date.now(), notificationEligible: !run.baseline, inventoryComplete: false })
@@ -238,7 +239,7 @@ export const saveDiscoveryProgress = internalMutation({
   handler: async (ctx, args) => {
     const { policy, proposal } = await assertMonitoringRun(ctx, args.runId)
     const manifest = resolveRootManifest(proposal.bodyKey, proposal.rootManifestVersion)
-    if (!manifest || args.pending.length + args.visited.length > 500 || [...args.pending, ...args.visited].some(url => url.length > 1500 || classifyHost(manifest, url) === 'unapproved' || isBeforeSourceWindow(url, policy.startsAt))) throw new Error('monitoring_listing_capacity')
+    if (!manifest || args.pending.length + args.visited.length > 500 || [...args.pending, ...args.visited].some(url => url.length > 1500 || !monitoringListingAllowed(manifest, url, policy.startsAt, Date.now()) || isBeforeSourceWindow(url, policy.startsAt))) throw new Error('monitoring_listing_capacity')
     await ctx.db.patch(policy._id, { discoveryPendingUrls: args.pending.length ? args.pending : undefined, discoveryVisitedUrls: args.pending.length ? args.visited : undefined, nextDiscoveryAt: args.pending.length ? undefined : Date.now() + policy.intervalHours * 3_600_000 })
     return null
   },
