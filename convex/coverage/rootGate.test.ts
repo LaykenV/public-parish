@@ -7,7 +7,7 @@ import {
   isApprovedRootUrl,
 } from './rootGate'
 import type { RedirectWalk } from './redirectWalk'
-import { resolveRootManifest } from './roots'
+import { listRootManifests, resolveRootManifest } from './roots'
 import type { CoverageRootManifest } from './roots'
 
 const MANIFEST: CoverageRootManifest = {
@@ -222,4 +222,15 @@ test('the Hearing Examiner keeps its Lafayette identity with the source-printed 
   expect(resolveRootManifest('lafayette-hearing-examiner', 'v2')?.bodyName).toBe(
     'Lafayette Hearing Examiner',
   )
+})
+
+
+test('City Zoning uses its printed name without rewriting earlier certifications', () => {
+  const original = resolveRootManifest('lafayette-city-zoning-commission', 'v1')!
+  const current = listRootManifests().find(root => root.bodyKey === original.bodyKey)!
+  expect(original.bodyName).toBe('Lafayette City Zoning Commission')
+  expect(current).toEqual({
+    ...original, version: 'v2', bodyName: 'City Zoning Commission', checkedAt: '2026-09-06',
+  })
+  expect(resolveRootManifest(current.bodyKey, 'v2')).toEqual(current)
 })
