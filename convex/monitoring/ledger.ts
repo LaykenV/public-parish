@@ -14,7 +14,8 @@ import { classifyHost } from '../coverage/rootGate'
 import { resolveRootManifest } from '../coverage/roots'
 import { sha256HexOfText } from '../sources/hashing'
 import schema from '../schema'
-import { isBeforeSourceWindow } from './discovery'
+import { isBeforeSourceWindow, officialMeetingDate } from './discovery'
+import { eligibleMonitoringDocuments } from './documents'
 import { matchesLafayetteBody, monitoringListingAllowed } from './lafayette'
 import { isPinevilleListing } from './pineville'
 import { DAY_MS, inventoryIdentity, inventoryResult, isBeforeMeetingWindow, MONITOR_VERSION, monitorState } from './contracts'
@@ -228,7 +229,7 @@ export const addDocuments = internalMutation({
       if (!url || isPinevilleListing(url) || !matchesLafayetteBody(proposal.bodyKey, url) || isBeforeSourceWindow(url, policy.startsAt) || classifyHost(manifest, url) === 'unapproved' || !isRegisteredSourceUrl(url, registry.officialDomains, registry.seedUrls, registry.approvedDocumentHosts)) continue
       const existing = await ctx.db.query('monitoredDocuments').withIndex('by_policy_id_and_url', q => q.eq('policyId', run.policyId).eq('canonicalUrl', url)).unique()
       if (!existing) {
-        await ctx.db.insert('monitoredDocuments', { policyId: run.policyId, registryId: registry._id, canonicalUrl: url, nextCheckAt: 0, firstSeenAt: Date.now(), notificationEligible: !run.baseline, inventoryComplete: false })
+        await ctx.db.insert('monitoredDocuments', { policyId: run.policyId, registryId: registry._id, canonicalUrl: url, sourceMeetingDate: officialMeetingDate(url), nextCheckAt: 0, firstSeenAt: Date.now(), notificationEligible: !run.baseline, inventoryComplete: false })
         count++
       }
     }
@@ -257,10 +258,10 @@ export const dueDocuments = internalQuery({
       if (seen.has(target.documentId)) continue
       seen.add(target.documentId)
       const document = await ctx.db.get(target.documentId)
-      if (document?.policyId === policy._id && !document.discoveryOnly && document.snapshotId === target.snapshotId && !document.inventoryComplete && document.nextCheckAt <= run.startedAt) selected.push(document)
+      if (document?.policyId === policy._id && !isBeforeSourceWindow(document.canonicalUrl, policy.startsAt) && !document.discoveryOnly && document.snapshotId === target.snapshotId && !document.inventoryComplete && document.nextCheckAt <= run.startedAt) selected.push(document)
       if (selected.length === policy.documentsPerRun) return selected
     }
-    const due = await ctx.db.query('monitoredDocuments').withIndex('by_policy_discovery_and_next_check_at', q => q.eq('policyId', policy._id).eq('discoveryOnly', undefined).lte('nextCheckAt', run.startedAt)).take(policy.documentsPerRun)
+    const due = await eligibleMonitoringDocuments(ctx, policy, { limit: policy.documentsPerRun, dueAt: run.startedAt })
     return [...selected, ...due.filter(document => !selected.some(item => item._id === document._id))].slice(0, policy.documentsPerRun)
   },
 })
@@ -394,9 +395,9 @@ export const finish = internalMutation({
     const now = Date.now()
     await ctx.db.patch(run._id, { state: args.state, documentsChecked: args.documentsChecked, targetsStarted: args.targetsStarted, errorClass: args.errorClass, completedAt: now })
     if (policy?.activeRunId === run._id && policy.generation === run.generation) {
-      const remaining = await ctx.db.query('monitoredDocuments').withIndex('by_policy_discovery_and_next_check_at', q => q.eq('policyId', policy._id).eq('discoveryOnly', undefined).lte('nextCheckAt', run.startedAt)).first()
+      const remaining = (await eligibleMonitoringDocuments(ctx, policy, { limit: 1, dueAt: run.startedAt }))[0]
       const pending = await ctx.db.query('documentInventoryTargets').withIndex('by_policy_id_and_state', q => q.eq('policyId', policy._id).eq('state', 'pending')).first()
-      const unfinished = await ctx.db.query('monitoredDocuments').withIndex('by_policy_discovery_and_inventory_complete', q => q.eq('policyId', policy._id).eq('discoveryOnly', undefined).eq('inventoryComplete', false)).first()
+      const unfinished = (await eligibleMonitoringDocuments(ctx, policy, { limit: 1, incompleteOnly: true }))[0]
       const listingPending = Boolean(policy.discoveryPendingUrls?.length)
       const running = await ctx.db.query('documentInventoryTargets').withIndex('by_policy_id_and_state', q => q.eq('policyId', policy._id).eq('state', 'running')).first()
       const expectations = await ctx.db.query('sourceExpectations').withIndex('by_registry_and_source_kind', q => q.eq('registryId', policy.registryId)).take(30)
@@ -545,7 +546,7 @@ export const retryDocument = mutation({
     const policy = document ? await ctx.db.get(document.policyId) : null
     const proposal = policy ? await ctx.db.get(policy.proposalId) : null
     const registry = policy ? await ctx.db.get(policy.registryId) : null
-    if (env.SOURCE_MONITORING_ENABLED !== 'true' || !document || document.discoveryOnly || !policy?.enabled || proposal?.status !== 'promoted' || !registry || !['supported', 'degraded'].includes(registry.status)) throw new Error('monitoring_stopped')
+    if (env.SOURCE_MONITORING_ENABLED !== 'true' || !document || document.discoveryOnly || !policy?.enabled || isBeforeSourceWindow(document.canonicalUrl, policy.startsAt) || proposal?.status !== 'promoted' || !registry || !['supported', 'degraded'].includes(registry.status)) throw new Error('monitoring_stopped')
     const now = Date.now()
     // Revisit a repaired source through the normal workflow. Keep its immutable
     // snapshot, accepted chunks, targets, quota usage, and retry history.
@@ -600,5 +601,27 @@ export const wake = internalMutation({
     const policy = await ctx.db.get(args.policyId)
     if (policy?.generation === args.generation && policy.enabled && policy.nextCheckAt <= Date.now()) await startRun(ctx, policy._id)
     return null
+  },
+})
+
+
+export const classifyOfficialMeetingDates = mutation({
+  args: { policyId: v.id('sourceMonitoringPolicies'), paginationOpts: paginationOptsValidator },
+  returns: v.object({ classified: v.number(), continueCursor: v.string(), isDone: v.boolean() }),
+  handler: async (ctx, args) => {
+    await requireOwner(ctx)
+    if (args.paginationOpts.numItems > 50) throw new Error('Date classification is limited to fifty documents per page.')
+    const policy = await ctx.db.get(args.policyId)
+    if (!policy) throw new Error('Monitoring policy missing.')
+    const page = await ctx.db.query('monitoredDocuments').withIndex('by_policy_id_and_url', q => q.eq('policyId', policy._id)).paginate(args.paginationOpts)
+    let classified = 0
+    for (const document of page.page) {
+      const sourceMeetingDate = officialMeetingDate(document.canonicalUrl)
+      if (sourceMeetingDate !== document.sourceMeetingDate) {
+        await ctx.db.patch(document._id, { sourceMeetingDate })
+        classified++
+      }
+    }
+    return { classified, continueCursor: page.continueCursor, isDone: page.isDone }
   },
 })
