@@ -264,7 +264,7 @@ const VERSIONED_ROOT_MANIFESTS: CoverageRootManifest[] = ROOT_MANIFESTS.map(
 
 // The former placeholder had no published production records. Keep its versions
 // for historical runs, but require separate evidence for each commission now.
-const CURRENT_ROOT_MANIFESTS: CoverageRootManifest[] = VERSIONED_ROOT_MANIFESTS.flatMap(
+const COMMISSION_ROOT_MANIFESTS: CoverageRootManifest[] = VERSIONED_ROOT_MANIFESTS.flatMap(
   (manifest): CoverageRootManifest[] => manifest.bodyKey === 'lafayette-planning-commission'
     ? [
         { ...manifest, bodyKey: 'lafayette-city-planning-commission', bodyName: 'Lafayette City Planning Commission', version: 'v1' },
@@ -286,6 +286,14 @@ const CURRENT_ROOT_MANIFESTS: CoverageRootManifest[] = VERSIONED_ROOT_MANIFESTS.
       : [manifest],
 )
 
+// The source agenda prints "City Zoning Commission". Preserve v1 so earlier
+// certifications keep their original identity and immutable registry history.
+const CURRENT_ROOT_MANIFESTS: CoverageRootManifest[] = COMMISSION_ROOT_MANIFESTS.map(
+  manifest => manifest.bodyKey === 'lafayette-city-zoning-commission'
+    ? { ...manifest, version: 'v2', bodyName: 'City Zoning Commission', checkedAt: '2026-09-06' }
+    : manifest,
+)
+
 export function listRootManifests(): CoverageRootManifest[] {
   return CURRENT_ROOT_MANIFESTS
 }
@@ -295,7 +303,7 @@ export function resolveRootManifest(
   version: string,
 ): CoverageRootManifest | null {
   return (
-    [...CURRENT_ROOT_MANIFESTS, ...VERSIONED_ROOT_MANIFESTS, ...ROOT_MANIFESTS].find(
+    [...CURRENT_ROOT_MANIFESTS, ...COMMISSION_ROOT_MANIFESTS, ...VERSIONED_ROOT_MANIFESTS, ...ROOT_MANIFESTS].find(
       (manifest) =>
         manifest.bodyKey === bodyKey && manifest.version === version,
     ) ?? null
