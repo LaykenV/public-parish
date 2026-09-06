@@ -124,7 +124,7 @@ async function seedValidatedCandidate(
       registryId,
       trigger: 'manual_extraction',
       state: 'succeeded',
-      processorVersion: 'v1.18',
+      processorVersion: 'v1.19',
       snapshotId,
       sourceKind: 'agenda',
       targetRecordId: 'CO-029-2026',
@@ -141,7 +141,7 @@ async function seedValidatedCandidate(
       sourceRecordIdProvenance: 'source_printed',
       promptVersion: 'v1.12',
       schemaVersion: 'v1',
-      processorVersion: 'v1.18',
+      processorVersion: 'v1.19',
       modelRole: 'MODEL_STRONG',
       modelId: TERRA_MODEL,
       route: 'ai_gateway',
@@ -310,7 +310,7 @@ async function seedReextractedCandidate(
       registryId: original.registryId,
       trigger: 'manual_extraction',
       state: 'succeeded',
-      processorVersion: 'v1.18',
+      processorVersion: 'v1.19',
       snapshotId: original.snapshotId,
       sourceKind: original.sourceKind,
       targetRecordId: original.targetRecordId,
@@ -329,7 +329,7 @@ async function seedReextractedCandidate(
         original.sourceRecordIdProvenance ?? 'source_printed',
       promptVersion: original.promptVersion,
       schemaVersion: original.schemaVersion,
-      processorVersion: 'v1.18',
+      processorVersion: 'v1.19',
       modelRole: 'MODEL_STRONG',
       modelId: TERRA_MODEL,
       route: 'ai_gateway',
@@ -674,7 +674,7 @@ test('a second model review publishes one full immutable version with exact cita
               maxItems: seeded.factIds.length,
               items: {
                 properties: {
-                  factId: { enum: expect.arrayContaining(seeded.factIds) },
+                  factId: { enum: expect.arrayContaining(seeded.factIds.map((fact) => fact.factId)) },
                   fieldPath: { enum: expect.arrayContaining(['/title', '/bodyName']) },
                 },
               },
@@ -1315,7 +1315,7 @@ test('replaying a succeeded extraction repairs a missing publication run', async
     sourceRecordIdProvenance: 'source_printed',
     promptVersion: 'v1.12',
     schemaVersion: 'v1',
-    processorVersion: 'v1.18',
+    processorVersion: 'v1.19',
   })
   await t.run(async (ctx) => {
     await ctx.db.patch(seeded.runId, { idempotencyKey })
