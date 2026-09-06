@@ -1,4 +1,5 @@
 import { isLafayetteEventAttachment } from './lafayette'
+import { isPinevilleListing } from './pineville'
 
 /** Only an explicit year in a URL can exclude an archive before retrieval. */
 export function isBeforeSourceWindow(raw: string, startsAt: number): boolean {
@@ -8,5 +9,6 @@ export function isBeforeSourceWindow(raw: string, startsAt: number): boolean {
   return years.length > 0 && Math.max(...years) < new Date(startsAt).getUTCFullYear()
 }
 export function isDocumentUrl(url: string): boolean {
+  if (isPinevilleListing(url)) return false
   return isLafayetteEventAttachment(url) || /(?:\.pdf(?:\?|$)|ViewFile|munidocDownload|\/Document\/|adaHtmlDocument)/i.test(url)
 }

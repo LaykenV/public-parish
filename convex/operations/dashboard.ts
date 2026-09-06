@@ -17,7 +17,7 @@ export const monitoring = query({
       const policy = await ctx.db.query('sourceMonitoringPolicies').withIndex('by_registry_id', q => q.eq('registryId', proposal.registryId)).unique()
       const pending = policy ? await ctx.db.query('documentInventoryTargets').withIndex('by_policy_id_and_state', q => q.eq('policyId', policy._id).eq('state', 'pending')).first() : null
       const failed = policy ? await ctx.db.query('documentInventoryTargets').withIndex('by_policy_id_and_state', q => q.eq('policyId', policy._id).eq('state', 'failed')).first() : null
-      const retryDocument = policy ? await ctx.db.query('monitoredDocuments').withIndex('by_policy_id_and_inventory_complete', q => q.eq('policyId', policy._id).eq('inventoryComplete', false)).filter(q => q.neq(q.field('errorClass'), undefined)).first() : null
+      const retryDocument = policy ? await ctx.db.query('monitoredDocuments').withIndex('by_policy_discovery_and_inventory_complete', q => q.eq('policyId', policy._id).eq('discoveryOnly', undefined).eq('inventoryComplete', false)).filter(q => q.neq(q.field('errorClass'), undefined)).first() : null
       sources.push({ bodyName: manifest.bodyName, proposalId: proposal._id, policy, pendingTarget: pending !== null, failedTarget: failed !== null, failedTargetId: failed?._id ?? null, retryDocumentId: retryDocument?._id ?? null })
     }
     return { enabled: env.SOURCE_MONITORING_ENABLED === 'true', counters: await ctx.db.query('civicEventCounters').take(100), sources }

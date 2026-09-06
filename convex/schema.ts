@@ -600,6 +600,7 @@ export default defineSchema({
     .index('by_state_and_started_at', ['state', 'startedAt']),
 
   monitoredDocuments: defineTable({
+    discoveryOnly: v.optional(v.literal(true)),
     policyId: v.id('sourceMonitoringPolicies'), registryId: v.id('sourceRegistries'),
     canonicalUrl: v.string(), nextCheckAt: v.number(), firstSeenAt: v.number(),
     notificationEligible: v.boolean(), snapshotId: v.optional(v.id('sourceSnapshots')),
@@ -608,6 +609,8 @@ export default defineSchema({
     inventoryComplete: v.boolean(), lastCheckedAt: v.optional(v.number()),
     errorClass: v.optional(v.string()),
   }).index('by_policy_id_and_url', ['policyId', 'canonicalUrl'])
+    .index('by_policy_discovery_and_inventory_complete', ['policyId', 'discoveryOnly', 'inventoryComplete'])
+    .index('by_policy_discovery_and_next_check_at', ['policyId', 'discoveryOnly', 'nextCheckAt'])
     .index('by_policy_id_and_inventory_complete', ['policyId', 'inventoryComplete'])
     .index('by_policy_id_and_next_check_at', ['policyId', 'nextCheckAt']),
 
