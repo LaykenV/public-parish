@@ -503,15 +503,35 @@ export const deferDocument = internalMutation({
   },
 })
 export const retryTarget = mutation({
-  args: { targetId: v.id('documentInventoryTargets') }, returns: v.boolean(),
+  args: {
+    targetId: v.id('documentInventoryTargets'),
+    expediteFailedAttempt: v.optional(v.boolean()),
+  },
+  returns: v.boolean(),
   handler: async (ctx, args) => {
     await requireOwner(ctx)
     const target = await ctx.db.get(args.targetId)
-    if (!target || target.state !== 'failed') return false
+    const pendingFailure = target?.state === 'pending' && args.expediteFailedAttempt === true && (target.attempts ?? 0) > 0
+    if (!target || (target.state !== 'failed' && !pendingFailure)) return false
     const policy = await ctx.db.get(target.policyId)
     const document = await ctx.db.get(target.documentId)
-    if (!policy?.enabled || document?.snapshotId !== target.snapshotId || !document.inventoryComplete) return false
-    await ctx.db.patch(target._id, { state: 'pending', attempts: 0, retryAt: undefined, updatedAt: Date.now() })
+    const registry = policy ? await ctx.db.get(policy.registryId) : null
+    const proposal = policy ? await ctx.db.get(policy.proposalId) : null
+    const body = registry ? await ctx.db.get(registry.governmentBodyId) : null
+    if (env.SOURCE_MONITORING_ENABLED !== 'true' || !policy?.enabled || proposal?.status !== 'promoted' ||
+        !registry || !['supported', 'degraded'].includes(registry.status) || !body || body.publicStatus === 'paused' ||
+        target.registryId !== registry._id || document?.snapshotId !== target.snapshotId || document.discoveryOnly || !document.inventoryComplete) return false
+    if (pendingFailure) {
+      const extraction = target.pipelineRunId ? await ctx.db.get(target.pipelineRunId) : null
+      const publication = extraction?.state === 'succeeded'
+        ? await ctx.db.query('pipelineRuns').withIndex('by_upstream_run', q => q.eq('upstreamRunId', extraction._id)).order('desc').first()
+        : null
+      const failed = publication ?? extraction
+      if (!failed || !['failed_terminal', 'failed_retryable', 'superseded'].includes(failed.state)) return false
+    }
+    // An early retry after a repair retains the automatic attempt limit. An
+    // explicit owner retry of an exhausted target starts a new allowance.
+    await ctx.db.patch(target._id, { state: 'pending', attempts: pendingFailure ? target.attempts : 0, retryAt: undefined, updatedAt: Date.now() })
     await ctx.db.patch(policy._id, { nextCheckAt: Date.now() })
     return true
   },
