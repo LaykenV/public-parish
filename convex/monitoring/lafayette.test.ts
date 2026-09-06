@@ -37,3 +37,18 @@ test('PDF discovery reads URI annotations without executing other actions', asyn
   expect(await pdfAnnotationLinks(await pdf.save())).toEqual([url])
   expect(await pdfAnnotationLinks(new TextEncoder().encode('<html>listing</html>'))).toEqual([])
 })
+
+
+test('PDF links accept an already bounded large packet and reject oversized artifacts', async () => {
+  const pdf = await PDFDocument.create()
+  const page = pdf.addPage()
+  const url = 'https://www.lafayettela.gov/media/example/outcome.pdf'
+  page.node.set(PDFName.of('Annots'), pdf.context.obj([
+    { Type: 'Annot', Subtype: 'Link', Rect: [0, 0, 20, 20], A: { S: 'URI', URI: PDFString.of(url) } },
+  ]))
+  pdf.context.register(pdf.context.stream(new Uint8Array(13 * 1024 * 1024)))
+  const bytes = await pdf.save({ useObjectStreams: false })
+  expect(bytes.byteLength).toBeGreaterThan(10 * 1024 * 1024)
+  expect(await pdfAnnotationLinks(bytes)).toEqual([url])
+  await expect(pdfAnnotationLinks(new Uint8Array(25 * 1024 * 1024 + 1))).rejects.toThrow('monitoring_pdf_link_capacity')
+})

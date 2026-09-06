@@ -1,8 +1,9 @@
+import { MAX_RAW_ARTIFACT_BYTES } from '../sources/rawArtifact'
 import { PDFArray, PDFDict, PDFDocument, PDFHexString, PDFName, PDFString } from 'pdf-lib'
 
 /** Read URI annotations, never execute PDF actions or retrieve their targets. */
 export async function pdfAnnotationLinks(bytes: Uint8Array): Promise<string[]> {
-  if (bytes.byteLength > 10 * 1024 * 1024) throw new Error('monitoring_pdf_link_capacity')
+  if (bytes.byteLength > MAX_RAW_ARTIFACT_BYTES) throw new Error('monitoring_pdf_link_capacity')
   if (new TextDecoder().decode(bytes.slice(0, 5)) !== '%PDF-') return []
   const pdf = await PDFDocument.load(bytes, { updateMetadata: false })
   if (pdf.getPageCount() > 200) throw new Error('monitoring_pdf_link_capacity')

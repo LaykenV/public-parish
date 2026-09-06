@@ -1,6 +1,6 @@
 import { canonicalizeUrl, isAllowedOfficialHost } from './domains'
 
-const MAX_RAW_ARTIFACT_BYTES = 25 * 1024 * 1024
+export const MAX_RAW_ARTIFACT_BYTES = 25 * 1024 * 1024
 const TRANSIENT_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504])
 export const DOCX_CONTENT_TYPE = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 export type BinaryDocumentKind = 'pdf' | 'docx'
