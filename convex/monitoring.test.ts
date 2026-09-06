@@ -407,6 +407,26 @@ test('owner document retry preserves accepted inventory progress', async () => {
   await expect(f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.retryDocument, { documentId: target.documentId })).rejects.toThrow('monitoring_stopped')
 })
 
+test('PDF parser repair requires the owner and idle work while preserving the old snapshot', async () => {
+  const f = await monitoringFixture()
+  workflowTest.register(f.t)
+  const target = await queuedTarget(f, 'parser-repair', false)
+  const args = { documentId: target.documentId, pdfParserMode: 'fast' as const }
+  await expect(f.t.mutation(api.monitoring.ledger.retryDocument, args)).rejects.toThrow()
+  vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
+  const owner = f.t.withIdentity({ subject: f.userId })
+  await expect(owner.mutation(api.monitoring.ledger.retryDocument, args)).rejects.toThrow('current source check')
+  await f.t.run(ctx => ctx.db.patch(f.runId, { state: 'completed' }))
+  await f.t.run(ctx => ctx.db.patch(target.targetId, { state: 'running' }))
+  await expect(owner.mutation(api.monitoring.ledger.retryDocument, args)).rejects.toThrow('document decisions')
+  await f.t.run(ctx => ctx.db.patch(target.targetId, { state: 'pending' }))
+  const before = await f.t.run(ctx => ctx.db.get(target.documentId))
+  await owner.mutation(api.monitoring.ledger.retryDocument, args)
+  const after = await f.t.run(ctx => ctx.db.get(target.documentId))
+  expect(after).toMatchObject({ snapshotId: before!.snapshotId, completedChunks: 1, inventoryComplete: false, pdfParserMode: 'fast', refreshSnapshot: true })
+  expect(await f.t.run(ctx => ctx.db.get(target.targetId))).toMatchObject({ state: 'pending', snapshotId: before!.snapshotId })
+})
+
 test('source requests reserve bounded paced slots without spending daily admissions', async () => {
   const { t, runId, policyId } = await monitoringFixture()
   rateLimiterTest.register(t)

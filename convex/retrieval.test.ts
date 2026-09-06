@@ -661,7 +661,7 @@ test('missing raw html fails instead of mislabeling markdown as the raw artifact
   expect(snapshots).toHaveLength(0)
 })
 
-test('a PDF stores the official source bytes alongside Firecrawl markdown', async () => {
+test.each([undefined, 'fast', 'auto'] as const)('a PDF preserves original bytes with parser mode %s', async pdfParserMode => {
   const t = initTest()
   const pdfBytes = new TextEncoder().encode('%PDF-1.7 official agenda bytes')
   const scrapeBodies: Array<Record<string, unknown>> = []
@@ -711,7 +711,7 @@ test('a PDF stores the official source bytes alongside Firecrawl markdown', asyn
 
   const result = await t.action(
     internal.operations.ingest.ingestRegistrySource,
-    { registryId, urlOverride: PDF_URL },
+    { registryId, urlOverride: PDF_URL, pdfParserMode },
   )
 
   expect(result).toMatchObject({ outcome: 'created', version: 1 })
@@ -730,6 +730,7 @@ test('a PDF stores the official source bytes alongside Firecrawl markdown', asyn
   )
   expect(fetchMock).toHaveBeenCalledTimes(4)
   expect(scrapeBodies).toHaveLength(2)
+  if (pdfParserMode) expect(scrapeBodies.every(body => body.maxAge === 0 && JSON.stringify(body.parsers) === JSON.stringify([{ type: 'pdf', mode: pdfParserMode }]))).toBe(true)
   expect(scrapeBodies.every((body) => body.skipTlsVerification === false)).toBe(
     true,
   )

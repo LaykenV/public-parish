@@ -300,7 +300,7 @@ export const setSnapshot = internalMutation({
     if (!document || document.policyId !== policy._id || !snapshot || snapshot.registryId !== policy.registryId || snapshot.canonicalUrl !== document.canonicalUrl || snapshot.truncation.truncated || snapshot.contentHashBasis !== 'raw_artifact_v2') throw new Error('Monitoring snapshot mismatch.')
     const sameContent = document.normalizedHash === snapshot.normalizedContentHash && document.inventoryVersion === MONITOR_VERSION
     const reused = sameContent && document.inventoryComplete
-    await ctx.db.patch(document._id, { snapshotId: sameContent ? document.snapshotId : snapshot._id, notificationEligible: sameContent ? document.notificationEligible : policy.baselineComplete, normalizedHash: snapshot.normalizedContentHash, inventoryVersion: MONITOR_VERSION, inventoryComplete: reused, completedChunks: sameContent ? document.completedChunks : 0, lastCheckedAt: Date.now(), nextCheckAt: Date.now() + policy.intervalHours * 3_600_000, errorClass: undefined })
+    await ctx.db.patch(document._id, { snapshotId: sameContent ? document.snapshotId : snapshot._id, notificationEligible: sameContent ? document.notificationEligible : policy.baselineComplete, normalizedHash: snapshot.normalizedContentHash, inventoryVersion: MONITOR_VERSION, inventoryComplete: reused, refreshSnapshot: undefined, completedChunks: sameContent ? document.completedChunks : 0, lastCheckedAt: Date.now(), nextCheckAt: Date.now() + policy.intervalHours * 3_600_000, errorClass: undefined })
     await ctx.db.patch(policy._id, { lastRetrievalAt: Date.now() })
     return reused
   },
@@ -563,7 +563,7 @@ export const pipelineBudget = internalMutation({
 })
 
 export const retryDocument = mutation({
-  args: { documentId: v.id('monitoredDocuments') }, returns: v.boolean(),
+  args: { documentId: v.id('monitoredDocuments'), pdfParserMode: v.optional(v.union(v.literal('fast'), v.literal('auto'))) }, returns: v.boolean(),
   handler: async (ctx, args) => {
     await requireOwner(ctx)
     const document = await ctx.db.get(args.documentId)
@@ -571,10 +571,18 @@ export const retryDocument = mutation({
     const proposal = policy ? await ctx.db.get(policy.proposalId) : null
     const registry = policy ? await ctx.db.get(policy.registryId) : null
     if (env.SOURCE_MONITORING_ENABLED !== 'true' || !document || document.discoveryOnly || !policy?.enabled || isBeforeSourceWindow(document.canonicalUrl, policy.startsAt) || proposal?.status !== 'promoted' || !registry || !['supported', 'degraded'].includes(registry.status)) throw new Error('monitoring_stopped')
+    if (args.pdfParserMode) {
+      const active = policy.activeRunId ? await ctx.db.get(policy.activeRunId) : null
+      if (active?.state === 'running') throw new Error('Wait for the current source check before changing its PDF parser.')
+      const snapshot = document.snapshotId ? await ctx.db.get(document.snapshotId) : null
+      if (snapshot?.rawContentType !== 'application/pdf') throw new Error('Parser repair requires an existing official PDF snapshot.')
+      const running = await ctx.db.query('documentInventoryTargets').withIndex('by_document_id_and_snapshot_id', q => q.eq('documentId', document._id)).filter(q => q.eq(q.field('state'), 'running')).first()
+      if (running) throw new Error('Wait for the document decisions before changing its PDF parser.')
+    }
     const now = Date.now()
     // Revisit a repaired source through the normal workflow. Keep its immutable
     // snapshot, accepted chunks, targets, quota usage, and retry history.
-    await ctx.db.patch(document._id, { nextCheckAt: now })
+    await ctx.db.patch(document._id, { nextCheckAt: now, ...(args.pdfParserMode ? { pdfParserMode: args.pdfParserMode, refreshSnapshot: true } : {}) })
     await ctx.db.patch(policy._id, { nextCheckAt: now, updatedAt: now })
     await startRun(ctx, policy._id)
     return true
