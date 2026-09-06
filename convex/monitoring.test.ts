@@ -515,3 +515,19 @@ test('owner can expedite a failed attempt without resetting attempts or bypassin
   await f.t.run(ctx => ctx.db.patch(f.policyId, { enabled: false }))
   expect(await owner.mutation(api.monitoring.ledger.retryTarget, args)).toBe(false)
 })
+
+
+test('inventory scope rejects background targets without hiding incomplete meeting evidence', () => {
+  const allowed = ['agenda', 'minutes']
+  expect(inventoryContract({ ...inventory, sourceKind: 'planning_case' }, text, 'Test Council', [], allowed)).toMatch(/outside the approved/)
+  expect(inventoryContract({ ...inventory, sourceKind: 'planning_case', targets: [], meetingDate: null, dateExcerpt: null }, text, 'Test Council', [], allowed)).toBeNull()
+  expect(inventoryContract({ ...inventory, complete: false, targets: [] }, text, 'Test Council', [], allowed)).toMatch(/incomplete/)
+  expect(inventoryContract(inventory, text, 'Test Council', [], allowed)).toBeNull()
+})
+
+test('inventory context exposes the current approved source kinds', async () => {
+  const f = await monitoringFixture()
+  const target = await queuedTarget(f, 'approved-scope')
+  const context = await f.t.query(internal.monitoring.ledger.documentContext, { runId: f.runId, documentId: target.documentId })
+  expect(context.allowedSourceKinds).toEqual(['agenda'])
+})

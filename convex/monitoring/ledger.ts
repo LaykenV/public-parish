@@ -16,6 +16,7 @@ import { sha256HexOfText } from '../sources/hashing'
 import schema from '../schema'
 import { isBeforeSourceWindow, officialMeetingDate } from './discovery'
 import { eligibleMonitoringDocuments } from './documents'
+import { sourceKindUnion } from '../pipeline/state'
 import { matchesLafayetteBody, monitoringListingAllowed } from './lafayette'
 import { isPinevilleListing } from './pineville'
 import { DAY_MS, inventoryIdentity, inventoryResult, isBeforeMeetingWindow, MONITOR_VERSION, monitorState } from './contracts'
@@ -267,12 +268,12 @@ export const dueDocuments = internalQuery({
 })
 export const documentContext = internalQuery({
   args: { runId: v.id('sourceMonitoringRuns'), documentId: v.id('monitoredDocuments') },
-  returns: v.object({ document: schema.doc('monitoredDocuments'), snapshot: v.union(schema.doc('sourceSnapshots'), v.null()), bodyName: v.string() }),
+  returns: v.object({ document: schema.doc('monitoredDocuments'), snapshot: v.union(schema.doc('sourceSnapshots'), v.null()), bodyName: v.string(), allowedSourceKinds: v.array(sourceKindUnion) }),
   handler: async (ctx, args) => {
-    const { policy, body } = await assertMonitoringRun(ctx, args.runId)
+    const { policy, body, registry } = await assertMonitoringRun(ctx, args.runId)
     const document = await ctx.db.get(args.documentId)
     if (!document || document.discoveryOnly || document.policyId !== policy._id) throw new Error('Monitoring document mismatch.')
-    return { document, snapshot: document.snapshotId ? await ctx.db.get(document.snapshotId) : null, bodyName: body.name }
+    return { document, snapshot: document.snapshotId ? await ctx.db.get(document.snapshotId) : null, bodyName: body.name, allowedSourceKinds: registry.sourceKinds }
   },
 })
 export const priorInventoryTargets = internalQuery({
