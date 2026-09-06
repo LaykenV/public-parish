@@ -43,6 +43,7 @@ export const discover = internalAction({
       const started = Date.now()
       let status = 'failed'
       let creditsUsed: number | undefined
+      let errorDetail: string | undefined
       try {
         const page = await firecrawl.scrape(ctx, url, { formats: ['links'], onlyMainContent: false, skipTlsVerification: false })
         const metadata = page.metadata
@@ -56,12 +57,13 @@ export const discover = internalAction({
         for (const link of links.filter(candidate => !isDocumentUrl(candidate) && (usesLafayetteEvents(proposal.bodyKey) && new URL(candidate).hostname === 'events.lafayettela.gov' || /(?:20\d{2}.*(?:meeting|agenda|minute)|(?:meeting|agenda|minute).*20\d{2})/i.test(candidate)))) if (!visited.has(link) && !listingUrls.includes(link) && !failed.includes(link)) listingUrls.push(link)
         if (visited.size + listingUrls.length > 500) throw new Error('monitoring_listing_capacity')
         status = 'succeeded'
-      } catch {
+      } catch (error) {
+        errorDetail = String(error).slice(0, 500)
         visited.delete(url)
         failed.push(url)
         failures++
       } finally {
-        await ctx.runMutation(internal.monitoring.ledger.recordCall, { ...args, operation: 'listing', provider: 'firecrawl', status, creditsUsed, latencyMs: Date.now() - started })
+        await ctx.runMutation(internal.monitoring.ledger.recordCall, { ...args, operation: 'listing', provider: 'firecrawl', status, creditsUsed, errorDetail, latencyMs: Date.now() - started })
         await ctx.runMutation(internal.monitoring.ledger.saveDiscoveryProgress, { ...args, pending: [...listingUrls, ...failed], visited: [...visited] })
       }
     }
