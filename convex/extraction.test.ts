@@ -17,6 +17,7 @@ import { checkExtractionContractV1 } from './extraction/contractV1'
 import {
   centsOf,
   locateExcerpt,
+  locateSourceExcerpt,
   normalizeForMatch,
   parseZonedIsoDateTime,
   textSupportsAmount,
@@ -745,7 +746,7 @@ test('gold case: a valid CO-029-2026 extraction validates and records the full e
     route: 'ai_gateway',
     promptVersion: 'v1.12',
     schemaVersion: 'v1',
-    processorVersion: 'v1.20',
+    processorVersion: 'v1.21',
   })
   expect(extraction?.responseHash).toBe(
     await sha256HexOfText(goldContent(snapshotId)),
@@ -2275,4 +2276,18 @@ test('matches a printed day-of-month meeting date without inventing its date or 
   expect(textSupportsDate('the 12th day of August', meeting)).toBe(false)
   expect(textSupportsDate('the 31st day of February, 2026', { year: 2026, month: 2, day: 31 })).toBe(false)
   expect(textSupportsDate('the 29th day of February, 2024', { year: 2024, month: 2, day: 29 })).toBe(true)
+})
+
+test('source-backed partial bold citations retain visible offsets and literal operators', () => {
+  const source = 'Before. **Road repairs** on Oak Street. After.'
+  const normalized = normalizeForMatch(source)
+  const location = locateSourceExcerpt(source, 'Road repairs** on Oak Street.')!
+  expect(normalized.slice(location.startOffset, location.endOffset)).toBe('Road repairs on Oak Street.')
+  expect(locateSourceExcerpt(source, 'Road repairs** on Pine Street.')).toBeNull()
+  expect(locateSourceExcerpt('Road repairs on Oak Street.', 'Road repairs** on Oak Street.')).toBeNull()
+  expect(locateSourceExcerpt(source, '')).toBeNull()
+  const operators = '**A heading** 2**3 remains literal.'
+  const operatorLocation = locateSourceExcerpt(operators, 'heading** 2**3 remains literal.')!
+  expect(normalizeForMatch(operators).slice(operatorLocation.startOffset, operatorLocation.endOffset)).toBe('heading 2**3 remains literal.')
+  expect(locateSourceExcerpt(operators, 'heading** 23 remains literal.')).toBeNull()
 })

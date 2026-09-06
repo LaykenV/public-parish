@@ -55,6 +55,38 @@ function unwrapWhitespaceBoundedBoldAsteriskEmphasis(text: string): string {
   )
 }
 
+export function locateSourceExcerpt(
+  source: string,
+  excerpt: string,
+  normalizedSource = normalizeForMatch(source),
+): { startOffset: number; endOffset: number } | null {
+  let normalizedExcerpt = normalizeForMatch(excerpt)
+  if (!normalizedExcerpt) return null
+  let startOffset = normalizedSource.indexOf(normalizedExcerpt)
+  if (startOffset >= 0) return { startOffset, endOffset: startOffset + normalizedExcerpt.length }
+
+  const literalStart = source.indexOf(excerpt)
+  if (literalStart < 0) return null
+  // Only remove markers that the complete source proves are balanced bold
+  // formatting. A partial quote can contain just one side of that formatting.
+  const removed = new Set<number>()
+  for (const match of source.matchAll(/(?<!\S)\*\*(\S(?:[^\r\n]*?\S)?)\*\*(?!\S)/g)) {
+    for (const marker of [match.index, match.index + match[0].length - 2]) {
+      const relative = marker - literalStart
+      if (relative >= 0 && relative + 2 <= excerpt.length) {
+        removed.add(relative)
+        removed.add(relative + 1)
+      }
+    }
+  }
+  if (!removed.size) return null
+  const visible = excerpt.split('').filter((_character, index) => !removed.has(index)).join('')
+  normalizedExcerpt = normalizeForMatch(visible)
+  if (!normalizedExcerpt) return null
+  startOffset = normalizedSource.indexOf(normalizedExcerpt)
+  return startOffset < 0 ? null : { startOffset, endOffset: startOffset + normalizedExcerpt.length }
+}
+
 function unwrapPdfSuperscriptArtifacts(text: string): string {
   return text
     .replace(

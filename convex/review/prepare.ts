@@ -10,7 +10,7 @@ import {
   publicActionTypes,
   recordTypes,
 } from '../extraction/contractV1'
-import { locateExcerpt, normalizeForMatch } from '../extraction/textMatch'
+import { locateSourceExcerpt, normalizeForMatch } from '../extraction/textMatch'
 import {
   PUBLICATION_PROCESSOR_VERSION,
   resolveSourceRecordIdProvenance,
@@ -328,9 +328,8 @@ export const prepareCandidateReview = internalAction({
           `Fact ${fact._id} no longer matches the validated candidate`,
         )
       }
-      const normalizedExcerpt = normalizeForMatch(fact.excerpt)
-      const startOffset = locateExcerpt(normalizedSource, fact.excerpt)
-      if (normalizedExcerpt === '' || startOffset < 0) {
+      const location = locateSourceExcerpt(sourceText, fact.excerpt, normalizedSource)
+      if (location === null) {
         return fail(
           'citation_not_found',
           `Citation for ${fact.fieldPath} no longer appears in the snapshot`,
@@ -344,8 +343,8 @@ export const prepareCandidateReview = internalAction({
         excerpt: fact.excerpt,
         page: fact.page ?? null,
         section: fact.section ?? null,
-        normalizedStartOffset: startOffset,
-        normalizedEndOffset: startOffset + normalizedExcerpt.length,
+        normalizedStartOffset: location.startOffset,
+        normalizedEndOffset: location.endOffset,
       })
     }
     if (
