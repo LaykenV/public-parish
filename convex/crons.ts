@@ -53,6 +53,8 @@ crons.interval(
   {},
 )
 
+crons.interval('resume interrupted issue proposals', { minutes: 15 }, internal.issues.proposals.recover, {})
+
 crons.interval('check approved government sources', { minutes: 15 }, internal.monitoring.ledger.tick, {})
 
 crons.interval('deliver verified place launch notices', { minutes: 15 }, internal.coverage.requests.sweep, { paginationOpts: { numItems: 25, cursor: null } })

@@ -1299,7 +1299,9 @@ export default defineSchema({
     cursor: v.union(v.string(), v.null()), matchedRecordIds: v.array(v.id('decisionRecords')),
     scanned: v.number(), startedAt: v.number(), updatedAt: v.number(), workflowId: v.optional(v.string()),
     issueBuildId: v.optional(v.id('issueBuilds')), errorClass: v.optional(v.string()), retryAttempts: v.optional(v.number()),
-  }).index('by_publication_version', ['publicationVersionId']).index('by_state_and_updated_at', ['state', 'updatedAt']).index('by_issue_build', ['issueBuildId']),
+    retryAt: v.optional(v.number()), recoveryAttempts: v.optional(v.number()), scanPages: v.optional(v.number()), scanComplete: v.optional(v.boolean()),
+    recoveryRunId: v.optional(v.id('pipelineRuns')), retriedByUserId: v.optional(v.id('users')),
+  }).index('by_state_and_retry_at', ['state', 'retryAt']).index('by_publication_version', ['publicationVersionId']).index('by_state_and_updated_at', ['state', 'updatedAt']).index('by_issue_build', ['issueBuildId']),
 
   issueBuilds: defineTable({
     targetIssueId: v.optional(v.id('issues')),

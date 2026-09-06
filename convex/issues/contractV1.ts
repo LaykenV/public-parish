@@ -209,7 +209,7 @@ export const issueCandidateJsonSchemaV1 = {
       },
     },
     sharedSignals: {
-      type: 'array',
+      type: 'array', minItems: 1, maxItems: 5,
       items: {
         type: 'object',
         additionalProperties: false,
@@ -225,7 +225,7 @@ export const issueCandidateJsonSchemaV1 = {
               'transaction',
             ],
           },
-          value: { type: 'string' },
+          value: { type: 'string', minLength: 8, maxLength: 180 },
           citationIds: { type: 'array', items: { type: 'string' } },
         },
       },

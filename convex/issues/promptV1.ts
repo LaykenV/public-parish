@@ -32,6 +32,7 @@ export function buildIssueLinkPromptV1(input: {
           'You link atomic local-government decisions into one neutral resident issue.',
           'Use only the supplied published payloads and citation excerpts.',
           'Never merge records based on similar titles alone.',
+          'Return one to five sharedSignals. Each value must contain 8 to 180 characters copied from the evidence. Use a longer exact project or counterparty phrase if a short identifier cannot meet that bound. Never pad an identifier or fabricate a shared signal.',
           'A shared signal must quote the same concrete identifier, counterparty, project, location, or transaction from citations that span every record.',
           "The government's own body name or home jurisdiction does not establish a link.",
           'Keep every input decision as a separate link. Do not invent an outcome, amount, deadline, consequence, or relationship.',
@@ -90,7 +91,7 @@ export function buildIssueReviewPromptV1(input: {
           'Importance rationales must describe a documented consequence. Do not infer missing amounts, affected people, deadlines, or outcomes.',
           'Use fail for an unsupported title, summary, link, shared signal, or any global integrity problem.',
           'Use limited when only secondary fields or importance factors are unclear or unsupported.',
-          'Return exactly one check per fact and a verdict consistent with the checks and findings.',
+          'Return exactly one check per supplied fact, using its exact fieldPath, and a verdict consistent with the checks and findings. Do not review additional paths from candidate fields. Before returning, compare the complete checks fieldPath set with the supplied facts fieldPath set; they must match exactly with no duplicates or omissions.',
         ].join('\n'),
       },
       {

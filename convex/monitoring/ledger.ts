@@ -533,3 +533,14 @@ export const retryDocument = mutation({
     return true
   },
 })
+
+export const pipelineBudget = internalMutation({
+  args: { runId: v.id('pipelineRuns') }, returns: v.object({ ok: v.boolean(), retryAt: v.number() }),
+  handler: async (ctx, args) => {
+    await assertPipelineMonitoring(ctx, args.runId)
+    const run = await ctx.db.get(args.runId)
+    const policy = run?.monitorPolicyId ? await ctx.db.get(run.monitorPolicyId) : null
+    if (!policy) return { ok: true, retryAt: Date.now() }
+    return processingBudget(ctx, policy, 2)
+  },
+})
