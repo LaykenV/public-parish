@@ -197,6 +197,16 @@ export function datesInText(text: string): CalendarDate[] {
     }
   }
 
+  // Official meeting notices can print "the 12th day of August, 2026".
+  const legalDatePattern =
+    /\b(\d{1,2})(?:st|nd|rd|th)?\s+day\s+of\s+([A-Za-z]+)(?:,\s*|\s+)(\d{4})\b/g
+  for (const match of normalized.matchAll(legalDatePattern)) {
+    const month = monthNumberFromName(match[2])
+    if (month !== null) {
+      push({ month, day: Number(match[1]), year: Number(match[3]) })
+    }
+  }
+
   return found
 }
 

@@ -745,7 +745,7 @@ test('gold case: a valid CO-029-2026 extraction validates and records the full e
     route: 'ai_gateway',
     promptVersion: 'v1.12',
     schemaVersion: 'v1',
-    processorVersion: 'v1.19',
+    processorVersion: 'v1.20',
   })
   expect(extraction?.responseHash).toBe(
     await sha256HexOfText(goldContent(snapshotId)),
@@ -2263,4 +2263,16 @@ test('deterministic date and amount helpers reject malformed values', () => {
   )
   expect(textSupportsAmount('accepting $13,564.80 in revenue', 13)).toBe(false)
   expect(textSupportsAmount('invoice ABC13564.80X', 13564.8)).toBe(false)
+})
+
+test('matches a printed day-of-month meeting date without inventing its date or time', () => {
+  const meeting = parseZonedIsoDateTime('2026-08-12T16:00:00-05:00')!
+  expect(textSupportsZonedDateTime('4:00 P.M. on the 12th day of August, 2026', meeting)).toBe(true)
+  expect(textSupportsZonedDateTime('4:00 P.M. on the 12th day of August, 2025', meeting)).toBe(false)
+  expect(textSupportsZonedDateTime('5:00 P.M. on the 12th day of August, 2026', meeting)).toBe(false)
+  expect(textSupportsDate('the 112th day of August, 2026', meeting)).toBe(false)
+  expect(textSupportsDate('the 12th day of August, 20260', meeting)).toBe(false)
+  expect(textSupportsDate('the 12th day of August', meeting)).toBe(false)
+  expect(textSupportsDate('the 31st day of February, 2026', { year: 2026, month: 2, day: 31 })).toBe(false)
+  expect(textSupportsDate('the 29th day of February, 2024', { year: 2024, month: 2, day: 29 })).toBe(true)
 })
