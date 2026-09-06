@@ -15,6 +15,7 @@ import {
 } from '../sources/domains'
 import { sha256HexOfBytes, sha256HexOfText } from '../sources/hashing'
 import { normalizeFirecrawlMetadata } from '../sources/metadata'
+import { municodeDeclaredHtmlType } from '../sources/municodeHtml'
 import { downloadOfficialPdf } from '../sources/rawArtifact'
 import { cleanupStoredArtifacts } from '../sources/storageCleanup'
 import { retrievalContentKey } from '../pipeline/keys'
@@ -163,8 +164,12 @@ function validateScrape(
     }
   }
 
-  const sourceContentType =
+  let sourceContentType =
     typeof metadata.contentType === 'string' ? metadata.contentType.trim() : ''
+  if (!sourceContentType && municodeDeclaredHtmlType(requestedUrl, document.rawHtml)) {
+    sourceContentType = municodeDeclaredHtmlType(retrievedUrl, document.rawHtml) ?? ''
+    if (sourceContentType) metadata.contentTypeEvidence = 'municode_html_meta_v1'
+  }
   if (!sourceContentType) {
     return {
       ok: false,

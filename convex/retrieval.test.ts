@@ -620,6 +620,20 @@ test('a missing content type fails closed without storing rendered HTML', async 
   expect(snapshots).toHaveLength(0)
 })
 
+test('the approved Youngsville HTML declaration retains its type evidence in the snapshot', async () => {
+  const t = initTest()
+  const url = 'https://meetings.municode.com/adaHtmlDocument/index?cc=YOUNGSVILA&me=official-meeting'
+  const raw = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>Official meeting</body></html>'
+  stubScrape('Official meeting', raw, { contentType: undefined, url, sourceURL: url })
+  const { registryId } = await t.mutation(internal.operations.seed.seedLaunchCoverage, {})
+  await t.run(async ctx => { await ctx.db.patch(registryId, { officialDomains: ['meetings.municode.com'], seedUrls: [url] }) })
+  const result = await t.action(internal.operations.ingest.ingestRegistrySource, { registryId, urlOverride: url })
+  expect(result.outcome).toBe('created')
+  const snapshot = await t.query(internal.sources.snapshots.getLatestForSource, { registryId, canonicalUrl: url })
+  expect(snapshot).toMatchObject({ contentType: 'text/html; charset=utf-8', rawContentType: 'text/html', firecrawlMetadata: { contentTypeEvidence: 'municode_html_meta_v1' } })
+  expect(snapshot?.contentHash).toBe(await sha256HexOfText(raw))
+})
+
 test('missing raw html fails instead of mislabeling markdown as the raw artifact', async () => {
   const t = initTest()
   stubScrape(MD_1, undefined)
