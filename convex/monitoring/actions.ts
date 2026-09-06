@@ -51,13 +51,14 @@ export const discover = internalAction({
       try {
         const page = await firecrawl.scrape(ctx, url, { formats: ['links'], onlyMainContent: false, skipTlsVerification: false })
         const metadata = page.metadata
-        creditsUsed = typeof metadata?.creditsUsed === 'number' ? metadata.creditsUsed : undefined
-        if (page.warning || (typeof metadata?.statusCode === 'number' && metadata.statusCode >= 400)) throw new Error('monitoring_listing_incomplete')
         const pinevilleItem = proposal.bodyKey === 'pineville-city-council' && isPinevilleItemListing(url)
+        const destination = canonicalizeCandidateUrl(typeof metadata?.url === 'string' ? metadata.url : typeof metadata?.sourceURL === 'string' ? metadata.sourceURL : url)
+        const excludedRedirect = pinevilleItem && destination !== null && classifyHost(manifest, destination) === 'unapproved'
+        creditsUsed = typeof metadata?.creditsUsed === 'number' ? metadata.creditsUsed : undefined
+        if (!excludedRedirect && (page.warning || (typeof metadata?.statusCode === 'number' && metadata.statusCode >= 400))) throw new Error('monitoring_listing_incomplete')
         let discovered = page.links ?? []
         if (pinevilleItem) {
-          if (typeof metadata?.statusCode !== 'number' || metadata.statusCode < 200 || metadata.statusCode >= 300) throw new Error('monitoring_listing_incomplete')
-          const destination = typeof metadata.url === 'string' ? metadata.url : typeof metadata.sourceURL === 'string' ? metadata.sourceURL : url
+          if (!destination || (!excludedRedirect && (typeof metadata?.statusCode !== 'number' || metadata.statusCode < 200 || metadata.statusCode >= 300))) throw new Error('monitoring_listing_incomplete')
           const pdf = pinevilleDownloadUrl(destination)
           // City listings mix official MuniDocs records with newspaper links.
           // Only the approved Pineville collection supplies an evidence URL.
@@ -71,7 +72,7 @@ export const discover = internalAction({
         visited.add(url)
         for (const link of links.filter(candidate => !isDocumentUrl(candidate) && ((proposal.bodyKey === 'pineville-city-council' && isPinevilleItemListing(candidate)) || usesLafayetteEvents(proposal.bodyKey) && new URL(candidate).hostname === 'events.lafayettela.gov' || /(?:20\d{2}.*(?:meeting|agenda|minute)|(?:meeting|agenda|minute).*20\d{2})/i.test(candidate)))) if (!visited.has(link) && !listingUrls.includes(link) && !failed.includes(link)) listingUrls.push(link)
         if (visited.size + listingUrls.length > 500) throw new Error('monitoring_listing_capacity')
-        status = 'succeeded'
+        status = excludedRedirect ? 'excluded_redirect' : 'succeeded'
       } catch (error) {
         errorDetail = String(error).slice(0, 500)
         visited.delete(url)
