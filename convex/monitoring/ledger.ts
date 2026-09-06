@@ -337,7 +337,7 @@ export const saveInventory = internalMutation({
         if (days && observedAt <= Date.now() && observedAt + days * DAY_MS > (expectation.expectedFrom ?? 0)) await ctx.db.patch(expectation._id, { expectedFrom: observedAt + days * DAY_MS, expectedBy: observedAt + (days + 7) * DAY_MS, matchedSnapshotId: document.snapshotId, basis: 'inferred' })
       }
     }
-    await ctx.db.patch(document._id, { completedChunks: args.chunk + 1, chunkCount: args.chunks, inventoryComplete: args.chunk + 1 === args.chunks, ...(args.chunk + 1 === args.chunks ? { nextCheckAt: Date.now() + policy.intervalHours * 3_600_000 } : {}) })
+    await ctx.db.patch(document._id, { completedChunks: args.chunk + 1, chunkCount: args.chunks, inventoryComplete: args.chunk + 1 === args.chunks, ...(args.chunk + 1 === args.chunks ? { nextCheckAt: Date.now() + policy.intervalHours * 3_600_000, errorClass: undefined } : {}) })
     return added
   },
 })
