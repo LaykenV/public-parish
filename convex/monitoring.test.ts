@@ -32,6 +32,7 @@ test('inventory refuses fabricated locators, ambiguous items and invalid dates',
   expect(inventoryContract({ ...inventory, targets: [{ ...inventory.targets[0], excerpt: 'Not in the source' }] }, text, 'Test Council')).toMatch(/citation/)
   expect(inventoryContract({ ...inventory, targets: [...inventory.targets, ...inventory.targets] }, text, 'Test Council')).toMatch(/duplicate/)
   expect(inventoryContract({ ...inventory, meetingDate: '2026-02-30' }, text, 'Test Council')).toMatch(/date/)
+  expect(inventoryContract({ ...inventory, targets: [{ ...inventory.targets[0], excerpt: 'x'.repeat(241) }] }, `${text} ${'x'.repeat(241)}`, 'Test Council')).toMatch(/240 characters/)
   expect(inventoryContract({ ...inventory, complete: false }, text, 'Test Council')).toMatch(/incomplete/)
   expect(inventoryContract({ ...inventory, targets: [{ ...inventory.targets[0], printedId: '2026-14\n', excerpt: '2026-14\n Road repairs' }] }, text, 'Test Council')).toMatch(/identifier/)
   expect(inventoryContract(inventory, text, 'Another Council')).toMatch(/body/)
