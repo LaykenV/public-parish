@@ -16,7 +16,7 @@ import {
 import { sha256HexOfBytes, sha256HexOfText } from '../sources/hashing'
 import { normalizeFirecrawlMetadata } from '../sources/metadata'
 import { municodeDeclaredHtmlType } from '../sources/municodeHtml'
-import { downloadOfficialPdf } from '../sources/rawArtifact'
+import { binaryDocumentKind, downloadOfficialDocument } from '../sources/rawArtifact'
 import { cleanupStoredArtifacts } from '../sources/storageCleanup'
 import { retrievalContentKey } from '../pipeline/keys'
 
@@ -180,7 +180,7 @@ function validateScrape(
   }
   const normalizedContentType = sourceContentType.toLowerCase()
   if (
-    !normalizedContentType.startsWith('application/pdf') &&
+    !binaryDocumentKind(normalizedContentType) &&
     !normalizedContentType.startsWith('text/html') &&
     !normalizedContentType.startsWith('application/xhtml+xml')
   ) {
@@ -380,10 +380,12 @@ async function ingestSeedUrl(
         : undefined
     let rawBytes: Uint8Array<ArrayBuffer>
     let rawContentType: string
-    if (scraped.sourceContentType.toLowerCase().startsWith('application/pdf')) {
-      const beforeArtifact = await downloadOfficialPdf(
+    const artifactKind = binaryDocumentKind(scraped.sourceContentType)
+    if (artifactKind) {
+      const beforeArtifact = await downloadOfficialDocument(
         scraped.retrievedUrl,
         officialDomains,
+        artifactKind,
       )
       if (!beforeArtifact.ok) {
         return await failOutcome(
@@ -408,20 +410,19 @@ async function ingestSeedUrl(
       }
       if (
         verifiedScrape.retrievedUrl !== scraped.retrievedUrl ||
-        !verifiedScrape.sourceContentType
-          .toLowerCase()
-          .startsWith('application/pdf')
+        binaryDocumentKind(verifiedScrape.sourceContentType) !== artifactKind
       ) {
         return await failOutcome(
           'source_changed_during_retrieval',
-          `Official PDF changed its resolved URL or content type during retrieval: ${url}`,
+          `Official document changed its resolved URL or content type during retrieval: ${url}`,
           true,
         )
       }
 
-      const afterArtifact = await downloadOfficialPdf(
+      const afterArtifact = await downloadOfficialDocument(
         verifiedScrape.retrievedUrl,
         officialDomains,
+        artifactKind,
       )
       if (!afterArtifact.ok) {
         return await failOutcome(
@@ -440,7 +441,7 @@ async function ingestSeedUrl(
       ) {
         return await failOutcome(
           'source_changed_during_retrieval',
-          `Official PDF changed while Firecrawl extracted it: ${url}`,
+          `Official document changed while Firecrawl extracted it: ${url}`,
           true,
         )
       }

@@ -23,5 +23,5 @@ export function isBeforeSourceWindow(raw: string, startsAt: number): boolean {
 }
 export function isDocumentUrl(url: string): boolean {
   if (isPinevilleListing(url)) return false
-  return isLafayetteEventAttachment(url) || /(?:\.pdf(?:\?|$)|ViewFile|munidocDownload|\/Document\/|adaHtmlDocument)/i.test(url)
+  return isLafayetteEventAttachment(url) || /(?:\.(?:pdf|docx)(?:\?|$)|ViewFile|munidocDownload|\/Document\/|adaHtmlDocument)/i.test(url)
 }

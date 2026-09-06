@@ -558,3 +558,11 @@ test('inventory normalizes a printed date without accepting missing dates or alt
   }
   expect(inventoryContract({ ...inventory, dateExcerpt: '2026-09-04' }, text, 'Test Council')).toMatch(/date citation/)
 })
+
+
+test('approved-source discovery recognizes DOCX agendas without broadening to executable or legacy Word files', () => {
+  expect(isDocumentUrl('https://www.lafayettela.gov/media/agenda.docx')).toBe(true)
+  expect(isDocumentUrl('https://www.lafayettela.gov/media/agenda.docx?download=1')).toBe(true)
+  expect(isDocumentUrl('https://www.lafayettela.gov/media/agenda.doc')).toBe(false)
+  expect(isDocumentUrl('https://www.lafayettela.gov/media/agenda.docx.exe')).toBe(false)
+})

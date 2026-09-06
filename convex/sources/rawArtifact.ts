@@ -2,6 +2,14 @@ import { canonicalizeUrl, isAllowedOfficialHost } from './domains'
 
 const MAX_RAW_ARTIFACT_BYTES = 25 * 1024 * 1024
 const TRANSIENT_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504])
+export const DOCX_CONTENT_TYPE = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+export type BinaryDocumentKind = 'pdf' | 'docx'
+
+export function binaryDocumentKind(contentType: string): BinaryDocumentKind | null {
+  const mime = contentType.split(';')[0].trim().toLowerCase()
+  return mime === 'application/pdf' ? 'pdf' : mime === DOCX_CONTENT_TYPE ? 'docx' : null
+}
+
 const PDF_SIGNATURE = new TextEncoder().encode('%PDF-')
 
 export type RawArtifactDownload =
@@ -18,10 +26,16 @@ export type RawArtifactDownload =
       retryable: boolean
     }
 
-export async function downloadOfficialPdf(
+export async function downloadOfficialPdf(url: string, officialDomains: string[]): Promise<RawArtifactDownload> {
+  return downloadOfficialDocument(url, officialDomains, 'pdf')
+}
+
+export async function downloadOfficialDocument(
   url: string,
   officialDomains: string[],
+  kind: BinaryDocumentKind,
 ): Promise<RawArtifactDownload> {
+  const label = kind === 'pdf' ? 'PDF' : 'DOCX'
   let response: Response
   try {
     response = await fetch(url, {
@@ -57,13 +71,13 @@ export async function downloadOfficialPdf(
 
   const contentType = response.headers.get('content-type') ?? ''
   if (
-    contentType !== '' &&
-    !contentType.toLowerCase().startsWith('application/pdf')
+    (contentType === '' && kind === 'docx') ||
+    (contentType !== '' && binaryDocumentKind(contentType) !== kind)
   ) {
     return {
       ok: false,
       errorClass: 'raw_artifact_content_type',
-      errorDetail: `Expected an official PDF but received ${contentType || 'no content type'}: ${finalUrl}`,
+      errorDetail: `Expected an official ${label} but received ${contentType || 'no content type'}: ${finalUrl}`,
       retryable: false,
     }
   }
@@ -76,7 +90,7 @@ export async function downloadOfficialPdf(
     return {
       ok: false,
       errorClass: 'raw_artifact_too_large',
-      errorDetail: `Official PDF exceeds the ${MAX_RAW_ARTIFACT_BYTES} byte limit: ${finalUrl}`,
+      errorDetail: `Official ${label} exceeds the ${MAX_RAW_ARTIFACT_BYTES} byte limit: ${finalUrl}`,
       retryable: false,
     }
   }
@@ -85,7 +99,7 @@ export async function downloadOfficialPdf(
     return {
       ok: false,
       errorClass: 'empty_raw_artifact',
-      errorDetail: `Official PDF had no response body: ${finalUrl}`,
+      errorDetail: `Official ${label} had no response body: ${finalUrl}`,
       retryable: true,
     }
   }
@@ -106,7 +120,7 @@ export async function downloadOfficialPdf(
         return {
           ok: false,
           errorClass: 'raw_artifact_too_large',
-          errorDetail: `Official PDF exceeds the ${MAX_RAW_ARTIFACT_BYTES} byte limit: ${finalUrl}`,
+          errorDetail: `Official ${label} exceeds the ${MAX_RAW_ARTIFACT_BYTES} byte limit: ${finalUrl}`,
           retryable: false,
         }
       }
@@ -137,22 +151,22 @@ export async function downloadOfficialPdf(
     return {
       ok: false,
       errorClass: 'empty_raw_artifact',
-      errorDetail: `Official PDF was empty: ${finalUrl}`,
+      errorDetail: `Official ${label} was empty: ${finalUrl}`,
       retryable: true,
     }
   }
-  if (!hasPdfSignature(bytes)) {
+  if (!(kind === 'pdf' ? hasPdfSignature(bytes) : hasDocxSignature(bytes))) {
     return {
       ok: false,
       errorClass: 'raw_artifact_signature',
-      errorDetail: `Official response did not contain a PDF signature: ${finalUrl}`,
+      errorDetail: `Official response did not contain a ${label} signature: ${finalUrl}`,
       retryable: false,
     }
   }
   return {
     ok: true,
     bytes,
-    contentType: contentType || 'application/pdf',
+    contentType: contentType || (kind === 'pdf' ? 'application/pdf' : DOCX_CONTENT_TYPE),
     finalUrl,
   }
 }
@@ -169,6 +183,36 @@ function hasPdfSignature(bytes: Uint8Array): boolean {
     ) {
       return true
     }
+  }
+  return false
+}
+
+
+// Inspect bounded ZIP directory metadata only. Firecrawl parses the document;
+// this check never decompresses archive entries or executes Office content.
+function hasDocxSignature(bytes: Uint8Array): boolean {
+  if (bytes.length < 22) return false
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
+  if (view.getUint32(0, true) !== 0x04034b50) return false
+  for (let end = bytes.length - 22; end >= Math.max(0, bytes.length - 65_557); end--) {
+    if (view.getUint32(end, true) !== 0x06054b50 || end + 22 + view.getUint16(end + 20, true) !== bytes.length) continue
+    const entries = view.getUint16(end + 10, true)
+    const directorySize = view.getUint32(end + 12, true)
+    const directoryStart = view.getUint32(end + 16, true)
+    if (view.getUint16(end + 4, true) !== 0 || view.getUint16(end + 6, true) !== 0 || view.getUint16(end + 8, true) !== entries || entries < 2 || entries > 2_048 || directoryStart + directorySize !== end) return false
+    const required = new Set<string>()
+    let offset = directoryStart
+    for (let entry = 0; entry < entries; entry++) {
+      if (offset + 46 > end || view.getUint32(offset, true) !== 0x02014b50 || (view.getUint16(offset + 8, true) & 1) !== 0) return false
+      const nameLength = view.getUint16(offset + 28, true)
+      const next = offset + 46 + nameLength + view.getUint16(offset + 30, true) + view.getUint16(offset + 32, true)
+      const localOffset = view.getUint32(offset + 42, true)
+      if (next > end || localOffset + 30 > directoryStart || view.getUint32(localOffset, true) !== 0x04034b50) return false
+      const name = new TextDecoder().decode(bytes.subarray(offset + 46, offset + 46 + nameLength))
+      if (name === '[Content_Types].xml' || name === 'word/document.xml') required.add(name)
+      offset = next
+    }
+    return offset === end && required.size === 2
   }
   return false
 }
