@@ -90,6 +90,15 @@ test('a verified old meeting leaves the current window without losing future inv
   expect(officialMeetingDate('https://www.brla.gov/AgendaCenter/ViewFile/ArchivedMinutes/_04302026-3326')).toBe('2026-04-30')
 })
 
+test('old-meeting exclusion requires a matching printed date in the header', () => {
+  const old = { ...inventory, targets: [] }
+  const startsAt = Date.parse('2026-09-05')
+  expect(inventoryContract(old, text, 'Test Council', [], ['agenda'], startsAt)).toBeNull()
+  expect(inventoryContract({ ...old, meetingDate: '2026-08-04' }, text, 'Test Council', [], ['agenda'], startsAt)).toMatch(/printed date matching/)
+  expect(inventoryContract(old, 'Current meeting header. '.repeat(100) + text, 'Test Council', [], ['agenda'], startsAt)).toMatch(/first 2000/)
+  for (const dateExcerpt of ['2026-09-04', '09/04/2026', 'September 4, 2026']) expect(inventoryContract({ ...old, dateExcerpt }, `Test Council. ${dateExcerpt}`, 'Test Council', [], ['agenda'], startsAt)).toBeNull()
+})
+
 test('a failed document backs off so the next approved document can run', async () => {
   const { t, runId } = await monitoringFixture()
   await t.mutation(internal.monitoring.ledger.addDocuments, { runId, urls: ['https://www.lafayettela.gov/dead-agenda.pdf', 'https://www.lafayettela.gov/good-agenda.pdf', 'https://unapproved.example/agenda.pdf'] })

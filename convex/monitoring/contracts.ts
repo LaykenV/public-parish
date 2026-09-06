@@ -32,7 +32,7 @@ export const inventoryResult = v.object({
 })
 export type InventoryResult = typeof inventoryResult.type
 
-export function inventoryContract(value: InventoryResult, source: string, bodyName: string, priorLocators: string[] = [], allowedSourceKinds?: string[]): string | null {
+export function inventoryContract(value: InventoryResult, source: string, bodyName: string, priorLocators: string[] = [], allowedSourceKinds?: string[], startsAt?: number): string | null {
   if (!value.complete) return `Document inventory is incomplete. ${value.reason ?? ''}`
   if (value.bodyName !== bodyName) return 'Inventory changed the government body.'
   if (value.targets.length && allowedSourceKinds && !allowedSourceKinds.includes(value.sourceKind)) return 'This source kind is outside the approved inventory scope. Preserve its actual source kind and return no targets for background documents; do not relabel them as agendas or minutes.'
@@ -42,6 +42,7 @@ export function inventoryContract(value: InventoryResult, source: string, bodyNa
   }
   const normalized = normalizeForMatch(source)
   if (value.meetingDate && (!value.dateExcerpt || !normalized.includes(normalizeForMatch(value.dateExcerpt)))) return 'Inventory date citation does not resolve.'
+  if (startsAt !== undefined && value.meetingDate && allowedSourceKinds?.includes(value.sourceKind) && isBeforeMeetingWindow(value.meetingDate, startsAt) && !hasHeaderMeetingDate(value, source)) return 'Excluding an old meeting requires its exact date excerpt in the first 2000 source characters, with a printed date matching meetingDate. Do not use a date from referenced older business.'
   const identities = new Set<string>()
   for (const target of value.targets) {
     if (!target.title.trim() || target.title.length > 300 || target.excerpt.length > 240 || !target.excerpt.trim() || !normalized.includes(normalizeForMatch(target.excerpt))) return `Inventory target citation does not resolve for ${JSON.stringify(target.title.slice(0, 120))}. Copy a contiguous source excerpt at most 240 characters, without omissions or ellipses. Rejected excerpt: ${JSON.stringify(target.excerpt.slice(0, 240))}`
@@ -89,4 +90,15 @@ export function inventorySourceSection(text: string, chunk: number): { source: s
 export function isBeforeMeetingWindow(meetingDate: string, startsAt: number): boolean {
   // Official meeting dates have day precision, including the owner's first day.
   return Date.parse(meetingDate) < new Date(startsAt).setUTCHours(0, 0, 0, 0)
+}
+
+
+export function hasHeaderMeetingDate(value: Pick<InventoryResult, 'meetingDate' | 'dateExcerpt'>, source: string): boolean {
+  if (!value.meetingDate || !value.dateExcerpt || !normalizeForMatch(source.slice(0, 2000)).includes(normalizeForMatch(value.dateExcerpt))) return false
+  const excerpt = value.dateExcerpt
+  const dates = [...excerpt.matchAll(/\b(20\d{2})-(\d{2})-(\d{2})\b/g)].map(match => `${match[1]}-${match[2]}-${match[3]}`)
+  for (const match of excerpt.matchAll(/\b(\d{1,2})[\/](\d{1,2})[\/](20\d{2})\b/g)) dates.push(`${match[3]}-${match[1].padStart(2, '0')}-${match[2].padStart(2, '0')}`)
+  const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+  for (const match of excerpt.matchAll(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})(?:st|nd|rd|th)?[,]?\s+(20\d{2})\b/gi)) dates.push(`${match[3]}-${String(months.indexOf(match[1].toLowerCase()) + 1).padStart(2, '0')}-${match[2].padStart(2, '0')}`)
+  return dates.includes(value.meetingDate)
 }
