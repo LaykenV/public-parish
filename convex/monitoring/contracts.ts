@@ -37,7 +37,7 @@ export function inventoryContract(value: InventoryResult, source: string, bodyNa
   if (value.bodyName !== bodyName) return 'Inventory changed the government body.'
   if (value.targets.length && allowedSourceKinds && !allowedSourceKinds.includes(value.sourceKind)) return 'This source kind is outside the approved inventory scope. Preserve its actual source kind and return no targets for background documents; do not relabel them as agendas or minutes.'
   if (value.targets.length > MAX_TARGETS_PER_CHUNK) return 'Inventory target overflow.'
-  if (value.targets.length && (!value.meetingDate || !/^\d{4}-\d{2}-\d{2}$/.test(value.meetingDate) || !Number.isFinite(Date.parse(value.meetingDate)) || new Date(value.meetingDate).toISOString().slice(0, 10) !== value.meetingDate)) {
+  if ((value.targets.length && !value.meetingDate) || (value.meetingDate !== null && (!/^\d{4}-\d{2}-\d{2}$/.test(value.meetingDate) || !Number.isFinite(Date.parse(value.meetingDate)) || new Date(value.meetingDate).toISOString().slice(0, 10) !== value.meetingDate))) {
     return 'Decision inventory needs a real source-backed meeting date in YYYY-MM-DD format. Normalize the printed date into that format and keep its exact original text in dateExcerpt. Use null only for an empty inventory when no meeting date is established.'
   }
   const normalized = normalizeForMatch(source)

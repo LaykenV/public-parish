@@ -260,7 +260,7 @@ export const dueDocuments = internalQuery({
       if (seen.has(target.documentId)) continue
       seen.add(target.documentId)
       const document = await ctx.db.get(target.documentId)
-      if (document?.policyId === policy._id && !isBeforeSourceWindow(document.canonicalUrl, policy.startsAt) && !document.discoveryOnly && document.snapshotId === target.snapshotId && !document.inventoryComplete && document.nextCheckAt <= run.startedAt) selected.push(document)
+      if (document?.policyId === policy._id && !isBeforeSourceWindow(document.canonicalUrl, policy.startsAt) && (!document.sourceMeetingDate || !isBeforeMeetingWindow(document.sourceMeetingDate, policy.startsAt)) && !document.discoveryOnly && document.snapshotId === target.snapshotId && !document.inventoryComplete && document.nextCheckAt <= run.startedAt) selected.push(document)
       if (selected.length === policy.documentsPerRun) return selected
     }
     const due = await eligibleMonitoringDocuments(ctx, policy, { limit: policy.documentsPerRun, dueAt: run.startedAt })
@@ -269,12 +269,12 @@ export const dueDocuments = internalQuery({
 })
 export const documentContext = internalQuery({
   args: { runId: v.id('sourceMonitoringRuns'), documentId: v.id('monitoredDocuments') },
-  returns: v.object({ document: schema.doc('monitoredDocuments'), snapshot: v.union(schema.doc('sourceSnapshots'), v.null()), bodyName: v.string(), allowedSourceKinds: v.array(sourceKindUnion) }),
+  returns: v.object({ document: schema.doc('monitoredDocuments'), snapshot: v.union(schema.doc('sourceSnapshots'), v.null()), bodyName: v.string(), allowedSourceKinds: v.array(sourceKindUnion), startsAt: v.number() }),
   handler: async (ctx, args) => {
     const { policy, body, registry } = await assertMonitoringRun(ctx, args.runId)
     const document = await ctx.db.get(args.documentId)
     if (!document || document.discoveryOnly || document.policyId !== policy._id) throw new Error('Monitoring document mismatch.')
-    return { document, snapshot: document.snapshotId ? await ctx.db.get(document.snapshotId) : null, bodyName: body.name, allowedSourceKinds: registry.sourceKinds }
+    return { document, snapshot: document.snapshotId ? await ctx.db.get(document.snapshotId) : null, bodyName: body.name, allowedSourceKinds: registry.sourceKinds, startsAt: policy.startsAt }
   },
 })
 export const priorInventoryTargets = internalQuery({
@@ -315,6 +315,15 @@ export const saveInventory = internalMutation({
     if (!args.inventory.complete || (args.inventory.targets.length > 0 && !registry.sourceKinds.includes(args.inventory.sourceKind))) throw new Error('Inventory is not complete or its source kind is not registered.')
     if ((document.completedChunks ?? 0) > args.chunk) return 0
     if ((document.completedChunks ?? 0) !== args.chunk) throw new Error('Inventory chunk order mismatch.')
+    const meetingDate = registry.sourceKinds.includes(args.inventory.sourceKind) ? args.inventory.meetingDate : null
+    if (args.chunk > 0 && document.sourceMeetingDate && meetingDate && document.sourceMeetingDate !== meetingDate) throw new Error('Inventory sections disagree on the meeting date.')
+    if (meetingDate && isBeforeMeetingWindow(meetingDate, policy.startsAt)) {
+      // This window excludes the meeting. Keep it unfinished so a later
+      // approved expansion can inventory it without losing historical targets.
+      await ctx.db.patch(document._id, { sourceMeetingDate: meetingDate, completedChunks: 0, inventoryComplete: false, errorClass: undefined })
+      return 0
+    }
+    if (meetingDate) await ctx.db.patch(document._id, { sourceMeetingDate: meetingDate })
     let added = 0
     for (const target of args.inventory.targets) {
       const date = args.inventory.meetingDate
