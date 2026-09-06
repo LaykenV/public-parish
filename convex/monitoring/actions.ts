@@ -149,6 +149,7 @@ export const discoverPdfLinks = internalAction({
     if (!usesLafayetteEvents(proposal.bodyKey)) return null
     const { snapshot } = await ctx.runQuery(internal.monitoring.ledger.documentContext, args)
     if (!snapshot) throw new Error('monitoring_snapshot_missing')
+    if (!snapshot.rawContentType.toLowerCase().startsWith('application/pdf')) return null
     const blob = await ctx.storage.get(snapshot.rawStorageId)
     if (!blob) throw new Error('monitoring_snapshot_missing')
     const bytes = new Uint8Array(await blob.arrayBuffer())
