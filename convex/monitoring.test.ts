@@ -432,3 +432,52 @@ test('provider throttling schedules a bounded continuation without degrading the
   await t.mutation(internal.monitoring.ledger.wake, { policyId, generation: 1 })
   expect(await t.run(ctx => ctx.db.query('sourceMonitoringRuns').collect())).toHaveLength(1)
 })
+
+
+test.each(['policy', 'registry'] as const)('monitoring dispatch replaces extraction with stale %s authority', async changed => {
+  const f = await monitoringFixture()
+  workflowTest.register(f.t)
+  rateLimiterTest.register(f.t)
+  const target = await queuedTarget(f, `stale-${changed}`)
+  await f.t.run(async ctx => {
+    if (changed === 'policy') {
+      await ctx.db.patch(f.policyId, { generation: 2 })
+      await ctx.db.patch(f.runId, { generation: 2 })
+    } else {
+      await ctx.db.patch(f.registryId, { statusGeneration: 2 })
+      await ctx.db.patch(f.runId, { registryGeneration: 2 })
+    }
+  })
+  await f.t.mutation(internal.monitoring.ledger.dispatchTargets, { runId: f.runId })
+  const updated = await f.t.run(ctx => ctx.db.get(target.targetId))
+  expect(updated?.pipelineRunId).not.toBe(target.pipelineRunId)
+  const run = await f.t.run(ctx => ctx.db.get(updated!.pipelineRunId!))
+  expect(run).toMatchObject({ monitorPolicyId: f.policyId, monitorGeneration: changed === 'policy' ? 2 : 1, monitorRegistryGeneration: changed === 'registry' ? 2 : 1 })
+  expect((await f.t.run(ctx => ctx.db.get(target.pipelineRunId)))?.state).toBe('queued')
+})
+
+test('owner can expedite a failed attempt without resetting attempts or bypassing evidence gates', async () => {
+  const f = await monitoringFixture()
+  vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
+  const target = await queuedTarget(f, 'expedite')
+  const args = { targetId: target.targetId, expediteFailedAttempt: true }
+  await f.t.run(async ctx => {
+    await ctx.db.patch(target.targetId, { pipelineRunId: target.pipelineRunId, attempts: 2, retryAt: Date.now() + DAY })
+    await ctx.db.patch(target.pipelineRunId, { state: 'failed_terminal' })
+  })
+  await expect(f.t.mutation(api.monitoring.ledger.retryTarget, args)).rejects.toThrow()
+  const owner = f.t.withIdentity({ subject: f.userId })
+  expect(await owner.mutation(api.monitoring.ledger.retryTarget, { targetId: target.targetId })).toBe(false)
+  expect(await owner.mutation(api.monitoring.ledger.retryTarget, args)).toBe(true)
+  const updated = await f.t.run(ctx => ctx.db.get(target.targetId))
+  expect(updated).toMatchObject({ state: 'pending', attempts: 2, pipelineRunId: target.pipelineRunId })
+  expect(updated?.retryAt).toBeUndefined()
+  await f.t.run(ctx => ctx.db.patch(target.pipelineRunId, { state: 'running' }))
+  expect(await owner.mutation(api.monitoring.ledger.retryTarget, args)).toBe(false)
+  await f.t.run(ctx => ctx.db.patch(target.pipelineRunId, { state: 'failed_terminal' }))
+  await f.t.run(ctx => ctx.db.patch(target.documentId, { inventoryComplete: false }))
+  expect(await owner.mutation(api.monitoring.ledger.retryTarget, args)).toBe(false)
+  await f.t.run(ctx => ctx.db.patch(target.documentId, { inventoryComplete: true }))
+  await f.t.run(ctx => ctx.db.patch(f.policyId, { enabled: false }))
+  expect(await owner.mutation(api.monitoring.ledger.retryTarget, args)).toBe(false)
+})
