@@ -44,3 +44,10 @@ Future monitoring must discover both opaque event attachments and action-summary
 links embedded in PDFs. Certification of this finite sample does not prove that
 future-document discovery works. Inspect that path before declaring unattended
 coverage complete.
+
+Development extraction exposed a naming mismatch. The City Planning action
+summary prints "Lafayette Consolidated Government City Planning Commission",
+while the registry names "Lafayette City Planning Commission". The extraction
+prompt now requests the registered spelling only when the source identifies
+that same body. It explicitly preserves City versus Parish distinctions and
+leaves the deterministic mismatch rejection unchanged.
