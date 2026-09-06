@@ -420,12 +420,13 @@ test('source requests reserve bounded paced slots without spending daily admissi
   await expect(t.mutation(internal.monitoring.ledger.reserveRetrievalSlot, { runId })).rejects.toThrow('monitoring_stopped')
 })
 
-test('provider throttling schedules a bounded continuation without degrading the source', async () => {
+test.each([['monitoring_provider_rate_limit', 60_000], ['monitoring_ai_gateway_unavailable', 900_000]] as const)('%s schedules a bounded continuation without degrading the source', async (errorClass, delay) => {
   const { t, runId, policyId, registryId } = await monitoringFixture()
-  await t.mutation(internal.monitoring.ledger.finish, { runId, state: 'incomplete', documentsChecked: 0, targetsStarted: 0, errorClass: 'monitoring_provider_rate_limit' })
+  await t.mutation(internal.monitoring.ledger.finish, { runId, state: 'incomplete', documentsChecked: 0, targetsStarted: 0, errorClass })
   const policy = await t.run(ctx => ctx.db.get(policyId))
   expect(policy?.failures).toBe(0)
-  expect(policy!.nextCheckAt - Date.now()).toBeGreaterThan(59_000)
+  expect(policy!.nextCheckAt - Date.now()).toBeGreaterThan(delay - 1_000)
+  expect(policy!.nextCheckAt - Date.now()).toBeLessThanOrEqual(delay)
   expect((await t.run(ctx => ctx.db.get(registryId)))?.status).toBe('supported')
   expect(await t.run(ctx => ctx.db.query('coverageIncidents').collect())).toEqual([])
   await t.run(ctx => ctx.db.patch(policyId, { enabled: false, generation: 2 }))
@@ -530,4 +531,20 @@ test('inventory context exposes the current approved source kinds', async () => 
   const target = await queuedTarget(f, 'approved-scope')
   const context = await f.t.query(internal.monitoring.ledger.documentContext, { runId: f.runId, documentId: target.documentId })
   expect(context.allowedSourceKinds).toEqual(['agenda'])
+})
+
+
+test('a gateway pause retains inventory progress and makes the snapshot due at its retry', async () => {
+  const f = await monitoringFixture()
+  const target = await queuedTarget(f, 'gateway-paused-inventory', false)
+  await f.t.run(ctx => ctx.db.patch(target.documentId, { completedChunks: 1, chunkCount: 2, nextCheckAt: Date.now() + DAY }))
+  const before = await f.t.run(ctx => ctx.db.get(target.documentId))
+  await f.t.mutation(internal.monitoring.ledger.deferDocument, { runId: f.runId, documentId: target.documentId, reason: 'monitoring_ai_gateway_unavailable' })
+  const document = await f.t.run(ctx => ctx.db.get(target.documentId))
+  expect(document).toMatchObject({ snapshotId: before!.snapshotId, completedChunks: 1, chunkCount: 2, inventoryComplete: false, errorClass: 'monitoring_ai_gateway_unavailable' })
+  expect(document!.nextCheckAt - Date.now()).toBeGreaterThan(899_000)
+  expect(document!.nextCheckAt - Date.now()).toBeLessThanOrEqual(900_000)
+  expect((await f.t.run(ctx => ctx.db.get(target.targetId)))?.state).toBe('pending')
+  await f.t.mutation(internal.monitoring.ledger.deferDocument, { runId: f.runId, documentId: target.documentId })
+  expect((await f.t.run(ctx => ctx.db.get(target.documentId)))!.nextCheckAt - Date.now()).toBeGreaterThan(DAY - 1_000)
 })
