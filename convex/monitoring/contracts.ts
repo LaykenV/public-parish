@@ -97,7 +97,7 @@ export function hasHeaderMeetingDate(value: Pick<InventoryResult, 'meetingDate' 
   if (!value.meetingDate || !value.dateExcerpt || !normalizeForMatch(source.slice(0, 2000)).includes(normalizeForMatch(value.dateExcerpt))) return false
   const excerpt = value.dateExcerpt
   const dates = [...excerpt.matchAll(/\b(20\d{2})-(\d{2})-(\d{2})\b/g)].map(match => `${match[1]}-${match[2]}-${match[3]}`)
-  for (const match of excerpt.matchAll(/\b(\d{1,2})[\/](\d{1,2})[\/](20\d{2})\b/g)) dates.push(`${match[3]}-${match[1].padStart(2, '0')}-${match[2].padStart(2, '0')}`)
+  for (const match of excerpt.matchAll(/\b(\d{1,2})\/(\d{1,2})\/(20\d{2})\b/g)) dates.push(`${match[3]}-${match[1].padStart(2, '0')}-${match[2].padStart(2, '0')}`)
   const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
   for (const match of excerpt.matchAll(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})(?:st|nd|rd|th)?[,]?\s+(20\d{2})\b/gi)) dates.push(`${match[3]}-${String(months.indexOf(match[1].toLowerCase()) + 1).padStart(2, '0')}-${match[2].padStart(2, '0')}`)
   return dates.includes(value.meetingDate)
