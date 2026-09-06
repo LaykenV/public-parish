@@ -254,6 +254,41 @@ async function queuedTarget(fixture: Awaited<ReturnType<typeof monitoringFixture
   })
 }
 
+test('Pineville listing reclassification preserves history and excludes wrappers from evidence work', async () => {
+  const f = await monitoringFixture()
+  vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
+  const ids = await f.t.run(async ctx => {
+    await ctx.db.patch(f.proposalId, { bodyKey: 'pineville-city-council' })
+    await ctx.db.patch(f.policyId, { enabled: false })
+    const fields = { policyId: f.policyId, registryId: f.registryId, nextCheckAt: 0, firstSeenAt: 1, notificationEligible: false, inventoryComplete: false }
+    const listingId = await ctx.db.insert('monitoredDocuments', { ...fields, canonicalUrl: 'https://www.pineville.net/egov/apps/document/center.egov?id=2309&view=item', errorClass: 'redirect_domain_not_allowed' })
+    const pdfId = await ctx.db.insert('monitoredDocuments', { ...fields, canonicalUrl: 'https://mcclibraryfunctions.azurewebsites.us/api/munidocDownload/31105/9734ade6364fa/pdf' })
+    return { listingId, pdfId }
+  })
+  const args = { policyId: f.policyId, paginationOpts: { numItems: 50, cursor: null } }
+  await expect(f.t.mutation(api.monitoring.ledger.reclassifyPinevilleListings, args)).rejects.toThrow()
+  const result = await f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.reclassifyPinevilleListings, args)
+  expect(result).toMatchObject({ classified: 1, isDone: true })
+  expect(await f.t.run(ctx => ctx.db.get(ids.listingId))).toMatchObject({ discoveryOnly: true, inventoryComplete: false, errorClass: 'redirect_domain_not_allowed' })
+  await f.t.run(ctx => ctx.db.patch(f.policyId, { enabled: true }))
+  expect((await f.t.query(internal.monitoring.ledger.dueDocuments, { runId: f.runId })).map(d => d._id)).toEqual([ids.pdfId])
+  await expect(f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.reclassifyPinevilleListings, args)).rejects.toThrow('Pause the Pineville policy')
+})
+
+test('a wrapper with existing decision targets cannot be reclassified automatically', async () => {
+  const f = await monitoringFixture()
+  vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
+  const target = await queuedTarget(f, 'protected')
+  await f.t.run(async ctx => {
+    await ctx.db.patch(f.proposalId, { bodyKey: 'pineville-city-council' })
+    await ctx.db.patch(f.policyId, { enabled: false })
+    await ctx.db.patch(target.documentId, { canonicalUrl: 'https://www.pineville.net/egov/apps/document/center.egov?id=2309&view=item' })
+  })
+  await expect(f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.reclassifyPinevilleListings, { policyId: f.policyId, paginationOpts: { numItems: 50, cursor: null } })).rejects.toThrow('requires individual review')
+  expect((await f.t.run(ctx => ctx.db.get(target.documentId)))?.discoveryOnly).toBeUndefined()
+  expect(await f.t.run(ctx => ctx.db.get(target.targetId))).not.toBeNull()
+})
+
 test('an incomplete first document cannot block a ready decision behind it', async () => {
   const f = await monitoringFixture()
   rateLimiterTest.register(f.t)
