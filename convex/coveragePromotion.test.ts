@@ -8,6 +8,7 @@ import { api, internal } from './_generated/api'
 import type { DataModel } from './_generated/dataModel'
 import { coverageGoldSetSamples } from './coverage/goldSet'
 import { COVERAGE_EVALUATOR_VERSION } from './coverage/gates'
+import { loadCoverageEvidence } from './coverage/evidence'
 import { listRootManifests } from './coverage/roots'
 import schema from './schema'
 
@@ -748,4 +749,50 @@ test('a missing-case probe requires the literal identifier instead of routing to
   expect(await t.query(internal.coverage.validation.sampleExtractionContext, {
     sampleId, mode: 'evidence',
   })).toMatchObject(expected.extraction!)
+})
+
+
+test('coverage keeps verified sample receipts after 200 newer runs and records without extending their age', async () => {
+  const t = convexTest(schema, modules)
+  await signInOwner(t)
+  const seeded = await seedReadyProposal(t, false)
+  const proof = await t.run(async ctx => {
+    const now = Date.now()
+    const storageId = await ctx.storage.store(new Blob(['Official evidence']))
+    const recordId = await ctx.db.insert('decisionRecords', { recordKey: 'retained-proof', registryId: seeded.registryId, governmentBodyId: seeded.bodyId, sourceRecordId: 'PROOF-2026', createdAt: 1, updatedAt: 1 })
+    const runIds = []
+    for (const sourceKind of ['agenda', 'minutes'] as const) {
+      const url = `https://www.lafayettela.gov/${sourceKind}.pdf`
+      const snapshotId = await ctx.db.insert('sourceSnapshots', { registryId: seeded.registryId, canonicalUrl: url, retrievedUrl: url, contentHash: sourceKind, contentType: 'text/plain', retrievalTime: 1, version: 1, normalizedStorageId: storageId, normalizedContentType: 'text/plain', normalizedByteLength: 17, rawStorageId: storageId, rawContentType: 'text/plain', rawByteLength: 17, truncation: { truncated: false }, firecrawlMetadata: {} })
+      const pipelineRunId = await ctx.db.insert('pipelineRuns', { registryId: seeded.registryId, trigger: 'manual_extraction', state: 'succeeded', processorVersion: 'test', sourceKind, snapshotId, targetRecordId: 'PROOF-2026', startedAt: now - 1_000, completedAt: now - 1_000 })
+      const sampleId = await ctx.db.insert('coverageRepresentativeSamples', { proposalId: seeded.proposalId, sourceKind, role: 'current', required: true, state: 'retrieved', pipelineRunId, snapshotId, createdAt: 1 })
+      runIds.push({ pipelineRunId, sampleId, snapshotId })
+    }
+    for (let index = 0; index < 201; index++) {
+      await ctx.db.insert('decisionRecords', { recordKey: `newer-${index}`, registryId: seeded.registryId, governmentBodyId: seeded.bodyId, sourceRecordId: `newer-${index}`, createdAt: now + index, updatedAt: now + index })
+      await ctx.db.insert('pipelineRuns', { registryId: seeded.registryId, trigger: 'manual_extraction', state: 'succeeded', processorVersion: 'test', sourceKind: 'agenda', targetRecordId: `newer-${index}`, startedAt: now + index, completedAt: now + index })
+    }
+    return { recordId, runIds }
+  })
+  const readEvidence = () => t.run(async ctx => loadCoverageEvidence(ctx, seeded.registryId, await ctx.db.query('coverageRepresentativeSamples').withIndex('by_proposal_and_role', q => q.eq('proposalId', seeded.proposalId)).take(20)))
+  const evidence = await readEvidence()
+  expect(evidence.records).toHaveLength(201)
+  expect(evidence.records.some(record => record._id === proof.recordId)).toBe(true)
+  expect(evidence.pipelineRuns).toHaveLength(202)
+  expect(evidence.pipelineRuns.filter(run => run.targetRecordId === 'PROOF-2026')).toHaveLength(2)
+  const evaluate = async (key: string) => {
+    const stageId = await t.run(async ctx => {
+      await ctx.db.patch(seeded.runId, { state: 'running' })
+      return await ctx.db.insert('coverageCompilerStages', { runId: seeded.runId, stage: 'evaluate_gates', idempotencyKey: key, inputHash: key, attempt: 1, state: 'running', gateVersion: COVERAGE_EVALUATOR_VERSION, startedAt: Date.now() })
+    })
+    await t.mutation(internal.coverage.evaluator.evaluateProposal, { proposalId: seeded.proposalId, stageId })
+    return await t.run(ctx => ctx.db.query('coverageGateEvaluations').withIndex('by_proposal_and_gate', q => q.eq('proposalId', seeded.proposalId).eq('gateNumber', 9)).order('desc').first())
+  }
+  expect((await evaluate('retained-samples'))?.passed).toBe(true)
+  await t.run(ctx => ctx.db.patch(proof.runIds[1].pipelineRunId, { completedAt: Date.now() - 61 * 86_400_000 }))
+  expect((await evaluate('aged-samples'))?.passed).toBe(false)
+  await t.run(ctx => ctx.db.patch(proof.runIds[1].pipelineRunId, { registryId: seeded.previousRegistryId }))
+  expect((await readEvidence()).pipelineRuns.some(run => run._id === proof.runIds[1].pipelineRunId)).toBe(false)
+  await t.run(ctx => ctx.db.patch(proof.runIds[0].sampleId, { snapshotId: proof.runIds[1].snapshotId }))
+  expect((await readEvidence()).pipelineRuns.some(run => run._id === proof.runIds[0].pipelineRunId)).toBe(false)
 })

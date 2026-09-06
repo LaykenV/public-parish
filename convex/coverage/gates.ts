@@ -1,4 +1,4 @@
-export const COVERAGE_EVALUATOR_VERSION = 'coverage-gates-v3'
+export const COVERAGE_EVALUATOR_VERSION = 'coverage-gates-v4'
 import { coverageGoldSetVersion } from './goldSet'
 
 export const COVERAGE_GOLD_SET_VERSION = coverageGoldSetVersion()
