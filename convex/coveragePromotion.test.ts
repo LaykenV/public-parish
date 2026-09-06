@@ -6,6 +6,7 @@ import { afterEach, expect, test, vi } from 'vitest'
 
 import { api, internal } from './_generated/api'
 import type { DataModel } from './_generated/dataModel'
+import { coverageGoldSetSamples } from './coverage/goldSet'
 import { COVERAGE_EVALUATOR_VERSION } from './coverage/gates'
 import { listRootManifests } from './coverage/roots'
 import schema from './schema'
@@ -706,4 +707,45 @@ test('source-link refresh records production checks and refuses redirects outsid
     const latest = await ctx.db.query('coverageDirectLinkChecks').order('desc').first()
     expect(latest).toMatchObject({ deployment: 'production', passed: true, status: 200 })
   })
+})
+
+
+test('a missing-case probe requires the literal identifier instead of routing to another case', async () => {
+  const t = convexTest(schema, modules)
+  await signInOwner(t)
+  const seeded = await seedReadyProposal(t, false)
+  const bodyKey = 'lafayette-city-zoning-commission'
+  const expected = coverageGoldSetSamples(bodyKey).find(sample => sample.negativeTargetRecordId)!
+  const sampleId = await t.run(async ctx => {
+    await ctx.db.patch(seeded.proposalId, { bodyKey })
+    const stageId = await ctx.db.insert('coverageCompilerStages', {
+      runId: seeded.runId, stage: 'validate_sample', idempotencyKey: 'probe',
+      inputHash: 'probe', attempt: 1, state: 'succeeded', gateVersion: 'v1', startedAt: 1,
+    })
+    const candidateId = await ctx.db.insert('coverageSourceCandidates', {
+      runId: seeded.runId, stageId, canonicalUrl: expected.url, discoveredFrom: [],
+      matchedTerms: [], hostDisposition: 'approved', state: 'pending', createdAt: 1,
+    })
+    const storageId = await ctx.storage.store(new Blob(['Official case 2026-16-REZ']))
+    const snapshotId = await ctx.db.insert('sourceSnapshots', {
+      registryId: seeded.registryId, canonicalUrl: expected.url, retrievedUrl: expected.url,
+      contentHash: 'probe-snapshot', contentType: 'text/plain', retrievalTime: 1, version: 1,
+      normalizedStorageId: storageId, normalizedContentType: 'text/plain', normalizedByteLength: 25,
+      rawStorageId: storageId, rawContentType: 'text/plain', rawByteLength: 25,
+      truncation: { truncated: false }, firecrawlMetadata: {},
+    })
+    return await ctx.db.insert('coverageRepresentativeSamples', {
+      proposalId: seeded.proposalId, candidateId, snapshotId, sourceKind: expected.sourceKind,
+      role: expected.role, required: true, state: 'retrieved', createdAt: 1,
+    })
+  })
+  expect(await t.query(internal.coverage.validation.sampleExtractionContext, {
+    sampleId, mode: 'failure_probe',
+  })).toMatchObject({
+    targetRecordId: expected.negativeTargetRecordId,
+    sourceRecordIdProvenance: 'source_printed',
+  })
+  expect(await t.query(internal.coverage.validation.sampleExtractionContext, {
+    sampleId, mode: 'evidence',
+  })).toMatchObject(expected.extraction!)
 })
