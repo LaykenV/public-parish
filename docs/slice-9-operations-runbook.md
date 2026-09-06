@@ -243,3 +243,17 @@ Provider throttling preserves inventories and does not count as a government
 source failure. Missing official artifacts and evidence failures still do.
 These controls cover monitored retrieval; owner compiler work and other apps
 sharing the Firecrawl team can still consume its account limit.
+
+## Catch-up worker capacity
+
+The evidence workflow pool permits eight concurrent steps. Source retrieval,
+extraction, publication, and issue work share this pool. Two paced discovery
+steps previously occupied the entire two-worker pool during launch catch-up.
+Eight workers let model steps proceed during those waits. The per-body and shared
+daily admissions still guard provider calls, and Firecrawl retains its separate
+four-request-per-minute deployment limit. This setting does not change source
+windows, target batch sizes, model roles, review gates, or retry bounds.
+
+During catch-up, inspect provider failures and budget usage with queue progress.
+If the provider starts throttling model calls, reduce worker concurrency through
+a reviewed change. More workers do not authorize a higher daily allowance.
