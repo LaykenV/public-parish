@@ -255,6 +255,25 @@ export const extractionJsonSchemaV1: Record<string, unknown> = {
   },
 }
 
+export function extractionJsonSchemaForSnapshotV1(snapshotId: string) {
+  return {
+    ...extractionJsonSchemaV1,
+    $defs: {
+      decision: decisionSchema,
+      amount: amountSchema,
+      publicAction: publicActionSchema,
+      fact: factSchema,
+      citation: {
+        ...citationSchema,
+        properties: {
+          ...citationSchema.properties,
+          sourceSnapshotId: { type: 'string', enum: [snapshotId] },
+        },
+      },
+    },
+  }
+}
+
 export function schemaNameForExtractionV1(): string {
   return `public_parish_extraction_${EXTRACTION_SCHEMA_VERSION}`
 }

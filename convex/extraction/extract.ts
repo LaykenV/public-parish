@@ -18,7 +18,7 @@ import {
 } from '../pipeline/state'
 import {
   checkExtractionContractV1,
-  extractionJsonSchemaV1,
+  extractionJsonSchemaForSnapshotV1,
   extractionResponseV1,
   schemaNameForExtractionV1,
 } from './contractV1'
@@ -121,7 +121,7 @@ export const runExtraction = internalAction({
       role: EXTRACTION_MODEL_ROLE,
       messages: prompt.messages,
       schemaName: schemaNameForExtractionV1(),
-      jsonSchema: extractionJsonSchemaV1,
+      jsonSchema: extractionJsonSchemaForSnapshotV1(context.snapshotId),
       reasoningEffort: EXTRACTION_REASONING_EFFORT,
       maxCompletionTokens: EXTRACTION_MAX_COMPLETION_TOKENS,
     } as const

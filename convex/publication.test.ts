@@ -513,7 +513,7 @@ function buildCo072AgendaReviewPrompt(section: string | null) {
 test('the review prompt treats CO-072 final-adoption placement as scheduled consideration', () => {
   const prompt = buildCo072AgendaReviewPrompt('Final Adoption of Ordinances')
 
-  expect(prompt.promptVersion).toBe('v1.4')
+  expect(prompt.promptVersion).toBe('v1.5')
   expect(prompt.messages[0].content).toContain(
     'an item under Final Adoption of Ordinances is scheduled for final-adoption consideration',
   )
@@ -546,7 +546,7 @@ test('the review prompt does not treat a bare agenda mention as scheduled', () =
   expect(prompt.messages[1].content).toContain('"section":null')
 })
 
-test('review prompt v1.4 creates a new publication idempotency key', async () => {
+test('review prompt v1.5 creates a new publication idempotency key', async () => {
   const t = initTest()
   const seeded = await seedValidatedCandidate(t, '-review-prompt-version')
   const keyFor = (promptVersion: string) =>
@@ -559,7 +559,7 @@ test('review prompt v1.4 creates a new publication idempotency key', async () =>
       payloadVersion: 'v1',
     })
 
-  expect(await keyFor('v1.4')).not.toBe(await keyFor('v1.3'))
+  expect(await keyFor('v1.5')).not.toBe(await keyFor('v1.4'))
 })
 
 test('a second model review publishes one full immutable version with exact citations', async () => {
@@ -621,7 +621,7 @@ test('a second model review publishes one full immutable version with exact cita
     verdict: 'pass',
     modelRole: 'MODEL_FAST',
     modelId: LUNA_MODEL,
-    promptVersion: 'v1.4',
+    promptVersion: 'v1.5',
     schemaVersion: 'v1',
   })
   expect(evidence.version).toMatchObject({
@@ -667,6 +667,32 @@ test('a second model review publishes one full immutable version with exact cita
       json_schema: {
         name: 'public_parish_independent_review_v1',
         strict: true,
+        schema: {
+          properties: {
+            checks: {
+              minItems: seeded.factIds.length,
+              maxItems: seeded.factIds.length,
+              items: {
+                properties: {
+                  factId: { enum: expect.arrayContaining(seeded.factIds) },
+                  fieldPath: { enum: expect.arrayContaining(['/title', '/bodyName']) },
+                },
+              },
+            },
+            findings: {
+              items: {
+                properties: {
+                  fieldPath: {
+                    anyOf: [
+                      { type: 'string', enum: expect.arrayContaining(['/title', '/bodyName']) },
+                      { type: 'null' },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     },
   })
