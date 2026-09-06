@@ -183,6 +183,16 @@ test('formatting can normalize but local agenda numbering cannot merge different
   expect(inventoryIdentity('2026-09-04', inventory.targets[0]).key).toBe(inventoryIdentity('2026-10-04', { ...inventory.targets[0], excerpt: '2026-14 Road repairs approved' }).key)
 })
 
+test('literal inventory citations can cross a bold boundary without accepting changed text', () => {
+  const source = 'Test Council. September 4, 2026. **2026-14 Road repairs** on Oak Street.'
+  const target = { printedId: null, title: 'Road repairs', excerpt: 'Road repairs** on Oak Street.' }
+  expect(inventoryContract({ ...inventory, targets: [target] }, source, 'Test Council')).toBeNull()
+  expect(inventoryContract({ ...inventory, targets: [{ ...target, excerpt: 'Road repairs** on Pine Street.' }] }, source, 'Test Council')).toMatch(/citation/)
+  expect(inventoryContract({ ...inventory, targets: [{ ...target, excerpt: '' }] }, source, 'Test Council')).toMatch(/citation/)
+  const oversized = 'Road repairs** ' + 'x'.repeat(241)
+  expect(inventoryContract({ ...inventory, targets: [{ ...target, excerpt: oversized }] }, source + oversized, 'Test Council')).toMatch(/240 characters/)
+})
+
 test('a bounded listing pass preserves its next page and does not finish the baseline', async () => {
   const { t, runId, policyId } = await monitoringFixture()
   await t.mutation(internal.monitoring.ledger.saveDiscoveryProgress, { runId, pending: ['https://www.lafayettela.gov/2026-meetings/page-2'], visited: ['https://www.lafayettela.gov/2026-meetings'] })
