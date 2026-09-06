@@ -212,3 +212,14 @@ test('Lafayette event documents require a new manifest and keep their path bound
   }
   expect(classifyHost(resolveRootManifest('youngsville-city-council', 'v1')!, event)).toBe('unapproved')
 })
+
+
+test('the Hearing Examiner keeps its Lafayette identity with the source-printed body name', () => {
+  const current = resolveRootManifest('lafayette-hearing-examiner', 'v3')!
+  expect(current.bodyName).toBe('Hearing Examiner')
+  expect(current.jurisdictionSlug).toBe('lafayette-parish')
+  expect(current.allowedHosts).toEqual(['www.lafayettela.gov'])
+  expect(resolveRootManifest('lafayette-hearing-examiner', 'v2')?.bodyName).toBe(
+    'Lafayette Hearing Examiner',
+  )
+})

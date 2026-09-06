@@ -1,0 +1,725 @@
+{
+  "version": "launch-bodies-v4",
+  "description": "Official body-specific agenda and outcome samples, including Lafayette planning documents recovered on September 6, 2026. Samples require runtime certification before support.",
+  "bodies": [
+    {
+      "bodyKey": "lafayette-city-council",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-09-01-agenda",
+          "title": "September 1, 2026 regular meeting agenda",
+          "url": "https://apps.lafayettela.gov/obcouncil/api/Document/2581071/",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-09-01",
+          "extraction": {
+            "targetRecordId": "CO-072-2026",
+            "sourceRecordIdProvenance": "source_printed"
+          },
+          "negativeTargetRecordId": "CO-999-2026"
+        },
+        {
+          "key": "2026-08-18-minutes",
+          "title": "August 18, 2026 regular meeting proceedings",
+          "url": "https://apps.lafayettela.gov/obcouncil/api/Document/2580143/",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-08-18",
+          "extraction": {
+            "targetRecordId": "CO-072-2026",
+            "sourceRecordIdProvenance": "source_printed"
+          }
+        },
+        {
+          "key": "2026-04-21-agenda",
+          "title": "April 21, 2026 regular meeting agenda",
+          "url": "https://apps.lafayettela.gov/obcouncil/api/Document/2553291/",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-04-21"
+        },
+        {
+          "key": "2026-04-21-minutes",
+          "title": "April 21, 2026 regular meeting proceedings",
+          "url": "https://apps.lafayettela.gov/obcouncil/api/Document/2554437/",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-04-21"
+        }
+      ]
+    },
+    {
+      "bodyKey": "lafayette-planning-commission",
+      "expectations": [
+        {
+          "sourceKind": "calendar",
+          "cadence": "monthly"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-city-schedule",
+          "title": "2026 City Planning Commission schedule",
+          "url": "https://media-002-us.cdn.govstack.com/lafayettela-us/media/vfpb55hg/2026-city-planning-commission-schedule.pdf?sfvrsn=55c8d128_1",
+          "sourceKind": "calendar",
+          "role": "current"
+        },
+        {
+          "key": "2026-parish-schedule",
+          "title": "2026 Parish Planning Commission schedule",
+          "url": "https://media-002-us.cdn.govstack.com/lafayettela-us/media/evrhzvry/2026-parish-planning-commission-schedule.pdf?sfvrsn=cd6e271c_1",
+          "sourceKind": "calendar",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "bodyKey": "lafayette-board-of-zoning-adjustment",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-08-13-agenda",
+          "title": "2026-08-13 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-08-13-1700-Board-of-Zoning-Adjustment-Meeting/c5725999-b4ee-4258-8f66-b49e012ed94c",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-08-13",
+          "extraction": {
+            "targetRecordId": "2026-29-BOZ",
+            "sourceRecordIdProvenance": "source_printed"
+          },
+          "negativeTargetRecordId": "2099-999-NOT-AN-OFFICIAL-CASE"
+        },
+        {
+          "key": "2026-08-13-minutes",
+          "title": "2026-08-13 action summary",
+          "url": "https://www.lafayettela.gov/media/5chcdj53/2026-08-13_boza_action_summary.pdf",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-08-13",
+          "extraction": {
+            "targetRecordId": "2026-29-BOZ",
+            "sourceRecordIdProvenance": "source_printed"
+          }
+        },
+        {
+          "key": "2026-07-09-agenda",
+          "title": "2026-07-09 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-07-09-1700-Board-of-Zoning-Adjustment-Meeting/29107655-cc3e-44e7-b72e-b47b00fca688",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-07-09"
+        },
+        {
+          "key": "2026-07-09-minutes",
+          "title": "2026-07-09 action summary",
+          "url": "https://www.lafayettela.gov/media/jdfphhau/2026-07-9_boza_action_summary.pdf",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-07-09"
+        }
+      ]
+    },
+    {
+      "bodyKey": "lafayette-hearing-examiner",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-08-14-agenda",
+          "title": "2026-08-14 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-08-14-0830-Hearing-Examiner-Public-Meeting/6257f8c4-4e08-4df1-b3e3-b4a200dc529b",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-08-14"
+        },
+        {
+          "key": "2026-07-10-agenda",
+          "title": "2026-07-10 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-07-10-0830-Hearing-Examiner-Public-Meeting/258b1ff3-80e7-4b23-884e-b47b00e1ea11",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-07-10",
+          "extraction": {
+            "targetRecordId": "2026-57-HE",
+            "sourceRecordIdProvenance": "source_printed"
+          },
+          "negativeTargetRecordId": "2099-999-NOT-AN-OFFICIAL-CASE"
+        },
+        {
+          "key": "2026-07-10-minutes",
+          "title": "2026-07 Hearing Examiner action summary",
+          "url": "https://www.lafayettela.gov/media/1vbh3415/he_review_list.pdf",
+          "sourceKind": "minutes",
+          "role": "current",
+          "extraction": {
+            "targetRecordId": "2026-57-HE",
+            "sourceRecordIdProvenance": "source_printed"
+          }
+        },
+        {
+          "key": "2026-06-12-agenda",
+          "title": "2026-06-12 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-06-12-0830-HEARING-EXAMINER-PUBLIC-MEETING/1c4982c9-4b41-46d7-a908-b46300de969e",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-06-12"
+        },
+        {
+          "key": "2026-06-12-minutes",
+          "title": "2026-06 Hearing Examiner action summary",
+          "url": "https://www.lafayettela.gov/media/2r2fowqo/june_hearing_examiner_review.pdf",
+          "sourceKind": "minutes",
+          "role": "historical"
+        }
+      ]
+    },
+    {
+      "bodyKey": "youngsville-city-council",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-07-09-agenda",
+          "title": "July 9, 2026 regular meeting agenda",
+          "url": "https://mccmeetings.blob.core.usgovcloudapi.net/youngsvila-pubu/MEET-Agenda-127667a1e3ba43a3abf3a382ea29357a.pdf",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-07-09",
+          "extraction": {
+            "targetRecordId": "2026-18",
+            "sourceRecordIdProvenance": "source_printed"
+          },
+          "negativeTargetRecordId": "2026-999"
+        },
+        {
+          "key": "2026-07-09-minutes",
+          "title": "July 9, 2026 regular meeting minutes",
+          "url": "https://mccmeetings.blob.core.usgovcloudapi.net/youngsvila-pubu/MEET-Minutes-127667a1e3ba43a3abf3a382ea29357a.pdf",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-07-09",
+          "extraction": {
+            "targetRecordId": "2026-18",
+            "sourceRecordIdProvenance": "source_printed"
+          }
+        },
+        {
+          "key": "2026-06-11-agenda",
+          "title": "June 11, 2026 regular meeting agenda",
+          "url": "https://mccmeetings.blob.core.usgovcloudapi.net/youngsvila-pubu/MEET-Agenda-b4c2e915fc324929a938d501259b2bce.pdf",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-06-11"
+        },
+        {
+          "key": "2026-06-11-minutes",
+          "title": "June 11, 2026 regular meeting minutes",
+          "url": "https://mccmeetings.blob.core.usgovcloudapi.net/youngsvila-pubu/MEET-Minutes-b4c2e915fc324929a938d501259b2bce.pdf",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "bodyKey": "alexandria-city-council",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-08-11-agenda",
+          "title": "August 11, 2026 regular meeting agenda",
+          "url": "https://www.cityofalexandriala.com/wp-content/uploads/2026/08/Alexandria-City-Council-meeting-August-11-2026-updated.pdf",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-08-11",
+          "extraction": {
+            "targetRecordId": "ALEXANDRIA-2026-08-11-FIRE-TURNOUT-GEAR-BIDS",
+            "sourceRecordIdProvenance": "operator_assigned"
+          },
+          "negativeTargetRecordId": "ALEXANDRIA-2026-08-11-MISSING-ITEM"
+        },
+        {
+          "key": "2026-08-11-minutes",
+          "title": "August 11, 2026 regular meeting minutes",
+          "url": "https://www.cityofalexandriala.com/wp-content/uploads/2026/08/August-11-2026-Council-Meeting-Minutes.pdf",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-08-11",
+          "extraction": {
+            "targetRecordId": "ALEXANDRIA-2026-08-11-FIRE-TURNOUT-GEAR-BIDS",
+            "sourceRecordIdProvenance": "operator_assigned"
+          }
+        },
+        {
+          "key": "2026-07-28-agenda",
+          "title": "July 28, 2026 regular meeting agenda",
+          "url": "https://www.cityofalexandriala.com/wp-content/uploads/2026/07/July-28-2026-City-Council-Agenda.pdf",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-07-28"
+        },
+        {
+          "key": "2026-07-28-minutes",
+          "title": "July 28, 2026 regular meeting minutes",
+          "url": "https://www.cityofalexandriala.com/wp-content/uploads/2026/08/July-28-2026-Council-Meeting-Minutes.pdf",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "bodyKey": "pineville-city-council",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-07-14-agenda",
+          "title": "July 14, 2026 regular meeting agenda",
+          "url": "https://mcclibraryfunctions.azurewebsites.us/api/munidocDownload/31105/949c156445b4e/pdf",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-07-14",
+          "extraction": {
+            "targetRecordId": "PINEVILLE-2026-07-14-ITEM-16",
+            "sourceRecordIdProvenance": "operator_assigned"
+          },
+          "negativeTargetRecordId": "PINEVILLE-2026-07-14-ITEM-999"
+        },
+        {
+          "key": "2026-07-14-minutes",
+          "title": "July 14, 2026 regular meeting minutes",
+          "url": "https://mcclibraryfunctions.azurewebsites.us/api/munidocDownload/31105/94f14c1a5a716/pdf",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-07-14",
+          "extraction": {
+            "targetRecordId": "PINEVILLE-2026-07-14-ITEM-16",
+            "sourceRecordIdProvenance": "operator_assigned"
+          }
+        },
+        {
+          "key": "2026-06-09-agenda",
+          "title": "June 9, 2026 regular meeting agenda",
+          "url": "https://mcclibraryfunctions.azurewebsites.us/api/munidocDownload/31105/92e38664f93dc/pdf",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-06-09"
+        },
+        {
+          "key": "2026-06-09-minutes",
+          "title": "June 9, 2026 regular meeting minutes",
+          "url": "https://mcclibraryfunctions.azurewebsites.us/api/munidocDownload/31105/93381a48ba6c5/pdf",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-06-09"
+        }
+      ]
+    },
+    {
+      "bodyKey": "rapides-parish-police-jury",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-08-10-agenda",
+          "title": "August 10, 2026 revised jury agenda",
+          "url": "https://rppj.com/wp-content/uploads/2026/08/August-10-2026-Jury-Agenda-Revised-820-a-m.pdf",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-08-10",
+          "extraction": {
+            "targetRecordId": "RPPJ-2026-08-10-ITEM-7",
+            "sourceRecordIdProvenance": "operator_assigned"
+          },
+          "negativeTargetRecordId": "RPPJ-2026-08-10-ITEM-999"
+        },
+        {
+          "key": "2026-08-10-minutes",
+          "title": "August 10, 2026 jury minutes",
+          "url": "https://rppj.com/wp-content/uploads/2026/08/August-10-2026-Jury-Minutes-Transcribed.pdf",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-08-10",
+          "extraction": {
+            "targetRecordId": "RPPJ-2026-08-10-ITEM-7",
+            "sourceRecordIdProvenance": "operator_assigned"
+          }
+        },
+        {
+          "key": "2026-06-08-agenda",
+          "title": "June 8, 2026 jury agenda",
+          "url": "https://rppj.com/wp-content/uploads/2026/06/June-8-2026-Jury-Agenda.pdf",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-06-08"
+        },
+        {
+          "key": "2026-06-08-minutes",
+          "title": "June 8, 2026 jury minutes",
+          "url": "https://rppj.com/wp-content/uploads/2026/06/June-8-2026-Jury-Minutes-Transcribed.pdf",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-06-08"
+        }
+      ]
+    },
+    {
+      "bodyKey": "ebr-metropolitan-council",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-08-12-agenda",
+          "title": "August 12, 2026 Metropolitan Council agenda",
+          "url": "https://www.brla.gov/AgendaCenter/ViewFile/Agenda/_08122026-2419",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-08-12",
+          "extraction": {
+            "targetRecordId": "EBR-2026-08-12-CORTANA-CITY-SALES-TAX-REBATE",
+            "sourceRecordIdProvenance": "operator_assigned"
+          },
+          "negativeTargetRecordId": "EBR-2026-08-12-MISSING-ITEM"
+        },
+        {
+          "key": "2026-08-12-minutes",
+          "title": "August 12, 2026 Metropolitan Council minutes",
+          "url": "https://www.brla.gov/AgendaCenter/ViewFile/Minutes/_08122026-2419",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-08-12",
+          "extraction": {
+            "targetRecordId": "EBR-2026-08-12-CORTANA-CITY-SALES-TAX-REBATE",
+            "sourceRecordIdProvenance": "operator_assigned"
+          }
+        },
+        {
+          "key": "2026-06-10-agenda",
+          "title": "June 10, 2026 Metropolitan Council agenda",
+          "url": "https://www.brla.gov/AgendaCenter/ViewFile/Agenda/_06102026-2392",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-06-10"
+        },
+        {
+          "key": "2026-06-10-minutes",
+          "title": "June 10, 2026 Metropolitan Council minutes",
+          "url": "https://www.brla.gov/AgendaCenter/ViewFile/Minutes/_06102026-2392",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-06-10"
+        }
+      ]
+    },
+    {
+      "bodyKey": "baton-rouge-planning-commission",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "monthly"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "monthly"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-07-20-agenda",
+          "title": "July 20, 2026 Planning Commission agenda",
+          "url": "https://www.brla.gov/AgendaCenter/ViewFile/Agenda/_07202026-2390",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-07-20",
+          "extraction": {
+            "targetRecordId": "PA-4-26",
+            "sourceRecordIdProvenance": "source_printed"
+          },
+          "negativeTargetRecordId": "CASE-999-26"
+        },
+        {
+          "key": "2026-07-20-minutes",
+          "title": "July 20, 2026 Planning Commission minutes",
+          "url": "https://www.brla.gov/AgendaCenter/ViewFile/Minutes/_07202026-2390",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-07-20",
+          "extraction": {
+            "targetRecordId": "PA-4-26",
+            "sourceRecordIdProvenance": "source_printed"
+          }
+        },
+        {
+          "key": "2026-06-15-agenda",
+          "title": "June 15, 2026 Planning Commission agenda",
+          "url": "https://www.brla.gov/AgendaCenter/ViewFile/Agenda/_06152026-2368",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-06-15"
+        },
+        {
+          "key": "2026-06-15-minutes",
+          "title": "June 15, 2026 Planning Commission minutes",
+          "url": "https://www.brla.gov/AgendaCenter/ViewFile/Minutes/_06152026-2368",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-06-15"
+        }
+      ]
+    },
+    {
+      "bodyKey": "lafayette-city-planning-commission",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-08-17-agenda",
+          "title": "2026-08-17 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-08-17-1700-City-Planning-Commission-Meeting/04cc7f40-311e-45ac-b256-b4a4012e08bd",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-08-17"
+        },
+        {
+          "key": "2026-07-20-agenda",
+          "title": "2026-07-20 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-07-20-1700-City-Planning-Commission-Meeting/fef48e18-107d-43de-b51e-b4880150cd2c",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-07-20",
+          "extraction": {
+            "targetRecordId": "2026-4-VAC",
+            "sourceRecordIdProvenance": "source_printed"
+          },
+          "negativeTargetRecordId": "2099-999-NOT-AN-OFFICIAL-CASE"
+        },
+        {
+          "key": "2026-07-20-minutes",
+          "title": "2026-07-20 action summary",
+          "url": "https://www.lafayettela.gov/media/dxaltx1h/action_summary_cpc_july_20_2026.pdf",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-07-20",
+          "extraction": {
+            "targetRecordId": "2026-4-VAC",
+            "sourceRecordIdProvenance": "source_printed"
+          }
+        },
+        {
+          "key": "2026-06-15-agenda",
+          "title": "2026-06-15 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-06-15-1700-CITY-PLANNING-COMMISSION-MEETING2/7eecb30c-e9f1-4b45-9cc0-b465015572c3",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-06-15"
+        },
+        {
+          "key": "2026-06-15-minutes",
+          "title": "2026-06-15 action summary",
+          "url": "https://www.lafayettela.gov/media/v3pd2nyd/action_summary_cpc_june-2026.pdf",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-06-15"
+        }
+      ]
+    },
+    {
+      "bodyKey": "lafayette-parish-planning-commission",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-08-10-agenda",
+          "title": "2026-08-10 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-08-10-1700-Parish-Planning-Commission/6cf05680-6c9f-4ff9-a046-b49d01369f25",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-08-10"
+        },
+        {
+          "key": "2026-07-13-agenda",
+          "title": "2026-07-13 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-07-13-1700-Parish-Planning-Commission/fd1628f6-0af5-4feb-8512-b481014b5c42",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-07-13",
+          "extraction": {
+            "targetRecordId": "2026-37-PC",
+            "sourceRecordIdProvenance": "source_printed"
+          },
+          "negativeTargetRecordId": "2099-999-NOT-AN-OFFICIAL-CASE"
+        },
+        {
+          "key": "2026-07-13-minutes",
+          "title": "2026-07-13 action summary",
+          "url": "https://www.lafayettela.gov/media/0aqjswqs/7-13-2026_ppc_action_summary.pdf",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-07-13",
+          "extraction": {
+            "targetRecordId": "2026-37-PC",
+            "sourceRecordIdProvenance": "source_printed"
+          }
+        },
+        {
+          "key": "2026-06-08-agenda",
+          "title": "2026-06-08 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-06-08-1700-PARISH-PLANNING-COMMISSION/e90ccd55-88a3-4f73-aae6-b45d015b44ee",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-06-08"
+        },
+        {
+          "key": "2026-06-08-minutes",
+          "title": "2026-06-08 action summary",
+          "url": "https://www.lafayettela.gov/media/5qsnr5et/6-8-2026_ppc_action_summary.pdf",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-06-08"
+        }
+      ]
+    },
+    {
+      "bodyKey": "lafayette-city-zoning-commission",
+      "expectations": [
+        {
+          "sourceKind": "agenda",
+          "cadence": "meeting_cycle"
+        },
+        {
+          "sourceKind": "minutes",
+          "cadence": "meeting_cycle"
+        }
+      ],
+      "samples": [
+        {
+          "key": "2026-08-17-agenda",
+          "title": "2026-08-17 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-08-17-1730-CITY-ZONING-COMMISSION-AUGUST-MEETING/f81de049-6645-412f-abb0-b4a500d13fed",
+          "sourceKind": "agenda",
+          "role": "current",
+          "meetingDate": "2026-08-17",
+          "extraction": {
+            "targetRecordId": "2026-16-REZ",
+            "sourceRecordIdProvenance": "source_printed"
+          },
+          "negativeTargetRecordId": "2099-999-NOT-AN-OFFICIAL-CASE"
+        },
+        {
+          "key": "2026-08-17-minutes",
+          "title": "2026-08-17 action summary",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-08-17-1730-CITY-ZONING-COMMISSION-AUGUST-MEETING/0f16447a-2ecd-4d31-9087-b4ab0101e32c",
+          "sourceKind": "minutes",
+          "role": "current",
+          "meetingDate": "2026-08-17",
+          "extraction": {
+            "targetRecordId": "2026-16-REZ",
+            "sourceRecordIdProvenance": "source_printed"
+          }
+        },
+        {
+          "key": "2026-07-20-agenda",
+          "title": "2026-07-20 meeting agenda",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-07-20-1730-City-Zoning-Commission-Public-Meeting/a9ef7d22-eba6-41df-96f5-b48801569e3e",
+          "sourceKind": "agenda",
+          "role": "historical",
+          "meetingDate": "2026-07-20"
+        },
+        {
+          "key": "2026-07-20-minutes",
+          "title": "2026-07-20 action summary",
+          "url": "https://events.lafayettela.gov/default/Detail/2026-07-20-1730-City-Zoning-Commission-Public-Meeting/c3e7de2f-f5c0-4b00-b393-b48e00de7551",
+          "sourceKind": "minutes",
+          "role": "historical",
+          "meetingDate": "2026-07-20"
+        }
+      ]
+    }
+  ]
+}
