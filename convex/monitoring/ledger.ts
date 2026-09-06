@@ -17,14 +17,43 @@ import schema from '../schema'
 import { isBeforeSourceWindow } from './discovery'
 import { DAY_MS, inventoryIdentity, inventoryResult, isBeforeMeetingWindow, MONITOR_VERSION, monitorState } from './contracts'
 
-const limiter = new RateLimiter(components.rateLimiter, {
-  globalCalls: { kind: 'fixed window', rate: 1_000, period: DAY },
+const limiter = new RateLimiter(components.rateLimiter, {})
+const DEFAULT_GLOBAL_DAILY_LIMIT = 1_000
+const MAX_POLICY_DAILY_LIMIT = 5_000
+const MAX_GLOBAL_DAILY_LIMIT = 50_000
+
+async function globalBudgetConfig(ctx: Pick<QueryCtx, 'db'>) {
+  const budget = await ctx.db.query('sourceMonitoringBudgets').withIndex('by_name', q => q.eq('name', 'global')).unique()
+  return { kind: 'fixed window' as const, rate: budget?.dailyCallLimit ?? DEFAULT_GLOBAL_DAILY_LIMIT, period: DAY }
+}
+
+export const configureGlobalBudget = mutation({
+  args: { dailyCallLimit: v.number() },
+  returns: v.object({ dailyCallLimit: v.number(), used: v.number(), windowStart: v.number() }),
+  handler: async (ctx, args) => {
+    await requireOwner(ctx)
+    if (!Number.isInteger(args.dailyCallLimit) || args.dailyCallLimit < 10 || args.dailyCallLimit > MAX_GLOBAL_DAILY_LIMIT) throw new Error('Global monitoring limit is outside the allowed bounds.')
+    const now = Date.now()
+    const config = await globalBudgetConfig(ctx)
+    const prior = await limiter.getValue(ctx, 'globalCalls', { config })
+    const current = calculateRateLimit(prior, prior.config, now)
+    const used = Math.max(0, config.rate - current.value)
+    if (used > args.dailyCallLimit) throw new Error('The new global limit is below calls already used in this window.')
+    if (config.rate !== args.dailyCallLimit) {
+      await limiter.reset(ctx, 'globalCalls')
+      await limiter.limit(ctx, 'globalCalls', { count: used, config: { ...config, rate: args.dailyCallLimit, start: current.ts }, throws: true })
+    }
+    const existing = await ctx.db.query('sourceMonitoringBudgets').withIndex('by_name', q => q.eq('name', 'global')).unique()
+    if (existing) await ctx.db.patch(existing._id, { dailyCallLimit: args.dailyCallLimit, updatedAt: now })
+    else await ctx.db.insert('sourceMonitoringBudgets', { name: 'global', dailyCallLimit: args.dailyCallLimit, updatedAt: now })
+    return { dailyCallLimit: args.dailyCallLimit, used, windowStart: current.ts }
+  },
 })
 
 async function processingBudget(ctx: MutationCtx, policy: Doc<'sourceMonitoringPolicies'>, count = 4) {
   if (count > policy.dailyCallLimit) return { ok: false, retryAt: Date.now() + DAY_MS }
   const local = await limiter.check(ctx, 'calls', { key: policy._id, count, config: { kind: 'fixed window', rate: policy.dailyCallLimit, period: DAY } })
-  const global = await limiter.check(ctx, 'globalCalls', { count })
+  const global = await limiter.check(ctx, 'globalCalls', { count, config: await globalBudgetConfig(ctx) })
   return { ok: local.ok && global.ok, retryAt: Date.now() + Math.max(local.retryAfter ?? 0, global.retryAfter ?? 0, 900_000) }
 }
 
@@ -74,7 +103,7 @@ export async function configurePolicy(ctx: MutationCtx, args: { proposalId: Id<'
   const registry = proposal ? await ctx.db.get(proposal.registryId) : null
   if (!proposal || proposal.status !== 'promoted' || !registry || !['supported', 'degraded'].includes(registry.status)) throw new Error('Only a promoted registry can be monitored.')
   if (args.enabled && env.SOURCE_MONITORING_ENABLED !== 'true') throw new Error('Source monitoring has not been enabled for this deployment.')
-  for (const [value, min, max] of [[args.intervalHours, 1, 168], [args.documentsPerRun, 1, 10], [args.targetsPerRun, 1, 20], [args.dailyCallLimit, 10, 500]]) {
+  for (const [value, min, max] of [[args.intervalHours, 1, 168], [args.documentsPerRun, 1, 10], [args.targetsPerRun, 1, 20], [args.dailyCallLimit, 10, MAX_POLICY_DAILY_LIMIT]]) {
     if (!Number.isInteger(value) || value < min || value > max) throw new Error('Monitoring limits are outside the allowed bounds.')
   }
   const manifest = resolveRootManifest(proposal.bodyKey, proposal.rootManifestVersion)
@@ -175,10 +204,11 @@ export const reserve = internalMutation({
   handler: async (ctx, args) => {
     const { policy } = await assertMonitoringRun(ctx, args.runId)
     if (!Number.isInteger(args.units) || args.units < 1 || args.units > 10) throw new Error('Invalid monitoring reservation.')
+    const globalConfig = await globalBudgetConfig(ctx)
     const options = { key: policy._id, count: args.units, config: { kind: 'fixed window' as const, rate: policy.dailyCallLimit, period: DAY } }
-    if (!(await limiter.check(ctx, 'calls', options)).ok || !(await limiter.check(ctx, 'globalCalls', { count: args.units })).ok) return false
+    if (!(await limiter.check(ctx, 'calls', options)).ok || !(await limiter.check(ctx, 'globalCalls', { count: args.units, config: globalConfig })).ok) return false
     await limiter.limit(ctx, 'calls', { ...options, throws: true })
-    await limiter.limit(ctx, 'globalCalls', { count: args.units, throws: true })
+    await limiter.limit(ctx, 'globalCalls', { count: args.units, config: globalConfig, throws: true })
     return true
   },
 })
@@ -407,10 +437,11 @@ export const reservePipelineCall = internalMutation({
     if (!run?.monitorPolicyId) return null
     const policy = await ctx.db.get(run.monitorPolicyId)
     if (!policy) throw new Error('monitoring_stopped')
+    const globalConfig = await globalBudgetConfig(ctx)
     const options = { key: policy._id, count: 2, config: { kind: 'fixed window' as const, rate: policy.dailyCallLimit, period: DAY } }
-    if (!(await limiter.check(ctx, 'calls', options)).ok || !(await limiter.check(ctx, 'globalCalls', { count: 2 })).ok) throw new Error('monitoring_daily_limit')
+    if (!(await limiter.check(ctx, 'calls', options)).ok || !(await limiter.check(ctx, 'globalCalls', { count: 2, config: globalConfig })).ok) throw new Error('monitoring_daily_limit')
     await limiter.limit(ctx, 'calls', { ...options, throws: true })
-    await limiter.limit(ctx, 'globalCalls', { count: 2, throws: true })
+    await limiter.limit(ctx, 'globalCalls', { count: 2, config: globalConfig, throws: true })
     return run.targetLocator ?? null
   },
 })
