@@ -1,5 +1,11 @@
 # Resident interface Slice 6 handoff
 
+Release status: this design document is a historical specification. Its resident
+interfaces and required integrations shipped by Slice 9. See
+[build status](build-status.md) for current behavior, remaining source work, and
+the accepted desktop and mobile emulation scope. Fixture and physical-device
+instructions below describe the original design review, not open build gates.
+
 Status: deployed through PR #34 as `0aa7474`; follow-up focus and copy fixes
 deployed through PR #42 as `eafab66`; live area availability connected through
 PR #92 as `2fa1cff`

@@ -1,5 +1,9 @@
 # Hackathon Requirements and Win Plan
 
+Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
+for the September 6 documentation checkpoint. Dated sections below retain their
+original release context; they do not reopen completed feature work.
+
 Official event:
 [Convex All Gas Hackathon](https://www.convex.dev/hackathons/all-gas)
 
@@ -228,9 +232,9 @@ replay. PRs #78 and #79 deployed grounded alert replies and private source
 reports. PRs #81 through #83 hardened weekly reply scope, retained report
 delivery results beyond provider cleanup, and stopped alerts after coverage
 lapses. A controlled production report reached `sent` and started no evidence
-pipeline run. The production alert-and-reply round trip, public
-coverage-request loop, recruited-resident proof, the demo, and the vibeapps.dev
-submission remain pending.
+pipeline run. The production alert-and-reply round trip and public coverage-request loop
+were pending at that checkpoint and subsequently passed Slice 9 certification.
+Recruited-resident proof, the demo, and submission remain separate work.
 
 PRs #85 through #88 deployed the owner-controlled coverage compiler, bounded
 Firecrawl discovery, strict source classification, exact-sample validation,
@@ -240,9 +244,9 @@ Council, Pineville City Council, Rapides Parish Police Jury, Baton Rouge
 Metropolitan Council, and Baton Rouge Planning and Zoning Commission passed all ten gates
 and were promoted. PR #92 connected the public selector to the live jurisdiction
 status. Rapides and East Baton Rouge are available. Lafayette remains
-validating because three planning bodies lack reachable meeting-specific agenda
-and outcome evidence. The compiler does not yet schedule routine source checks
-or enumerate every decision in a newly posted document.
+validating because five planning bodies lack reachable meeting-specific agenda
+and outcome evidence. Slice 9 added bounded scheduled checks and automatic
+decision inventory, which were outside the Slice 8 compiler.
 
 PR #70 then corrected Place follow validation so supported parishes and
 municipalities use the same enrollment path while unsupported places still
@@ -577,7 +581,7 @@ other contested project.
 | AI publishes unsupported facts       | citation or labeled-set failure                       | withhold, strengthen validation, move stage to benchmark winner                |
 | Product feels like a council digest  | users browse but do not ask or follow                 | center issue consequence, action, change, and outcome                          |
 | Chat consumes time and money         | high tokens without useful answers                    | usage telemetry, request limits, prompt caching, and checked answer quality    |
-| AI Gateway is unavailable            | service token returns a disabled or unavailable error | confirm paid-team access early and keep a tested direct OpenAI fallback        |
+| AI Gateway is unavailable            | service token returns a disabled or unavailable error | keep AI Gateway access verified; fallback stays disabled until separately tested        |
 | Static hosting breaks dynamic routes | direct refresh or webhook fails                       | fix root route ownership early, before UI polish                               |
 | Auth v2 alpha changes                | package or API changes break Google login             | pin the exact version, isolate auth code, and keep the anonymous path complete |
 | Content replaces building            | posts increase while exits fail                       | cap content time and publish only shipped proof                                |
@@ -591,20 +595,12 @@ being more than large: it must be coherent, live, trusted, useful this week, and
 easy to prove in under three minutes.
 
 
-## Slice 9 production release
+## Slice 9 completion
 
-PRs #93 through #99 and the narrow controlled-replay repair #100 are deployed
-on production `befitting-flamingo-587`. Every merge passed its exact deployment
-workflow and an independent live smoke. The bounded Rapides Parish Police Jury
-canary is enabled, with one document and one target per run and 50 provider
-admissions per day. The other six supported bodies remain owner-started.
-[The production certification record](slice-9-production-certification.md),
-[development certification](slice-9-development-certification.md)
-and [operations runbook](slice-9-operations-runbook.md) keep development
-proof separate from production proof.
-
-Approved-source monitoring remains bounded by an owner policy and a deployment
-switch. Accepted history uses paginated search and corpus Ask scans evidence in
-batches. Coverage requests save demand without starting source work. Verified
-launch notices, current issue share HTML, and private operating reports complete
-the remaining public integrations.
+The final feature build is complete and deployed through the follow-up repairs
+in PRs #102 through #105. [Current build status and remaining work](build-status.md)
+records the exact release, verification scope, named coverage, and operating
+limits. [Production certification](slice-9-production-certification.md)
+preserves the dated release evidence. Initial catch-up, additional source
+activation, full Lafayette support, resident observations, the demo, and
+submission remain separate work. No Slice 10 is planned.

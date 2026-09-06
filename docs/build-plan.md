@@ -1,5 +1,9 @@
 # Four-Week Build Plan
 
+Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
+for the September 6 documentation checkpoint. Dated sections below retain their
+original release context; they do not reopen completed feature work.
+
 Event window: August 25 through September 22, 2026
 Project start: August 26, 2026
 Submission cutoff: September 22 at 12:00 PM Pacific
@@ -325,9 +329,9 @@ Then pause implementation and complete this design handoff:
   design tool;
 - design and build the approved page system in one cohesive frontend pass,
   including the final Ask, Follow, account, email, and coverage positions;
-- after each design-slice pull request deploys and passes the exact production
-  workflow and independent smoke, run the documented founder review on an
-  actual iPhone in Safari before the next slice changes that shared pattern;
+- after each design-slice deployment, review its shared patterns. For the final
+  Slice 9 release, the owner accepted desktop and mobile emulation instead of
+  the original physical iPhone Safari gate;
 - use typed fixtures and local design adapters until each real API is ready;
 - connect the issue, decision, citation, coverage, and realtime publication
   paths that already work;
@@ -412,9 +416,9 @@ confirmed the connected report form and exact selected-Source attachment. PRs
 notification coverage gate. Production workflows `33797222889`, `33797505992`,
 and `33797772856` passed, followed by independent smokes. A controlled
 production report reached `sent`, retained that result, and started no evidence
-pipeline run. The alert-and-reply provider round trip remains development-only,
-so the Week 2 exit gate still needs one real production subscriber to receive a
-sourced change.
+pipeline run. The alert-and-reply provider round trip had development proof at
+that checkpoint. Slice 9 subsequently proved the controlled production
+round trip. Real resident observations remain part of the usage sprint.
 
 - pin and install Convex Auth v2 alpha;
 - add Google OAuth account sign-in;
@@ -482,8 +486,9 @@ artifact certification, and PR #92 connected the area selector to live coverage.
 
 ### Geographic Rollout
 
-1. Lafayette City Council and Youngsville passed development gates 1 through 9.
-   Lafayette's three planning bodies remain blocked on meeting-specific official
+1. Lafayette City Council and Youngsville passed their production coverage gates
+   during Slice 9.
+   Lafayette's five planning bodies remain blocked on meeting-specific official
    records, so the parish stays validating.
 2. Alexandria, Pineville, and Rapides Police Jury passed all ten production
    gates. Rapides is supported.
@@ -563,14 +568,14 @@ Do not add a map, new institution class, broad design system, or admin product.
 - reconfirm the voter-information strip's election date and outbound link
   against the Secretary of State's official calendar;
 - test the app from a signed-out browser and mobile viewport;
-- test every enabled design slice on an actual iPhone in Safari with browser
-  controls expanded and collapsed, portrait and landscape, the keyboard, 125
-  percent page zoom, and Reduce Motion;
+- use the accepted desktop, keyboard, reduced-motion, and mobile-emulation
+  review for this release; do not claim physical iPhone or screen-reader proof;
 - test every direct `convex.site` route;
 - test Convex Auth v2 alpha Google OAuth;
 - test AgentMail email-subscription verification, management, and unsubscribe;
 - test the normal AI path through Convex AI Gateway on both model roles;
-- test the direct OpenAI fallback without using it in the demo;
+- verify direct OpenAI fallback stays disabled; the owner accepted AI Gateway
+  as the verified provider and removed the live fallback test requirement;
 - test anonymous chat expiry and abuse limits;
 - test AgentMail send, reply, and dedupe.
 
@@ -676,20 +681,12 @@ Never cut:
   redefining the business plan.
 
 
-## Slice 9 production release
+## Slice 9 completion
 
-PRs #93 through #99 and the narrow controlled-replay repair #100 are deployed
-on production `befitting-flamingo-587`. Every merge passed its exact deployment
-workflow and an independent live smoke. The bounded Rapides Parish Police Jury
-canary is enabled, with one document and one target per run and 50 provider
-admissions per day. The other six supported bodies remain owner-started.
-[The production certification record](slice-9-production-certification.md),
-[development certification](slice-9-development-certification.md)
-and [operations runbook](slice-9-operations-runbook.md) keep development
-proof separate from production proof.
-
-Approved-source monitoring remains bounded by an owner policy and a deployment
-switch. Accepted history uses paginated search and corpus Ask scans evidence in
-batches. Coverage requests save demand without starting source work. Verified
-launch notices, current issue share HTML, and private operating reports complete
-the remaining public integrations.
+The final feature build is complete and deployed through the follow-up repairs
+in PRs #102 through #105. [Current build status and remaining work](build-status.md)
+records the exact release, verification scope, named coverage, and operating
+limits. [Production certification](slice-9-production-certification.md)
+preserves the dated release evidence. Initial catch-up, additional source
+activation, full Lafayette support, resident observations, the demo, and
+submission remain separate work. No Slice 10 is planned.

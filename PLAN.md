@@ -1,5 +1,9 @@
 # Public Parish Plan
 
+Current status: Slice 9 is complete. See [build status and remaining work](docs/build-status.md)
+for the September 6 documentation checkpoint. Dated sections below retain their
+original release context; they do not reopen completed feature work.
+
 Status: Phase 0, evidence-engine Slices 1 through 4, resident-interface Design Slices 1 through 8, and implementation Slices 6 through 8 are deployed; Slice 9 is deployed and production-tested
 Event: Convex All Gas Hackathon
 Submission deadline: September 22, 2026 at 12:00 PM Pacific
@@ -126,9 +130,9 @@ body and place alerts when coverage is no longer supported or degraded. Their
 production workflows `33797222889`, `33797505992`, and `33797772856` passed,
 followed by independent production smokes. A controlled production source
 report reached `sent`, retained that terminal status in the application, and
-left the latest evidence-pipeline run unchanged. The full alert-and-reply
-provider round trip still has development proof only. No real production
-subscriber has completed that path yet.
+left the latest evidence-pipeline run unchanged. At that checkpoint, the full alert-and-reply
+provider round trip had development proof only. Slice 9 later verified the
+controlled production round trip; organic resident benefit remains unproven.
 
 Implementation Slice 8 is closed. PRs #85 through #88 deployed the
 owner-controlled compiler, bounded Firecrawl discovery, strict source
@@ -139,11 +143,11 @@ Production certification promoted Alexandria City Council, Pineville City
 Council, Rapides Parish Police Jury, Baton Rouge Metropolitan Council, and Baton
 Rouge Planning and Zoning Commission after each passed all ten gates. PR #92 connected the
 area selector to the live jurisdiction projection. Rapides and East Baton Rouge
-are available. Lafayette remains validating because its three planning bodies
+are available. Lafayette remains validating because its five planning bodies
 lack reachable meeting-specific agenda and outcome evidence. The compiler is an
 onboarding and repair operation. Routine scheduled source checks, automatic
-document-to-decision fanout, and new issue proposals remain future work and are
-not implied by Slice 8 closure.
+document-to-decision fanout, and new issue proposals were outside Slice 8.
+Slice 9 subsequently deployed them under bounded owner-approved policies.
 
 ## Executive Decision
 
@@ -485,20 +489,12 @@ Otherwise, preserve Public Parish as a useful open-source civic service and a
 strong technical case study, then return product time to the core business.
 
 
-## Slice 9 production release
+## Slice 9 completion
 
-PRs #93 through #99 and the narrow controlled-replay repair #100 are deployed
-on production `befitting-flamingo-587`. Every merge passed its exact deployment
-workflow and an independent live smoke. The bounded Rapides Parish Police Jury
-canary is enabled, with one document and one target per run and 50 provider
-admissions per day. The other six supported bodies remain owner-started.
-[The production certification record](docs/slice-9-production-certification.md),
-[development certification](docs/slice-9-development-certification.md)
-and [operations runbook](docs/slice-9-operations-runbook.md) keep development
-proof separate from production proof.
-
-Approved-source monitoring remains bounded by an owner policy and a deployment
-switch. Accepted history uses paginated search and corpus Ask scans evidence in
-batches. Coverage requests save demand without starting source work. Verified
-launch notices, current issue share HTML, and private operating reports complete
-the remaining public integrations.
+The final feature build is complete and deployed through the follow-up repairs
+in PRs #102 through #105. [Current build status and remaining work](docs/build-status.md)
+records the exact release, verification scope, named coverage, and operating
+limits. [Production certification](docs/slice-9-production-certification.md)
+preserves the dated release evidence. Initial catch-up, additional source
+activation, full Lafayette support, resident observations, the demo, and
+submission remain separate work. No Slice 10 is planned.

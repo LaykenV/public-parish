@@ -1,5 +1,9 @@
 # Slice 9 final build plan
 
+Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
+for the September 6 documentation checkpoint. Dated sections below retain their
+original release context; they do not reopen completed feature work.
+
 Status: final build slice deployed and production-tested on September 5, 2026
 Date: September 4, 2026
 Baseline: `8b03ac3`, matching local and remote `main` during this review
@@ -7,7 +11,8 @@ Baseline: `8b03ac3`, matching local and remote `main` during this review
 This is the detailed execution plan for the final build slice. It replaces the
 original four-packet Slice 9 grouping in `post-slice-5-pr-plan.md`. It proposed
 seven substantial PRs. They shipped as #93 through #99, followed by the narrow
-production replay repair #100. [Production proof](slice-9-production-certification.md)
+production replay repair #100. Follow-up repairs #102 through #105 are deployed
+and recorded in [current build status](build-status.md). [Production proof](slice-9-production-certification.md)
 records the release, active canary, and remaining operating work. Each delivers
 one outcome and includes the backend,
 matching resident adapter, tests, and documentation needed for that outcome.

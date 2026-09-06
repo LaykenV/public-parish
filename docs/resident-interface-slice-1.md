@@ -1,5 +1,11 @@
 # Resident interface Slice 1
 
+Release status: this design document is a historical specification. Its resident
+interfaces and required integrations shipped by Slice 9. See
+[build status](build-status.md) for current behavior, remaining source work, and
+the accepted desktop and mobile emulation scope. Fixture and physical-device
+instructions below describe the original design review, not open build gates.
+
 Status: deployed low-fidelity system; shell and discovery are superseded by Design Slice 2
 
 Date: August 29, 2026

@@ -1,5 +1,11 @@
 # Resident interface Slice 3
 
+Release status: this design document is a historical specification. Its resident
+interfaces and required integrations shipped by Slice 9. See
+[build status](build-status.md) for current behavior, remaining source work, and
+the accepted desktop and mobile emulation scope. Fixture and physical-device
+instructions below describe the original design review, not open build gates.
+
 Status: deployed through PR #27 as `3a59e45` on August 30, 2026; production data adapters were connected later
 
 Date: August 30, 2026

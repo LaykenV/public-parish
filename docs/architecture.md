@@ -1,5 +1,9 @@
 # Technical Architecture
 
+Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
+for the September 6 documentation checkpoint. Dated sections below retain their
+original release context; they do not reopen completed feature work.
+
 Status: Phase 0, evidence-engine Slices 1 through 4, resident-interface Design Slices 1 through 8, and implementation Slices 6 through 8 are deployed; Slice 9 is deployed and production-tested
 
 ## Architecture Goal
@@ -163,7 +167,7 @@ gates and were promoted: Alexandria City Council, Pineville City Council,
 Rapides Parish Police Jury, Baton Rouge Metropolitan Council, and Baton Rouge
 Planning and Zoning Commission. PR #92 made the resident area selector read the live
 jurisdiction status. Rapides and East Baton Rouge are available. Lafayette
-remains validating because three planning bodies do not have reachable official
+remains validating because five planning bodies do not have reachable official
 agenda and outcome artifacts. This closes Implementation Slice 8 without
 weakening its gate.
 
@@ -451,10 +455,10 @@ repair. Routine checks use the registry, Firecrawl change tracking, targeted
 scrapes, PDF parsing, and known schedules.
 
 The deployed Slice 8 implementation covers the owner-triggered onboarding and
-repair pass. It does not yet schedule routine registry checks, enumerate every
-decision in a newly posted document, or propose a new issue without an explicit
-operation. Once an owner starts a known target, retrieval through publication is
-automated and an accepted material change refreshes already linked issues.
+repair pass. At that checkpoint, routine checks, automatic decision inventory,
+and new issue proposals still required later work. Slice 9 now provides those
+capabilities under bounded, owner-approved policies. See the final-slice runtime
+contracts below for the deployed queue and provider rules.
 
 If a portal fails repeatedly, record the failure and add the smallest
 source-specific adapter that restores the shared output contract. Do not create
@@ -1572,7 +1576,8 @@ data remains dated and visible, never silently current.
 
 - Convex AI Gateway token, model, `response_format`, usage, and error behavior
 - strict `MODEL_STRONG` extraction and `MODEL_FAST` review schemas
-- direct OpenAI fallback parity without using it in the normal demo path
+- direct OpenAI fallback stays disabled under the accepted Slice 9 provider
+  scope; a live fallback test is required only before enabling that path
 - Firecrawl component outputs and truncation handling
 - AgentMail verification, inbound, thread, retry, and dedupe behavior
 - Convex Auth v2 alpha Google OAuth and authorization
@@ -1657,24 +1662,15 @@ proof. The packet split does not change the architecture or product scope below.
 Do not reverse this order to polish a dashboard before the evidence path works.
 
 
-## Slice 9 production release
+## Slice 9 completion
 
-PRs #93 through #99 and the narrow controlled-replay repair #100 are deployed
-on production `befitting-flamingo-587`. Every merge passed its exact deployment
-workflow and an independent live smoke. The bounded Rapides Parish Police Jury
-canary is enabled, with one document and one target per run and 50 provider
-admissions per day. The other six supported bodies remain owner-started.
-[The production certification record](slice-9-production-certification.md),
-[development certification](slice-9-development-certification.md)
-and [operations runbook](slice-9-operations-runbook.md) keep development
-proof separate from production proof.
-
-Approved-source monitoring remains bounded by an owner policy and a deployment
-switch. Accepted history uses paginated search and corpus Ask scans evidence in
-batches. Coverage requests save demand without starting source work. Verified
-launch notices, current issue share HTML, and private operating reports complete
-the remaining public integrations.
-
+The final feature build is complete and deployed through the follow-up repairs
+in PRs #102 through #105. [Current build status and remaining work](build-status.md)
+records the exact release, verification scope, named coverage, and operating
+limits. [Production certification](slice-9-production-certification.md)
+preserves the dated release evidence. Initial catch-up, additional source
+activation, full Lafayette support, resident observations, the demo, and
+submission remain separate work. No Slice 10 is planned.
 
 ### Final-slice runtime contracts
 
@@ -1720,8 +1716,9 @@ exact atomic publication references; they do not replace decision records.
 
 Explore reads a published search projection with cursors instead of a latest-50
 array. Publication updates its projection and corpus revision atomically. Result
-hydration rejects stale publication references. Existing accepted records need
-the bounded search backfill after deployment.
+hydration rejects stale publication references. The initial production backfill
+indexed existing accepted records. A later repair backfill is a separate bounded
+operation, not routine release setup.
 
 Corpus Ask scans records in pages of 25 and selects relevant accepted evidence
 from up to four pages concurrently. It saves selection progress after each group

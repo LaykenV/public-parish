@@ -1,5 +1,10 @@
 # Slice 9 development certification
 
+This is a dated certification record, not a live status dashboard.
+[Current build status](build-status.md) includes the subsequent repairs and
+remaining operating work. Historical body counts and queue totals below apply
+only to their recorded checks.
+
 The release candidate is the combined stack of PRs [#93](https://github.com/LaykenV/public-parish/pull/93),
 [#94](https://github.com/LaykenV/public-parish/pull/94),
 [#95](https://github.com/LaykenV/public-parish/pull/95),

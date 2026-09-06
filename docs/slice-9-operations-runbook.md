@@ -1,6 +1,7 @@
 # Slice 9 operations
 
-PRs #93 through #99 and the controlled-replay repair #100 are deployed.
+The final build and follow-up repairs through PR #105 are deployed.
+[Build status](build-status.md) separates completed features from remaining work.
 The owner authorized production release and bounded live testing on September 5.
 See the [production certification record](slice-9-production-certification.md)
 and the separate [development evidence](slice-9-development-certification.md).
@@ -11,9 +12,11 @@ window, and 50 daily admissions. Catch-up checks can run every 15 minutes within
 that daily limit. Initial inventory remains incomplete. The other six supported
 bodies still require owner-started checks. Direct OpenAI fallback is disabled.
 
-## Deployment and initial activation
+## Historical initial rollout and future activation
 
-Keep `SOURCE_MONITORING_ENABLED=false` through the code rollout. All added
+The initial rollout kept `SOURCE_MONITORING_ENABLED=false` before activation.
+Do not rerun rollout setup or disable the active production canary merely
+because this historical procedure appears here. All added
 schema fields are optional or belong to new tables. Existing source snapshots,
 publication versions, issue IDs, issue slugs, follows, and citations remain.
 New indexes deploy with the backend. The production Gate 10 classification
@@ -29,7 +32,8 @@ every redirect against the approved manifest, and never retrieves evidence
 through Firecrawl or republishes records. Watch that exact workflow to completion,
 then run the independent `npm run smoke:production`.
 
-Backfill the accepted search projection after PR #95 deploys. Run the internal
+The initial production search backfill completed after PR #95. For an
+explicitly authorized repair that requires another backfill, run the internal
 `resident/search:backfill` mutation separately for `decision` and `issue`, with
 25 records per page and the returned cursor until `isDone`. This operation
 indexes accepted publications. It does not republish records or send alerts.
@@ -63,6 +67,26 @@ This helper refuses other deployments and cannot grant a later window.
 AI Gateway is the verified provider. Keep direct OpenAI fallback disabled.
 The owner accepted this configuration because development has no direct
 OpenAI key. Re-enabling fallback requires its own bounded provider check.
+
+## Automatic catch-up after PR #105
+
+Ready decisions run before new source work. A run first reconciles the previous
+batch and starts eligible targets within the existing per-run limit. While a
+batch is active, this policy performs no discovery or document retrieval. The
+provider limiter still applies to every extraction, review, and issue call.
+
+An incomplete document cannot release its targets. Dispatch scans at most 100
+due items and defers blocked entries so later ready work can advance. Documents
+with waiting targets receive continuation priority within the bounded scan.
+Budget exhaustion preserves the queue and failure attempts, then sets the next
+check to the limiter reset. The 15-minute cron picks up due work automatically.
+An owner does not need to start each pending target. Check now still uses the
+same limits; it is not a way around an exhausted budget.
+
+Read current queue, run, and limiter state before reporting progress. The 61
+pending production targets recorded on September 5 are a historical receipt.
+After the next window, verify targets advance, inspect actual rejection reasons,
+and review provider use before changing limits or enabling another body.
 
 ## Stop and resume
 

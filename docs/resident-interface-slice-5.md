@@ -1,5 +1,11 @@
 # Resident interface Slice 5 handoff
 
+Release status: this design document is a historical specification. Its resident
+interfaces and required integrations shipped by Slice 9. See
+[build status](build-status.md) for current behavior, remaining source work, and
+the accepted desktop and mobile emulation scope. Fixture and physical-device
+instructions below describe the original design review, not open build gates.
+
 Status: deployed through PR #31 as `adfe81e`
 
 Date: August 31, 2026

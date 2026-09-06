@@ -1,5 +1,10 @@
 # Slice 9 production certification
 
+This is a dated certification record, not a live status dashboard.
+[Current build status](build-status.md) includes the subsequent repairs and
+remaining operating work. Historical body counts and queue totals below apply
+only to their recorded checks.
+
 Recorded September 5, 2026, after the owner authorized production merges and
 bounded live testing. The application release is `48dedf3a72a21084628aac59025db86b4623ca0f`
 on `befitting-flamingo-587`. This record closes the final feature build slice.
@@ -156,3 +161,37 @@ Resident recruitment, observed benefit, a newly timed under-three-minute demo,
 external social previews, and submission remain separate. No submission, social
 post, physical-device result, complete historical archive, or organic resident
 outcome is claimed by this release.
+
+
+## Follow-up release closure
+
+PR #101 recorded the initial release. PR #102 admitted the checked Lafayette
+event-document paths while preserving old manifests. PR #103 separated City
+Planning, Parish Planning, and City Zoning identities. Together with BOZA and
+Hearing Examiner, five Lafayette planning bodies remain validating. No body was
+promoted by these repairs.
+
+PR #103 passed 476 tests and deployed, but its smoke retained the obsolete
+ten-body expectation. PR #104 repaired that assertion to check the exact twelve
+bodies within their parishes. Its deployment and independent smoke passed.
+
+| PR | Merge | Exact production workflow | Result |
+| --- | --- | --- | --- |
+| #102 | `fc5ed66` | [33977412980](https://github.com/LaykenV/public-parish/actions/runs/33977412980) | Deployment and independent smoke passed. |
+| #103 | `0d13b0b` | [33978449270](https://github.com/LaykenV/public-parish/actions/runs/33978449270) | Deployed; outdated smoke assertion failed and was repaired by #104. |
+| #104 | `eccd18a` | [33978914410](https://github.com/LaykenV/public-parish/actions/runs/33978914410) | Deployment and independent smoke passed. |
+| #105 | `4b8927b` | [33981783575](https://github.com/LaykenV/public-parish/actions/runs/33981783575) | 483 CI tests, deployment, and independent smoke passed. |
+
+PR #105 gives queued decisions priority over source discovery, prevents blocked
+items from stopping ready work, and preserves attempts across budget pauses.
+The [development receipt](https://github.com/LaykenV/public-parish/pull/105#issuecomment-5553618091)
+records one newly processed full card with six citations and no discovery or
+retrieval calls. Development monitoring was restored to its disabled state.
+
+The [production receipt](https://github.com/LaykenV/public-parish/pull/105#issuecomment-5553649138)
+records an exhausted-budget check with 61 pending and four published targets,
+unchanged attempts, zero source calls, and the next check at the September 6
+07:13:46 Central reset. This proves the pause and schedule, not subsequent
+production catch-up. The approved 50 daily admissions and one target per run
+remain unchanged. See [current completion boundaries](build-status.md) and the
+[operations runbook](slice-9-operations-runbook.md) before further activation.

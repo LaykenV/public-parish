@@ -1,5 +1,9 @@
 # Official-Source Plan
 
+Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
+for the September 6 documentation checkpoint. Dated sections below retain their
+original release context; they do not reopen completed feature work.
+
 Status: seven bodies supported after Slice 9; Lafayette planning sources still need complete certification
 Last verified: September 5, 2026
 
@@ -13,7 +17,7 @@ supported.
 Lafayette City Council and Youngsville City Council passed production coverage
 checks during Slice 9. The remaining planning sources are still validating.
 The official events service briefly exposed meeting attachments, then returned
-502 again during the September 5 recheck. New version 2 manifests admit only
+502 again during the September 5 recheck. Versioned manifests admit only
 its checked event-document path; the old manifests remain unchanged for prior
 runs. No coverage gate or public support state changes with that permission.
 
@@ -40,7 +44,7 @@ three targets stayed out after repeat exact-citation failures, and replay reused
 all 27 successful extraction run IDs without new model calls. The batch evidence
 lives in `docs/production-batches/launch-data-2026-08-31.v1.json`.
 
-The resident query now exposes those 26 publications. A September 1 one-time
+At that checkpoint, the resident query exposed those 26 publications. A September 1 one-time
 production data correction cleared the current publication pointers from one
 older duplicate Lafayette board-vacancy record without deleting its evidence.
 Exactly one board-vacancy card remains, under
@@ -56,11 +60,11 @@ Pineville City Council, Rapides Parish Police Jury, Baton Rouge Metropolitan
 Council, and Baton Rouge Planning and Zoning Commission after each passed all ten gates.
 That makes Rapides and East Baton Rouge supported in the resident selector.
 
-Lafayette City Council and Youngsville City Council passed gates 1 through 9 in
-development. They were not promoted because Lafayette's public place status
-requires every checked body in the parish, and the three planning bodies remain
-blocked. Their government pages and 2026 schedule PDFs answered 200 on September
-4, but `events.lafayettela.gov` still answered 502 and no stable current and
+At the September 4 checkpoint, Lafayette City Council and Youngsville City
+Council had passed gates 1 through 9 in development and were not yet promoted.
+Slice 9 subsequently promoted both bodies. Parish support still requires every
+required body to pass; five separate planning bodies now remain validating.
+Their government pages and 2026 schedule PDFs answered 200 on September 4, but `events.lafayettela.gov` still answered 502 and no stable current and
 historical agenda-and-outcome set exists for those bodies. Lafayette therefore
 remains validating. This is a documented source failure, not a lower coverage
 standard.
@@ -291,20 +295,12 @@ This order establishes the local demo first, then tests different portal shapes
 before Public Parish claims geographic breadth.
 
 
-## Slice 9 production release
+## Slice 9 completion
 
-PRs #93 through #99 and the narrow controlled-replay repair #100 are deployed
-on production `befitting-flamingo-587`. Every merge passed its exact deployment
-workflow and an independent live smoke. The bounded Rapides Parish Police Jury
-canary is enabled, with one document and one target per run and 50 provider
-admissions per day. The other six supported bodies remain owner-started.
-[The production certification record](slice-9-production-certification.md),
-[development certification](slice-9-development-certification.md)
-and [operations runbook](slice-9-operations-runbook.md) keep development
-proof separate from production proof.
-
-Approved-source monitoring remains bounded by an owner policy and a deployment
-switch. Accepted history uses paginated search and corpus Ask scans evidence in
-batches. Coverage requests save demand without starting source work. Verified
-launch notices, current issue share HTML, and private operating reports complete
-the remaining public integrations.
+The final feature build is complete and deployed through the follow-up repairs
+in PRs #102 through #105. [Current build status and remaining work](build-status.md)
+records the exact release, verification scope, named coverage, and operating
+limits. [Production certification](slice-9-production-certification.md)
+preserves the dated release evidence. Initial catch-up, additional source
+activation, full Lafayette support, resident observations, the demo, and
+submission remain separate work. No Slice 10 is planned.

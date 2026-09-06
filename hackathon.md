@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-05T16:25:00Z
+- **Last updated:** 2026-09-06T14:52:24Z
 
 ## Log
 
@@ -1521,3 +1521,15 @@ and repeated daily-budget pauses. Ready decisions now precede source discovery;
 incomplete documents cannot block the queue, and budget pauses preserve retries.
 Added scheduler and limiter regressions for PR checks. Daily limits and evidence
 gates remain unchanged. Development and production proof follow review.
+
+
+### 2026-09-06 - 4b8927b
+
+Closed the Slice 9 follow-up record. PRs #102 through #105 deployed the Lafayette
+source and identity repairs, corrected the twelve-body production smoke, and
+repaired queued-decision priority. PR #105 passed 483 CI tests, production
+deployment, and independent smoke. Its development run published one queued
+item with six citations; production proved the exhausted-budget pause without
+consuming attempts. The build is complete. Catch-up, broader activation, full
+Lafayette certification, resident proof, the demo, and submission remain open.
+`docs/build-status.md` records those boundaries and links the dated evidence.

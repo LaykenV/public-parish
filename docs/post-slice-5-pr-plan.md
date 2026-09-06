@@ -1,5 +1,9 @@
 # Post-Slice-5 PR plan
 
+Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
+for the September 6 documentation checkpoint. Dated sections below retain their
+original release context; they do not reopen completed feature work.
+
 Status: implementation Slices 6 through 9 are deployed and release-tested
 
 This plan turns the remaining implementation into a few substantial,
@@ -49,7 +53,7 @@ compiler, discovery, validation, promotion gate, and deploy-safe seed. PR #91
 completed exact-artifact development proof and production certification. Five
 bodies passed all ten production gates, which made Rapides and East Baton Rouge
 available. PR #92 connected the selector to that live jurisdiction state.
-Lafayette remains validating because its three planning bodies do not have a
+Lafayette remains validating because its five planning bodies do not have a
 stable agenda and outcome evidence set. Slice 9 has since shipped and passed
 production checks. Later current-status records supersede this planning baseline.
 
@@ -744,9 +748,9 @@ a versioned supported registry without weakening evidence rules.
 Status: closed September 4, 2026. Seven bodies passed development gates 1
 through 9. Production promoted Alexandria City Council, Pineville City Council,
 Rapides Parish Police Jury, Baton Rouge Metropolitan Council, and Baton Rouge
-Planning and Zoning Commission after ten passing gates each. Lafayette's three planning
-bodies retain gate reports and remain blocked on official meeting-specific
-records. Lafayette City Council and Youngsville were not promoted under the
+Planning and Zoning Commission after ten passing gates each. At that checkpoint,
+Lafayette's three planning entries retained gate reports and remained blocked
+on official meeting-specific records. Lafayette City Council and Youngsville were not promoted under the
 strict parish-level release rule. Rapides and East Baton Rouge are available in
 the live selector; Lafayette is validating.
 
@@ -1012,7 +1016,9 @@ authorization, negative tests, the matching frontend adapter, and
 evidence-based documentation. Do not call production services or operate on
 production data without separate approval.
 
-Run npm run verify and git diff --check. Report the changed behavior, tests,
+Do not run local automated validation without approval for the exact command.
+Run git diff --check and use GitHub Actions for tests, typecheck, build, and lint.
+Report the changed behavior, tests,
 remaining fixture boundary, deployment effect, and runtime proof still needed.
 Do not merge or deploy unless explicitly asked.
 ```

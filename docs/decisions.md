@@ -1,5 +1,9 @@
 # Grilling Decision Record
 
+Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
+for the September 6 documentation checkpoint. Dated sections below retain their
+original release context; they do not reopen completed feature work.
+
 Product grilling completed: August 26, 2026
 Stack amendment completed: August 27, 2026
 Environment and checkpoint amendment completed: August 27, 2026
@@ -100,7 +104,7 @@ expand the promise.
   the compiler implementation open indefinitely.
 - A parish becomes selectable only when every checked body in that parish is
   supported. Rapides and East Baton Rouge met that rule on September 4.
-  Lafayette remains validating because three planning bodies lack reachable
+  Lafayette remains validating because five planning bodies lack reachable
   agenda and outcome evidence.
 - Slice 8 covers owner-triggered onboarding and repair. Scheduled routine source
   checks, automatic document-to-decision fanout, and automatic new issue
@@ -328,6 +332,10 @@ expand the promise.
 
 ## Resident Interface
 
+For the final Slice 9 review, the owner replaced the physical-device gate
+with desktop and mobile emulation. The original design-review policy below
+does not block this release. No physical-device pass is claimed.
+
 - [`resident-interface-plan.md`](./resident-interface-plan.md) is the approved
   Slice 5 page, interaction, state, and design-agent contract.
 - Build the complete frontend now so later API integration does not reorganize
@@ -360,9 +368,8 @@ expand the promise.
   chains. Action labels stay fixed while a spinner occupies a stable icon slot.
 - Keep success feedback inline. Use pills for useful filters, topics,
   selections, and compact statuses.
-- After each deployed design slice passes the exact production workflow and
-  smoke, the founder tests its direct route on an actual iPhone in Safari before
-  the next slice changes the same shared patterns.
+- Review shared patterns after deployment. Slice 9 uses the accepted desktop
+  and mobile emulation scope; physical iPhone testing is not its release gate.
 - Divide design work into the eight assignments in the resident interface plan.
   Each assignment works from the complete app and one shared component registry.
 
@@ -431,20 +438,12 @@ These do not reopen the product plan:
 - verify official September meeting schedules before relying on a live cycle.
 
 
-## Slice 9 production release
+## Slice 9 completion
 
-PRs #93 through #99 and the narrow controlled-replay repair #100 are deployed
-on production `befitting-flamingo-587`. Every merge passed its exact deployment
-workflow and an independent live smoke. The bounded Rapides Parish Police Jury
-canary is enabled, with one document and one target per run and 50 provider
-admissions per day. The other six supported bodies remain owner-started.
-[The production certification record](slice-9-production-certification.md),
-[development certification](slice-9-development-certification.md)
-and [operations runbook](slice-9-operations-runbook.md) keep development
-proof separate from production proof.
-
-Approved-source monitoring remains bounded by an owner policy and a deployment
-switch. Accepted history uses paginated search and corpus Ask scans evidence in
-batches. Coverage requests save demand without starting source work. Verified
-launch notices, current issue share HTML, and private operating reports complete
-the remaining public integrations.
+The final feature build is complete and deployed through the follow-up repairs
+in PRs #102 through #105. [Current build status and remaining work](build-status.md)
+records the exact release, verification scope, named coverage, and operating
+limits. [Production certification](slice-9-production-certification.md)
+preserves the dated release evidence. Initial catch-up, additional source
+activation, full Lafayette support, resident observations, the demo, and
+submission remain separate work. No Slice 10 is planned.

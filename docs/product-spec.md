@@ -1,5 +1,9 @@
 # Resident Product Specification
 
+Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
+for the September 6 documentation checkpoint. Dated sections below retain their
+original release context; they do not reopen completed feature work.
+
 Status: approved product plan; evidence Slices 1 through 4, resident-interface Design Slices 1 through 8, and implementation Slices 6 through 8 are deployed; Slice 9 is deployed and production-tested
 
 ## Product Sentence
@@ -648,10 +652,14 @@ The mobile issue page gets design priority over a desktop dashboard.
 - dates use readable local time plus machine-readable timestamps;
 - links identify the official source destination.
 
-After each deployed design slice passes automated production checks, the
-founder tests its direct route on an actual iPhone in Safari. The review covers
-safe areas, Safari chrome, sheet heights, horizontal and vertical gestures,
-keyboard behavior, rotation, page zoom, and reduced motion.
+For the final Slice 9 review, the owner replaced the physical-device gate
+with desktop and mobile emulation. The original design-review policy below
+does not block this release. No physical-device pass is claimed.
+
+The original design review specified physical Safari checks for safe areas,
+browser chrome, sheets, gestures, keyboard behavior, rotation, and page zoom.
+That checklist is retained in the historical interface plan for future use;
+it is not an unfinished Slice 9 requirement.
 
 ## Product Analytics
 
@@ -738,20 +746,12 @@ The resident product is submission-ready when a signed-out mobile visitor can:
 10. inspect coverage and revision history.
 
 
-## Slice 9 production release
+## Slice 9 completion
 
-PRs #93 through #99 and the narrow controlled-replay repair #100 are deployed
-on production `befitting-flamingo-587`. Every merge passed its exact deployment
-workflow and an independent live smoke. The bounded Rapides Parish Police Jury
-canary is enabled, with one document and one target per run and 50 provider
-admissions per day. The other six supported bodies remain owner-started.
-[The production certification record](slice-9-production-certification.md),
-[development certification](slice-9-development-certification.md)
-and [operations runbook](slice-9-operations-runbook.md) keep development
-proof separate from production proof.
-
-Approved-source monitoring remains bounded by an owner policy and a deployment
-switch. Accepted history uses paginated search and corpus Ask scans evidence in
-batches. Coverage requests save demand without starting source work. Verified
-launch notices, current issue share HTML, and private operating reports complete
-the remaining public integrations.
+The final feature build is complete and deployed through the follow-up repairs
+in PRs #102 through #105. [Current build status and remaining work](build-status.md)
+records the exact release, verification scope, named coverage, and operating
+limits. [Production certification](slice-9-production-certification.md)
+preserves the dated release evidence. Initial catch-up, additional source
+activation, full Lafayette support, resident observations, the demo, and
+submission remain separate work. No Slice 10 is planned.

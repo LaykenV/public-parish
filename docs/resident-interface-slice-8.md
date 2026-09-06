@@ -1,5 +1,11 @@
 # Resident interface Design Slice 8
 
+Release status: this design document is a historical specification. Its resident
+interfaces and required integrations shipped by Slice 9. See
+[build status](build-status.md) for current behavior, remaining source work, and
+the accepted desktop and mobile emulation scope. Fixture and physical-device
+instructions below describe the original design review, not open build gates.
+
 Status: deployed through PR #43 as `85d6947` on August 31, 2026. Production
 workflow `33454522729` and the independent production smoke passed. Later
 releases connected accepted issue, evidence, anonymous Ask, Google account,

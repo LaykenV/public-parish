@@ -1,6 +1,6 @@
 # Public Parish
 
-Public Parish is a free, open-source, nonpartisan application that will help
+Public Parish is a free, open-source, nonpartisan application that helps
 Louisiana residents see consequential local-government decisions, inspect the
 official evidence, ask questions, follow an issue, and learn what happened after
 the vote.
@@ -12,56 +12,27 @@ revision principles, not code or a submission base.
 
 ## Current state
 
-Phase 0 and evidence-engine Slices 1 through 4 are complete and deployed. The
-repository has a TanStack Start SPA, separate Convex development and production
-deployments, a realtime readiness query, Convex static hosting, Firecrawl
-discovery and retrieval, immutable source snapshots, and a private durable
-workflow that extracts, validates, independently reviews, and creates immutable
-full, limited, or withheld publication versions for cited atomic decisions.
-Slice 4 adds material-change history plus independently reviewed issue links and
-deterministic importance scores without replacing the atomic records. The real
-Terra extraction, Luna review, and idempotent replay proofs ran in the personal
-development deployment. Slice 4 deployed through PR #13 as `c162543` and passed
-the exact production workflow plus an independent smoke.
+The planned feature build is complete through Slice 9. Residents can explore
+published decisions and issue timelines, inspect immutable official evidence,
+ask grounded questions, and manage Google or verified-email follows. Sourced
+alerts, grounded email replies, weekly roundups, private source reports,
+coverage requests, verified launch notices, and issue share HTML are deployed.
+Published history and corpus Ask work in batches as the corpus grows.
 
-Resident-interface Design Slices 1 through 8 are deployed. Production exposes
-26 accepted atomic publications and two accepted issue timelines through
-bounded resident projections. Home leads with those issue timelines and the
-decision records underneath. Explore searches issues before individual records.
-Legacy `/for-you` and `/issues` index routes redirect to Home, while stable issue
-detail routes retain their citations and Source controls.
+Seven named bodies have passed coverage gates. Five Lafayette planning bodies
+remain validating. Only Rapides Parish Police Jury has automatic checks enabled;
+other supported bodies still have owner-started updates. Initial catch-up and
+full Lafayette coverage are unfinished operating work.
 
-Implementation Slice 6 is deployed through PRs #45, #47, #49, #56, and #57.
-Signed-out residents can hold a private 24-hour issue, meeting, or corpus
-conversation. One high-reasoning Luna call selects relevant records from the
-complete current catalog and accepted excerpts. A second call receives the
-expanded records and verified official documents. Deterministic code rejects
-unsupported citation IDs before display. Per-session and app-wide request
-limits bound call frequency. Provider token use and estimated cost remain
-private telemetry rather than an answer limit. Production tests proved cited
-issue and corpus answers, exact Source controls, evidence not found, thread
-restoration, and the removal of raw internal evidence IDs from resident-facing
-answer text.
+[Current build status](docs/build-status.md) names the supported bodies, approved
+limits, release proof, and remaining resident and submission work. The latest
+application release passed 483 CI tests, its production workflow, and independent
+production smoke. Development and controlled release tests do not establish
+organic resident benefit.
 
-Implementation Slice 7A is deployed through PRs #58 and #59. Convex Auth v2
-Google sessions now own private saved areas and topics through centralized
-authorization. The canonical custom domain and qualifying `convex.site` flow
-both completed real production sign-in and sign-out, and the public privacy
-notice is live on both hosts. Implementation Slice 7B is deployed through PRs
-#66 and #67. Google and AgentMail-verified email owners can create and manage
-real follows without sharing ownership. Implementation Slice 7C is deployed
-through PRs #72 through #75. Accepted material changes now create durable
-matches and deduplicated immediate or weekly AgentMail delivery, while signed-in
-residents can manage the default cadence and inspect recent delivery state.
-Implementation Slice 7D is deployed through PRs #78 and #79. Verified replies
-to sourced alerts reuse the grounded Ask path, and private source reports go to
-a separate AgentMail inbox without starting the evidence pipeline. Coverage
-requests remain later work.
-
-- Public production app: https://publicparish.com (redirects to the canonical
-  Convex-served origin at https://www.publicparish.com)
-- Required hackathon host: https://befitting-flamingo-587.convex.site
-- Hosted development smoke: https://woozy-wren-227.convex.site
+- [Public production app](https://www.publicparish.com)
+- [Qualifying hackathon host](https://befitting-flamingo-587.convex.site)
+- [Development app](https://woozy-wren-227.convex.site)
 
 ## Local setup
 
@@ -81,7 +52,7 @@ npm run verify
 npm run dev
 ```
 
-Open `http://localhost:3000`. The page should report `Convex connected`.
+Open `http://localhost:3000` to use the resident interface.
 `npx convex dev --once` creates the ignored `.env.local` file. Copy
 `.env.example` only when documenting variable names. Never commit real values.
 
@@ -110,9 +81,13 @@ uploads the result to that deployment's `convex.site` host. Use it only when a
 change needs the real static host. Production builds fail when
 `VITE_CONVEX_URL` is missing.
 
-Pull requests run `npm run verify`. Merging a reviewed PR to `main` is the
-production approval for this hackathon and triggers the `Deploy production`
-workflow. It verifies the merge commit, runs `npm run deploy` to publish the
+These setup and validation commands are for human contributors. Agents follow
+`AGENTS.md`: automated validation runs in GitHub Actions unless the owner
+approves the exact local command.
+
+Pull requests run `npm run verify`. Every push to `main`, including an explicitly
+authorized direct documentation push, triggers the `Deploy production`
+workflow. It verifies that exact commit, runs `npm run deploy` to publish the
 matching backend and frontend, applies the idempotent source-registry seed, and
 runs `npm run smoke:production`. The smoke checks the direct `convex.site`, the
 canonical custom domain, the apex redirect, and the production readiness query.
@@ -128,6 +103,11 @@ local UI and personal development backend. Use a preview deployment only when
 auth, webhook, routing, or schema work genuinely needs isolation.
 
 ## Canonical documents
+
+- [Build completion and remaining work](docs/build-status.md)
+- [Slice 9 execution plan](docs/slice-9-final-build-plan.md)
+- [Production certification](docs/slice-9-production-certification.md)
+- [Source operations runbook](docs/slice-9-operations-runbook.md)
 
 - [Product and operating plan](PLAN.md)
 - [Grilling decision record](docs/decisions.md)

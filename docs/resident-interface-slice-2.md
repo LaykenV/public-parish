@@ -1,5 +1,11 @@
 # Resident interface Slice 2
 
+Release status: this design document is a historical specification. Its resident
+interfaces and required integrations shipped by Slice 9. See
+[build status](build-status.md) for current behavior, remaining source work, and
+the accepted desktop and mobile emulation scope. Fixture and physical-device
+instructions below describe the original design review, not open build gates.
+
 Status: deployed through PR #24 as `4e2ac67`; owner phone review refinements
 deployed through PR #25 as `b22e321`; laptop and real-iPhone review remain
 
