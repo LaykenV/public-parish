@@ -329,7 +329,9 @@ export const sampleExtractionContext = internalQuery({
             snapshotId: source.sample.snapshotId,
             sourceKind: source.sample.sourceKind,
             targetRecordId: expectation.negativeTargetRecordId,
-            sourceRecordIdProvenance: 'operator_assigned' as const,
+            // A negative probe must search for this literal printed identifier.
+            // A routing label could let extraction select an unrelated real case.
+            sourceRecordIdProvenance: 'source_printed' as const,
           }
         : null
     }
