@@ -23,7 +23,7 @@ import { DAY_MS, inventoryIdentity, inventoryResult, isBeforeMeetingWindow, MONI
 
 const limiter = new RateLimiter(components.rateLimiter, {})
 const DEFAULT_GLOBAL_DAILY_LIMIT = 1_000
-const MAX_POLICY_DAILY_LIMIT = 5_000
+const MAX_POLICY_DAILY_LIMIT = 50_000
 const MAX_GLOBAL_DAILY_LIMIT = 50_000
 
 async function globalBudgetConfig(ctx: Pick<QueryCtx, 'db'>) {

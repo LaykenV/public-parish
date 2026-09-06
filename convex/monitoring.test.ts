@@ -108,7 +108,7 @@ test('changing a daily limit preserves admissions already used in the window', a
   expect(await t.mutation(internal.monitoring.ledger.reserve, { runId, units: 6 })).toBe(true)
   const rate = new RateLimiter(components.rateLimiter, {})
   const original = await t.run(ctx => ctx.db.get(policyId))
-  for (const dailyCallLimit of [1_000, 5_000, 10]) {
+  for (const dailyCallLimit of [1_000, 5_000, 15_000, 50_000, 10]) {
     await t.run(ctx => configurePolicy(ctx, { proposalId, enabled: true, intervalHours: 24, documentsPerRun: 1, targetsPerRun: 1, dailyCallLimit, startsAt: original!.startsAt }))
     expect(await t.run(ctx => ctx.db.get(policyId))).toMatchObject({ generation: original!.generation, activeRunId: runId })
     const remaining = await t.run(async ctx => {
@@ -117,6 +117,7 @@ test('changing a daily limit preserves admissions already used in the window', a
     })
     expect(remaining).toBe(dailyCallLimit - 6)
   }
+  await expect(t.run(ctx => configurePolicy(ctx, { proposalId, enabled: true, intervalHours: 24, documentsPerRun: 1, targetsPerRun: 1, dailyCallLimit: 50_001, startsAt: original!.startsAt }))).rejects.toThrow('outside the allowed bounds')
 })
 
 
