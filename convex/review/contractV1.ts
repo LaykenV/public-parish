@@ -143,7 +143,7 @@ const nullableString = {
   anyOf: [{ type: 'string' as const }, { type: 'null' as const }],
 }
 
-export const independentReviewJsonSchemaV1: Record<string, unknown> = {
+export const independentReviewJsonSchemaV1 = {
   type: 'object',
   properties: {
     verdict: { type: 'string', enum: ['pass', 'limited', 'fail'] },
@@ -186,6 +186,54 @@ export const independentReviewJsonSchemaV1: Record<string, unknown> = {
   },
   required: ['verdict', 'checks', 'findings'],
   additionalProperties: false,
+}
+
+export function independentReviewJsonSchemaForFactsV1(
+  facts: ExpectedReviewFact[],
+) {
+  if (facts.length === 0 || facts.length > MAX_REVIEW_CHECKS) {
+    throw new Error('Review requires between 1 and 100 supplied facts')
+  }
+  const factIds = facts.map((fact) => fact.factId)
+  if (new Set(factIds).size !== facts.length) {
+    throw new Error('Review requires unique supplied fact IDs')
+  }
+  const fieldPaths = [...new Set(facts.map((fact) => fact.fieldPath))]
+  const base = independentReviewJsonSchemaV1
+  return {
+    ...base,
+    properties: {
+      ...base.properties,
+      checks: {
+        ...base.properties.checks,
+        minItems: facts.length,
+        maxItems: facts.length,
+        items: {
+          ...base.properties.checks.items,
+          properties: {
+            ...base.properties.checks.items.properties,
+            factId: { type: 'string', enum: factIds },
+            fieldPath: { type: 'string', enum: fieldPaths },
+          },
+        },
+      },
+      findings: {
+        ...base.properties.findings,
+        items: {
+          ...base.properties.findings.items,
+          properties: {
+            ...base.properties.findings.items.properties,
+            fieldPath: {
+              anyOf: [
+                { type: 'string', enum: fieldPaths },
+                { type: 'null' },
+              ],
+            },
+          },
+        },
+      },
+    },
+  }
 }
 
 export function schemaNameForIndependentReviewV1(): string {

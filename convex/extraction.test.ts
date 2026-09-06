@@ -745,7 +745,7 @@ test('gold case: a valid CO-029-2026 extraction validates and records the full e
     route: 'ai_gateway',
     promptVersion: 'v1.12',
     schemaVersion: 'v1',
-    processorVersion: 'v1.18',
+    processorVersion: 'v1.19',
   })
   expect(extraction?.responseHash).toBe(
     await sha256HexOfText(goldContent(snapshotId)),
@@ -827,6 +827,15 @@ test('gold case: a valid CO-029-2026 extraction validates and records the full e
       json_schema: {
         name: 'public_parish_extraction_v1',
         strict: true,
+        schema: {
+          $defs: {
+            citation: {
+              properties: {
+                sourceSnapshotId: { type: 'string', enum: [snapshotId] },
+              },
+            },
+          },
+        },
       },
     },
   })

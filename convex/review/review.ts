@@ -16,7 +16,7 @@ import { sha256HexOfText } from '../sources/hashing'
 import { reviewMaxCompletionTokens } from './completionBudget'
 import {
   checkIndependentReviewContractV1,
-  independentReviewJsonSchemaV1,
+  independentReviewJsonSchemaForFactsV1,
   independentReviewV1,
   schemaNameForIndependentReviewV1,
 } from './contractV1'
@@ -145,7 +145,7 @@ export const runIndependentReview = internalAction({
         role: REVIEW_MODEL_ROLE,
         messages: prompt.messages,
         schemaName: schemaNameForIndependentReviewV1(),
-        jsonSchema: independentReviewJsonSchemaV1,
+        jsonSchema: independentReviewJsonSchemaForFactsV1(args.context.facts),
         reasoningEffort: 'high',
         maxCompletionTokens: reviewMaxCompletionTokens(
           args.context.facts.length,
