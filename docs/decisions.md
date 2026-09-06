@@ -104,8 +104,8 @@ expand the promise.
   the compiler implementation open indefinitely.
 - A parish becomes selectable only when every checked body in that parish is
   supported. Rapides and East Baton Rouge met that rule on September 4.
-  Lafayette remains validating because five planning bodies lack reachable
-  agenda and outcome evidence.
+  Lafayette met the same rule on September 6 after all five planning bodies
+  passed production certification with official agenda and outcome evidence.
 - Slice 8 covers owner-triggered onboarding and repair. Scheduled routine source
   checks, automatic document-to-decision fanout, and automatic new issue
   proposals require a separate implementation decision before they become a

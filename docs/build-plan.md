@@ -488,21 +488,21 @@ artifact certification, and PR #92 connected the area selector to live coverage.
 
 1. Lafayette City Council and Youngsville passed their production coverage gates
    during Slice 9.
-   Lafayette's five planning bodies remain blocked on meeting-specific official
-   records, so the parish stays validating.
+   All five planning bodies passed production certification on September 6.
+   Lafayette is available for those seven named bodies.
 2. Alexandria, Pineville, and Rapides Police Jury passed all ten production
    gates. Rapides is supported.
 3. Baton Rouge Metro Council and Planning and Zoning Commission passed all ten production
    gates. East Baton Rouge is supported.
 4. Accepted records remain searchable across all three regions.
-5. The live selector keeps Lafayette unavailable and labels it as validating.
+5. The live selector reports all three parishes available.
 
 Planning/zoning in Rapides remains required for the promised region only after
 the official bodies and sources are identified. If they cannot pass in time,
 narrow the named Rapides coverage in public copy instead of lowering the gate.
 
-Slice 8 closes on this honest partial rollout because its release gate permits a
-documented portal failure and requires public claims to narrow. The
+Slice 8 closed on a partial rollout because its release gate permitted a
+documented portal failure and required public claims to narrow. The
 owner-triggered compiler did not yet provide scheduled routine monitoring at Slice 8,
 automatic decision enumeration, or automatic new issue proposals.
 

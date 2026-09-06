@@ -63,12 +63,11 @@ That makes Rapides and East Baton Rouge supported in the resident selector.
 
 At the September 4 checkpoint, Lafayette City Council and Youngsville City
 Council had passed gates 1 through 9 in development and were not yet promoted.
-Slice 9 subsequently promoted both bodies. Parish support still requires every
-required body to pass; five separate planning bodies now remain validating.
-Their government pages and 2026 schedule PDFs answered 200 on September 4, but `events.lafayettela.gov` still answered 502 and no stable current and
-historical agenda-and-outcome set exists for those bodies. Lafayette therefore
-remains validating. This is a documented source failure, not a lower coverage
-standard.
+Slice 9 subsequently promoted both bodies. The planning sources remained
+blocked at the September 5 checkpoint. Government pages and schedule PDFs
+answered, but the event service returned 502 and meeting-specific evidence was
+missing. The September 6 recovery above resolved that source failure and passed
+the unchanged production gates.
 
 ## Source Policy
 

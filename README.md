@@ -19,14 +19,16 @@ alerts, grounded email replies, weekly roundups, private source reports,
 coverage requests, verified launch notices, and issue share HTML are deployed.
 Published history and corpus Ask work in batches as the corpus grows.
 
-Seven named bodies have passed coverage gates. Five Lafayette planning bodies
-remain validating. Only Rapides Parish Police Jury has automatic checks enabled;
-other supported bodies still have owner-started updates. Initial catch-up and
-full Lafayette coverage are unfinished operating work.
+All twelve named launch bodies passed production coverage gates. Lafayette,
+Rapides, and East Baton Rouge are available for those bodies' approved agendas
+and minutes. The original seven bodies have automatic checks enabled. The five
+newly certified Lafayette planning bodies still need owner-started updates.
+Initial catch-up remains budget-paused. See the [September 6 operations
+report](docs/source-operations-2026-09-06.md) for counts and limits.
 
 [Current build status](docs/build-status.md) names the supported bodies, approved
 limits, release proof, and remaining resident and submission work. The latest
-application release passed 483 CI tests, its production workflow, and independent
+application release passed 486 CI tests, its production workflow, and independent
 production smoke. Development and controlled release tests do not establish
 organic resident benefit.
 

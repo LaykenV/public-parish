@@ -143,8 +143,10 @@ Production certification promoted Alexandria City Council, Pineville City
 Council, Rapides Parish Police Jury, Baton Rouge Metropolitan Council, and Baton
 Rouge Planning and Zoning Commission after each passed all ten gates. PR #92 connected the
 area selector to the live jurisdiction projection. Rapides and East Baton Rouge
-are available. Lafayette remains validating because its five planning bodies
-lack reachable meeting-specific agenda and outcome evidence. The compiler is an
+became available. Lafayette stayed validating at that checkpoint because its
+planning bodies lacked meeting-specific agenda and outcome evidence. All five
+planning bodies passed production certification on September 6, so Lafayette
+is now available for its seven named launch bodies. The compiler is an
 onboarding and repair operation. Routine scheduled source checks, automatic
 document-to-decision fanout, and new issue proposals were outside Slice 8.
 Slice 9 subsequently deployed them under bounded owner-approved policies.

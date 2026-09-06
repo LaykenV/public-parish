@@ -166,9 +166,9 @@ agenda-and-minutes replay, and production-link path. Five bodies passed all ten
 gates and were promoted: Alexandria City Council, Pineville City Council,
 Rapides Parish Police Jury, Baton Rouge Metropolitan Council, and Baton Rouge
 Planning and Zoning Commission. PR #92 made the resident area selector read the live
-jurisdiction status. Rapides and East Baton Rouge are available. Lafayette
-remains validating because five planning bodies do not have reachable official
-agenda and outcome artifacts. This closes Implementation Slice 8 without
+jurisdiction status. Rapides and East Baton Rouge became available at that
+checkpoint. Lafayette remained validating until its five planning bodies passed
+production certification on September 6. The compiler closed Slice 8 without
 weakening its gate.
 
 ## System Boundaries

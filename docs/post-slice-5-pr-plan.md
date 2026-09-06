@@ -53,9 +53,10 @@ compiler, discovery, validation, promotion gate, and deploy-safe seed. PR #91
 completed exact-artifact development proof and production certification. Five
 bodies passed all ten production gates, which made Rapides and East Baton Rouge
 available. PR #92 connected the selector to that live jurisdiction state.
-Lafayette remains validating because its five planning bodies do not have a
-stable agenda and outcome evidence set. Slice 9 has since shipped and passed
-production checks. Later current-status records supersede this planning baseline.
+Lafayette remained validating at that checkpoint. Slice 9 has since shipped,
+and all five planning bodies passed production certification on September 6.
+All three parishes are now available for their named launch bodies. The
+[current build status](build-status.md) supersedes this planning baseline.
 
 ## Original starting assumption
 
@@ -751,8 +752,8 @@ Rapides Parish Police Jury, Baton Rouge Metropolitan Council, and Baton Rouge
 Planning and Zoning Commission after ten passing gates each. At that checkpoint,
 Lafayette's three planning entries retained gate reports and remained blocked
 on official meeting-specific records. Lafayette City Council and Youngsville were not promoted under the
-strict parish-level release rule. Rapides and East Baton Rouge are available in
-the live selector; Lafayette is validating.
+strict parish-level release rule. At that checkpoint, Rapides and East Baton
+Rouge were available in the live selector and Lafayette was validating.
 
 Outcome: the owner can inspect live compiler stages, diagnose failures, retry
 the smallest invalid stage, and complete separate evidence-gated onboarding
