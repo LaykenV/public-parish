@@ -395,9 +395,9 @@ export const finish = internalMutation({
     const now = Date.now()
     await ctx.db.patch(run._id, { state: args.state, documentsChecked: args.documentsChecked, targetsStarted: args.targetsStarted, errorClass: args.errorClass, completedAt: now })
     if (policy?.activeRunId === run._id && policy.generation === run.generation) {
-      const remaining = (await eligibleMonitoringDocuments(ctx, policy, { limit: 1, dueAt: run.startedAt }))[0]
+      const remaining = (await eligibleMonitoringDocuments(ctx, policy, { limit: 1, dueAt: run.startedAt })).length > 0
       const pending = await ctx.db.query('documentInventoryTargets').withIndex('by_policy_id_and_state', q => q.eq('policyId', policy._id).eq('state', 'pending')).first()
-      const unfinished = (await eligibleMonitoringDocuments(ctx, policy, { limit: 1, incompleteOnly: true }))[0]
+      const unfinished = (await eligibleMonitoringDocuments(ctx, policy, { limit: 1, incompleteOnly: true })).length > 0
       const listingPending = Boolean(policy.discoveryPendingUrls?.length)
       const running = await ctx.db.query('documentInventoryTargets').withIndex('by_policy_id_and_state', q => q.eq('policyId', policy._id).eq('state', 'running')).first()
       const expectations = await ctx.db.query('sourceExpectations').withIndex('by_registry_and_source_kind', q => q.eq('registryId', policy.registryId)).take(30)
