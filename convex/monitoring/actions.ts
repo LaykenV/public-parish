@@ -1,3 +1,4 @@
+import { isProviderRateLimit, reserveMonitoringRetrieval } from './providerPacing'
 import { FirecrawlClient } from '@firecrawl/firecrawl-convex'
 import { v } from 'convex/values'
 import { components, internal } from '../_generated/api'
@@ -38,7 +39,7 @@ export const discover = internalAction({
     const visited = new Set<string>(resumed ? policy.discoveryVisitedUrls : [])
     for (let listing = 0; listing < 10 && listingUrls.length; listing++) {
       const url = listingUrls[0]
-      if (!await ctx.runMutation(internal.monitoring.ledger.reserve, { ...args, units: 1 })) throw new Error('monitoring_daily_limit')
+      await reserveMonitoringRetrieval(ctx, args.runId)
       listingUrls.shift()
       const started = Date.now()
       let status = 'failed'
@@ -62,6 +63,7 @@ export const discover = internalAction({
         visited.delete(url)
         failed.push(url)
         failures++
+        if (isProviderRateLimit(error)) throw new Error('monitoring_provider_rate_limit')
       } finally {
         await ctx.runMutation(internal.monitoring.ledger.recordCall, { ...args, operation: 'listing', provider: 'firecrawl', status, creditsUsed, errorDetail, latencyMs: Date.now() - started })
         await ctx.runMutation(internal.monitoring.ledger.saveDiscoveryProgress, { ...args, pending: [...listingUrls, ...failed], visited: [...visited] })

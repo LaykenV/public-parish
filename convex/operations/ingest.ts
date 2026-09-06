@@ -1,3 +1,4 @@
+import { isProviderRateLimit, reserveMonitoringRetrieval } from '../monitoring/providerPacing'
 import { FirecrawlClient } from '@firecrawl/firecrawl-convex'
 import type { FirecrawlDocument } from '@firecrawl/firecrawl-convex'
 import { ConvexError, v } from 'convex/values'
@@ -339,7 +340,7 @@ async function ingestSeedUrl(
       if (!monitorRunId) return
       const current = await ctx.runQuery(internal.monitoring.ledger.context, { runId: monitorRunId })
       if (current.registry._id !== registryId) throw new Error('monitoring_registry_mismatch')
-      if (!await ctx.runMutation(internal.monitoring.ledger.reserve, { runId: monitorRunId, units: 1 })) throw new Error('monitoring_daily_limit')
+      await reserveMonitoringRetrieval(ctx, monitorRunId)
     }
     const retrieve = async (sourceUrl: string, fresh: boolean) => {
       await reserve()
@@ -535,7 +536,7 @@ async function ingestSeedUrl(
       cleanupFailures.length === 0
         ? classified.errorDetail
         : `${classified.errorDetail}; storage cleanup failed ${cleanupFailures.length} time(s)`
-    const monitoringControl = monitorRunId && ['monitoring_stopped', 'monitoring_daily_limit'].find(code => String(error).includes(code))
+    const monitoringControl = monitorRunId && (isProviderRateLimit(error) ? 'monitoring_provider_rate_limit' : ['monitoring_stopped', 'monitoring_daily_limit', 'monitoring_provider_rate_limit'].find(code => String(error).includes(code)))
     return await failOutcome(
       monitoringControl || classified.errorClass,
       errorDetail,

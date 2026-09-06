@@ -227,3 +227,19 @@ forward. The normal monitoring workflow resumes accepted chunks and retains
 existing targets and quota usage. A stopped deployment or disabled policy
 rejects the retry. This does not certify incomplete documents or reset their
 history.
+
+## Provider request pacing
+
+Development and production each pace monitored Firecrawl requests to four per
+minute with a one-request burst. The deployments share a team whose observed
+limit is ten requests per minute. A request can reserve at most 45 seconds of
+waiting time. The action keeps the first PDF artifact while waiting for its
+required verification scrape, then rechecks monitoring authority and daily
+capacity before sending it. Longer waits and provider 429 responses return to
+the durable workflow. A generation-checked scheduled wake continues after one
+minute. A paused source cannot restart from an old wake.
+
+Provider throttling preserves inventories and does not count as a government
+source failure. Missing official artifacts and evidence failures still do.
+These controls cover monitored retrieval; owner compiler work and other apps
+sharing the Firecrawl team can still consume its account limit.
