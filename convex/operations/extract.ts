@@ -74,6 +74,11 @@ export const startSnapshotExtraction = internalMutation({
       .first()
     if (
       existing &&
+      (!monitoring || (
+        existing.monitorPolicyId === monitoring.policy._id &&
+        existing.monitorGeneration === monitoring.policy.generation &&
+        existing.monitorRegistryGeneration === monitoring.run.registryGeneration
+      )) &&
       (existing.state === 'succeeded' ||
         existing.state === 'running' ||
         existing.state === 'queued')
