@@ -113,7 +113,7 @@ export async function configurePolicy(ctx: MutationCtx, args: { proposalId: Id<'
   if (!Number.isFinite(args.startsAt) || (args.enabled && args.startsAt < now - 366 * DAY_MS) || args.startsAt > now) throw new Error('Choose an explicit source window within the previous year.')
   const existing = await ctx.db.query('sourceMonitoringPolicies').withIndex('by_registry_id', q => q.eq('registryId', registry._id)).unique()
   const authorityChanged = !existing || existing.enabled !== args.enabled || existing.startsAt !== args.startsAt || existing.proposalId !== args.proposalId
-  const fields = { ...args, registryId: registry._id, generation: (existing?.generation ?? 0) + (authorityChanged ? 1 : 0), nextCheckAt: now, activeRunId: authorityChanged ? undefined : existing?.activeRunId, updatedAt: now }
+  const fields = { ...args, registryId: registry._id, generation: (existing?.generation ?? 0) + (authorityChanged ? 1 : 0), nextCheckAt: now, activeRunId: authorityChanged ? undefined : existing.activeRunId, updatedAt: now }
   if (existing) {
     if (existing.dailyCallLimit !== args.dailyCallLimit) {
       const prior = await limiter.getValue(ctx, 'calls', { key: existing._id, config: { kind: 'fixed window', rate: existing.dailyCallLimit, period: DAY } })
