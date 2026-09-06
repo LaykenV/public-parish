@@ -606,6 +606,8 @@ export default defineSchema({
     canonicalUrl: v.string(), nextCheckAt: v.number(), firstSeenAt: v.number(),
     notificationEligible: v.boolean(), snapshotId: v.optional(v.id('sourceSnapshots')),
     normalizedHash: v.optional(v.string()), inventoryVersion: v.optional(v.string()),
+    pdfParserMode: v.optional(v.union(v.literal('fast'), v.literal('auto'))),
+    refreshSnapshot: v.optional(v.boolean()),
     chunkCount: v.optional(v.number()), completedChunks: v.optional(v.number()),
     inventoryComplete: v.boolean(), lastCheckedAt: v.optional(v.number()),
     errorClass: v.optional(v.string()),

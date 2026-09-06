@@ -28,8 +28,8 @@ export const checkSources = extractionWorkflowManager.define({
       let reused = false
       // Continue the accepted immutable snapshot before fetching another revision.
       // The next completed-document check retrieves the current official source.
-      if (!document.snapshotId || document.inventoryComplete || document.inventoryVersion !== MONITOR_VERSION) {
-      const retrieval = await step.runAction(internal.operations.ingest.ingestRegistrySource, { registryId: document.registryId, urlOverride: document.canonicalUrl, monitorRunId: args.runId }, { retry: false })
+      if (document.refreshSnapshot || !document.snapshotId || document.inventoryComplete || document.inventoryVersion !== MONITOR_VERSION) {
+      const retrieval = await step.runAction(internal.operations.ingest.ingestRegistrySource, { registryId: document.registryId, urlOverride: document.canonicalUrl, monitorRunId: args.runId, pdfParserMode: document.pdfParserMode }, { retry: false })
       if (retrieval.outcome === 'failed') throw new Error(retrieval.errorClass)
       reused = await step.runMutation(internal.monitoring.ledger.setSnapshot, { ...args, documentId: document._id, snapshotId: retrieval.snapshotId })
       }

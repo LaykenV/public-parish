@@ -209,6 +209,7 @@ export const ingestRegistrySource = internalAction({
     registryId: v.id('sourceRegistries'),
     urlOverride: v.optional(v.string()),
     monitorRunId: v.optional(v.id('sourceMonitoringRuns')),
+    pdfParserMode: v.optional(v.union(v.literal('fast'), v.literal('auto'))),
   },
   returns: ingestOutcome,
   handler: async (ctx, args): Promise<IngestOutcome> => {
@@ -236,6 +237,7 @@ export const ingestRegistrySource = internalAction({
       ),
       requestedUrl,
       args.monitorRunId,
+      args.pdfParserMode,
     )
   },
 })
@@ -298,6 +300,7 @@ async function ingestSeedUrl(
   officialDomains: string[],
   rawUrl: string,
   monitorRunId?: Id<'sourceMonitoringRuns'>,
+  pdfParserMode?: 'fast' | 'auto',
 ): Promise<IngestOutcome> {
   const url = canonicalizeUrl(rawUrl)
   if (!url) {
@@ -355,7 +358,8 @@ async function ingestSeedUrl(
       try {
         const result = await firecrawl.scrape(ctx, sourceUrl, {
           formats: ['markdown', 'rawHtml'], onlyMainContent: false,
-          skipTlsVerification: false, ...(fresh ? { maxAge: 0 } : {}),
+          skipTlsVerification: false, ...(fresh || pdfParserMode ? { maxAge: 0 } : {}),
+          ...(pdfParserMode ? { parsers: [{ type: 'pdf', mode: pdfParserMode }] } : {}),
         })
         creditsUsed = typeof result.metadata?.creditsUsed === 'number' ? result.metadata.creditsUsed : undefined
         status = result.warning || (typeof result.metadata?.statusCode === 'number' && result.metadata.statusCode >= 400) ? 'failed' : 'succeeded'
@@ -381,6 +385,7 @@ async function ingestSeedUrl(
     let rawBytes: Uint8Array<ArrayBuffer>
     let rawContentType: string
     const artifactKind = binaryDocumentKind(scraped.sourceContentType)
+    if (pdfParserMode && artifactKind !== 'pdf') return await failOutcome('source_type_changed', 'PDF parser repair requires an official PDF response.', false)
     if (artifactKind) {
       const beforeArtifact = await downloadOfficialDocument(
         scraped.retrievedUrl,
