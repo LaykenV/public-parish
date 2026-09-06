@@ -51,3 +51,8 @@ while the registry names "Lafayette City Planning Commission". The extraction
 prompt now requests the registered spelling only when the source identifies
 that same body. It explicitly preserves City versus Parish distinctions and
 leaves the deterministic mismatch rejection unchanged.
+
+BOZA and Hearing Examiner development attempts exposed copied-excerpt errors.
+The model added spaces to a vote tally and omitted Markdown table structure.
+The prompt now calls out those errors and requests shorter exact spans. The
+locator check still rejects excerpts that do not resolve to the snapshot.

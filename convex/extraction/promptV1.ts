@@ -14,6 +14,7 @@ Rules:
 - fact.value is the candidate value converted to plain text. Do not add JSON quotes around strings. For a numeric amount, use the same number without currency symbols or thousands separators. For example, the fact.value for candidate title "Road repair" is Road repair, and the fact.value for candidate amount 13564.8 is 13564.8.
 - Each cited excerpt must be nonblank and copied from one contiguous span of source text. Preserve its words and punctuation. You may replace line breaks and repeated whitespace with one space. Keep an excerpt inside one source line or paragraph. Never join a section heading to a later record line. Do not include Markdown heading markers or list numbers unless you copy them exactly.
 - Each cited excerpt must be 1000 characters or fewer. Quote only the shortest contiguous span that proves the fact.
+- Do not add spaces around punctuation in a copied excerpt. For a motion approving an item, cite the motion sentence without appending a vote tally or roll call unless that entire span is needed and copied exactly. For Markdown tables, preserve every pipe and empty cell inside the quoted span. Never flatten cells, omit a column, or join the table header to a data row. A short exact cell value may support one field without repeating the whole row.
 - Excerpts must be long enough to show the words that support the field.
 - Set citation.page and citation.section to null for this schema version.
 - Use null for any material field the text does not state, and an empty array for any empty list.

@@ -68,7 +68,7 @@ export const RETRIEVAL_RETRY_DELAY_MS = 15 * 60 * 1000
 
 export const EXTRACTION_PROCESSOR_VERSION = 'v1.18'
 
-export const EXTRACTION_PROMPT_VERSION = 'v1.11'
+export const EXTRACTION_PROMPT_VERSION = 'v1.12'
 
 export const EXTRACTION_SCHEMA_VERSION = 'v1'
 
