@@ -6,6 +6,7 @@ import type { MutationCtx } from '../_generated/server'
 import type { SourceKind } from '../pipeline/state'
 import { coverageLinkDeployment, evaluateCoverageGates, COVERAGE_EVALUATOR_VERSION } from './gates'
 import { coverageGoldSetSample } from './goldSet'
+import { loadCoverageEvidence } from './evidence'
 import { classifyHost } from './rootGate'
 import { resolveRootManifest } from './roots'
 
@@ -55,13 +56,7 @@ export const evaluateProposal = internalMutation({
         sample.candidateId ? await ctx.db.get(sample.candidateId) : null,
       ),
     )
-    const records = await ctx.db
-      .query('decisionRecords')
-      .withIndex('by_registry_and_updated_at', (index) =>
-        index.eq('registryId', proposal.registryId),
-      )
-      .order('desc')
-      .take(MAX_EVIDENCE_RECORDS)
+    const { records, pipelineRuns } = await loadCoverageEvidence(ctx, proposal.registryId, samples)
     const publicationEvidence = await inspectPublications(ctx, records)
     const immutableRevisionCount = await inspectImmutableRevisions(ctx, records)
     const changes = await ctx.db
@@ -76,13 +71,6 @@ export const evaluateProposal = internalMutation({
         index.eq('registryId', proposal.registryId),
       )
       .take(30)
-    const pipelineRuns = await ctx.db
-      .query('pipelineRuns')
-      .withIndex('by_registry_and_started_time', (index) =>
-        index.eq('registryId', proposal.registryId),
-      )
-      .order('desc')
-      .take(MAX_EVIDENCE_RECORDS)
     const extractionEvidence = await inspectExtractions(ctx, pipelineRuns)
     const linkDeployment = coverageLinkDeployment(env.CONVEX_SITE_URL)
     const productionLinks = await ctx.db
