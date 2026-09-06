@@ -139,7 +139,7 @@ async function seedValidatedCandidate(
       sourceKind: 'agenda',
       targetRecordId: 'CO-029-2026',
       sourceRecordIdProvenance: 'source_printed',
-      promptVersion: 'v1.10',
+      promptVersion: 'v1.11',
       schemaVersion: 'v1',
       processorVersion: 'v1.18',
       modelRole: 'MODEL_STRONG',
@@ -168,7 +168,7 @@ async function seedValidatedCandidate(
       amounts: [],
       publicActions: [],
       state: 'deterministically_validated',
-      promptVersion: 'v1.10',
+      promptVersion: 'v1.11',
       schemaVersion: 'v1',
       modelRole: 'MODEL_STRONG',
       modelId: TERRA_MODEL,
@@ -1287,7 +1287,7 @@ test('replaying a succeeded extraction repairs a missing publication run', async
     sourceKind: 'agenda',
     targetRecordId: 'CO-029-2026',
     sourceRecordIdProvenance: 'source_printed',
-    promptVersion: 'v1.10',
+    promptVersion: 'v1.11',
     schemaVersion: 'v1',
     processorVersion: 'v1.18',
   })
@@ -1301,7 +1301,7 @@ test('replaying a succeeded extraction repairs a missing publication run', async
       attempt: 1,
       inputSnapshotId: seeded.snapshotId,
       outputExtractionId: seeded.extractionId,
-      promptVersion: 'v1.10',
+      promptVersion: 'v1.11',
       schemaVersion: 'v1',
     })
     await ctx.db.insert('pipelineStages', {
