@@ -730,7 +730,7 @@ test.each([undefined, 'fast', 'auto'] as const)('a PDF preserves original bytes 
   )
   expect(fetchMock).toHaveBeenCalledTimes(4)
   expect(scrapeBodies).toHaveLength(2)
-  if (pdfParserMode) expect(scrapeBodies.every(body => body.maxAge === 0 && JSON.stringify(body.parsers) === JSON.stringify([{ type: 'pdf', mode: pdfParserMode }]))).toBe(true)
+  if (pdfParserMode) for (const body of scrapeBodies) expect(body).toMatchObject({ maxAge: 0, parsers: [{ type: 'pdf', mode: pdfParserMode }] })
   expect(scrapeBodies.every((body) => body.skipTlsVerification === false)).toBe(
     true,
   )
