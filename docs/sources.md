@@ -4,8 +4,8 @@ Current status: Slice 9 is complete. See [build status and remaining work](build
 for the September 6 documentation checkpoint. Dated sections below retain their
 original release context; they do not reopen completed feature work.
 
-Status: seven bodies supported after Slice 9; Lafayette planning sources still need complete certification
-Last verified: September 5, 2026
+Status: all twelve launch bodies supported across Lafayette, Rapides, and East Baton Rouge.
+Last verified: September 6, 2026
 
 This document supplies starting points, not a claim of complete coverage. Every
 URL must be checked during the Firecrawl source spike, and every public body must
@@ -14,21 +14,22 @@ supported.
 
 ## Current Lafayette source repair
 
-Lafayette City Council and Youngsville City Council passed production coverage
-checks during Slice 9. The remaining planning sources are still validating.
-The official events service briefly exposed meeting attachments, then returned
-502 again during the September 5 recheck. Versioned manifests admit only
-its checked event-document path; the old manifests remain unchanged for prior
-runs. No coverage gate or public support state changes with that permission.
+The official event service recovered on September 6. Agenda attachments and
+outcome links embedded inside agenda PDFs supplied the missing official evidence.
+The v4 gold set records exact current and historical agenda/outcome pairs for
+City Planning, Parish Planning, City Zoning, BOZA, and Hearing Examiner.
+The [source investigation](source-spikes/lafayette-planning-recovery-2026-09-06.md)
+records the observed URLs and document checks.
 
-Current coverage now lists Lafayette City Planning Commission, Lafayette Parish
-Planning Commission, and Lafayette City Zoning Commission separately. Each has
-its own checked schedule and must pass its own agenda and outcome checks.
-Together with BOZA and Hearing Examiner, five planning bodies remain validating.
-The
-[September 5 source recheck](source-spikes/lafayette-planning-recheck-2026-09-05.md)
-records the recovered path, current failures, and remaining evidence work.
-The checkpoints below retain their dated historical findings.
+City Planning, Parish Planning, City Zoning, BOZA, and Hearing Examiner passed
+all ten development and production gates. They joined the already supported
+Lafayette City Council and Youngsville City Council. Lafayette is now available
+for these seven named bodies. The five planning bodies need owner-started updates. Recovered representative samples do not prove
+automatic discovery of future opaque attachments or PDF-embedded outcome links.
+
+See the [source-operations report](source-operations-2026-09-06.md) for the exact
+coverage, automation limits, and remaining catch-up. The checkpoints below retain
+their dated historical findings.
 
 ## Implemented checkpoint
 
@@ -298,9 +299,11 @@ before Public Parish claims geographic breadth.
 ## Slice 9 completion
 
 The final feature build is complete and deployed through the follow-up repairs
-in PRs #102 through #105. [Current build status and remaining work](build-status.md)
+in PRs #102 through #108. [Current build status and remaining work](build-status.md)
 records the exact release, verification scope, named coverage, and operating
 limits. [Production certification](slice-9-production-certification.md)
-preserves the dated release evidence. Initial catch-up, additional source
-activation, full Lafayette support, resident observations, the demo, and
-submission remain separate work. No Slice 10 is planned.
+preserves the initial release evidence. The [September 6 source-operations
+report](source-operations-2026-09-06.md) records subsequent certification,
+automation, queue progress, and budget limits. Catch-up, future planning-source
+automation, resident observations, the demo, and submission remain operating
+work. No Slice 10 is planned.

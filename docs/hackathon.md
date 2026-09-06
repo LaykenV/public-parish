@@ -598,9 +598,11 @@ easy to prove in under three minutes.
 ## Slice 9 completion
 
 The final feature build is complete and deployed through the follow-up repairs
-in PRs #102 through #105. [Current build status and remaining work](build-status.md)
+in PRs #102 through #108. [Current build status and remaining work](build-status.md)
 records the exact release, verification scope, named coverage, and operating
 limits. [Production certification](slice-9-production-certification.md)
-preserves the dated release evidence. Initial catch-up, additional source
-activation, full Lafayette support, resident observations, the demo, and
-submission remain separate work. No Slice 10 is planned.
+preserves the initial release evidence. The [September 6 source-operations
+report](source-operations-2026-09-06.md) records subsequent certification,
+automation, queue progress, and budget limits. Catch-up, future planning-source
+automation, resident observations, the demo, and submission remain operating
+work. No Slice 10 is planned.

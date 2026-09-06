@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-06T14:52:24Z
+- **Last updated:** 2026-09-06T16:40:41Z
 
 ## Log
 
@@ -1533,3 +1533,35 @@ item with six citations; production proved the exhausted-budget pause without
 consuming attempts. The build is complete. Catch-up, broader activation, full
 Lafayette certification, resident proof, the demo, and submission remain open.
 `docs/build-status.md` records those boundaries and links the dated evidence.
+
+
+### 2026-09-06 - 55a9158
+
+Recovered the five Lafayette planning bodies' official agendas and outcome
+sources through event attachments and links inside PDFs. PR #106 records the
+checked samples and extraction corrections. Production certification exposed a
+missing-record probe that could route to an unrelated case. Review withheld
+that result. PR #107 requires the literal printed identifier; development and
+production replays returned `not_found` without a candidate. PR #108 uses City
+Zoning's printed body name while preserving its older root manifest.
+
+All five bodies passed all ten development and production coverage gates and
+were promoted. Public queries report all twelve launch bodies supported and
+all three parishes available. The five planning bodies still need owner-started
+updates because future attachment discovery has not been proved.
+
+Scheduled Rapides runs demonstrated progress after the budget reset. The owner
+approved 500 daily admissions during catch-up. Normal monitoring cleared 39 of
+the previous 61 pending targets, with 38 more published and one withheld.
+The exhausted bucket leaves 22 pending, including 18 blocked by an incomplete
+minutes inventory. Automatic work resumes after the September 7 reset. Restore
+50 after catch-up and the budget window permit it. The six other previously
+supported bodies now have bounded policies and subsequent scheduled runs.
+
+PRs #106 through #108 passed CI, review, production deployment, and independent
+smoke. The final PR passed 486 tests and desktop/mobile emulation. Chrome showed
+the first four planning promotions before its connection became unavailable.
+The final promotion and selector availability have live public-query proof,
+not a final manual browser click. The source-operations report records the
+case-level results, dates, budgets, and remaining work. No resident benefit or
+hackathon submission is claimed.

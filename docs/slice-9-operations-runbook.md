@@ -1,16 +1,18 @@
 # Slice 9 operations
 
-The final build and follow-up repairs through PR #105 are deployed.
+The final build and follow-up repairs through PR #108 are deployed.
 [Build status](build-status.md) separates completed features from remaining work.
 The owner authorized production release and bounded live testing on September 5.
 See the [production certification record](slice-9-production-certification.md)
 and the separate [development evidence](slice-9-development-certification.md).
 
-Rapides Parish Police Jury is the only enabled monitoring policy. Its limits are
-one document and one target per run, a 24-hour source cadence, a 30-day meeting
-window, and 50 daily admissions. Catch-up checks can run every 15 minutes within
-that daily limit. Initial inventory remains incomplete. The other six supported
-bodies still require owner-started checks. Direct OpenAI fallback is disabled.
+All seven previously supported bodies now have enabled monitoring policies.
+Rapides uses one document and one target per run with 500 daily admissions
+temporarily during catch-up. The other six use three documents, five targets,
+and 50 daily admissions. All retain a 24-hour source cadence and bounded initial
+meeting windows. The 15-minute scheduler resumes due work within each budget.
+Initial catch-up remains incomplete. Direct OpenAI fallback is disabled.
+See the [September 6 operations report](source-operations-2026-09-06.md).
 
 ## Historical initial rollout and future activation
 
@@ -41,11 +43,14 @@ Verify an older accepted record through Explore and corpus Ask before enabling
 source automation. The current 1,000-record boundary proof is a CI workload,
 not a measured production throughput claim.
 
-The owner approved Rapides Parish Police Jury after its current production
-coverage evaluation passed. The approved canary uses one document,
-one target, a 24-hour cadence, a 30-day source window, and 50 provider admissions
-per day. Keep other policies paused. The owner UI's default is three documents
-and five targets, so set the narrower canary through `monitoring/ledger:configure`.
+The owner approved automatic monitoring for all seven previously supported
+bodies on September 6 after scheduled Rapides runs demonstrated progress.
+Rapides retains one document and one target per run, a 24-hour cadence, and its
+original 30-day source window. Its daily limit is temporarily 500 for catch-up,
+with a normal limit of 50 to restore after catch-up and the budget window allow
+it. The other six policies use three documents, five targets, and 50 daily
+admissions. See the [dated source-operations report](source-operations-2026-09-06.md)
+for queue counts, failures, and the remaining Lafayette monitoring limitation.
 The development catch-up used a separate explicit historical window to exercise
 existing official revisions. Do not copy that window into production.
 
@@ -56,7 +61,8 @@ retrieval. Completed inventories return to the source-check cadence. Checking a
 completed PDF can still cost retrieval credits.
 The development run hit both 200- and 400-admission limits and stopped without
 losing pending work. Calibration reached the existing 500-admission maximum;
-that is not a proposed production setting or a spending guarantee.
+the owner later approved 500 for production Rapides catch-up on September 6.
+An admission limit is not a spending guarantee.
 The owner approved one additional 100-admission development credit for the
 window ending September 5 at 13:25:59 UTC. The internal proof helper credits
 that exact exhausted canary once and records the grant separately. It retains

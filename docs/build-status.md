@@ -1,7 +1,7 @@
 # Build completion and remaining work
 
-Documentation reviewed September 6, 2026 against production release `4b8927b`.
-Runtime observations below are dated September 5; they are not live queue totals.
+Documentation reviewed September 6, 2026 against production release `55a9158`.
+The source-operations report records the dated queue and budget checkpoints.
 
 ## Build status
 
@@ -18,39 +18,46 @@ PR #100 repaired controlled legacy-publication replay. PR #101 recorded the
 initial release. PRs #102 through #105 repaired Lafayette source permissions,
 commission identities, production smoke expectations, and queue progress.
 
-The latest application release is [PR #105](https://github.com/LaykenV/public-parish/pull/105),
-merge `4b8927bb3d2d1af3c377ad53e91072e6164ba036`.
-Its [production workflow](https://github.com/LaykenV/public-parish/actions/runs/33981783575)
-and independent production smoke passed. CI passed 483 tests. The smoke checked
-the direct and canonical sites, apex redirect, resident routes, exact coverage
-identities, search, issue evidence, share HTML, and backend readiness.
+The latest application release is [PR #108](https://github.com/LaykenV/public-parish/pull/108),
+merge `55a9158c5a272514b0cea90f4bafde534b54d625`.
+Its [production workflow](https://github.com/LaykenV/public-parish/actions/runs/34045717299)
+and independent production smoke passed. CI passed 486 tests and the desktop
+and mobile emulation journeys. Smoke checked the direct and canonical sites,
+apex redirect, resident routes, coverage, search, issue evidence, share HTML,
+and backend readiness.
+PR #106 recovered the planning certification samples. PR #107 made negative
+probes require exact printed identifiers. PR #108 aligned City Zoning's name
+with its official agenda while preserving prior manifest versions.
 
 Build completion does not mean every source is supported, catch-up is finished,
 residents have demonstrated benefit, or the hackathon entry has been submitted.
 
 ## Coverage and automation
 
-Twelve bodies are listed. Seven passed their own coverage gates; five Lafayette
-planning bodies remain validating. Support covers each named body's approved
+All twelve launch bodies passed their own production coverage gates.
+Lafayette, Rapides, and East Baton Rouge are available. Support covers each
+named body's approved
 agenda and minutes sources, not all parish government or a complete archive.
 
 | Place | Supported bodies | Remaining coverage |
 | --- | --- | --- |
-| Lafayette | Lafayette City Council; Youngsville City Council | City Planning Commission; Parish Planning Commission; City Zoning Commission; Board of Zoning Adjustment; Hearing Examiner remain validating. |
+| Lafayette | Lafayette City Council; Youngsville City Council; Lafayette City Planning Commission; Lafayette Parish Planning Commission; City Zoning Commission; Lafayette Board of Zoning Adjustment; Hearing Examiner | Available for these named bodies and approved source types. The five planning bodies need owner-started updates. |
 | Rapides | Alexandria City Council; Pineville City Council; Rapides Parish Police Jury | Available for these named bodies and approved source types. |
 | East Baton Rouge | Metropolitan Council; Planning and Zoning Commission | Available for these named bodies and approved source types. |
 
-Lafayette's official event service returned HTTP 502 repeatedly on September 5.
-Older meeting-document links returned 404. The checked schedule PDFs establish
-cadence, not decisions or outcomes. The [source investigation](source-spikes/lafayette-planning-recheck-2026-09-05.md)
-records the evidence. Full Lafayette support remains unfinished and requires
-usable agenda/outcome pairs plus passing gates for all five planning bodies.
+Lafayette's official event service recovered on September 6. The exact agenda
+attachments and outcome links embedded in agenda PDFs supplied the missing
+evidence. The [source investigation](source-spikes/lafayette-planning-recovery-2026-09-06.md)
+records the recovered official sources. All five planning bodies passed all
+ten gates independently in development and production before promotion.
 
-Only Rapides Parish Police Jury has automatic checks enabled. Its approved
-limits remain one document and one target per run, a 24-hour source cadence,
-a 30-day meeting window, and 50 daily provider admissions. The other six
-supported bodies still have owner-started updates. Expand activation only after
-reviewing the canary's progress and each policy's sources, cadence, and budget.
+All seven previously supported bodies have automatic checks enabled. Rapides
+retains one document and one target per run, a 24-hour source cadence, and its
+original 30-day meeting window. The owner approved a temporary daily limit of
+500 during catch-up. Restore 50 after catch-up and the budget window permit it.
+The other six policies use three documents, five targets, and 50 daily admissions.
+The five planning bodies still need owner-started updates; their future embedded
+PDF-link discovery has not been verified.
 
 PR #105 gives ready decisions priority over discovery, skips blocked queue
 entries within a bounded scan, prioritizes unfinished documents with waiting
@@ -59,14 +66,14 @@ batch, that policy does no additional source retrieval or discovery. The
 15-minute scheduler resumes due work without requiring an owner to start each
 item. Provider limits and publication gates still apply.
 
-The September 5 development check processed and published one queued Rapides
-item, reducing pending items from 49 to 48 and increasing published items from
-30 to 31. Its full card had six citations to stored official evidence. The run
-made no discovery or retrieval calls; development monitoring was then paused.
-The production check preserved 61 pending targets and four published targets,
-made no source calls, and waited for the exhausted window's September 6 reset.
-These are release receipts, not proof that production has since drained its
-queue. Inspect current operations state before reporting new totals or progress.
+Scheduled production runs made progress after the September 6 reset. Subsequent
+owner-started catch-up used the same monitoring workflow and limits. At the
+10:53 a.m. Central checkpoint, Rapides had 42 published targets, one withheld,
+and 22 pending. Its 500-admission bucket was exhausted and the next check pointed
+to September 7 at approximately 7:13 a.m. Central. The unfinished August 10
+minutes inventory still blocks 18 targets. These are inventory-target counts,
+not distinct public cards. See the [source-operations report](source-operations-2026-09-06.md)
+for each policy's progress and failures.
 
 ## Accepted verification scope
 
@@ -87,22 +94,22 @@ queue. Inspect current operations state before reporting new totals or progress.
 
 ## Remaining operating and launch work
 
-1. Observe the repaired canary after budget reset, complete initial catch-up,
-   inspect rejected items, and verify continued publication without duplicates.
-2. Review measured cost and progress before activating the other approved
-   bodies. Do not increase limits merely to make a queue look complete.
-3. Complete the Lafayette source and coverage work without lowering the gates.
-4. Observe real residents finding an issue, inspecting evidence, asking a
+1. Finish the budget-paused Rapides backlog and minutes inventory after reset,
+   inspect failures, and restore its normal daily limit after catch-up.
+2. Monitor the seven active policies and their budgets. Verify future Lafayette
+   planning-document discovery before enabling those five policies.
+3. Observe real residents finding an issue, inspecting evidence, asking a
    question, following it, and returning for an outcome. The plan's 25 residents,
    10 follows, and 10 substantive questions remain targets until measured.
-5. Capture the source-change story and record a product demo under three
+4. Capture the source-change story and record a product demo under three
    minutes. Repeat public-link and sign-in checks for that demo, and inspect
    actual social-platform previews before using them in posts.
-6. Recheck organizer requirements, prepare permissioned public proof and posts,
+5. Recheck organizer requirements, prepare permissioned public proof and posts,
    and submit the entry only after authorization. No submission is claimed.
 
 ## Evidence and operating instructions
 
+- [September 6 source operations](source-operations-2026-09-06.md)
 - [Initial production certification and follow-up releases](slice-9-production-certification.md)
 - [Development certification](slice-9-development-certification.md)
 - [Operations runbook](slice-9-operations-runbook.md)

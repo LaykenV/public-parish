@@ -503,7 +503,7 @@ The estimated spend can exceed a reservation because classification reserves no
 additional amount and Firecrawl does not report dollar cost.
 
 The owner freezes checked sources into an immutable registry proposal before
-validation. `docs/coverage-gold-sets/launch-bodies.v3.json` names the exact
+validation. `docs/coverage-gold-sets/launch-bodies.v4.json` names the exact
 public artifacts, cadence, date role, and extraction targets. Discovery can add
 candidates, but a model-selected URL cannot replace a required sample.
 Validation reuses the existing Firecrawl retrieval and immutable snapshot path
@@ -1665,12 +1665,14 @@ Do not reverse this order to polish a dashboard before the evidence path works.
 ## Slice 9 completion
 
 The final feature build is complete and deployed through the follow-up repairs
-in PRs #102 through #105. [Current build status and remaining work](build-status.md)
+in PRs #102 through #108. [Current build status and remaining work](build-status.md)
 records the exact release, verification scope, named coverage, and operating
 limits. [Production certification](slice-9-production-certification.md)
-preserves the dated release evidence. Initial catch-up, additional source
-activation, full Lafayette support, resident observations, the demo, and
-submission remain separate work. No Slice 10 is planned.
+preserves the initial release evidence. The [September 6 source-operations
+report](source-operations-2026-09-06.md) records subsequent certification,
+automation, queue progress, and budget limits. Catch-up, future planning-source
+automation, resident observations, the demo, and submission remain operating
+work. No Slice 10 is planned.
 
 ### Final-slice runtime contracts
 
@@ -1751,5 +1753,9 @@ Zoning commissions. Old manifest versions still resolve for historical runs.
 There were no production decision records under the generic entry when this
 change was prepared. Existing publication identities are not reassigned.
 The current parish gate requires each named commission; a passing legacy
-placeholder cannot stand in for any of them. Their schedule-only gold samples
-cannot satisfy the agenda, outcome, publication, or historical-artifact gates.
+placeholder cannot stand in for any of them. The September 6 v4 gold set uses
+recovered body-specific agendas and action summaries. The Hearing Examiner v3
+and City Zoning Commission v2 roots use their source-printed names under the
+same Lafayette jurisdiction and host restrictions. Older manifests remain
+resolvable. All five bodies passed their own ten production gates on September 6. Their future automatic document
+discovery remains unverified, so an owner starts updates.
