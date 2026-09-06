@@ -402,9 +402,11 @@ export const finish = internalMutation({
       // An unfinished initial inventory may have seen only older archive pages.
       const overdue = policy.baselineComplete && expectations.some(item => item.expectedBy !== undefined && item.expectedBy < now)
       const healthy = args.state === 'completed' && !overdue
-      const budgetPaused = args.errorClass === 'monitoring_daily_limit'
-      const nextCheckAt = budgetPaused ? (await processingBudget(ctx, policy)).retryAt : now + (remaining || pending || running || listingPending || !healthy ? 900_000 : policy.intervalHours * 3_600_000)
+      const providerPaused = args.errorClass === 'monitoring_provider_rate_limit'
+      const budgetPaused = args.errorClass === 'monitoring_daily_limit' || providerPaused
+      const nextCheckAt = providerPaused ? now + 60_000 : budgetPaused ? (await processingBudget(ctx, policy)).retryAt : now + (remaining || pending || running || listingPending || !healthy ? 900_000 : policy.intervalHours * 3_600_000)
       await ctx.db.patch(policy._id, { activeRunId: undefined, baselineComplete: policy.baselineComplete || (healthy && !remaining && !unfinished && !pending && !running && !listingPending), nextCheckAt, failures: healthy ? 0 : budgetPaused || args.state === 'stopped' ? policy.failures : policy.failures + 1, ...(healthy && !remaining && !unfinished && !pending && !running && !listingPending ? { lastCompletedAt: now } : {}), updatedAt: now })
+      if (providerPaused) await ctx.scheduler.runAt(nextCheckAt, internal.monitoring.ledger.wake, { policyId: policy._id, generation: policy.generation })
       if (!healthy && !budgetPaused && args.state !== 'stopped') await recordIncident(ctx, policy.registryId, overdue ? 'expected_artifact_missing' : args.errorClass ?? 'monitoring_failed')
     }
     return null
@@ -550,5 +552,28 @@ export const retryDocument = mutation({
     await ctx.db.patch(policy._id, { nextCheckAt: now, updatedAt: now })
     await startRun(ctx, policy._id)
     return true
+  },
+})
+
+
+export const reserveRetrievalSlot = internalMutation({
+  args: { runId: v.id('sourceMonitoringRuns') }, returns: v.number(),
+  handler: async (ctx, args) => {
+    const { policy } = await assertMonitoringRun(ctx, args.runId)
+    if (!(await processingBudget(ctx, policy, 1)).ok) throw new Error('monitoring_daily_limit')
+    // Development and production share the Firecrawl team. Four requests per
+    // minute each leave room below its observed ten-request team limit.
+    const slot = await limiter.limit(ctx, 'firecrawlRequests', { reserve: true, config: { kind: 'token bucket', rate: 4, period: 60_000, capacity: 1, maxReserved: 3 } })
+    if (!slot.ok) throw new Error('monitoring_provider_rate_limit')
+    return Math.ceil(slot.retryAfter ?? 0)
+  },
+})
+
+export const wake = internalMutation({
+  args: { policyId: v.id('sourceMonitoringPolicies'), generation: v.number() }, returns: v.null(),
+  handler: async (ctx, args) => {
+    const policy = await ctx.db.get(args.policyId)
+    if (policy?.generation === args.generation && policy.enabled && policy.nextCheckAt <= Date.now()) await startRun(ctx, policy._id)
+    return null
   },
 })
