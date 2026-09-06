@@ -9,7 +9,7 @@ import { completeStructuredDirectFallback } from '../ai/provider'
 import { decryptAddress, hashAddress } from '../follows/secrets'
 import { loadTimelineMembers } from '../issues/membership'
 import { coverageLinkDeployment } from '../coverage/gates'
-import { normalizeForMatch } from '../extraction/textMatch'
+import { locateSourceExcerpt, normalizeForMatch } from '../extraction/textMatch'
 import { sha256HexOfText } from '../sources/hashing'
 import { env, internalAction, internalMutation, internalQuery } from '../_generated/server'
 
@@ -104,7 +104,7 @@ export const auditPublishedEvidence = internalAction({
   handler: async (ctx, args): Promise<{ records: number; citations: number; legacyOffsets: number; problems: string[]; isDone: boolean; continueCursor: string }> => {
     requireDevelopment()
     const page = await ctx.runQuery(internal.operations.developmentProof.publishedEvidencePage, args)
-    const texts = new Map<string, { current: string; historical: string[] }>()
+    const texts = new Map<string, { source: string; current: string; historical: string[] }>()
     const problems: string[] = []
     let citations = 0
     let legacyOffsets = 0
@@ -115,12 +115,14 @@ export const auditPublishedEvidence = internalAction({
         const blob = await ctx.storage.get(snapshot.normalizedStorageId)
         const text = blob ? await blob.text() : ''
         if (!blob || await sha256HexOfText(text) !== snapshot.normalizedContentHash) problems.push(`${record.recordKey}: snapshot hash`)
-        texts.set(snapshot._id, { current: normalizeForMatch(text), historical: historicalCitationMatches(text) })
+        texts.set(snapshot._id, { source: text, current: normalizeForMatch(text), historical: historicalCitationMatches(text) })
       }
       for (const citation of record.citations) {
         citations++
         const text = texts.get(citation.snapshotId)
         if (text?.current.slice(citation.normalizedStartOffset, citation.normalizedEndOffset) === normalizeForMatch(citation.excerpt)) continue
+        const location = text ? locateSourceExcerpt(text.source, citation.excerpt, text.current) : null
+        if (location && location.startOffset === citation.normalizedStartOffset && location.endOffset === citation.normalizedEndOffset) continue
         const excerpts = historicalCitationMatches(citation.excerpt)
         if (text?.historical.some((source, index) => source.slice(citation.normalizedStartOffset, citation.normalizedEndOffset) === excerpts[index])) legacyOffsets++
         else problems.push(`${record.recordKey} ${citation.fieldPath}: citation offsets`)

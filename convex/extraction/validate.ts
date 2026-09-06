@@ -12,7 +12,7 @@ import {
 } from './contractV1'
 import {
   centsOf,
-  locateExcerpt,
+  locateSourceExcerpt,
   normalizeForMatch,
   parseZonedIsoDateTime,
   textSupportsAmount,
@@ -294,11 +294,11 @@ export const runValidation = internalAction({
         })
         continue
       }
-      if (normalizedSource === null) {
+      if (normalizedSource === null || sourceText === null) {
         continue
       }
-      const excerptIndex = locateExcerpt(normalizedSource, fact.excerpt)
-      if (excerptIndex === -1) {
+      const excerptLocation = locateSourceExcerpt(sourceText, fact.excerpt, normalizedSource)
+      if (excerptLocation === null) {
         addFinding({
           code: 'citation_not_found',
           fieldPath: fact.fieldPath,
@@ -325,17 +325,13 @@ export const runValidation = internalAction({
         const proved = (snapshot.pageMap ?? []).some((entry) => {
           if (
             entry.page !== fact.page ||
-            sourceText === null ||
             entry.startOffset < 0 ||
             entry.endOffset <= entry.startOffset ||
             entry.endOffset > sourceText.length
           ) {
             return false
           }
-          const normalizedPage = normalizeForMatch(
-            sourceText.slice(entry.startOffset, entry.endOffset),
-          )
-          return locateExcerpt(normalizedPage, fact.excerpt) !== -1
+          return locateSourceExcerpt(sourceText.slice(entry.startOffset, entry.endOffset), fact.excerpt) !== null
         })
         if (!proved) {
           addFinding({
@@ -346,10 +342,8 @@ export const runValidation = internalAction({
         }
       }
       if (fact.section !== undefined) {
-        const sectionIndex = normalizedSource.indexOf(
-          normalizeForMatch(fact.section),
-        )
-        if (sectionIndex === -1 || sectionIndex > excerptIndex) {
+        const sectionLocation = locateSourceExcerpt(sourceText, fact.section, normalizedSource)
+        if (sectionLocation === null || sectionLocation.startOffset > excerptLocation.startOffset) {
           addFinding({
             code: 'citation_not_found',
             fieldPath: fact.fieldPath,

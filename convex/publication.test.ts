@@ -65,10 +65,11 @@ function initTest(fastModel: string = LUNA_MODEL): TestConvex {
 async function seedValidatedCandidate(
   t: TestConvex,
   suffix: string = '',
+  sourceText: string = SOURCE_TEXT,
 ): Promise<SeededCandidate> {
-  const normalizedBytes = new TextEncoder().encode(SOURCE_TEXT)
-  const rawBytes = new TextEncoder().encode(`%PDF-1.7 ${SOURCE_TEXT}`)
-  const normalizedHash = await sha256HexOfText(SOURCE_TEXT)
+  const normalizedBytes = new TextEncoder().encode(sourceText)
+  const rawBytes = new TextEncoder().encode(`%PDF-1.7 ${sourceText}`)
+  const normalizedHash = await sha256HexOfText(sourceText)
   const rawHash = await sha256HexOfBytes(rawBytes)
   return await t.run(async (ctx) => {
     const normalizedStorageId = await ctx.storage.store(
@@ -124,7 +125,7 @@ async function seedValidatedCandidate(
       registryId,
       trigger: 'manual_extraction',
       state: 'succeeded',
-      processorVersion: 'v1.20',
+      processorVersion: 'v1.21',
       snapshotId,
       sourceKind: 'agenda',
       targetRecordId: 'CO-029-2026',
@@ -141,7 +142,7 @@ async function seedValidatedCandidate(
       sourceRecordIdProvenance: 'source_printed',
       promptVersion: 'v1.12',
       schemaVersion: 'v1',
-      processorVersion: 'v1.20',
+      processorVersion: 'v1.21',
       modelRole: 'MODEL_STRONG',
       modelId: TERRA_MODEL,
       route: 'ai_gateway',
@@ -310,7 +311,7 @@ async function seedReextractedCandidate(
       registryId: original.registryId,
       trigger: 'manual_extraction',
       state: 'succeeded',
-      processorVersion: 'v1.20',
+      processorVersion: 'v1.21',
       snapshotId: original.snapshotId,
       sourceKind: original.sourceKind,
       targetRecordId: original.targetRecordId,
@@ -329,7 +330,7 @@ async function seedReextractedCandidate(
         original.sourceRecordIdProvenance ?? 'source_printed',
       promptVersion: original.promptVersion,
       schemaVersion: original.schemaVersion,
-      processorVersion: 'v1.20',
+      processorVersion: 'v1.21',
       modelRole: 'MODEL_STRONG',
       modelId: TERRA_MODEL,
       route: 'ai_gateway',
@@ -1315,7 +1316,7 @@ test('replaying a succeeded extraction repairs a missing publication run', async
     sourceRecordIdProvenance: 'source_printed',
     promptVersion: 'v1.12',
     schemaVersion: 'v1',
-    processorVersion: 'v1.20',
+    processorVersion: 'v1.21',
   })
   await t.run(async (ctx) => {
     await ctx.db.patch(seeded.runId, { idempotencyKey })
@@ -1803,4 +1804,28 @@ test('review completion budget accommodates high reasoning plus required JSON', 
   )
   expect(reviewMaxCompletionTokens(33)).toBe(10000)
   expect(reviewMaxCompletionTokens(MAX_REVIEW_CHECKS)).toBe(13000)
+})
+
+test('review and publication retain exact partial-bold quotes with matching normalized offsets', async () => {
+  const t = initTest()
+  const source = SOURCE_TEXT.replace('Accept grant revenue', '**Accept grant** revenue')
+  const seeded = await seedValidatedCandidate(t, '-partial-bold', source)
+  const titleFact = seeded.factIds.find(fact => fact.fieldPath === '/title')!
+  await t.run(async ctx => {
+    await ctx.db.patch(titleFact.factId, { excerpt: 'Accept grant** revenue' })
+  })
+  stubReviewFetch(JSON.stringify(reviewResponse(seeded.factIds)), [])
+  const started = await startAndDrain(t, seeded.candidateId)
+  const result = await t.run(async ctx => {
+    const version = await ctx.db.query('publicationVersions').withIndex('by_run', q => q.eq('runId', started.runId)).unique()
+    const citations = version ? await ctx.db.query('citations').withIndex('by_publication_and_field_path', q => q.eq('publicationVersionId', version._id)).collect() : []
+    return { mode: version?.mode, title: citations.find(citation => citation.fieldPath === '/title') }
+  })
+  expect(result.mode).toBe('full')
+  const startOffset = 'Lafayette City Council CO-029-2026 proposal '.length
+  expect(result.title).toMatchObject({
+    excerpt: 'Accept grant** revenue',
+    normalizedStartOffset: startOffset,
+    normalizedEndOffset: startOffset + 'Accept grant revenue'.length,
+  })
 })
