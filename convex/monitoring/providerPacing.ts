@@ -3,7 +3,9 @@ import type { Id } from '../_generated/dataModel'
 import type { ActionCtx } from '../_generated/server'
 
 export function isProviderRateLimit(error: unknown): boolean {
-  return /rate limit exceeded|too many requests|\b429\b/i.test(String(error))
+  // The component reports the Firecrawl API status in this exact prefix.
+  // A source URL, document identifier, or target-site status is not that status.
+  return /Firecrawl \/v2\/scrape failed \(429\):/i.test(String(error))
 }
 
 export async function reserveMonitoringRetrieval(ctx: ActionCtx, runId: Id<'sourceMonitoringRuns'>) {

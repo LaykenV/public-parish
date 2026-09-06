@@ -37,7 +37,9 @@ export const discover = internalAction({
     let failures = 0
     const failed: string[] = []
     const visited = new Set<string>(resumed ? policy.discoveryVisitedUrls : [])
-    for (let listing = 0; listing < 10 && listingUrls.length; listing++) {
+    // Checkpoint each result and yield after three requests. Pacing can wait
+    // up to 45 seconds per request; ten requests would crowd the action limit.
+    for (let listing = 0; listing < 3 && listingUrls.length; listing++) {
       const url = listingUrls[0]
       await reserveMonitoringRetrieval(ctx, args.runId)
       listingUrls.shift()
@@ -69,6 +71,7 @@ export const discover = internalAction({
         await ctx.runMutation(internal.monitoring.ledger.saveDiscoveryProgress, { ...args, pending: [...listingUrls, ...failed], visited: [...visited] })
       }
     }
+    if (listingUrls.length && failures === 0) throw new Error('monitoring_provider_rate_limit')
     return failures === 0
 
   },
