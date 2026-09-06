@@ -584,3 +584,13 @@ test.each([false, true])('target reconciliation retries a Gateway outage without
   await f.t.mutation(internal.monitoring.ledger.reconcileTargets, { policyId: f.policyId })
   expect((await f.t.run(ctx => ctx.db.get(target.targetId)))?.attempts).toBe(mixed ? 3 : 2)
 })
+
+test('accepts a unique locator without copying an identifier outside that locator', () => {
+  const source = 'Test Council. September 4, 2026. Resolution 2026-14. Authorize repairs to the library roof.'
+  const target = { printedId: null, title: 'Library roof repairs', excerpt: 'Authorize repairs to the library roof.' }
+  const value = { ...inventory, targets: [target] }
+  expect(inventoryContract(value, source, 'Test Council')).toBeNull()
+  expect(inventoryIdentity('2026-09-04', target).sourcePrinted).toBe(false)
+  expect(inventoryContract({ ...value, targets: [{ ...target, printedId: '2026-14' }] }, source, 'Test Council')).toMatch(/complete printed identifier/)
+  expect(inventoryContract({ ...value, targets: [target, target] }, source, 'Test Council')).toMatch(/duplicate/)
+})
