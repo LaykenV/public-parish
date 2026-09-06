@@ -191,3 +191,16 @@ validating and name the supported bodies individually.
 Production release proof, resident observations, the demo, and submission remain
 separate from development certification. Correctness and source repairs can
 continue after this final feature slice without starting another feature list.
+
+## Catch-up capacity
+
+The owner can set a body's daily admission limit between 10 and 5,000 through
+`monitoring/ledger:configure`. The shared limit defaults to 1,000 until the owner
+sets `monitoring/ledger:configureGlobalBudget` with a `dailyCallLimit` between
+10 and 50,000. Deploying this capability does not raise any active limit.
+Both controls preserve admissions consumed and the current window start. A
+reduction below admissions already used fails. Never reset a bucket to create
+capacity. Raise the shared limit and the affected body limits together, size
+them from pending work and measured calls, then reassess after catch-up. These
+are provider admission caps, not dollar budgets. Evidence gates, approved
+hosts, per-run bounds, and the deployment kill switch still apply.

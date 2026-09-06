@@ -569,6 +569,10 @@ export default defineSchema({
     subscriberId: v.id('emailSubscribers'), placeKey: v.string(), placeName: v.string(), launchedSlug: v.optional(v.string()), state: v.union(v.literal('waiting'), v.literal('queued'), v.literal('sent'), v.literal('stopped')), outboundId: v.optional(v.string()), providerStatus: v.optional(v.string()), createdAt: v.number(), updatedAt: v.number(),
   }).index('by_subscriber_and_place', ['subscriberId', 'placeKey']).index('by_subscriber_and_launched_slug', ['subscriberId', 'launchedSlug']).index('by_subscriber', ['subscriberId']).index('by_state', ['state']),
 
+  sourceMonitoringBudgets: defineTable({
+    name: v.literal('global'), dailyCallLimit: v.number(), updatedAt: v.number(),
+  }).index('by_name', ['name']),
+
   sourceMonitoringPolicies: defineTable({
     developmentAdmissionGrant: v.optional(v.object({ windowStart: v.number(), admissions: v.number(), consumedBefore: v.number(), grantedAt: v.number() })),
     nextDiscoveryAt: v.optional(v.number()),
