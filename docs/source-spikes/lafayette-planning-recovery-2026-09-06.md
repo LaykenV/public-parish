@@ -56,3 +56,9 @@ BOZA and Hearing Examiner development attempts exposed copied-excerpt errors.
 The model added spaces to a vote tally and omitted Markdown table structure.
 The prompt now calls out those errors and requests shorter exact spans. The
 locator check still rejects excerpts that do not resolve to the snapshot.
+
+The Hearing Examiner headings print "Hearing Examiner", without "Lafayette".
+The v3 root manifest uses that official body name and retains the Lafayette
+Parish jurisdiction, body key, root URL, and approved hosts. The v2 manifest
+remains resolvable for earlier runs. This avoids adding an unsupported word to
+the cited body name; it does not relax the independent review or body check.

@@ -281,7 +281,9 @@ const CURRENT_ROOT_MANIFESTS: CoverageRootManifest[] = VERSIONED_ROOT_MANIFESTS.
           ],
         },
       ]
-    : [manifest],
+    : manifest.bodyKey === 'lafayette-hearing-examiner'
+      ? [{ ...manifest, version: 'v3', bodyName: 'Hearing Examiner', checkedAt: '2026-09-06' }]
+      : [manifest],
 )
 
 export function listRootManifests(): CoverageRootManifest[] {
