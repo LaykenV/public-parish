@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/build-plan.md`.
+
 # Four-Week Build Plan
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
@@ -323,7 +330,7 @@ Then pause implementation and complete this design handoff:
   loading, empty, limited, error, signed-out, and signed-in states;
 - prepare one reusable design context pack from the product specification,
   architecture, data contracts, copy constraints, and existing visual system;
-- use [`resident-interface-plan.md`](./resident-interface-plan.md) as the master
+- use [`resident-interface-plan.md`](resident-interface-plan.md) as the master
   page contract and the source for the eight design-agent assignments;
 - have the founder create and approve the complete interface in the selected
   design tool;
@@ -345,7 +352,7 @@ implementation slices connect remaining actions without reopening page layout
 or visual direction.
 
 After Slice 5, use
-[`post-slice-5-pr-plan.md`](./post-slice-5-pr-plan.md) as the agent execution
+[`post-slice-5-pr-plan.md`](post-slice-5-pr-plan.md) as the agent execution
 queue. It splits implementation Slices 6 through 9 into dependency-ordered,
 single-concern PR packets. The split changes delivery size, not product scope.
 

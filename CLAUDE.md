@@ -3,6 +3,10 @@ guidance. Read and follow it before any work.
 
 @AGENTS.md
 
+Start from `docs/work.md` for current status and the stories, design/QA, launch
+sequence. Active contracts are indexed in `README.md`. Archived slice plans are
+historical evidence, not unfinished assignments.
+
 <!-- convex-ai-start -->
 
 This project uses [Convex](https://convex.dev) as its backend.

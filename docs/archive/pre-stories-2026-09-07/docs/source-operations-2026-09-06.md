@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/source-operations-2026-09-06.md`.
+
 # Source operations, September 6, 2026
 
 This is a historical checkpoint. Use the [bounded September 7 checkpoint](bounded-catchup-2026-09-07.md)
@@ -60,7 +67,7 @@ or publication gate was lowered to clear a queue.
 ## Lafayette certification
 
 PR #106 adds recovered official agenda and outcome samples for all five planning
-bodies. The [source investigation](source-spikes/lafayette-planning-recovery-2026-09-06.md)
+bodies. The [source investigation](../../../source-spikes/lafayette-planning-recovery-2026-09-06.md)
 records how event attachments and hyperlinks inside PDFs supplied the documents.
 All five passed all ten development coverage gates through the normal pipeline.
 All five then passed all ten production gates and were promoted. The public

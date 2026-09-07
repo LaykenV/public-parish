@@ -1,8 +1,10 @@
 # Public Parish Agent Instructions
 
-Read `PLAN.md`, `docs/decisions.md`, `docs/product-spec.md`,
-`docs/architecture.md`, `docs/sources.md`, `docs/build-plan.md`, and
-`docs/hackathon.md` before changing product behavior or scope.
+Read `PLAN.md`, `docs/work.md`, `docs/architecture.md`, `docs/sources.md`,
+`docs/design.md`, and `docs/operations.md` before changing product behavior or
+scope. Read `docs/marketing.md` for distribution and `docs/submission.md` for
+hackathon artifacts. `docs/work.md` is the only active status and pending-work
+queue. `docs/archive/` preserves history, not current instructions.
 
 ## Product Contract
 
@@ -23,7 +25,10 @@ Read `PLAN.md`, `docs/decisions.md`, `docs/product-spec.md`,
 
 ## Implementation Contract
 
-- Build the evidence pipeline before the polished interface.
+- Finish the three-story functionality and evidence gate in `docs/work.md` before
+  the global design and full founder QA pass. Launch and outreach follow QA.
+- Preserve the shared evidence pipeline when adding owner-curated stories. Story
+  publication must not promote an unsupported body or parish.
 - Use TanStack Start in SPA/static-prerender mode, Convex for the backend and
   realtime state, and Convex static hosting at `convex.site`.
 - Keep route files thin, put route-level data contracts in `.data.ts` modules,
@@ -35,11 +40,10 @@ Read `PLAN.md`, `docs/decisions.md`, `docs/product-spec.md`,
   documented failure.
 - OpenAI calls run from Convex actions through Convex AI Gateway. Refer to
   models by role and keep the only role-to-model table in
-  `docs/architecture.md`. `MODEL_STRONG` (`openai/gpt-5.6-terra`) runs record
-  extraction, consequence factors, and issue linking. `MODEL_FAST`
-  (`openai/gpt-5.6-luna`) runs discovery classification, ranking, independent
-  review, and chat. The reviewer never runs on the extraction model. Send strict
-  JSON Schema through the Chat Completions `response_format` field.
+  `docs/architecture.md`. `MODEL_STRONG` runs record extraction, consequence
+  factors, issue linking, and planned story drafting. `MODEL_FAST` runs discovery
+  classification, independent review, and chat. Code computes importance scores.
+  The reviewer never runs on the extraction model. Send strict JSON Schema through the Chat Completions `response_format` field.
   Deterministic validation runs after extraction and review.
 - Keep direct OpenAI access behind the same provider interface as a documented
   fallback if AI Gateway is unavailable. The submitted app should use AI
@@ -54,6 +58,18 @@ Read `PLAN.md`, `docs/decisions.md`, `docs/product-spec.md`,
   raw application data in public docs or logs.
 
 ## Scope Control
+
+The approved launch adds three homepage stories: Meta in Richland Parish as the
+lead, SpaceX in Vermilion Parish and the Boyce data center as secondary stories.
+All three and story-scoped Ask, follows, updates, replies, sharing, source review
+and images must pass before the full design and QA campaign. Keep featured
+stories visible before local setup and issues. Do not add a fourth story or
+replace this set without an owner decision.
+
+The owner permits additional targeted hackathon spending under
+`docs/operations.md`. The old catch-up maximum is not the remaining project
+budget. Retain finite task limits and stop rules; do not restart broad backfill
+or change production settings from a documentation instruction.
 
 Do not add maps, public discussion, testimony generation, public-records request
 automation, a procurement product, video transcription, or a government staff

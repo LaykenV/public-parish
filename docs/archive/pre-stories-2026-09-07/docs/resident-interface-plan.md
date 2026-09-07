@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/resident-interface-plan.md`.
+
 # Public Parish resident interface plan
 
 Release status: this design document is a historical specification. Its resident
@@ -49,10 +56,10 @@ Read these files before starting any design slice:
 - [`decisions.md`](./decisions.md)
 - [`product-spec.md`](./product-spec.md)
 - [`architecture.md`](./architecture.md)
-- [`sources.md`](./sources.md)
+- [`sources.md`](sources.md)
 - [`build-plan.md`](./build-plan.md)
 - [`hackathon.md`](./hackathon.md)
-- [`design-system.html`](./design-system.html)
+- [`design-system.html`](../../../design-system.html)
 - [`marketing-page.md`](./marketing-page.md)
 
 This file resolves the page and interaction choices those documents left open.
@@ -104,7 +111,7 @@ generic AI assistant.
 
 ### Visual foundation
 
-Keep the selected system in [`design-system.html`](./design-system.html):
+Keep the selected system in [`design-system.html`](../../../design-system.html):
 
 | Role           | Value     | Use                                             |
 | -------------- | --------- | ----------------------------------------------- |
@@ -957,7 +964,7 @@ cards, result rows, filters, and feed update behavior.
 
 Implementation checkpoint: deployed through PR #27 as `3a59e45`. The
 implementation and fixture boundary are recorded in
-[`resident-interface-slice-3.md`](./resident-interface-slice-3.md).
+[`resident-interface-slice-3.md`](resident-interface-slice-3.md).
 
 #### Objective
 
@@ -1016,7 +1023,7 @@ viewer, timeline, and update history from real evidence.
 Implementation checkpoint: deployed through PR #28 as `ff36c1b`. Production
 workflow `33389489990` passed. The implementation, the fixture boundary, and
 the three additions to the adapter contract are recorded in
-[`resident-interface-slice-4.md`](./resident-interface-slice-4.md).
+[`resident-interface-slice-4.md`](resident-interface-slice-4.md).
 
 #### Objective
 

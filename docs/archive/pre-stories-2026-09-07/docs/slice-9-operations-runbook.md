@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/slice-9-operations-runbook.md`.
+
 # Slice 9 operations
 
 The final build and follow-up repairs through PR #139 are deployed.

@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/decisions.md`.
+
 # Grilling Decision Record
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
@@ -336,7 +343,7 @@ For the final Slice 9 review, the owner replaced the physical-device gate
 with desktop and mobile emulation. The original design-review policy below
 does not block this release. No physical-device pass is claimed.
 
-- [`resident-interface-plan.md`](./resident-interface-plan.md) is the approved
+- [`resident-interface-plan.md`](resident-interface-plan.md) is the approved
   Slice 5 page, interaction, state, and design-agent contract.
 - Build the complete frontend now so later API integration does not reorganize
   pages. Use typed local fixtures for unfinished integrations.

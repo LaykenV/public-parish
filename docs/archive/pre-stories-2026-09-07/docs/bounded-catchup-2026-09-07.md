@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/bounded-catchup-2026-09-07.md`.
+
 # Bounded catch-up, September 7, 2026 UTC
 
 The owner approved up to $10 total in additional paid catch-up processing after

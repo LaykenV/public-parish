@@ -1,0 +1,176 @@
+# Current work and launch gates
+
+Updated September 7, 2026. This is the only active status and pending-work queue.
+The approved order is stories, then design and QA, then launch and outreach.
+[Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
+[operations](operations.md), and [marketing](marketing.md) define the contracts.
+
+## Current checkpoint
+
+The original feature build is complete through Slice 9. The new story work is
+planned and unimplemented. Documentation changes do not certify story support.
+
+| Capability | Evidence and limitation |
+| --- | --- |
+| Evidence pipeline | Immutable snapshots, deterministic validation, independent review, and full, limited, or withheld publication deployed |
+| Resident loop | Discovery, issues, decisions, evidence, anonymous Ask, Google and email-only follows, alerts, roundups, replies, and private reports deployed |
+| Coverage and operations | Owner compiler, bounded scheduled processing, coverage requests, launch notices, search, issue sharing, and reports deployed |
+| Latest inspected release | Main commit `c2183d6`, successful production workflow [34143377017](https://github.com/LaykenV/public-parish/actions/runs/34143377017) |
+| Local coverage | Eleven of twelve named bodies supported; Youngsville degraded. Lafayette accessible with a limitation; Rapides and East Baton Rouge available |
+| Source automation | Public health reads on September 7 showed only Metropolitan Council scheduled checks enabled |
+| Existing corpus | September 7 public queries returned 50 decisions per parish, the query cap; 6 Lafayette, 20 Rapides at the issue cap, and 19 East Baton Rouge timelines |
+| Boyce starting evidence | Existing Applied Digital issue returned three linked decisions and thirteen citations. This is a source base, not the new story page |
+| Remaining proof | Three completed stories, full founder design and QA pass, organic resident usefulness, final demo, and submission |
+
+Many recent decisions are limited. Query counts are bounded results, not complete
+archive totals. A source can pass certification while its backlog remains
+unfinished. Do not claim continuous updates for paused policies.
+
+The [last funded checkpoint](archive/pre-stories-2026-09-07/docs/bounded-catchup-2026-09-07.md)
+recorded $4 source AI and $0.50 Ask allowances expiring September 14 UTC, 172
+pending decision targets, six failed, and an unfinished issue queue. These are
+dated operating facts, not current live balances. The owner now permits targeted
+additional spending under [operations](operations.md#spending-policy).
+
+The older release record reports 560 CI tests and independent production smoke
+through PR #139. This docs session does not rerun or extend that proof. No
+physical-device or screen-reader pass, organic resident outcome, story release,
+or submission is claimed.
+
+## Phase 1: finish stories
+
+The owner implements and reviews the new functionality with agents. Use a
+bounded PR per concern; keep implementation verification inside each packet.
+Do not begin the full redesign campaign until this phase passes.
+
+| Packet | Required outcome | Dependencies | State |
+| --- | --- | --- | --- |
+| S1 | Versioned story contract, owner authorization, source intake, exact evidence references, image provenance, review and publication policy | Architecture and source contracts | Pending |
+| S2 | Owner JSON import, preview, approve, revise and withdraw workflow; replay and stale-evidence protection | S1 | Pending |
+| S3 | Published story routes, evidence view, all-three homepage composition, related records, search and social share HTML | S1, S2 | Pending |
+| S4 | Story-scoped anonymous Ask and private thread authorization using accepted story evidence | S1, S3 | Pending |
+| S5 | Google and verified-email story follows, material-update alerts, roundup integration, grounded replies, management and unsubscribe | S1, S3, S4 | Pending |
+| S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Pending |
+| S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Pending |
+
+Build the first complete vertical path with the existing Boyce evidence if that
+reduces risk. Meta remains the lead on the delivered homepage. Research for all
+three can proceed while shared functionality is implemented. No fourth story is
+required. CCS is deferred; do not substitute it for the agreed launch set.
+
+### Story acceptance
+
+- [ ] Home shows Meta as the lead and SpaceX and Boyce as secondary stories on
+  desktop and mobile. No carousel or location-selection gate hides a story.
+- [ ] Every story has a stable direct URL, substantive reviewed explanation,
+  relevant image, source credit, exact citations, timeline, known gaps,
+  reviewed-through date, related records, and update expectations.
+- [ ] Official source identity, full artifact retention, hashes, exact spans,
+  independent review, deterministic checks, and owner approval all pass.
+- [ ] An anonymous visitor can ask two related story questions and an unsupported
+  question. Answers cite accepted evidence; not-found and exhausted-budget
+  states remain honest. No open-web civic answer path is added.
+- [ ] Google and verified-email visitors can follow each story, manage delivery,
+  receive a controlled material update, reply, and unsubscribe. Replays and
+  overlapping follows do not create duplicate updates.
+- [ ] A caption, image, headline-style, or featured-order change alone sends no
+  material-change alert. An initial import sends no historical alert batch.
+- [ ] Changed or withdrawn source evidence cannot remain silently current in a
+  story, answer, search result, email, or social preview.
+- [ ] Story search and share previews use the accepted story version and its
+  approved image. Direct refresh works on both production origins.
+- [ ] Story publication neither promotes a new parish nor enables agency-wide
+  monitoring. Supported local coverage retains its existing gates.
+- [ ] Owner review, retries, revisions, withholding, and rollback or withdrawal
+  have a repeatable documented path. New versions preserve prior evidence.
+- [ ] Record development and CI results separately from production proof. Capture
+  the exact release, live paths, controlled inbox evidence, and cost.
+
+Story following is required. A link to an underlying issue follow is useful
+navigation but does not satisfy the whole-story follow requirement. If the
+schedule threatens this scope, report the tradeoff to the owner rather than
+silently replacing functionality or dropping a launch story.
+
+## Phase 2: global design and full QA
+
+Start only after S7. [Design](design.md) owns the page contracts and review order.
+
+- [ ] Agree on global colors, type, spacing, button and input treatments,
+  navigation, cards, statuses, image treatment, and evidence interactions.
+- [ ] Use Home and story detail as the reference pages, then update shared
+  components and the design-system reference together.
+- [ ] Review Home, all three stories, Explore, issue, decision, meeting, Ask,
+  Following, sign-in and email management, Coverage, requests, reports, method,
+  privacy, and voter links on desktop and mobile.
+- [ ] Exercise source panels, limited and missing evidence, stale updates,
+  pagination, unsupported areas, loading, empty, error, offline, expired-session,
+  exhausted-allowance, keyboard, focus, reduced-motion, and long-content states.
+- [ ] Fix blocking findings and recheck affected resident journeys. Check social
+  previews and direct routes after relevant layout or metadata changes.
+- [ ] Run a small private resident pilot after the founder pass and repair
+  confusing or broken interactions before the broad public announcement.
+
+### QA ledger
+
+Keep findings here until resolved. Evidence can link to a PR or permissioned
+screenshot. Do not put personal messages, emails, or private questions here.
+
+| ID | Route and viewport | Reproduction and expected behavior | Severity | Owner | State | Resolution evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| No findings recorded yet | Full pass pending | Record observations when the pass starts | Unassessed | Layken | Pending | None |
+
+P0 is an unsupported public claim, privacy leak, or destructive failure. P1 is a
+broken primary journey, unusable mobile layout, source link, Ask, follow, or
+unsubscribe path. Both block launch. P2 is bounded confusion or presentation
+work that can wait when the owner accepts it.
+
+## Phase 3: launch, outreach, content, and submission
+
+- [ ] Confirm all three stories are current enough for their published claims
+  and have an owner and next review date.
+- [ ] Fund finite operating allowances for public Ask, selected source checks,
+  story review, and email through submission and judging. Compare provider use
+  with the ledger; do not assume the September 14 allowances renew.
+- [ ] Pass the founder and private-pilot launch gates with no open P0 or P1.
+- [ ] Inspect actual Facebook, X, and LinkedIn previews for the URLs to be used.
+- [ ] Prepare the personal Facebook launch, group-specific posts, short video,
+  outreach list, and required sponsor-tagged X or LinkedIn post.
+- [ ] Publish and send only after authorization. Observe behavior and answer
+  feedback; keep corrections and small reliability fixes moving.
+- [ ] Record known resident actions and permissioned feedback separately from
+  anonymous browser telemetry and controlled test activity.
+- [ ] Record the under-three-minute demo, recheck public artifacts, and complete
+  [the submission checklist](submission.md#submission-checklist).
+
+## Calendar targets
+
+The phase gates control order. Dates are targets at the owner's current pace,
+not evidence of completion or permission to skip a gate.
+
+| Window | Focus | Exit |
+| --- | --- | --- |
+| September 7 through 11 | Stories, source dossiers, targeted processing, and functional release proof | Three stories and the full story loop accepted |
+| September 12 through 15 | Global design, page-by-page desktop and mobile QA, private pilot | Launch gate passed; major design and feature freeze |
+| September 16 through 20 | Public launch, outreach, content, resident feedback, small fixes | Useful live product and permissioned usage evidence |
+| September 20 through 21 | Demo and submission artifacts alongside launch support | Submit by September 21 with authorization |
+| September 22 | Contingency | Deadline noon Pacific, 2 p.m. Central |
+| Through September 25 | Keep public app and operating allowances usable for judging | Monitor errors and source freshness |
+
+If stories slip, protect their acceptance and the QA gate. Cut a rich editor,
+extra visual variants, archive depth, broad automation, and nonessential scope
+first. Do not start the full redesign early, drop a named story, or count a
+broken flow as complete to preserve a calendar target. Escalate the schedule
+tradeoff while there is time to reserve several days for outreach.
+
+## Backlog triage
+
+Do not clear pending, limited, or failed records for the sake of counts. Work a
+target only when it supplies a launch-story claim, fixes a resident-blocking
+problem, proves the demo, or supports useful selected local evidence. Prefer
+saved snapshots and inventories. Preserve missing evidence and failure reasons.
+Youngsville recovery is useful if a new official document can be obtained at low
+cost; repeated retrieval of its old packet is not a launch prerequisite.
+
+Keep completed tasks with their release or observation evidence until the next
+checkpoint, then archive the dated record. Do not reopen the original nine
+implementation slices or eight design slices from historical checklists.

@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/slice-9-final-build-plan.md`.
+
 # Slice 9 final build plan
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)

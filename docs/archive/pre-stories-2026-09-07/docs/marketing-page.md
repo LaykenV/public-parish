@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/marketing-page.md`.
+
 # Public Parish marketing-page brief
 
 Status: historical context pack; Design Slice 2 retired the standalone marketing page
@@ -16,7 +23,7 @@ page. Use the resident-interface documents for current work.
 
 ## Required first read
 
-Read [`design-system.html`](./design-system.html) before designing or writing
+Read [`design-system.html`](../../../design-system.html) before designing or writing
 code. It is the source of truth for app-wide color, logo, mobile, touch, motion,
 accessibility, and reusable component behavior.
 
@@ -26,7 +33,7 @@ two files appear to conflict, stop and identify the conflict before building.
 Also read the current product sources before making claims:
 
 - [`../PLAN.md`](../PLAN.md)
-- [`product-spec.md`](./product-spec.md)
+- [`product-spec.md`](product-spec.md)
 - [`architecture.md`](./architecture.md)
 - [`hackathon.md`](./hackathon.md)
 
@@ -118,7 +125,7 @@ Use this exact working copy:
 `Choose your area`
 
 The selected double-P mark lives at
-[`../public/brand-mark.svg`](../public/brand-mark.svg). Render the product name as
+[`../public/brand-mark.svg`](../../../../public/brand-mark.svg). Render the product name as
 live text. The resident application shell appears on Home, and its mark and name
 link to Home. Do not generate a raster lockup containing the name.
 
@@ -219,7 +226,7 @@ Resident value stays first.
 
 ## Brand direction
 
-Follow [`design-system.html`](./design-system.html) for exact tokens and usage.
+Follow [`design-system.html`](../../../design-system.html) for exact tokens and usage.
 The intended character is warm civic utility with an editorial edge. It should
 feel calm, direct, inspectable, and recognizably Louisiana without resembling a
 campaign, government portal, university athletics site, Mardi Gras event poster,
@@ -342,7 +349,7 @@ repository. At the time this brief was last updated:
 - grounded inbound email replies and private source reports shipped in Slice
   7D;
 - coverage claims remain limited to bodies that pass the publication and
-  coverage gates in [`sources.md`](./sources.md);
+  coverage gates in [`sources.md`](sources.md);
 - the owner-run coverage compiler remains future work.
 
 Do not turn planned features into present-tense product claims.
@@ -359,7 +366,7 @@ Each design agent should return:
 6. reduced-motion verification;
 7. keyboard and focus verification;
 8. a list of any choices that should graduate into
-   [`design-system.html`](./design-system.html).
+   [`design-system.html`](../../../design-system.html).
 
 Do not update the shared design system during an experiment. The owner will
 select what graduates after comparing the alternatives.

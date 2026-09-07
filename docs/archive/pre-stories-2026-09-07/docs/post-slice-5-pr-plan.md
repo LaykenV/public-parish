@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/post-slice-5-pr-plan.md`.
+
 # Post-Slice-5 PR plan
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
@@ -9,7 +16,7 @@ Status: implementation Slices 6 through 9 are deployed and release-tested
 This plan turns the remaining implementation into a few substantial,
 reviewable pull requests per slice. It does not add product scope. The page
 hierarchy and interaction contracts remain in
-[`resident-interface-plan.md`](./resident-interface-plan.md).
+[`resident-interface-plan.md`](resident-interface-plan.md).
 
 ## Implementation history
 

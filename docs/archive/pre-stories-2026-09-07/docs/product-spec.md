@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/product-spec.md`.
+
 # Resident Product Specification
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
@@ -20,7 +27,7 @@ Do not design resident pages incrementally during backend work. Slice 4 settled
 the issue, importance, timeline, and change contracts. The complete page
 inventory, content, actions, navigation, mobile priority, system states, and
 design-agent assignments live in
-[`resident-interface-plan.md`](./resident-interface-plan.md). Design and build
+[`resident-interface-plan.md`](resident-interface-plan.md). Design and build
 the full frontend against typed local fixtures so later API work does not reopen
 the page system. Fixture-backed success is development proof only. A production
 build cannot present an action as working until its real backend path passes.

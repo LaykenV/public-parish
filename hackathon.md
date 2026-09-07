@@ -12,9 +12,13 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-07T04:47:16Z
+- **Last updated:** 2026-09-07T17:49:05Z
 
 ## Log
+
+Current status and pending work are in [docs/work.md](docs/work.md). The entries
+below preserve their original release context and repository paths. Earlier
+plans are indexed in [the archive](docs/archive/README.md).
 
 ### 2026-09-04 - 2fa1cff
 
@@ -1617,7 +1621,7 @@ on desktop and at 375 pixels without a new card crash or horizontal overflow.
 Source processing remains off in development and production. The new allowance
 guard is deployed but not activated or funded. No new paid data-processing model
 or Firecrawl calls were started and no account spending cap was raised. The
-[current operating checkpoint](docs/source-operations-2026-09-07.md) records 180
+[current operating checkpoint](docs/archive/pre-stories-2026-09-07/docs/source-operations-2026-09-07.md) records 180
 pending decision targets, nine failed targets, separate issue-proposal work,
 and the unresolved need for newer Youngsville documents. Full catch-up,
 sustained automatic processing, founder QA, and launch are not claimed complete.
@@ -1633,7 +1637,7 @@ A live anonymous Ask answer returned the Cortana rebate amount with its official
 minutes citation. Estimated ledger charges were $2.90 for sources and $0.04 for
 Ask. The team cap did not increase. Other body policies remain paused, 172 targets
 remain pending, and Youngsville still lacks newer official documents. The
-[bounded catch-up checkpoint](docs/bounded-catchup-2026-09-07.md) records failures,
+[bounded catch-up checkpoint](docs/archive/pre-stories-2026-09-07/docs/bounded-catchup-2026-09-07.md) records failures,
 withheld timelines, and the remaining work before full catch-up can be claimed.
 
 
@@ -1646,3 +1650,12 @@ Added the founder QA checklist and limited-beta gate to `docs/build-status.md`.
 Full catch-up, the founder sweep, and launch remain unfinished. Production
 workflow `34083784580` and independent live smoke passed for the prior checkpoint.
 This review did not start paid retrieval or model processing or change allowances.
+
+### 2026-09-07 - working tree: stories-first documentation
+
+Consolidated the active business, architecture, work, design, source, operations,
+marketing and submission documents and archived completed slice plans. The owner
+selected Meta as the lead story with SpaceX and Boyce secondary, required the full
+story loop before design and QA, and approved targeted launch spending. Stories
+remain planned. This session changed documentation only; no new runtime feature,
+paid processing, deployment or submission is claimed.

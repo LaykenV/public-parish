@@ -1,507 +1,147 @@
-# Public Parish Plan
-
-Current status: Slice 9 is complete. See [build status and remaining work](docs/build-status.md)
-for the September 7 documentation checkpoint. Dated sections below retain their
-original release context; they do not reopen completed feature work.
-
-Status: Phase 0, evidence-engine Slices 1 through 4, resident-interface Design Slices 1 through 8, and implementation Slices 6 through 8 are deployed; Slice 9 is deployed and production-tested
-Event: Convex All Gas Hackathon
-Submission deadline: September 22, 2026 at 12:00 PM Pacific
-
-The production backend stores immutable official-source snapshots, extracts and
-deterministically validates cited atomic decisions, runs a separate independent
-review, and writes full, limited, or withheld immutable publication versions.
-The first issue-link and importance proof ran in the personal development
-deployment. PR #12 deployed the hardened Slice 3 backend as `8df651c`. PR #13
-deployed Slice 4 as `c162543`; production workflow `33273984552` and the
-independent production smoke passed. The controlled launch-data batch then
-published 26 cited atomic records after Terra extraction, Luna review, and
-deterministic policy: 15 Lafayette, 9 Rapides, and 2 East Baton Rouge records.
-Fifteen are full and 11 are limited. Three targets stayed out after exact-citation
-validation failures, and one negative control returned `not_found`. The
-resident integration reads current full and limited atomic publications and
-accepted issue timelines through bounded public queries. The approved resident
-information architecture uses one issue-led Home. It shows accepted Lafayette
-and Rapides issue timelines first, then the atomic decision records underneath.
-Explore searches issues before decision records. The old `/for-you` and
-`/issues` index routes redirect to Home, while issue detail routes remain
-stable. Withheld versions stay hidden. Publication counts do not prove complete
-body coverage.
-
-Resident-interface Design Slice 1 established the complete route blueprint.
-Design Slice 2 then shipped the responsive shell plus fixture-backed Home, For
-You, and Explore pages through PR #24 as `4e2ac67`. Explicit fixture URL
-scenarios remain available for deterministic QA in development builds. The
-resident pages do not show a fixture banner, and production ignores fixture
-parameters instead of presenting fixture records. PR #25 deployed the owner
-phone-review refinements as `b22e321`, including structured card headers and
-status pills, Coss action treatments, one-color Watching text, and a Louisiana
-Coverage icon. Production workflow `33324166404` and the independent smoke
-passed. The current integration replaces the production discovery empty states
-with accepted atomic records.
-
-PR #27 deployed Design Slice 3 as `3a59e45`. It implemented the issue, atomic
-decision, meeting, and citation-level evidence surfaces. Its explicit typed
-fixtures load only through development-only imports, add no resident-facing
-banner, and stay out of production JavaScript. At that design checkpoint,
-production routes showed an honest recovery page until the real detail queries
-arrived.
-
-PR #28 merged resident-interface Design Slice 4 as `ff36c1b`. Its production
-workflow `33389489990` succeeded. That design release resolved corpus, issue,
-and meeting scope through a typed adapter, rendered cited answers in the
-existing evidence gutter, and moved the resident's question out of the URL into
-an in-memory handoff. It deliberately kept production Ask unavailable until the
-implementation Slice 6 backend passed. Eleven presentation scenarios load only
-through a development-only dynamic import.
-
-PR #31 deployed Design Slice 5 as `adfe81e`. Production workflow `33401768387`
-and the independent production smoke passed. The fixture-backed follow and
-ownership interface covers Google return, email-only verification, Following,
-areas and topics, notification preferences, scoped email management, and alert
-layouts. At that design checkpoint, the production routes remained unavailable
-until Convex Auth and AgentMail passed their integration gates.
-
-PR #34 deployed Design Slice 6 as `0aa7474`, including Coverage, coverage
-requests, the public method page, area states, and private source-problem
-reporting. PR #37 deployed Design Slice 7 as `f854c2e` and made route focus,
-loading, sheets, live announcements, and reduced motion consistent across the
-application. PR #43 deployed the final connected prototype as `85d6947`.
-Production workflow `33454522729` and the independent production smoke passed.
-The final UI carries development evidence scenarios and bounded return routes
-across discovery, records, Ask, Following, and Coverage without exposing
-fixtures in production.
-
-At the Design Slice 8 checkpoint, the resident UI design track was complete
-and the production resident loop still needed integration. The resident-evidence integration connects current accepted decisions,
-grouped meeting evidence, exact citations, and fail-closed issue subscriptions
-to the finished routes. Production issue runs
-`jd7eeb84pv1rzdmp6jf3dg161d8djvz0` and
-`jd76dkmjgyz6rf4temt03cefgx8dj27m` passed linking, independent review,
-deterministic validation, and publication. A subscriber received the second
-issue on its existing connection 10.8 seconds after an initial empty result.
-The Slice 5 data gate is closed.
-
-Implementation Slice 6 is also closed. PR #45 deployed private 24-hour Agent
-threads as `c9ea441`, PR #47 deployed validated `MODEL_FAST` answers as
-`9ae0467`, and PR #49 deployed the bounded anonymous Ask interface as
-`30dc267`. PR #56 then deployed the high-reasoning Luna selector and answer
-flow as `adc0a34` through production workflow `33560561545`. The selector sees
-every current issue, meeting, decision, and accepted citation excerpt in scope.
-Deterministic code expands its targets, and the answer pass receives those
-records plus their hash-checked normalized official documents. Invalid, broad,
-and empty selections expand to the full scope. A valid not-found selection
-returns the safe not-found answer without running the document-heavy second
-call. Per-session and app-wide request-frequency limits remain. Provider token
-use is private telemetry, not an application-owned input or output budget. Hard
-record-count and document-byte checks fail visibly instead of truncating model
-context.
-
-Production tests proved both issue and corpus Ask. The issue flow completed two
-related cited turns and opened the exact `CO-022-2026` and `CO-023-2026`
-minutes spans. The corpus flow selected both surplus-pickup decisions and named
-Terrebonne Parish Consolidated Government from the accepted evidence. PR #57
-deployed the citation-display correction as `13f735b` through workflow
-`33562735003`; a fresh production answer showed resident-facing Source controls
-without raw internal evidence IDs. Implementation Slice 7A is deployed through
-PRs #58 and #59. Google account ownership, private saved areas and topics,
-centralized authorization, and the public privacy notice are live. Production
-browser tests completed Google sign-in and sign-out from the canonical domain
-and from the qualifying `convex.site` origin through the canonical callback.
-Implementation Slice 7B is deployed through PRs #66 and #67. Google residents
-and AgentMail-verified email-only residents can now follow an issue, topic,
-government body, or place, and each can manage only their own follow. Coverage
-requests are live in production after Slice 9.
-Implementation Slice 7C is deployed through PRs #72 through #75. Accepted new
-decisions and later material changes now create durable follow matches,
-deduplicated immediate delivery, evidence-only weekly roundups, and live
-notification settings. A controlled development replay sent two immediate and
-two weekly messages through AgentMail and produced no duplicate on replay. PR
-#57 already corrected the Markdown emphasis markers found during controlled
-corpus QA. Implementation Slice 7D is deployed through PRs #78 and #79. It
-verifies an alert's inbox, thread, and sender before reusing the grounded Ask
-path for replies. It also sends private source-problem reports through a
-separate AgentMail inbox without starting Firecrawl, extraction, or publication
-work. Production workflows `33786995126` and `33788197489` passed for merge
-commits `3f18c126` and `41a6d593`, followed by independent production smokes.
-PRs #81 through #83 then made weekly replies cover every roundup item, retained
-private-report delivery results beyond AgentMail payload cleanup, and stopped
-body and place alerts when coverage is no longer supported or degraded. Their
-production workflows `33797222889`, `33797505992`, and `33797772856` passed,
-followed by independent production smokes. A controlled production source
-report reached `sent`, retained that terminal status in the application, and
-left the latest evidence-pipeline run unchanged. At that checkpoint, the full alert-and-reply
-provider round trip had development proof only. Slice 9 later verified the
-controlled production round trip; organic resident benefit remains unproven.
-
-Implementation Slice 8 is closed. PRs #85 through #88 deployed the
-owner-controlled compiler, bounded Firecrawl discovery, strict source
-classification, exact-sample validation, ten deterministic coverage gates,
-promotion controls, and the private operations view. PR #91 replaced the slot
-template with checked artifact fixtures and ran the complete evidence lifecycle.
-Production certification promoted Alexandria City Council, Pineville City
-Council, Rapides Parish Police Jury, Baton Rouge Metropolitan Council, and Baton
-Rouge Planning and Zoning Commission after each passed all ten gates. PR #92 connected the
-area selector to the live jurisdiction projection. Rapides and East Baton Rouge
-became available. Lafayette stayed validating at that checkpoint because its
-planning bodies lacked meeting-specific agenda and outcome evidence. All five
-planning bodies passed production certification on September 6, so Lafayette
-became available for its seven named launch bodies at that checkpoint.
-Youngsville has since degraded; see the current coverage limits above. The compiler is an
-onboarding and repair operation. Routine scheduled source checks, automatic
-document-to-decision fanout, and new issue proposals were outside Slice 8.
-Slice 9 subsequently deployed them under bounded owner-approved policies.
-
-## Executive Decision
-
-Enter the hackathon with Public Parish, a fresh application built around one
-complete resident outcome:
-
-> See what local government is about to change, understand the official evidence,
-> ask a question, follow the issue, and learn what happened.
-
-This is a justified four-week exception to the normal business plan because the
-founder has previously won this Convex hackathon, cares about the domain, has
-credible local distribution, and can turn the work into a public case study.
-It is not a substitute for selling Varholdt services. The weekday 90-minute
-sales block, partner outreach, and first-dollar goals remain protected.
-
-The project can be broad in capability without becoming broad in promise. It
-will launch with defined bodies in three Louisiana regions, use a dynamic
-coverage compiler instead of hand-coding every portal, and hold every supported
-place to one evidence standard. The product will not claim statewide coverage.
-
-## Winning Thesis
-
-The project is strong enough to contend if the submission proves all of these at
-once:
-
-1. A normal resident can use it immediately, without learning government jargon.
-2. It operates on real, current Louisiana records across more than one portal
-   shape.
-3. Every meaningful statement has an official-source receipt and visible
-   uncertainty.
-4. Firecrawl, OpenAI, AgentMail, and Convex each perform essential work in one
-   live workflow.
-5. A source change becomes a validated update, a realtime interface change, and
-   a useful email alert.
-6. Real residents use the product before judging.
-7. The demo shows the product doing the work instead of describing future scope.
-
-The winning version is not “AI summarizes council meetings.” It is a live civic
-evidence system that connects a resident, a consequential issue, the official
-record, a question, a change, and an outcome.
-
-## Problem
-
-Louisiana local-government information exists, but it is split across agenda
-centers, document searches, PDFs, minutes, ordinances, calendars, and videos.
-Residents usually encounter a controversy after the important deadline or must
-read an entire meeting packet to understand one item.
-
-The missing layer connects:
-
-- the issue a resident cares about;
-- the granular decisions and meetings that move it;
-- what changed and when;
-- the official evidence for each claim;
-- what the public can still do;
-- the final decision and later implementation.
-
-## Product Promise
-
-Public Parish is free, open source, nonpartisan, source-cited, and correctable.
-It tells residents what a supported local body is considering, why a decision
-may matter, when action is expected, how to inspect the original record, and
-what happened next.
-
-It does not tell residents what political position to take. "Why this may matter"
-describes cited effects on public money, public assets, land use, health and
-safety, rights and access, service delivery, and public deadlines. It does not
-use outrage, popularity, or the founder's opinion as a ranking signal.
-
-## Launch Coverage
-
-### Lafayette Parish
-
-- Lafayette City Council
-- Lafayette Parish Council
-- Youngsville City Council
-- Lafayette planning and zoning bodies
-
-### Rapides Parish
-
-- Alexandria City Council
-- Pineville City Council
-- Rapides Parish Police Jury
-- relevant planning and zoning bodies after official-source discovery
-
-### East Baton Rouge Parish
-
-- Metropolitan Council
-- Planning Commission
-
-All three regions receive the same public trust standard. Their source adapters
-and body structures can differ. The internal coverage compiler may discover and
-validate a new jurisdiction, but it does not make that jurisdiction public until
-its source set passes the coverage gate. The public coverage-request form only
-records demand and an optional notification address. It never starts a crawl.
-
-## Core Resident Experience
-
-### 1. Choose What Is Local
-
-The resident selects a parish or municipality and optional topics. No street
-address is requested. Signed-in users can save multiple areas.
-
-### 2. Discover Issues and Decisions
-
-The home experience has:
-
-- **Issue timelines:** related decisions for the resident's selected areas;
-- **Latest decision records:** the atomic government actions beneath those
-  issues, including records without a validated issue relationship;
-- **Explore:** issue-first search across every published issue and decision
-  record.
-
-### 3. Understand an Issue
-
-An issue page connects the underlying proposal, hearing, agenda item, amendment,
-vote, contract, and outcome when the official record supports that relationship.
-It shows:
-
-- a plain-language explanation;
-- "Why this may matter" factors with citations;
-- current stage and next known date;
-- remaining public actions and deadlines;
-- a chronological decision timeline;
-- exact citations and original sources;
-- last-checked time, confidence, and coverage health;
-- source revisions and published fixes.
-
-Atomic decisions remain available. Uncertain relationships remain separate.
-
-### 4. Ask Public Parish
-
-Anonymous visitors can hold a multi-turn chat about the current issue or any
-published Public Parish evidence. The same device keeps continuity for 24 hours.
-Chat never requires sign-in and never searches the open web for civic facts.
-
-When the validated corpus does not answer a question, Public Parish says that the
-answer was not found and links the relevant official contact or source. It does
-not improvise.
-
-### 5. Follow and Receive an Outcome
-
-Accounts are optional. Google accounts provide saved interests and managed
-follows. A resident who does not want an account can verify an email-only
-subscription through AgentMail. Either owner can follow an issue, topic, body,
-or place. AgentMail sends immediate material-change alerts and an
-optional weekly roundup of material updates.
-
-Material changes include a new decision, amendment, deadline, meeting change,
-vote, contract award, implementation update, or outcome.
-
-### 6. Inspect Coverage and Report a Source Problem
-
-A public coverage page shows bodies, source health, last successful check, and
-known limits. A resident can report a wrong fact, broken citation, or missed
-official source through a dedicated AgentMail address. Reports stay private and
-do not start an automated workflow. The owner may rerun the normal evidence
-pipeline. If the accepted public record changes, the issue's normal revision
-history shows the fix.
-
-### 7. Find Voting Information
-
-The landing page carries one small, dated voter-information strip: the next
-statewide election date and an outbound link to the Louisiana Secretary of
-State's official voter portal for registration status and a resident's sample
-ballot.
-
-The strip is static hand-authored content. It runs no crawl, no extraction, and
-no model call. It names no candidate, party, office, or position, and it ranks
-nothing. Public Parish points at the official voter portal instead of restating
-what that portal already publishes, so the strip sits outside the publication
-contract without weakening it.
-
-Confirm the election date against the Secretary of State's official calendar
-before the strip goes live. Do not write the date from memory. Remove or advance
-the strip once that date passes.
-
-## Government Record Model
-
-The system extracts granular records such as proposals, hearings, votes,
-contracts, appointments, and public actions. It can connect them into an issue
-timeline with these lifecycle states:
-
-1. discovered
-2. proposed
-3. scheduled
-4. amended
-5. postponed
-6. decided
-7. implementing
-8. completed
-9. canceled
-10. unknown
-
-The pipeline extracts all useful official records for completeness and search.
-Promotion to the main feeds requires a substantive decision and a valid
-importance assessment.
-
-## Sponsor Roles
-
-| Provider  | Essential responsibility                                                                                                              | Visible proof                                                |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| Convex    | Evidence graph, workflow state, source versions, live queries, AI Gateway, chat state, follows, schedules, Auth v2 alpha, and hosting | A validated source change updates the resident UI live       |
-| Firecrawl | Maps official sites, discovers sources, retrieves pages and PDFs, renders difficult pages, parses documents, and detects change       | A new or changed government artifact enters the pipeline     |
-| OpenAI    | Produces strict structured extraction, independent review, consequence factors, issue-link proposals, and grounded answers            | The app turns a source packet into cited records and answers |
-| AgentMail | Persists civic email threads and sends material-change and outcome alerts                                                             | A follower receives and can reply to a sourced update        |
-
-No provider is present only for a logo or a trivial API call.
-
-## Technical Direction
-
-- Frontend: TanStack Start in SPA/static-prerender mode
-- Hosting: Convex static hosting on a public `convex.site` URL
-- Sharing: per-issue Open Graph HTML from a Convex HTTP route that reads only
-  published issue data and points visitors to the canonical issue page
-- Backend: Convex queries, mutations, actions, scheduling, HTTP actions, and
-  realtime subscriptions
-- Auth: pinned Convex Auth v2 alpha with Google OAuth
-- Retrieval: Firecrawl through its Convex component
-- Email: AgentMail through its Convex component, including verification of
-  email-only alert subscriptions
-- AI: OpenAI Chat Completions through Convex AI Gateway with strict
-  `response_format` JSON schemas
-- Models: `openai/gpt-5.6-terra` for record extraction, consequence factors,
-  and issue linking; `openai/gpt-5.6-luna` for discovery classification,
-  ranking, independent publication review, and chat
-- Evidence: immutable source snapshots, content hashes, precise excerpts, PDF
-  pages or sections, retrieval times, processing history, and published versions
-
-See `docs/architecture.md` for the full design.
-
-## Publication Contract
-
-A claim may become public only when:
-
-1. the source belongs to the body's approved official-domain registry;
-2. an immutable source snapshot exists;
-3. extraction returns the strict schema;
-4. every material fact resolves to a citation in that snapshot;
-5. deterministic checks pass for names, dates, amounts, links, and source
-   versions;
-6. an independent OpenAI review returns a valid verdict;
-7. the final publication policy passes.
-
-If the source is incomplete, the product shows “Limited information available”
-or withholds the card. A second model call cannot turn absent evidence into a
-fact.
-
-## Success Scorecards
-
-### Civic Proof
-
-- 25 real residents use the live app
-- 10 issue or topic follows
-- 10 substantive chat questions
-- several users return or open an update
-- one real decision is followed from discovery through a later outcome
-- zero published claims without a resolving citation
-
-### Hackathon Proof
-
-- fresh Convex application and public repository
-- public `convex.site` app usable without an invite
-- meaningful Convex, Firecrawl, OpenAI, and AgentMail integrations
-- Convex AI Gateway and Auth v2 alpha working in the public app
-- live source-change demonstration
-- current root `hackathon.md`
-- under-three-minute demo dominated by product interaction
-- technical build posts on X or LinkedIn that tag all required sponsors
-- submission on vibeapps.dev before the deadline
-
-### Business Proof
-
-Keep this separate from civic usage:
-
-- qualified business conversations
-- Workflow Diagnostics
-- proposals
-- deposits
-- inbound requests from actual buyers or partners
-
-Views, resident signups, and hackathon attention are not counted as business
-leads.
-
-## Distribution
-
-- X and LinkedIn: technical build progress, sponsor integration, reliability,
-  and hackathon story
-- TikTok and Facebook: resident problem, official evidence, current local issue,
-  and how to use Public Parish
-
-One recording can produce separate edits. Content work is capped near 90 minutes
-per week. Posts in local Facebook groups must follow group rules and identify the
-builder transparently.
-
-The product voice stays nonpartisan even when the surrounding issue is
-controversial.
-
-## Scope Guardrails
-
-Do not build these before the complete loop is working and used:
-
-- exact-address personalization;
-- maps;
-- public comments or discussion;
-- testimony generation;
-- public-records request automation;
-- a separate procurement product;
-- full meeting-video transcription;
-- a municipal staff portal;
-- every Louisiana parish;
-- generic civic-platform configuration work.
-
-The hackathon scope permanently excludes FAQ aggregation, a productized public
-corrections workflow, public-triggered coverage compilation, live public
-compiler progress, and cross-device chat history. It also permanently excludes candidate
-profiles, ballot matching, and any district-level election feature. The
-landing-page voter-information strip is the only election surface, and it makes
-no claim of its own. Keep the public "Request your
-parish" form as demand capture, and run the coverage compiler only from an
-owner-controlled operation. Weekly roundup emails and per-issue dynamic share
-HTML remain part of the planned product.
-
-If schedule pressure appears, cut geographic breadth behind the public coverage
-gate before weakening citation, review, source versioning, chat grounding, or the
-end-to-end Lafayette demo.
-
-## Post-Hackathon Rule
-
-After submission, continue adding product features only if at least one of these
-is true:
-
-- residents repeatedly use alerts or return for outcomes;
-- a named newsroom, civic group, or government body will distribute or verify
-  the service;
-- a qualified commercial opportunity emerges.
-
-Otherwise, preserve Public Parish as a useful open-source civic service and a
-strong technical case study, then return product time to the core business.
-
-
-## Slice 9 completion
-
-The final feature build is complete through Slice 9, with subsequent repairs
-through PR #139. [Current build status and QA gates](docs/build-status.md)
-records release proof, exact supported bodies, automation limits, and remaining
-work. [Production certification](docs/slice-9-production-certification.md)
-preserves the initial release evidence. The [bounded catch-up checkpoint](docs/bounded-catchup-2026-09-07.md)
-records the latest paid processing and the owner's $10 total maximum.
-
-Proceed with the founder's full QA sweep. Limited beta follows a passing resident
-loop and useful evidence for the first testers, with coverage limitations visible.
-Full catch-up and all-body automatic updates are unfinished. An empty processing
-queue is not required before QA. No Slice 10 is planned.
+# Business and product plan
+
+Owner decisions updated September 7, 2026. Current delivery status and all
+unfinished work live in [the work plan](docs/work.md). Technical contracts live
+in [architecture](docs/architecture.md).
+
+## Purpose
+
+Public Parish is a free, open-source, nonpartisan Louisiana civic application.
+It helps residents understand consequential government decisions, inspect the
+official evidence, ask questions, follow a subject, and learn what changed.
+
+Government records are scattered across agendas, minutes, permits, notices,
+agreement documents, and agency websites. Public Parish connects those records
+into explanations a resident can inspect. It does not replace the official
+record, legal notice, or an agency's answer.
+
+## Audience and positioning
+
+Lead with recognizable Louisiana stories. Give a visitor a reason to read before
+asking them to configure local coverage. Then offer the decisions affecting their
+selected area. Reading and Ask require no account. Google sign-in supports saved
+interests and managed follows. Verified email subscriptions are a separate
+account-free delivery path.
+
+The working product promise is "Understand Louisiana's consequential stories,
+with the official evidence." This is proposed positioning for the coming design
+pass, not a claim that the story feature has shipped.
+
+Stories-first is an adoption hypothesis. Measure whether visitors inspect
+sources, ask useful questions, follow, and return. Interest in a familiar project
+does not establish approval or opposition to that project.
+
+## Approved launch scope
+
+Launch with exactly these three featured stories on Home:
+
+| Placement | Story | Geographic label |
+| --- | --- | --- |
+| Lead | Meta data center | Richland Parish, northeast Louisiana |
+| Secondary | SpaceX project | Pecan Island, Vermilion Parish |
+| Secondary | Applied Digital / Boyce data center | Rapides Parish |
+
+Use verified project names in published copy. "Monroe data center" can identify
+a research lead, but it does not replace the precise project geography.
+
+All three stories and the complete story functionality must work before the
+founder's global design and full QA pass begins. Required functionality includes
+owner-controlled source intake and review, versioned publication, photos,
+citations, story-scoped Ask, story follows and sourced updates, email replies,
+sharing, search, and related local records. A collection of static articles does
+not close this phase. The [work plan](docs/work.md) owns acceptance and order.
+
+The local product continues to cover the named bodies in Lafayette, Rapides,
+and East Baton Rouge defined in [sources](docs/sources.md). A story may span
+several agencies or places. Its publication does not certify continuous coverage
+of those agencies or add their parishes to the local selector.
+
+## Delivery order
+
+1. Finish story functionality and publish the three accepted launch stories.
+2. Complete global design changes, then page-by-page desktop and mobile design
+   and functional QA. Fix blocking findings.
+3. Launch publicly, conduct outreach, publish content, observe residents, and
+   make bounded fixes. Record the demo and submit with the owner's authorization.
+
+Functional verification during implementation is still required. The full
+founder design and QA campaign starts after the story acceptance gate. Broad
+promotion waits for the public launch gate. Preparing source dossiers and draft
+outreach materials does not authorize sending or publishing them.
+
+## Trust contract
+
+- Every published factual claim resolves to an immutable official-source
+  snapshot and precise citation, including story headlines, captions, and
+  previews when they make factual claims.
+- Preserve atomic decisions and single-body issue identities. Stories organize
+  accepted evidence across bodies without replacing those records.
+- Missing evidence produces a limited explanation or withheld publication.
+  Independent review cannot turn absent evidence into a fact.
+- Explain consequence, process, uncertainty, and public actions without advocacy.
+  Do not infer political motives or public consensus.
+- Separate editorial placement from deterministic importance and coverage
+  confidence. A featured story gets no stronger evidence status from attention.
+- Keep private questions, messages, email addresses, and resident records out of
+  public docs, analytics payloads, screenshots, and demos.
+
+## Spending and business boundaries
+
+The owner permits additional targeted spending over the remaining hackathon
+period when it improves the three stories, resident reliability, design and QA
+proof, launch operation, or the submission. The earlier $10 catch-up maximum was
+a containment measure after an excessive backfill run. It is not the total budget
+for the rest of the project.
+
+This is not permission for unlimited scraping, archive completion, all-body
+reactivation, or repeated retries without diagnosis. The [operations policy](docs/operations.md)
+requires finite task allowances, expected benefit, reuse of stored evidence,
+provider-cost accounting, and stop conditions. No new numeric allowance or
+production setting is established by this documentation change.
+
+Public Parish remains a bounded civic-service experiment and a public technical
+case study. Protect the weekday 90-minute Varholdt sales block. Resident use and
+hackathon attention do not count as commercial leads, paid diagnostics, proposals,
+or deposits. Prize money is uncertain and cannot be treated as revenue.
+
+The app stays free and open source during the hackathon. There is no paid civic
+tier, advertising product, paid placement, or sale of resident data in scope.
+After judging, compare resident usefulness, operating cost, and maintenance time
+before deciding its ongoing pace. Do not promise perpetual statewide service.
+
+## Evidence of success
+
+Aim for 25 permissioned or recruited residents, 10 follows, 10 substantive
+questions, several return visits, and a sourced update somebody finds useful.
+These are working targets, not measured results or conditions for inventing
+activity. Keep anonymous browser counts separate from known residents.
+
+A persuasive demo shows an understandable story, an exact receipt, a grounded
+question, a follow, and an evidence-backed update. Sponsor integrations must do
+real work. [Marketing](docs/marketing.md) owns distribution and measurement;
+[submission](docs/submission.md) owns organizer requirements and demo artifacts.
+
+## Deferred scope
+
+Do not add a fourth launch story, broad CCS coverage, candidate comparisons,
+election predictions, a ballot database, maps, public discussion, testimony
+writing, public-records request automation, procurement tools, video
+transcription, a government staff portal, FAQ aggregation, a public corrections
+workflow, public-triggered compilation, live public compiler progress, or
+cross-device chat history for this launch.
+
+Keep the small dated voter-information strip with official outbound links.
+Keep private source-problem reports and public coverage requests. Reports and
+requests do not launch paid source work.
+
+## Decision record
+
+On September 7 the owner approved consolidating documentation, leading Home with
+Louisiana stories, and retaining local issues below them. The owner then fixed
+the launch set as Meta, SpaceX, and Boyce, required story completion before the
+full design and QA pass, and replaced a catch-up-only spending restriction with
+purposeful spending on hackathon outcomes. Older slice plans and the optional
+story-follow fallback are superseded by this scope.
+
+[Historical plans and release evidence](docs/archive/README.md) remain available.
+Do not use their unfinished checkboxes as the current work queue.

@@ -1,0 +1,166 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../work.md).
+Original repository path: `README.md`.
+
+# Public Parish
+
+Public Parish is a free, open-source, nonpartisan application that helps
+Louisiana residents see consequential local-government decisions, inspect the
+official evidence, ask questions, follow an issue, and learn what happened after
+the vote.
+
+This repository was created for the
+[Convex All Gas Hackathon](https://www.convex.dev/hackathons/all-gas). It is a
+fresh application. The existing Lafayette ITEP project contributes evidence and
+revision principles, not code or a submission base.
+
+## Current state
+
+The planned feature build is complete through Slice 9. Residents can explore
+published decisions and issue timelines, inspect immutable official evidence,
+ask grounded questions, and manage Google or verified-email follows. Sourced
+alerts, grounded email replies, weekly roundups, private source reports,
+coverage requests, verified launch notices, and issue share HTML are deployed.
+Published history and corpus Ask work in batches as the corpus grows.
+
+Eleven of the twelve named launch bodies are supported for their approved
+source types. Youngsville is degraded because newer usable official documents
+remain unavailable. Lafayette stays selectable with a coverage limitation.
+Only Metropolitan Council automation is enabled for bounded catch-up. Other
+body policies are paused, and the backlog is unfinished.
+
+The [September 7 catch-up checkpoint](docs/bounded-catchup-2026-09-07.md) records
+nonrenewing $4 source AI and $0.50 Ask allowances within the owner's $10 total
+maximum. These are estimated model-cost controls, not a cap on every hosting or
+provider charge. Direct OpenAI fallback remains disabled.
+
+[Current build status and QA gates](docs/build-status.md) names the supported
+bodies, release proof, and remaining work. Repairs through PR #139 passed 560 CI
+tests and production smoke. The founder's full QA sweep is next. Limited beta
+requires a passing resident loop and useful evidence for the intended testers;
+full historical catch-up and organic resident benefit are not claimed.
+
+- [Public production app](https://www.publicparish.com)
+- [Qualifying hackathon host](https://befitting-flamingo-587.convex.site)
+- [Development app](https://woozy-wren-227.convex.site)
+
+## Local setup
+
+Requirements:
+
+- Node.js 22
+- npm 11
+- a Convex account with access to the `public-parish` project
+
+From a fresh clone:
+
+```bash
+npm ci
+npx convex ai-files install
+npx convex dev --once
+npm run verify
+npm run dev
+```
+
+Open `http://localhost:3000` to use the resident interface.
+`npx convex dev --once` creates the ignored `.env.local` file. Copy
+`.env.example` only when documenting variable names. Never commit real values.
+
+The frontend runs on the laptop. The backend does not. `npm run dev` runs Vite
+locally and keeps the personal Convex development deployment synchronized with
+the current branch. The local UI, development database, actions, and file
+storage all use that remote development deployment. It is one shared personal
+development deployment, not one deployment per branch. After switching
+branches, run `npm run dev` so the remote backend matches the checked-out code.
+
+Useful commands:
+
+```bash
+npm run dev:web
+npm run dev:convex
+npm run typecheck
+npm run test
+npm run build
+npm run lint
+npm run hosting:smoke:dev
+npm run smoke:production
+```
+
+`npm run hosting:smoke:dev` builds with the development deployment URL and
+uploads the result to that deployment's `convex.site` host. Use it only when a
+change needs the real static host. Production builds fail when
+`VITE_CONVEX_URL` is missing.
+
+These setup and validation commands are for human contributors. Agents follow
+`AGENTS.md`: automated validation runs in GitHub Actions unless the owner
+approves the exact local command.
+
+Pull requests run `npm run verify`. Every push to `main`, including an explicitly
+authorized direct documentation push, triggers the `Deploy production`
+workflow. It verifies that exact commit, runs `npm run deploy` to publish the
+matching backend and frontend, applies the idempotent source-registry seed, and
+runs `npm run smoke:production`. The smoke checks the direct `convex.site`, the
+canonical custom domain, the apex redirect, and the production readiness query.
+
+The bare-domain redirect is isolated in
+[`infra/apex-redirect`](../../../infra/apex-redirect/README.md). It preserves paths and
+query strings but never hosts the application frontend. The hackathon submission
+URL remains the public `convex.site` host; the custom domain is an additional
+resident-facing entry point.
+
+There is no staging environment during the hackathon. Test branches with the
+local UI and personal development backend. Use a preview deployment only when
+auth, webhook, routing, or schema work genuinely needs isolation.
+
+## Canonical documents
+
+- [Build completion and remaining work](docs/build-status.md)
+- [Slice 9 execution plan](docs/slice-9-final-build-plan.md)
+- [Production certification](docs/slice-9-production-certification.md)
+- [Source operations runbook](docs/slice-9-operations-runbook.md)
+
+- [Product and operating plan](PLAN.md)
+- [Grilling decision record](docs/decisions.md)
+- [Resident product specification](docs/product-spec.md)
+- [Technical architecture](docs/architecture.md)
+- [Initial official-source registry](docs/sources.md)
+- [Four-week build plan](docs/build-plan.md)
+- [Hackathon requirements and win plan](docs/hackathon.md)
+- [Resident interface master plan](docs/resident-interface-plan.md)
+- [Resident interface Design Slice 1](docs/resident-interface-slice-1.md)
+- [Resident interface Design Slice 2](docs/resident-interface-slice-2.md)
+- [Resident interface Design Slice 3](docs/resident-interface-slice-3.md)
+- [Resident interface Design Slice 4](docs/resident-interface-slice-4.md)
+- [Resident interface Design Slice 5](docs/resident-interface-slice-5.md)
+- [Resident interface Design Slice 6](docs/resident-interface-slice-6.md)
+- [Resident interface Design Slice 7](docs/resident-interface-slice-7.md)
+- [Resident interface Design Slice 8](docs/resident-interface-slice-8.md)
+- [Post-Slice-5 implementation plan](docs/post-slice-5-pr-plan.md)
+- [Public build log](../../../hackathon.md)
+
+## Implemented setup and intended stack
+
+- TanStack Start in SPA/static-prerender mode
+- Convex backend and realtime queries, with static hosting registered
+- Firecrawl for official-source discovery, retrieval, PDFs, and change detection
+- `@convex-dev/workflow` for the private prepare, extract, validate, and complete
+  pipeline
+- Convex AI Gateway for OpenAI Chat Completions with strict structured outputs
+- `openai/gpt-5.6-terra` for record extraction, consequence factors, and issue
+  linking; `openai/gpt-5.6-luna` for discovery classification, ranking,
+  independent review, and chat
+- Convex Auth v2 alpha with Google OAuth
+- AgentMail for verified email subscriptions, inbound threads, and
+  material-change alerts
+
+Direct dependencies and the lockfile use exact versions. Convex Auth v2 is
+pinned to `2.0.0-alpha.1` and owns Google sessions for saved resident setup.
+Terra extraction and Luna review have passed real development and production
+decision cases.
+
+## License
+
+MIT. See [LICENSE](../../../LICENSE).

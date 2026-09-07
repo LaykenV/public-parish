@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/source-operations-2026-09-07.md`.
+
 # Source operations, September 7, 2026 UTC
 
 This is the recovery checkpoint before the owner funded additional processing.

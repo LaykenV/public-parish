@@ -1,3 +1,10 @@
+# Historical document
+
+Archived September 7, 2026 before the stories-first launch plan. This document
+records an earlier plan or checkpoint. It does not authorize work, set current
+budgets, or override the [current work plan](../../../work.md).
+Original repository path: `docs/build-status.md`.
+
 # Build completion and remaining work
 
 Documentation reviewed September 7, 2026 UTC against application release
