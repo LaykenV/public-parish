@@ -214,6 +214,26 @@ test('owner correction creates one new unapproved candidate and preserves the or
   } finally { vi.useRealTimers() }
 })
 
+test('historical correction intent is explicit, immutable and separate from material update review', async () => {
+  vi.useFakeTimers()
+  try {
+    const { t, owner, args, buildId } = await setup()
+    workflowTest.register(t)
+    await owner.mutation(api.stories.operations.approve, args)
+    const parent = await t.run(ctx => ctx.db.get(buildId))
+    const draft = { ...parent!.draft!, title: { ...parent!.draft!.title, text: 'Historical agency announcement.' } }
+    const request = { parentBuildId: buildId, parentDraftHash: args.draftHash, expectedGeneration: 1, draft }
+    const baseline = await owner.mutation(api.stories.corrections.prepare, { ...request, notificationIntent: 'baseline' })
+    expect(await owner.mutation(api.stories.corrections.prepare, { ...request, notificationIntent: 'baseline' })).toBe(baseline)
+    const update = await owner.mutation(api.stories.corrections.prepare, request)
+    const rows = await t.run(async ctx => ({ baseline: await ctx.db.get(baseline), update: await ctx.db.get(update) }))
+    expect(rows.baseline?.notificationIntent).toBe('baseline')
+    expect(rows.update?.notificationIntent).toBe('update')
+    expect(rows.baseline?.inputHash).not.toBe(rows.update?.inputHash)
+    expect(rows.baseline?.review).toBeUndefined()
+  } finally { vi.useRealTimers() }
+})
+
 test('draft corrections refuse changed parents, cross-story citations and version races', async () => {
   const { t, owner, args, buildId, storyId } = await setup()
   const parent = await t.run(ctx => ctx.db.get(buildId))

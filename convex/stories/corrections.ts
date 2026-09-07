@@ -9,7 +9,8 @@ import { resolveSources, evidenceHash } from './evidence'
 import { hashStoryValue } from './hashing'
 
 export const prepare = mutation({
-  args: { parentBuildId: v.id('storyBuilds'), parentDraftHash: v.string(), expectedGeneration: v.number(), draft: storyDraft },
+  args: { parentBuildId: v.id('storyBuilds'), parentDraftHash: v.string(), expectedGeneration: v.number(), draft: storyDraft,
+    notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
   returns: v.id('storyBuilds'),
   handler: async (ctx, args) => {
     const owner = await requireOwner(ctx)
@@ -30,7 +31,8 @@ export const prepare = mutation({
     const draftHash = await hashStoryValue(args.draft)
     if (draftHash === parent.draftHash) throw new Error('The corrected draft must change')
     const inputHash = await hashStoryValue({ contract: 'story-owner-correction-v1', parentBuildId: parent._id, parentDraftHash: parent.draftHash,
-      draftHash, evidenceHash: await evidenceHash(parent.spans), expectedGeneration: args.expectedGeneration, media: parent.media ? { ...parent.media, storageId: undefined } : null })
+      draftHash, evidenceHash: await evidenceHash(parent.spans), expectedGeneration: args.expectedGeneration, notificationIntent: args.notificationIntent,
+      media: parent.media ? { ...parent.media, storageId: undefined } : null })
     const existing = await ctx.db.query('storyBuilds').withIndex('by_input_hash', q => q.eq('inputHash', inputHash)).unique()
     if (existing) return existing._id
     if (story.generation !== args.expectedGeneration) throw new Error('Correction generation changed')
@@ -42,7 +44,7 @@ export const prepare = mutation({
       inputHash, sourceBindings: parent.sourceBindings, spans: parent.spans, relatedPublications: parent.relatedPublications, media: parent.media,
       state: 'drafted', draft: args.draft, draftHash, draftModel: parent.draftModel,
       draftProvenance: { kind: 'owner_correction', parentBuildId: parent._id, parentDraftHash: parent.draftHash },
-      notificationIntent: story.currentVersionId ? 'update' : 'baseline', runId, startedBy: owner._id, createdAt: Date.now() })
+      notificationIntent: args.notificationIntent ?? (story.currentVersionId ? 'update' : 'baseline'), runId, startedBy: owner._id, createdAt: Date.now() })
     // The workflow retains this saved draft and always starts a fresh independent
     // review. No prior approval or review is copied into the new candidate.
     const workflowId = await issueWorkflowManager.start(ctx, internal.stories.workflow.buildStory, { buildId })
