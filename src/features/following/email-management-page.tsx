@@ -172,7 +172,7 @@ function SubscriberEmailManagementPage({
         <header className="following-head email-manage-head">
           <p className="following-kicker">Email-only follows</p>
           <h1>Manage email alerts</h1>
-          <p>This private link manages every follow for this verified address.</p>
+          <p>This private link manages the follows shown below for your verified address.</p>
         </header>
         {subscriptions.length === 0 ? (
           <section className="email-manage-result">
