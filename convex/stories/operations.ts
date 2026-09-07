@@ -1,3 +1,4 @@
+import { indexStory } from './search'
 import { v } from 'convex/values'
 import { paginationOptsValidator } from 'convex/server'
 import { mutation, query } from '../_generated/server'
@@ -61,6 +62,7 @@ export const approve = mutation({
     await ctx.db.patch(build._id, { versionId, state: mode === 'withheld' ? 'withheld' : 'published' })
     if (mode !== 'withheld') {
       await ctx.db.patch(story._id, { currentVersionId: versionId, generation: story.generation + 1, state: 'active', withdrawalReason: undefined, updatedAt: Date.now() })
+      await indexStory(ctx, story._id)
       // Initial publication has no material event. S5 adds typed story events
       // in this transaction before mail or resident subscription is enabled.
     }
@@ -77,6 +79,7 @@ export const withdraw = mutation({
     if (!story || story.generation !== args.expectedGeneration) throw new Error('Story changed before withdrawal')
     if (!args.reason.trim() || args.reason.length > 600) throw new Error('Supply a short public withdrawal reason')
     await ctx.db.patch(story._id, { state: 'withdrawn', withdrawalReason: args.reason, generation: story.generation + 1, updatedAt: Date.now() })
+    await indexStory(ctx, story._id)
     return null
   },
 })

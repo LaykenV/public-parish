@@ -84,7 +84,7 @@ export type ResultRowData = {
   date?: string
   href: string
   id?: string
-  kind: 'Decision record' | 'Meeting' | 'Government body' | 'Routine record'
+  kind: 'Story' | 'Decision record' | 'Meeting' | 'Government body' | 'Routine record'
   meta?: string
   place?: string
   sourceStatus?: EvidenceStatus
@@ -160,6 +160,7 @@ export const SOURCE_OPTIONS = [
 ] as const
 
 export const TYPE_OPTIONS = [
+  { label: 'Stories', value: 'story' },
   { label: 'Issues', value: 'issue' },
   { label: 'Decision records', value: 'decision' },
   { label: 'Meetings', value: 'meeting' },

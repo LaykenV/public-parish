@@ -6,7 +6,7 @@ import type { ExploreEntry } from './explore-model'
 
 export function usePublishedSearch(enabled: boolean, search: ExploreSearch) {
   return usePaginatedQuery(api.resident.search.search, enabled ? {
-    q: search.q, kind: search.type === 'decision' || search.type === 'issue' || search.type === 'meeting' || search.type === 'body' ? search.type : undefined, place: search.place, body: search.body,
+    q: search.q, kind: search.type === 'story' || search.type === 'decision' || search.type === 'issue' || search.type === 'meeting' || search.type === 'body' ? search.type : undefined, place: search.place, body: search.body,
     lifecycle: search.lifecycle, source: search.source, topic: search.topic, date: search.date, sort: search.sort,
   } : 'skip', { initialNumItems: 25 })
 }
@@ -21,6 +21,6 @@ export function toSearchEntry(row: SearchEntry): ExploreEntry {
     }
     return { kind: 'issue', date: row.date ?? undefined, issue }
   }
-  const kind = row.kind === 'decision' ? 'Decision record' : row.kind === 'meeting' ? 'Meeting' : 'Government body'
+  const kind = row.kind === 'story' ? 'Story' : row.kind === 'decision' ? 'Decision record' : row.kind === 'meeting' ? 'Meeting' : 'Government body'
   return { kind, date: row.date ?? undefined, row: { kind, href: row.href, title: row.title, body: row.bodyName, place: row.placeName, state: row.kind === 'decision' ? state : undefined, date: row.date ?? undefined, sourceStatus: row.kind === 'decision' ? row.mode === 'full' ? 'Evidence available' : 'Limited information' : undefined } }
 }

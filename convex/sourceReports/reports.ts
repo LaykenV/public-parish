@@ -302,7 +302,7 @@ function normalizeRecordPath(value: string): string {
     throw reportError('record_url')
   }
   if (
-    !/^\/(issues|decisions|meetings)\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(
+    !/^\/(issues|decisions|meetings|stories)\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(
       url.pathname,
     )
   ) {

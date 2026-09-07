@@ -25,6 +25,7 @@ import { Route as FollowingNotificationsRouteImport } from './routes/following_.
 import { Route as IssuesIssueSlugRouteImport } from './routes/issues.$issueSlug'
 import { Route as MeetingsMeetingIdRouteImport } from './routes/meetings.$meetingId'
 import { Route as OperationsCoverageRouteImport } from './routes/operations_.coverage'
+import { Route as StoriesStorySlugRouteImport } from './routes/stories.$storySlug'
 import { Route as EmailManageTokenRouteImport } from './routes/email.manage.$token'
 
 const IndexRoute = IndexRouteImport.update({
@@ -107,6 +108,11 @@ const OperationsCoverageRoute = OperationsCoverageRouteImport.update({
   path: '/operations/coverage',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StoriesStorySlugRoute = StoriesStorySlugRouteImport.update({
+  id: '/stories/$storySlug',
+  path: '/stories/$storySlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmailManageTokenRoute = EmailManageTokenRouteImport.update({
   id: '/email/manage/$token',
   path: '/email/manage/$token',
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/issues/$issueSlug': typeof IssuesIssueSlugRoute
   '/meetings/$meetingId': typeof MeetingsMeetingIdRoute
   '/operations/coverage': typeof OperationsCoverageRoute
+  '/stories/$storySlug': typeof StoriesStorySlugRoute
   '/email/manage/$token': typeof EmailManageTokenRoute
 }
 export interface FileRoutesByTo {
@@ -149,6 +156,7 @@ export interface FileRoutesByTo {
   '/issues/$issueSlug': typeof IssuesIssueSlugRoute
   '/meetings/$meetingId': typeof MeetingsMeetingIdRoute
   '/operations/coverage': typeof OperationsCoverageRoute
+  '/stories/$storySlug': typeof StoriesStorySlugRoute
   '/email/manage/$token': typeof EmailManageTokenRoute
 }
 export interface FileRoutesById {
@@ -169,6 +177,7 @@ export interface FileRoutesById {
   '/issues/$issueSlug': typeof IssuesIssueSlugRoute
   '/meetings/$meetingId': typeof MeetingsMeetingIdRoute
   '/operations_/coverage': typeof OperationsCoverageRoute
+  '/stories/$storySlug': typeof StoriesStorySlugRoute
   '/email/manage/$token': typeof EmailManageTokenRoute
 }
 export interface FileRouteTypes {
@@ -190,6 +199,7 @@ export interface FileRouteTypes {
     | '/issues/$issueSlug'
     | '/meetings/$meetingId'
     | '/operations/coverage'
+    | '/stories/$storySlug'
     | '/email/manage/$token'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/issues/$issueSlug'
     | '/meetings/$meetingId'
     | '/operations/coverage'
+    | '/stories/$storySlug'
     | '/email/manage/$token'
   id:
     | '__root__'
@@ -228,6 +239,7 @@ export interface FileRouteTypes {
     | '/issues/$issueSlug'
     | '/meetings/$meetingId'
     | '/operations_/coverage'
+    | '/stories/$storySlug'
     | '/email/manage/$token'
   fileRoutesById: FileRoutesById
 }
@@ -248,6 +260,7 @@ export interface RootRouteChildren {
   IssuesIssueSlugRoute: typeof IssuesIssueSlugRoute
   MeetingsMeetingIdRoute: typeof MeetingsMeetingIdRoute
   OperationsCoverageRoute: typeof OperationsCoverageRoute
+  StoriesStorySlugRoute: typeof StoriesStorySlugRoute
   EmailManageTokenRoute: typeof EmailManageTokenRoute
 }
 
@@ -365,6 +378,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperationsCoverageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stories/$storySlug': {
+      id: '/stories/$storySlug'
+      path: '/stories/$storySlug'
+      fullPath: '/stories/$storySlug'
+      preLoaderRoute: typeof StoriesStorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/email/manage/$token': {
       id: '/email/manage/$token'
       path: '/email/manage/$token'
@@ -392,6 +412,7 @@ const rootRouteChildren: RootRouteChildren = {
   IssuesIssueSlugRoute: IssuesIssueSlugRoute,
   MeetingsMeetingIdRoute: MeetingsMeetingIdRoute,
   OperationsCoverageRoute: OperationsCoverageRoute,
+  StoriesStorySlugRoute: StoriesStorySlugRoute,
   EmailManageTokenRoute: EmailManageTokenRoute,
 }
 export const routeTree = rootRouteImport

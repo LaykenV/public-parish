@@ -46,7 +46,7 @@ export function getExploreEntries(
     Boolean(text && text.toLowerCase().includes(query))
 
   const issuePasses = (issue: IssueCardData) => {
-    if (search.type === 'decision' || search.type === 'meeting') return false
+    if (search.type === 'story' || search.type === 'decision' || search.type === 'meeting') return false
     if (search.place && issue.place !== search.place) return false
     if (search.topic && !issue.topics.includes(search.topic)) return false
     if (search.body && issue.body !== search.body) return false
@@ -76,6 +76,7 @@ export function getExploreEntries(
 
   const rowPasses = (row: ResultRowData) => {
     if (search.type === 'issue') return false
+    if (search.type === 'story' && row.kind !== 'Story') return false
     if (search.type === 'decision' && row.kind !== 'Decision record') {
       return false
     }
