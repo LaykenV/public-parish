@@ -19,7 +19,7 @@ const PUBLISHERS: Partial<Record<string, { name: string; root: string; domains: 
 
 type Source = StoryManifest['sources'][number]
 type ReadCtx = Pick<QueryCtx | MutationCtx, 'db'>
-async function registeredSource(ctx: ReadCtx, source: Source) {
+export async function registeredSource(ctx: ReadCtx, source: Source) {
   const body = await ctx.db.query('governmentBodies').withIndex('by_slug', q => q.eq('slug', source.bodyKey)).unique()
   if (!body || body.name !== source.bodyName) return null
   const registries = await ctx.db.query('sourceRegistries').withIndex('by_body_and_status', q => q.eq('governmentBodyId', body._id)).take(10)

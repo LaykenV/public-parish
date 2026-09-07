@@ -61,6 +61,42 @@ async function setup() {
   return { t, owner: t.withIdentity({ subject: ids.ownerId }), ...ids }
 }
 
+test('accepted artifact transfer refuses other owners and changed bytes, then replays without publication or mail', async () => {
+  const { t, owner, args, buildId, snapshotId } = await setup()
+  vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')
+  vi.stubEnv('STORY_ARTIFACT_TRANSFER_KEY', '1'.repeat(64))
+  await owner.mutation(api.stories.operations.approve, args)
+  const context = await t.run(async ctx => {
+    const build = (await ctx.db.get(buildId))!
+    const imported = (await ctx.db.get(build.importId))!
+    const snapshot = (await ctx.db.get(snapshotId))!
+    return { importId: imported._id, bundleHash: imported.bundleHash, sourceKey: build.sourceBindings[0].sourceKey, rawStorageId: snapshot.rawStorageId, normalizedStorageId: snapshot.normalizedStorageId }
+  })
+  const request = { storyKey: 'applied-digital-boyce', sourceKey: context.sourceKey, targetSite: 'https://woozy-wren-227.convex.site' }
+  await expect(t.action(api.stories.transfer.exportSource, request)).rejects.toThrow()
+  const exported = await owner.action(api.stories.transfer.exportSource, request)
+  const transfer = { importId: context.importId, bundleHash: context.bundleHash, packet: exported.packet, signature: exported.signature, rawStorageId: context.rawStorageId, normalizedStorageId: context.normalizedStorageId }
+  await expect(t.action(api.stories.transfer.importSource, transfer)).rejects.toThrow()
+  const wrong = await t.run(ctx => ctx.storage.store(new Blob(['different bytes'])))
+  await expect(owner.action(api.stories.transfer.importSource, { ...transfer, rawStorageId: wrong })).rejects.toThrow('Transfer artifact')
+  expect(await owner.action(api.stories.transfer.importSource, transfer)).toEqual({ snapshotId, reused: true })
+  // Simulate a target missing the official source, with its uploaded bytes retained.
+  await t.run(ctx => ctx.db.delete(snapshotId))
+  const adopted = await owner.action(api.stories.transfer.importSource, transfer)
+  expect(adopted.reused).toBe(false)
+  expect(adopted.snapshotId).not.toBe(snapshotId)
+  expect(await owner.action(api.stories.transfer.importSource, transfer)).toEqual({ ...adopted, reused: true })
+  await t.run(async ctx => {
+    expect(await ctx.db.query('storyArtifactTransfers').collect()).toHaveLength(1)
+    expect(await ctx.db.query('storyVersions').collect()).toHaveLength(1)
+    expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0)
+    expect(await ctx.db.query('notificationDeliveries').collect()).toHaveLength(0)
+    expect((await ctx.db.get(adopted.snapshotId))?.retrievalTime).toBe(1)
+    await ctx.db.patch(adopted.snapshotId, { normalizedContentHash: 'f'.repeat(64) })
+  })
+  await expect(owner.action(api.stories.transfer.importSource, transfer)).rejects.toThrow('different source evidence')
+})
+
 test('owner approval freezes a version; replay creates no version or baseline mail', async () => {
   const { t, owner, args, storyId } = await setup()
   const version = await owner.mutation(api.stories.operations.approve, args)

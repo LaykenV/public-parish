@@ -10,6 +10,7 @@
 
 import type * as stories_contracts from "../stories/contracts.js";
 import type * as stories_corrections from "../stories/corrections.js";
+import type * as stories_transfer from "../stories/transfer.js";
 import type * as stories_evidence from "../stories/evidence.js";
 import type * as stories_operations from "../stories/operations.js";
 import type * as stories_buildLedger from "../stories/buildLedger.js";
@@ -167,6 +168,7 @@ declare const fullApi: ApiFromModules<{
   "stories/evidence": typeof stories_evidence;
   "stories/contracts": typeof stories_contracts;
   "stories/corrections": typeof stories_corrections;
+  "stories/transfer": typeof stories_transfer;
   "stories/imports": typeof stories_imports;
   "ai/chatCompletions": typeof ai_chatCompletions;
   "ai/provider": typeof ai_provider;

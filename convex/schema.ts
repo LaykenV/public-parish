@@ -921,6 +921,11 @@ export default defineSchema({
       'checkedAt',
     ]),
 
+  storyArtifactTransfers: defineTable({
+    snapshotId: v.id('sourceSnapshots'), importId: v.id('storyImports'), sourceKey: v.string(),
+    packetJson: v.string(), signature: v.string(), importedBy: v.id('users'), createdAt: v.number(),
+  }).index('by_snapshot', ['snapshotId']),
+
   sourceSnapshots: defineTable({
     registryId: v.id('sourceRegistries'),
     canonicalUrl: v.string(),
