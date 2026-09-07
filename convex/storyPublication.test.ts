@@ -152,6 +152,44 @@ test('owner retry preserves a saved draft and enforces a finite retry count', as
   } finally { vi.useRealTimers() }
 })
 
+test('owner correction creates one new unapproved candidate and preserves the original review', async () => {
+  vi.useFakeTimers()
+  try {
+    const { t, owner, args, buildId } = await setup()
+    workflowTest.register(t)
+    const before = await t.run(ctx => ctx.db.get(buildId))
+    const draft = { ...before!.draft!, title: { ...before!.draft!.title, text: 'The agency announced its proposal.' } }
+    const correction = { parentBuildId: buildId, parentDraftHash: args.draftHash, expectedGeneration: 0, draft }
+    await expect(t.mutation(api.stories.corrections.prepare, correction)).rejects.toThrow('Sign in with Google')
+    const id = await owner.mutation(api.stories.corrections.prepare, correction)
+    expect(await owner.mutation(api.stories.corrections.prepare, correction)).toBe(id)
+    const corrected = await t.run(async ctx => {
+      expect(await ctx.db.get(buildId)).toEqual(before)
+      expect(await ctx.db.query('storyBuilds').collect()).toHaveLength(2)
+      expect(await ctx.db.query('storyVersions').collect()).toHaveLength(0)
+      expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0)
+      return (await ctx.db.get(id))!
+    })
+    expect(corrected.state).toBe('drafted')
+    expect(corrected.reviewHash).toBeUndefined()
+    expect(corrected.review).toBeUndefined()
+    expect(corrected.draftProvenance).toEqual({ kind: 'owner_correction', parentBuildId: buildId, parentDraftHash: args.draftHash })
+    await expect(owner.mutation(api.stories.operations.approve, { ...args, buildId: id, inputHash: corrected.inputHash, draftHash: corrected.draftHash! })).rejects.toThrow('Approval inputs changed')
+  } finally { vi.useRealTimers() }
+})
+
+test('draft corrections refuse changed parents, cross-story citations and version races', async () => {
+  const { t, owner, args, buildId, storyId } = await setup()
+  const parent = await t.run(ctx => ctx.db.get(buildId))
+  const draft = { ...parent!.draft!, title: { ...parent!.draft!.title, text: 'A corrected proposal title' } }
+  const correction = { parentBuildId: buildId, parentDraftHash: args.draftHash, expectedGeneration: 0, draft }
+  await expect(owner.mutation(api.stories.corrections.prepare, { ...correction, parentDraftHash: 'changed' })).rejects.toThrow('inputs changed')
+  await expect(owner.mutation(api.stories.corrections.prepare, { ...correction, draft: { ...draft, title: { ...draft.title, evidenceKeys: ['other-story:0:1'] } } })).rejects.toThrow('unsupported')
+  await t.run(ctx => ctx.db.patch(storyId, { generation: 1 }))
+  await expect(owner.mutation(api.stories.corrections.prepare, correction)).rejects.toThrow('generation changed')
+  expect(await t.run(ctx => ctx.db.query('storyBuilds').collect())).toHaveLength(1)
+})
+
 test('anonymous story Ask accepts only reviewed current spans and refuses another session', async () => {
   const { t, owner, args, storyId } = await setup()
   const versionId = await owner.mutation(api.stories.operations.approve, args)

@@ -103,22 +103,24 @@ function ImportWork({ imported }: { imported: Doc<'storyImports'> }) {
     })}>Prepare exact candidate</Button>
     {message ? <p role="status">{message}</p> : null}
     <h3>Build receipts</h3><ul>{builds?.map(build => <li key={build.id}><button type="button" onClick={() => setBuildId(build.id)}>{build.state}, {new Date(build.createdAt).toLocaleString()}</button></li>)}</ul>
-    {buildId ? <BuildWork key={buildId} buildId={buildId} /> : null}
+    {buildId ? <BuildWork key={buildId} buildId={buildId} onSelect={setBuildId} /> : null}
   </section>
 }
 
-function BuildWork({ buildId }: { buildId: Id<'storyBuilds'> }) {
+function BuildWork({ buildId, onSelect }: { buildId: Id<'storyBuilds'>; onSelect: (id: Id<'storyBuilds'>) => void }) {
   const preview = useBuild(buildId)
   if (!preview) return <p role="status">Loading exact candidate...</p>
-  return <ReviewCandidate key={`${preview.build._id}:${preview.build.inputHash}:${preview.build.draftHash}:${preview.build.reviewHash}`} build={preview.build} previous={preview.previous} imageUrl={preview.imageUrl} />
+  return <ReviewCandidate key={`${preview.build._id}:${preview.build.inputHash}:${preview.build.draftHash}:${preview.build.reviewHash}`} build={preview.build} previous={preview.previous} imageUrl={preview.imageUrl} onSelect={onSelect} />
 }
 
-function ReviewCandidate({ build, previous, imageUrl }: { build: Doc<'storyBuilds'>; previous: Doc<'storyVersions'> | null; imageUrl: string | null }) {
+function ReviewCandidate({ build, previous, imageUrl, onSelect }: { build: Doc<'storyBuilds'>; previous: Doc<'storyVersions'> | null; imageUrl: string | null; onSelect: (id: Id<'storyBuilds'>) => void }) {
   const identity = useStoryIdentity(build.storyId)
   const history = useStoryHistory(build.storyId)
   const approve = useMutation(api.stories.operations.approve)
   const retry = useMutation(api.stories.buildLedger.retry)
   const withdraw = useMutation(api.stories.operations.withdraw)
+  const prepareCorrection = useMutation(api.stories.corrections.prepare)
+  const [correction, setCorrection] = useState(build.draft ? JSON.stringify(build.draft, null, 2) : '')
   const [checked, setChecked] = useState(false)
   const [reason, setReason] = useState('')
   const [message, setMessage] = useState('')
@@ -126,6 +128,12 @@ function ReviewCandidate({ build, previous, imageUrl }: { build: Doc<'storyBuild
   async function operate(task: () => Promise<string>) { setPending(true); try { setMessage(await task()) } catch (error) { setMessage(errorText(error)) } finally { setPending(false) } }
   return <section><h3>Exact candidate review</h3><p>State {build.state}. Notification intent {build.notificationIntent ?? 'update'}.</p><p>Input <code>{build.inputHash}</code><br />Draft <code>{build.draftHash ?? 'Pending'}</code><br />Review <code>{build.reviewHash ?? 'Pending'}</code></p>
     {build.draft ? <><p>Changed fields: {changedDraftFields(previous?.payload ?? null, build.draft).join(', ') || 'None'}</p><div className="story-review-columns"><section><h4>Previous accepted version</h4><pre>{previous ? JSON.stringify(previous.payload, null, 2) : 'No previous publication'}</pre></section><section><h4>Candidate</h4><pre>{JSON.stringify(build.draft, null, 2)}</pre></section></div></> : <p>Drafting has not completed.</p>}
+    {build.draftProvenance ? <p>Owner-corrected draft based on immutable draft <code>{build.draftProvenance.parentDraftHash}</code>. It requires its own independent review and approval.</p> : null}
+    {build.draft && build.state !== 'queued' && build.state !== 'drafted' ? <details><summary>Correct this draft</summary><p>Use the existing evidence keys. This preserves the original candidate and spends only on a new independent review. It does not publish.</p><label>Corrected draft JSON <textarea rows={16} value={correction} maxLength={250000} onChange={event => setCorrection(event.target.value)} /></label><Button disabled={pending || !identity || !build.draftHash} onClick={() => void operate(async () => {
+      const id = await prepareCorrection({ parentBuildId: build._id, parentDraftHash: build.draftHash!, expectedGeneration: identity!.generation, draft: JSON.parse(correction) })
+      onSelect(id)
+      return 'Corrected candidate prepared for independent review.'
+    })}>Prepare corrected draft for review</Button></details> : null}
     {build.media ? <figure>{imageUrl ? <img className="story-review-image" src={imageUrl} alt={build.media.alt} width={build.media.width} height={build.media.height} /> : <p>Image artifact unavailable.</p>}<figcaption>{build.media.caption} · {build.media.credit} · {build.media.license}<p>Alt text: {build.media.alt}</p><a href={build.media.originalUrl} target="_blank" rel="noreferrer">Original image</a>{' · '}<a href={build.media.permissionEvidenceUrl} target="_blank" rel="noreferrer">Permission evidence</a></figcaption></figure> : null}
     <h4>Exact evidence</h4>{build.spans.map(span => <details key={span.key}><summary>{span.key}{span.page ? `, page ${span.page}` : ''}</summary><blockquote>{span.excerpt}</blockquote><a href={span.officialUrl} target="_blank" rel="noreferrer">Official source</a><p>Artifact <code>{span.rawHash}</code><br />Normalized <code>{span.normalizedHash}</code></p></details>)}
     <h4>Independent review</h4><pre>{build.review ? JSON.stringify(build.review, null, 2) : 'Review pending'}</pre>{build.error ? <p role="alert">{build.error}</p> : null}
