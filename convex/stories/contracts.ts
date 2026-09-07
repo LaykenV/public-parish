@@ -103,7 +103,8 @@ export function reviewPaths(draft: StoryDraft, media: typeof storyMedia.type | n
 export function reviewSchemaFor(draft: StoryDraft, media: typeof storyMedia.type | null) {
   const paths = reviewPaths(draft, media)
   const checks = reviewJsonSchema.properties.checks
-  return { ...reviewJsonSchema, properties: { ...reviewJsonSchema.properties, checks: {
+  return { ...reviewJsonSchema, properties: { ...reviewJsonSchema.properties,
+    verdict: { type: 'string', enum: draft.limitations.length ? ['limited', 'fail'] : ['pass', 'limited', 'fail'] }, checks: {
     ...checks, minItems: paths.length, maxItems: paths.length,
     items: { ...checks.items, properties: { ...checks.items.properties, path: { type: 'string', enum: paths } } },
   } } }

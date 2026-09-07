@@ -27,6 +27,8 @@ test('independent review must cover each fact and cannot pass unsupported claims
 
 test('known gaps cannot produce full publication and must receive review', () => {
   const limited = { ...draft, limitations: ['No executed agreement is included.'] }
+  expect(reviewSchemaFor(limited, null).properties.verdict.enum).toEqual(['limited', 'fail'])
+  expect(reviewSchemaFor(draft, null).properties.verdict.enum).toContain('pass')
   expect(checkReview(review, limited, null)).toContain('exactly once')
   const checked = { ...review, checks: [...review.checks, { path: '/limitations/0', assessment: 'supported' as const, reason: 'Only an announcement is supplied.' }] }
   expect(checkReview(checked, limited, null)).toContain('limited publication')
