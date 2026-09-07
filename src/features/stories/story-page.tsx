@@ -42,6 +42,7 @@ export function StoryPage({ slug }: { slug: string }) {
     <header><p>{story.geography.join(' · ')}</p><h1>{story.payload.title.text}</h1><Statement statement={story.payload.summary} story={story} />
       <p className="pp-story-meta">Reviewed through {story.reviewedThrough}. Next owner review planned {story.nextReviewAt}. {story.mode === 'limited' ? 'Some questions remain unanswered.' : ''}</p>
       <ShareButton path={`/stories/${story.slug}`} title={story.payload.title.text} />
+      <Link to="/ask" search={{ scope: 'story', story: story.slug, returnTo: `/stories/${story.slug}` }}>Ask about this story</Link>
     </header>
     <StoryImage key={story.media?.url} media={story.media} />
     {story.payload.sections.map((section, i) => <section key={i}><h2>{section.heading}</h2>{section.statements.map((statement, j) => <Statement key={j} statement={statement} story={story} />)}</section>)}

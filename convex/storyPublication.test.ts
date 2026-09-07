@@ -2,9 +2,10 @@ import { hashStoryValue } from './stories/hashing'
 /// <reference types="vite/client" />
 import { convexTest } from 'convex-test'
 import workflowTest from '@convex-dev/workflow/test'
+import agentTest from '@convex-dev/agent/test'
 import { afterEach, expect, test, vi } from 'vitest'
 import example from '../docs/story-manifests/import-contract-v1.example.json'
-import { api } from './_generated/api'
+import { api, internal } from './_generated/api'
 import schema from './schema'
 import { sha256HexOfText } from './sources/hashing'
 import type { StoryManifest } from './stories/manifestTypes'
@@ -18,6 +19,7 @@ afterEach(() => vi.unstubAllEnvs())
 async function setup() {
   vi.stubEnv('ADMIN_EMAIL', 'owner@example.com')
   const t = convexTest(schema, modules)
+  agentTest.register(t)
   const manifest = structuredClone(example) as StoryManifest
   manifest.purpose = 'research'
   const text = 'EXAMPLE FIXTURE. The demonstration agency announced a proposed project.\n'
@@ -134,4 +136,82 @@ test('owner retry preserves a saved draft and enforces a finite retry count', as
     })
     await expect(owner.mutation(api.stories.buildLedger.retry, { buildId, inputHash: args.inputHash })).rejects.toThrow('allowance exhausted')
   } finally { vi.useRealTimers() }
+})
+
+test('anonymous story Ask accepts only reviewed current spans and refuses another session', async () => {
+  const { t, owner, args, storyId } = await setup()
+  const versionId = await owner.mutation(api.stories.operations.approve, args)
+  const token = 'story-ask-alice-000000000000000000000000000000'
+  const otherToken = 'story-ask-bob-00000000000000000000000000000000'
+  await t.mutation(api.ask.threads.createSession, { token })
+  await t.mutation(api.ask.threads.createSession, { token: otherToken })
+  const thread = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'story', storySlug: 'applied-digital-boyce' } })
+  const catalog = await t.query(api.ask.evidence.retrieveEvidence, { token, threadId: thread.threadId, question: 'What was proposed?' })
+  expect(catalog.scope).toEqual({ kind: 'story', storySlug: 'applied-digital-boyce' })
+  expect(catalog.records[0].targetKind).toBe('story')
+  expect(catalog.records[0].summary).toBeNull()
+  expect(catalog.evidence).toHaveLength(1)
+  expect(catalog.evidence[0].evidenceId).toContain(`story:${versionId}:`)
+  await expect(t.query(api.ask.evidence.retrieveEvidence, { token: otherToken, threadId: thread.threadId, question: 'What was proposed?' })).rejects.toThrow('Thread is unavailable')
+  await t.run(async ctx => {
+    const version = (await ctx.db.get(versionId))!
+    await ctx.db.patch(versionId, { spans: [...version.spans, { ...version.spans[0], key: 'unused-research', excerpt: 'Unreviewed proposed excerpt' }] })
+  })
+  expect((await t.query(api.ask.evidence.retrieveEvidenceByIds, { token, threadId: thread.threadId, evidenceIds: [`story:${versionId}:unused-research`] })).kind).toBe('no_evidence')
+  await owner.mutation(api.stories.operations.withdraw, { storyId, expectedGeneration: 1, reason: 'Review the source.' })
+  expect((await t.query(api.ask.evidence.retrieveEvidenceByIds, { token, threadId: thread.threadId, evidenceIds: [catalog.evidence[0].evidenceId] })).kind).toBe('no_evidence')
+  await expect(t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'story', storySlug: 'applied-digital-boyce' } })).rejects.toThrow('Story evidence is unavailable')
+})
+
+test('cross-story citations fail and a source change during generation prevents persistence', async () => {
+  const { t, owner, args, storyId, snapshotId } = await setup()
+  const versionId = await owner.mutation(api.stories.operations.approve, args)
+  const token = 'story-race-session-000000000000000000000000000'
+  await t.mutation(api.ask.threads.createSession, { token })
+  const thread = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'story', storySlug: 'applied-digital-boyce' } })
+  const page = await t.query(internal.ask.evidence.retrieveCatalogPage, { token, threadId: thread.threadId, cursor: null })
+  const evidenceId = page.catalog.evidence[0].evidenceId
+  const otherVersionId = await t.run(async ctx => {
+    const version = (await ctx.db.get(versionId))!
+    const { _id: _versionId, _creationTime: _created, ...fields } = version
+    const otherStoryId = await ctx.db.insert('stories', { storyKey: 'meta-richland', slug: 'meta-richland', rank: 0, state: 'active', generation: 1, createdAt: 1, updatedAt: 1 })
+    const id = await ctx.db.insert('storyVersions', { ...fields, storyId: otherStoryId })
+    await ctx.db.patch(otherStoryId, { currentVersionId: id })
+    return id
+  })
+  expect((await t.query(api.ask.evidence.retrieveEvidenceByIds, { token, threadId: thread.threadId, evidenceIds: [evidenceId.replace(versionId, otherVersionId)] })).kind).toBe('no_evidence')
+  const receiptId = await t.run(async ctx => {
+    const mapping = (await ctx.db.query('askThreadAccess').withIndex('by_thread_id', q => q.eq('threadId', thread.threadId)).unique())!
+    const id = await ctx.db.insert('askAnswerReceipts', { sessionId: mapping.sessionId, threadId: thread.threadId, questionMessageId: 'synthetic-question', state: 'running', attempt: 1, startedAt: Date.now(), corpusRevision: page.revision, selectorComplete: true, selectorEvidenceIds: [evidenceId] })
+    const snapshot = (await ctx.db.get(snapshotId))!
+    const { _id: _snapshotId, _creationTime: _created, ...fields } = snapshot
+    await ctx.db.insert('sourceSnapshots', { ...fields, version: 2, previousSnapshotId: snapshotId })
+    return id
+  })
+  await expect(t.mutation(internal.ask.ledger.persistAnswer, { receiptId, answerAttempt: 1, answer: { kind: 'answer', answer: 'A project was proposed.', evidenceIds: [evidenceId], followUps: [] } })).rejects.toThrow('Story evidence changed')
+  expect((await owner.query(api.stories.operations.history, { storyId })).map(version => version._id)).toContain(versionId)
+})
+
+test('corpus Ask includes each shared story span once without broadening a local scope', async () => {
+  const { t, owner, args } = await setup()
+  const versionId = await owner.mutation(api.stories.operations.approve, args)
+  await t.run(async ctx => {
+    const version = (await ctx.db.get(versionId))!
+    const { _id: _versionId, _creationTime: _created, ...fields } = version
+    const storyId = await ctx.db.insert('stories', { storyKey: 'meta-richland', slug: 'meta-richland', rank: 0, state: 'active', generation: 1, createdAt: 1, updatedAt: 1 })
+    const id = await ctx.db.insert('storyVersions', { ...fields, storyId })
+    await ctx.db.patch(storyId, { currentVersionId: id })
+    await ctx.db.insert('jurisdictions', { name: 'Lafayette Parish', slug: 'lafayette-parish', type: 'parish', state: 'LA', publicStatus: 'candidate' })
+  })
+  const token = 'story-corpus-session-00000000000000000000000000'
+  await t.mutation(api.ask.threads.createSession, { token })
+  const thread = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'corpus' } })
+  const page = await t.query(internal.ask.evidence.retrieveCatalogPage, { token, threadId: thread.threadId, cursor: null })
+  expect(page.catalog.records.map(record => record.targetKind)).toEqual(['story'])
+  expect(page.catalog.evidence).toHaveLength(1)
+  const local = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'corpus', areaKey: 'rapides-parish' } })
+  expect((await t.query(api.ask.evidence.retrieveEvidence, { token, threadId: local.threadId, question: 'What was proposed?' })).evidence).toHaveLength(1)
+  const unrelated = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'corpus', areaKey: 'lafayette-parish' } })
+  expect((await t.query(api.ask.evidence.retrieveEvidence, { token, threadId: unrelated.threadId, question: 'What was proposed?' })).evidence).toHaveLength(0)
+  expect((await t.query(internal.ask.evidence.retrievePublishedDocumentRefs, { token, threadId: thread.threadId, evidenceIds: page.catalog.evidence.map(item => item.evidenceId) }))).toHaveLength(1)
 })

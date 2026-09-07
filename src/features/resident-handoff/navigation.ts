@@ -14,6 +14,7 @@ const RESIDENT_ROUTES = [
   '/for-you',
   '/how-it-works',
   '/issues/',
+  '/stories/',
   '/meetings/',
 ] as const
 
@@ -108,6 +109,7 @@ export function residentReturnLabel(returnTo: string): string {
   if (pathname === '/explore') return 'Back to Explore'
   if (pathname === '/following') return 'Back to Following'
   if (pathname.startsWith('/issues/')) return 'Back to issue'
+  if (pathname.startsWith('/stories/')) return 'Back to story'
   if (pathname.startsWith('/decisions/')) return 'Back to decision record'
   if (pathname.startsWith('/meetings/')) return 'Back to meeting'
   if (pathname === '/coverage') return 'Back to Coverage'

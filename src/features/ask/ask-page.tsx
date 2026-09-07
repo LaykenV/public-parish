@@ -611,7 +611,7 @@ function AskScopeBar({ scope }: { scope: AskScope }) {
         <p className="ask-scope-title">{scope.recordTitle}</p>
         <Link className="ask-scope-back" to={scope.returnTo}>
           <ArrowLeftIcon aria-hidden="true" />
-          {scope.kind === 'issue' ? 'Back to issue' : 'Back to meeting'}
+          {scope.kind === 'story' ? 'Back to story' : scope.kind === 'issue' ? 'Back to issue' : 'Back to meeting'}
         </Link>
       </div>
     </div>

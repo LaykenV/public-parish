@@ -55,6 +55,10 @@ export async function loadAskPageData(
 }
 
 function initialScope(scopeKey: string, returnTo?: string): AskScope {
+  if (scopeKey.startsWith('story:')) {
+    const storySlug = scopeKey.slice(6)
+    return { kind: 'story', storySlug, label: 'Answering from this story', recordTitle: 'Story evidence', returnTo: returnTo ?? `/stories/${storySlug}` }
+  }
   if (scopeKey.startsWith('issue:')) {
     const issueSlug = scopeKey.slice(6)
     return {

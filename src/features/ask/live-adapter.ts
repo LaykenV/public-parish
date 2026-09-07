@@ -52,6 +52,10 @@ export class LiveAskAdapter implements AskAdapter {
   }
 
   async resolveScope(input: AskRouteSearch): Promise<AskScope> {
+    if (input.scope === 'story') {
+      const result = await this.client.query(api.stories.resident.get, { slug: input.story })
+      return { kind: 'story', storySlug: input.story, label: 'Answering from this story', recordTitle: result.story?.payload.title.text ?? 'Story evidence unavailable', returnTo: input.returnTo ?? `/stories/${input.story}` }
+    }
     if (input.scope === 'issue') {
       const issue = await this.client.query(
         api.resident.evidence.getPublishedIssue,

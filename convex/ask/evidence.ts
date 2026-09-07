@@ -17,6 +17,8 @@ import {
   storedScope,
 } from './contracts'
 import { authorizeThreadRead } from './threads'
+import { storyAskCatalog } from '../stories/askEvidence'
+import type { StoryCatalog } from '../stories/askEvidence'
 
 const MAX_SCOPE_RECORDS = 75
 const MAX_SCOPE_EVIDENCE_ITEMS = 1_500
@@ -41,12 +43,14 @@ export const retrieveEvidence = query({
     const access = await authorizeThreadRead(ctx, args.token, args.threadId)
     const scope = storedScope(access.mapping.scopeKind, access.mapping.scopeKey)
     const decisions = await scopedDecisions(ctx, scope)
-    const records = decisions.map(recordContext)
+    const stories = await storyAskCatalog(ctx, scope)
+    const records = [...decisions.map(recordContext), ...stories.records]
     const meetings = meetingCatalog(decisions)
     const issues = await issueCatalog(ctx, decisions)
     const evidence = decisions.flatMap((decision) =>
       decision.citations.map((citation) => projectEvidence(decision, citation)),
     )
+    evidence.push(...stories.sources.map(source => source.evidence))
     if (evidence.length > MAX_SCOPE_EVIDENCE_ITEMS) {
       throw new ConvexError({
         code: 'ask_scope_too_large',
@@ -88,16 +92,17 @@ export const retrieveEvidenceByIds = query({
     const access = await authorizeThreadRead(ctx, args.token, args.threadId)
     const scope = storedScope(access.mapping.scopeKind, access.mapping.scopeKey)
     const issueKeys = await issueRecordKeys(ctx, scope)
+    const stories = await storyAskCatalog(ctx, scope)
     const evidence = await Promise.all(
       args.evidenceIds.map((evidenceId) =>
-        loadAcceptedEvidenceById(ctx, scope, issueKeys, evidenceId),
+        loadAcceptedEvidenceById(ctx, scope, issueKeys, evidenceId, stories),
       ),
     )
     const accepted = evidence.filter(
       (item): item is NonNullable<typeof item> => item !== null,
     )
     const decisions = await loadDecisions(ctx, [
-      ...new Set(accepted.map((item) => item.recordKey)),
+      ...new Set(accepted.filter(item => !item.evidenceId.startsWith('story:')).map((item) => item.recordKey)),
     ])
     return {
       kind:
@@ -107,7 +112,7 @@ export const retrieveEvidenceByIds = query({
       scope,
       issues: await issueCatalog(ctx, decisions),
       meetings: meetingCatalog(decisions),
-      records: decisions.map(recordContext),
+      records: [...decisions.map(recordContext), ...stories.records.filter(record => accepted.some(item => item.recordKey === record.recordKey))],
       evidence: accepted,
     }
   },
@@ -147,6 +152,7 @@ export const retrievePublishedDocumentRefs = internalQuery({
     const access = await authorizeThreadRead(ctx, args.token, args.threadId)
     const scope = storedScope(access.mapping.scopeKind, access.mapping.scopeKey)
     const issueKeys = await issueRecordKeys(ctx, scope)
+    const stories = await storyAskCatalog(ctx, scope)
     const refs = await Promise.all(
       [...new Set(args.evidenceIds)].map(async (evidenceId) => {
         const source = await loadAcceptedEvidenceSource(
@@ -154,6 +160,7 @@ export const retrievePublishedDocumentRefs = internalQuery({
           scope,
           issueKeys,
           evidenceId,
+          stories,
         )
         if (!source) {
           throw new ConvexError({
@@ -238,12 +245,14 @@ async function loadAcceptedEvidenceById(
   scope: Scope,
   issueKeys: Set<string> | null,
   evidenceId: string,
+  stories: StoryCatalog,
 ) {
   const source = await loadAcceptedEvidenceSource(
     ctx,
     scope,
     issueKeys,
     evidenceId,
+    stories,
   )
   return source?.evidence ?? null
 }
@@ -253,10 +262,13 @@ async function loadAcceptedEvidenceSource(
   scope: Scope,
   issueKeys: Set<string> | null,
   evidenceId: string,
+  stories: StoryCatalog,
 ): Promise<{
   evidence: AskEvidence
   snapshotId: Id<'sourceSnapshots'>
 } | null> {
+  if (evidenceId.startsWith('story:')) return stories.sources.find(source => source.evidence.evidenceId === evidenceId) ?? null
+  if (scope.kind === 'story') return null
   const citationId = ctx.db.normalizeId('citations', evidenceId)
   if (!citationId) return null
   const citation = await ctx.db.get(citationId)
@@ -397,6 +409,7 @@ async function scopedDecisions(
   ctx: QueryCtx,
   scope: Scope,
 ): Promise<ScopedDecision[]> {
+  if (scope.kind === 'story') return []
   if (scope.kind === 'issue') {
     const issue: IssueProjection | null = await ctx.runQuery(
       api.resident.evidence.getPublishedIssue,
@@ -628,6 +641,11 @@ export const retrieveCatalogPage = internalQuery({
     const scope = storedScope(access.mapping.scopeKind, access.mapping.scopeKey)
     const revision = (await ctx.db.query('publicCorpusState').withIndex('by_key', q => q.eq('key', 'published')).unique())?.revision ?? 0
     if (args.revision !== undefined && args.revision !== revision) throw new ConvexError({ code: 'ask_evidence_changed', message: 'Published evidence changed. Retry the question.' })
+    if (scope.kind === 'story') {
+      const stories = await storyAskCatalog(ctx, scope)
+      const evidence = stories.sources.map(source => source.evidence)
+      return { cursor: '', isDone: true, revision, catalog: { kind: evidence.length ? 'evidence' as const : 'no_evidence' as const, scope, issues: [], meetings: [], records: stories.records, evidence } }
+    }
     const page = await ctx.db.query('decisionRecords').order('asc').paginate({ numItems: 25, cursor: args.cursor })
     const issueKeys = await issueRecordKeys(ctx, scope)
     const keys: string[] = []
@@ -644,8 +662,10 @@ export const retrieveCatalogPage = internalQuery({
     }
     const decisions = await loadDecisions(ctx, keys)
     const evidence = decisions.flatMap(decision => decision.citations.map(citation => projectEvidence(decision, citation)))
+    const stories = args.cursor === null ? await storyAskCatalog(ctx, scope) : { records: [], sources: [] }
+    evidence.push(...stories.sources.map(source => source.evidence))
     if (evidence.length > MAX_SCOPE_EVIDENCE_ITEMS) throw new ConvexError({ code: 'ask_scope_too_large', message: 'One evidence batch is too large. Choose a decision or meeting.' })
-    return { cursor: page.continueCursor, isDone: page.isDone, revision, catalog: { kind: evidence.length ? 'evidence' as const : 'no_evidence' as const, scope, issues: await issueCatalog(ctx, decisions), meetings: meetingCatalog(decisions), records: decisions.map(recordContext), evidence } }
+    return { cursor: page.continueCursor, isDone: page.isDone, revision, catalog: { kind: evidence.length ? 'evidence' as const : 'no_evidence' as const, scope, issues: await issueCatalog(ctx, decisions), meetings: meetingCatalog(decisions), records: [...decisions.map(recordContext), ...stories.records], evidence } }
   },
 })
 
@@ -658,14 +678,15 @@ export const retrieveSelectedCatalog = internalQuery({
     const access = await authorizeThreadRead(ctx, args.token, args.threadId)
     const scope = storedScope(access.mapping.scopeKind, access.mapping.scopeKey)
     const issueKeys = await issueRecordKeys(ctx, scope)
+    const stories = await storyAskCatalog(ctx, scope)
     const evidence: AskEvidence[] = []
     for (const evidenceId of args.evidenceIds) {
-      const item = await loadAcceptedEvidenceById(ctx, scope, issueKeys, evidenceId)
+      const item = await loadAcceptedEvidenceById(ctx, scope, issueKeys, evidenceId, stories)
       if (!item) throw new ConvexError({ code: 'ask_evidence_changed', message: 'Selected evidence changed. Retry the question.' })
       evidence.push(item)
     }
-    const decisions = await loadDecisions(ctx, [...new Set(evidence.map(item => item.recordKey))])
-    return { kind: evidence.length ? 'evidence' : 'no_evidence', scope, issues: await issueCatalog(ctx, decisions), meetings: meetingCatalog(decisions), records: decisions.map(recordContext), evidence }
+    const decisions = await loadDecisions(ctx, [...new Set(evidence.filter(item => !item.evidenceId.startsWith('story:')).map(item => item.recordKey))])
+    return { kind: evidence.length ? 'evidence' : 'no_evidence', scope, issues: await issueCatalog(ctx, decisions), meetings: meetingCatalog(decisions), records: [...decisions.map(recordContext), ...stories.records.filter(record => evidence.some(item => item.recordKey === record.recordKey))], evidence }
   },
 })
 
@@ -677,6 +698,7 @@ export const expandCatalogSelection = internalQuery({
     if (revision !== args.revision) throw new ConvexError({ code: 'ask_evidence_changed', message: 'Published evidence changed. Retry the question.' })
     const access = await authorizeThreadRead(ctx, args.token, args.threadId)
     const scope = storedScope(access.mapping.scopeKind, access.mapping.scopeKey)
+    if (scope.kind === 'story') return []
     const issueKeys = await issueRecordKeys(ctx, scope)
     const keys = new Set<string>()
     for (const target of args.targets) {

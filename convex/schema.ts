@@ -391,6 +391,7 @@ export default defineSchema({
     preparingEventId: v.optional(v.id('emailReplyEvents')),
     preparingStartedAt: v.optional(v.number()),
     scopeKind: v.union(
+      v.literal('story'),
       v.literal('corpus'),
       v.literal('issue'),
       v.literal('meeting'),
@@ -1544,6 +1545,7 @@ export default defineSchema({
     sessionId: v.id('anonymousSessions'),
     threadId: v.string(),
     scopeKind: v.union(
+      v.literal('story'),
       v.literal('corpus'),
       v.literal('issue'),
       v.literal('meeting'),

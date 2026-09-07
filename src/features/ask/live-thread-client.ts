@@ -139,6 +139,7 @@ export class LiveAskThreadClient {
 }
 
 function backendScope(scope: AskScope) {
+  if (scope.kind === 'story') return { kind: 'story' as const, storySlug: scope.storySlug }
   if (scope.kind === 'issue') {
     return { kind: 'issue' as const, issueSlug: scope.issueSlug }
   }

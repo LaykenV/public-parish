@@ -3,7 +3,7 @@ import { query } from '../_generated/server'
 import type { QueryCtx, MutationCtx } from '../_generated/server'
 import type { Doc } from '../_generated/dataModel'
 import { storyDraft, storySpan } from './contracts'
-import { currentVersionEvidence } from './evidence'
+import { acceptedStorySpans, currentVersionEvidence } from './evidence'
 
 export const publicStory = v.object({
   id: v.id('stories'), slug: v.string(), rank: v.number(), revision: v.id('storyVersions'),
@@ -30,7 +30,7 @@ export async function resolvePublicStory(ctx: QueryCtx | MutationCtx, story: Doc
     const snapshot = await ctx.db.get(span.snapshotId)
     snapshotUrls.set(span.snapshotId, snapshot ? await ctx.storage.getUrl(snapshot.rawStorageId) : null)
   }
-  const evidence = version.spans.map(span => ({ ...span, snapshotUrl: snapshotUrls.get(span.snapshotId) ?? null }))
+  const evidence = acceptedStorySpans(version).map(span => ({ ...span, snapshotUrl: snapshotUrls.get(span.snapshotId) ?? null }))
   const url = version.media ? await ctx.storage.getUrl(version.media.storageId) : null
   const media = url && version.media ? { url, caption: version.media.caption, alt: version.media.alt, credit: version.media.credit, originalUrl: version.media.originalUrl,
     license: version.media.license, kind: version.media.kind, width: version.media.width, height: version.media.height } : null

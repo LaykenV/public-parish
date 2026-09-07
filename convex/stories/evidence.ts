@@ -4,8 +4,13 @@ import { isRegisteredSourceUrl } from '../sources/domains'
 import { hashStoryValue } from './hashing'
 import type { StoryManifest } from './manifestTypes'
 import type { StorySpan } from './contracts'
+import { draftStatements } from './contracts'
 
 type ReadCtx = Pick<QueryCtx | MutationCtx, 'db'>
+export function acceptedStorySpans(version: Doc<'storyVersions'>) {
+  const keys = new Set(draftStatements(version.payload).flatMap(statement => statement.evidenceKeys))
+  return version.spans.filter(span => keys.has(span.key))
+}
 export async function resolveSources(ctx: ReadCtx, manifest: StoryManifest, bindings: Array<{ sourceKey: string, snapshotId: Id<'sourceSnapshots'> }>) {
   if (manifest.purpose !== 'research' || !manifest.sources.length || bindings.length !== manifest.sources.length ||
     new Set(bindings.map(binding => binding.sourceKey)).size !== bindings.length) throw new Error('Supply each real research source exactly once')
@@ -62,7 +67,12 @@ export async function currentVersionEvidence(ctx: ReadCtx, version: Doc<'storyVe
     if (visited.has(span.snapshotId)) continue
     visited.add(span.snapshotId)
     const snapshot = await ctx.db.get(span.snapshotId)
-    if (!snapshot || snapshot.truncation.truncated || snapshot.contentHash !== span.rawHash || snapshot.normalizedContentHash !== span.normalizedHash) return false
+    if (!snapshot || snapshot.truncation.truncated || snapshot.contentHashBasis !== 'raw_artifact_v2' || snapshot.contentHash !== span.rawHash || snapshot.normalizedContentHash !== span.normalizedHash) return false
+    const registry = await ctx.db.get(snapshot.registryId)
+    if (!registry || ![snapshot.canonicalUrl, snapshot.retrievedUrl].every(url => url.startsWith('https://') && isRegisteredSourceUrl(url, registry.officialDomains, registry.seedUrls, registry.approvedDocumentHosts))) return false
+    const raw = await ctx.db.system.get('_storage', snapshot.rawStorageId)
+    const normalized = await ctx.db.system.get('_storage', snapshot.normalizedStorageId)
+    if (!raw || !normalized || raw.size !== snapshot.rawByteLength || normalized.size !== snapshot.normalizedByteLength) return false
     const latest = await ctx.db.query('sourceSnapshots').withIndex('by_registry_and_canonical_url_and_version', q => q.eq('registryId', snapshot.registryId).eq('canonicalUrl', snapshot.canonicalUrl)).order('desc').first()
     if (latest?._id !== snapshot._id) return false
   }
