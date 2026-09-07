@@ -52,7 +52,7 @@ const pairArgs = v.object(documentPair)
 export const context = internalQuery({
   args: documentPair,
   returns: v.object({ document: schema.doc('monitoredDocuments'), snapshot: schema.doc('sourceSnapshots') }),
-  handler: loadPair,
+  handler: async (ctx, args) => { await requireOwner(ctx); return loadPair(ctx, args) },
 })
 
 export const save = internalMutation({
@@ -71,7 +71,6 @@ export const classifyStoredMeeting = action({
   args: documentPair,
   returns: v.object({ date: v.string() }),
   handler: async (ctx, args): Promise<{ date: string }> => {
-    await requireOwner(ctx)
     const { snapshot } = await ctx.runQuery(internal.monitoring.meetingDates.context, args)
     const blob = await ctx.storage.get(snapshot.normalizedStorageId)
     if (!blob) throw new Error('Stored agenda is missing.')
