@@ -45,3 +45,9 @@ test('enforces finite size and array bounds before source work', () => {
   expect(() => parseStoryManifest(' '.repeat(250001))).toThrow('exceeds')
   expect(() => parseStoryManifest(changed(b => { b.sources = Array(25).fill(b.sources[0]) }))).toThrow('too many entries')
 })
+
+test.each(['javascript:alert(1)', 'data:text/html,unsafe', 'https://secret@example.org/license'])('rejects unsafe image permission links: %s', evidenceUrl => {
+  const media = { mediaKey: 'synthetic-image', artifact: { uri: 'synthetic-image.png', sha256: 'a'.repeat(64), bytes: 1, contentType: 'image/png' }, originalUrl: 'https://example.org/image.png', credit: 'Synthetic fixture', permission: { status: 'licensed', license: 'Synthetic fixture license', evidenceUrl, notes: 'Not an actual documentary image.' }, kind: 'diagram', caption: 'Synthetic fixture.', alt: 'Synthetic fixture.', width: 1, height: 1, captionClaimKeys: [] }
+  expect(() => parseStoryManifest(JSON.stringify({ ...example, media: [media] }))).toThrow('HTTPS')
+  expect(() => parseStoryManifest(JSON.stringify({ ...example, media: [{ ...media, permission: { ...media.permission, evidenceUrl: 'https://example.org/license' } }] }))).not.toThrow()
+})

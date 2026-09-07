@@ -146,7 +146,11 @@ export function parseStoryManifest(json: string): StoryManifest {
     if (!question.claimKeys.length) throw new Error('Supported questions require claims')
     checkClaims(question.claimKeys)
   }
-  for (const media of manifest.media) { https(media.originalUrl); checkClaims(media.captionClaimKeys) }
+  for (const media of manifest.media) {
+    https(media.originalUrl)
+    if (media.permission.evidenceUrl !== null) https(media.permission.evidenceUrl)
+    checkClaims(media.captionClaimKeys)
+  }
   for (const retrieval of manifest.additionalRetrieval) { https(retrieval.url); checkClaims(retrieval.requiredForClaimKeys) }
   date(manifest.research.reviewedThrough, 'day'); date(manifest.research.nextReviewAt, 'day')
   if (manifest.research.nextReviewAt <= manifest.research.reviewedThrough) throw new Error('Next review must follow the reviewed-through date')
