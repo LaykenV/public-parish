@@ -162,14 +162,15 @@ export const fail = internalMutation({
 })
 
 export const recordAttempt = internalMutation({
-  args: { buildId: v.id('storyBuilds'), role: modelRoles, route: aiRoutes, model: v.string(), status: v.string(), latencyMs: v.number(), promptTokens: v.optional(v.number()), completionTokens: v.optional(v.number()) },
+  args: { buildId: v.id('storyBuilds'), role: modelRoles, route: aiRoutes, model: v.string(), status: v.string(), latencyMs: v.number(), promptTokens: v.optional(v.number()), completionTokens: v.optional(v.number()), requestId: v.optional(v.string()), errorClass: v.optional(v.string()), errorDetail: v.optional(v.string()) },
   returns: v.null(),
   handler: async (ctx, args) => {
     const build = await ctx.db.get(args.buildId)
     if (!build) throw new Error('Unknown build')
     await ctx.db.insert('aiCalls', { runId: build.runId, modelRole: args.role, route: args.route, modelId: args.model,
       promptVersion: 'story-v1', schemaVersion: 'story-v1', attempt: (build.retryCount ?? 0) + 1, status: args.status, latencyMs: args.latencyMs,
-      promptTokens: args.promptTokens, completionTokens: args.completionTokens, createdAt: Date.now() })
+      promptTokens: args.promptTokens, completionTokens: args.completionTokens, requestId: args.requestId,
+      errorClass: args.errorClass, errorDetail: args.errorDetail?.slice(0, 500), createdAt: Date.now() })
     return null
   },
 })
