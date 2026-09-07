@@ -16,6 +16,8 @@ export const confirmPromotion = mutation({
     if (!proposal)
       throw promotionError('proposal_missing', 'The proposal does not exist.')
     if (proposal.status === 'promoted') {
+      const body = await ctx.db.get(proposal.governmentBodyId)
+      if (body) await updateJurisdictionStatus(ctx, body.jurisdictionId)
       return { promoted: true, replayed: true }
     }
     if (proposal.status !== 'ready') {

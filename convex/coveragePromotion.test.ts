@@ -816,5 +816,10 @@ test.each([true, false])('degraded parish recovery requires every launch body, c
   await owner.mutation(api.coverage.promotion.confirmPromotion, { proposalId: seeded.proposalId })
   await t.run(async ctx => {
     expect((await ctx.db.get(seeded.jurisdictionId))?.publicStatus).toBe(complete ? 'supported' : 'degraded')
+    await ctx.db.patch(seeded.jurisdictionId, { publicStatus: 'degraded' })
+  })
+  expect(await owner.mutation(api.coverage.promotion.confirmPromotion, { proposalId: seeded.proposalId })).toEqual({ promoted: true, replayed: true })
+  await t.run(async ctx => {
+    expect((await ctx.db.get(seeded.jurisdictionId))?.publicStatus).toBe(complete ? 'supported' : 'degraded')
   })
 })
