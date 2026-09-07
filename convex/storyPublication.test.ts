@@ -229,7 +229,7 @@ test('Google story follows are idempotent and withdrawal prevents new enrollment
   await owner.mutation(api.stories.operations.withdraw, { storyId, expectedGeneration: 1, reason: 'Source review required.' })
   await expect(owner.mutation(api.follows.enrollment.createGoogleFollow, target)).rejects.toThrow('unavailable')
   const [follow] = await owner.query(api.follows.enrollment.currentGoogleFollows, {})
-  await owner.mutation(api.follows.enrollment.removeGoogleFollow, { followId: follow.id as import('./_generated/dataModel').Id<'follows'> })
+  await owner.mutation(api.follows.enrollment.removeGoogleFollow, { followId: follow.id })
   expect(await owner.query(api.follows.enrollment.currentGoogleFollows, {})).toEqual([])
 })
 
