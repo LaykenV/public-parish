@@ -139,6 +139,15 @@ test('owner retry preserves a saved draft and enforces a finite retry count', as
       expect(build.state).toBe('drafted')
       await ctx.db.patch(buildId, { state: 'failed' })
     })
+    await expect(owner.mutation(api.stories.buildLedger.retry, { buildId, inputHash: 'changed' })).rejects.toThrow('Retry inputs changed')
+    expect(await owner.mutation(api.stories.buildLedger.retry, { buildId, inputHash: args.inputHash })).toBe(buildId)
+    await t.run(async ctx => {
+      const build = (await ctx.db.get(buildId))!
+      expect(build.draftHash).toBe(args.draftHash)
+      expect(build.retryCount).toBe(2)
+      expect(build.state).toBe('drafted')
+      await ctx.db.patch(buildId, { state: 'failed' })
+    })
     await expect(owner.mutation(api.stories.buildLedger.retry, { buildId, inputHash: args.inputHash })).rejects.toThrow('allowance exhausted')
   } finally { vi.useRealTimers() }
 })

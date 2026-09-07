@@ -1,5 +1,7 @@
 import { v } from 'convex/values'
 
+export const MAX_STORY_BUILD_RETRIES = 2
+
 export const storyKey = v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce'))
 export const storyMode = v.union(v.literal('full'), v.literal('limited'), v.literal('withheld'))
 export const sourceBinding = v.object({ sourceKey: v.string(), snapshotId: v.id('sourceSnapshots') })

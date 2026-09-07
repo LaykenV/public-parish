@@ -7,7 +7,7 @@ import { issueWorkflowManager } from '../pipeline/workflowManager'
 import schema from '../schema'
 import { hashStoryValue, canonicalStoryJson } from './hashing'
 import { parseStoryManifest, LAUNCH_STORIES } from './manifest'
-import { sourceBinding, storyDraft, storyReview, storyMedia, checkDraft, checkReview } from './contracts'
+import { sourceBinding, storyDraft, storyReview, storyMedia, checkDraft, checkReview, MAX_STORY_BUILD_RETRIES } from './contracts'
 import { evidenceHash, proposedSpans, resolveSources } from './evidence'
 import { aiRoutes, modelRoles } from '../ai/types'
 
@@ -94,7 +94,7 @@ export const retry = mutation({
     const build = await ctx.db.get(args.buildId)
     if (!build || build.inputHash !== args.inputHash) throw new Error('Retry inputs changed')
     if (build.state !== 'failed') throw new Error('Only a failed story build can retry')
-    if ((build.retryCount ?? 0) >= 1) throw new Error('Story retry allowance exhausted')
+    if ((build.retryCount ?? 0) >= MAX_STORY_BUILD_RETRIES) throw new Error('Story retry allowance exhausted')
     const story = await ctx.db.get(build.storyId)
     const imported = await ctx.db.get(build.importId)
     if (!story || !imported || build.versionId || story.generation !== build.expectedGeneration) throw new Error('Story retry is stale')
