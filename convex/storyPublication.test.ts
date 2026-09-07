@@ -67,10 +67,10 @@ test('controlled roundup refuses unauthenticated callers, production, and an unv
   vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')
   vi.stubEnv('AGENTMAIL_UPDATES_INBOX_ID', 'public-parish-development@agentmail.to')
   vi.stubEnv('AGENTMAIL_REPORTS_INBOX_ID', 'public-parish-reports@agentmail.to')
-  await expect(t.mutation(internal.operations.developmentProof.collectControlledStoryRoundup, {})).rejects.toThrow()
-  await expect(owner.mutation(internal.operations.developmentProof.collectControlledStoryRoundup, {})).rejects.toThrow('not verified')
+  await expect(t.mutation(api.operations.developmentProof.collectControlledStoryRoundup, {})).rejects.toThrow()
+  await expect(owner.mutation(api.operations.developmentProof.collectControlledStoryRoundup, {})).rejects.toThrow('not verified')
   vi.stubEnv('CONVEX_SITE_URL', 'https://befitting-flamingo-587.convex.site')
-  await expect(owner.mutation(internal.operations.developmentProof.collectControlledStoryRoundup, {})).rejects.toThrow('unavailable')
+  await expect(owner.mutation(api.operations.developmentProof.collectControlledStoryRoundup, {})).rejects.toThrow('unavailable')
   expect(await t.run(ctx => ctx.db.query('roundupWindows').collect())).toHaveLength(0)
 })
 

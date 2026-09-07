@@ -13,7 +13,7 @@ import { loadTimelineMembers } from '../issues/membership'
 import { coverageLinkDeployment } from '../coverage/gates'
 import { locateSourceExcerpt, normalizeForMatch } from '../extraction/textMatch'
 import { sha256HexOfText } from '../sources/hashing'
-import { env, internalAction, internalMutation, internalQuery } from '../_generated/server'
+import { env, internalAction, internalMutation, internalQuery, mutation } from '../_generated/server'
 
 // Exact normalization used by the first published corpus at 74ce97e.
 function originalCitationMatch(text: string): string {
@@ -239,7 +239,7 @@ export const replyToControlledNotification = internalAction({
   },
 })
 
-export const collectControlledStoryRoundup = internalMutation({
+export const collectControlledStoryRoundup = mutation({
   args: {}, returns: v.id('roundupWindows'),
   handler: async ctx => {
     requireDevelopment()
