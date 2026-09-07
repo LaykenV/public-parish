@@ -50,7 +50,7 @@ async function loadPair(ctx: Pick<QueryCtx, 'db'>, args: typeof pairArgs.type) {
 }
 const pairArgs = v.object(documentPair)
 export const context = internalQuery({
-  args: documentPair,
+  args: pairArgs.fields,
   returns: v.object({ document: schema.doc('monitoredDocuments'), snapshot: schema.doc('sourceSnapshots') }),
   handler: async (ctx, args) => { await requireOwner(ctx); return loadPair(ctx, args) },
 })
@@ -68,7 +68,7 @@ export const save = internalMutation({
 })
 
 export const classifyStoredMeeting = action({
-  args: documentPair,
+  args: pairArgs.fields,
   returns: v.object({ date: v.string() }),
   handler: async (ctx, args): Promise<{ date: string }> => {
     const { snapshot } = await ctx.runQuery(internal.monitoring.meetingDates.context, args)
