@@ -81,7 +81,7 @@ test('retained draft promotion keeps writing but requires a fresh review and tar
     workflowTest.register(t)
     vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')
     vi.stubEnv('STORY_ARTIFACT_TRANSFER_KEY', '1'.repeat(64))
-    const request = { storyKey: 'applied-digital-boyce', targetSite: 'https://woozy-wren-227.convex.site' }
+    const request = { storyKey: 'applied-digital-boyce' as const, targetSite: 'https://woozy-wren-227.convex.site' }
     await expect(owner.query(api.stories.retainedDraft.exportDraft, request)).rejects.toThrow('current accepted')
     await owner.mutation(api.stories.operations.approve, args)
     await expect(t.query(api.stories.retainedDraft.exportDraft, request)).rejects.toThrow()
