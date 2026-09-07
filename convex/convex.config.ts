@@ -11,6 +11,7 @@ import { defineApp } from 'convex/server'
 
 const app = defineApp({
   env: {
+    AI_SPENDING_GUARD_ENABLED: v.optional(v.string()),
     SOURCE_MONITORING_ENABLED: v.optional(v.string()),
     FIRECRAWL_API_KEY: v.string(),
     FIRECRAWL_WEBHOOK_SECRET: v.optional(v.string()),

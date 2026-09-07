@@ -1585,3 +1585,10 @@ The production parish-switch check exposed a card crash on an official date
 written as "September 29, 2026, at Noon." Date formatting now retains printed
 wording when it is not a valid ISO date, instead of throwing or guessing.
 Regression tests use that exact input. No source records or provider settings change.
+
+### 2026-09-07 - working tree
+
+Adding expiring estimated-cost allowances for source AI and resident Ask after
+the spending interruption. Reservations precede model calls and preserve charges
+when usage is unknown. Existing admission windows remain intact. Automated
+validation is delegated to the PR; paid catch-up remains paused during review.

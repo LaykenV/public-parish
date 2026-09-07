@@ -141,6 +141,7 @@ export const runIndependentReview = internalAction({
       })
     }
     const options: CompleteStructuredOptions = {
+      ctx,
       request: {
         role: REVIEW_MODEL_ROLE,
         messages: prompt.messages,

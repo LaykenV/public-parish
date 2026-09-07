@@ -115,6 +115,7 @@ export const inventoryChunk = internalAction({
       for (const role of ['MODEL_STRONG', 'MODEL_FAST'] as const) {
       if (!await ctx.runMutation(internal.monitoring.ledger.reserve, { runId: args.runId, units: 2 })) throw new Error('monitoring_daily_limit')
       const outcome = await completeStructured({
+        ctx,
         request: {
           role, schemaName: role === 'MODEL_FAST' ? 'source_inventory_review_v1' : 'source_inventory_v1', jsonSchema: role === 'MODEL_FAST' ? inventoryReviewSchema : inventoryJsonSchema, reasoningEffort: 'high', maxCompletionTokens: role === 'MODEL_FAST' ? 8_000 : 12_000,
           messages: [

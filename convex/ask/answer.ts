@@ -1,5 +1,7 @@
 'use node'
 
+import { DEFAULT_MAX_COMPLETION_TOKENS, reserveModelSpend, settleModelSpend } from '../ai/spending'
+
 import { Agent, listMessages } from '@convex-dev/agent'
 import { convexGateway } from '@convex-dev/ai-sdk-provider'
 import type { JSONObject, JSONSchema7 } from '@ai-sdk/provider'
@@ -288,6 +290,7 @@ export const answerQuestion = action({
       let direct: Awaited<ReturnType<typeof runDirectFallback>>
       try {
         direct = await runDirectFallback(
+          ctx,
           prompt,
           selectedEvidence.evidence,
           async (attempt) =>
@@ -451,6 +454,7 @@ async function generateWithGateway(
     storageOptions: { saveMessages: 'none' },
   })
   const startedAt = Date.now()
+  const reservation = await reserveModelSpend(ctx, 'ask', 'MODEL_FAST', JSON.stringify({ instructions, prompt: args.prompt, schema }), DEFAULT_MAX_COMPLETION_TOKENS)
   const result = await agent.generateText(
     ctx,
     { threadId: args.threadId },
@@ -464,7 +468,8 @@ async function generateWithGateway(
           ? 'Published evidence targets for a later answer'
           : 'A source-grounded Public Parish answer',
       }),
-      maxRetries: 1,
+      maxRetries: 0,
+      maxOutputTokens: DEFAULT_MAX_COMPLETION_TOKENS,
       providerOptions: {
         convexGateway: {
           reasoningEffort: 'high',
@@ -485,6 +490,7 @@ async function generateWithGateway(
       storageOptions: { saveMessages: 'none' },
     },
   )
+  await settleModelSpend(ctx, reservation, 'MODEL_FAST', { promptTokens: result.usage.inputTokens ?? null, completionTokens: result.usage.outputTokens ?? null, totalTokens: result.usage.totalTokens ?? null, cachedTokens: null, reasoningTokens: null })
   return {
     output: result.output,
     modelId: result.response.modelId || modelId,
@@ -581,6 +587,7 @@ async function selectPublishedContext(
     if (!allowsDirectFallback(gatewayError)) return broadSelection()
     try {
       const direct = await runDirectSelectorFallback(
+        ctx,
         prompt,
         args.catalog,
         async (attempt) =>
@@ -785,11 +792,14 @@ async function loadPublishedDocuments(
 }
 
 async function runDirectFallback(
+  ctx: ActionCtx,
   prompt: string,
   evidence: AskEvidence[],
   onAttempt: (attempt: AttemptRecord) => Promise<void>,
 ) {
   const options: CompleteStructuredOptions = {
+    ctx,
+    spendingScope: 'ask',
     request: {
       role: 'MODEL_FAST',
       messages: [
@@ -808,11 +818,14 @@ async function runDirectFallback(
 }
 
 async function runDirectSelectorFallback(
+  ctx: ActionCtx,
   prompt: string,
   catalog: AskEvidenceResult,
   onAttempt: (attempt: AttemptRecord) => Promise<void>,
 ) {
   const options: CompleteStructuredOptions = {
+    ctx,
+    spendingScope: 'ask',
     request: {
       role: 'MODEL_FAST',
       messages: [

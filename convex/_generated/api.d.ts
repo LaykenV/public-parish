@@ -10,6 +10,8 @@
 
 import type * as ai_chatCompletions from "../ai/chatCompletions.js";
 import type * as ai_provider from "../ai/provider.js";
+import type * as ai_spending from "../ai/spending.js";
+import type * as ai_spendingLedger from "../ai/spendingLedger.js";
 import type * as ai_types from "../ai/types.js";
 import type * as analytics_civic from "../analytics/civic.js";
 import type * as analytics_civicContracts from "../analytics/civicContracts.js";
@@ -141,6 +143,8 @@ import type {
 declare const fullApi: ApiFromModules<{
   "ai/chatCompletions": typeof ai_chatCompletions;
   "ai/provider": typeof ai_provider;
+  "ai/spending": typeof ai_spending;
+  "ai/spendingLedger": typeof ai_spendingLedger;
   "ai/types": typeof ai_types;
   "analytics/civic": typeof analytics_civic;
   "analytics/civicContracts": typeof analytics_civicContracts;

@@ -118,6 +118,7 @@ export const runIssueReview = internalAction({
     }
     await ctx.runMutation(internal.monitoring.ledger.reservePipelineCall, { runId: context.runId })
     const options: CompleteStructuredOptions = {
+      ctx,
       request: {
         role: 'MODEL_FAST',
         messages: prompt.messages,

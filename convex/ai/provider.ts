@@ -1,6 +1,9 @@
 import { parse, ValidationError } from 'convex-helpers/validators'
 import type { Validator } from 'convex/values'
 
+import type { ActionCtx } from '../_generated/server'
+import { DEFAULT_MAX_COMPLETION_TOKENS, reserveModelSpend, settleModelSpend } from './spending'
+import type { SpendingScope } from './spending'
 import { env } from '../_generated/server'
 import {
   attemptFromFailure,
@@ -54,6 +57,8 @@ async function runRoute(
   responseValidator: Validator<unknown, 'required', any>,
   contractCheck: (parsed: unknown) => string | null,
   recordAttempt: (attempt: AttemptRecord) => Promise<void>,
+  ctx: ActionCtx,
+  scope: SpendingScope,
 ): Promise<RouteResult> {
   const modelId =
     route === 'direct_openai'
@@ -61,6 +66,8 @@ async function runRoute(
       : gatewayModelId
   const startedAt = Date.now()
 
+  request = { ...request, maxCompletionTokens: request.maxCompletionTokens ?? DEFAULT_MAX_COMPLETION_TOKENS }
+  const reservation = await reserveModelSpend(ctx, scope, request.role, JSON.stringify({ messages: request.messages, schema: request.jsonSchema }), request.maxCompletionTokens!)
   let normalized
   try {
     const fetched = await fetchChatCompletion(route, modelId, request)
@@ -71,6 +78,7 @@ async function runRoute(
       )
     }
     normalized = fetched.response
+    await settleModelSpend(ctx, reservation, request.role, normalized.usage)
   } catch (error) {
     const attempt = attemptFromFailure(
       route,
@@ -212,6 +220,8 @@ async function runRoute(
 }
 
 export type CompleteStructuredOptions = {
+  ctx: ActionCtx
+  spendingScope?: SpendingScope
   request: StructuredRequest
   responseValidator: Validator<unknown, 'required', any>
   contractCheck: (parsed: unknown) => string | null
@@ -240,6 +250,8 @@ export async function completeStructured(
       responseValidator,
       contractCheck,
       recordAttempt,
+      options.ctx,
+      options.spendingScope ?? 'sources',
     )
   } catch (error) {
     if (!(error instanceof GatewayUnavailableError)) {
@@ -255,6 +267,8 @@ export async function completeStructured(
       responseValidator,
       contractCheck,
       recordAttempt,
+      options.ctx,
+      options.spendingScope ?? 'sources',
     )
     if (directResult.kind === 'success') {
       return { outcome: 'success', result: directResult.success, attempts }
@@ -297,6 +311,8 @@ export async function completeStructuredDirectFallback(
     responseValidator,
     contractCheck,
     recordAttempt,
+    options.ctx,
+    options.spendingScope ?? 'sources',
   )
   if (directResult.kind === 'success') {
     return { outcome: 'success', result: directResult.success, attempts }

@@ -70,6 +70,7 @@ type DiscoveryProvider = (
 type ClassifierProvider = (
   request: ReturnType<typeof classifierRequest>,
   contractCheck: (parsed: unknown) => string | null,
+  ctx: ActionCtx,
 ) => Promise<StructuredOutcome>
 
 let discoverWithProvider: DiscoveryProvider = runFirecrawlDiscovery
@@ -240,6 +241,7 @@ export const classifyForRun = internalAction({
               parsed as SourceClassificationResponse,
             ),
           ),
+          ctx,
         )
       } catch (error) {
         for (const attempt of (error as Error & { attempts?: AttemptRecord[] })
@@ -353,10 +355,12 @@ async function runFirecrawlDiscovery(
 async function runStructuredClassifier(
   request: ReturnType<typeof classifierRequest>,
   contractCheck: (parsed: unknown) => string | null,
+  ctx: ActionCtx,
 ): Promise<StructuredOutcome> {
   const attempts: AttemptRecord[] = []
   try {
     return await completeStructured({
+      ctx,
       request,
       responseValidator: sourceClassificationResponse,
       contractCheck,
