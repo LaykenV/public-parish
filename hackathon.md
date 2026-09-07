@@ -1592,3 +1592,8 @@ Adding expiring estimated-cost allowances for source AI and resident Ask after
 the spending interruption. Reservations precede model calls and preserve charges
 when usage is unknown. Existing admission windows remain intact. Automated
 validation is delegated to the PR; paid catch-up remains paused during review.
+
+Youngsville's old packet can take its meeting date from a hash-checked stored
+accessible agenda with the same official meeting ID. This avoids repeated PDF
+retrieval outside the current source window. It preserves unfinished inventory
+and records the date's snapshot. No model call or coverage promotion is involved.
