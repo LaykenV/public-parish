@@ -134,7 +134,7 @@ export const retrieve = action({
     const work = await ctx.runMutation(internal.stories.intake.beginRetrieval, args)
     if (work.reused || !work.receiptId) return 'Saved source reused. No retrieval call was made.'
     const result = await ctx.runAction(internal.operations.ingest.ingestRegistrySource, { registryId: work.registryId, urlOverride: work.url }).catch(async () => {
-      await ctx.runMutation(internal.stories.intake.finishRetrieval, { receiptId: work.receiptId!, attempt: work.attempt, error: 'Source retrieval action failed. Inspect the private pipeline receipt before retrying.' })
+      await ctx.runMutation(internal.stories.intake.finishRetrieval, { receiptId: work.receiptId, attempt: work.attempt, error: 'Source retrieval action failed. Inspect the private pipeline receipt before retrying.' })
       throw new Error('Source retrieval failed. Inspect the private pipeline receipt before retrying.')
     })
     await ctx.runMutation(internal.stories.intake.finishRetrieval, { receiptId: work.receiptId, attempt: work.attempt, ...(result.outcome === 'failed' ? { error: result.errorClass } : { snapshotId: result.snapshotId }) })
