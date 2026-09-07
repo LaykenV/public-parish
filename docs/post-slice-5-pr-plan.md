@@ -1,7 +1,7 @@
 # Post-Slice-5 PR plan
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
-for the September 6 documentation checkpoint. Dated sections below retain their
+for the September 7 documentation checkpoint. Dated sections below retain their
 original release context; they do not reopen completed feature work.
 
 Status: implementation Slices 6 through 9 are deployed and release-tested
@@ -11,7 +11,7 @@ reviewable pull requests per slice. It does not add product scope. The page
 hierarchy and interaction contracts remain in
 [`resident-interface-plan.md`](./resident-interface-plan.md).
 
-## Current checkpoint
+## Implementation history
 
 Resident-interface Design Slices 1 through 8 are deployed through PR #43 as
 `85d6947`. The complete route hierarchy, responsive behavior, development
@@ -55,7 +55,8 @@ bodies passed all ten production gates, which made Rapides and East Baton Rouge
 available. PR #92 connected the selector to that live jurisdiction state.
 Lafayette remained validating at that checkpoint. Slice 9 has since shipped,
 and all five planning bodies passed production certification on September 6.
-All three parishes are now available for their named launch bodies. The
+All three parishes became available at that checkpoint. Youngsville has since
+degraded, and Lafayette retains access with a limitation. The
 [current build status](build-status.md) supersedes this planning baseline.
 
 ## Original starting assumption

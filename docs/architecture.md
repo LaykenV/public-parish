@@ -1,7 +1,7 @@
 # Technical Architecture
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
-for the September 6 documentation checkpoint. Dated sections below retain their
+for the September 7 documentation checkpoint. Dated sections below retain their
 original release context; they do not reopen completed feature work.
 
 Status: Phase 0, evidence-engine Slices 1 through 4, resident-interface Design Slices 1 through 8, and implementation Slices 6 through 8 are deployed; Slice 9 is deployed and production-tested
@@ -27,7 +27,7 @@ Official source changes
 The architecture should make this loop obvious in the live app and in the
 under-three-minute demo.
 
-## Current implementation checkpoint
+## Implementation history
 
 Slice 1 implements the official registry, immutable source snapshots, raw and
 normalized artifact hashes, file storage, and retrieval pipeline evidence.
@@ -1155,7 +1155,8 @@ Strict output means:
 
 ### Implemented Slice 2 path
 
-The current contract is schema v1, prompt v1.2, and processor v1.4. The action
+The extraction contract is schema v1, prompt v1.12, and processor v1.21,
+as defined in `convex/pipeline/state.ts`. The action
 sends the static system prompt first, treats source text as untrusted data, uses
 high reasoning with `store: false`, and requires strict Chat Completions
 Structured Outputs. Convex AI Gateway is the normal route. Direct OpenAI stays
@@ -1199,8 +1200,9 @@ Allowances expire and never renew automatically. Reconfiguration changes their
 total ceiling without erasing charges. This ledger uses the role prices below;
 it is not a provider invoice or a limit on Convex hosting, storage, Firecrawl,
 or email charges. Existing retrieval and request-frequency limits remain.
-Production source monitoring stays off until its allowance and admission limits
-have been configured. Development gets its own allowance, if paid testing is
+Enable source monitoring only after configuring its allowance and admission
+limits. The [operating checkpoint](bounded-catchup-2026-09-07.md) records the
+current production activation. Development gets its own allowance, if paid testing is
 approved, and cannot spend production's balance.
 
 ### Model roles
@@ -1682,15 +1684,17 @@ Do not reverse this order to polish a dashboard before the evidence path works.
 
 ## Slice 9 completion
 
-The final feature build is complete and deployed through the follow-up repairs
-in PRs #102 through #108. [Current build status and remaining work](build-status.md)
-records the exact release, verification scope, named coverage, and operating
-limits. [Production certification](slice-9-production-certification.md)
-preserves the initial release evidence. The [September 6 source-operations
-report](source-operations-2026-09-06.md) records subsequent certification,
-automation, queue progress, and budget limits. Catch-up, future planning-source
-automation, resident observations, the demo, and submission remain operating
-work. No Slice 10 is planned.
+The final feature build is complete through Slice 9, with subsequent repairs
+through PR #139. [Current build status and QA gates](build-status.md)
+records release proof, exact supported bodies, automation limits, and remaining
+work. [Production certification](slice-9-production-certification.md)
+preserves the initial release evidence. The [bounded catch-up checkpoint](bounded-catchup-2026-09-07.md)
+records the latest paid processing and the owner's $10 total maximum.
+
+Proceed with the founder's full QA sweep. Limited beta follows a passing resident
+loop and useful evidence for the first testers, with coverage limitations visible.
+Full catch-up and all-body automatic updates are unfinished. An empty processing
+queue is not required before QA. No Slice 10 is planned.
 
 ### Final-slice runtime contracts
 
@@ -1775,5 +1779,7 @@ placeholder cannot stand in for any of them. The September 6 v4 gold set uses
 recovered body-specific agendas and action summaries. The Hearing Examiner v3
 and City Zoning Commission v2 roots use their source-printed names under the
 same Lafayette jurisdiction and host restrictions. Older manifests remain
-resolvable. All five bodies passed their own ten production gates on September 6. Their future automatic document
-discovery remains unverified, so an owner starts updates.
+resolvable. All five bodies passed their own ten production gates on September 6.
+They now have monitoring policies, but those policies are paused under the
+current spending controls. Certification does not prove sustained automatic
+updates; consult the operating checkpoint before starting paid work.

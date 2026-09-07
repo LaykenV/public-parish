@@ -1,7 +1,7 @@
 # Public Parish Plan
 
 Current status: Slice 9 is complete. See [build status and remaining work](docs/build-status.md)
-for the September 6 documentation checkpoint. Dated sections below retain their
+for the September 7 documentation checkpoint. Dated sections below retain their
 original release context; they do not reopen completed feature work.
 
 Status: Phase 0, evidence-engine Slices 1 through 4, resident-interface Design Slices 1 through 8, and implementation Slices 6 through 8 are deployed; Slice 9 is deployed and production-tested
@@ -72,8 +72,8 @@ The final UI carries development evidence scenarios and bounded return routes
 across discovery, records, Ask, Following, and Coverage without exposing
 fixtures in production.
 
-The resident UI design track is complete. The full production resident loop is
-not. The resident-evidence integration connects current accepted decisions,
+At the Design Slice 8 checkpoint, the resident UI design track was complete
+and the production resident loop still needed integration. The resident-evidence integration connects current accepted decisions,
 grouped meeting evidence, exact citations, and fail-closed issue subscriptions
 to the finished routes. Production issue runs
 `jd7eeb84pv1rzdmp6jf3dg161d8djvz0` and
@@ -146,7 +146,8 @@ area selector to the live jurisdiction projection. Rapides and East Baton Rouge
 became available. Lafayette stayed validating at that checkpoint because its
 planning bodies lacked meeting-specific agenda and outcome evidence. All five
 planning bodies passed production certification on September 6, so Lafayette
-is now available for its seven named launch bodies. The compiler is an
+became available for its seven named launch bodies at that checkpoint.
+Youngsville has since degraded; see the current coverage limits above. The compiler is an
 onboarding and repair operation. Routine scheduled source checks, automatic
 document-to-decision fanout, and new issue proposals were outside Slice 8.
 Slice 9 subsequently deployed them under bounded owner-approved policies.
@@ -493,12 +494,14 @@ strong technical case study, then return product time to the core business.
 
 ## Slice 9 completion
 
-The final feature build is complete and deployed through the follow-up repairs
-in PRs #102 through #108. [Current build status and remaining work](docs/build-status.md)
-records the exact release, verification scope, named coverage, and operating
-limits. [Production certification](docs/slice-9-production-certification.md)
-preserves the initial release evidence. The [September 6 source-operations
-report](docs/source-operations-2026-09-06.md) records subsequent certification,
-automation, queue progress, and budget limits. Catch-up, future planning-source
-automation, resident observations, the demo, and submission remain operating
-work. No Slice 10 is planned.
+The final feature build is complete through Slice 9, with subsequent repairs
+through PR #139. [Current build status and QA gates](docs/build-status.md)
+records release proof, exact supported bodies, automation limits, and remaining
+work. [Production certification](docs/slice-9-production-certification.md)
+preserves the initial release evidence. The [bounded catch-up checkpoint](docs/bounded-catchup-2026-09-07.md)
+records the latest paid processing and the owner's $10 total maximum.
+
+Proceed with the founder's full QA sweep. Limited beta follows a passing resident
+loop and useful evidence for the first testers, with coverage limitations visible.
+Full catch-up and all-body automatic updates are unfinished. An empty processing
+queue is not required before QA. No Slice 10 is planned.

@@ -1,7 +1,7 @@
 # Four-Week Build Plan
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
-for the September 6 documentation checkpoint. Dated sections below retain their
+for the September 7 documentation checkpoint. Dated sections below retain their
 original release context; they do not reopen completed feature work.
 
 Event window: August 25 through September 22, 2026
@@ -683,12 +683,14 @@ Never cut:
 
 ## Slice 9 completion
 
-The final feature build is complete and deployed through the follow-up repairs
-in PRs #102 through #108. [Current build status and remaining work](build-status.md)
-records the exact release, verification scope, named coverage, and operating
-limits. [Production certification](slice-9-production-certification.md)
-preserves the initial release evidence. The [September 6 source-operations
-report](source-operations-2026-09-06.md) records subsequent certification,
-automation, queue progress, and budget limits. Catch-up, future planning-source
-automation, resident observations, the demo, and submission remain operating
-work. No Slice 10 is planned.
+The final feature build is complete through Slice 9, with subsequent repairs
+through PR #139. [Current build status and QA gates](build-status.md)
+records release proof, exact supported bodies, automation limits, and remaining
+work. [Production certification](slice-9-production-certification.md)
+preserves the initial release evidence. The [bounded catch-up checkpoint](bounded-catchup-2026-09-07.md)
+records the latest paid processing and the owner's $10 total maximum.
+
+Proceed with the founder's full QA sweep. Limited beta follows a passing resident
+loop and useful evidence for the first testers, with coverage limitations visible.
+Full catch-up and all-body automatic updates are unfinished. An empty processing
+queue is not required before QA. No Slice 10 is planned.

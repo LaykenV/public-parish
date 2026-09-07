@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-07T04:36:42Z
+- **Last updated:** 2026-09-07T04:47:16Z
 
 ## Log
 
@@ -1635,3 +1635,14 @@ Ask. The team cap did not increase. Other body policies remain paused, 172 targe
 remain pending, and Youngsville still lacks newer official documents. The
 [bounded catch-up checkpoint](docs/bounded-catchup-2026-09-07.md) records failures,
 withheld timelines, and the remaining work before full catch-up can be claimed.
+
+
+### 2026-09-07 - working tree documentation review
+
+Updated the README and canonical plans to match repairs through PR #139 and
+the bounded catch-up checkpoint. Replaced stale support and automation claims
+with eleven supported bodies, Youngsville's limitation, and one enabled policy.
+Added the founder QA checklist and limited-beta gate to `docs/build-status.md`.
+Full catch-up, the founder sweep, and launch remain unfinished. Production
+workflow `34083784580` and independent live smoke passed for the prior checkpoint.
+This review did not start paid retrieval or model processing or change allowances.

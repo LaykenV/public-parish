@@ -1,7 +1,7 @@
 # Slice 9 final build plan
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
-for the September 6 documentation checkpoint. Dated sections below retain their
+for the September 7 documentation checkpoint. Dated sections below retain their
 original release context; they do not reopen completed feature work.
 
 Status: final build slice deployed and production-tested on September 5, 2026

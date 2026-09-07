@@ -1,7 +1,7 @@
 # Source operations, September 6, 2026
 
-This is a historical checkpoint. Use the [September 7 report](source-operations-2026-09-07.md)
-for current source status, paused automation, and remaining catch-up.
+This is a historical checkpoint. Use the [bounded September 7 checkpoint](bounded-catchup-2026-09-07.md)
+for current source status, automation limits, and remaining catch-up.
 
 ## Automatic processing and catch-up
 

@@ -1,7 +1,7 @@
 # Grilling Decision Record
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
-for the September 6 documentation checkpoint. Dated sections below retain their
+for the September 7 documentation checkpoint. Dated sections below retain their
 original release context; they do not reopen completed feature work.
 
 Product grilling completed: August 26, 2026
@@ -430,8 +430,9 @@ These do not reopen the product plan:
   `package-lock.json`; Convex is 1.45.0, static hosting is 0.2.1, and Convex
   Auth v2 is pinned to 2.0.0-alpha.1;
 - both role model IDs resolved through the AI Gateway on August 27, 2026;
-- the Convex team spending thresholds are $20 warning and $60 disable per
-  month;
+- the initial August 27 Convex team thresholds were $20 warning and $60
+  disable per month. These are historical setup values, not current limits;
+  use the [operating checkpoint](bounded-catchup-2026-09-07.md) for active controls;
 - the `CONVEXALLGAS` Firecrawl grant added 20,000 participant credits on
   August 27, 2026;
 - benchmark the strong and fast stage assignment against a labeled source set;
@@ -440,15 +441,17 @@ These do not reopen the product plan:
 
 ## Slice 9 completion
 
-The final feature build is complete and deployed through the follow-up repairs
-in PRs #102 through #108. [Current build status and remaining work](build-status.md)
-records the exact release, verification scope, named coverage, and operating
-limits. [Production certification](slice-9-production-certification.md)
-preserves the initial release evidence. The [September 6 source-operations
-report](source-operations-2026-09-06.md) records subsequent certification,
-automation, queue progress, and budget limits. Catch-up, future planning-source
-automation, resident observations, the demo, and submission remain operating
-work. No Slice 10 is planned.
+The final feature build is complete through Slice 9, with subsequent repairs
+through PR #139. [Current build status and QA gates](build-status.md)
+records release proof, exact supported bodies, automation limits, and remaining
+work. [Production certification](slice-9-production-certification.md)
+preserves the initial release evidence. The [bounded catch-up checkpoint](bounded-catchup-2026-09-07.md)
+records the latest paid processing and the owner's $10 total maximum.
+
+Proceed with the founder's full QA sweep. Limited beta follows a passing resident
+loop and useful evidence for the first testers, with coverage limitations visible.
+Full catch-up and all-body automatic updates are unfinished. An empty processing
+queue is not required before QA. No Slice 10 is planned.
 
 
 ## Reading published evidence during coverage interruptions
@@ -460,3 +463,13 @@ An area with no accepted evidence remains unavailable. This does not promote a
 source, change follow eligibility, or restart monitoring. Coverage recovery
 recomputes a degraded parish after its required bodies recover, while preserving
 an explicit parish pause.
+
+
+## QA and limited beta boundary, September 7
+
+The founder's QA sweep can proceed with the existing published corpus. A limited
+beta requires a working resident loop and useful evidence for the first testers,
+with exact coverage limitations visible. Neither QA nor limited beta implies
+complete history or automatic updates for every supported body. Keep additional
+paid catch-up within the approved $10 total maximum. Fix specific evidence gaps
+found during QA instead of treating all pending targets as launch blockers.

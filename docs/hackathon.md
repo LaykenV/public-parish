@@ -1,7 +1,7 @@
 # Hackathon Requirements and Win Plan
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
-for the September 6 documentation checkpoint. Dated sections below retain their
+for the September 7 documentation checkpoint. Dated sections below retain their
 original release context; they do not reopen completed feature work.
 
 Official event:
@@ -538,9 +538,10 @@ other contested project.
 - [x] AgentMail sends and verifies a real email-only subscription in development
 - [x] AgentMail sends sourced alerts through a controlled development replay
 - [x] Signed-out resident path works
-- [ ] Three named launch regions pass or public claims are narrowed honestly
+- [x] Coverage claims name eleven supported bodies and Youngsville's limitation
 - [x] One development issue reaches two approved vote outcomes
-- [ ] Citations, revisions, uncertainty, and coverage health work
+- [x] Controlled release checks cover citations, revisions, uncertainty, and coverage health
+- [ ] Founder full QA sweep and blocking-finding fixes complete
 
 ### Public Artifacts
 
@@ -567,7 +568,8 @@ other contested project.
 ### Submission
 
 - [x] Public repo URL verified
-- [ ] Live app URL verified
+- [x] Live app URL verified by September 7 production smoke
+- [ ] Public links rechecked immediately before submission
 - [ ] Video URL verified
 - [ ] vibeapps.dev entry completed
 - [ ] Submitted before September 22 at 12:00 PM Pacific
@@ -597,12 +599,14 @@ easy to prove in under three minutes.
 
 ## Slice 9 completion
 
-The final feature build is complete and deployed through the follow-up repairs
-in PRs #102 through #108. [Current build status and remaining work](build-status.md)
-records the exact release, verification scope, named coverage, and operating
-limits. [Production certification](slice-9-production-certification.md)
-preserves the initial release evidence. The [September 6 source-operations
-report](source-operations-2026-09-06.md) records subsequent certification,
-automation, queue progress, and budget limits. Catch-up, future planning-source
-automation, resident observations, the demo, and submission remain operating
-work. No Slice 10 is planned.
+The final feature build is complete through Slice 9, with subsequent repairs
+through PR #139. [Current build status and QA gates](build-status.md)
+records release proof, exact supported bodies, automation limits, and remaining
+work. [Production certification](slice-9-production-certification.md)
+preserves the initial release evidence. The [bounded catch-up checkpoint](bounded-catchup-2026-09-07.md)
+records the latest paid processing and the owner's $10 total maximum.
+
+Proceed with the founder's full QA sweep. Limited beta follows a passing resident
+loop and useful evidence for the first testers, with coverage limitations visible.
+Full catch-up and all-body automatic updates are unfinished. An empty processing
+queue is not required before QA. No Slice 10 is planned.

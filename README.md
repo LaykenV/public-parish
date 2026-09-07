@@ -19,18 +19,22 @@ alerts, grounded email replies, weekly roundups, private source reports,
 coverage requests, verified launch notices, and issue share HTML are deployed.
 Published history and corpus Ask work in batches as the corpus grows.
 
-All twelve named launch bodies passed production coverage gates. Lafayette,
-Rapides, and East Baton Rouge are available for those bodies' approved agendas
-and minutes. The original seven bodies have automatic checks enabled. The five
-newly certified Lafayette planning bodies still need owner-started updates.
-Initial catch-up remains budget-paused. See the [September 6 operations
-report](docs/source-operations-2026-09-06.md) for counts and limits.
+Eleven of the twelve named launch bodies are supported for their approved
+source types. Youngsville is degraded because newer usable official documents
+remain unavailable. Lafayette stays selectable with a coverage limitation.
+Only Metropolitan Council automation is enabled for bounded catch-up. Other
+body policies are paused, and the backlog is unfinished.
 
-[Current build status](docs/build-status.md) names the supported bodies, approved
-limits, release proof, and remaining resident and submission work. The latest
-application release passed 486 CI tests, its production workflow, and independent
-production smoke. Development and controlled release tests do not establish
-organic resident benefit.
+The [September 7 catch-up checkpoint](docs/bounded-catchup-2026-09-07.md) records
+nonrenewing $4 source AI and $0.50 Ask allowances within the owner's $10 total
+maximum. These are estimated model-cost controls, not a cap on every hosting or
+provider charge. Direct OpenAI fallback remains disabled.
+
+[Current build status and QA gates](docs/build-status.md) names the supported
+bodies, release proof, and remaining work. Repairs through PR #139 passed 560 CI
+tests and production smoke. The founder's full QA sweep is next. Limited beta
+requires a passing resident loop and useful evidence for the intended testers;
+full historical catch-up and organic resident benefit are not claimed.
 
 - [Public production app](https://www.publicparish.com)
 - [Qualifying hackathon host](https://befitting-flamingo-587.convex.site)

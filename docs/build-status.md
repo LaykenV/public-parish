@@ -1,6 +1,9 @@
 # Build completion and remaining work
 
-Documentation reviewed September 7, 2026 UTC against release `4c42d12`.
+Documentation reviewed September 7, 2026 UTC against application release
+`4c42d12` and operating checkpoint `9d04d2d`. Production workflow
+[34083784580](https://github.com/LaykenV/public-parish/actions/runs/34083784580)
+and independent live smoke passed for that checkpoint.
 See the [current operating checkpoint](bounded-catchup-2026-09-07.md).
 
 ## Build status
@@ -83,10 +86,41 @@ sustained automatic progress across all bodies. Those claims remain incomplete.
   tests, typechecks, builds, or lint without approval for the exact command.
   Authorized production releases still require independent live smoke.
 
+## Founder QA and limited beta gate
+
+Proceed with the full QA sweep using the existing corpus. More bulk paid
+processing is not a prerequisite. Keep any additional paid work within the
+approved $10 total maximum, and address specific evidence gaps found during QA.
+The active allowances and policy settings above remain unchanged.
+
+The founder sweep is pending. Record its results before declaring beta ready:
+
+- [ ] Open the public app signed out on desktop and mobile emulation; switch
+  among all three launch areas and confirm the exact coverage limitations.
+- [ ] Find useful published evidence in each intended tester's area through
+  Home and Explore; check search, filters, pagination, and older records.
+- [ ] Open a decision and an issue timeline, follow their citations to immutable
+  excerpts and official documents, and inspect limited and missing-evidence states.
+- [ ] Ask related questions and an unsupported question; check citations,
+  scope changes, and a clear response when the Ask allowance is exhausted.
+- [ ] Exercise Google sign-in, saved areas, follows, email verification, an
+  authorized controlled alert and reply, management, and unsubscribe. Use a
+  test inbox and count any paid QA calls against the existing allowance.
+- [ ] Check share links, coverage requests, source reports, keyboard navigation,
+  loading, empty, and error recovery. Confirm no blocking mobile layout defect.
+
+Limited beta can start after blocking findings are fixed and the intended testers
+have useful evidence to explore. Describe paused updates and Youngsville's gap
+plainly. This gate does not require a complete archive or zero pending targets.
+The earlier controlled checks provide release evidence; they do not mark this
+founder sweep complete. Demo recording, resident observations, and submission
+remain separate work.
+
 ## Remaining operating and launch work
 
-1. Continue eligible catch-up within the active nonrenewing allowance, inspect
-   failed decisions and issue proposals, and verify automatic progress. Keep
+1. Complete the founder QA sweep and fix its blocking findings. Prioritize
+   specific evidence gaps within the existing allowance, inspect failed
+   decisions and issue proposals, and observe automatic progress. Keep
    other source checks paused until their costs fit the approved maximum.
    Restore smaller local admission limits when their consumed windows clear.
 2. Obtain newer official Youngsville agenda or outcome documents. Repeated paid
