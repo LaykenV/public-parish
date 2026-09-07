@@ -10,6 +10,8 @@ import { api, internal } from './_generated/api'
 import type { DataModel, Id } from './_generated/dataModel'
 import schema from './schema'
 import { sha256HexOfText } from './sources/hashing'
+import { currentAtomicExcerpts } from './stories/askEvidence'
+import { normalizeForMatch } from './extraction/textMatch'
 import {
   allowsDirectFallback,
   overrideAskGatewayForTests,
@@ -1303,3 +1305,21 @@ test('a thousand-record corpus searches old history and selects evidence across 
   expect(receipt?.selectorComplete).toBe(true)
   expect(receipt?.selectorBatches).toBeGreaterThan(30)
 }, 120_000)
+
+test('shared story evidence deduplication respects atomic normalization, scope and current publication', async () => {
+  const t = initTest()
+  const seeded = await seedEvidence(t)
+  await t.run(async ctx => {
+    const excerpt = 'The council approved the Audubon Boulevard drainage agreement.'
+    const citation = (await ctx.db.query('citations').withIndex('by_snapshot', q => q.eq('snapshotId', seeded.snapshotId)).collect()).find(row => row.fieldPath === '/title')!
+    // Atomic matching offsets differ from exact document offsets. Both retain
+    // the same accepted quotation despite layout whitespace.
+    await ctx.db.patch(citation._id, { normalizedStartOffset: 0, normalizedEndOffset: excerpt.length, excerpt: excerpt.replaceAll(' ', '\n') })
+    expect((await currentAtomicExcerpts(ctx, seeded.snapshotId)).has(normalizeForMatch(excerpt))).toBe(true)
+    expect((await currentAtomicExcerpts(ctx, seeded.snapshotId, 'lafayette-parish')).has(normalizeForMatch(excerpt))).toBe(true)
+    expect(await currentAtomicExcerpts(ctx, seeded.snapshotId, 'richland-parish')).toEqual(new Set())
+    const publication = (await ctx.db.get(citation.publicationVersionId))!
+    await ctx.db.patch(publication.recordId, { currentPublishedVersionId: undefined })
+    expect(await currentAtomicExcerpts(ctx, seeded.snapshotId)).toEqual(new Set())
+  })
+})

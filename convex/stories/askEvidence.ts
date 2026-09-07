@@ -3,9 +3,30 @@ import type { AskEvidence, AskRecordContext, AskScope } from '../ask/contracts'
 import type { Id } from '../_generated/dataModel'
 import { acceptedStorySpans, currentVersionEvidence } from './evidence'
 import { LAUNCH_STORIES } from './manifest'
+import { normalizeForMatch } from '../extraction/textMatch'
 
 type StoryEvidence = { evidence: AskEvidence; snapshotId: Id<'sourceSnapshots'> }
 export type StoryCatalog = { records: AskRecordContext[]; sources: StoryEvidence[] }
+
+export async function currentAtomicExcerpts(ctx: Pick<QueryCtx, 'db'>, snapshotId: Id<'sourceSnapshots'>, areaKey?: string) {
+  const citations = await ctx.db.query('citations').withIndex('by_snapshot', q => q.eq('snapshotId', snapshotId)).take(501)
+  if (citations.length > 500) throw new Error('Shared source citation set exceeds the Ask bound')
+  const excerpts = new Set<string>()
+  const eligible = new Map<Id<'publicationVersions'>, boolean>()
+  for (const citation of citations) {
+    let included = eligible.get(citation.publicationVersionId)
+    if (included === undefined) {
+      const publication = await ctx.db.get(citation.publicationVersionId)
+      const record = publication ? await ctx.db.get(publication.recordId) : null
+      const body = record ? await ctx.db.get(record.governmentBodyId) : null
+      const place = body ? await ctx.db.get(body.jurisdictionId) : null
+      included = Boolean(publication?.payload && publication.mode !== 'withheld' && publication.snapshotId === snapshotId && publication.payload.source.snapshotId === snapshotId && record?.currentPublishedVersionId === publication._id && record.currentMode === publication.mode && place && (!areaKey || place.slug === areaKey))
+      eligible.set(citation.publicationVersionId, included)
+    }
+    if (included) excerpts.add(normalizeForMatch(citation.excerpt))
+  }
+  return excerpts
+}
 
 // Story prose labels the catalog. Only reviewed exact source spans are evidence.
 // IDs bind citations to the immutable version, so a revision cannot reuse them.
@@ -17,6 +38,7 @@ export async function storyAskCatalog(ctx: Pick<QueryCtx, 'db'>, scope: AskScope
   const records: AskRecordContext[] = []
   const sources: StoryEvidence[] = []
   const seen = new Set<string>()
+  const atomicBySnapshot = new Map<Id<'sourceSnapshots'>, Set<string>>()
   for (const story of candidates) {
     if (!story || story.state !== 'active' || !story.currentVersionId) continue
     const parish = LAUNCH_STORIES[story.storyKey].parish
@@ -32,20 +54,15 @@ export async function storyAskCatalog(ctx: Pick<QueryCtx, 'db'>, scope: AskScope
       const registry = snapshot ? await ctx.db.get(snapshot.registryId) : null
       const body = registry ? await ctx.db.get(registry.governmentBodyId) : null
       if (!snapshot || !body) continue
-      // A current atomic record already contributes these exact bytes to corpus
-      // Ask. Keep its existing citation identity instead of counting it twice.
+      // Atomic locators use normalized matching offsets; story locators use
+      // exact document offsets. Compare the accepted excerpt, not those offsets.
       if (scope.kind === 'corpus') {
-        const citations = await ctx.db.query('citations').withIndex('by_snapshot', q => q.eq('snapshotId', snapshot._id)).take(501)
-        if (citations.length > 500) throw new Error('Shared source citation set exceeds the Ask bound')
-        let shared = false
-        for (const citation of citations) {
-          if (citation.normalizedStartOffset !== span.start || citation.normalizedEndOffset !== span.end || citation.excerpt !== span.excerpt) continue
-          const publication = await ctx.db.get(citation.publicationVersionId)
-          if (!publication?.payload || publication.mode === 'withheld') continue
-          const record = await ctx.db.get(publication.recordId)
-          if (record?.currentPublishedVersionId === publication._id) { shared = true; break }
+        let atomic = atomicBySnapshot.get(snapshot._id)
+        if (!atomic) {
+          atomic = await currentAtomicExcerpts(ctx, snapshot._id, scope.areaKey)
+          atomicBySnapshot.set(snapshot._id, atomic)
         }
-        if (shared) continue
+        if (atomic.has(normalizeForMatch(span.excerpt))) continue
       }
       const evidenceId = `story:${version._id}:${span.key}`
       sources.push({ snapshotId: snapshot._id, evidence: { evidenceId, recordKey: story.slug, fieldPath: span.key,
