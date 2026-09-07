@@ -7,6 +7,7 @@ Brand and domain amendment completed: August 27, 2026
 Issue and importance contract amendment completed: August 29, 2026
 Resident interface amendment completed: August 29, 2026
 Coverage compiler amendment completed: September 4, 2026
+Final build-slice planning amendment completed: September 4, 2026
 Product name: Public Parish
 
 This file records the settled product decisions from the planning grill. It
@@ -102,10 +103,11 @@ expand the promise.
   supported. Rapides and East Baton Rouge met that rule on September 4.
   Lafayette remains validating because three planning bodies lack reachable
   agenda and outcome evidence.
-- Slice 8 covers owner-triggered onboarding and repair. Scheduled routine source
-  checks, automatic document-to-decision fanout, and automatic new issue
-  proposals require a separate implementation decision before they become a
-  resident-facing promise.
+- Slice 8 covers owner-triggered onboarding and repair. The September 4 final
+  Slice 9 plan includes bounded scheduled checks of approved sources, automatic
+  document-to-decision processing, and reviewed new issue proposals. These are
+  planned, not deployed behavior. The owner still controls registry approval,
+  geographic promotion, and production activation with measured operating limits.
 - A body accepts promotion only from its newest active proposal. Promotion
   supersedes sibling proposals, and status controls reject stale promoted
   proposals.
@@ -133,6 +135,11 @@ expand the promise.
   or removing a record creates a new issue key instead of changing the existing
   issue. Keep that limitation internal until Slice 5 defines how public routes
   supersede or redirect an older overlapping issue.
+- Slice 9 will separate persistent issue identity from build-input identity so
+  accepted later decisions preserve existing issue URLs and follows. It will
+  also preserve searchable history and corpus Ask as published records grow.
+  The implementation and proof requirements are in
+  [`slice-9-final-build-plan.md`](./slice-9-final-build-plan.md).
 - Track discovered, proposed, scheduled, amended, postponed, decided,
   implementing, completed, canceled, and unknown states.
 - Record prior source versions and meaningful change history.

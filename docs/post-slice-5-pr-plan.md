@@ -1,6 +1,12 @@
 # Post-Slice-5 PR plan
 
-Status: implementation Slices 6 through 8 are deployed and release-tested; Slice 9 is next
+Status: implementation Slices 6 through 8 are deployed and release-tested; Slice 9 is planned as the final build slice
+
+The current Slice 9 execution plan is
+[`slice-9-final-build-plan.md`](./slice-9-final-build-plan.md). It includes the
+September 4 decisions on automatic source processing, stable issue timelines,
+searchable history, corpus Ask, and honest partial geographic coverage. Its
+seven packets supersede the original four Slice 9 packets retained below.
 
 This plan turns the remaining implementation into a few substantial,
 reviewable pull requests per slice. It does not add product scope. The page
@@ -76,7 +82,8 @@ The original remaining path counted 15 planned PRs:
 - Slice 7 has 4 PRs.
 - Slice 8 was delivered as 3 planned code PRs plus narrow release and
   certification fixes.
-- Slice 9 has 4 PRs.
+- Slice 9 originally had 4 PRs. The final-build plan now has 7, including
+  automatic processing, issue continuity, and growing-corpus access.
 
 Each PR delivers one complete vertical capability. A packet may cross schema,
 Convex functions, adapters, and UI when all of those changes prove the same
@@ -93,7 +100,9 @@ Every PR must:
   those risks apply;
 - replace only the matching Slice 5 fixture adapter;
 - update canonical status and root `hackathon.md` with proved behavior;
-- pass `npm run verify` and `git diff --check`.
+- pass `npm run verify` in GitHub Actions and `git diff --check` during static
+  review. Do not run local automated validation without authorization for the
+  exact command.
 
 Every PR must exclude:
 
@@ -129,10 +138,13 @@ Slice 5 evidence and realtime
      -> 8D operations and geographic rollout
 
 Slices 6 through 8
-  -> 9A public coverage loop
-  -> 9B factual issue sharing
-  -> 9C private-safe measurement and provider health
-  -> 9D release certification
+  -> 9A automatic approved-source processing
+  -> 9B stable issue timelines and follows
+  -> 9C growing-corpus search and Ask
+  -> 9D public coverage and verified requests
+  -> 9E factual issue sharing
+  -> 9F private measurement and operating health
+  -> 9G release certification
 ```
 
 Slice 7 can begin while Slice 6 is in progress. PR 7D depends on the validated
@@ -802,11 +814,14 @@ Proof and release gate:
 
 ## Slice 9: public distribution and production hardening
 
-Slice 9 connects the remaining public utilities, proves the full resident loop,
-and records submission evidence. Defects found during certification receive
-their own narrow PRs.
+The approved scope now includes bounded source automation, stable issue
+membership, and access across the growing corpus. Use
+[`slice-9-final-build-plan.md`](./slice-9-final-build-plan.md) for the current
+seven-packet sequence, dependencies, tests, operating bounds, and release exits.
+The four packets below are the original proposal, retained for scope history.
+Their packet letters do not identify the current implementation assignments.
 
-### PR 9A: complete the public coverage request loop
+### Original PR 9A: complete the public coverage request loop
 
 Suggested title: `feat: complete the public coverage request loop`
 
@@ -850,7 +865,7 @@ Exclude:
 Proof: a request creates zero compiler runs, a failed candidate sends nothing,
 and one successful promotion sends one notice.
 
-### PR 9B: serve factual issue sharing
+### Original PR 9B: serve factual issue sharing
 
 Suggested title: `feat: serve factual previews for shared issues`
 
@@ -887,7 +902,7 @@ Exclude:
 Proof: each preview uses only the accepted issue projection and reaches the
 correct public issue.
 
-### PR 9C: add private-safe product and provider health
+### Original PR 9C: add private-safe product and provider health
 
 Suggested title: `feat: measure civic actions and provider health safely`
 
@@ -933,7 +948,7 @@ Exclude:
 Proof: the owner sees bounded counts and costs, while private strings fail the
 event contract and cannot be queried publicly.
 
-### PR 9D: certify the production resident loop
+### Original PR 9D: certify the production resident loop
 
 Suggested title: `test: certify the production resident loop`
 
@@ -1005,7 +1020,8 @@ authorization, negative tests, the matching frontend adapter, and
 evidence-based documentation. Do not call production services or operate on
 production data without separate approval.
 
-Run npm run verify and git diff --check. Report the changed behavior, tests,
+Defer npm run verify to GitHub Actions. Run only git diff --check locally unless
+the user authorizes an exact automated validation command. Report behavior, tests,
 remaining fixture boundary, deployment effect, and runtime proof still needed.
 Do not merge or deploy unless explicitly asked.
 ```

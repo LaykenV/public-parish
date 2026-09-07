@@ -8,6 +8,14 @@ The founder can build the basic interface quickly, so the plan spends the extra
 scope on evidence depth, source diversity, live changes, and real usage. It does
 not spend it on decorative features.
 
+The detailed final build slice is
+[`slice-9-final-build-plan.md`](./slice-9-final-build-plan.md). Its seven planned
+PRs cover bounded source automation, stable issue timelines, growing-corpus
+search and Ask, public coverage and verified requests, factual sharing, private
+operating reports, and release certification. This replaces the original four
+Slice 9 packets. Implementation has not started. Lafayette may remain partially
+covered with exact body limitations; no publication or coverage gate is relaxed.
+
 ## Operating Rules
 
 - Protect the weekday 90-minute Varholdt sales block.

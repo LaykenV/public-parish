@@ -12,9 +12,18 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-04T19:11:18Z
+- **Last updated:** 2026-09-04T19:26:15Z
 
 ## Log
+
+### 2026-09-04 - working tree
+
+Planned Slice 9 as the final build slice in `docs/slice-9-final-build-plan.md`.
+The seven packets cover approved-source automation, stable issue follows,
+growing-corpus search and Ask, public coverage requests and verified launch
+notices, factual share previews, private operating reports, and certification.
+Kept Lafayette's blocked sources behind the same gates. This session changed
+planning documents only. No implementation, automated tests, or deployment ran.
 
 ### 2026-09-04 - 2fa1cff
 
