@@ -653,3 +653,17 @@ test('accepts a unique locator without copying an identifier outside that locato
   expect(inventoryContract({ ...value, targets: [{ ...target, printedId: '2026-14' }] }, source, 'Test Council')).toMatch(/complete printed identifier/)
   expect(inventoryContract({ ...value, targets: [target, target] }, source, 'Test Council')).toMatch(/duplicate/)
 })
+
+test('an exhausted source allowance blocks retrieval admissions and new monitoring runs', async () => {
+  const f = await monitoringFixture()
+  rateLimiterTest.register(f.t)
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', 'true')
+  vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
+  expect(await f.t.mutation(internal.monitoring.ledger.reserve, { runId: f.runId, units: 1 })).toBe(false)
+  const owner = f.t.withIdentity({ subject: f.userId })
+  expect(await owner.mutation(api.monitoring.ledger.checkNow, { policyId: f.policyId })).toBeNull()
+  await owner.mutation(api.ai.spendingLedger.configure, { scope: 'sources', allowanceUsd: 0.1, expiresAt: Date.now() + DAY, enabled: true })
+  expect(await f.t.mutation(internal.monitoring.ledger.reserve, { runId: f.runId, units: 1 })).toBe(true)
+  await f.t.mutation(internal.ai.spendingLedger.reserve, { scope: 'sources', micros: 100_000 })
+  expect(await f.t.mutation(internal.monitoring.ledger.reserve, { runId: f.runId, units: 1 })).toBe(false)
+})

@@ -55,7 +55,14 @@ export const configureGlobalBudget = mutation({
   },
 })
 
+async function hasSourceAllowance(ctx: Pick<QueryCtx, 'db'>, now: number): Promise<boolean> {
+  if (env.AI_SPENDING_GUARD_ENABLED !== 'true') return true
+  const allowance = await ctx.db.query('aiSpendingAllowances').withIndex('by_scope', q => q.eq('scope', 'sources')).unique()
+  return Boolean(allowance?.enabled && allowance.expiresAt > now && allowance.chargedMicros < allowance.allowanceMicros)
+}
+
 async function processingBudget(ctx: MutationCtx, policy: Doc<'sourceMonitoringPolicies'>, count = 4) {
+  if (!await hasSourceAllowance(ctx, Date.now())) return { ok: false, retryAt: Date.now() + DAY_MS }
   if (count > policy.dailyCallLimit) return { ok: false, retryAt: Date.now() + DAY_MS }
   const local = await limiter.check(ctx, 'calls', { key: policy._id, count, config: { kind: 'fixed window', rate: policy.dailyCallLimit, period: DAY } })
   const global = await limiter.check(ctx, 'globalCalls', { count, config: await globalBudgetConfig(ctx) })
@@ -165,7 +172,7 @@ export const tick = internalMutation({
 })
 async function startRun(ctx: MutationCtx, policyId: Id<'sourceMonitoringPolicies'>): Promise<Id<'sourceMonitoringRuns'> | null> {
   let policy = await ctx.db.get(policyId)
-  if (!policy?.enabled || env.SOURCE_MONITORING_ENABLED !== 'true') return null
+  if (!policy?.enabled || env.SOURCE_MONITORING_ENABLED !== 'true' || !await hasSourceAllowance(ctx, Date.now())) return null
   const now = Date.now()
   if (policy.activeRunId) {
     const active = await ctx.db.get(policy.activeRunId)
@@ -209,6 +216,7 @@ export const reserve = internalMutation({
   args: { runId: v.id('sourceMonitoringRuns'), units: v.number() }, returns: v.boolean(),
   handler: async (ctx, args) => {
     const { policy } = await assertMonitoringRun(ctx, args.runId)
+    if (!await hasSourceAllowance(ctx, Date.now())) return false
     if (!Number.isInteger(args.units) || args.units < 1 || args.units > 10) throw new Error('Invalid monitoring reservation.')
     const globalConfig = await globalBudgetConfig(ctx)
     const options = { key: policy._id, count: args.units, config: { kind: 'fixed window' as const, rate: policy.dailyCallLimit, period: DAY } }
@@ -453,6 +461,7 @@ export const reservePipelineCall = internalMutation({
     await assertPipelineMonitoring(ctx, args.runId)
     const run = await ctx.db.get(args.runId)
     if (!run?.monitorPolicyId) return null
+    if (!await hasSourceAllowance(ctx, Date.now())) throw new Error('monitoring_daily_limit')
     const policy = await ctx.db.get(run.monitorPolicyId)
     if (!policy) throw new Error('monitoring_stopped')
     const globalConfig = await globalBudgetConfig(ctx)
