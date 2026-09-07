@@ -1678,3 +1678,9 @@ frozen research bundles and reused the existing Boyce snapshots. Eight missing
 official documents were retrieved with one bounded rate-limit retry. Corrected
 manifests, real drafting, owner approvals and mail round trips remain pending.
 No story publication, production deployment or resident delivery is claimed.
+
+### 2026-09-07 - df98e9d development integration
+
+Staged Agent 2's frozen v2 launch manifests using saved official artifacts. SpaceX and Boyce drafts completed, but independent reviews failed validation. Meta's scanned commission order retains an extraction gap. Neither drafting nor staging counts as accepted publication.
+
+Configured a dedicated development AgentMail sender and callback with an owner-approved restricted key. No mail round trip occurred and production routing is unchanged. Real Google owner sign-in worked. Opening a saved candidate exposed a pagination validator defect. Separate repair PRs address that defect, review diagnostics and forced OCR intake. The joint story gate, artifact promotion and founder QA remain open.

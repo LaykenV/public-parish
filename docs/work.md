@@ -7,13 +7,9 @@ The approved order is stories, then design and QA, then launch and outreach.
 
 ## Current checkpoint
 
-The original feature build is complete through Slice 9. The new story work is
-in progress. PRs #140 through #147 implement private source intake, immutable
-publication, resident story pages, Ask and story alerts. Combined SHA `78ab15d`
-passed PR CI and runs on personal development. All three frozen research bundles
-are staged, and the eight missing official documents are saved. Corrected
-normalizations, drafting, owner approval and resident/provider proof remain open.
-PR #148 repairs failures found during intake and awaits its own CI and sync.
+The original feature build is complete through Slice 9. Stories remain in development. PRs #140 through #155 pass CI and review; combined SHA `df98e9d` runs on personal development. Frozen v2 bundles are staged. SpaceX and Boyce drafts saved, but both independent reviews failed validation. Meta's commission-order normalization remains partial. No story publication is accepted.
+
+The dedicated AgentMail development sender and callback are configured with an owner-approved inbox-restricted setup key. No test mail has been sent. Live owner inspection found a history pagination crash. PRs #156 through #158 address OCR repair, review diagnostics and that crash. Their development verification remains pending. Artifact promotion and the full per-story acceptance matrix remain open.
 
 | Capability | Evidence and limitation |
 | --- | --- |
@@ -54,8 +50,8 @@ Do not begin the full redesign campaign until this phase passes.
 | S2 | Owner JSON import, preview, approve, revise and withdraw workflow; replay and stale-evidence protection | S1 | Implemented and CI passed; exact launch candidates and owner review pending |
 | S3 | Published story routes, evidence view, all-three homepage composition, related records, search and social share HTML | S1, S2 | Implemented and CI passed; deployed routes available, accepted story and browser proof pending |
 | S4 | Story-scoped anonymous Ask and private thread authorization using accepted story evidence | S1, S3 | Implemented and CI passed; real story questions pending |
-| S5 | Google and verified-email story follows, material-update alerts, roundup integration, grounded replies, management and unsubscribe | S1, S3, S4 | Implemented and CI passed; dedicated callback and actual provider round trips pending |
-| S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Frozen v1 staged; all eleven source documents available, corrected manifests and publication pending |
+| S5 | Google and verified-email story follows, material-update alerts, roundup integration, grounded replies, management and unsubscribe | S1, S3, S4 | Implemented and CI passed; dedicated callback configured; actual provider round trips pending |
+| S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Frozen v2 staged; Meta partial-source gate and both review failures block publication |
 | S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Pending |
 
 Build the first complete vertical path with the existing Boyce evidence if that
@@ -63,13 +59,9 @@ reduces risk. Meta remains the lead on the delivered homepage. Research for all
 three can proceed while shared functionality is implemented. No fourth story is
 required. CCS is deferred; do not substitute it for the agreed launch set.
 
-The development frontend came from Verify run
-[34156544079](https://github.com/LaykenV/public-parish/actions/runs/34156544079).
-No local automated validation ran. Existing Boyce snapshots were reused. New
-publisher registries are paused and candidate; no parish gained certification.
-The first Firecrawl batch encountered a rate limit on the last SpaceX document.
-One bounded retry succeeded. No story model call or test email has run.
-All feature PRs remain unmerged. Development execution is not production proof.
+The development frontend came from Verify run [34160004948](https://github.com/LaykenV/public-parish/actions/runs/34160004948). No local automated validation ran. Existing snapshots are reused. New publisher registries remain paused and candidate. No parish gained certification.
+
+Five story model calls were admitted. The conservative source charge is $0.231614 of a $2 development allowance, including a retained $0.154638 reservation after a settlement timeout. Ask remains unused under its $0.50 allowance. These development allowances expire September 8 and do not renew. Provider invoice amounts remain unknown. No test email has run. All feature PRs remain unmerged.
 
 ### Story acceptance
 
