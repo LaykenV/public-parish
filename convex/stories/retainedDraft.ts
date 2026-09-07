@@ -14,7 +14,7 @@ export type RetainedDraft = typeof retainedDraft.type
 
 export async function checkRetainedDraft(value: RetainedDraft, storyKey: string, bundleHash: string, spans: StorySpan[]) {
   const p = value.packet
-  if (p.contract !== 'story-retained-draft-v1' || p.originSite !== 'https://woozy-wren-227.convex.site' || p.targetSite !== env.CONVEX_SITE_URL ||
+  if (p.originSite !== 'https://woozy-wren-227.convex.site' || p.targetSite !== env.CONVEX_SITE_URL ||
     !Number.isFinite(p.exportedAt) || p.exportedAt > Date.now() + 60_000 || Date.now() - p.exportedAt > 7 * 86_400_000) throw new Error('Retained draft target or receipt time is invalid')
   if (p.storyKey !== storyKey || p.bundleHash !== bundleHash || !p.draftModel || canonicalStoryJson(p).length > 250_000 || await hashStoryValue(p.draft) !== p.draftHash) throw new Error('Retained draft inputs changed')
   await verifyArtifactPacket(p, value.signature, env.STORY_ARTIFACT_TRANSFER_KEY)
