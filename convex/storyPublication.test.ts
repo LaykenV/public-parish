@@ -247,7 +247,7 @@ test('verified-email story follows use existing management and unsubscribe recor
   expect(await t.query(internal.follows.management.readManagement, { tokenHash: 'story-management', now: Date.now() })).toMatchObject({ status: 'valid', follows: [{ targetKind: 'story', cadence: 'weekly' }] })
   expect(await t.mutation(internal.follows.management.unsubscribeEmailWithToken, { tokenHash: 'story-unsubscribe' })).toEqual({ unsubscribed: true })
   await t.run(async ctx => {
-    expect(await ctx.db.query('follows').collect()).toHaveLength(0)
+    expect((await ctx.db.query('notificationPreferences').first())?.cadence).toBe('muted')
     expect((await ctx.db.query('emailSubscribers').first())?.state).toBe('unsubscribed')
     expect(await ctx.db.query('notificationDeliveries').collect()).toHaveLength(0)
   })
