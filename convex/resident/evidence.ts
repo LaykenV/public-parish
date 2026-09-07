@@ -1,3 +1,5 @@
+import { areaSlug } from '../follows/contracts'
+import { selectedBodyIds } from './areas'
 import { loadTimelineMembers } from '../issues/membership'
 import { paginationOptsValidator } from 'convex/server'
 import { v } from 'convex/values'
@@ -440,28 +442,24 @@ export const getPublishedIssue = query({
 })
 
 export const listPublishedIssues = query({
-  args: {},
+  args: { areas: v.optional(v.array(areaSlug)) },
   returns: v.array(issueSummaryResult),
-  handler: async (ctx) => {
-    const [fullIssues, limitedIssues] = await Promise.all([
-      ctx.db
-        .query('issues')
-        .withIndex('by_current_mode_and_updated_at', (q) =>
-          q.eq('currentMode', 'full'),
-        )
-        .order('desc')
-        .take(20),
-      ctx.db
-        .query('issues')
-        .withIndex('by_current_mode_and_updated_at', (q) =>
-          q.eq('currentMode', 'limited'),
-        )
-        .order('desc')
-        .take(20),
-    ])
-    const issues = [...fullIssues, ...limitedIssues]
+  handler: async (ctx, args) => {
+    const bodyIds = await selectedBodyIds(ctx, args.areas)
+    const groups = await Promise.all(
+      (['full', 'limited'] as const).flatMap(mode => bodyIds === null
+        ? [ctx.db.query('issues')
+            .withIndex('by_current_mode_and_updated_at', q => q.eq('currentMode', mode))
+            .order('desc').take(20)]
+        : bodyIds.map(bodyId => ctx.db.query('issues')
+            .withIndex('by_government_body_and_current_mode_and_updated_at', q =>
+              q.eq('governmentBodyId', bodyId).eq('currentMode', mode))
+            .order('desc').take(20))),
+    )
+    const issues = groups.flat()
       .sort((left, right) => right.updatedAt - left.updatedAt)
       .slice(0, 20)
+
     const projected = await Promise.all(
       issues.map((issue) => projectPublishedIssue(ctx, issue)),
     )

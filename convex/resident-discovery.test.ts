@@ -205,6 +205,39 @@ test('projects accepted decision citations and bounded meeting evidence', async 
   expect(meeting?.citations.length).toBeGreaterThan(0)
 })
 
+test('selected parish decisions survive a newer publication flood elsewhere', async () => {
+  const t = convexTest(schema, modules)
+  await t.run(async ctx => {
+    for (const [slug, count] of [['lafayette-parish', 2], ['east-baton-rouge-parish', 55]] as const) {
+      const jurisdictionId = await ctx.db.insert('jurisdictions', {
+        name: slug, slug, type: 'parish', state: 'LA', publicStatus: 'degraded',
+      })
+      const governmentBodyId = await ctx.db.insert('governmentBodies', {
+        jurisdictionId, name: slug, slug, bodyType: 'city_council', publicStatus: 'degraded',
+      })
+      const registryId = await ctx.db.insert('sourceRegistries', {
+        governmentBodyId, officialDomains: ['example.gov'], seedUrls: [],
+        sourceKinds: ['agenda'], expectedCadence: { kind: 'meeting_cycle' },
+        discoveryMode: 'dynamic', status: 'degraded',
+      })
+      for (let n = 0; n < count; n++) await seedPublication({
+        ctx, registryId, governmentBodyId, sourceRecordId: `${slug}-${n}`,
+        mode: n === 0 ? 'limited' : 'full', updatedAt: count === 2 ? n : 100 + n,
+      })
+      await seedPublication({ ctx, registryId, governmentBodyId,
+        sourceRecordId: `${slug}-withheld`, mode: 'withheld', updatedAt: 1000 })
+    }
+  })
+  const global = await t.query(api.resident.discovery.listPublishedDecisions, {})
+  expect(global).toHaveLength(50)
+  expect(global.every(row => row.placeSlug === 'east-baton-rouge-parish')).toBe(true)
+  const local = await t.query(api.resident.discovery.listPublishedDecisions, { areas: ['lafayette-parish'] })
+  expect(local.map(row => row.sourceRecordId)).toEqual(['lafayette-parish-1', 'lafayette-parish-0'])
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { areas: ['rapides-parish'] })).toEqual([])
+  const selected = await t.query(api.resident.discovery.listPublishedDecisions, { areas: ['lafayette-parish', 'rapides-parish', 'lafayette-parish'] })
+  expect(selected).toEqual(local)
+})
+
 async function seedPublication({
   ctx,
   registryId,

@@ -1411,3 +1411,43 @@ test('a paused deployment leaves proposal recovery dormant and retry requires th
   expect((await t.run(ctx => ctx.db.get(proposalId)))?.state).toBe('pending')
   await expect(t.mutation(api.issues.proposals.retry, { proposalId })).rejects.toThrow()
 })
+
+
+test('selected parish issues survive newer issue rows in another parish', async () => {
+  const t = initTest()
+  const seeded = await seedIssueInput(t)
+  const candidate = issueCandidate(seeded)
+  stubIssueFetch([
+    { model: TERRA_MODEL, content: candidate },
+    { model: LUNA_MODEL, content: issueReview(candidate) },
+  ])
+  const started = await startAndDrain(t, seeded.recordIds)
+  const evidence = await t.query(internal.operations.issues.readIssueBuildEvidence, { runId: started.runId })
+  await t.run(async ctx => {
+    const record = await ctx.db.get(seeded.recordIds[0])
+    const body = await ctx.db.get(record!.governmentBodyId)
+    await ctx.db.patch(body!.jurisdictionId, { slug: 'lafayette-parish' })
+  })
+  const original = await t.query(api.resident.evidence.listPublishedIssues, {})
+  expect(original).toHaveLength(1)
+  await t.run(async ctx => {
+    const jurisdictionId = await ctx.db.insert('jurisdictions', {
+      name: 'East Baton Rouge Parish', slug: 'east-baton-rouge-parish',
+      type: 'parish', state: 'LA', publicStatus: 'supported',
+    })
+    const governmentBodyId = await ctx.db.insert('governmentBodies', {
+      jurisdictionId, name: 'Metropolitan Council', slug: 'metro',
+      bodyType: 'parish_council', publicStatus: 'supported',
+    })
+    for (let n = 0; n < 25; n++) await ctx.db.insert('issues', {
+      issueKey: `newer-${n}`, slug: `newer-${n}`, governmentBodyId,
+      // Stale publications must not enter the selected parish or bypass projection.
+      currentVersionId: evidence.issueVersion!._id, currentMode: 'full',
+      createdAt: Date.now() + n + 1000, updatedAt: Date.now() + n + 1000,
+    })
+  })
+  expect(await t.query(api.resident.evidence.listPublishedIssues, {})).toEqual([])
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['lafayette-parish'] })).toEqual(original)
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['rapides-parish'] })).toEqual([])
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['lafayette-parish', 'lafayette-parish'] })).toEqual(original)
+})
