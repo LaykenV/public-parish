@@ -60,7 +60,7 @@ test('an exhausted allowance stops the structured provider before fetch', async 
   const fetchSpy = vi.spyOn(globalThis, 'fetch')
   const ctx = { runMutation: (reference: Parameters<typeof t.mutation>[0], args: Record<string, unknown>) => t.mutation(reference, args) } as unknown as ActionCtx
   try {
-    await expect(completeStructured({ ctx, request: { role: 'MODEL_FAST', messages: [{ role: 'user', content: 'test' }], schemaName: 'test', jsonSchema: {}, reasoningEffort: 'low', maxCompletionTokens: 100 }, responseValidator: v.object({}), contractCheck: () => null })).rejects.toThrow('approved allowance')
+    await expect(completeStructured({ ctx, request: { role: 'MODEL_FAST', messages: [{ role: 'user', content: 'test' }], schemaName: 'test', jsonSchema: {}, reasoningEffort: 'low', maxCompletionTokens: 100 }, responseValidator: v.object({}), contractCheck: () => null })).rejects.toThrow('ai_spending_limit: Paid AI processing')
     expect(fetchSpy).not.toHaveBeenCalled()
   } finally { fetchSpy.mockRestore() }
 })
