@@ -54,8 +54,8 @@ export const begin = internalMutation({
     // new versioned bundle. Bound alternate image attempts for one import.
     const priorBuilds = await ctx.db.query('storyBuilds').withIndex('by_import_id', q => q.eq('importId', imported._id)).take(101)
     if (priorBuilds.length > 100) throw new Error('Import build history exceeds the replay bound')
-    const publishedReplay = priorBuilds.find(build => build.state === 'published' && build.versionId && canonicalStoryJson(build.media ? { ...build.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity))
-    if (publishedReplay && canonicalStoryJson(publishedReplay.relatedPublications) === canonicalStoryJson(relatedPublications)) return publishedReplay._id
+    const publishedReplay = priorBuilds.find(build => build.state === 'published' && build.versionId && canonicalStoryJson(build.media ? { ...build.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity) && canonicalStoryJson(build.relatedPublications) === canonicalStoryJson(relatedPublications))
+    if (publishedReplay) return publishedReplay._id
     const runId = await ctx.db.insert('pipelineRuns', { registryId: sources[0].snapshot.registryId, trigger: 'manual_story_build', state: 'queued', processorVersion: 'story-v1', suppressNotifications: true, startedAt: Date.now() })
     const buildId = await ctx.db.insert('storyBuilds', { importId: imported._id, storyId: story._id, expectedGeneration: story.generation, inputHash, publicationMappings: args.publicationMappings, sourceBindings: args.bindings, spans, relatedPublications, media,
       ...(args.retainedDraft ? { draft: args.retainedDraft.packet.draft, draftHash: args.retainedDraft.packet.draftHash, draftModel: args.retainedDraft.packet.draftModel, retainedDraftReceipt: { packetJson: canonicalStoryJson(args.retainedDraft.packet), signature: args.retainedDraft.signature } } : {}),
