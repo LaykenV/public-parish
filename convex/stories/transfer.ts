@@ -42,7 +42,7 @@ export const exportContext = internalQuery({
 export const exportSource = action({
   args: { storyKey: v.string(), sourceKey: v.string(), targetSite: v.string() },
   returns: v.object({ packet: artifactPacket, signature: v.string(), rawUrl: v.string(), normalizedUrl: v.string() }),
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<{ packet: ArtifactPacket; signature: string; rawUrl: string; normalizedUrl: string }> => {
     if (!['https://woozy-wren-227.convex.site', 'https://befitting-flamingo-587.convex.site'].includes(args.targetSite)) throw new Error('Choose the reviewed development or production transfer target')
     const context = await ctx.runQuery(internal.stories.transfer.exportContext, { storyKey: args.storyKey, sourceKey: args.sourceKey })
     const source = JSON.parse(context.sourceJson) as { bodyKey: string; bodyName: string; retrieval: unknown }
