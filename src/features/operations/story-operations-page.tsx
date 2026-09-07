@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useAction, useMutation, useQuery } from 'convex/react'
 import { Link } from '@tanstack/react-router'
 import { api } from '../../../convex/_generated/api'
@@ -58,6 +58,7 @@ function ImportWork({ imported }: { imported: Doc<'storyImports'> }) {
   const [buildId, setBuildId] = useState<Id<'storyBuilds'> | null>(null)
   const [mediaKey, setMediaKey] = useState(manifest.media[0]?.mediaKey ?? '')
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const uploadedImages = useRef(new Map<string, Id<'_storage'>>())
   const [intent, setIntent] = useState<'baseline' | 'update'>('baseline')
   const [pending, setPending] = useState(false)
   const [message, setMessage] = useState('')
@@ -74,6 +75,7 @@ function ImportWork({ imported }: { imported: Doc<'storyImports'> }) {
     <Button disabled={pending} onClick={() => void operate(async () => { await register({ importId: imported._id, bundleHash: imported.bundleHash }); return 'Checked publisher registrations are available. Coverage and monitoring remain unchanged.' })}>Register checked launch publishers</Button>
     <ul>{sources?.map(source => <li key={source.sourceKey}><strong>{source.bodyName}</strong> · {source.sourceKey}<p><a href={source.url} target="_blank" rel="noreferrer">Official source</a> · {source.status.replaceAll('_', ' ')}</p>{source.normalizedUrl ? <a href={source.normalizedUrl} target="_blank" rel="noreferrer">Inspect saved normalized document</a> : null}<p>Raw hash <code>{source.rawHash ?? 'Not retrieved'}</code><br />Normalized hash <code>{source.normalizedHash ?? 'Not retrieved'}</code></p>
       {source.status === 'normalization_changed' ? <p>Create a new bundle version using these exact saved bytes and corrected spans. Do not repeat retrieval to force a hash match.</p> : null}
+      {source.status === 'artifact_missing' ? <p>A retained artifact is missing. Restore its exact saved bytes before preparing a candidate. New retrieval cannot repair a missing historical file.</p> : null}
       {source.status === 'missing' ? <Button disabled={pending || !source.registered || source.attempts >= 2} onClick={() => void operate(() => retrieve({ importId: imported._id, sourceKey: source.sourceKey, bundleHash: imported.bundleHash }))}>Retrieve missing source, attempt {source.attempts + 1} of 2</Button> : null}{source.error ? <p role="alert">{source.error}</p> : null}</li>)}</ul>
     <h3>Draft and independent review</h3><p>New work spends the configured finite source allowance. Successful saved work is reused.</p>
     <label>Approved image candidate <select value={mediaKey} onChange={event => setMediaKey(event.target.value)}>{manifest.media.map(media => <option key={media.mediaKey} value={media.mediaKey}>{media.caption}</option>)}</select></label>
@@ -86,10 +88,15 @@ function ImportWork({ imported }: { imported: Doc<'storyImports'> }) {
       const digest = await crypto.subtle.digest('SHA-256', await imageFile.arrayBuffer())
       const hash = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, '0')).join('')
       if (hash !== proposed.artifact.sha256) throw new Error('Image hash does not match the manifest.')
-      const upload = await fetch(await uploadImage({}), { method: 'POST', headers: { 'Content-Type': imageFile.type }, body: imageFile })
-      if (!upload.ok) throw new Error('Image upload failed.')
-      const result = await upload.json() as { storageId: Id<'_storage'> }
-      const id = await start({ importId: imported._id, bindings: sources.map(source => ({ sourceKey: source.sourceKey, snapshotId: source.snapshotId! })), media: { mediaKey, storageId: result.storageId }, notificationIntent: intent })
+      let storageId = uploadedImages.current.get(hash)
+      if (!storageId) {
+        const upload = await fetch(await uploadImage({}), { method: 'POST', headers: { 'Content-Type': imageFile.type }, body: imageFile })
+        if (!upload.ok) throw new Error('Image upload failed.')
+        const result = await upload.json() as { storageId: Id<'_storage'> }
+        storageId = result.storageId
+        uploadedImages.current.set(hash, storageId)
+      }
+      const id = await start({ importId: imported._id, bindings: sources.map(source => ({ sourceKey: source.sourceKey, snapshotId: source.snapshotId! })), media: { mediaKey, storageId }, notificationIntent: intent })
       setBuildId(id)
       return 'Build receipt ready. Review the saved draft and independent findings below.'
     })}>Prepare exact candidate</Button>

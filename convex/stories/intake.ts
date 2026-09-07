@@ -34,9 +34,15 @@ function reusable(source: Source, snapshot: Doc<'sourceSnapshots'> | null): bool
   return Boolean(snapshot && !snapshot.truncation.truncated && snapshot.contentHashBasis === 'raw_artifact_v2' && (snapshot.contentHash === source.rawArtifact.sha256 || snapshot.retrievalTime >= Date.parse(source.retrieval.retrievedAt)))
 }
 
+async function retained(ctx: ReadCtx, snapshot: Doc<'sourceSnapshots'>) {
+  const raw = await ctx.db.system.get(snapshot.rawStorageId)
+  const normalized = await ctx.db.system.get(snapshot.normalizedStorageId)
+  return raw?.size === snapshot.rawByteLength && normalized?.size === snapshot.normalizedByteLength
+}
+
 export const sources = query({
   args: { importId: v.id('storyImports') },
-  returns: v.array(v.object({ sourceKey: v.string(), bodyName: v.string(), url: v.string(), registered: v.boolean(), status: v.union(v.literal('ready'), v.literal('missing'), v.literal('normalization_changed')),
+  returns: v.array(v.object({ sourceKey: v.string(), bodyName: v.string(), url: v.string(), registered: v.boolean(), status: v.union(v.literal('ready'), v.literal('missing'), v.literal('artifact_missing'), v.literal('normalization_changed')),
     snapshotId: v.union(v.null(), v.id('sourceSnapshots')), rawHash: v.union(v.null(), v.string()), normalizedHash: v.union(v.null(), v.string()), normalizedUrl: v.union(v.null(), v.string()), attempts: v.number(), error: v.union(v.null(), v.string()) })),
   handler: async (ctx, args) => {
     await requireOwner(ctx)
@@ -47,7 +53,7 @@ export const sources = query({
       const registry = await registeredSource(ctx, source)
       const snapshot = await latestSource(ctx, source, registry)
       const receipt = await ctx.db.query('storySourceRetrievals').withIndex('by_import_and_source', q => q.eq('importId', imported._id).eq('sourceKey', source.sourceKey)).unique()
-      const status = reusable(source, snapshot) ? snapshot?.contentHash === source.rawArtifact.sha256 && snapshot.normalizedContentHash === source.normalizedArtifact.sha256 ? 'ready' as const : 'normalization_changed' as const : 'missing' as const
+      const status = snapshot && !await retained(ctx, snapshot) ? 'artifact_missing' as const : reusable(source, snapshot) ? snapshot?.contentHash === source.rawArtifact.sha256 && snapshot.normalizedContentHash === source.normalizedArtifact.sha256 ? 'ready' as const : 'normalization_changed' as const : 'missing' as const
       rows.push({ sourceKey: source.sourceKey, bodyName: source.bodyName, url: source.url, registered: Boolean(registry), status, snapshotId: snapshot?._id ?? null, rawHash: snapshot?.contentHash ?? null, normalizedHash: snapshot?.normalizedContentHash ?? null,
         normalizedUrl: snapshot ? await ctx.storage.getUrl(snapshot.normalizedStorageId) : null, attempts: receipt?.attempts ?? 0, error: receipt?.error ?? null })
     }
@@ -99,6 +105,7 @@ export const beginRetrieval = internalMutation({
     const registry = await registeredSource(ctx, source)
     if (!registry) throw new Error('Register the checked official publisher first')
     const snapshot = await latestSource(ctx, source, registry)
+    if (snapshot && !await retained(ctx, snapshot)) throw new Error('Saved artifact is missing. Restore its exact retained bytes before new retrieval.')
     if (reusable(source, snapshot)) return { receiptId: null, registryId: registry._id, url: source.url, reused: true, attempt: 0 }
     const previous = await ctx.db.query('storySourceRetrievals').withIndex('by_import_and_source', q => q.eq('importId', imported._id).eq('sourceKey', source.sourceKey)).unique()
     if (previous?.state === 'running' && Date.now() - previous.startedAt < 10 * 60_000) throw new Error('Retrieval is already running')
@@ -126,14 +133,13 @@ export const retrieve = action({
     // prepare is an authenticated owner mutation in this same call context.
     const work = await ctx.runMutation(internal.stories.intake.beginRetrieval, args)
     if (work.reused || !work.receiptId) return 'Saved source reused. No retrieval call was made.'
-    try {
-      const result = await ctx.runAction(internal.operations.ingest.ingestRegistrySource, { registryId: work.registryId, urlOverride: work.url })
-      await ctx.runMutation(internal.stories.intake.finishRetrieval, { receiptId: work.receiptId, attempt: work.attempt, ...(result.outcome === 'failed' ? { error: result.errorDetail } : { snapshotId: result.snapshotId }) })
-      return result.outcome === 'failed' ? result.errorDetail : 'Source saved. Compare its normalized hash and exact spans before drafting.'
-    } catch (error) {
-      await ctx.runMutation(internal.stories.intake.finishRetrieval, { receiptId: work.receiptId, attempt: work.attempt, error: error instanceof Error ? error.message : 'Source retrieval failed' })
-      throw error
-    }
+    const result = await ctx.runAction(internal.operations.ingest.ingestRegistrySource, { registryId: work.registryId, urlOverride: work.url }).catch(async () => {
+      await ctx.runMutation(internal.stories.intake.finishRetrieval, { receiptId: work.receiptId!, attempt: work.attempt, error: 'Source retrieval action failed. Inspect the private pipeline receipt before retrying.' })
+      throw new Error('Source retrieval failed. Inspect the private pipeline receipt before retrying.')
+    })
+    await ctx.runMutation(internal.stories.intake.finishRetrieval, { receiptId: work.receiptId, attempt: work.attempt, ...(result.outcome === 'failed' ? { error: result.errorClass } : { snapshotId: result.snapshotId }) })
+    if (result.outcome === 'failed') throw new Error(`Source retrieval failed: ${result.errorClass}`)
+    return 'Source saved. Compare its normalized hash and exact spans before drafting.'
   },
 })
 

@@ -358,3 +358,16 @@ test('source retrieval has two attempts and rejects stale completion', async () 
   await t.mutation(internal.stories.intake.finishRetrieval, { receiptId: second.receiptId!, attempt: second.attempt, error: 'Synthetic second failure' })
   await expect(owner.mutation(internal.stories.intake.beginRetrieval, input)).rejects.toThrow('attempts exhausted')
 })
+
+test('a missing retained artifact blocks paid retrieval instead of claiming reuse', async () => {
+  const { t, owner, buildId, rawStorageId } = await setup()
+  const input = await t.run(async ctx => {
+    const build = (await ctx.db.get(buildId))!
+    const imported = (await ctx.db.get(build.importId))!
+    await ctx.storage.delete(rawStorageId)
+    return { importId: imported._id, sourceKey: JSON.parse(imported.manifestJson).sources[0].sourceKey as string, bundleHash: imported.bundleHash }
+  })
+  expect((await owner.query(api.stories.intake.sources, { importId: input.importId }))[0].status).toBe('artifact_missing')
+  await expect(owner.action(api.stories.intake.retrieve, input)).rejects.toThrow('Saved artifact is missing')
+  await t.run(async ctx => { expect(await ctx.db.query('storySourceRetrievals').collect()).toHaveLength(0) })
+})
