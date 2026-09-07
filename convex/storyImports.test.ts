@@ -1,12 +1,12 @@
 /// <reference types="vite/client" />
 import { convexTest } from 'convex-test'
 import { afterEach, expect, test, vi } from 'vitest'
-import example from '../../docs/story-manifests/import-contract-v1.example.json'
-import { api } from '../_generated/api'
-import schema from '../schema'
-import { sha256HexOfText } from '../sources/hashing'
+import example from '../docs/story-manifests/import-contract-v1.example.json'
+import { api } from './_generated/api'
+import schema from './schema'
+import { sha256HexOfText } from './sources/hashing'
 
-const modules = import.meta.glob('../**/*.ts')
+const modules = import.meta.glob('./**/*.ts')
 afterEach(() => vi.unstubAllEnvs())
 async function setup() {
   vi.stubEnv('ADMIN_EMAIL', 'owner@example.com')
