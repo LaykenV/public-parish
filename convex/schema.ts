@@ -612,6 +612,7 @@ export default defineSchema({
   monitoredDocuments: defineTable({
     discoveryOnly: v.optional(v.literal(true)),
     sourceMeetingDate: v.optional(v.string()),
+    meetingDateEvidenceSnapshotId: v.optional(v.id('sourceSnapshots')),
     policyId: v.id('sourceMonitoringPolicies'), registryId: v.id('sourceRegistries'),
     canonicalUrl: v.string(), nextCheckAt: v.number(), firstSeenAt: v.number(),
     notificationEligible: v.boolean(), snapshotId: v.optional(v.id('sourceSnapshots')),
