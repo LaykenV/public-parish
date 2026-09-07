@@ -144,6 +144,27 @@ test('accepted artifact transfer refuses other owners and changed bytes, then re
   await expect(owner.action(api.stories.transfer.importSource, transfer)).rejects.toThrow('different source evidence')
 })
 
+test('import replay selects an accepted receipt after an earlier withheld review', async () => {
+  const { t, owner, args, buildId } = await setup()
+  const original = (await t.run(ctx => ctx.db.get(buildId)))!
+  const failedReview = { ...original.review!, verdict: 'fail' as const }
+  const failedHash = await hashStoryValue(failedReview)
+  await t.run(ctx => ctx.db.patch(buildId, { review: failedReview, reviewHash: failedHash }))
+  await owner.mutation(api.stories.operations.approve, { ...args, reviewHash: failedHash })
+  const acceptedId = await t.run(ctx => {
+    const { _id: _id, _creationTime: _created, ...fields } = original
+    return ctx.db.insert('storyBuilds', { ...fields, inputHash: 'b'.repeat(64) })
+  })
+  await owner.mutation(api.stories.operations.approve, { ...args, buildId: acceptedId, inputHash: 'b'.repeat(64) })
+  const replay = await owner.mutation(internal.stories.buildLedger.begin, { importId: original.importId, bindings: original.sourceBindings, media: original.media })
+  expect(replay).toBe(acceptedId)
+  await t.run(async ctx => {
+    expect((await ctx.db.get(buildId))?.state).toBe('withheld')
+    expect(await ctx.db.query('storyBuilds').collect()).toHaveLength(2)
+    expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0)
+  })
+})
+
 test('owner approval freezes a version; replay creates no version or baseline mail', async () => {
   const { t, owner, args, storyId } = await setup()
   const version = await owner.mutation(api.stories.operations.approve, args)

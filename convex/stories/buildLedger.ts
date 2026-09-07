@@ -53,7 +53,7 @@ export const begin = internalMutation({
     // new versioned bundle. Bound alternate image attempts for one import.
     const priorBuilds = await ctx.db.query('storyBuilds').withIndex('by_import_id', q => q.eq('importId', imported._id)).take(101)
     if (priorBuilds.length > 100) throw new Error('Import build history exceeds the replay bound')
-    const publishedReplay = priorBuilds.find(build => build.versionId && canonicalStoryJson(build.media ? { ...build.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity))
+    const publishedReplay = priorBuilds.find(build => build.state === 'published' && build.versionId && canonicalStoryJson(build.media ? { ...build.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity))
     if (publishedReplay) return publishedReplay._id
     const relatedPublications: Doc<'storyBuilds'>['relatedPublications'] = []
     for (const source of sources) {
