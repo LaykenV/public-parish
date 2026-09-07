@@ -5,11 +5,25 @@ import { internalMutation } from '../_generated/server'
 import type { MutationCtx } from '../_generated/server'
 import { acceptedStorySpans, currentVersionEvidence } from './evidence'
 import { hashStoryValue } from './hashing'
+import { normalizeForMatch } from '../extraction/textMatch'
 
 export async function storyFactHash(version: Doc<'storyVersions'>) {
   // Formatting, images, captions, featured order and rewording alone do not
   // announce a factual change. Evidence changes require exact owner approval.
   return hashStoryValue(acceptedStorySpans(version).map(span => `${span.sourceKey}:${span.excerpt}`).sort())
+}
+
+export function storyEvidenceChangeKey(snapshotId: string, excerpt: string) {
+  return `${snapshotId}:${normalizeForMatch(excerpt)}`
+}
+
+export function hasIndependentStoryChange(previous: Doc<'storyVersions'>, current: Doc<'storyVersions'>, covered: Set<string>) {
+  const before = new Set(acceptedStorySpans(previous).map(span => storyEvidenceChangeKey(span.snapshotId, span.excerpt)))
+  const after = new Set(acceptedStorySpans(current).map(span => storyEvidenceChangeKey(span.snapshotId, span.excerpt)))
+  const changed = [...before].filter(key => !after.has(key)).concat([...after].filter(key => !before.has(key)))
+  // A correction or changed limitation can be material without adding a span.
+  // Do not suppress it merely because a related decision changed too.
+  return changed.length ? changed.some(key => !covered.has(key)) : previous.draftHash !== current.draftHash
 }
 
 export async function recordStoryUpdate(ctx: MutationCtx, previousVersionId: Id<'storyVersions'> | undefined, currentVersionId: Id<'storyVersions'>, intent: 'baseline' | 'update', reviewedMaterial: boolean) {
@@ -19,12 +33,25 @@ export async function recordStoryUpdate(ctx: MutationCtx, previousVersionId: Id<
   if (!previous || !current || current.mode === 'withheld') return
   if (await storyFactHash(previous) === await storyFactHash(current) && previous.draftHash === current.draftHash) return
   const changeKeys: string[] = []
+  const covered = new Set<string>()
+  let citationBudget = 240
+  let completeCoverage = true
   for (const reference of current.relatedPublications) {
     if (previous.relatedPublications.some(old => old.publicationVersionId === reference.publicationVersionId)) continue
     const change = await ctx.db.query('materialChanges').withIndex('by_current_publication', q => q.eq('currentPublicationVersionId', reference.publicationVersionId)).unique()
-    if (change?.material && change.notificationEligible !== false) changeKeys.push(`decision:${change._id}`)
+    if (change?.material && change.notificationEligible !== false) {
+      changeKeys.push(`decision:${change._id}`)
+      for (const publicationId of [change.previousPublicationVersionId, change.currentPublicationVersionId]) {
+        if (!publicationId || !completeCoverage) continue
+        const citations = await ctx.db.query('citations').withIndex('by_publication_and_field_path', q => q.eq('publicationVersionId', publicationId)).take(citationBudget + 1)
+        // Oversized evidence cannot prove that a local alert covers the story.
+        if (citations.length > citationBudget) { completeCoverage = false; continue }
+        citationBudget -= citations.length
+        for (const citation of citations) covered.add(storyEvidenceChangeKey(citation.snapshotId, citation.excerpt))
+      }
+    }
   }
-  if (!changeKeys.length) changeKeys.push(`story-facts:${current.storyId}:${previous.draftHash}:${current.draftHash}:${await storyFactHash(current)}`)
+  if (!changeKeys.length || !completeCoverage || hasIndependentStoryChange(previous, current, covered)) changeKeys.push(`story-facts:${current.storyId}:${previous.draftHash}:${current.draftHash}:${await storyFactHash(current)}`)
   const existing = await ctx.db.query('storyUpdateEvents').withIndex('by_current_version', q => q.eq('currentVersionId', currentVersionId)).unique()
   if (existing) return
   const now = Date.now()

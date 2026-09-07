@@ -13,7 +13,7 @@ import type { StoryManifest } from './stories/manifestTypes'
 import { proposedSpans } from './stories/evidence'
 import type { StoryDraft, StoryReview } from './stories/contracts'
 import { claimDeliveryChanges, validUpdateReference } from './follows/updateEvents'
-import { currentStoryUpdate } from './stories/updates'
+import { currentStoryUpdate, hasIndependentStoryChange, storyEvidenceChangeKey } from './stories/updates'
 import { storyAskCatalog } from './stories/askEvidence'
 import { hashAddress } from './follows/secrets'
 
@@ -494,5 +494,22 @@ test('replaying an older accepted import preserves the latest story without mode
     expect(await ctx.db.query('pipelineRuns').collect()).toHaveLength(before.runs)
     expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0)
     expect(await ctx.db.query('notificationDeliveries').collect()).toHaveLength(0)
+  })
+})
+
+
+test('a local notification only covers a story revision when every changed excerpt is shared', async () => {
+  const fixture = await setup()
+  const versionId = await fixture.owner.mutation(api.stories.operations.approve, fixture.args)
+  await fixture.t.run(async ctx => {
+    const previous = (await ctx.db.get(versionId))!
+    const shared = { ...previous.spans[0], key: 'shared-new-evidence', excerpt: 'A new official decision.' }
+    const independent = { ...previous.spans[0], key: 'story-only-evidence', excerpt: 'A separate project fact.' }
+    const updated = { ...previous, draftHash: 'b'.repeat(64), spans: [shared], payload: { ...previous.payload, summary: { text: 'The decision changed.', evidenceKeys: [shared.key] }, title: { text: 'Decision update', evidenceKeys: [shared.key] } } }
+    const covered = new Set([storyEvidenceChangeKey(previous.spans[0].snapshotId, previous.spans[0].excerpt), storyEvidenceChangeKey(shared.snapshotId, 'A  new official decision.')])
+    expect(hasIndependentStoryChange(previous, updated, covered)).toBe(false)
+    const mixed = { ...updated, spans: [shared, independent], payload: { ...updated.payload, sections: [{ heading: 'Government actions', statements: [{ text: 'A separate fact changed.', evidenceKeys: [independent.key] }] }] } }
+    expect(hasIndependentStoryChange(previous, mixed, covered)).toBe(true)
+    expect(hasIndependentStoryChange(previous, { ...previous, draftHash: 'c'.repeat(64) }, covered)).toBe(true)
   })
 })
