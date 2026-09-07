@@ -10,6 +10,7 @@ import { sourceBinding, storyDraft, storyReview, checkDraft, checkReview, draftJ
 import type { StoryDraft, StoryReview, StorySpan } from './contracts'
 import { parseStoryManifest } from './manifest'
 import { proposedSpans } from './evidence'
+import { retainedDraft } from './retainedDraft'
 import { imageReviewMessage, MAX_STORY_REVIEW_IMAGE_BYTES } from './imageReview'
 
 async function verifiedBytes(ctx: ActionCtx, storageId: Id<'_storage'>, hash: string, size: number) {
@@ -22,7 +23,7 @@ async function verifiedBytes(ctx: ActionCtx, storageId: Id<'_storage'>, hash: st
 }
 
 export const start = action({
-  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), media: v.union(v.null(), v.object({ mediaKey: v.string(), storageId: v.id('_storage') })), notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
+  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), retainedDraft: v.optional(retainedDraft), media: v.union(v.null(), v.object({ mediaKey: v.string(), storageId: v.id('_storage') })), notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
   returns: v.id('storyBuilds'),
   handler: async (ctx, args): Promise<Id<'storyBuilds'>> => {
     const context = await ctx.runQuery(api.stories.buildLedger.prepare, { importId: args.importId, bindings: args.bindings })
@@ -56,7 +57,7 @@ export const start = action({
         credit: proposed.credit, license: proposed.permission.license, permissionEvidenceUrl: proposed.permission.evidenceUrl,
         kind: proposed.kind, caption: proposed.caption, alt: proposed.alt, width: proposed.width, height: proposed.height, captionEvidenceKeys }
     }
-    return ctx.runMutation(internal.stories.buildLedger.begin, { importId: args.importId, bindings: args.bindings, media, notificationIntent: args.notificationIntent })
+    return ctx.runMutation(internal.stories.buildLedger.begin, { importId: args.importId, bindings: args.bindings, media, notificationIntent: args.notificationIntent, retainedDraft: args.retainedDraft })
   },
 })
 

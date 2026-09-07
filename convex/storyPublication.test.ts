@@ -74,6 +74,40 @@ test('controlled roundup refuses unauthenticated callers, production, and an unv
   expect(await t.run(ctx => ctx.db.query('roundupWindows').collect())).toHaveLength(0)
 })
 
+test('retained draft promotion keeps writing but requires a fresh review and target approval', async () => {
+  vi.useFakeTimers()
+  try {
+    const { t, owner, args, buildId } = await setup()
+    workflowTest.register(t)
+    vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')
+    vi.stubEnv('STORY_ARTIFACT_TRANSFER_KEY', '1'.repeat(64))
+    const request = { storyKey: 'applied-digital-boyce', targetSite: 'https://woozy-wren-227.convex.site' }
+    await expect(owner.query(api.stories.retainedDraft.exportDraft, request)).rejects.toThrow('current accepted')
+    await owner.mutation(api.stories.operations.approve, args)
+    await expect(t.query(api.stories.retainedDraft.exportDraft, request)).rejects.toThrow()
+    const retained = await owner.query(api.stories.retainedDraft.exportDraft, request)
+    const original = (await t.run(ctx => ctx.db.get(buildId)))!
+    const begin = { importId: original.importId, bindings: original.sourceBindings, media: null, retainedDraft: retained, notificationIntent: 'baseline' as const }
+    await expect(owner.mutation(internal.stories.buildLedger.begin, { ...begin, retainedDraft: { ...retained, packet: { ...retained.packet, targetSite: 'https://befitting-flamingo-587.convex.site' } } })).rejects.toThrow('target')
+    await expect(owner.mutation(internal.stories.buildLedger.begin, { ...begin, retainedDraft: { ...retained, packet: { ...retained.packet, draftModel: 'forged-model' } } })).rejects.toThrow('signature')
+    const id = await owner.mutation(internal.stories.buildLedger.begin, begin)
+    expect(await owner.mutation(internal.stories.buildLedger.begin, begin)).toBe(id)
+    await t.action(internal.stories.build.draft, { buildId: id })
+    await t.run(async ctx => {
+      const build = (await ctx.db.get(id))!
+      expect(build.draftHash).toBe(original.draftHash)
+      expect(build.draft).toEqual(original.draft)
+      expect(build.state).toBe('drafted')
+      expect(build.review).toBeUndefined()
+      expect(build.reviewHash).toBeUndefined()
+      expect(build.versionId).toBeUndefined()
+      expect(build.retainedDraftReceipt?.signature).toBe(retained.signature)
+      expect(await ctx.db.query('storyVersions').collect()).toHaveLength(1)
+      expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0)
+    })
+  } finally { vi.useRealTimers() }
+})
+
 test('accepted artifact transfer refuses other owners and changed bytes, then replays without publication or mail', async () => {
   const { t, owner, args, buildId, snapshotId } = await setup()
   vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')

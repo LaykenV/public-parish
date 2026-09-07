@@ -29,10 +29,18 @@ The importer retains original retrieval time and records transfer provenance in
 `storyArtifactTransfers`; it does not pretend a transfer is another Firecrawl call.
 
 The normal story builder still checks exact spans and current evidence. Research
-claims never inherit publication approval from an artifact receipt. Draft and
-review reuse is a separate gate. Until a portable accepted-draft path exists,
-do not claim that this artifact-only operation avoids every model call. No
-production model spending or data import is authorized by this document.
+claims never inherit publication approval from an artifact receipt.
+
+An owner can export the current accepted writing with
+`stories/retainedDraft:exportDraft`, naming the target site. Its signed seven-day
+receipt binds the exact draft, original draft model, story key and frozen bundle
+hash. Pass it as `retainedDraft` to `stories/build:start` in the target. The builder
+checks the actual retained artifacts and every exact span before adopting the
+writing. It records the receipt and runs a fresh MODEL_FAST independent review.
+It never copies a review or approval. The target owner must approve the exact
+new candidate and target evidence hashes. This path avoids another MODEL_STRONG
+draft call; budget one independent review per story, with no automatic retries.
+No production model spending or data import is authorized by this document.
 
 Rehearse with development receipts and target IDs before promotion. Verify owner
 refusals, signature and byte tampering, target conflicts, replay, original retrieval

@@ -27,11 +27,11 @@ async function transferKey(secret: string | undefined) {
   const bytes = Uint8Array.from(secret.match(/../g)!, pair => Number.parseInt(pair, 16))
   return crypto.subtle.importKey('raw', bytes, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify'])
 }
-export async function signArtifactPacket(packet: ArtifactPacket, secret: string | undefined) {
+export async function signArtifactPacket(packet: unknown, secret: string | undefined) {
   const signature = await crypto.subtle.sign('HMAC', await transferKey(secret), new TextEncoder().encode(canonicalStoryJson(packet)))
   return Array.from(new Uint8Array(signature), byte => byte.toString(16).padStart(2, '0')).join('')
 }
-export async function verifyArtifactPacket(packet: ArtifactPacket, signature: string, secret: string | undefined) {
+export async function verifyArtifactPacket(packet: unknown, signature: string, secret: string | undefined) {
   if (!/^[a-f0-9]{64}$/.test(signature)) throw new Error('Invalid artifact transfer signature')
   const bytes = Uint8Array.from(signature.match(/../g)!, pair => Number.parseInt(pair, 16))
   if (!await crypto.subtle.verify('HMAC', await transferKey(secret), bytes, new TextEncoder().encode(canonicalStoryJson(packet)))) throw new Error('Artifact transfer signature mismatch')

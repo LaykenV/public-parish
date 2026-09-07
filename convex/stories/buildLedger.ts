@@ -9,6 +9,7 @@ import { hashStoryValue, canonicalStoryJson } from './hashing'
 import { parseStoryManifest, LAUNCH_STORIES } from './manifest'
 import { sourceBinding, storyDraft, storyReview, storyMedia, checkDraft, checkReview, MAX_STORY_BUILD_RETRIES } from './contracts'
 import { evidenceHash, proposedSpans, resolveSources } from './evidence'
+import { retainedDraft, checkRetainedDraft } from './retainedDraft'
 import { aiRoutes, modelRoles } from '../ai/types'
 
 export const prepare = query({
@@ -25,7 +26,7 @@ export const prepare = query({
 })
 
 export const begin = internalMutation({
-  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), media: v.union(v.null(), storyMedia), notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
+  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), retainedDraft: v.optional(retainedDraft), media: v.union(v.null(), storyMedia), notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
   returns: v.id('storyBuilds'),
   handler: async (ctx, args) => {
     const owner = await requireOwner(ctx)
@@ -34,6 +35,7 @@ export const begin = internalMutation({
     const manifest = parseStoryManifest(imported.manifestJson)
     const sources = await resolveSources(ctx, manifest, args.bindings)
     const spans = proposedSpans(manifest, sources)
+    if (args.retainedDraft) await checkRetainedDraft(args.retainedDraft, manifest.story.storyKey, imported.bundleHash, spans)
     const media = args.media
     if (media && media.captionEvidenceKeys.some(key => !spans.some(span => span.key === key))) throw new Error('Image caption cites unknown evidence')
     let story = await ctx.db.query('stories').withIndex('by_story_key', q => q.eq('storyKey', manifest.story.storyKey)).unique()
@@ -43,7 +45,7 @@ export const begin = internalMutation({
     }
     const mediaIdentity = media ? { ...media, storageId: undefined } : null
     const notificationIntent = args.notificationIntent ?? (story.currentVersionId ? 'update' : 'baseline')
-    const inputHash = await hashStoryValue({ contract: 'story-build-2', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation, notificationIntent })
+    const inputHash = await hashStoryValue({ contract: 'story-build-2', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation, notificationIntent, retainedDraftHash: args.retainedDraft?.packet.draftHash })
     const existing = await ctx.db.query('storyBuilds').withIndex('by_input_hash', q => q.eq('inputHash', inputHash)).unique()
     if (existing) return existing._id
     // Replaying a historical accepted bundle returns its receipt, never a new
@@ -66,7 +68,8 @@ export const begin = internalMutation({
     if (relatedPublications.length > 24) throw new Error('Too many related records')
     const runId = await ctx.db.insert('pipelineRuns', { registryId: sources[0].snapshot.registryId, trigger: 'manual_story_build', state: 'queued', processorVersion: 'story-v1', suppressNotifications: true, startedAt: Date.now() })
     const buildId = await ctx.db.insert('storyBuilds', { importId: imported._id, storyId: story._id, expectedGeneration: story.generation, inputHash, sourceBindings: args.bindings, spans, relatedPublications, media,
-      state: 'queued', notificationIntent, runId, startedBy: owner._id, createdAt: Date.now() })
+      ...(args.retainedDraft ? { draft: args.retainedDraft.packet.draft, draftHash: args.retainedDraft.packet.draftHash, draftModel: args.retainedDraft.packet.draftModel, retainedDraftReceipt: { packetJson: canonicalStoryJson(args.retainedDraft.packet), signature: args.retainedDraft.signature } } : {}),
+      state: args.retainedDraft ? 'drafted' : 'queued', notificationIntent, runId, startedBy: owner._id, createdAt: Date.now() })
     const workflowId = await issueWorkflowManager.start(ctx, internal.stories.workflow.buildStory, { buildId })
     await ctx.db.patch(buildId, { workflowId })
     return buildId
