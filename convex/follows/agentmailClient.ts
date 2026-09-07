@@ -19,6 +19,7 @@ import { claimDeliveryChanges, updateChangeKeys, validUpdateReference } from './
 import type { UpdateReference } from './updateEvents'
 import { currentStoryUpdate } from '../stories/updates'
 import { acceptedStorySpans } from '../stories/evidence'
+import { checkedRecipient } from './developmentRouting'
 
 export const agentmail: AgentMail = new AgentMail(components.agentmail, {
   webhookSecret: env.AGENTMAIL_WEBHOOK_SECRET ?? '',
@@ -167,7 +168,7 @@ export const reserveImmediateDelivery = internalMutation({
     })
     try {
       const outboundId = await agentmail.sendMessage(ctx, updatesInboxId(), {
-        to: recipient,
+        to: checkedRecipient(recipient),
         subject: projected.subject,
         text: projected.text,
         labels: ['public-parish', 'sourced-alert', 'immediate'],
@@ -600,7 +601,7 @@ async function enqueueWeeklyDelivery(
   })
   try {
     const outboundId = await agentmail.sendMessage(ctx, updatesInboxId(), {
-      to: recipient,
+      to: checkedRecipient(recipient),
       subject: projected.subject,
       text: projected.text,
       labels: ['public-parish', 'sourced-alert', 'weekly'],

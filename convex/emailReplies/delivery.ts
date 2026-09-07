@@ -6,6 +6,7 @@ import { agentmail, updatesInboxId } from '../follows/agentmailClient'
 import { currentStoryUpdate } from '../stories/updates'
 import { hasCurrentStoryFollow } from './intake'
 import { acceptedStorySpans } from '../stories/evidence'
+import { checkedRecipient, DEVELOPMENT_RECIPIENT, isStoryDevelopment } from '../follows/developmentRouting'
 
 export const completeAnswer = internalMutation({
   args: {
@@ -28,6 +29,13 @@ export const completeAnswer = internalMutation({
       return null
     }
     const thread = event.replyThreadId ? await ctx.db.get(event.replyThreadId) : null
+    if (isStoryDevelopment()) {
+      checkedRecipient(DEVELOPMENT_RECIPIENT)
+      if (event.senderHash !== await hashAddress(DEVELOPMENT_RECIPIENT) || event.inboundInboxId !== env.AGENTMAIL_UPDATES_INBOX_ID?.trim()) {
+        await ctx.db.patch(event._id, { state: 'ignored', errorClass: 'development_recipient_refused', completedAt: Date.now(), updatedAt: Date.now() })
+        return null
+      }
+    }
     if (thread?.scopeKind === 'story') {
       const delivery = await ctx.db.get(thread.notificationDeliveryId)
       const current = delivery?.storyUpdateId ? await currentStoryUpdate(ctx, delivery.storyUpdateId) : null

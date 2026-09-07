@@ -9,6 +9,7 @@ import type { MutationCtx, QueryCtx } from '../_generated/server'
 import { action, internalMutation, mutation, query } from '../_generated/server'
 import { requireUser } from '../auth/authorization'
 import { agentmail, updatesInboxId } from './agentmailClient'
+import { checkedRecipient } from './developmentRouting'
 import {
   activeDeliveryCadence,
   deliveryCadence,
@@ -253,7 +254,7 @@ export const prepareEmailFollow = internalMutation({
     )
 
     const outboundId = await agentmail.sendMessage(ctx, updatesInboxId(), {
-      to: args.recipient,
+      to: checkedRecipient(args.recipient),
       subject: 'Your Public Parish verification code',
       text: verificationEmailText(args.code),
       labels: ['public-parish', 'verification'],
