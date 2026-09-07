@@ -36,7 +36,7 @@ export const prepare = mutation({
     if (story.generation !== args.expectedGeneration) throw new Error('Correction generation changed')
     const builds = await ctx.db.query('storyBuilds').withIndex('by_import_id', q => q.eq('importId', parent.importId)).take(100)
     if (builds.length >= 100) throw new Error('Import correction history exceeds its bound')
-    const runId = await ctx.db.insert('pipelineRuns', { registryId: sources[0].snapshot.registryId, trigger: 'manual_story_correction',
+    const runId = await ctx.db.insert('pipelineRuns', { registryId: sources[0].snapshot.registryId, trigger: 'manual_story_build',
       state: 'queued', processorVersion: 'story-v1', suppressNotifications: true, startedAt: Date.now() })
     const buildId = await ctx.db.insert('storyBuilds', { importId: parent.importId, storyId: parent.storyId, expectedGeneration: story.generation,
       inputHash, sourceBindings: parent.sourceBindings, spans: parent.spans, relatedPublications: parent.relatedPublications, media: parent.media,
