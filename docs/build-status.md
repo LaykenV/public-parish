@@ -1,7 +1,7 @@
 # Build completion and remaining work
 
 Documentation reviewed September 7, 2026 UTC against release `4c42d12`.
-See the [current operating checkpoint](source-operations-2026-09-07.md).
+See the [current operating checkpoint](bounded-catchup-2026-09-07.md).
 
 ## Build status
 
@@ -39,26 +39,32 @@ in a parish or a complete historical archive.
 | Place | Supported bodies | Remaining coverage |
 | --- | --- | --- |
 | Lafayette | Lafayette City Council; Lafayette City Planning Commission; Lafayette Parish Planning Commission; City Zoning Commission; Lafayette Board of Zoning Adjustment; Hearing Examiner | Youngsville remains degraded. Its checked portal ends at July 9, 2026. |
-| Rapides | Alexandria City Council; Pineville City Council; Rapides Parish Police Jury | Two citation failures remain for inspection and bounded retry. |
+| Rapides | Alexandria City Council; Pineville City Council; Rapides Parish Police Jury | One retried citation failure remains paused for inspection. |
 | East Baton Rouge | Metropolitan Council; Planning and Zoning Commission | Both passed all ten recovery gates again. Their decision catch-up remains incomplete. |
 
-All twelve bodies have monitoring policies, but the production and development
-source-processing switches are off after the spending interruption. Enabled
-policy rows do not mean automation is running. The new estimated-cost guard is
-deployed but not activated or funded at this checkpoint. Additional paid
-catch-up awaits a specific small allowance. No budget increase or paid AI or
-Firecrawl call was started during this repair session.
+All twelve bodies have monitoring policies. Production now has an active $4
+nonrenewing source AI allowance and a separate $0.50 Ask allowance, within the
+owner's approved $10 total catch-up maximum. The remaining headroom is
+unallocated. Both allowances expire September 14 UTC. The team spending cap did
+not increase and direct OpenAI fallback remains off.
 
-The current queue has 180 pending decision targets in East Baton Rouge and nine
-failed targets across four bodies. There are no targets marked running after
-reconciliation against stored pipeline results. Nine failures came from an
-older processor and failed exact-citation checks. They have not been waived or
-represented as recovered. The issue-proposal audit separately found 125 pending
-and 56 failed proposals. These are processing tasks, not counts of public issues.
+Only the Metropolitan Council policy is enabled for bounded automatic catch-up.
+Other source policies are paused; development source processing remains off.
+The shared source cap is 600 admissions per day, preserving prior usage. The
+estimated-cost guard also applies before each model call and does not refill
+when the admission window resets. No Firecrawl retrieval was needed for this
+catch-up pass. The current operating checkpoint records outcomes and limits.
 
-A 15-minute scheduler and budget-pause recovery are implemented. Sustained
-unattended progress still needs proof after controlled reactivation. A supported
-source or a passing deployment does not establish that proof.
+The bounded pass published eleven target outcomes, three full and eight limited,
+and one limited issue timeline. An unattended Metropolitan Council run at
+04:23:32 UTC published four of those target outcomes from saved inventories.
+After reconciliation, 172 targets remain pending, six failed, and none running.
+Two retried or newly processed targets still failed exact-citation validation.
+The ledger estimated $2.90 in source charges and $0.04 for a live cited Ask
+answer. Full catch-up and the separate issue queue remain unfinished.
+
+A supported source or a passing deployment does not prove full catch-up or
+sustained automatic progress across all bodies. Those claims remain incomplete.
 
 ## Accepted verification scope
 
@@ -79,10 +85,10 @@ source or a passing deployment does not establish that proof.
 
 ## Remaining operating and launch work
 
-1. Fund and activate a small nonrenewing source allowance and separate Ask
-   allowance, then restore conservative admission limits as their windows allow.
-   Finish eligible inventories and decision catch-up within the allowance,
-   inspect failed decisions and issue proposals, and observe scheduled progress.
+1. Continue eligible catch-up within the active nonrenewing allowance, inspect
+   failed decisions and issue proposals, and verify automatic progress. Keep
+   other source checks paused until their costs fit the approved maximum.
+   Restore smaller local admission limits when their consumed windows clear.
 2. Obtain newer official Youngsville agenda or outcome documents. Repeated paid
    retrieval of its old packet cannot fill that gap. Preserve Lafayette's
    limitation until current evidence supports recovery.
@@ -97,7 +103,7 @@ source or a passing deployment does not establish that proof.
 
 ## Evidence and operating instructions
 
-- [Current September 7 operating checkpoint](source-operations-2026-09-07.md)
+- [Current September 7 operating checkpoint](bounded-catchup-2026-09-07.md)
 - [Historical September 6 source operations](source-operations-2026-09-06.md)
 - [Initial production certification and follow-up releases](slice-9-production-certification.md)
 - [Development certification](slice-9-development-certification.md)

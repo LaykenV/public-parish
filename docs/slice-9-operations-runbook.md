@@ -8,17 +8,19 @@ and the separate [development evidence](slice-9-development-certification.md).
 
 ## Current operating state, September 7 UTC
 
-Source processing is paused in production and development. All twelve launch
-bodies have policy rows, but `SOURCE_MONITORING_ENABLED=false` prevents runs.
-Do not turn it on from the historical rollout instructions below. See the
-[current checkpoint](source-operations-2026-09-07.md) before changing settings.
+Production has `SOURCE_MONITORING_ENABLED=true` for one enabled policy,
+Metropolitan Council. The other eleven policies are paused. Development source
+processing remains off. See the [funded catch-up checkpoint](bounded-catchup-2026-09-07.md)
+for the active $4 source AI allowance, separate $0.50 Ask allowance, 600 shared
+daily admissions, and the owner's $10 maximum. No broad source restart is implied.
 
 PR #138 adds `ai/spendingLedger:configure` and owner-only `status`. Each scope,
 `sources` or `ask`, has a total estimated-cost allowance, an expiry within 31
 days, and an enabled flag. Reconfiguration preserves charges. Allowances never
 refill themselves. Set both scopes deliberately before activating
 `AI_SPENDING_GUARD_ENABLED=true`; a missing allowance refuses paid model calls.
-The guard is deployed but remains off and unfunded at this checkpoint.
+The guard is active in production with the two funded scopes above. The
+allowances expire September 14 UTC and do not renew automatically.
 
 Model calls reserve a conservative amount before contacting the provider and
 settle against known token usage. Failed calls or missing usage retain the
@@ -27,9 +29,9 @@ invoice, Convex hosting, Firecrawl retrieval, or email. Existing request and
 source-admission limits continue to apply. Do not reset their consumed usage to
 lower a limit; wait for its window if the new limit is below calls already used.
 
-Restoring automatic work requires an approved small allowance, conservative
-source admissions, and observation of a scheduled run. Paid source processing
-remains paused until that setup is complete. Direct OpenAI fallback stays off.
+Expanding automatic work must remain inside the approved maximum. Do not
+enable more source policies or fund a recurring allowance from these
+instructions. Direct OpenAI fallback stays off.
 
 ## Historical initial rollout and future activation
 

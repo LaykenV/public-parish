@@ -1,6 +1,9 @@
 # Source operations, September 7, 2026 UTC
 
-This checkpoint replaces the September 6 operating counts and activation notes.
+This is the recovery checkpoint before the owner funded additional processing.
+The [bounded catch-up report](bounded-catchup-2026-09-07.md) records the subsequent
+activation, allowances, and results. This checkpoint replaced the September 6
+operating counts and activation notes at that time.
 The feature build through Slice 9 is complete. Catch-up and full current source
 coverage are not complete. The founder's full QA pass and launch remain ahead.
 

@@ -5,7 +5,8 @@ for the September 7 UTC documentation checkpoint. Dated sections below retain th
 original release context; they do not reopen completed feature work.
 
 Status: eleven launch bodies supported. Youngsville remains degraded, and Lafayette
-remains available with a limitation. Automatic source processing is paused.
+remains available with a limitation. Automatic catch-up is enabled only for
+Metropolitan Council under a small nonrenewing allowance; other source policies remain paused.
 Last verified: September 7, 2026 UTC
 
 This document supplies starting points, not a claim of complete coverage. Every
@@ -26,11 +27,12 @@ City Planning, Parish Planning, City Zoning, BOZA, and Hearing Examiner passed
 all ten development and production gates. They joined the already supported
 Lafayette City Council and Youngsville City Council at that checkpoint.
 Subsequent work added monitoring policies for all twelve launch bodies. Source
-processing is now paused after a spending interruption. Youngsville remains
+processing later paused after a spending interruption. Bounded Metropolitan
+Council catch-up has since resumed. Youngsville remains
 degraded because its checked portal still ends at July 9, 2026; newer official
 agenda or outcome documents remain unavailable.
 
-See the [current source-operations report](source-operations-2026-09-07.md) for the exact
+See the [current source-operations report](bounded-catchup-2026-09-07.md) for the exact
 coverage, automation limits, and remaining catch-up. The checkpoints below retain
 their dated historical findings.
 

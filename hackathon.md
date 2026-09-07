@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-07T02:38:31Z
+- **Last updated:** 2026-09-07T04:36:42Z
 
 ## Log
 
@@ -1621,3 +1621,17 @@ or Firecrawl calls were started and no account spending cap was raised. The
 pending decision targets, nine failed targets, separate issue-proposal work,
 and the unresolved need for newer Youngsville documents. Full catch-up,
 sustained automatic processing, founder QA, and launch are not claimed complete.
+
+
+### 2026-09-07 - working tree
+
+Activated nonrenewing production allowances within the owner's $10 total
+maximum, $4 for source AI and $0.50 for Ask. The bounded saved-snapshot pass
+published eleven target outcomes and one limited issue timeline. An unattended
+Metropolitan Council batch published four records without new document retrieval.
+A live anonymous Ask answer returned the Cortana rebate amount with its official
+minutes citation. Estimated ledger charges were $2.90 for sources and $0.04 for
+Ask. The team cap did not increase. Other body policies remain paused, 172 targets
+remain pending, and Youngsville still lacks newer official documents. The
+[bounded catch-up checkpoint](docs/bounded-catchup-2026-09-07.md) records failures,
+withheld timelines, and the remaining work before full catch-up can be claimed.
