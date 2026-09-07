@@ -4,7 +4,7 @@ import { internal } from '../_generated/api'
 import type { Doc } from '../_generated/dataModel'
 import type { MutationCtx } from '../_generated/server'
 import { env, internalMutation } from '../_generated/server'
-import { scopeKey, storedScope } from '../ask/contracts'
+import { askScope, scopeKey, storedScope } from '../ask/contracts'
 import type { AskScope } from '../ask/contracts'
 import {
   encryptPrivateText,
@@ -140,14 +140,7 @@ export const getPreparation = internalMutation({
       askExpiresAt: v.optional(v.number()),
       ownsPreparation: v.boolean(),
       encryptedQuestion: v.string(),
-      scope: v.union(
-        v.object({
-          kind: v.literal('corpus'),
-          areaKey: v.optional(v.string()),
-        }),
-        v.object({ kind: v.literal('issue'), issueSlug: v.string() }),
-        v.object({ kind: v.literal('meeting'), meetingId: v.string() }),
-      ),
+      scope: askScope,
     }),
   ),
   handler: async (ctx, args) => {
