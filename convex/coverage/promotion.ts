@@ -16,6 +16,8 @@ export const confirmPromotion = mutation({
     if (!proposal)
       throw promotionError('proposal_missing', 'The proposal does not exist.')
     if (proposal.status === 'promoted') {
+      const body = await ctx.db.get(proposal.governmentBodyId)
+      if (body) await updateJurisdictionStatus(ctx, body.jurisdictionId)
       return { promoted: true, replayed: true }
     }
     if (proposal.status !== 'ready') {
@@ -132,6 +134,7 @@ export const setCoverageStatus = mutation({
     const recovered =
       args.status === 'supported' && body.publicStatus !== 'supported'
     if (body.publicStatus === args.status && registry.status === args.status) {
+      await updateJurisdictionStatus(ctx, body.jurisdictionId)
       return { changed: false, recovered }
     }
     await ctx.db.patch(body._id, { publicStatus: args.status })
@@ -200,10 +203,7 @@ async function updateJurisdictionStatus(
 ): Promise<void> {
   const jurisdiction = await ctx.db.get(jurisdictionId)
   if (!jurisdiction) return
-  if (
-    jurisdiction.publicStatus === 'paused' ||
-    jurisdiction.publicStatus === 'degraded'
-  ) {
+  if (jurisdiction.publicStatus === 'paused') {
     return
   }
   const requiredKeys = listRootManifests()
@@ -220,9 +220,9 @@ async function updateJurisdictionStatus(
   )
   const supported =
     requiredKeys.length > 0 &&
-    bodies.every((body) => body?.publicStatus === 'supported')
+    bodies.every((body) => body?.jurisdictionId === jurisdictionId && body.publicStatus === 'supported')
   await ctx.db.patch(jurisdiction._id, {
-    publicStatus: supported ? 'supported' : 'candidate',
+    publicStatus: supported ? 'supported' : jurisdiction.publicStatus === 'degraded' ? 'degraded' : 'candidate',
     ...(supported ? { qualityGateAt: Date.now() } : {}),
   })
 }

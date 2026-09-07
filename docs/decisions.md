@@ -449,3 +449,14 @@ report](source-operations-2026-09-06.md) records subsequent certification,
 automation, queue progress, and budget limits. Catch-up, future planning-source
 automation, resident observations, the demo, and submission remain operating
 work. No Slice 10 is planned.
+
+
+## Reading published evidence during coverage interruptions
+
+The parish selector distinguishes full coverage from access to already-published
+records. A parish with a current accepted publication remains selectable with
+a coverage limitation notice, even when sources are degraded or updates paused.
+An area with no accepted evidence remains unavailable. This does not promote a
+source, change follow eligibility, or restart monitoring. Coverage recovery
+recomputes a degraded parish after its required bodies recover, while preserving
+an explicit parish pause.
