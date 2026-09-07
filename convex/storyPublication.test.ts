@@ -69,7 +69,9 @@ test('unauthenticated and changed-hash approvals fail before publication', async
   const { t, owner, args } = await setup()
   await expect(t.mutation(api.stories.operations.approve, args)).rejects.toThrow('Sign in with Google')
   await expect(owner.mutation(api.stories.operations.approve, { ...args, draftHash: 'b'.repeat(64) })).rejects.toThrow('Approval inputs changed')
-  await t.run(async ctx => expect(await ctx.db.query('storyVersions').collect()).toHaveLength(0))
+  await t.run(async ctx => {
+    expect(await ctx.db.query('storyVersions').collect()).toHaveLength(0)
+  })
 })
 
 test('a newer source or deleted artifact invalidates exact-version approval', async () => {
