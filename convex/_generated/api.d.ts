@@ -8,6 +8,12 @@
  * @module
  */
 
+import type * as stories_contracts from "../stories/contracts.js";
+import type * as stories_evidence from "../stories/evidence.js";
+import type * as stories_operations from "../stories/operations.js";
+import type * as stories_buildLedger from "../stories/buildLedger.js";
+import type * as stories_build from "../stories/build.js";
+import type * as stories_workflow from "../stories/workflow.js";
 import type * as stories_imports from "../stories/imports.js";
 import type * as ai_chatCompletions from "../ai/chatCompletions.js";
 import type * as ai_provider from "../ai/provider.js";
@@ -143,6 +149,12 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  "stories/workflow": typeof stories_workflow;
+  "stories/build": typeof stories_build;
+  "stories/buildLedger": typeof stories_buildLedger;
+  "stories/operations": typeof stories_operations;
+  "stories/evidence": typeof stories_evidence;
+  "stories/contracts": typeof stories_contracts;
   "stories/imports": typeof stories_imports;
   "ai/chatCompletions": typeof ai_chatCompletions;
   "ai/provider": typeof ai_provider;

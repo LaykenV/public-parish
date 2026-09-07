@@ -1,3 +1,4 @@
+import { storyKey, storyMode, sourceBinding, storySpan, storyDraft, storyReview, storyMedia, relatedPublication } from './stories/contracts'
 import { civicEvent } from './analytics/civicContracts'
 import { searchEntry } from './resident/searchContracts'
 import { defineSchema, defineTable } from 'convex/server'
@@ -114,6 +115,33 @@ const analyticsAreaCounts = v.object({
 })
 
 export default defineSchema({
+  stories: defineTable({
+    storyKey, slug: v.string(), rank: v.number(),
+    state: v.union(v.literal('unpublished'), v.literal('active'), v.literal('withdrawn')),
+    currentVersionId: v.optional(v.id('storyVersions')),
+    withdrawalReason: v.optional(v.string()),
+    generation: v.number(), createdAt: v.number(), updatedAt: v.number(),
+  }).index('by_story_key', ['storyKey']).index('by_slug', ['slug']).index('by_state_and_rank', ['state', 'rank']),
+  storyBuilds: defineTable({
+    importId: v.id('storyImports'), storyId: v.id('stories'),
+    expectedGeneration: v.number(), inputHash: v.string(),
+    sourceBindings: v.array(sourceBinding), spans: v.array(storySpan),
+    relatedPublications: v.array(relatedPublication), media: v.union(v.null(), storyMedia),
+    state: v.union(v.literal('queued'), v.literal('drafted'), v.literal('reviewed'), v.literal('failed'), v.literal('published'), v.literal('withheld')),
+    draft: v.optional(storyDraft), draftHash: v.optional(v.string()), draftModel: v.optional(v.string()),
+    review: v.optional(storyReview), reviewHash: v.optional(v.string()), reviewModel: v.optional(v.string()),
+    runId: v.id('pipelineRuns'), workflowId: v.optional(v.string()),
+    error: v.optional(v.string()), startedBy: v.id('users'), createdAt: v.number(),
+    versionId: v.optional(v.id('storyVersions')),
+  }).index('by_input_hash', ['inputHash']).index('by_story_id_and_created_at', ['storyId', 'createdAt']),
+  storyVersions: defineTable({
+    storyId: v.id('stories'), buildId: v.id('storyBuilds'), version: v.number(),
+    mode: storyMode, inputHash: v.string(), draftHash: v.string(), reviewHash: v.string(),
+    payload: storyDraft, spans: v.array(storySpan), relatedPublications: v.array(relatedPublication),
+    media: v.union(v.null(), storyMedia), geography: v.array(v.string()),
+    reviewedThrough: v.string(), nextReviewAt: v.string(), reviewResponsibility: v.string(),
+    approvedBy: v.id('users'), approvedAt: v.number(),
+  }).index('by_story_id_and_version', ['storyId', 'version']).index('by_build_id', ['buildId']),
   // Staging is private research. It has no public pointer or publication API.
   storyImports: defineTable({
     storyKey: v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce')),

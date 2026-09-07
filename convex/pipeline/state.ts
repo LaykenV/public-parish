@@ -30,6 +30,7 @@ export const runTriggers = v.union(
   v.literal('validated_candidate'),
   v.literal('manual_publication'),
   v.literal('manual_issue_build'),
+  v.literal('manual_story_build'),
   v.literal('decision_published'),
 )
 
