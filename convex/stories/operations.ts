@@ -12,14 +12,14 @@ import { checkDraft, checkReview } from './contracts'
 
 export const preview = query({
   args: { buildId: v.id('storyBuilds') },
-  returns: v.object({ build: schema.doc('storyBuilds'), previous: v.union(v.null(), schema.doc('storyVersions')) }),
+  returns: v.object({ build: schema.doc('storyBuilds'), previous: v.union(v.null(), schema.doc('storyVersions')), imageUrl: v.union(v.null(), v.string()) }),
   handler: async (ctx, args) => {
     await requireOwner(ctx)
     const build = await ctx.db.get(args.buildId)
     if (!build) throw new Error('Unknown story build')
     const story = await ctx.db.get(build.storyId)
     const previous = story?.currentVersionId ? await ctx.db.get(story.currentVersionId) : null
-    return { build, previous }
+    return { build, previous, imageUrl: build.media ? await ctx.storage.getUrl(build.media.storageId) : null }
   },
 })
 

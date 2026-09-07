@@ -326,3 +326,35 @@ test('cosmetic revisions retain pending material delivery and a later baseline i
     await fixture.t.run(async ctx => { expect(await currentStoryUpdate(ctx, eventId)).toBeNull() })
   } finally { vi.useRealTimers() }
 })
+
+test('owner intake reuses saved artifacts and exposes normalization changes without retrieval', async () => {
+  const { t, owner, buildId, snapshotId } = await setup()
+  const imported = await t.run(async ctx => {
+    const build = (await ctx.db.get(buildId))!
+    return (await ctx.db.get(build.importId))!
+  })
+  await expect(t.query(api.stories.intake.sources, { importId: imported._id })).rejects.toThrow('Sign in with Google')
+  expect((await owner.query(api.stories.intake.sources, { importId: imported._id }))[0].status).toBe('ready')
+  const sourceKey = JSON.parse(imported.manifestJson).sources[0].sourceKey as string
+  expect(await owner.action(api.stories.intake.retrieve, { importId: imported._id, bundleHash: imported.bundleHash, sourceKey })).toContain('No retrieval call')
+  await t.run(async ctx => { await ctx.db.patch(snapshotId, { normalizedContentHash: 'f'.repeat(64) }) })
+  expect((await owner.query(api.stories.intake.sources, { importId: imported._id }))[0].status).toBe('normalization_changed')
+  await t.run(async ctx => { expect(await ctx.db.query('storySourceRetrievals').collect()).toHaveLength(0) })
+})
+
+test('source retrieval has two attempts and rejects stale completion', async () => {
+  const { t, owner, buildId, snapshotId } = await setup()
+  const input = await t.run(async ctx => {
+    const build = (await ctx.db.get(buildId))!
+    const imported = (await ctx.db.get(build.importId))!
+    await ctx.db.patch(snapshotId, { truncation: { truncated: true } })
+    return { importId: imported._id, sourceKey: JSON.parse(imported.manifestJson).sources[0].sourceKey as string, bundleHash: imported.bundleHash }
+  })
+  const first = await owner.mutation(internal.stories.intake.beginRetrieval, input)
+  await expect(owner.mutation(internal.stories.intake.beginRetrieval, input)).rejects.toThrow('already running')
+  await t.mutation(internal.stories.intake.finishRetrieval, { receiptId: first.receiptId!, attempt: first.attempt, error: 'Synthetic retrieval failure' })
+  const second = await owner.mutation(internal.stories.intake.beginRetrieval, input)
+  await expect(t.mutation(internal.stories.intake.finishRetrieval, { receiptId: first.receiptId!, attempt: first.attempt, snapshotId })).rejects.toThrow('attempt changed')
+  await t.mutation(internal.stories.intake.finishRetrieval, { receiptId: second.receiptId!, attempt: second.attempt, error: 'Synthetic second failure' })
+  await expect(owner.mutation(internal.stories.intake.beginRetrieval, input)).rejects.toThrow('attempts exhausted')
+})

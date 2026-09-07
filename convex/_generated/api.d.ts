@@ -17,6 +17,7 @@ import type * as stories_workflow from "../stories/workflow.js";
 import type * as stories_resident from "../stories/resident.js";
 import type * as stories_search from "../stories/search.js";
 import type * as stories_updates from "../stories/updates.js";
+import type * as stories_intake from "../stories/intake.js";
 import type * as sharing_stories from "../sharing/stories.js";
 import type * as stories_imports from "../stories/imports.js";
 import type * as ai_chatCompletions from "../ai/chatCompletions.js";
@@ -156,6 +157,7 @@ declare const fullApi: ApiFromModules<{
   "sharing/stories": typeof sharing_stories;
   "stories/search": typeof stories_search;
   "stories/updates": typeof stories_updates;
+  "stories/intake": typeof stories_intake;
   "stories/resident": typeof stories_resident;
   "stories/workflow": typeof stories_workflow;
   "stories/build": typeof stories_build;

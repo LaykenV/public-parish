@@ -136,6 +136,12 @@ export default defineSchema({
     error: v.optional(v.string()), startedBy: v.id('users'), createdAt: v.number(),
     versionId: v.optional(v.id('storyVersions')),
   }).index('by_input_hash', ['inputHash']).index('by_story_id_and_created_at', ['storyId', 'createdAt']),
+  storySourceRetrievals: defineTable({
+    importId: v.id('storyImports'), sourceKey: v.string(), attempts: v.number(),
+    state: v.union(v.literal('running'), v.literal('complete'), v.literal('failed')),
+    snapshotId: v.optional(v.id('sourceSnapshots')), error: v.optional(v.string()),
+    startedAt: v.number(), completedAt: v.optional(v.number()),
+  }).index('by_import_and_source', ['importId', 'sourceKey']),
   storyVersions: defineTable({
     storyId: v.id('stories'), buildId: v.id('storyBuilds'), version: v.number(),
     mode: storyMode, inputHash: v.string(), draftHash: v.string(), reviewHash: v.string(),
@@ -586,7 +592,7 @@ export default defineSchema({
   jurisdictions: defineTable({
     name: v.string(),
     slug: v.string(),
-    type: v.union(v.literal('parish'), v.literal('municipality')),
+    type: v.union(v.literal('parish'), v.literal('municipality'), v.literal('state')),
     state: v.string(),
     parentJurisdictionId: v.optional(v.id('jurisdictions')),
     publicStatus: coverageStatuses,

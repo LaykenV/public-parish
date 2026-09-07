@@ -10,7 +10,7 @@ import {
 
 type ResidentRoutePath = Exclude<
   keyof FileRoutesByFullPath,
-  '/' | '/operations/coverage'
+  '/' | '/operations/coverage' | '/operations/stories'
 >
 
 const EXPECTED_RESIDENT_ROUTES = [
