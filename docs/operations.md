@@ -141,7 +141,7 @@ publications. It is separate from retrieval and model extraction. Use bounded
 pages and inspect the returned cursor. Do not call a projection repair new
 published evidence or put it into every deployment seed.
 
-## Story operating procedure, planned
+## Story operating procedure
 
 1. Prepare the bounded source dossier and JSON manifest described in
    [sources](sources.md#source-dossier-and-import-contract).
@@ -156,17 +156,21 @@ published evidence or put it into every deployment seed.
 7. Inspect delivery, reply and dedupe receipts. A photo or layout change sends no
    material update. Withdraw a known-invalid version using the defined workflow.
 
-The importer, review interface and story operations are not implemented yet.
-Use [architecture](architecture.md#planned-story-model) and the S1 through S7
-packets to build them. Do not substitute direct database insertion for this path.
+The owner importer and review interface are implemented at `/operations/stories`.
+All three launch stories passed the bounded development loop. Use
+[architecture](architecture.md#owner-curated-story-model) and
+[the transfer procedure](story-artifact-transfer.md). Do not substitute direct
+database insertion or copied approval for this path.
 
 ## AgentMail and controlled verification
 
 Use an explicitly authorized controlled recipient for verification, update,
 roundup, reply and unsubscribe checks. A provider-accepted message, inbox receipt,
 verified application callback and useful resident outcome are distinct results.
-Both deployments have shared the updates inbox; trace the application record to
-the intended deployment before claiming a round trip.
+The story development gate used a dedicated development inbox and callback, with
+only the owner-controlled reports inbox as recipient. Production routing was not
+changed. Both deployments previously shared the updates inbox, so trace the
+application record to its intended deployment before claiming a round trip.
 
 The production webhook is `/agentmail/webhook` on the qualifying Convex host.
 Provider subscriptions must include `message.received` for grounded replies and

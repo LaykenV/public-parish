@@ -27,7 +27,7 @@ Approved official source
   -> resident queries, search, Ask, and sourced notifications
 ```
 
-The planned story path adds owner-reviewed composition over accepted evidence
+The development story path adds owner-reviewed composition over accepted evidence
 from one or several bodies. It preserves the existing decision and issue path.
 
 ## Stack and code organization
@@ -180,8 +180,8 @@ facts without acting as current configuration.
 
 | Role | Gateway model ID | Work |
 | --- | --- | --- |
-| `MODEL_STRONG` | `openai/gpt-5.6-terra` | Record extraction, document inventory, consequence factors, issue linking, planned story drafting |
-| `MODEL_FAST` | `openai/gpt-5.6-luna` | Discovery classification, independent review, Ask selection and answers, planned story review |
+| `MODEL_STRONG` | `openai/gpt-5.6-terra` | Record extraction, document inventory, consequence factors, issue linking, story drafting |
+| `MODEL_FAST` | `openai/gpt-5.6-luna` | Discovery classification, independent review, Ask selection and answers, story review |
 
 Use strict JSON Schema in Chat Completions `response_format`. Generation and
 publication review run with the configured high reasoning effort; short discovery
@@ -287,10 +287,12 @@ bounded delivery metadata, not the description or address. Retention and cleanup
 live in `convex/follows/retention.ts`, `convex/emailReplies/recovery.ts`, and
 `convex/sourceReports/reports.ts`. Preserve these controls when adding stories.
 
-## Planned story model
+## Owner-curated story model
 
-This section is approved scope, not an implemented schema. The first story PR
-must make the concrete validators and field names reviewable.
+The story schema and resident loop are implemented in `convex/stories` and the
+existing Ask, follow and email domains. Application `61c9fec` passed the bounded
+development gate. Production promotion remains owner-gated. The contracts below
+remain requirements for later revisions. See [development evidence](story-development-certification.md).
 
 A story has its own identity because it can cover several government bodies.
 Use these logical records, reusing existing ledgers where their contracts fit:
@@ -330,7 +332,8 @@ ledger deduplicates overlapping local and story follows by owner and cadence.
 Reviewed cosmetic revisions retain a pending material event; a later material
 revision or suppressed historical baseline invalidates the older event. Replies
 recheck accepted citation IDs, inbox, sender, subscription and thread before send.
-These paths have CI coverage; launch model and email round trips remain pending.
+These paths have CI coverage and passed the three-story development model and
+controlled email round trips. Production promotion remains pending.
 
 The owner supplies a versioned JSON manifest referencing exact approved sources,
 saved artifacts or existing accepted records, proposed grouping, questions and
@@ -448,3 +451,12 @@ cases, especially cross-story access, stale citations, import replay, independen
 review, image metadata, withheld content and duplicate mail. Run authorized live
 checks separately and state their limits. [Work](work.md) owns launch acceptance;
 [operations](operations.md) owns release and controlled-provider procedures.
+
+
+### Retained story promotion
+
+`stories/transfer` verifies signed source-artifact receipts against actual retained
+bytes and target-resolved stable identities. `stories/retainedDraft` binds exact
+accepted writing to a frozen manifest and target deployment. The target builder
+rechecks every span, retains the draft and runs a fresh independent review. It
+copies neither review nor approval. See [the bounded transfer procedure](story-artifact-transfer.md).

@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-07T19:57:59Z
+- **Last updated:** 2026-09-07T23:29:37Z
 
 ## Log
 
@@ -1678,3 +1678,13 @@ frozen research bundles and reused the existing Boyce snapshots. Eight missing
 official documents were retrieved with one bounded rate-limit retry. Corrected
 manifests, real drafting, owner approvals and mail round trips remain pending.
 No story publication, production deployment or resident delivery is claimed.
+
+
+### 2026-09-07 - 61c9fec
+
+Published all three reviewed launch stories in development, with Meta first on
+Home. Verified exact evidence, images, anonymous Ask, story follows, real
+controlled updates, a three-story roundup, grounded replies and unsubscribe.
+Retained artifact and draft promotion reuse saved work while requiring target
+review and approval. CI passed; no local suite or production promotion ran.
+The founder design and full QA campaign remains separate.
