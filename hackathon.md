@@ -1578,3 +1578,10 @@ Repairing access to already-published evidence during coverage interruptions.
 The selector keeps such parishes selectable with a limitation notice, while
 parish recovery no longer skips degraded status. Explicit pauses remain.
 Automated validation is delegated to GitHub Actions; source processing stays off.
+
+### 2026-09-07 - working tree
+
+The production parish-switch check exposed a card crash on an official date
+written as "September 29, 2026, at Noon." Date formatting now retains printed
+wording when it is not a valid ISO date, instead of throwing or guessing.
+Regression tests use that exact input. No source records or provider settings change.
