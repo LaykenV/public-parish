@@ -91,6 +91,7 @@ export const answerInbound = internalAction({
         attempt: claim.attempt,
         answerMessageId: answer.messageId,
         kind: answer.kind,
+        evidenceIds: answer.citations.map(citation => citation.evidenceId),
         text: formatEmailReply(
           answer,
           claim.officialContactUrl,

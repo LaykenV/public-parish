@@ -12,6 +12,7 @@ import type { StoryManifest } from './stories/manifestTypes'
 import { proposedSpans } from './stories/evidence'
 import type { StoryDraft, StoryReview } from './stories/contracts'
 import { claimDeliveryChanges, validUpdateReference } from './follows/updateEvents'
+import { currentStoryUpdate } from './stories/updates'
 
 const modules = import.meta.glob('./**/*.ts')
 afterEach(() => vi.unstubAllEnvs())
@@ -307,4 +308,21 @@ test('overlapping notification claims deduplicate per owner and cadence', async 
     expect(await ctx.db.query('notificationChangeClaims').collect()).toHaveLength(2)
   })
   expect(validUpdateReference({})).toBe(false)
+})
+
+test('cosmetic revisions retain pending material delivery and a later baseline invalidates it', async () => {
+  vi.useFakeTimers()
+  try {
+    const fixture = await setup()
+    await fixture.owner.mutation(api.stories.operations.approve, fixture.args)
+    await revision(fixture, 'material', 'update')
+    const eventId = await fixture.t.run(async ctx => (await ctx.db.query('storyUpdateEvents').first())!._id)
+    const cosmetic = await revision(fixture, 'cosmetic', 'update')
+    await fixture.t.run(async ctx => {
+      expect((await currentStoryUpdate(ctx, eventId))?.version._id).toBe(cosmetic.versionId)
+      expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(1)
+    })
+    await revision(fixture, 'material', 'baseline')
+    await fixture.t.run(async ctx => { expect(await currentStoryUpdate(ctx, eventId)).toBeNull() })
+  } finally { vi.useRealTimers() }
 })

@@ -36,8 +36,20 @@ export async function recordStoryUpdate(ctx: MutationCtx, previousVersionId: Id<
 export async function currentStoryUpdate(ctx: Pick<MutationCtx, 'db'>, id: Id<'storyUpdateEvents'>) {
   const event = await ctx.db.get(id)
   const story = event ? await ctx.db.get(event.storyId) : null
-  const version = event ? await ctx.db.get(event.currentVersionId) : null
-  if (!event || !story || story.state !== 'active' || story.currentVersionId !== event.currentVersionId || !version || version.mode === 'withheld' || !await currentVersionEvidence(ctx, version)) return null
+  const eventVersion = event ? await ctx.db.get(event.currentVersionId) : null
+  const version = story?.currentVersionId ? await ctx.db.get(story.currentVersionId) : null
+  if (!event || !story || story.state !== 'active' || !eventVersion || !version || version.mode === 'withheld' || !await currentVersionEvidence(ctx, version)) return null
+  if (version._id !== eventVersion._id) {
+    // A later image or copy edit must not discard a pending material roundup.
+    // Any intervening substantive revision, including a suppressed baseline,
+    // makes the older event ineligible. Bound historical inspection explicitly.
+    const revisions = await ctx.db.query('storyVersions').withIndex('by_story_id_and_version', q => q.eq('storyId', story._id).gt('version', eventVersion.version).lte('version', version.version)).take(21)
+    if (revisions.length > 20 || revisions.length !== version.version - eventVersion.version) return null
+    for (const revision of revisions) {
+      const build = await ctx.db.get(revision.buildId)
+      if (revision.mode === 'withheld' || build?.review?.changeAssessment?.kind !== 'cosmetic') return null
+    }
+  }
   return { event, story, version }
 }
 
