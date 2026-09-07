@@ -92,10 +92,24 @@ function validTimelineDate(value: string): boolean {
   return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === day
 }
 
-export function checkReview(review: StoryReview, draft: StoryDraft, media: typeof storyMedia.type | null): string | null {
-  if (review.changeAssessment && (!review.changeAssessment.reason.trim() || review.changeAssessment.reason.length > 800 || (review.changeAssessment.previousDraftHash !== null && !/^[a-f0-9]{64}$/.test(review.changeAssessment.previousDraftHash)))) return 'Invalid change assessment'
+export function reviewPaths(draft: StoryDraft, media: typeof storyMedia.type | null): string[] {
   const expected = [...draftStatements(draft).map(item => item.path), ...draft.limitations.map((_, i) => `/limitations/${i}`)]
   if (media) expected.push('/media/caption', '/media/alt')
+  return expected
+}
+
+export function reviewSchemaFor(draft: StoryDraft, media: typeof storyMedia.type | null) {
+  const paths = reviewPaths(draft, media)
+  const checks = reviewJsonSchema.properties.checks
+  return { ...reviewJsonSchema, properties: { ...reviewJsonSchema.properties, checks: {
+    ...checks, minItems: paths.length, maxItems: paths.length,
+    items: { ...checks.items, properties: { ...checks.items.properties, path: { type: 'string', enum: paths } } },
+  } } }
+}
+
+export function checkReview(review: StoryReview, draft: StoryDraft, media: typeof storyMedia.type | null): string | null {
+  if (review.changeAssessment && (!review.changeAssessment.reason.trim() || review.changeAssessment.reason.length > 800 || (review.changeAssessment.previousDraftHash !== null && !/^[a-f0-9]{64}$/.test(review.changeAssessment.previousDraftHash)))) return 'Invalid change assessment'
+  const expected = reviewPaths(draft, media)
   if (review.checks.length !== expected.length || JSON.stringify(review.checks.map(check => check.path).sort()) !== JSON.stringify(expected.sort())) return 'Review must check every statement, limitation and image description exactly once'
   if (review.checks.some(check => !check.reason.trim() || check.reason.length > 800) || review.limitations.length > 12 || review.limitations.some(text => !text.trim() || text.length > 600)) return 'Invalid review findings'
   const failed = review.checks.some(check => check.assessment !== 'supported')

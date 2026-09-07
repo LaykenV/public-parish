@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { checkDraft, checkReview } from './contracts'
+import { checkDraft, checkReview, reviewSchemaFor } from './contracts'
 import type { StoryDraft, StoryReview, StorySpan } from './contracts'
 
 const draft: StoryDraft = {
@@ -38,4 +38,19 @@ test('a timeline date is part of the reviewed statement', () => {
   expect(checkReview(review, withDate, null)).toContain('exactly once')
   for (const date of ['2026', '2026-09', '2024-02-29']) expect(checkDraft({ ...draft, timeline: [{ date, statement: draft.summary }] }, spans)).toBeNull()
   for (const date of ['2026-02-29', 'tomorrow', '2026-13', '2026-09-07'.repeat(100)]) expect(checkDraft({ ...draft, timeline: [{ date, statement: draft.summary }] }, spans)).toBe('Invalid timeline date')
+})
+
+test('review requests name nested fields and gaps while duplicate checks still fail closed', () => {
+  const candidate = { ...draft, sections: [{ heading: 'Project scope', statements: [draft.summary] }],
+    timeline: [{ date: '2026-01', statement: draft.summary }], nextAction: draft.summary,
+    limitations: ['No completed agreement is supplied.'] }
+  const checks = reviewSchemaFor(candidate, null).properties.checks
+  const paths = ['/title', '/summary', '/sections/0/0', '/timeline/0', '/nextAction', '/limitations/0']
+  expect(checks.items.properties.path.enum).toEqual(paths)
+  expect(checks.minItems).toBe(paths.length)
+  expect(checks.maxItems).toBe(paths.length)
+  const result: StoryReview = { verdict: 'limited', limitations: [], checks: paths.map(path => ({ path, assessment: 'supported', reason: 'Synthetic fixture.' })) }
+  expect(checkReview(result, candidate, null)).toBeNull()
+  result.checks[2] = result.checks[1]
+  expect(checkReview(result, candidate, null)).toContain('exactly once')
 })
