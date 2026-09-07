@@ -43,9 +43,10 @@ export const configureGlobalBudget = mutation({
     const prior = await limiter.getValue(ctx, 'globalCalls', { config })
     const current = calculateRateLimit(prior, prior.config, now)
     const used = Math.max(0, config.rate - current.value)
+    if (used > args.dailyCallLimit) throw new Error('The new global limit is below calls already used in this window.')
     if (config.rate !== args.dailyCallLimit) {
       await limiter.reset(ctx, 'globalCalls')
-      await limiter.limit(ctx, 'globalCalls', { count: used, config: { ...config, rate: args.dailyCallLimit, start: current.ts, maxReserved: used }, reserve: true, throws: true })
+      await limiter.limit(ctx, 'globalCalls', { count: used, config: { ...config, rate: args.dailyCallLimit, start: current.ts }, throws: true })
     }
     const existing = await ctx.db.query('sourceMonitoringBudgets').withIndex('by_name', q => q.eq('name', 'global')).unique()
     if (existing) await ctx.db.patch(existing._id, { dailyCallLimit: args.dailyCallLimit, updatedAt: now })
@@ -123,8 +124,9 @@ export async function configurePolicy(ctx: MutationCtx, args: { proposalId: Id<'
       const prior = await limiter.getValue(ctx, 'calls', { key: existing._id, config: { kind: 'fixed window', rate: existing.dailyCallLimit, period: DAY } })
       const current = calculateRateLimit(prior, prior.config, now)
       const used = Math.max(0, existing.dailyCallLimit - current.value)
+      if (used > args.dailyCallLimit) throw new Error('The new daily limit is below calls already used in this window. Wait for the next window or choose a higher limit.')
       await limiter.reset(ctx, 'calls', { key: existing._id })
-      await limiter.limit(ctx, 'calls', { key: existing._id, count: used, config: { kind: 'fixed window', rate: args.dailyCallLimit, period: DAY, start: current.ts, maxReserved: used }, reserve: true, throws: true })
+      await limiter.limit(ctx, 'calls', { key: existing._id, count: used, config: { kind: 'fixed window', rate: args.dailyCallLimit, period: DAY, start: current.ts }, throws: true })
     }
     const sourceWindowChanged = existing.startsAt !== args.startsAt || existing.proposalId !== args.proposalId
     await ctx.db.patch(existing._id, { ...fields, ...(sourceWindowChanged ? { discoveryPendingUrls: undefined, discoveryVisitedUrls: undefined, nextDiscoveryAt: undefined, baselineComplete: false } : {}) })

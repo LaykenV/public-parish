@@ -1590,5 +1590,5 @@ Regression tests use that exact input. No source records or provider settings ch
 
 Adding expiring estimated-cost allowances for source AI and resident Ask after
 the spending interruption. Reservations precede model calls and preserve charges
-when usage is unknown. Lower monitoring limits retain prior admissions. Automated
+when usage is unknown. Existing admission windows remain intact. Automated
 validation is delegated to the PR; paid catch-up remains paused during review.

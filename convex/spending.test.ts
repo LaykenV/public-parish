@@ -2,13 +2,13 @@
 import { convexTest } from 'convex-test'
 import { afterEach, expect, test, vi } from 'vitest'
 import { v } from 'convex/values'
-import { api, internal } from '../_generated/api'
-import type { ActionCtx } from '../_generated/server'
-import schema from '../schema'
-import { completeStructured } from './provider'
-import { reservationMicros } from './spending'
+import { api, internal } from './_generated/api'
+import type { ActionCtx } from './_generated/server'
+import schema from './schema'
+import { completeStructured } from './ai/provider'
+import { reservationMicros } from './ai/spending'
 
-const modules = import.meta.glob('../**/*.ts')
+const modules = import.meta.glob('./**/*.ts')
 afterEach(() => vi.unstubAllEnvs())
 
 async function fixture() {
