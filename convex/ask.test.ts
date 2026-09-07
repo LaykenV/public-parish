@@ -881,6 +881,8 @@ test('rejects invented citations before an assistant message is saved', async ()
   expect(receipts).toMatchObject([
     { state: 'failed', errorClass: 'schema_invalid' },
   ])
+  const attempts = await t.run(ctx => ctx.db.query('askModelAttempts').collect())
+  expect(attempts.find(attempt => attempt.status === 'schema_invalid')?.errorDetail).toBe('Answer cited evidence outside the retrieved set')
 })
 
 test('lets the selector abstain after reviewing the full scope', async () => {

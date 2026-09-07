@@ -31,7 +31,7 @@ type AskEvidenceResult = AskContracts.AskEvidenceResult
 type AskModelAnswer = AskContracts.AskModelAnswer
 type AskModelSelection = AskContracts.AskModelSelection
 
-export const ASK_PROMPT_VERSION = 'ask-answer-v3'
+export const ASK_PROMPT_VERSION = 'ask-answer-v4'
 export const ASK_SCHEMA_VERSION = 'ask-answer-v3'
 export const ASK_SELECTOR_PROMPT_VERSION = 'ask-selector-v2-batched'
 export const ASK_SELECTOR_SCHEMA_VERSION = 'ask-selector-v2-batched'
@@ -43,8 +43,9 @@ Do not use outside knowledge, browse the web, infer missing facts, or take a sid
 Every factual claim in an answer must be supported by one or more supplied evidence IDs.
 Full documents provide context, but a citation supports a claim only when its accepted excerpt contains that fact.
 Return not_found when the selected published evidence cannot support a useful answer.
-Answer directly and completely. Prefer clear prose, but do not omit supported details needed to answer the question.
-Keep suggested follow-up questions inside the same evidence scope.`
+For not_found, explain the evidence gap in plain language and return an empty evidenceIds array. Do not add factual background claims to a not_found response. For answer, cite at least one exact supplied evidence ID and never repeat an ID.
+Answer directly and completely in plain text paragraphs. Do not use Markdown emphasis, headings, or bullet formatting. Do not omit supported details needed to answer the question.
+Keep suggested follow-up questions inside the same evidence scope. Return at most three follow-ups, each no more than 160 characters.`
 
 const ASK_SELECTOR_INSTRUCTIONS = `You select published Public Parish evidence for a later answer model.
 Do not answer the resident's question.
@@ -90,6 +91,7 @@ export const ASK_ANSWER_JSON_SCHEMA: JSONSchema7 & JSONObject = {
     answer: { type: 'string' },
     evidenceIds: {
       type: 'array',
+      description: 'Empty for not_found. For answer, one or more unique exact IDs from the supplied evidence.',
       items: { type: 'string' },
       maxItems: MAX_ANSWER_EVIDENCE_IDS,
     },
@@ -343,7 +345,7 @@ export const answerQuestion = action({
     let answer: AskModelAnswer
     try {
       answer = validateModelAnswer(generated.output, selectedEvidence.evidence)
-    } catch {
+    } catch (error) {
       await recordAttempt(
         ctx,
         claim.receiptId,
@@ -358,7 +360,9 @@ export const answerQuestion = action({
           usage: generated.usage,
           retryAfterMs: null,
           errorClass: 'schema_invalid',
-          errorDetail: 'AI Gateway answer failed deterministic validation',
+          // The validator emits fixed reason strings, never resident text or
+          // provider output. Preserve the reason for bounded repair and retry.
+          errorDetail: error instanceof Error ? error.message : 'AI Gateway answer failed deterministic validation',
         },
         3,
         ASK_PROMPT_VERSION,
