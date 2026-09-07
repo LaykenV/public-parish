@@ -1,7 +1,7 @@
 # Build completion and remaining work
 
-Documentation reviewed September 6, 2026 against production release `55a9158`.
-The source-operations report records the dated queue and budget checkpoints.
+Documentation reviewed September 7, 2026 UTC against release `4c42d12`.
+See the [current operating checkpoint](source-operations-2026-09-07.md).
 
 ## Build status
 
@@ -18,62 +18,47 @@ PR #100 repaired controlled legacy-publication replay. PR #101 recorded the
 initial release. PRs #102 through #105 repaired Lafayette source permissions,
 commission identities, production smoke expectations, and queue progress.
 
-The latest application release is [PR #108](https://github.com/LaykenV/public-parish/pull/108),
-merge `55a9158c5a272514b0cea90f4bafde534b54d625`.
-Its [production workflow](https://github.com/LaykenV/public-parish/actions/runs/34045717299)
-and independent production smoke passed. CI passed 486 tests and the desktop
-and mobile emulation journeys. Smoke checked the direct and canonical sites,
-apex redirect, resident routes, coverage, search, issue evidence, share HTML,
-and backend readiness.
-PR #106 recovered the planning certification samples. PR #107 made negative
-probes require exact printed identifiers. PR #108 aligned City Zoning's name
-with its official agenda while preserving prior manifest versions.
+PRs #135 through #137 repaired parish feeds, access during source interruptions,
+and cards with printed date wording. PR #138 adds expiring estimated AI-cost
+allowances. PR #139 dates an old Youngsville packet from its stored official
+agenda without another retrieval. The combined PR checks passed 560 tests.
+The current operating checkpoint records deployment and live smoke evidence.
 
 Build completion does not mean every source is supported, catch-up is finished,
 residents have demonstrated benefit, or the hackathon entry has been submitted.
 
 ## Coverage and automation
 
-All twelve launch bodies passed their own production coverage gates.
-Lafayette, Rapides, and East Baton Rouge are available. Support covers each
-named body's approved
-agenda and minutes sources, not all parish government or a complete archive.
+All twelve launch bodies previously passed their production coverage gates.
+Eleven remain supported at this checkpoint. Youngsville is degraded because
+newer official documents remain unavailable. Lafayette remains selectable with
+a limitation notice. Rapides and East Baton Rouge have records available.
+Support covers the named bodies and approved source types, not every government
+in a parish or a complete historical archive.
 
 | Place | Supported bodies | Remaining coverage |
 | --- | --- | --- |
-| Lafayette | Lafayette City Council; Youngsville City Council; Lafayette City Planning Commission; Lafayette Parish Planning Commission; City Zoning Commission; Lafayette Board of Zoning Adjustment; Hearing Examiner | Available for these named bodies and approved source types. The five planning bodies need owner-started updates. |
-| Rapides | Alexandria City Council; Pineville City Council; Rapides Parish Police Jury | Available for these named bodies and approved source types. |
-| East Baton Rouge | Metropolitan Council; Planning and Zoning Commission | Available for these named bodies and approved source types. |
+| Lafayette | Lafayette City Council; Lafayette City Planning Commission; Lafayette Parish Planning Commission; City Zoning Commission; Lafayette Board of Zoning Adjustment; Hearing Examiner | Youngsville remains degraded. Its checked portal ends at July 9, 2026. |
+| Rapides | Alexandria City Council; Pineville City Council; Rapides Parish Police Jury | Two citation failures remain for inspection and bounded retry. |
+| East Baton Rouge | Metropolitan Council; Planning and Zoning Commission | Both passed all ten recovery gates again. Their decision catch-up remains incomplete. |
 
-Lafayette's official event service recovered on September 6. The exact agenda
-attachments and outcome links embedded in agenda PDFs supplied the missing
-evidence. The [source investigation](source-spikes/lafayette-planning-recovery-2026-09-06.md)
-records the recovered official sources. All five planning bodies passed all
-ten gates independently in development and production before promotion.
+All twelve bodies have monitoring policies, but the production and development
+source-processing switches are off after the spending interruption. Enabled
+policy rows do not mean automation is running. The new estimated-cost guard is
+deployed but not activated or funded at this checkpoint. Additional paid
+catch-up awaits a specific small allowance. No budget increase or paid AI or
+Firecrawl call was started during this repair session.
 
-All seven previously supported bodies have automatic checks enabled. Rapides
-retains one document and one target per run, a 24-hour source cadence, and its
-original 30-day meeting window. The owner approved a temporary daily limit of
-500 during catch-up. Restore 50 after catch-up and the budget window permit it.
-The other six policies use three documents, five targets, and 50 daily admissions.
-The five planning bodies still need owner-started updates; their future embedded
-PDF-link discovery has not been verified.
+The current queue has 180 pending decision targets in East Baton Rouge and nine
+failed targets across four bodies. There are no targets marked running after
+reconciliation against stored pipeline results. Nine failures came from an
+older processor and failed exact-citation checks. They have not been waived or
+represented as recovered. The issue-proposal audit separately found 125 pending
+and 56 failed proposals. These are processing tasks, not counts of public issues.
 
-PR #105 gives ready decisions priority over discovery, skips blocked queue
-entries within a bounded scan, prioritizes unfinished documents with waiting
-items, and preserves retries when the budget is exhausted. During a processing
-batch, that policy does no additional source retrieval or discovery. The
-15-minute scheduler resumes due work without requiring an owner to start each
-item. Provider limits and publication gates still apply.
-
-Scheduled production runs made progress after the September 6 reset. Subsequent
-owner-started catch-up used the same monitoring workflow and limits. At the
-10:53 a.m. Central checkpoint, Rapides had 42 published targets, one withheld,
-and 22 pending. Its 500-admission bucket was exhausted and the next check pointed
-to September 7 at approximately 7:13 a.m. Central. The unfinished August 10
-minutes inventory still blocks 18 targets. These are inventory-target counts,
-not distinct public cards. See the [source-operations report](source-operations-2026-09-06.md)
-for each policy's progress and failures.
+A 15-minute scheduler and budget-pause recovery are implemented. Sustained
+unattended progress still needs proof after controlled reactivation. A supported
+source or a passing deployment does not establish that proof.
 
 ## Accepted verification scope
 
@@ -94,10 +79,13 @@ for each policy's progress and failures.
 
 ## Remaining operating and launch work
 
-1. Finish the budget-paused Rapides backlog and minutes inventory after reset,
-   inspect failures, and restore its normal daily limit after catch-up.
-2. Monitor the seven active policies and their budgets. Verify future Lafayette
-   planning-document discovery before enabling those five policies.
+1. Fund and activate a small nonrenewing source allowance and separate Ask
+   allowance, then restore conservative admission limits as their windows allow.
+   Finish eligible inventories and decision catch-up within the allowance,
+   inspect failed decisions and issue proposals, and observe scheduled progress.
+2. Obtain newer official Youngsville agenda or outcome documents. Repeated paid
+   retrieval of its old packet cannot fill that gap. Preserve Lafayette's
+   limitation until current evidence supports recovery.
 3. Observe real residents finding an issue, inspecting evidence, asking a
    question, following it, and returning for an outcome. The plan's 25 residents,
    10 follows, and 10 substantive questions remain targets until measured.
@@ -109,7 +97,8 @@ for each policy's progress and failures.
 
 ## Evidence and operating instructions
 
-- [September 6 source operations](source-operations-2026-09-06.md)
+- [Current September 7 operating checkpoint](source-operations-2026-09-07.md)
+- [Historical September 6 source operations](source-operations-2026-09-06.md)
 - [Initial production certification and follow-up releases](slice-9-production-certification.md)
 - [Development certification](slice-9-development-certification.md)
 - [Operations runbook](slice-9-operations-runbook.md)

@@ -1,24 +1,40 @@
 # Slice 9 operations
 
-The final build and follow-up repairs through PR #108 are deployed.
+The final build and follow-up repairs through PR #139 are deployed.
 [Build status](build-status.md) separates completed features from remaining work.
 The owner authorized production release and bounded live testing on September 5.
 See the [production certification record](slice-9-production-certification.md)
 and the separate [development evidence](slice-9-development-certification.md).
 
-All seven previously supported bodies now have enabled monitoring policies.
-Rapides uses one document and one target per run with 500 daily admissions
-temporarily during catch-up. The other six use three documents, five targets,
-and 50 daily admissions. All retain a 24-hour source cadence and bounded initial
-meeting windows. The 15-minute scheduler resumes due work within each budget.
-Initial catch-up remains incomplete. Direct OpenAI fallback is disabled.
-See the [September 6 operations report](source-operations-2026-09-06.md).
+## Current operating state, September 7 UTC
+
+Source processing is paused in production and development. All twelve launch
+bodies have policy rows, but `SOURCE_MONITORING_ENABLED=false` prevents runs.
+Do not turn it on from the historical rollout instructions below. See the
+[current checkpoint](source-operations-2026-09-07.md) before changing settings.
+
+PR #138 adds `ai/spendingLedger:configure` and owner-only `status`. Each scope,
+`sources` or `ask`, has a total estimated-cost allowance, an expiry within 31
+days, and an enabled flag. Reconfiguration preserves charges. Allowances never
+refill themselves. Set both scopes deliberately before activating
+`AI_SPENDING_GUARD_ENABLED=true`; a missing allowance refuses paid model calls.
+The guard is deployed but remains off and unfunded at this checkpoint.
+
+Model calls reserve a conservative amount before contacting the provider and
+settle against known token usage. Failed calls or missing usage retain the
+reservation. This is an estimated AI-cost control, not a cap on the provider's
+invoice, Convex hosting, Firecrawl retrieval, or email. Existing request and
+source-admission limits continue to apply. Do not reset their consumed usage to
+lower a limit; wait for its window if the new limit is below calls already used.
+
+Restoring automatic work requires an approved small allowance, conservative
+source admissions, and observation of a scheduled run. Paid source processing
+remains paused until that setup is complete. Direct OpenAI fallback stays off.
 
 ## Historical initial rollout and future activation
 
 The initial rollout kept `SOURCE_MONITORING_ENABLED=false` before activation.
-Do not rerun rollout setup or disable the active production canary merely
-because this historical procedure appears here. All added
+These paragraphs describe earlier activation, not current runtime settings. All added
 schema fields are optional or belong to new tables. Existing source snapshots,
 publication versions, issue IDs, issue slugs, follows, and citations remain.
 New indexes deploy with the backend. The production Gate 10 classification

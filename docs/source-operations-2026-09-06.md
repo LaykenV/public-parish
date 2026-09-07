@@ -1,5 +1,8 @@
 # Source operations, September 6, 2026
 
+This is a historical checkpoint. Use the [September 7 report](source-operations-2026-09-07.md)
+for current source status, paused automation, and remaining catch-up.
+
 ## Automatic processing and catch-up
 
 Rapides made progress through scheduled runs after its September 6 budget reset,

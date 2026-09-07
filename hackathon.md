@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-06T16:40:41Z
+- **Last updated:** 2026-09-07T02:38:31Z
 
 ## Log
 
@@ -1597,3 +1597,27 @@ Youngsville's old packet can take its meeting date from a hash-checked stored
 accessible agenda with the same official meeting ID. This avoids repeated PDF
 retrieval outside the current source window. It preserves unfinished inventory
 and records the date's snapshot. No model call or coverage promotion is involved.
+
+
+### 2026-09-07 - 4c42d12
+
+PRs #138 and #139 deployed expiring estimated AI-cost allowances and a stored
+Youngsville meeting-date repair. Their exact production workflows and independent
+live smoke passed. The combined PR checks passed 560 tests. Both changes also
+deployed to development, where unfunded reservations refused admission. No live
+paid model call was used to demonstrate settlement.
+
+Production applied the February 12 date from the stored official accessible
+agenda and preserved unfinished inventory and Youngsville's degraded status.
+Bounded direct source-link checks and stored-evidence reevaluation restored both
+East Baton Rouge bodies after all ten gates passed for each. Their backlog remains.
+The live East Baton Rouge homepage showed six issue cards and six decision links
+on desktop and at 375 pixels without a new card crash or horizontal overflow.
+
+Source processing remains off in development and production. The new allowance
+guard is deployed but not activated or funded. No new paid data-processing model
+or Firecrawl calls were started and no account spending cap was raised. The
+[current operating checkpoint](docs/source-operations-2026-09-07.md) records 180
+pending decision targets, nine failed targets, separate issue-proposal work,
+and the unresolved need for newer Youngsville documents. Full catch-up,
+sustained automatic processing, founder QA, and launch are not claimed complete.

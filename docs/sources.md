@@ -1,18 +1,19 @@
 # Official-Source Plan
 
 Current status: Slice 9 is complete. See [build status and remaining work](build-status.md)
-for the September 6 documentation checkpoint. Dated sections below retain their
+for the September 7 UTC documentation checkpoint. Dated sections below retain their
 original release context; they do not reopen completed feature work.
 
-Status: all twelve launch bodies supported across Lafayette, Rapides, and East Baton Rouge.
-Last verified: September 6, 2026
+Status: eleven launch bodies supported. Youngsville remains degraded, and Lafayette
+remains available with a limitation. Automatic source processing is paused.
+Last verified: September 7, 2026 UTC
 
 This document supplies starting points, not a claim of complete coverage. Every
 URL must be checked during the Firecrawl source spike, and every public body must
 pass the same gold-set and freshness gate before Public Parish marks it
 supported.
 
-## Current Lafayette source repair
+## September 6 Lafayette certification
 
 The official event service recovered on September 6. Agenda attachments and
 outcome links embedded inside agenda PDFs supplied the missing official evidence.
@@ -23,11 +24,13 @@ records the observed URLs and document checks.
 
 City Planning, Parish Planning, City Zoning, BOZA, and Hearing Examiner passed
 all ten development and production gates. They joined the already supported
-Lafayette City Council and Youngsville City Council. Lafayette is now available
-for these seven named bodies. The five planning bodies need owner-started updates. Recovered representative samples do not prove
-automatic discovery of future opaque attachments or PDF-embedded outcome links.
+Lafayette City Council and Youngsville City Council at that checkpoint.
+Subsequent work added monitoring policies for all twelve launch bodies. Source
+processing is now paused after a spending interruption. Youngsville remains
+degraded because its checked portal still ends at July 9, 2026; newer official
+agenda or outcome documents remain unavailable.
 
-See the [source-operations report](source-operations-2026-09-06.md) for the exact
+See the [current source-operations report](source-operations-2026-09-07.md) for the exact
 coverage, automation limits, and remaining catch-up. The checkpoints below retain
 their dated historical findings.
 
