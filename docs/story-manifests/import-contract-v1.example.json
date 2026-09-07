@@ -1,0 +1,115 @@
+{
+  "contractVersion": "1.0.0",
+  "bundleVersion": 1,
+  "bundleKey": "boyce-contract-example-v1",
+  "supersedesBundleSha256": null,
+  "purpose": "fixture",
+  "story": {
+    "storyKey": "applied-digital-boyce",
+    "slug": "applied-digital-boyce",
+    "placement": "secondary",
+    "rank": 2,
+    "geography": [
+      {
+        "placeName": "Boyce vicinity",
+        "parish": "Rapides Parish",
+        "state": "Louisiana",
+        "precisionNotes": "Illustrative geography field. Verify project boundary in a real bundle."
+      }
+    ],
+    "topics": [
+      "economic-development"
+    ]
+  },
+  "sources": [
+    {
+      "sourceKey": "example-announcement",
+      "bodyKey": "example-agency",
+      "bodyName": "Example agency, fictional fixture",
+      "title": "Contract example, never publish",
+      "url": "https://example.invalid/announcement",
+      "finalUrl": "https://example.invalid/announcement",
+      "documentType": "announcement",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "example-artifact.txt",
+        "sha256": "866870dd044fd044195705c7f748ba6ef037c3afea7765c5c6dc7321115d8764",
+        "bytes": 72,
+        "contentType": "text/plain; charset=utf-8"
+      },
+      "normalizedArtifact": {
+        "uri": "example-artifact.txt",
+        "sha256": "866870dd044fd044195705c7f748ba6ef037c3afea7765c5c6dc7321115d8764",
+        "bytes": 72,
+        "contentType": "text/plain; charset=utf-8"
+      },
+      "retrieval": {
+        "method": "manual_file",
+        "retrievedAt": "2026-09-07T18:00:00Z",
+        "providerReference": null,
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Complete locally authored fixture. No official retrieval occurred.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "A proposed project announcement",
+    "proposedSummary": "The demonstration agency announced a proposed project.",
+    "claims": [
+      {
+        "claimKey": "announcement",
+        "text": "The demonstration agency announced a proposed project.",
+        "supports": [
+          {
+            "sourceKey": "example-announcement",
+            "normalizedSha256": "866870dd044fd044195705c7f748ba6ef037c3afea7765c5c6dc7321115d8764",
+            "start": 17,
+            "end": 71,
+            "excerpt": "The demonstration agency announced a proposed project.",
+            "page": null,
+            "section": "Example"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [
+      {
+        "eventKey": "announcement",
+        "date": null,
+        "datePrecision": "unknown",
+        "claimKeys": [
+          "announcement"
+        ]
+      }
+    ],
+    "knownUnknowns": [
+      "No real civic evidence exists in this fixture."
+    ],
+    "nextActionClaimKeys": [],
+    "reviewedThrough": "2026-09-07",
+    "nextReviewAt": "2026-09-08",
+    "reviewResponsibility": "Owner",
+    "supportedQuestions": [
+      {
+        "question": "What did the example agency announce?",
+        "claimKeys": [
+          "announcement"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Was construction completed?",
+        "reason": "The fixture documents only an announcement."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

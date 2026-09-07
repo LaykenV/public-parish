@@ -114,6 +114,24 @@ const analyticsAreaCounts = v.object({
 })
 
 export default defineSchema({
+  // Staging is private research. It has no public pointer or publication API.
+  storyImports: defineTable({
+    storyKey: v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce')),
+    bundleKey: v.string(),
+    bundleVersion: v.number(),
+    contractVersion: v.literal('1.0.0'),
+    bundleHash: v.string(),
+    manifestJson: v.string(),
+    state: v.literal('staged'),
+    blockers: v.array(v.string()),
+    stagedBy: v.id('users'),
+    createdAt: v.number(),
+  })
+    .index('by_bundle_hash', ['bundleHash'])
+    .index('by_bundle_key_and_bundle_version', ['bundleKey', 'bundleVersion'])
+    .index('by_story_key_and_created_at', ['storyKey', 'createdAt'])
+    .index('by_created_at', ['createdAt']),
+
   users: defineTable({
     googleAccountId: v.string(),
     email: v.string(),

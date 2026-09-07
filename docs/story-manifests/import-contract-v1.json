@@ -1,0 +1,910 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:public-parish:story-import:1.0.0",
+  "title": "Public Parish untrusted story research bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractVersion",
+    "bundleVersion",
+    "bundleKey",
+    "supersedesBundleSha256",
+    "purpose",
+    "story",
+    "sources",
+    "research",
+    "media",
+    "additionalRetrieval"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "1.0.0"
+    },
+    "bundleVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "bundleKey": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+    },
+    "supersedesBundleSha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "purpose": {
+      "enum": [
+        "research",
+        "fixture"
+      ]
+    },
+    "story": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "storyKey",
+        "slug",
+        "placement",
+        "rank",
+        "geography",
+        "topics"
+      ],
+      "properties": {
+        "storyKey": {
+          "enum": [
+            "meta-richland",
+            "spacex-pecan-island",
+            "applied-digital-boyce"
+          ]
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+        },
+        "placement": {
+          "enum": [
+            "lead",
+            "secondary"
+          ]
+        },
+        "rank": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "geography": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "placeName",
+              "parish",
+              "state",
+              "precisionNotes"
+            ],
+            "properties": {
+              "placeName": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "parish": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "state": {
+                "const": "Louisiana"
+              },
+              "precisionNotes": {
+                "type": "string",
+                "maxLength": 4000
+              }
+            }
+          }
+        },
+        "topics": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "type": "string",
+            "maxLength": 100
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sourceKey",
+          "bodyKey",
+          "bodyName",
+          "title",
+          "url",
+          "finalUrl",
+          "documentType",
+          "documentDate",
+          "datePrecision",
+          "rawArtifact",
+          "normalizedArtifact",
+          "retrieval",
+          "existingPublicationReferences"
+        ],
+        "properties": {
+          "sourceKey": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+          },
+          "bodyKey": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+          },
+          "bodyName": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "finalUrl": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "documentType": {
+            "enum": [
+              "agenda",
+              "minutes",
+              "ordinance",
+              "resolution",
+              "notice",
+              "packet",
+              "permit",
+              "agreement",
+              "announcement",
+              "utility_proceeding",
+              "other_official_record"
+            ]
+          },
+          "documentDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4000
+          },
+          "datePrecision": {
+            "enum": [
+              "day",
+              "month",
+              "year",
+              "unknown"
+            ]
+          },
+          "rawArtifact": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "uri",
+              "sha256",
+              "bytes",
+              "contentType"
+            ],
+            "properties": {
+              "uri": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "contentType": {
+                "type": "string",
+                "maxLength": 120
+              }
+            }
+          },
+          "normalizedArtifact": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "uri",
+              "sha256",
+              "bytes",
+              "contentType"
+            ],
+            "properties": {
+              "uri": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "contentType": {
+                "type": "string",
+                "maxLength": 120
+              }
+            }
+          },
+          "retrieval": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "method",
+              "retrievedAt",
+              "providerReference",
+              "redirectChain",
+              "failureEvidence",
+              "completeness",
+              "completenessNotes",
+              "pageMap"
+            ],
+            "properties": {
+              "method": {
+                "enum": [
+                  "firecrawl",
+                  "existing_snapshot",
+                  "manual_file"
+                ]
+              },
+              "retrievedAt": {
+                "type": "string",
+                "maxLength": 40
+              },
+              "providerReference": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 4000
+              },
+              "redirectChain": {
+                "type": "array",
+                "maxItems": 12,
+                "items": {
+                  "type": "string",
+                  "maxLength": 4000
+                }
+              },
+              "failureEvidence": {
+                "type": "array",
+                "maxItems": 8,
+                "items": {
+                  "type": "string",
+                  "maxLength": 4000
+                }
+              },
+              "completeness": {
+                "enum": [
+                  "complete",
+                  "partial",
+                  "unknown"
+                ]
+              },
+              "completenessNotes": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "pageMap": {
+                "type": "array",
+                "maxItems": 1000,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "page",
+                    "start",
+                    "end"
+                  ],
+                  "properties": {
+                    "page": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "start": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "end": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "existingPublicationReferences": {
+            "type": "array",
+            "maxItems": 40,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kind",
+                "stableKey",
+                "versionHash",
+                "sourceHash",
+                "citationKeys",
+                "environmentHint",
+                "idHint"
+              ],
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "decision",
+                    "issue",
+                    "reviewed_fact"
+                  ]
+                },
+                "stableKey": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+                },
+                "versionHash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "sourceHash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "citationKeys": {
+                  "type": "array",
+                  "maxItems": 80,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+                  }
+                },
+                "environmentHint": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 4000
+                },
+                "idHint": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 4000
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "research": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposedTitle",
+        "proposedSummary",
+        "claims",
+        "relationships",
+        "timeline",
+        "knownUnknowns",
+        "nextActionClaimKeys",
+        "reviewedThrough",
+        "nextReviewAt",
+        "reviewResponsibility",
+        "supportedQuestions",
+        "unsupportedQuestions"
+      ],
+      "properties": {
+        "proposedTitle": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "proposedSummary": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "claims": {
+          "type": "array",
+          "maxItems": 80,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "claimKey",
+              "text",
+              "supports"
+            ],
+            "properties": {
+              "claimKey": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "supports": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "sourceKey",
+                    "normalizedSha256",
+                    "start",
+                    "end",
+                    "excerpt",
+                    "page",
+                    "section"
+                  ],
+                  "properties": {
+                    "sourceKey": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+                    },
+                    "normalizedSha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "start": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "end": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "excerpt": {
+                      "type": "string",
+                      "maxLength": 12000
+                    },
+                    "page": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 1
+                    },
+                    "section": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 4000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "relationships": {
+          "type": "array",
+          "maxItems": 40,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "relationshipKey",
+              "fromSourceKey",
+              "toSourceKey",
+              "kind",
+              "description",
+              "supports"
+            ],
+            "properties": {
+              "relationshipKey": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+              },
+              "fromSourceKey": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+              },
+              "toSourceKey": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+              },
+              "kind": {
+                "enum": [
+                  "announces",
+                  "authorizes",
+                  "supersedes",
+                  "amends",
+                  "related",
+                  "contradicts"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "supports": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "sourceKey",
+                    "normalizedSha256",
+                    "start",
+                    "end",
+                    "excerpt",
+                    "page",
+                    "section"
+                  ],
+                  "properties": {
+                    "sourceKey": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+                    },
+                    "normalizedSha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "start": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "end": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "excerpt": {
+                      "type": "string",
+                      "maxLength": 12000
+                    },
+                    "page": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 1
+                    },
+                    "section": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 4000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "maxItems": 40,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "eventKey",
+              "date",
+              "datePrecision",
+              "claimKeys"
+            ],
+            "properties": {
+              "eventKey": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+              },
+              "date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 4000
+              },
+              "datePrecision": {
+                "enum": [
+                  "day",
+                  "month",
+                  "year",
+                  "unknown"
+                ]
+              },
+              "claimKeys": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+                }
+              }
+            }
+          }
+        },
+        "knownUnknowns": {
+          "type": "array",
+          "maxItems": 40,
+          "items": {
+            "type": "string",
+            "maxLength": 4000
+          }
+        },
+        "nextActionClaimKeys": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+          }
+        },
+        "reviewedThrough": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "nextReviewAt": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "reviewResponsibility": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "supportedQuestions": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "question",
+              "claimKeys"
+            ],
+            "properties": {
+              "question": {
+                "type": "string",
+                "maxLength": 500
+              },
+              "claimKeys": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+                }
+              }
+            }
+          }
+        },
+        "unsupportedQuestions": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "question",
+              "reason"
+            ],
+            "properties": {
+              "question": {
+                "type": "string",
+                "maxLength": 500
+              },
+              "reason": {
+                "type": "string",
+                "maxLength": 4000
+              }
+            }
+          }
+        }
+      }
+    },
+    "media": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mediaKey",
+          "artifact",
+          "originalUrl",
+          "credit",
+          "permission",
+          "kind",
+          "caption",
+          "alt",
+          "width",
+          "height",
+          "captionClaimKeys"
+        ],
+        "properties": {
+          "mediaKey": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+          },
+          "artifact": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "uri",
+              "sha256",
+              "bytes",
+              "contentType"
+            ],
+            "properties": {
+              "uri": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "contentType": {
+                "type": "string",
+                "maxLength": 120
+              }
+            }
+          },
+          "originalUrl": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "credit": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "permission": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "status",
+              "license",
+              "evidenceUrl",
+              "notes"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "licensed",
+                  "public_domain",
+                  "owner_permission",
+                  "unresolved"
+                ]
+              },
+              "license": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 4000
+              },
+              "evidenceUrl": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 4000
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 4000
+              }
+            }
+          },
+          "kind": {
+            "enum": [
+              "photo",
+              "rendering",
+              "document_detail",
+              "diagram"
+            ]
+          },
+          "caption": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "alt": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "captionClaimKeys": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+            }
+          }
+        }
+      }
+    },
+    "additionalRetrieval": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url",
+          "reason",
+          "requiredForClaimKeys",
+          "estimatedUsd",
+          "maxAttempts",
+          "stopCondition"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "requiredForClaimKeys": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+            }
+          },
+          "estimatedUsd": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "maxAttempts": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "stopCondition": {
+            "type": "string",
+            "maxLength": 4000
+          }
+        }
+      }
+    }
+  }
+}

@@ -1659,3 +1659,12 @@ selected Meta as the lead story with SpaceX and Boyce secondary, required the fu
 story loop before design and QA, and approved targeted launch spending. Stories
 remain planned. This session changed documentation only; no new runtime feature,
 paid processing, deployment or submission is claimed.
+
+### 2026-09-07 - working tree: story research intake
+
+Added the frozen story research contract and owner-only staging, preview and
+paginated history. Exact bundle hashes fence changed inputs and make identical
+replay reuse its receipt. Regression tests cover private access, malformed
+references and replay. Automated validation is deferred to PR CI. Story drafting,
+publication and the resident story loop remain unfinished; no deployment or
+provider round trip is claimed.

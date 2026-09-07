@@ -8,7 +8,9 @@ The approved order is stories, then design and QA, then launch and outreach.
 ## Current checkpoint
 
 The original feature build is complete through Slice 9. The new story work is
-planned and unimplemented. Documentation changes do not certify story support.
+in progress. Owner-only research staging is implemented on the story feature branch;
+CI and development verification are pending. Publication and resident story support
+remain unimplemented. Documentation changes do not certify story support.
 
 | Capability | Evidence and limitation |
 | --- | --- |
@@ -45,7 +47,7 @@ Do not begin the full redesign campaign until this phase passes.
 
 | Packet | Required outcome | Dependencies | State |
 | --- | --- | --- | --- |
-| S1 | Versioned story contract, owner authorization, source intake, exact evidence references, image provenance, review and publication policy | Architecture and source contracts | Pending |
+| S1 | Versioned story contract, owner authorization, source intake, exact evidence references, image provenance, review and publication policy | Architecture and source contracts | In progress, research contract and owner staging implemented, CI pending |
 | S2 | Owner JSON import, preview, approve, revise and withdraw workflow; replay and stale-evidence protection | S1 | Pending |
 | S3 | Published story routes, evidence view, all-three homepage composition, related records, search and social share HTML | S1, S2 | Pending |
 | S4 | Story-scoped anonymous Ask and private thread authorization using accepted story evidence | S1, S3 | Pending |

@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as stories_imports from "../stories/imports.js";
 import type * as ai_chatCompletions from "../ai/chatCompletions.js";
 import type * as ai_provider from "../ai/provider.js";
 import type * as ai_spending from "../ai/spending.js";
@@ -142,6 +143,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  "stories/imports": typeof stories_imports;
   "ai/chatCompletions": typeof ai_chatCompletions;
   "ai/provider": typeof ai_provider;
   "ai/spending": typeof ai_spending;
