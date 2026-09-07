@@ -7,6 +7,11 @@ import {
 } from './google-follow-intent'
 
 describe('Google follow intent', () => {
+  it('preserves story identity through Google sign-in', () => {
+    const href = googleFollowIntentUrl('https://www.publicparish.com/stories/meta-richland', { kind: 'Story', key: 'meta-richland', title: 'Meta', detail: 'Richland Parish' }, 'both')
+    expect(readGoogleFollowIntent(href)).toEqual({ targetKind: 'story', targetKey: 'meta-richland', cadence: 'both' })
+    expect(clearGoogleFollowIntent(href)).toBe('/stories/meta-richland')
+  })
   it('carries only target identity and cadence through sign-in', () => {
     const href = googleFollowIntentUrl(
       'https://www.publicparish.com/issues/drainage-fee-credit-cap?returnTo=%2Fexplore#sources',

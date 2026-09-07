@@ -9,6 +9,7 @@ import { internalMutation } from '../_generated/server'
 import { TOPIC_SLUGS } from './contracts'
 import type { TopicSlug } from './contracts'
 import type { FollowTargetKind } from './enrollmentContracts'
+import { currentVersionEvidence } from '../stories/evidence'
 
 type TargetCtx = Pick<QueryCtx | MutationCtx, 'db'>
 
@@ -67,6 +68,13 @@ export async function resolveFollowTarget(
   rawTargetKey: string,
 ): Promise<ResolvedTarget> {
   const targetKey = normalizeTargetKey(rawTargetKey)
+
+  if (targetKind === 'story') {
+    const story = await ctx.db.query('stories').withIndex('by_slug', q => q.eq('slug', targetKey)).unique()
+    const version = story?.state === 'active' && story.currentVersionId ? await ctx.db.get(story.currentVersionId) : null
+    if (!version || version.mode === 'withheld' || !await currentVersionEvidence(ctx, version)) throw invalidTarget()
+    return { targetKind, targetKey, title: version.payload.title.text, detail: version.geography.join(' · ') }
+  }
 
   if (targetKind === 'topic') {
     if (!TOPIC_SLUGS.includes(targetKey as (typeof TOPIC_SLUGS)[number])) {

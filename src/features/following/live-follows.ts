@@ -12,11 +12,12 @@ export type LiveFollow = {
   id: string
   resumeCadence: DeliveryFrequency
   targetKey: string
-  targetKind: 'issue' | 'topic' | 'government_body' | 'place'
+  targetKind: 'story' | 'issue' | 'topic' | 'government_body' | 'place'
   title: string
 }
 
 const followKinds: Record<LiveFollow['targetKind'], FollowKind> = {
+  story: 'Story',
   issue: 'Issue',
   topic: 'Topic',
   government_body: 'Government body',
@@ -63,7 +64,7 @@ export function toFollowedTarget(follow: LiveFollow): FollowedTarget {
     id: follow.id,
     key: follow.targetKey,
     href:
-      follow.targetKind === 'issue' ? `/issues/${follow.targetKey}` : undefined,
+      follow.targetKind === 'story' ? `/stories/${follow.targetKey}` : follow.targetKind === 'issue' ? `/issues/${follow.targetKey}` : undefined,
     kind: followKinds[follow.targetKind],
     title: follow.title,
     detail: follow.detail,

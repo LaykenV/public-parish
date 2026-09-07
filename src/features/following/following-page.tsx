@@ -548,7 +548,7 @@ function FollowingList({
       </div>
 
       <div aria-label="Filter follows" className="following-filters">
-        {(['All', 'Issue', 'Topic', 'Government body', 'Place'] as const).map(
+        {(['All', 'Story', 'Issue', 'Topic', 'Government body', 'Place'] as const).map(
           (item) => (
             <button
               aria-pressed={filter === item}

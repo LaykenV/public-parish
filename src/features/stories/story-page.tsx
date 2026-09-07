@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { ShareButton } from '../discovery/share'
+import { FollowAction } from '../following/follow-action'
 import { ReportProblem } from '../evidence/evidence-blocks'
 import { useStory, useFeaturedStories } from './story-page.data'
 import type { PublicStory } from './story-page.data'
@@ -42,6 +43,7 @@ export function StoryPage({ slug }: { slug: string }) {
     <header><p>{story.geography.join(' · ')}</p><h1>{story.payload.title.text}</h1><Statement statement={story.payload.summary} story={story} />
       <p className="pp-story-meta">Reviewed through {story.reviewedThrough}. Next owner review planned {story.nextReviewAt}. {story.mode === 'limited' ? 'Some questions remain unanswered.' : ''}</p>
       <ShareButton path={`/stories/${story.slug}`} title={story.payload.title.text} />
+      <FollowAction available live label="Follow this story" target={{ kind: 'Story', key: story.slug, title: story.payload.title.text, detail: story.geography.join(' · ') }} />
       <Link to="/ask" search={{ scope: 'story', story: story.slug, returnTo: `/stories/${story.slug}` }}>Ask about this story</Link>
     </header>
     <StoryImage key={story.media?.url} media={story.media} />

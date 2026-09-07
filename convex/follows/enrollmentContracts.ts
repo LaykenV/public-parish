@@ -4,6 +4,7 @@ import { v } from 'convex/values'
 export const followOwnerKind = v.union(v.literal('google'), v.literal('email'))
 
 export const followTargetKind = v.union(
+  v.literal('story'),
   v.literal('issue'),
   v.literal('topic'),
   v.literal('government_body'),

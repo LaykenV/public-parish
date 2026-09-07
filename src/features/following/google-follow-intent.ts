@@ -1,7 +1,7 @@
 import type { DeliveryFrequency, FollowKind, FollowTarget } from './contracts'
 
 export type GoogleFollowTargetKind =
-  'issue' | 'topic' | 'government_body' | 'place'
+  'story' | 'issue' | 'topic' | 'government_body' | 'place'
 
 export type GoogleFollowIntent = {
   cadence: DeliveryFrequency
@@ -14,6 +14,7 @@ const INTENT_KEY = 'followKey'
 const INTENT_KIND = 'followKind'
 
 const targetKinds: Record<FollowKind, GoogleFollowTargetKind> = {
+  Story: 'story',
   Issue: 'issue',
   Topic: 'topic',
   'Government body': 'government_body',
@@ -66,6 +67,7 @@ export function clearGoogleFollowIntent(href: string): string {
 function isTargetKind(value: string | null): value is GoogleFollowTargetKind {
   return (
     value === 'issue' ||
+    value === 'story' ||
     value === 'topic' ||
     value === 'government_body' ||
     value === 'place'

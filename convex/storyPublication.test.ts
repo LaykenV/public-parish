@@ -215,3 +215,40 @@ test('corpus Ask includes each shared story span once without broadening a local
   expect((await t.query(api.ask.evidence.retrieveEvidence, { token, threadId: unrelated.threadId, question: 'What was proposed?' })).evidence).toHaveLength(0)
   expect((await t.query(internal.ask.evidence.retrievePublishedDocumentRefs, { token, threadId: thread.threadId, evidenceIds: page.catalog.evidence.map(item => item.evidenceId) }))).toHaveLength(1)
 })
+
+test('Google story follows are idempotent and withdrawal prevents new enrollment', async () => {
+  const { t, owner, args, storyId } = await setup()
+  const target = { targetKind: 'story' as const, targetKey: 'applied-digital-boyce', cadence: 'both' as const }
+  await expect(owner.mutation(api.follows.enrollment.createGoogleFollow, target)).rejects.toThrow('unavailable')
+  await owner.mutation(api.stories.operations.approve, args)
+  await expect(t.mutation(api.follows.enrollment.createGoogleFollow, target)).rejects.toThrow('Sign in with Google')
+  await owner.mutation(api.follows.enrollment.createGoogleFollow, target)
+  await owner.mutation(api.follows.enrollment.createGoogleFollow, target)
+  expect(await owner.query(api.follows.enrollment.currentGoogleFollows, {})).toMatchObject([{ targetKind: 'story', targetKey: target.targetKey, cadence: 'both' }])
+  await t.run(async ctx => { expect(await ctx.db.query('follows').collect()).toHaveLength(1) })
+  await owner.mutation(api.stories.operations.withdraw, { storyId, expectedGeneration: 1, reason: 'Source review required.' })
+  await expect(owner.mutation(api.follows.enrollment.createGoogleFollow, target)).rejects.toThrow('unavailable')
+  const [follow] = await owner.query(api.follows.enrollment.currentGoogleFollows, {})
+  await owner.mutation(api.follows.enrollment.removeGoogleFollow, { followId: follow.id as import('./_generated/dataModel').Id<'follows'> })
+  expect(await owner.query(api.follows.enrollment.currentGoogleFollows, {})).toEqual([])
+})
+
+test('verified-email story follows use existing management and unsubscribe records', async () => {
+  const { t, owner, args } = await setup()
+  await owner.mutation(api.stories.operations.approve, args)
+  await t.run(async ctx => {
+    const subscriberId = await ctx.db.insert('emailSubscribers', { addressHash: 'synthetic-story-address', encryptedAddress: 'synthetic-fixture', encryptionVersion: 1, state: 'pending', createdAt: Date.now(), updatedAt: Date.now() })
+    await ctx.db.insert('emailVerificationChallenges', { subscriberId, challengeId: 'story-challenge', codeHash: 'synthetic-code-hash', purpose: 'create_follow', targetKind: 'story', targetKey: 'applied-digital-boyce', cadence: 'both', expiresAt: Date.now() + 60_000, attempts: 0, createdAt: Date.now() })
+  })
+  const input = { challengeId: 'story-challenge', codeHash: 'synthetic-code-hash', managementTokenHash: 'story-management', unsubscribeTokenHash: 'story-unsubscribe' }
+  expect(await t.mutation(internal.follows.enrollment.consumeEmailFollowChallenge, input)).toMatchObject({ status: 'verified', created: true, follow: { targetKind: 'story' } })
+  expect(await t.mutation(internal.follows.enrollment.consumeEmailFollowChallenge, input)).toEqual({ status: 'replayed' })
+  await t.mutation(internal.follows.management.updateEmailFollowWithToken, { tokenHash: 'story-management', cadence: 'weekly' })
+  expect(await t.query(internal.follows.management.readManagement, { tokenHash: 'story-management', now: Date.now() })).toMatchObject({ status: 'valid', follows: [{ targetKind: 'story', cadence: 'weekly' }] })
+  expect(await t.mutation(internal.follows.management.unsubscribeEmailWithToken, { tokenHash: 'story-unsubscribe' })).toEqual({ unsubscribed: true })
+  await t.run(async ctx => {
+    expect(await ctx.db.query('follows').collect()).toHaveLength(0)
+    expect((await ctx.db.query('emailSubscribers').first())?.state).toBe('unsubscribed')
+    expect(await ctx.db.query('notificationDeliveries').collect()).toHaveLength(0)
+  })
+})
