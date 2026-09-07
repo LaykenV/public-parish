@@ -79,3 +79,16 @@ export const matchPage = internalMutation({
     return null
   },
 })
+
+export const recover = internalMutation({
+  args: {}, returns: v.number(),
+  handler: async ctx => {
+    const now = Date.now()
+    const pending = await ctx.db.query('notificationFanouts').withIndex('by_phase_state_and_updated_at', q => q.eq('phase', 'story').eq('state', 'pending').lt('updatedAt', now - 5 * 60_000)).take(10)
+    for (const fanout of pending) {
+      await ctx.db.patch(fanout._id, { updatedAt: now })
+      await ctx.scheduler.runAfter(0, internal.stories.updates.matchPage, { fanoutId: fanout._id, cursor: fanout.cursor ?? null })
+    }
+    return pending.length
+  },
+})

@@ -450,3 +450,25 @@ test('a reused provider thread binds to the latest delivery without duplicating 
     })
   } finally { vi.useRealTimers() }
 })
+
+test('interrupted story matching resumes only stale pages and retains its cursor', async () => {
+  vi.useFakeTimers()
+  try {
+    const fixture = await setup()
+    await fixture.owner.mutation(api.stories.operations.approve, fixture.args)
+    await revision(fixture, 'material', 'update')
+    expect(await fixture.t.mutation(internal.stories.updates.recover, {})).toBe(0)
+    const fanoutId = await fixture.t.run(async ctx => {
+      const fanout = (await ctx.db.query('notificationFanouts').first())!
+      await ctx.db.patch(fanout._id, { updatedAt: Date.now() - 6 * 60_000, cursor: 'synthetic-resume-cursor' })
+      return fanout._id
+    })
+    expect(await fixture.t.mutation(internal.stories.updates.recover, {})).toBe(1)
+    expect(await fixture.t.mutation(internal.stories.updates.recover, {})).toBe(0)
+    await fixture.t.run(async ctx => {
+      expect((await ctx.db.get(fanoutId))?.cursor).toBe('synthetic-resume-cursor')
+      expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(1)
+      expect(await ctx.db.query('notificationDeliveries').collect()).toHaveLength(0)
+    })
+  } finally { vi.useRealTimers() }
+})

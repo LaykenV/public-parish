@@ -360,6 +360,7 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index('by_phase_state_and_updated_at', ['phase', 'state', 'updatedAt'])
     .index('by_story_update', ['storyUpdateId'])
     .index('by_material_change_id_and_phase_and_issue_version_id', [
       'materialChangeId',
