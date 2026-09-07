@@ -1,3 +1,4 @@
+import { hashStoryValue } from './stories/hashing'
 /// <reference types="vite/client" />
 import { convexTest } from 'convex-test'
 import { afterEach, expect, test, vi } from 'vitest'
@@ -37,8 +38,8 @@ async function setup() {
     const statement = { text: 'The agency announced a proposed project.', evidenceKeys: [spans[0].key] }
     const draft: StoryDraft = { title: statement, summary: statement, sections: [], timeline: [], nextAction: null, limitations: [] }
     const review: StoryReview = { verdict: 'pass', limitations: [], checks: ['/title', '/summary', '/media/caption', '/media/alt'].map(path => ({ path, assessment: 'supported', reason: 'Synthetic supported fixture.' })) }
-    const draftHash = await sha256HexOfText(JSON.stringify(draft))
-    const reviewHash = await sha256HexOfText(JSON.stringify(review))
+    const draftHash = await hashStoryValue(draft)
+    const reviewHash = await hashStoryValue(review)
     const imageId = await ctx.storage.store(new Blob(['synthetic fixture image']))
     const media = { storageId: imageId, sha256: rawHash, originalUrl: 'https://example.invalid/image.png', credit: 'Fixture', license: 'Fixture', permissionEvidenceUrl: 'https://example.invalid/rights', kind: 'document_detail' as const, caption: 'Fixture document', alt: 'Fixture document', width: 100, height: 100, captionEvidenceKeys: [spans[0].key] }
     const storyId = await ctx.db.insert('stories', { storyKey: 'applied-digital-boyce', slug: 'applied-digital-boyce', rank: 2, state: 'unpublished', generation: 0, createdAt: 1, updatedAt: 1 })
@@ -102,7 +103,7 @@ test('unsupported review produces an immutable withheld version with no public p
   const reviewHash = await t.run(async ctx => {
     const build = (await ctx.db.get(buildId))!
     const review: StoryReview = { ...build.review!, verdict: 'fail', checks: build.review!.checks.map(check => ({ ...check, assessment: 'unsupported' })) }
-    const hash = await sha256HexOfText(JSON.stringify(review))
+    const hash = await hashStoryValue(review)
     await ctx.db.patch(buildId, { review, reviewHash: hash })
     return hash
   })

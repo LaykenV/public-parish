@@ -2,7 +2,7 @@ import { v } from 'convex/values'
 import { mutation, query } from '../_generated/server'
 import { requireOwner } from '../auth/authorization'
 import schema from '../schema'
-import { sha256HexOfText } from '../sources/hashing'
+import { hashStoryValue } from './hashing'
 import { parseStoryManifest } from './manifest'
 import { resolveSources } from './evidence'
 import { checkDraft, checkReview } from './contracts'
@@ -39,7 +39,7 @@ export const approve = mutation({
       if (!raw || !normalized || raw.size !== snapshot.rawByteLength || normalized.size !== snapshot.normalizedByteLength) throw new Error('Evidence storage changed before approval')
     }
     if (build.media && !await ctx.db.system.get('_storage', build.media.storageId)) throw new Error('Image storage changed before approval')
-    if (await sha256HexOfText(JSON.stringify(build.draft)) !== args.draftHash || await sha256HexOfText(JSON.stringify(build.review)) !== args.reviewHash) throw new Error('Draft or review hash mismatch')
+    if (await hashStoryValue(build.draft) !== args.draftHash || await hashStoryValue(build.review) !== args.reviewHash) throw new Error('Draft or review hash mismatch')
     if (checkDraft(build.draft, build.spans) || checkReview(build.review, build.draft, build.media)) throw new Error('Deterministic story review failed')
     for (const reference of build.relatedPublications) {
       const record = await ctx.db.get(reference.recordId)

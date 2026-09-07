@@ -1,7 +1,7 @@
 import type { Doc, Id } from '../_generated/dataModel'
 import type { QueryCtx, MutationCtx } from '../_generated/server'
 import { isRegisteredSourceUrl } from '../sources/domains'
-import { sha256HexOfText } from '../sources/hashing'
+import { hashStoryValue } from './hashing'
 import type { StoryManifest } from './manifestTypes'
 import type { StorySpan } from './contracts'
 
@@ -53,7 +53,7 @@ export function proposedSpans(manifest: StoryManifest, sources: Array<{ source: 
 // Stable identity is part of the digest; environment-specific IDs are excluded
 // so the same reviewed artifact set can be revalidated during promotion.
 export async function evidenceHash(spans: StorySpan[]) {
-  return sha256HexOfText(JSON.stringify(spans.map(({ snapshotId: _snapshotId, ...span }) => span)))
+  return hashStoryValue(spans.map(({ snapshotId: _snapshotId, ...span }) => span))
 }
 
 export async function currentVersionEvidence(ctx: ReadCtx, version: Doc<'storyVersions'>): Promise<boolean> {

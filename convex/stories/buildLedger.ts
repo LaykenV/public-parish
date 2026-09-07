@@ -5,7 +5,7 @@ import { internalMutation, internalQuery, query } from '../_generated/server'
 import { requireOwner } from '../auth/authorization'
 import { issueWorkflowManager } from '../pipeline/workflowManager'
 import schema from '../schema'
-import { sha256HexOfText } from '../sources/hashing'
+import { hashStoryValue, canonicalStoryJson } from './hashing'
 import { parseStoryManifest, LAUNCH_STORIES } from './manifest'
 import { sourceBinding, storyDraft, storyReview, storyMedia, checkDraft, checkReview } from './contracts'
 import { evidenceHash, proposedSpans, resolveSources } from './evidence'
@@ -42,13 +42,13 @@ export const begin = internalMutation({
       story = (await ctx.db.get(id))!
     }
     const mediaIdentity = media ? { ...media, storageId: undefined } : null
-    const inputHash = await sha256HexOfText(JSON.stringify({ contract: 'story-build-1', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation }))
+    const inputHash = await hashStoryValue({ contract: 'story-build-1', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation })
     const existing = await ctx.db.query('storyBuilds').withIndex('by_input_hash', q => q.eq('inputHash', inputHash)).unique()
     if (existing) return existing._id
     // An accepted identical import replays even after its publication advanced
     // the generation. Never repeat model work because publication moved a pointer.
     const previousBuilds = await ctx.db.query('storyBuilds').withIndex('by_story_id_and_created_at', q => q.eq('storyId', story._id)).order('desc').take(20)
-    const publishedReplay = previousBuilds.find(build => build.importId === imported._id && build.versionId === story.currentVersionId && JSON.stringify(build.media ? { ...build.media, storageId: undefined } : null) === JSON.stringify(mediaIdentity))
+    const publishedReplay = previousBuilds.find(build => build.importId === imported._id && build.versionId === story.currentVersionId && canonicalStoryJson(build.media ? { ...build.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity))
     if (publishedReplay) return publishedReplay._id
     const relatedPublications: Doc<'storyBuilds'>['relatedPublications'] = []
     for (const source of sources) {
@@ -92,7 +92,7 @@ export const saveDraft = internalMutation({
     if (!build || build.inputHash !== args.inputHash) throw new Error('Draft inputs changed')
     const error = checkDraft(args.draft, build.spans)
     if (error) throw new Error(error)
-    const draftHash = await sha256HexOfText(JSON.stringify(args.draft))
+    const draftHash = await hashStoryValue(args.draft)
     if (build.draftHash) {
       if (build.draftHash !== draftHash) throw new Error('Immutable draft changed')
       return null
@@ -111,7 +111,7 @@ export const saveReview = internalMutation({
     if (!build || build.inputHash !== args.inputHash || !build.draft || build.draftHash !== args.draftHash || build.draftModel === args.model) throw new Error('Review inputs changed or reviewer is not independent')
     const error = checkReview(args.review, build.draft, build.media)
     if (error) throw new Error(error)
-    const reviewHash = await sha256HexOfText(JSON.stringify(args.review))
+    const reviewHash = await hashStoryValue(args.review)
     if (build.reviewHash) {
       if (build.reviewHash !== reviewHash) throw new Error('Immutable review changed')
       return null
