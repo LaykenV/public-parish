@@ -123,6 +123,7 @@ export default defineSchema({
     generation: v.number(), createdAt: v.number(), updatedAt: v.number(),
   }).index('by_story_key', ['storyKey']).index('by_slug', ['slug']).index('by_state_and_rank', ['state', 'rank']),
   storyBuilds: defineTable({
+    notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))),
     retryCount: v.optional(v.number()),
     importId: v.id('storyImports'), storyId: v.id('stories'),
     expectedGeneration: v.number(), inputHash: v.string(),
@@ -303,9 +304,24 @@ export default defineSchema({
     updatedAt: v.number(),
   }).index('by_user_id', ['userId']),
 
+  storyUpdateEvents: defineTable({
+    storyId: v.id('stories'),
+    previousVersionId: v.id('storyVersions'),
+    currentVersionId: v.id('storyVersions'),
+    changeKeys: v.array(v.string()),
+    createdAt: v.number(),
+  }).index('by_current_version', ['currentVersionId']).index('by_story_and_created_at', ['storyId', 'createdAt']),
+
+  notificationChangeClaims: defineTable({
+    ownerKey: v.string(), changeKey: v.string(),
+    cadenceKey: v.string(), deliveryId: v.id('notificationDeliveries'),
+    createdAt: v.number(),
+  }).index('by_owner_change_and_cadence', ['ownerKey', 'changeKey', 'cadenceKey']).index('by_delivery', ['deliveryId']),
+
   notificationMatches: defineTable({
     followId: v.id('follows'),
-    materialChangeId: v.id('materialChanges'),
+    materialChangeId: v.optional(v.id('materialChanges')),
+    storyUpdateId: v.optional(v.id('storyUpdateEvents')),
     ownerKind: v.union(v.literal('google'), v.literal('email')),
     ownerKey: v.string(),
     targetKind: followTargetKind,
@@ -313,6 +329,8 @@ export default defineSchema({
     cadenceAtMatch: activeDeliveryCadence,
     matchedAt: v.number(),
   })
+    .index('by_follow_and_story_update', ['followId', 'storyUpdateId'])
+    .index('by_story_update_and_owner', ['storyUpdateId', 'ownerKey'])
     .index('by_follow_id_and_material_change_id', [
       'followId',
       'materialChangeId',
@@ -325,8 +343,9 @@ export default defineSchema({
     .index('by_matched_at', ['matchedAt']),
 
   notificationFanouts: defineTable({
-    materialChangeId: v.id('materialChanges'),
-    phase: v.union(v.literal('decision'), v.literal('issue')),
+    materialChangeId: v.optional(v.id('materialChanges')),
+    storyUpdateId: v.optional(v.id('storyUpdateEvents')),
+    phase: v.union(v.literal('decision'), v.literal('issue'), v.literal('story')),
     issueVersionId: v.optional(v.id('issueVersions')),
     targetIndex: v.number(),
     cursor: v.optional(v.string()),
@@ -335,6 +354,7 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index('by_story_update', ['storyUpdateId'])
     .index('by_material_change_id_and_phase_and_issue_version_id', [
       'materialChangeId',
       'phase',
@@ -343,6 +363,7 @@ export default defineSchema({
     .index('by_state_and_updated_at', ['state', 'updatedAt']),
 
   notificationDeliveries: defineTable({
+    storyUpdateId: v.optional(v.id('storyUpdateEvents')),
     ownerKind: v.union(v.literal('google'), v.literal('email')),
     ownerKey: v.string(),
     kind: v.union(v.literal('immediate'), v.literal('weekly')),
@@ -370,6 +391,7 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index('by_owner_and_story_update', ['ownerKey', 'storyUpdateId'])
     .index('by_owner_key_and_kind_and_material_change_id', [
       'ownerKey',
       'kind',
@@ -407,6 +429,8 @@ export default defineSchema({
     .index('by_updated_at', ['updatedAt']),
 
   emailReplyEvents: defineTable({
+    inboundInboxId: v.optional(v.string()),
+    senderHash: v.optional(v.string()),
     providerEventId: v.string(),
     agentmailThreadId: v.string(),
     inboundMessageId: v.string(),
@@ -433,6 +457,7 @@ export default defineSchema({
     updatedAt: v.number(),
   })
     .index('by_provider_event_id', ['providerEventId'])
+    .index('by_inbox_and_message', ['inboundInboxId', 'inboundMessageId'])
     .index('by_agentmail_thread_id_and_created_at', [
       'agentmailThreadId',
       'createdAt',
@@ -463,10 +488,12 @@ export default defineSchema({
   roundupEntries: defineTable({
     roundupWindowId: v.id('roundupWindows'),
     deliveryId: v.id('notificationDeliveries'),
-    materialChangeId: v.id('materialChanges'),
+    materialChangeId: v.optional(v.id('materialChanges')),
+    storyUpdateId: v.optional(v.id('storyUpdateEvents')),
     followIds: v.array(v.id('follows')),
     createdAt: v.number(),
   })
+    .index('by_delivery_and_story_update', ['deliveryId', 'storyUpdateId'])
     .index('by_delivery_id_and_material_change_id', [
       'deliveryId',
       'materialChangeId',

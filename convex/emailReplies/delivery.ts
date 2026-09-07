@@ -1,7 +1,10 @@
 import { v } from 'convex/values'
 
-import { internalMutation } from '../_generated/server'
+import { env, internalMutation } from '../_generated/server'
+import { hashAddress } from '../follows/secrets'
 import { agentmail, updatesInboxId } from '../follows/agentmailClient'
+import { currentStoryUpdate } from '../stories/updates'
+import { hasCurrentStoryFollow } from './intake'
 
 export const completeAnswer = internalMutation({
   args: {
@@ -21,6 +24,25 @@ export const completeAnswer = internalMutation({
       event.outboundId !== undefined
     ) {
       return null
+    }
+    const thread = event.replyThreadId ? await ctx.db.get(event.replyThreadId) : null
+    if (thread?.scopeKind === 'story') {
+      const delivery = await ctx.db.get(thread.notificationDeliveryId)
+      const current = delivery?.storyUpdateId ? await currentStoryUpdate(ctx, delivery.storyUpdateId) : null
+      let currentSenderHash: string | undefined
+      if (delivery?.ownerKind === 'google') {
+        const id = ctx.db.normalizeId('users', delivery.ownerKey.slice(7))
+        const user = id ? await ctx.db.get(id) : null
+        if (user) currentSenderHash = await hashAddress(user.email)
+      } else if (delivery?.ownerKind === 'email') {
+        const id = ctx.db.normalizeId('emailSubscribers', delivery.ownerKey.slice(6))
+        const subscriber = id ? await ctx.db.get(id) : null
+        if (subscriber?.state === 'verified') currentSenderHash = subscriber.addressHash
+      }
+      if (!delivery || !event.senderHash || currentSenderHash !== event.senderHash || event.inboundInboxId !== env.AGENTMAIL_UPDATES_INBOX_ID?.trim() || delivery.agentmailThreadId !== event.agentmailThreadId || thread.ownerKey !== delivery.ownerKey || !current || current.story.slug !== thread.scopeKey || !await hasCurrentStoryFollow(ctx, delivery, current.story.slug)) {
+        await ctx.db.patch(event._id, { state: 'ignored', errorClass: 'story_reply_evidence_or_subscription_changed', completedAt: Date.now(), updatedAt: Date.now() })
+        return null
+      }
     }
     const outboundId = await agentmail.replyToMessage(
       ctx,

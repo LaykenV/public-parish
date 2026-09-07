@@ -25,7 +25,7 @@ export const prepare = query({
 })
 
 export const begin = internalMutation({
-  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), media: v.union(v.null(), storyMedia) },
+  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), media: v.union(v.null(), storyMedia), notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
   returns: v.id('storyBuilds'),
   handler: async (ctx, args) => {
     const owner = await requireOwner(ctx)
@@ -42,7 +42,8 @@ export const begin = internalMutation({
       story = (await ctx.db.get(id))!
     }
     const mediaIdentity = media ? { ...media, storageId: undefined } : null
-    const inputHash = await hashStoryValue({ contract: 'story-build-1', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation })
+    const notificationIntent = args.notificationIntent ?? (story.currentVersionId ? 'update' : 'baseline')
+    const inputHash = await hashStoryValue({ contract: 'story-build-2', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation, notificationIntent })
     const existing = await ctx.db.query('storyBuilds').withIndex('by_input_hash', q => q.eq('inputHash', inputHash)).unique()
     if (existing) return existing._id
     // An accepted identical import replays even after its publication advanced
@@ -63,7 +64,7 @@ export const begin = internalMutation({
     if (relatedPublications.length > 24) throw new Error('Too many related records')
     const runId = await ctx.db.insert('pipelineRuns', { registryId: sources[0].snapshot.registryId, trigger: 'manual_story_build', state: 'queued', processorVersion: 'story-v1', suppressNotifications: true, startedAt: Date.now() })
     const buildId = await ctx.db.insert('storyBuilds', { importId: imported._id, storyId: story._id, expectedGeneration: story.generation, inputHash, sourceBindings: args.bindings, spans, relatedPublications, media,
-      state: 'queued', runId, startedBy: owner._id, createdAt: Date.now() })
+      state: 'queued', notificationIntent, runId, startedBy: owner._id, createdAt: Date.now() })
     const workflowId = await issueWorkflowManager.start(ctx, internal.stories.workflow.buildStory, { buildId })
     await ctx.db.patch(buildId, { workflowId })
     return buildId
@@ -72,7 +73,7 @@ export const begin = internalMutation({
 
 export const load = internalQuery({
   args: { buildId: v.id('storyBuilds') },
-  returns: v.object({ build: schema.doc('storyBuilds'), imported: schema.doc('storyImports') }),
+  returns: v.object({ build: schema.doc('storyBuilds'), imported: schema.doc('storyImports'), previous: v.union(v.null(), schema.doc('storyVersions')) }),
   handler: async (ctx, args) => {
     const build = await ctx.db.get(args.buildId)
     const imported = build ? await ctx.db.get(build.importId) : null
@@ -80,7 +81,7 @@ export const load = internalQuery({
     const story = await ctx.db.get(build.storyId)
     if (!story || story.generation !== build.expectedGeneration) throw new Error('Story generation changed')
     await resolveSources(ctx, parseStoryManifest(imported.manifestJson), build.sourceBindings)
-    return { build, imported }
+    return { build, imported, previous: story.currentVersionId ? await ctx.db.get(story.currentVersionId) : null }
   },
 })
 
@@ -131,6 +132,9 @@ export const saveReview = internalMutation({
     if (!build || build.inputHash !== args.inputHash || !build.draft || build.draftHash !== args.draftHash || build.draftModel === args.model) throw new Error('Review inputs changed or reviewer is not independent')
     const error = checkReview(args.review, build.draft, build.media)
     if (error) throw new Error(error)
+    const story = await ctx.db.get(build.storyId)
+    const previous = story?.currentVersionId ? await ctx.db.get(story.currentVersionId) : null
+    if (story?.generation !== build.expectedGeneration || !args.review.changeAssessment || args.review.changeAssessment.previousDraftHash !== (previous?.draftHash ?? null)) throw new Error('Review comparison changed')
     const reviewHash = await hashStoryValue(args.review)
     if (build.reviewHash) {
       if (build.reviewHash !== reviewHash) throw new Error('Immutable review changed')

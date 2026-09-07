@@ -21,6 +21,7 @@ export const storyDraft = v.object({
 })
 export type StoryDraft = typeof storyDraft.type
 export const storyReview = v.object({
+  changeAssessment: v.optional(v.object({ kind: v.union(v.literal('baseline'), v.literal('cosmetic'), v.literal('material')), previousDraftHash: v.union(v.null(), v.string()), reason: v.string() })),
   verdict: v.union(v.literal('pass'), v.literal('limited'), v.literal('fail')),
   checks: v.array(v.object({ path: v.string(), assessment: v.union(v.literal('supported'), v.literal('unsupported')), reason: v.string() })),
   limitations: v.array(v.string()),
@@ -50,7 +51,8 @@ export const draftJsonSchema = {
   },
 }
 export const reviewJsonSchema = {
-  type: 'object', additionalProperties: false, required: ['verdict', 'checks', 'limitations'], properties: {
+  type: 'object', additionalProperties: false, required: ['verdict', 'checks', 'limitations', 'changeAssessment'], properties: {
+    changeAssessment: { type: 'object', additionalProperties: false, required: ['kind', 'previousDraftHash', 'reason'], properties: { kind: { type: 'string', enum: ['baseline', 'cosmetic', 'material'] }, previousDraftHash: { type: ['string', 'null'] }, reason: { type: 'string' } } },
     verdict: { type: 'string', enum: ['pass', 'limited', 'fail'] },
     checks: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['path', 'assessment', 'reason'], properties: {
       path: { type: 'string' }, assessment: { type: 'string', enum: ['supported', 'unsupported'] }, reason: { type: 'string' },
@@ -91,6 +93,7 @@ function validTimelineDate(value: string): boolean {
 }
 
 export function checkReview(review: StoryReview, draft: StoryDraft, media: typeof storyMedia.type | null): string | null {
+  if (review.changeAssessment && (!review.changeAssessment.reason.trim() || review.changeAssessment.reason.length > 800 || (review.changeAssessment.previousDraftHash !== null && !/^[a-f0-9]{64}$/.test(review.changeAssessment.previousDraftHash)))) return 'Invalid change assessment'
   const expected = [...draftStatements(draft).map(item => item.path), ...draft.limitations.map((_, i) => `/limitations/${i}`)]
   if (media) expected.push('/media/caption', '/media/alt')
   if (review.checks.length !== expected.length || JSON.stringify(review.checks.map(check => check.path).sort()) !== JSON.stringify(expected.sort())) return 'Review must check every statement, limitation and image description exactly once'

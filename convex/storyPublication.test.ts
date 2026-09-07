@@ -11,6 +11,7 @@ import { sha256HexOfText } from './sources/hashing'
 import type { StoryManifest } from './stories/manifestTypes'
 import { proposedSpans } from './stories/evidence'
 import type { StoryDraft, StoryReview } from './stories/contracts'
+import { claimDeliveryChanges, validUpdateReference } from './follows/updateEvents'
 
 const modules = import.meta.glob('./**/*.ts')
 afterEach(() => vi.unstubAllEnvs())
@@ -251,4 +252,59 @@ test('verified-email story follows use existing management and unsubscribe recor
     expect((await ctx.db.query('emailSubscribers').first())?.state).toBe('unsubscribed')
     expect(await ctx.db.query('notificationDeliveries').collect()).toHaveLength(0)
   })
+})
+
+async function revision(fixture: Awaited<ReturnType<typeof setup>>, kind: 'material' | 'cosmetic', intent: 'baseline' | 'update') {
+  const args = await fixture.t.run(async ctx => {
+    const story = (await ctx.db.get(fixture.storyId))!
+    const previous = (await ctx.db.get(story.currentVersionId!))!
+    const original = (await ctx.db.get(fixture.buildId))!
+    const { _id: _buildId, _creationTime: _created, versionId: _versionId, ...fields } = original
+    const draft = { ...original.draft!, summary: { ...original.draft!.summary, text: `Synthetic reviewed revision ${story.generation}.` } }
+    const draftHash = await hashStoryValue(draft)
+    const review: StoryReview = { ...original.review!, changeAssessment: { kind, previousDraftHash: previous.draftHash, reason: 'Synthetic classification for notification regression.' } }
+    const reviewHash = await hashStoryValue(review)
+    const inputHash = await hashStoryValue({ generation: story.generation, draftHash, reviewHash, intent })
+    const buildId = await ctx.db.insert('storyBuilds', { ...fields, state: 'reviewed', expectedGeneration: story.generation, notificationIntent: intent, draft, draftHash, review, reviewHash, inputHash })
+    return { buildId, inputHash, draftHash, reviewHash, expectedGeneration: story.generation }
+  })
+  return { args, versionId: await fixture.owner.mutation(api.stories.operations.approve, args) }
+}
+
+test('approved story updates are atomic and baseline, cosmetic and replay do not flood follows', async () => {
+  vi.useFakeTimers()
+  try {
+    const fixture = await setup()
+    await fixture.owner.mutation(api.stories.operations.approve, fixture.args)
+    await revision(fixture, 'cosmetic', 'update')
+    await revision(fixture, 'material', 'baseline')
+    await fixture.t.run(async ctx => { expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0) })
+    const material = await revision(fixture, 'material', 'update')
+    expect(await fixture.owner.mutation(api.stories.operations.approve, material.args)).toBe(material.versionId)
+    await fixture.t.run(async ctx => {
+      const events = await ctx.db.query('storyUpdateEvents').collect()
+      expect(events).toHaveLength(1)
+      expect(events[0].currentVersionId).toBe(material.versionId)
+      expect((await ctx.db.get(fixture.storyId))?.currentVersionId).toBe(material.versionId)
+      expect((await ctx.db.query('notificationFanouts').first())?.phase).toBe('story')
+      expect(await ctx.db.query('materialChanges').collect()).toHaveLength(0)
+      expect(await ctx.db.query('notificationDeliveries').collect()).toHaveLength(0)
+    })
+  } finally { vi.useRealTimers() }
+})
+
+test('overlapping notification claims deduplicate per owner and cadence', async () => {
+  const { t } = await setup()
+  await t.run(async ctx => {
+    const fields = { ownerKind: 'google' as const, ownerKey: 'google:synthetic-owner', kind: 'immediate' as const, state: 'reserved' as const, enqueueAttempts: 0, reconcileAttempts: 0, createdAt: 1, updatedAt: 1 }
+    const first = (await ctx.db.get(await ctx.db.insert('notificationDeliveries', fields)))!
+    const second = (await ctx.db.get(await ctx.db.insert('notificationDeliveries', fields)))!
+    const other = (await ctx.db.get(await ctx.db.insert('notificationDeliveries', { ...fields, ownerKey: 'google:another-owner' })))!
+    expect(await claimDeliveryChanges(ctx, first, ['same-underlying-approved-change'])).toBe(true)
+    expect(await claimDeliveryChanges(ctx, first, ['same-underlying-approved-change'])).toBe(true)
+    expect(await claimDeliveryChanges(ctx, second, ['same-underlying-approved-change'])).toBe(false)
+    expect(await claimDeliveryChanges(ctx, other, ['same-underlying-approved-change'])).toBe(true)
+    expect(await ctx.db.query('notificationChangeClaims').collect()).toHaveLength(2)
+  })
+  expect(validUpdateReference({})).toBe(false)
 })

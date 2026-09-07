@@ -12,6 +12,7 @@ import {
   normalizeEmail,
 } from '../follows/secrets'
 import { parseInboundEmail } from './contracts'
+import { currentStoryUpdate } from '../stories/updates'
 
 const RUNNING_LEASE_MS = 10 * 60 * 1000
 const MAX_ANSWER_ATTEMPTS = 2
@@ -34,10 +35,13 @@ export const onMessageReceived = internalMutation({
 
     const now = Date.now()
     const inbound = parseInboundEmail(args.message)
+    if (inbound && await ctx.db.query('emailReplyEvents').withIndex('by_inbox_and_message', q => q.eq('inboundInboxId', inbound.inboxId).eq('inboundMessageId', inbound.messageId)).first()) return null
     const eventId = await ctx.db.insert('emailReplyEvents', {
       providerEventId: args.eventId,
       agentmailThreadId: inbound?.threadId ?? '',
       inboundMessageId: inbound?.messageId ?? '',
+      inboundInboxId: inbound?.inboxId,
+      senderHash: inbound ? await hashAddress(inbound.from) : undefined,
       state: 'ignored',
       preparationAttempts: 0,
       attempt: 0,
@@ -82,6 +86,10 @@ export const onMessageReceived = internalMutation({
         q.eq('agentmailThreadId', inbound.threadId),
       )
       .unique()
+    if (replyThread && (replyThread.ownerKey !== delivery.ownerKey || replyThread.scopeKind !== context.scope.kind || replyThread.scopeKey !== scopeKey(context.scope))) {
+      await ignoreEvent(ctx, eventId, 'reply_scope_changed')
+      return null
+    }
     const needsAskThread =
       !replyThread?.askThreadId ||
       replyThread.askExpiresAt === undefined ||
@@ -431,6 +439,11 @@ async function replyContext(
   ctx: MutationCtx,
   delivery: Doc<'notificationDeliveries'>,
 ): Promise<{ scope: AskScope; officialContactUrl?: string } | null> {
+  if (delivery.storyUpdateId) {
+    const current = await currentStoryUpdate(ctx, delivery.storyUpdateId)
+    if (!current || !await hasCurrentStoryFollow(ctx, delivery, current.story.slug)) return null
+    return { scope: { kind: 'story', storySlug: current.story.slug } }
+  }
   if (delivery.kind === 'weekly') {
     // A roundup can contain updates from several follows, bodies, and places.
     // Its reply thread must cover every item named in the message.
@@ -462,4 +475,13 @@ async function replyContext(
     scope: { kind: 'corpus', areaKey: place.slug },
     officialContactUrl: body.officialUrl,
   }
+}
+
+export async function hasCurrentStoryFollow(ctx: Pick<MutationCtx, 'db'>, delivery: Doc<'notificationDeliveries'>, slug: string): Promise<boolean> {
+  const follow = await ctx.db.query('follows').withIndex('by_owner_key_and_target_kind_and_target_key', q => q.eq('ownerKey', delivery.ownerKey).eq('targetKind', 'story').eq('targetKey', slug)).unique()
+  if (!follow || follow.ownerKind !== delivery.ownerKind) return false
+  const preference = await ctx.db.query('notificationPreferences').withIndex('by_follow_id', q => q.eq('followId', follow._id)).unique()
+  if (!preference || preference.cadence === 'muted') return false
+  if (follow.ownerKind === 'email') return (await ctx.db.get(follow.emailSubscriberId))?.state === 'verified'
+  return Boolean(await ctx.db.get(follow.userId))
 }

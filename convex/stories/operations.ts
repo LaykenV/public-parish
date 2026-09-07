@@ -1,4 +1,5 @@
 import { indexStory } from './search'
+import { recordStoryUpdate } from './updates'
 import { v } from 'convex/values'
 import { paginationOptsValidator } from 'convex/server'
 import { mutation, query } from '../_generated/server'
@@ -49,6 +50,8 @@ export const approve = mutation({
       if (record?.currentPublishedVersionId !== reference.publicationVersionId || publication?.payloadHash !== reference.payloadHash || publication.mode === 'withheld') throw new Error('Related evidence changed before approval')
     }
     const mode = build.review.verdict === 'fail' ? 'withheld' : build.review.verdict === 'limited' || manifest.research.knownUnknowns.length ? 'limited' : 'full'
+    const previous = story.currentVersionId ? await ctx.db.get(story.currentVersionId) : null
+    if (previous && (!build.review.changeAssessment || build.review.changeAssessment.previousDraftHash !== previous.draftHash || build.review.changeAssessment.kind === 'baseline')) throw new Error('An exact previous-version change review is required')
     if (mode !== 'withheld' && !build.media) throw new Error('An approved image is required for launch publication')
     const latest = await ctx.db.query('storyVersions').withIndex('by_story_id_and_version', q => q.eq('storyId', story._id)).order('desc').first()
     const versionId = await ctx.db.insert('storyVersions', {
@@ -63,8 +66,7 @@ export const approve = mutation({
     if (mode !== 'withheld') {
       await ctx.db.patch(story._id, { currentVersionId: versionId, generation: story.generation + 1, state: 'active', withdrawalReason: undefined, updatedAt: Date.now() })
       await indexStory(ctx, story._id)
-      // Initial publication has no material event. S5 adds typed story events
-      // in this transaction before mail or resident subscription is enabled.
+      await recordStoryUpdate(ctx, story.currentVersionId, versionId, build.notificationIntent ?? 'update', build.review.changeAssessment?.kind === 'material')
     }
     return versionId
   },

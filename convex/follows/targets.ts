@@ -232,7 +232,7 @@ export const runMatchFanout = internalMutation({
   returns: v.null(),
   handler: async (ctx, args) => {
     const fanout = await ctx.db.get(args.fanoutId)
-    if (!fanout || fanout.state === 'complete') return null
+    if (!fanout || fanout.state === 'complete' || !fanout.materialChangeId) return null
     const change = await ctx.db.get(fanout.materialChangeId)
     if (!change?.material || change.notificationEligible === false) {
       await ctx.db.patch(fanout._id, {
