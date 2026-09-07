@@ -3,6 +3,7 @@ import { hashStoryValue } from './stories/hashing'
 import { convexTest } from 'convex-test'
 import workflowTest from '@convex-dev/workflow/test'
 import agentTest from '@convex-dev/agent/test'
+import agentmailTest from '@agentmail/convex/test'
 import { afterEach, expect, test, vi } from 'vitest'
 import example from '../docs/story-manifests/import-contract-v1.example.json'
 import { api, internal } from './_generated/api'
@@ -13,6 +14,8 @@ import { proposedSpans } from './stories/evidence'
 import type { StoryDraft, StoryReview } from './stories/contracts'
 import { claimDeliveryChanges, validUpdateReference } from './follows/updateEvents'
 import { currentStoryUpdate } from './stories/updates'
+import { storyAskCatalog } from './stories/askEvidence'
+import { hashAddress } from './follows/secrets'
 
 const modules = import.meta.glob('./**/*.ts')
 afterEach(() => vi.unstubAllEnvs())
@@ -370,4 +373,80 @@ test('a missing retained artifact blocks paid retrieval instead of claiming reus
   expect((await owner.query(api.stories.intake.sources, { importId: input.importId }))[0].status).toBe('artifact_missing')
   await expect(owner.action(api.stories.intake.retrieve, input)).rejects.toThrow('Saved artifact is missing')
   await t.run(async ctx => { expect(await ctx.db.query('storySourceRetrievals').collect()).toHaveLength(0) })
+})
+
+async function storyReplyFixture() {
+  const fixture = await setup()
+  vi.stubEnv('CONVEX_SITE_URL', 'https://example.convex.site')
+  vi.stubEnv('AGENTMAIL_API_KEY', 'synthetic-agentmail-key')
+  vi.stubEnv('AGENTMAIL_UPDATES_INBOX_ID', 'updates-test')
+  vi.stubEnv('EMAIL_ADDRESS_HMAC_KEY', 'dGVzdC1obWFjLWtleQ==')
+  vi.stubEnv('EMAIL_ENCRYPTION_KEY', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=')
+  agentmailTest.register(fixture.t)
+  await fixture.owner.mutation(api.stories.operations.approve, fixture.args)
+  await fixture.owner.mutation(api.follows.enrollment.createGoogleFollow, { targetKind: 'story', targetKey: 'applied-digital-boyce', cadence: 'both' })
+  await revision(fixture, 'material', 'update')
+  const ids = await fixture.t.run(async ctx => {
+    const update = (await ctx.db.query('storyUpdateEvents').first())!
+    const ownerKey = `google:${fixture.ownerId}`
+    const deliveryId = await ctx.db.insert('notificationDeliveries', { ownerKind: 'google', ownerKey, kind: 'immediate', storyUpdateId: update._id, state: 'delivered', agentmailThreadId: 'synthetic-story-provider-thread', enqueueAttempts: 1, reconcileAttempts: 1, createdAt: 1, updatedAt: 1 })
+    const replyThreadId = await ctx.db.insert('emailReplyThreads', { agentmailThreadId: 'synthetic-story-provider-thread', notificationDeliveryId: deliveryId, scopeKind: 'story', scopeKey: 'applied-digital-boyce', ownerKind: 'google', ownerKey, createdAt: 1, updatedAt: 1 })
+    const eventId = await ctx.db.insert('emailReplyEvents', { providerEventId: 'synthetic-running-story-reply', agentmailThreadId: 'synthetic-story-provider-thread', inboundMessageId: 'synthetic-inbound-story-message', inboundInboxId: 'updates-test', senderHash: await hashAddress('owner@example.com'), replyThreadId, state: 'running', preparationAttempts: 1, attempt: 1, startedAt: Date.now(), createdAt: 1, updatedAt: 1 })
+    const catalog = await storyAskCatalog(ctx, { kind: 'story', storySlug: 'applied-digital-boyce' })
+    return { eventId, deliveryId, replyThreadId, evidenceIds: catalog.sources.map(source => source.evidence.evidenceId) }
+  })
+  return { ...fixture, ...ids }
+}
+
+test('story reply enqueue accepts actual Ask citation IDs and rejects replay', async () => {
+  vi.useFakeTimers()
+  try {
+    const fixture = await storyReplyFixture()
+    const args = { eventId: fixture.eventId, attempt: 1, answerMessageId: 'synthetic-answer', kind: 'answer' as const, text: 'Synthetic grounded answer for the component enqueue test.', evidenceIds: fixture.evidenceIds }
+    expect(args.evidenceIds).not.toHaveLength(0)
+    await fixture.t.mutation(internal.emailReplies.delivery.completeAnswer, args)
+    const first = await fixture.t.run(ctx => ctx.db.get(fixture.eventId))
+    expect(first?.state).toBe('answered')
+    expect(first?.outboundId).toBeDefined()
+    await fixture.t.mutation(internal.emailReplies.delivery.completeAnswer, args)
+    expect((await fixture.t.run(ctx => ctx.db.get(fixture.eventId)))?.outboundId).toBe(first?.outboundId)
+  } finally { vi.useRealTimers() }
+})
+
+test.each(['wrong citation', 'changed sender', 'withdrawn story', 'unfollowed'] as const)('story reply enqueue refuses %s', async reason => {
+  vi.useFakeTimers()
+  try {
+    const fixture = await storyReplyFixture()
+    if (reason === 'changed sender') await fixture.t.run(async ctx => { await ctx.db.patch(fixture.ownerId, { email: 'changed@example.com' }) })
+    if (reason === 'withdrawn story') await fixture.owner.mutation(api.stories.operations.withdraw, { storyId: fixture.storyId, expectedGeneration: 2, reason: 'Synthetic withdrawal regression.' })
+    if (reason === 'unfollowed') {
+      const [follow] = await fixture.owner.query(api.follows.enrollment.currentGoogleFollows, {})
+      await fixture.owner.mutation(api.follows.enrollment.removeGoogleFollow, { followId: follow.id })
+    }
+    await fixture.t.mutation(internal.emailReplies.delivery.completeAnswer, { eventId: fixture.eventId, attempt: 1, answerMessageId: 'synthetic-refused-answer', kind: 'answer', text: 'Must never be queued.', evidenceIds: reason === 'wrong citation' ? ['story:another-version:another-span'] : fixture.evidenceIds })
+    const event = await fixture.t.run(ctx => ctx.db.get(fixture.eventId))
+    expect(event?.state).toBe('ignored')
+    expect(event?.outboundId).toBeUndefined()
+  } finally { vi.useRealTimers() }
+})
+
+test('a reused provider thread binds to the latest delivery without duplicating an inbound message', async () => {
+  vi.useFakeTimers()
+  try {
+    const fixture = await storyReplyFixture()
+    const latestDeliveryId = await fixture.t.run(async ctx => {
+      const old = (await ctx.db.get(fixture.deliveryId))!
+      const { _id: _deliveryId, _creationTime: _created, ...fields } = old
+      return ctx.db.insert('notificationDeliveries', { ...fields, createdAt: Date.now() })
+    })
+    const message = { inbox_id: 'updates-test', thread_id: 'synthetic-story-provider-thread', message_id: 'synthetic-new-provider-message', from: 'owner@example.com', extracted_text: 'What did the official source announce?' }
+    await fixture.t.mutation(internal.emailReplies.intake.onMessageReceived, { eventId: 'synthetic-provider-callback-1', message })
+    await fixture.t.mutation(internal.emailReplies.intake.onMessageReceived, { eventId: 'synthetic-provider-callback-2', message })
+    await fixture.t.run(async ctx => {
+      expect((await ctx.db.get(fixture.replyThreadId))?.notificationDeliveryId).toBe(latestDeliveryId)
+      const rows = await ctx.db.query('emailReplyEvents').withIndex('by_inbox_and_message', q => q.eq('inboundInboxId', 'updates-test').eq('inboundMessageId', message.message_id)).collect()
+      expect(rows).toHaveLength(1)
+      expect(rows[0].state).toBe('queued')
+    })
+  } finally { vi.useRealTimers() }
 })

@@ -111,6 +111,7 @@ export const onMessageReceived = internalMutation({
       replyThread = (await ctx.db.get(replyThreadId))!
     } else if (needsAskThread && !replyThread.preparingEventId) {
       await ctx.db.patch(replyThread._id, {
+        notificationDeliveryId: delivery._id,
         preparingEventId: eventId,
         preparingStartedAt: now,
         scopeKind: context.scope.kind,
@@ -119,6 +120,11 @@ export const onMessageReceived = internalMutation({
         updatedAt: now,
       })
       replyThread = (await ctx.db.get(replyThread._id))!
+    }
+    if (replyThread.notificationDeliveryId !== delivery._id) {
+      // Provider threads can contain successive alerts for the same story.
+      // Keep the current delivery after the owner and scope checks above.
+      await ctx.db.patch(replyThread._id, { notificationDeliveryId: delivery._id, updatedAt: now })
     }
     await ctx.db.patch(eventId, {
       replyThreadId: replyThread._id,
