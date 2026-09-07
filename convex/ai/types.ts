@@ -16,7 +16,7 @@ export type AiRoute = typeof aiRoutes.type
 
 export type ChatMessage = {
   role: 'system' | 'user'
-  content: string
+  content: string | Array<{ type: 'text'; text: string } | { type: 'image_url'; image_url: { url: string; detail: 'high' } }>
 }
 
 export type StructuredRequest = {
