@@ -41,7 +41,7 @@ export const prepare = mutation({
     const buildId = await ctx.db.insert('storyBuilds', { importId: parent.importId, storyId: parent.storyId, expectedGeneration: story.generation,
       inputHash, sourceBindings: parent.sourceBindings, spans: parent.spans, relatedPublications: parent.relatedPublications, media: parent.media,
       state: 'drafted', draft: args.draft, draftHash, draftModel: parent.draftModel,
-      draftProvenance: { kind: 'owner_correction', parentBuildId: parent._id, parentDraftHash: parent.draftHash! },
+      draftProvenance: { kind: 'owner_correction', parentBuildId: parent._id, parentDraftHash: parent.draftHash },
       notificationIntent: story.currentVersionId ? 'update' : 'baseline', runId, startedBy: owner._id, createdAt: Date.now() })
     // The workflow retains this saved draft and always starts a fresh independent
     // review. No prior approval or review is copied into the new candidate.
