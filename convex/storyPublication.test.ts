@@ -63,6 +63,7 @@ async function setup() {
 
 test('controlled roundup refuses unauthenticated callers, production, and an unverified recipient', async () => {
   const { t, owner } = await setup()
+  vi.stubEnv('EMAIL_ADDRESS_HMAC_KEY', '11'.repeat(32))
   vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')
   vi.stubEnv('AGENTMAIL_UPDATES_INBOX_ID', 'public-parish-development@agentmail.to')
   vi.stubEnv('AGENTMAIL_REPORTS_INBOX_ID', 'public-parish-reports@agentmail.to')
