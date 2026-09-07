@@ -885,6 +885,22 @@ test('rejects invented citations before an assistant message is saved', async ()
   expect(attempts.find(attempt => attempt.status === 'schema_invalid')?.errorDetail).toBe('Answer cited evidence outside the retrieved set')
 })
 
+test('answer abstention cannot publish uncited model background facts', async () => {
+  const t = initTest()
+  await seedEvidence(t)
+  const token = 'abstention-background-session-000000000000000000000000'
+  await t.mutation(api.ask.threads.createSession, { token })
+  const thread = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'corpus', areaKey: 'lafayette-parish' } })
+  const question = await t.mutation(api.ask.threads.appendQuestion, { token, threadId: thread.threadId, question: 'How many workers are employed today?', idempotencyKey: 'abstention-background-0001' })
+  overrideAskGatewayForTests(async (_ctx, args) => gatewayResult(args.stage === 'selector' ? { retrievalMode: 'broad', targets: [] } : {
+    kind: 'not_found', answer: 'No current count, but 1,000 workers were projected.', evidenceIds: [], followUps: ['Was the 1,000-worker projection met?'],
+  }))
+  const answer = await t.action(api.ask.answer.answerQuestion, { token, threadId: thread.threadId, questionMessageId: question.messageId })
+  expect(answer).toMatchObject({ kind: 'not_found', answer: 'The published evidence available for this scope does not answer that question.', citations: [], followUps: [] })
+  const history = await t.query(api.ask.threads.getHistory, { token, threadId: thread.threadId, paginationOpts: { numItems: 40, cursor: null } })
+  expect(JSON.stringify(history)).not.toContain('1,000')
+})
+
 test('lets the selector abstain after reviewing the full scope', async () => {
   const t = initTest()
   await seedEvidence(t)

@@ -924,7 +924,12 @@ function validateModelAnswer(
 ): AskModelAnswer {
   const error = modelAnswerContractError(value, evidence)
   if (error) throw new Error(error)
-  return value as AskModelAnswer
+  const answer = value as AskModelAnswer
+  // Abstention has no citations. Do not publish model-written background facts
+  // or follow-ups through a response that cannot support them with evidence.
+  return answer.kind === 'not_found' ? {
+    kind: 'not_found', answer: 'The published evidence available for this scope does not answer that question.', evidenceIds: [], followUps: [],
+  } : answer
 }
 
 export function modelAnswerContractError(
