@@ -1,5 +1,6 @@
 import { v } from 'convex/values'
 import { internal } from '../_generated/api'
+import type { Doc } from '../_generated/dataModel'
 import { internalMutation, internalQuery, query } from '../_generated/server'
 import { requireOwner } from '../auth/authorization'
 import { issueWorkflowManager } from '../pipeline/workflowManager'
@@ -49,7 +50,7 @@ export const begin = internalMutation({
     const previousBuilds = await ctx.db.query('storyBuilds').withIndex('by_story_id_and_created_at', q => q.eq('storyId', story._id)).order('desc').take(20)
     const publishedReplay = previousBuilds.find(build => build.importId === imported._id && build.versionId === story.currentVersionId && JSON.stringify(build.media ? { ...build.media, storageId: undefined } : null) === JSON.stringify(mediaIdentity))
     if (publishedReplay) return publishedReplay._id
-    const relatedPublications = []
+    const relatedPublications: Doc<'storyBuilds'>['relatedPublications'] = []
     for (const source of sources) {
       for (const hint of source.source.existingPublicationReferences) {
         if (hint.kind !== 'decision') continue

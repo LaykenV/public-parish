@@ -81,6 +81,7 @@ export const draft = internalAction({
   handler: async (ctx, args): Promise<null> => {
     const { build, imported } = await ctx.runQuery(internal.stories.buildLedger.load, args)
     if (build.draft) return null
+    if (env.AI_SPENDING_GUARD_ENABLED !== 'true') throw new Error('Story processing requires an enabled finite spending allowance')
     await checkStoredSpans(ctx, build.spans)
     const manifest = parseStoryManifest(imported.manifestJson)
     const result = await completeStructured({ ctx, request: { role: 'MODEL_STRONG', schemaName: 'story_draft_v1', jsonSchema: draftJsonSchema,
@@ -100,6 +101,7 @@ export const review = internalAction({
     const { build, imported } = await ctx.runQuery(internal.stories.buildLedger.load, args)
     if (build.review) return null
     if (!build.draft || !build.draftHash || !env.MODEL_FAST_ID || env.MODEL_FAST_ID === build.draftModel) throw new Error('Independent story reviewer is unavailable')
+    if (env.AI_SPENDING_GUARD_ENABLED !== 'true') throw new Error('Story processing requires an enabled finite spending allowance')
     await checkStoredSpans(ctx, build.spans)
     const candidate = build.draft
     const result = await completeStructured({ ctx, request: { role: 'MODEL_FAST', schemaName: 'story_review_v1', jsonSchema: reviewJsonSchema,
