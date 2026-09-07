@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest'
 import { hashStoryValue } from './hashing'
+
 test('approval hashes survive object-key reordering but fence changed facts and array order', async () => {
   const first = await hashStoryValue({ title: { text: 'Proposal', evidenceKeys: ['a', 'b'] }, limits: [] })
   expect(await hashStoryValue({ limits: [], title: { evidenceKeys: ['a', 'b'], text: 'Proposal' } })).toBe(first)
