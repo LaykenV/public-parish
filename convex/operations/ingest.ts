@@ -209,7 +209,7 @@ export const ingestRegistrySource = internalAction({
     registryId: v.id('sourceRegistries'),
     urlOverride: v.optional(v.string()),
     monitorRunId: v.optional(v.id('sourceMonitoringRuns')),
-    pdfParserMode: v.optional(v.union(v.literal('fast'), v.literal('auto'))),
+    pdfParserMode: v.optional(v.union(v.literal('fast'), v.literal('auto'), v.literal('ocr'))),
   },
   returns: ingestOutcome,
   handler: async (ctx, args): Promise<IngestOutcome> => {
@@ -300,7 +300,7 @@ async function ingestSeedUrl(
   officialDomains: string[],
   rawUrl: string,
   monitorRunId?: Id<'sourceMonitoringRuns'>,
-  pdfParserMode?: 'fast' | 'auto',
+  pdfParserMode?: 'fast' | 'auto' | 'ocr',
 ): Promise<IngestOutcome> {
   const url = canonicalizeUrl(rawUrl)
   if (!url) {

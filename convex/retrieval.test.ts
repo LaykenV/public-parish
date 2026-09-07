@@ -661,7 +661,7 @@ test('missing raw html fails instead of mislabeling markdown as the raw artifact
   expect(snapshots).toHaveLength(0)
 })
 
-test.each([undefined, 'fast', 'auto'] as const)('a PDF preserves original bytes with parser mode %s', async pdfParserMode => {
+test.each([undefined, 'fast', 'auto', 'ocr'] as const)('a PDF preserves original bytes with parser mode %s', async pdfParserMode => {
   const t = initTest()
   const pdfBytes = new TextEncoder().encode('%PDF-1.7 official agenda bytes')
   const scrapeBodies: Array<Record<string, unknown>> = []
