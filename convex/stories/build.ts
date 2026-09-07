@@ -6,7 +6,7 @@ import type { Id } from '../_generated/dataModel'
 import { completeStructured } from '../ai/provider'
 import type { AttemptRecord } from '../ai/types'
 import { sha256HexOfBytes } from '../sources/hashing'
-import { sourceBinding, storyDraft, storyReview, checkDraft, checkReview, draftJsonSchema, reviewSchemaFor, reviewPaths, draftStatements } from './contracts'
+import { publicationMapping, sourceBinding, storyDraft, storyReview, checkDraft, checkReview, draftJsonSchema, reviewSchemaFor, reviewPaths, draftStatements } from './contracts'
 import type { StoryDraft, StoryReview, StorySpan } from './contracts'
 import { parseStoryManifest } from './manifest'
 import { proposedSpans } from './evidence'
@@ -23,7 +23,7 @@ async function verifiedBytes(ctx: ActionCtx, storageId: Id<'_storage'>, hash: st
 }
 
 export const start = action({
-  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), retainedDraft: v.optional(retainedDraft), media: v.union(v.null(), v.object({ mediaKey: v.string(), storageId: v.id('_storage') })), notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
+  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), retainedDraft: v.optional(retainedDraft), publicationMappings: v.optional(v.array(publicationMapping)), media: v.union(v.null(), v.object({ mediaKey: v.string(), storageId: v.id('_storage') })), notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
   returns: v.id('storyBuilds'),
   handler: async (ctx, args): Promise<Id<'storyBuilds'>> => {
     const context = await ctx.runQuery(api.stories.buildLedger.prepare, { importId: args.importId, bindings: args.bindings })
@@ -57,7 +57,7 @@ export const start = action({
         credit: proposed.credit, license: proposed.permission.license, permissionEvidenceUrl: proposed.permission.evidenceUrl,
         kind: proposed.kind, caption: proposed.caption, alt: proposed.alt, width: proposed.width, height: proposed.height, captionEvidenceKeys }
     }
-    return ctx.runMutation(internal.stories.buildLedger.begin, { importId: args.importId, bindings: args.bindings, media, notificationIntent: args.notificationIntent, retainedDraft: args.retainedDraft })
+    return ctx.runMutation(internal.stories.buildLedger.begin, { importId: args.importId, bindings: args.bindings, media, notificationIntent: args.notificationIntent, retainedDraft: args.retainedDraft, publicationMappings: args.publicationMappings })
   },
 })
 

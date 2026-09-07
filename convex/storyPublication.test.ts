@@ -74,6 +74,14 @@ test('controlled roundup refuses unauthenticated callers, production, and an unv
   expect(await t.run(ctx => ctx.db.query('roundupWindows').collect())).toHaveLength(0)
 })
 
+test('publication mapping preview is owner-only and rejects an unknown target', async () => {
+  const { t, owner, buildId } = await setup()
+  const build = (await t.run(ctx => ctx.db.get(buildId)))!
+  const args = { importId: build.importId, bindings: build.sourceBindings, sourceKey: build.sourceBindings[0].sourceKey, originRecordKey: 'origin', targetRecordKey: 'missing' }
+  await expect(t.query(api.stories.buildLedger.previewPublicationMapping, args)).rejects.toThrow('Sign in with Google')
+  await expect(owner.query(api.stories.buildLedger.previewPublicationMapping, args)).rejects.toThrow('not published')
+})
+
 test('retained draft promotion keeps writing but requires a fresh review and target approval', async () => {
   vi.useFakeTimers()
   try {

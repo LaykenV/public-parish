@@ -120,3 +120,6 @@ export function checkReview(review: StoryReview, draft: StoryDraft, media: typeo
   if (!failed && review.verdict === 'pass' && (review.limitations.length || draft.limitations.length)) return 'Known gaps require limited publication'
   return null
 }
+
+export const publicationMapping = v.object({ sourceKey: v.string(), originRecordKey: v.string(), targetRecordKey: v.string(), targetPayloadHash: v.string() })
+export type PublicationMapping = typeof publicationMapping.type

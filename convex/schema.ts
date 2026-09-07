@@ -1,4 +1,4 @@
-import { storyKey, storyMode, sourceBinding, storySpan, storyDraft, storyReview, storyMedia, relatedPublication } from './stories/contracts'
+import { storyKey, storyMode, sourceBinding, storySpan, storyDraft, storyReview, storyMedia, relatedPublication, publicationMapping } from './stories/contracts'
 import { civicEvent } from './analytics/civicContracts'
 import { searchEntry } from './resident/searchContracts'
 import { defineSchema, defineTable } from 'convex/server'
@@ -123,6 +123,7 @@ export default defineSchema({
     generation: v.number(), createdAt: v.number(), updatedAt: v.number(),
   }).index('by_story_key', ['storyKey']).index('by_slug', ['slug']).index('by_state_and_rank', ['state', 'rank']),
   storyBuilds: defineTable({
+    publicationMappings: v.optional(v.array(publicationMapping)),
     notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))),
     retryCount: v.optional(v.number()),
     importId: v.id('storyImports'), storyId: v.id('stories'),

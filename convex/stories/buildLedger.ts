@@ -1,15 +1,15 @@
 import { v } from 'convex/values'
 import { internal } from '../_generated/api'
-import type { Doc } from '../_generated/dataModel'
 import { internalMutation, internalQuery, mutation, query } from '../_generated/server'
 import { requireOwner } from '../auth/authorization'
 import { issueWorkflowManager } from '../pipeline/workflowManager'
 import schema from '../schema'
 import { hashStoryValue, canonicalStoryJson } from './hashing'
 import { parseStoryManifest, LAUNCH_STORIES } from './manifest'
-import { sourceBinding, storyDraft, storyReview, storyMedia, checkDraft, checkReview, MAX_STORY_BUILD_RETRIES } from './contracts'
+import { publicationMapping, sourceBinding, storyDraft, storyReview, storyMedia, checkDraft, checkReview, MAX_STORY_BUILD_RETRIES } from './contracts'
 import { evidenceHash, proposedSpans, resolveSources } from './evidence'
 import { retainedDraft, checkRetainedDraft } from './retainedDraft'
+import { resolvePublicationReferences } from './publicationReferences'
 import { aiRoutes, modelRoles } from '../ai/types'
 
 export const prepare = query({
@@ -26,7 +26,7 @@ export const prepare = query({
 })
 
 export const begin = internalMutation({
-  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), retainedDraft: v.optional(retainedDraft), media: v.union(v.null(), storyMedia), notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
+  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), retainedDraft: v.optional(retainedDraft), publicationMappings: v.optional(v.array(publicationMapping)), media: v.union(v.null(), storyMedia), notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
   returns: v.id('storyBuilds'),
   handler: async (ctx, args) => {
     const owner = await requireOwner(ctx)
@@ -36,6 +36,7 @@ export const begin = internalMutation({
     const sources = await resolveSources(ctx, manifest, args.bindings)
     const spans = proposedSpans(manifest, sources)
     if (args.retainedDraft) await checkRetainedDraft(args.retainedDraft, manifest.story.storyKey, imported.bundleHash, spans)
+    const relatedPublications = await resolvePublicationReferences(ctx, sources, args.publicationMappings ?? [])
     const media = args.media
     if (media && media.captionEvidenceKeys.some(key => !spans.some(span => span.key === key))) throw new Error('Image caption cites unknown evidence')
     let story = await ctx.db.query('stories').withIndex('by_story_key', q => q.eq('storyKey', manifest.story.storyKey)).unique()
@@ -45,7 +46,7 @@ export const begin = internalMutation({
     }
     const mediaIdentity = media ? { ...media, storageId: undefined } : null
     const notificationIntent = args.notificationIntent ?? (story.currentVersionId ? 'update' : 'baseline')
-    const inputHash = await hashStoryValue({ contract: 'story-build-2', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation, notificationIntent, retainedDraftHash: args.retainedDraft?.packet.draftHash })
+    const inputHash = await hashStoryValue({ contract: 'story-build-2', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation, notificationIntent, retainedDraftHash: args.retainedDraft?.packet.draftHash, publicationMappings: args.publicationMappings?.length ? args.publicationMappings : undefined })
     const existing = await ctx.db.query('storyBuilds').withIndex('by_input_hash', q => q.eq('inputHash', inputHash)).unique()
     if (existing) return existing._id
     // Replaying a historical accepted bundle returns its receipt, never a new
@@ -54,20 +55,9 @@ export const begin = internalMutation({
     const priorBuilds = await ctx.db.query('storyBuilds').withIndex('by_import_id', q => q.eq('importId', imported._id)).take(101)
     if (priorBuilds.length > 100) throw new Error('Import build history exceeds the replay bound')
     const publishedReplay = priorBuilds.find(build => build.state === 'published' && build.versionId && canonicalStoryJson(build.media ? { ...build.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity))
-    if (publishedReplay) return publishedReplay._id
-    const relatedPublications: Doc<'storyBuilds'>['relatedPublications'] = []
-    for (const source of sources) {
-      for (const hint of source.source.existingPublicationReferences) {
-        if (hint.kind !== 'decision') continue
-        const record = await ctx.db.query('decisionRecords').withIndex('by_record_key', q => q.eq('recordKey', hint.stableKey)).unique()
-        const publication = record?.currentPublishedVersionId ? await ctx.db.get(record.currentPublishedVersionId) : null
-        if (!record || !publication || publication.payloadHash !== hint.versionHash || publication.snapshotId !== source.snapshot._id || publication.mode === 'withheld') throw new Error('Accepted publication hint does not resolve to current evidence')
-        if (!relatedPublications.some(item => item.recordId === record._id)) relatedPublications.push({ recordId: record._id, publicationVersionId: publication._id, payloadHash: publication.payloadHash })
-      }
-    }
-    if (relatedPublications.length > 24) throw new Error('Too many related records')
+    if (publishedReplay && canonicalStoryJson(publishedReplay.relatedPublications) === canonicalStoryJson(relatedPublications)) return publishedReplay._id
     const runId = await ctx.db.insert('pipelineRuns', { registryId: sources[0].snapshot.registryId, trigger: 'manual_story_build', state: 'queued', processorVersion: 'story-v1', suppressNotifications: true, startedAt: Date.now() })
-    const buildId = await ctx.db.insert('storyBuilds', { importId: imported._id, storyId: story._id, expectedGeneration: story.generation, inputHash, sourceBindings: args.bindings, spans, relatedPublications, media,
+    const buildId = await ctx.db.insert('storyBuilds', { importId: imported._id, storyId: story._id, expectedGeneration: story.generation, inputHash, publicationMappings: args.publicationMappings, sourceBindings: args.bindings, spans, relatedPublications, media,
       ...(args.retainedDraft ? { draft: args.retainedDraft.packet.draft, draftHash: args.retainedDraft.packet.draftHash, draftModel: args.retainedDraft.packet.draftModel, retainedDraftReceipt: { packetJson: canonicalStoryJson(args.retainedDraft.packet), signature: args.retainedDraft.signature } } : {}),
       state: args.retainedDraft ? 'drafted' : 'queued', notificationIntent, runId, startedBy: owner._id, createdAt: Date.now() })
     const workflowId = await issueWorkflowManager.start(ctx, internal.stories.workflow.buildStory, { buildId })
@@ -175,5 +165,27 @@ export const recordAttempt = internalMutation({
       promptTokens: args.promptTokens, completionTokens: args.completionTokens, requestId: args.requestId,
       errorClass: args.errorClass, errorDetail: args.errorDetail?.slice(0, 500), createdAt: Date.now() })
     return null
+  },
+})
+
+// Owner review selects an accepted target record from the same verified source.
+// Returning its actual hash makes a later publication change fail at build time.
+export const previewPublicationMapping = query({
+  args: { importId: v.id('storyImports'), bindings: v.array(sourceBinding), sourceKey: v.string(), originRecordKey: v.string(), targetRecordKey: v.string() },
+  returns: v.object({ mapping: publicationMapping, title: v.string(), sourceRecordId: v.string(), officialUrl: v.string() }),
+  handler: async (ctx, args) => {
+    await requireOwner(ctx)
+    const imported = await ctx.db.get(args.importId)
+    if (!imported) throw new Error('Unknown import')
+    const sources = await resolveSources(ctx, parseStoryManifest(imported.manifestJson), args.bindings)
+    const record = await ctx.db.query('decisionRecords').withIndex('by_record_key', q => q.eq('recordKey', args.targetRecordKey)).unique()
+    const publication = record?.currentPublishedVersionId ? await ctx.db.get(record.currentPublishedVersionId) : null
+    if (!record || !publication?.payload) throw new Error('Target record is not published')
+    const mapping = { sourceKey: args.sourceKey, originRecordKey: args.originRecordKey, targetRecordKey: args.targetRecordKey, targetPayloadHash: publication.payloadHash }
+    // Validate this source alone so other mappings can be reviewed separately.
+    const source = sources.find(item => item.source.sourceKey === args.sourceKey)
+    if (!source) throw new Error('Mapping is outside the story sources')
+    await resolvePublicationReferences(ctx, [{ ...source, source: { ...source.source, existingPublicationReferences: source.source.existingPublicationReferences.filter(hint => hint.stableKey === args.originRecordKey) } }], [mapping])
+    return { mapping, title: publication.payload.title, sourceRecordId: record.sourceRecordId, officialUrl: source.snapshot.canonicalUrl }
   },
 })
