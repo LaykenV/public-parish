@@ -61,6 +61,18 @@ async function setup() {
   return { t, owner: t.withIdentity({ subject: ids.ownerId }), ...ids }
 }
 
+test('controlled roundup refuses unauthenticated callers, production, and an unverified recipient', async () => {
+  const { t, owner } = await setup()
+  vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')
+  vi.stubEnv('AGENTMAIL_UPDATES_INBOX_ID', 'public-parish-development@agentmail.to')
+  vi.stubEnv('AGENTMAIL_REPORTS_INBOX_ID', 'public-parish-reports@agentmail.to')
+  await expect(t.mutation(internal.operations.developmentProof.collectControlledStoryRoundup, {})).rejects.toThrow()
+  await expect(owner.mutation(internal.operations.developmentProof.collectControlledStoryRoundup, {})).rejects.toThrow('not verified')
+  vi.stubEnv('CONVEX_SITE_URL', 'https://befitting-flamingo-587.convex.site')
+  await expect(owner.mutation(internal.operations.developmentProof.collectControlledStoryRoundup, {})).rejects.toThrow('unavailable')
+  expect(await t.run(ctx => ctx.db.query('roundupWindows').collect())).toHaveLength(0)
+})
+
 test('accepted artifact transfer refuses other owners and changed bytes, then replays without publication or mail', async () => {
   const { t, owner, args, buildId, snapshotId } = await setup()
   vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')

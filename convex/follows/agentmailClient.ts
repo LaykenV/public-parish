@@ -19,7 +19,7 @@ import { claimDeliveryChanges, updateChangeKeys, validUpdateReference } from './
 import type { UpdateReference } from './updateEvents'
 import { currentStoryUpdate } from '../stories/updates'
 import { acceptedStorySpans } from '../stories/evidence'
-import { checkedRecipient } from './developmentRouting'
+import { checkedRecipient, labelDevelopmentStoryMail } from './developmentRouting'
 
 export const agentmail: AgentMail = new AgentMail(components.agentmail, {
   webhookSecret: env.AGENTMAIL_WEBHOOK_SECRET ?? '',
@@ -753,10 +753,11 @@ async function projectWeeklyEmail(
     )
   }
   lines.push(`Manage alerts: ${managementUrl}`)
-  return {
+  const message = {
     subject: `${items.length} ${items.length === 1 ? 'update' : 'updates'} in your Public Parish roundup`,
     text: lines.join('\n'),
   }
+  return entries.some(entry => entry.storyUpdateId) ? labelDevelopmentStoryMail(message) : message
 }
 
 async function suppressDelivery(
@@ -784,7 +785,7 @@ async function projectImmediateEmail(
     const lines = ['An approved story has new evidence.', '', current.version.payload.title.text, '', current.version.payload.summary.text, '', 'Official sources', ...new Set(acceptedStorySpans(current.version).map(span => span.officialUrl)), '', `View in Public Parish: ${appUrl(`/stories/${current.story.slug}`)}`]
     if (emailRepliesAvailable()) lines.push('Reply with a question about this story. Answers use its current accepted evidence.')
     lines.push(`Manage alerts: ${managementUrl}`)
-    return { subject: `Story update: ${current.version.payload.title.text}`, text: lines.join('\n') }
+    return labelDevelopmentStoryMail({ subject: `Story update: ${current.version.payload.title.text}`, text: lines.join('\n') })
   }
   const change = reference.materialChangeId ? await ctx.db.get(reference.materialChangeId) : null
   const version = change

@@ -15,3 +15,10 @@ export function checkedRecipient(recipient: string): string {
   }
   return recipient
 }
+
+export function labelDevelopmentStoryMail(message: { subject: string; text: string }) {
+  return isStoryDevelopment() ? {
+    subject: `[Development verification] ${message.subject}`,
+    text: `Controlled development verification using accepted official records. Historical evidence progressions are test updates, not new government actions.\n\n${message.text}`,
+  } : message
+}
