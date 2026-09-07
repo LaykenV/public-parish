@@ -1503,7 +1503,8 @@ button.pp-area-row:hover {
   color: var(--foreground);
 }
 
-.pp-area-row[data-status='validating'] .pp-area-status {
+.pp-area-row[data-status='validating'] .pp-area-status,
+.pp-area-row[data-status='limited'] .pp-area-status {
   color: var(--warning-foreground);
 }
 

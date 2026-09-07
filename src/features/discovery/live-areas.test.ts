@@ -23,3 +23,11 @@ describe('live coverage areas', () => {
     ).toBe(true)
   })
 })
+
+
+it('keeps published history selectable without claiming full coverage', () => {
+  const area = toAreaRecords([{ slug: 'lafayette-parish', status: 'limited' }])[0]
+  expect(area.status).toBe('limited')
+  expect(area.note).toContain('newer decisions may be missing')
+  expect(area.note).not.toContain('Every launch body')
+})

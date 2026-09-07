@@ -110,7 +110,7 @@ function AreaSelectorDialog({
               <button
                 aria-pressed={selected}
                 className="pp-area-row"
-                data-status="available"
+                data-status={place.status}
                 data-selected={selected || undefined}
                 onClick={() => {
                   setArea(place.slug)
@@ -121,7 +121,7 @@ function AreaSelectorDialog({
               >
                 <span className="pp-area-name">{place.name}</span>
                 <span className="pp-area-status">
-                  <CheckCircle2Icon aria-hidden="true" />
+                  {place.status === 'limited' ? <Clock3Icon aria-hidden="true" /> : <CheckCircle2Icon aria-hidden="true" />}
                   {selected ? 'Watching' : 'Records available'}
                 </span>
                 {place.note ? (

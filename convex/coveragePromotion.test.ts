@@ -796,3 +796,25 @@ test('coverage keeps verified sample receipts after 200 newer runs and records w
   await t.run(ctx => ctx.db.patch(proof.runIds[0].sampleId, { snapshotId: proof.runIds[1].snapshotId }))
   expect((await readEvidence()).pipelineRuns.some(run => run._id === proof.runIds[0].pipelineRunId)).toBe(false)
 })
+
+
+test.each([true, false])('degraded parish recovery requires every launch body, complete=%s', async complete => {
+  const t = convexTest(schema, modules)
+  const owner = await signInOwner(t)
+  const seeded = await seedReadyProposal(t, true)
+  await t.run(async ctx => {
+    await ctx.db.patch(seeded.jurisdictionId, { publicStatus: 'degraded' })
+    const roots = listRootManifests().filter(root => root.jurisdictionSlug === 'lafayette-parish')
+    for (const [index, root] of roots.entries()) {
+      if (!complete && index === 0) continue
+      await ctx.db.insert('governmentBodies', {
+        jurisdictionId: seeded.jurisdictionId, name: root.bodyName, slug: root.bodyKey,
+        bodyType: 'other', publicStatus: 'supported',
+      })
+    }
+  })
+  await owner.mutation(api.coverage.promotion.confirmPromotion, { proposalId: seeded.proposalId })
+  await t.run(async ctx => {
+    expect((await ctx.db.get(seeded.jurisdictionId))?.publicStatus).toBe(complete ? 'supported' : 'degraded')
+  })
+})

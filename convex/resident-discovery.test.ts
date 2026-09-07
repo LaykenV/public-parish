@@ -238,6 +238,28 @@ test('selected parish decisions survive a newer publication flood elsewhere', as
   expect(selected).toEqual(local)
 })
 
+test.each(['degraded', 'paused', 'validating'] as const)('published history remains selectable while coverage is %s', async status => {
+  const t = convexTest(schema, modules)
+  const recordId = await t.run(async ctx => {
+    const jurisdictionId = await ctx.db.insert('jurisdictions', {
+      name: 'Lafayette Parish', slug: 'lafayette-parish', type: 'parish', state: 'LA', publicStatus: status,
+    })
+    const governmentBodyId = await ctx.db.insert('governmentBodies', {
+      jurisdictionId, name: 'Lafayette City Council', slug: 'lafayette-city-council',
+      bodyType: 'city_council', publicStatus: status,
+    })
+    const registryId = await ctx.db.insert('sourceRegistries', {
+      governmentBodyId, officialDomains: ['lafayettela.gov'], seedUrls: [], sourceKinds: ['agenda'],
+      expectedCadence: { kind: 'meeting_cycle' }, discoveryMode: 'dynamic', status,
+    })
+    await seedPublication({ ctx, registryId, governmentBodyId, sourceRecordId: 'withheld', mode: 'withheld', updatedAt: 20 })
+    return (await seedPublication({ ctx, registryId, governmentBodyId, sourceRecordId: 'accepted', mode: 'limited', updatedAt: 10 })).recordId
+  })
+  expect((await t.query(api.resident.discovery.listCoverageAreas, {}))[0].status).toBe('limited')
+  await t.run(async ctx => { await ctx.db.patch(recordId, { currentPublishedVersionId: undefined }) })
+  expect((await t.query(api.resident.discovery.listCoverageAreas, {}))[0].status).toBe('validating')
+})
+
 async function seedPublication({
   ctx,
   registryId,

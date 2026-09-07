@@ -1573,3 +1573,8 @@ Repairing the empty parish homepage by selecting government bodies before
 applying bounded issue and decision limits. Regression coverage includes a
 newer publication flood in another parish. GitHub Actions will run automated
 checks and desktop/mobile browser checks. No paid source processing is restarted.
+
+Repairing access to already-published evidence during coverage interruptions.
+The selector keeps such parishes selectable with a limitation notice, while
+parish recovery no longer skips degraded status. Explicit pauses remain.
+Automated validation is delegated to GitHub Actions; source processing stays off.

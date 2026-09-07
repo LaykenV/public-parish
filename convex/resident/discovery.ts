@@ -31,7 +31,7 @@ type ResidentDecision = typeof residentDecision.type
 
 const coverageArea = v.object({
   slug: areaSlug,
-  status: v.union(v.literal('available'), v.literal('validating')),
+  status: v.union(v.literal('available'), v.literal('limited'), v.literal('validating')),
 })
 
 type CoverageArea = typeof coverageArea.type
@@ -46,14 +46,25 @@ export const listCoverageAreas = query({
           .query('jurisdictions')
           .withIndex('by_slug', (index) => index.eq('slug', slug))
           .take(2)
-        return {
-          slug,
-          status:
-            jurisdictions.length === 1 &&
-            jurisdictions[0]?.publicStatus === 'supported'
-              ? ('available' as const)
-              : ('validating' as const),
+        if (jurisdictions.length !== 1) return { slug, status: 'validating' as const }
+        const jurisdiction = jurisdictions[0]
+        if (jurisdiction.publicStatus === 'supported') return { slug, status: 'available' as const }
+        const bodies = await ctx.db.query('governmentBodies')
+          .withIndex('by_jurisdiction_and_slug', q => q.eq('jurisdictionId', jurisdiction._id)).take(25)
+        for (const body of bodies) {
+          for (const mode of ['full', 'limited'] as const) {
+            const record = await ctx.db.query('decisionRecords')
+              .withIndex('by_government_body_and_current_mode_and_updated_at', q =>
+                q.eq('governmentBodyId', body._id).eq('currentMode', mode))
+              .order('desc').first()
+            const version = record?.currentPublishedVersionId
+              ? await ctx.db.get(record.currentPublishedVersionId) : null
+            if (version?.recordId === record?._id && version?.mode === mode && version.payload?.kind === mode) {
+              return { slug, status: 'limited' as const }
+            }
+          }
         }
+        return { slug, status: 'validating' as const }
       }),
     )
   },

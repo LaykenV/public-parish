@@ -1,7 +1,7 @@
 export type AreaSlug =
   'lafayette-parish' | 'east-baton-rouge-parish' | 'rapides-parish'
 
-export type AreaStatus = 'available' | 'validating'
+export type AreaStatus = 'available' | 'limited' | 'validating'
 
 export type AreaRecord = {
   name: string

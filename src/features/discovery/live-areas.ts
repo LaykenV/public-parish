@@ -27,7 +27,9 @@ export function toAreaRecords(
       note:
         status === 'available'
           ? 'Every launch body in this parish passed the publication and coverage gates.'
-          : 'This area opens after every launch body passes the same evidence gate.',
+          : status === 'limited'
+            ? 'Published records are available. Coverage is incomplete or updates are paused; newer decisions may be missing.'
+            : 'This area opens after every launch body passes the same evidence gate.',
     }
   })
 }
