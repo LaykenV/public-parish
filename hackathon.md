@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-07T17:49:05Z
+- **Last updated:** 2026-09-07T19:57:59Z
 
 ## Log
 
@@ -1668,3 +1668,13 @@ replay reuse its receipt. Regression tests cover private access, malformed
 references and replay. Automated validation is deferred to PR CI. Story drafting,
 publication and the resident story loop remain unfinished; no deployment or
 provider round trip is claimed.
+
+### 2026-09-07 - 78ab15d
+
+Implemented owner story publication, resident routes, accepted-evidence Ask and
+story follows through existing alerts and replies. PR CI passed, and the exact
+backend and CI-built frontend run on personal development. Staged all three
+frozen research bundles and reused the existing Boyce snapshots. Eight missing
+official documents were retrieved with one bounded rate-limit retry. Corrected
+manifests, real drafting, owner approvals and mail round trips remain pending.
+No story publication, production deployment or resident delivery is claimed.

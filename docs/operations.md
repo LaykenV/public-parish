@@ -89,6 +89,27 @@ policy or create story data.
 
 ## Source stop, resume and diagnosis
 
+For the story release, Agent 1 owns all writes to personal development
+`woozy-wren-227`. The isolated implementation checkout does not isolate that
+deployment. Download the exact green PR's `development-frontend-<SHA>` artifact
+for frontend sync. `convex dev --once --typecheck disable --codegen disable`
+performs the authorized backend sync without local automated validation. Upload
+the prebuilt artifact with static hosting's `upload --dist <artifact> --spa`.
+Confirm the development target before each command. Do not use `deploy`, `--prod`
+or `--build` for this development path.
+
+Story verification uses a dedicated development AgentMail sender and a separate
+owned recipient. The development guard rejects other recipients. A mailbox
+existing or an outbound provider ID is not a completed round trip. Record the
+development webhook, receipt and grounded reply separately. Do not modify a
+production webhook to make a development check pass. Callback setup remains an
+open gate at the September 7 story checkpoint.
+
+Saved artifact hash differences require a new manifest version with corrected
+exact spans. Preserve the frozen predecessor. Repeating retrieval to force a
+hash match is not a repair. A provider failure stops the batch; inspect its
+receipt and reserve a bounded retry only when the cause is understood.
+
 For a global source stop, set `SOURCE_MONITORING_ENABLED=false` on the identified
 deployment. For a single source, use Pause checks in `/operations/coverage`.
 Generation checks fence subsequent paid steps and publication. Already issued

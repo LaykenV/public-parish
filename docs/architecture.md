@@ -312,6 +312,26 @@ publication guarantees. Do not fabricate a decision merely to satisfy a table.
 
 ### Import and publication
 
+The development implementation lives in `convex/stories`. `storyImports` stores
+private research under the frozen 1.0.0 contract. `storyBuilds` binds sources,
+draft, review, notification intent and generation. `storyVersions` stores the
+immutable approved statements and exact shared snapshot spans. Reviewed story
+facts can reference multiple official bodies without inventing a decision or
+changing the single-body issue-linking contract.
+
+Owner operations are at `/operations/stories`. Public story, Ask, search and
+share queries resolve the current accepted version and recheck source retention
+and revisions. Ask includes only spans used by approved statements. The corpus
+deduplicates shared exact spans against atomic records and other stories.
+
+`storyUpdateEvents` identifies substantive approved revisions. Existing fanout,
+delivery, roundup and reply records carry a typed story reference. A change-claim
+ledger deduplicates overlapping local and story follows by owner and cadence.
+Reviewed cosmetic revisions retain a pending material event; a later material
+revision or suppressed historical baseline invalidates the older event. Replies
+recheck accepted citation IDs, inbox, sender, subscription and thread before send.
+These paths have CI coverage; launch model and email round trips remain pending.
+
 The owner supplies a versioned JSON manifest referencing exact approved sources,
 saved artifacts or existing accepted records, proposed grouping, questions and
 media provenance. It contains no resident data or secrets. Computer use can
