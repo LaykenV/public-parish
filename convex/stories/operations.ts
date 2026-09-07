@@ -1,7 +1,7 @@
 import { indexStory } from './search'
 import { recordStoryUpdate } from './updates'
 import { v } from 'convex/values'
-import { paginationOptsValidator } from 'convex/server'
+import { paginationOptsValidator, paginationResultValidator } from 'convex/server'
 import { mutation, query } from '../_generated/server'
 import { requireOwner } from '../auth/authorization'
 import schema from '../schema'
@@ -102,7 +102,7 @@ export const uploadImage = mutation({
 
 export const historyPage = query({
   args: { storyId: v.id('stories'), paginationOpts: paginationOptsValidator },
-  returns: v.object({ page: v.array(schema.doc('storyVersions')), isDone: v.boolean(), continueCursor: v.string() }),
+  returns: paginationResultValidator(schema.doc('storyVersions')),
   handler: async (ctx, args) => {
     await requireOwner(ctx)
     return ctx.db.query('storyVersions').withIndex('by_story_id_and_version', q => q.eq('storyId', args.storyId)).order('desc').paginate({ ...args.paginationOpts, numItems: Math.max(1, Math.min(20, args.paginationOpts.numItems)) })
