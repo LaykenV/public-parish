@@ -1423,7 +1423,10 @@ export default defineSchema({
   })
     .index('by_issue_key', ['issueKey'])
     .index('by_slug', ['slug'])
-    .index('by_current_mode_and_updated_at', ['currentMode', 'updatedAt']),
+    .index('by_current_mode_and_updated_at', ['currentMode', 'updatedAt'])
+    .index('by_government_body_and_current_mode_and_updated_at', [
+      'governmentBodyId', 'currentMode', 'updatedAt',
+    ]),
 
   issueVersions: defineTable({
     issueId: v.id('issues'),

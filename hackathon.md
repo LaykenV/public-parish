@@ -1565,3 +1565,11 @@ The final promotion and selector availability have live public-query proof,
 not a final manual browser click. The source-operations report records the
 case-level results, dates, budgets, and remaining work. No resident benefit or
 hackathon submission is claimed.
+
+
+### 2026-09-06 - working tree
+
+Repairing the empty parish homepage by selecting government bodies before
+applying bounded issue and decision limits. Regression coverage includes a
+newer publication flood in another parish. GitHub Actions will run automated
+checks and desktop/mobile browser checks. No paid source processing is restarted.

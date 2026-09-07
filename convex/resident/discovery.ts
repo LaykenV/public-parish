@@ -5,6 +5,7 @@ import { query } from '../_generated/server'
 import { lifecycleStates } from '../extraction/contractV1'
 import { AREA_SLUGS, areaSlug } from '../follows/contracts'
 import { sourceKindUnion } from '../pipeline/state'
+import { selectedBodyIds } from './areas'
 
 const acceptedMode = v.union(v.literal('full'), v.literal('limited'))
 
@@ -59,26 +60,21 @@ export const listCoverageAreas = query({
 })
 
 export const listPublishedDecisions = query({
-  args: {},
+  args: { areas: v.optional(v.array(areaSlug)) },
   returns: v.array(residentDecision),
-  handler: async (ctx): Promise<ResidentDecision[]> => {
-    const [fullRecords, limitedRecords] = await Promise.all([
-      ctx.db
-        .query('decisionRecords')
-        .withIndex('by_current_mode_and_updated_at', (q) =>
-          q.eq('currentMode', 'full'),
-        )
-        .order('desc')
-        .take(50),
-      ctx.db
-        .query('decisionRecords')
-        .withIndex('by_current_mode_and_updated_at', (q) =>
-          q.eq('currentMode', 'limited'),
-        )
-        .order('desc')
-        .take(50),
-    ])
-    const records = [...fullRecords, ...limitedRecords]
+  handler: async (ctx, args): Promise<ResidentDecision[]> => {
+    const bodyIds = await selectedBodyIds(ctx, args.areas)
+    const groups = await Promise.all(
+      (['full', 'limited'] as const).flatMap(mode => bodyIds === null
+        ? [ctx.db.query('decisionRecords')
+            .withIndex('by_current_mode_and_updated_at', q => q.eq('currentMode', mode))
+            .order('desc').take(50)]
+        : bodyIds.map(bodyId => ctx.db.query('decisionRecords')
+            .withIndex('by_government_body_and_current_mode_and_updated_at', q =>
+              q.eq('governmentBodyId', bodyId).eq('currentMode', mode))
+            .order('desc').take(50))),
+    )
+    const records = groups.flat()
       .sort((left, right) => right.updatedAt - left.updatedAt)
       .slice(0, 50)
 

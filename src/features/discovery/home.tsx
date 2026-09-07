@@ -36,8 +36,6 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
   const fixturesEnabled = activeScenario !== undefined
   const auth = useConvexAuth()
   const savedSetup = useSavedSetup(!fixturesEnabled && auth.isAuthenticated)
-  const publishedIssues = usePublishedIssues(!fixturesEnabled)
-  const publishedDecisions = usePublishedDecisions(!fixturesEnabled)
   const watching: AreaSlug[] =
     activeScenario === 'signed-in'
       ? ['lafayette-parish', 'east-baton-rouge-parish']
@@ -46,6 +44,9 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
         : area
           ? [area]
           : []
+
+  const publishedIssues = usePublishedIssues(!fixturesEnabled, watching)
+  const publishedDecisions = usePublishedDecisions(!fixturesEnabled, watching)
 
   const [refreshed, setRefreshed] = useState(false)
   const [refreshAnnouncement, announceRefresh] = useRepeatedAnnouncement(
