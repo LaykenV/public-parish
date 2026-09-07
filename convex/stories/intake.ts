@@ -10,7 +10,7 @@ import { isRegisteredSourceUrl } from '../sources/domains'
 
 // These are official publishers for the three approved launch stories. Adding
 // a publisher requires code review. A research manifest cannot register a host.
-const PUBLISHERS: Record<string, { name: string; root: string; domains: string[]; jurisdiction: string }> = {
+const PUBLISHERS: Partial<Record<string, { name: string; root: string; domains: string[]; jurisdiction: string }>> = {
   'louisiana-economic-development': { name: 'Louisiana Economic Development', root: 'https://www.opportunitylouisiana.gov/', domains: ['opportunitylouisiana.gov'], jurisdiction: 'louisiana' },
   'louisiana-public-service-commission': { name: 'Louisiana Public Service Commission', root: 'https://lpsc.louisiana.gov/', domains: ['lpsc.louisiana.gov', 'lpscpubvalence.lpsc.louisiana.gov'], jurisdiction: 'louisiana' },
   'louisiana-legislature': { name: 'Louisiana Legislature', root: 'https://www.legis.la.gov/', domains: ['legis.la.gov'], jurisdiction: 'louisiana' },
