@@ -472,3 +472,27 @@ test('interrupted story matching resumes only stale pages and retains its cursor
     })
   } finally { vi.useRealTimers() }
 })
+
+
+test('replaying an older accepted import preserves the latest story without model work', async () => {
+  const fixture = await setup()
+  await fixture.owner.mutation(api.stories.operations.approve, fixture.args)
+  const latest = await revision(fixture, 'cosmetic', 'baseline')
+  const replayArgs = await fixture.t.run(async ctx => {
+    const original = (await ctx.db.get(fixture.buildId))!
+    const imported = (await ctx.db.get(original.importId))!
+    const { _id: _importId, _creationTime: _created, ...fields } = imported
+    const laterImportId = await ctx.db.insert('storyImports', { ...fields, bundleVersion: 2, bundleHash: 'f'.repeat(64) })
+    await ctx.db.patch(latest.args.buildId, { importId: laterImportId })
+    return { importId: original.importId, bindings: original.sourceBindings, media: original.media, notificationIntent: 'baseline' as const }
+  })
+  const before = await fixture.t.run(async ctx => ({ builds: (await ctx.db.query('storyBuilds').collect()).length, runs: (await ctx.db.query('pipelineRuns').collect()).length }))
+  expect(await fixture.owner.mutation(internal.stories.buildLedger.begin, replayArgs)).toBe(fixture.buildId)
+  await fixture.t.run(async ctx => {
+    expect((await ctx.db.get(fixture.storyId))?.currentVersionId).toBe(latest.versionId)
+    expect(await ctx.db.query('storyBuilds').collect()).toHaveLength(before.builds)
+    expect(await ctx.db.query('pipelineRuns').collect()).toHaveLength(before.runs)
+    expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0)
+    expect(await ctx.db.query('notificationDeliveries').collect()).toHaveLength(0)
+  })
+})

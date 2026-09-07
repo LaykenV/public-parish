@@ -46,11 +46,13 @@ export const begin = internalMutation({
     const inputHash = await hashStoryValue({ contract: 'story-build-2', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation, notificationIntent })
     const existing = await ctx.db.query('storyBuilds').withIndex('by_input_hash', q => q.eq('inputHash', inputHash)).unique()
     if (existing) return existing._id
-    // An accepted identical import replays even after its publication advanced
-    // the generation. Never repeat model work because publication moved a pointer.
-    const currentVersion = story.currentVersionId ? await ctx.db.get(story.currentVersionId) : null
-    const publishedReplay = currentVersion ? await ctx.db.get(currentVersion.buildId) : null
-    if (publishedReplay?.importId === imported._id && canonicalStoryJson(publishedReplay.media ? { ...publishedReplay.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity)) return publishedReplay._id
+    // Replaying a historical accepted bundle returns its receipt, never a new
+    // candidate or a change to the current publication. New review requires a
+    // new versioned bundle. Bound alternate image attempts for one import.
+    const priorBuilds = await ctx.db.query('storyBuilds').withIndex('by_import_id', q => q.eq('importId', imported._id)).take(101)
+    if (priorBuilds.length > 100) throw new Error('Import build history exceeds the replay bound')
+    const publishedReplay = priorBuilds.find(build => build.versionId && canonicalStoryJson(build.media ? { ...build.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity))
+    if (publishedReplay) return publishedReplay._id
     const relatedPublications: Doc<'storyBuilds'>['relatedPublications'] = []
     for (const source of sources) {
       for (const hint of source.source.existingPublicationReferences) {

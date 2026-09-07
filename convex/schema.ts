@@ -135,7 +135,7 @@ export default defineSchema({
     runId: v.id('pipelineRuns'), workflowId: v.optional(v.string()),
     error: v.optional(v.string()), startedBy: v.id('users'), createdAt: v.number(),
     versionId: v.optional(v.id('storyVersions')),
-  }).index('by_input_hash', ['inputHash']).index('by_story_id_and_created_at', ['storyId', 'createdAt']),
+  }).index('by_input_hash', ['inputHash']).index('by_import_id', ['importId']).index('by_story_id_and_created_at', ['storyId', 'createdAt']),
   storySourceRetrievals: defineTable({
     importId: v.id('storyImports'), sourceKey: v.string(), attempts: v.number(),
     state: v.union(v.literal('running'), v.literal('complete'), v.literal('failed')),
