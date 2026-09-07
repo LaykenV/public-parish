@@ -75,7 +75,7 @@ export const commitSource = internalMutation({
   handler: async (ctx, args) => {
     const owner = await requireOwner(ctx)
     const packet = args.packet
-    checkArtifactPacket(packet, env.CONVEX_SITE_URL ?? '', Date.now())
+    checkArtifactPacket(packet, env.CONVEX_SITE_URL, Date.now())
     await verifyArtifactPacket(packet, args.signature, env.STORY_ARTIFACT_TRANSFER_KEY)
     const imported = await ctx.db.get(args.importId)
     if (!imported || imported.bundleHash !== args.bundleHash || imported.storyKey !== packet.storyKey) throw new Error('Transfer import inputs changed')
@@ -115,7 +115,7 @@ export const importSource = action({
   handler: async (ctx, args): Promise<{ snapshotId: Id<'sourceSnapshots'>; reused: boolean }> => {
     // Owner authorization precedes reading caller-selected stored files.
     await ctx.runQuery(internal.stories.transfer.requireTransferOwner, {})
-    checkArtifactPacket(args.packet, env.CONVEX_SITE_URL ?? '', Date.now())
+    checkArtifactPacket(args.packet, env.CONVEX_SITE_URL, Date.now())
     await verifyArtifactPacket(args.packet, args.signature, env.STORY_ARTIFACT_TRANSFER_KEY)
     await checkedBytes(ctx, args.rawStorageId, args.packet.rawHash, args.packet.rawBytes)
     await checkedBytes(ctx, args.normalizedStorageId, args.packet.normalizedHash, args.packet.normalizedBytes)
