@@ -123,6 +123,7 @@ export default defineSchema({
     generation: v.number(), createdAt: v.number(), updatedAt: v.number(),
   }).index('by_story_key', ['storyKey']).index('by_slug', ['slug']).index('by_state_and_rank', ['state', 'rank']),
   storyBuilds: defineTable({
+    retryCount: v.optional(v.number()),
     importId: v.id('storyImports'), storyId: v.id('stories'),
     expectedGeneration: v.number(), inputHash: v.string(),
     sourceBindings: v.array(sourceBinding), spans: v.array(storySpan),

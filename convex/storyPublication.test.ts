@@ -1,6 +1,7 @@
 import { hashStoryValue } from './stories/hashing'
 /// <reference types="vite/client" />
 import { convexTest } from 'convex-test'
+import workflowTest from '@convex-dev/workflow/test'
 import { afterEach, expect, test, vi } from 'vitest'
 import example from '../docs/story-manifests/import-contract-v1.example.json'
 import { api } from './_generated/api'
@@ -114,4 +115,23 @@ test('unsupported review produces an immutable withheld version with no public p
     expect((await ctx.db.get(storyId))?.currentVersionId).toBeUndefined()
     expect((await ctx.db.query('storyVersions').first())?.mode).toBe('withheld')
   })
+})
+
+test('owner retry preserves a saved draft and enforces a finite retry count', async () => {
+  vi.useFakeTimers()
+  try {
+    const { t, owner, args, buildId } = await setup()
+    workflowTest.register(t)
+    await t.run(async ctx => { await ctx.db.patch(buildId, { state: 'failed', review: undefined, reviewHash: undefined, reviewModel: undefined }) })
+    await expect(t.mutation(api.stories.buildLedger.retry, { buildId, inputHash: args.inputHash })).rejects.toThrow('Sign in with Google')
+    expect(await owner.mutation(api.stories.buildLedger.retry, { buildId, inputHash: args.inputHash })).toBe(buildId)
+    await t.run(async ctx => {
+      const build = (await ctx.db.get(buildId))!
+      expect(build.draftHash).toBe(args.draftHash)
+      expect(build.retryCount).toBe(1)
+      expect(build.state).toBe('drafted')
+      await ctx.db.patch(buildId, { state: 'failed' })
+    })
+    await expect(owner.mutation(api.stories.buildLedger.retry, { buildId, inputHash: args.inputHash })).rejects.toThrow('allowance exhausted')
+  } finally { vi.useRealTimers() }
 })

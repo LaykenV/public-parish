@@ -36,4 +36,6 @@ test('known gaps cannot produce full publication and must receive review', () =>
 test('a timeline date is part of the reviewed statement', () => {
   const withDate = { ...draft, timeline: [{ date: '2026-01-01', statement: draft.summary }] }
   expect(checkReview(review, withDate, null)).toContain('exactly once')
+  for (const date of ['2026', '2026-09', '2024-02-29']) expect(checkDraft({ ...draft, timeline: [{ date, statement: draft.summary }] }, spans)).toBeNull()
+  for (const date of ['2026-02-29', 'tomorrow', '2026-13', '2026-09-07'.repeat(100)]) expect(checkDraft({ ...draft, timeline: [{ date, statement: draft.summary }] }, spans)).toBe('Invalid timeline date')
 })

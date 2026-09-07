@@ -1,7 +1,7 @@
 import { v } from 'convex/values'
 import { internal } from '../_generated/api'
 import type { Doc } from '../_generated/dataModel'
-import { internalMutation, internalQuery, query } from '../_generated/server'
+import { internalMutation, internalQuery, mutation, query } from '../_generated/server'
 import { requireOwner } from '../auth/authorization'
 import { issueWorkflowManager } from '../pipeline/workflowManager'
 import schema from '../schema'
@@ -47,9 +47,9 @@ export const begin = internalMutation({
     if (existing) return existing._id
     // An accepted identical import replays even after its publication advanced
     // the generation. Never repeat model work because publication moved a pointer.
-    const previousBuilds = await ctx.db.query('storyBuilds').withIndex('by_story_id_and_created_at', q => q.eq('storyId', story._id)).order('desc').take(20)
-    const publishedReplay = previousBuilds.find(build => build.importId === imported._id && build.versionId === story.currentVersionId && canonicalStoryJson(build.media ? { ...build.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity))
-    if (publishedReplay) return publishedReplay._id
+    const currentVersion = story.currentVersionId ? await ctx.db.get(story.currentVersionId) : null
+    const publishedReplay = currentVersion ? await ctx.db.get(currentVersion.buildId) : null
+    if (publishedReplay?.importId === imported._id && canonicalStoryJson(publishedReplay.media ? { ...publishedReplay.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity)) return publishedReplay._id
     const relatedPublications: Doc<'storyBuilds'>['relatedPublications'] = []
     for (const source of sources) {
       for (const hint of source.source.existingPublicationReferences) {
@@ -81,6 +81,26 @@ export const load = internalQuery({
     if (!story || story.generation !== build.expectedGeneration) throw new Error('Story generation changed')
     await resolveSources(ctx, parseStoryManifest(imported.manifestJson), build.sourceBindings)
     return { build, imported }
+  },
+})
+
+export const retry = mutation({
+  args: { buildId: v.id('storyBuilds'), inputHash: v.string() }, returns: v.id('storyBuilds'),
+  handler: async (ctx, args) => {
+    await requireOwner(ctx)
+    const build = await ctx.db.get(args.buildId)
+    if (!build || build.inputHash !== args.inputHash) throw new Error('Retry inputs changed')
+    if (build.state !== 'failed') throw new Error('Only a failed story build can retry')
+    if ((build.retryCount ?? 0) >= 1) throw new Error('Story retry allowance exhausted')
+    const story = await ctx.db.get(build.storyId)
+    const imported = await ctx.db.get(build.importId)
+    if (!story || !imported || build.versionId || story.generation !== build.expectedGeneration) throw new Error('Story retry is stale')
+    await resolveSources(ctx, parseStoryManifest(imported.manifestJson), build.sourceBindings)
+    await ctx.db.patch(build._id, { retryCount: (build.retryCount ?? 0) + 1, state: build.draft ? 'drafted' : 'queued', error: undefined })
+    await ctx.db.patch(build.runId, { state: 'queued', completedAt: undefined })
+    const workflowId = await issueWorkflowManager.start(ctx, internal.stories.workflow.buildStory, { buildId: build._id })
+    await ctx.db.patch(build._id, { workflowId })
+    return build._id
   },
 })
 
@@ -142,7 +162,7 @@ export const recordAttempt = internalMutation({
     const build = await ctx.db.get(args.buildId)
     if (!build) throw new Error('Unknown build')
     await ctx.db.insert('aiCalls', { runId: build.runId, modelRole: args.role, route: args.route, modelId: args.model,
-      promptVersion: 'story-v1', schemaVersion: 'story-v1', attempt: 1, status: args.status, latencyMs: args.latencyMs,
+      promptVersion: 'story-v1', schemaVersion: 'story-v1', attempt: (build.retryCount ?? 0) + 1, status: args.status, latencyMs: args.latencyMs,
       promptTokens: args.promptTokens, completionTokens: args.completionTokens, createdAt: Date.now() })
     return null
   },

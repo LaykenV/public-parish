@@ -69,6 +69,7 @@ export function draftStatements(draft: StoryDraft) {
 }
 
 export function checkDraft(draft: StoryDraft, spans: StorySpan[]): string | null {
+  if (draft.timeline.some(event => event.date !== null && !validTimelineDate(event.date))) return 'Invalid timeline date'
   if (draft.title.text.length > 180 || draft.summary.text.length > 1400 || draft.sections.length > 6 || draft.timeline.length > 12 || draft.limitations.length > 12) return 'Story exceeds content bounds'
   if (draft.sections.some(section => !['What the records establish', 'Government actions', 'Project scope'].includes(section.heading) || section.statements.length > 8)) return 'Invalid section'
   if (draft.limitations.some(text => !text.trim() || text.length > 600)) return 'Invalid limitation'
@@ -80,6 +81,13 @@ export function checkDraft(draft: StoryDraft, spans: StorySpan[]): string | null
       new Set(statement.evidenceKeys).size !== statement.evidenceKeys.length || statement.evidenceKeys.some(key => !keys.has(key))) return `Invalid or unsupported statement ${statement.path}`
   }
   return null
+}
+
+function validTimelineDate(value: string): boolean {
+  if (!/^\d{4}(?:-\d{2}(?:-\d{2})?)?$/.test(value)) return false
+  const day = value.length === 4 ? `${value}-01-01` : value.length === 7 ? `${value}-01` : value
+  const parsed = new Date(`${day}T00:00:00Z`)
+  return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === day
 }
 
 export function checkReview(review: StoryReview, draft: StoryDraft, media: typeof storyMedia.type | null): string | null {
