@@ -152,6 +152,7 @@ export const runExtraction = internalAction({
     }
 
     const options: CompleteStructuredOptions = {
+      ctx,
       request,
       responseValidator: extractionResponseV1,
       contractCheck: checkExtractionContractV1,

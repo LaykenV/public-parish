@@ -1,7 +1,8 @@
-import { GatewayUnavailableError } from '../ai/types'
+import { GatewayUnavailableError, PermanentModelError } from '../ai/types'
 
 // Classify the typed provider error before workflow serialization removes its type.
 export function rethrowMonitoringProviderError(error: unknown): never {
+  if (error instanceof PermanentModelError && error.errorClass === 'ai_spending_limit') throw new Error('monitoring_daily_limit')
   if (error instanceof GatewayUnavailableError && error.errorClass === 'ai_gateway_unavailable') throw new Error('monitoring_ai_gateway_unavailable')
   throw error
 }

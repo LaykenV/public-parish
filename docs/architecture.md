@@ -1185,6 +1185,24 @@ there is no separate AI Gateway tier. The gateway currently exposes
 Outputs. The GPT-5.6 tiers support Chat Completions, Structured Outputs, and
 selectable reasoning effort.
 
+### Expiring AI spending allowances
+
+When `AI_SPENDING_GUARD_ENABLED=true`, source processing and resident Ask have
+separate owner-funded estimated-cost allowances. Every model request reserves
+its full output bound and a conservative input estimate before calling the
+provider. Reported token usage settles the reservation; missing usage retains
+the entire charge. Retries and direct fallback require fresh reservations.
+Ask does not use hidden SDK retries. Its selector and answer have explicit
+output bounds, and no source text is silently truncated to fit an allowance.
+
+Allowances expire and never renew automatically. Reconfiguration changes their
+total ceiling without erasing charges. This ledger uses the role prices below;
+it is not a provider invoice or a limit on Convex hosting, storage, Firecrawl,
+or email charges. Existing retrieval and request-frequency limits remain.
+Production source monitoring stays off until its allowance and admission limits
+have been configured. Development gets its own allowance, if paid testing is
+approved, and cannot spend production's balance.
+
 ### Model roles
 
 Refer to models by role everywhere except this table. This is the only place

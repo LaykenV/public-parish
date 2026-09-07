@@ -569,6 +569,16 @@ export default defineSchema({
     subscriberId: v.id('emailSubscribers'), placeKey: v.string(), placeName: v.string(), launchedSlug: v.optional(v.string()), state: v.union(v.literal('waiting'), v.literal('queued'), v.literal('sent'), v.literal('stopped')), outboundId: v.optional(v.string()), providerStatus: v.optional(v.string()), createdAt: v.number(), updatedAt: v.number(),
   }).index('by_subscriber_and_place', ['subscriberId', 'placeKey']).index('by_subscriber_and_launched_slug', ['subscriberId', 'launchedSlug']).index('by_subscriber', ['subscriberId']).index('by_state', ['state']),
 
+  aiSpendingAllowances: defineTable({
+    scope: v.union(v.literal('sources'), v.literal('ask')),
+    allowanceMicros: v.number(), chargedMicros: v.number(), enabled: v.boolean(),
+    expiresAt: v.number(), updatedAt: v.number(),
+  }).index('by_scope', ['scope']),
+  aiSpendingReservations: defineTable({
+    allowanceId: v.id('aiSpendingAllowances'), reservedMicros: v.number(),
+    chargedMicros: v.optional(v.number()), settledAt: v.optional(v.number()), createdAt: v.number(),
+  }).index('by_created_at', ['createdAt']),
+
   sourceMonitoringBudgets: defineTable({
     name: v.literal('global'), dailyCallLimit: v.number(), updatedAt: v.number(),
   }).index('by_name', ['name']),

@@ -154,9 +154,10 @@ export const resetUsageRollups = internalMutation({
 
 export const directFallbackProbe = internalAction({
   args: {}, returns: v.object({ outcome: v.string(), route: v.string(), model: v.string(), tokens: v.union(v.number(), v.null()) }),
-  handler: async () => {
+  handler: async ctx => {
     requireDevelopment()
     const result = await completeStructuredDirectFallback({
+      ctx,
       request: { role: 'MODEL_FAST', reasoningEffort: 'low', maxCompletionTokens: 200, schemaName: 'development_provider_probe', jsonSchema: { type: 'object', additionalProperties: false, required: ['status'], properties: { status: { type: 'string', enum: ['ready'] } } }, messages: [{ role: 'user', content: 'Return status ready. This checks the development provider route and makes no civic claim.' }] },
       responseValidator: v.object({ status: v.literal('ready') }), contractCheck: () => null,
     })

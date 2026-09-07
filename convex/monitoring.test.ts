@@ -150,13 +150,17 @@ test('changing a daily limit preserves admissions already used in the window', a
 })
 
 
-test('a daily limit cannot erase admissions by dropping below usage', async () => {
+test('a lower daily limit preserves used admissions and blocks further work', async () => {
   const { t, runId, policyId, proposalId } = await monitoringFixture()
   rateLimiterTest.register(t)
   await t.run(ctx => ctx.db.patch(policyId, { dailyCallLimit: 20 }))
   expect(await t.mutation(internal.monitoring.ledger.reserve, { runId, units: 8 })).toBe(true)
   expect(await t.mutation(internal.monitoring.ledger.reserve, { runId, units: 8 })).toBe(true)
-  await expect(t.run(ctx => configurePolicy(ctx, { proposalId, enabled: true, intervalHours: 24, documentsPerRun: 1, targetsPerRun: 1, dailyCallLimit: 10, startsAt: Date.now() - DAY }))).rejects.toThrow('below calls already used')
+  const policy = await t.run(ctx => ctx.db.get(policyId))
+  await t.run(ctx => configurePolicy(ctx, { proposalId, enabled: true, intervalHours: 24, documentsPerRun: 1, targetsPerRun: 1, dailyCallLimit: 10, startsAt: policy!.startsAt }))
+  const rate = new RateLimiter(components.rateLimiter, {})
+  const remaining = await t.run(ctx => rate.getValue(ctx, 'calls', { key: policyId, config: { kind: 'fixed window', rate: 10, period: DAY } }))
+  expect(calculateRateLimit(remaining, remaining.config).value).toBe(-6)
   expect(await t.mutation(internal.monitoring.ledger.reserve, { runId, units: 5 })).toBe(false)
 })
 
@@ -407,7 +411,8 @@ test('only the owner can change shared capacity and usage survives increases and
   expect(await t.mutation(internal.monitoring.ledger.reserve, { runId, units: 1 })).toBe(false)
   expect(await owner.mutation(api.monitoring.ledger.configureGlobalBudget, { dailyCallLimit: 2_000 })).toMatchObject({ used: 10, windowStart: raised.windowStart })
   expect(await t.mutation(internal.monitoring.ledger.reserve, { runId, units: 2 })).toBe(true)
-  await expect(owner.mutation(api.monitoring.ledger.configureGlobalBudget, { dailyCallLimit: 10 })).rejects.toThrow('below calls already used')
+  expect(await owner.mutation(api.monitoring.ledger.configureGlobalBudget, { dailyCallLimit: 10 })).toMatchObject({ used: 12, windowStart: raised.windowStart })
+  expect(await t.mutation(internal.monitoring.ledger.reserve, { runId, units: 1 })).toBe(false)
   await expect(owner.mutation(api.monitoring.ledger.configureGlobalBudget, { dailyCallLimit: 50_001 })).rejects.toThrow('outside the allowed bounds')
 })
 
