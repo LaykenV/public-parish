@@ -15,7 +15,17 @@ Supported. The stories remain LIMITED where official evidence is missing.
 remaining gaps, live checks, $0.600803 in model charges and 86 Firecrawl credits
 for this continuation.
 
-The latest inspected behavior release is `61fe72ec964c21f704d2cfaa559b54e6d1fee140`,
+The latest inspected behavior release is `c82080960d9162b7d459ff6b49773dc4976b1cd6`.
+PRs 191, 192, 193 and 195 added honest Ask pause messages, resident error
+recovery, required spending protection and email-only stop-all links. PR 196
+repaired a test compatibility error that stopped PR 195's initial deployment
+and made PR CI check the Convex TypeScript configuration. Production workflow
+[34255328183](https://github.com/LaykenV/public-parish/actions/runs/34255328183)
+and independent `npm run smoke:production` passed. This does not certify visual
+QA or the production provider email loop. No allowance or source policy changed.
+PR 194 adds all-three-story checks to the release smoke.
+
+The morning source-continuation release was `61fe72ec964c21f704d2cfaa559b54e6d1fee140`,
 PR 189. Its production workflow
 [34244890498](https://github.com/LaykenV/public-parish/actions/runs/34244890498)
 and independent `npm run smoke:production` passed. Two final anonymous Ask checks
@@ -64,7 +74,7 @@ records the evidence and the production boundary.
 | Evidence pipeline | Immutable snapshots, deterministic validation, independent review, and full, limited, or withheld publication deployed |
 | Resident loop | Discovery, issues, decisions, evidence, anonymous Ask, Google and email-only follows, alerts, roundups, replies, and private reports deployed |
 | Coverage and operations | Owner compiler, bounded scheduled processing, coverage requests, launch notices, search, issue sharing, and reports deployed |
-| Latest inspected behavior release | Main commit `61fe72e`, successful production workflow [34244890498](https://github.com/LaykenV/public-parish/actions/runs/34244890498) and independent smoke |
+| Latest inspected behavior release | Main commit `c820809`, successful production workflow [34255328183](https://github.com/LaykenV/public-parish/actions/runs/34255328183) and independent smoke |
 | Local coverage | Live September 8 checks returned Supported for all twelve named bodies, including all seven Lafayette bodies. Four targeted Youngsville decisions are published; full archive catch-up remains incomplete |
 | Source automation | Only the prior Metropolitan Council policy is enabled. The restored $4 source allowance is exhausted, so new paid source processing is blocked. Ask has a separate funded allowance |
 | Existing corpus | September 7 public queries returned 50 decisions per parish, the query cap; 6 Lafayette, 20 Rapides at the issue cap, and 19 East Baton Rouge timelines |
