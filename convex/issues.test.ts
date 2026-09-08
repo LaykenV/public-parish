@@ -34,12 +34,14 @@ type SeededIssueInput = {
   }>
 }
 
-function initTest(fastModel: string = LUNA_MODEL): TestConvex {
+async function initTest(fastModel: string = LUNA_MODEL): Promise<TestConvex> {
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', 'true')
   vi.stubEnv('FIRECRAWL_API_KEY', 'fc-test-key')
   vi.stubEnv('MODEL_STRONG_ID', TERRA_MODEL)
   vi.stubEnv('MODEL_FAST_ID', fastModel)
   overrideGatewayTokenMinterForTests(async () => 'test-scoped-token')
   const t = convexTest(schema, modules)
+  await t.run(ctx => ctx.db.insert('aiSpendingAllowances', { scope: 'sources', enabled: true, allowanceMicros: 10_000_000, chargedMicros: 0, expiresAt: Date.now() + 31 * 86_400_000, updatedAt: Date.now() }))
   workflowTest.register(t)
   return t
 }
@@ -726,7 +728,7 @@ afterEach(() => {
 })
 
 test('two atomic decisions publish one cited issue, score, timeline, and material change', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const topicFollowId = await seedGoogleFollow(t, 'topic', 'public-assets')
   const candidate = issueCandidate(seeded, {
@@ -871,7 +873,7 @@ test('two atomic decisions publish one cited issue, score, timeline, and materia
 })
 
 test('a generic title-level similarity signal fails before independent review', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded, { genericSignal: true })
   const fetchMock = stubIssueFetch([{ model: TERRA_MODEL, content: candidate }])
@@ -894,7 +896,7 @@ test('a generic title-level similarity signal fails before independent review', 
 })
 
 test('the home jurisdiction cannot be the only shared signal', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded, { jurisdictionSignal: true })
   const fetchMock = stubIssueFetch([{ model: TERRA_MODEL, content: candidate }])
@@ -915,7 +917,7 @@ test('the home jurisdiction cannot be the only shared signal', async () => {
 })
 
 test('a failed issue build can retry the same deterministic input', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const rejectedCandidate = issueCandidate(seeded, { genericSignal: true })
   const acceptedCandidate = issueCandidate(seeded)
@@ -951,7 +953,7 @@ test('a failed issue build can retry the same deterministic input', async () => 
 })
 
 test('a contract-invalid linker response keeps its raw evidence', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
   const rationaleFact = candidate.facts.find(
@@ -977,7 +979,7 @@ test('a contract-invalid linker response keeps its raw evidence', async () => {
 })
 
 test('a link reason with evidence from only its own record fails before review', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
   const firstLinkFact = candidate.facts.find(
@@ -1001,7 +1003,7 @@ test('a link reason with evidence from only its own record fails before review',
 })
 
 test('changing a current publication after start closes the build before any model call', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const fetchMock = stubIssueFetch([])
   const started = await t.mutation(internal.operations.issues.startIssueBuild, {
@@ -1031,7 +1033,7 @@ test('changing a current publication after start closes the build before any mod
 })
 
 test('an unsupported importance factor contributes zero without reducing another supported factor', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded, { secondFactor: true })
   const review = issueReview(candidate, {
@@ -1069,7 +1071,7 @@ test('an unsupported importance factor contributes zero without reducing another
 })
 
 test('the independent issue reviewer cannot use the linking model', async () => {
-  const t = initTest(TERRA_MODEL)
+  const t = await initTest(TERRA_MODEL)
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
   const fetchMock = stubIssueFetch([{ model: TERRA_MODEL, content: candidate }])
@@ -1089,7 +1091,7 @@ test('the independent issue reviewer cannot use the linking model', async () => 
 })
 
 test('unsupported core issue evidence writes history without a current pointer', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
   stubIssueFetch([
@@ -1119,7 +1121,7 @@ test('unsupported core issue evidence writes history without a current pointer',
 })
 
 test('a published decision refresh creates one new issue version and replays without duplicates', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const firstCandidate = issueCandidate(seeded)
   stubIssueFetch([
@@ -1266,7 +1268,7 @@ test('a published decision refresh creates one new issue version and replays wit
 })
 
 test('an extension retains the original issue URL and old members beyond the model window', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
   stubIssueFetch([{ model: TERRA_MODEL, content: candidate }, { model: LUNA_MODEL, content: issueReview(candidate) }])
@@ -1303,7 +1305,7 @@ test('an extension retains the original issue URL and old members beyond the mod
 })
 
 test('an automatic extension with too many changed members stays visible for attention', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
   stubIssueFetch([{ model: TERRA_MODEL, content: candidate }, { model: LUNA_MODEL, content: issueReview(candidate) }])
@@ -1325,7 +1327,7 @@ test('an automatic extension with too many changed members stays visible for att
 
 
 test('a proposal reuses an issue refresh that already accepted the same publications', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
   stubIssueFetch([{ model: TERRA_MODEL, content: candidate }, { model: LUNA_MODEL, content: issueReview(candidate) }])
@@ -1341,7 +1343,7 @@ test('a proposal reuses an issue refresh that already accepted the same publicat
 })
 
 test.each([0, 2])('a stale proposal build retries only within its two-attempt bound, prior attempts %s', async retryAttempts => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
   stubIssueFetch([{ model: TERRA_MODEL, content: candidate }, { model: LUNA_MODEL, content: issueReview(candidate) }])
@@ -1371,7 +1373,7 @@ test.each([0, 2])('a stale proposal build retries only within its two-attempt bo
 })
 
 test('an interrupted scan resumes accepted matches without duplicating the published issue', async () => {
-  const t = initTest()
+  const t = await initTest()
   vi.stubEnv('SOURCE_MONITORING_ENABLED', 'true')
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
@@ -1388,7 +1390,7 @@ test('an interrupted scan resumes accepted matches without duplicating the publi
 })
 
 test.each([0, 2])('malformed issue builds retry at most twice, prior attempts %s', async recoveryAttempts => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
   stubIssueFetch([{ model: TERRA_MODEL, content: candidate }, { model: LUNA_MODEL, content: issueReview(candidate) }])
@@ -1402,7 +1404,7 @@ test.each([0, 2])('malformed issue builds retry at most twice, prior attempts %s
 })
 
 test('a paused deployment leaves proposal recovery dormant and retry requires the owner', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const originRunId = await t.run(async ctx => (await ctx.db.get(seeded.currentVersionIds[0]))!.runId)
   const proposalId = await t.run(ctx => ctx.db.insert('issueLinkProposals', { recordId: seeded.recordIds[0], publicationVersionId: seeded.currentVersionIds[0], originRunId, state: 'pending', cursor: null, matchedRecordIds: [], scanned: 0, retryAt: 0, startedAt: 1, updatedAt: 1 }))
@@ -1414,7 +1416,7 @@ test('a paused deployment leaves proposal recovery dormant and retry requires th
 
 
 test('selected parish issues survive newer issue rows in another parish', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedIssueInput(t)
   const candidate = issueCandidate(seeded)
   stubIssueFetch([

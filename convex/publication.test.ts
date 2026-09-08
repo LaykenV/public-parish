@@ -50,7 +50,8 @@ type SeededCandidate = {
   factIds: Array<{ factId: Id<'candidateFacts'>; fieldPath: string }>
 }
 
-function initTest(fastModel: string = LUNA_MODEL): TestConvex {
+async function initTest(fastModel: string = LUNA_MODEL): Promise<TestConvex> {
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', 'true')
   vi.stubEnv('FIRECRAWL_API_KEY', 'fc-test-key')
   vi.stubEnv('MODEL_STRONG_ID', TERRA_MODEL)
   vi.stubEnv('MODEL_FAST_ID', fastModel)
@@ -58,6 +59,7 @@ function initTest(fastModel: string = LUNA_MODEL): TestConvex {
   vi.stubEnv('CONVEX_SITE_URL', 'https://public-parish-test.convex.site')
   overrideGatewayTokenMinterForTests(async () => 'test-scoped-token')
   const t = convexTest(schema, modules)
+  await t.run(ctx => ctx.db.insert('aiSpendingAllowances', { scope: 'sources', enabled: true, allowanceMicros: 10_000_000, chargedMicros: 0, expiresAt: Date.now() + 31 * 86_400_000, updatedAt: Date.now() }))
   workflowTest.register(t)
   return t
 }
@@ -548,7 +550,7 @@ test('the review prompt does not treat a bare agenda mention as scheduled', () =
 })
 
 test('review prompt v1.5 creates a new publication idempotency key', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-review-prompt-version')
   const keyFor = (promptVersion: string) =>
     publicationRunKey({
@@ -564,7 +566,7 @@ test('review prompt v1.5 creates a new publication idempotency key', async () =>
 })
 
 test('a second model review publishes one full immutable version with exact citations', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t)
   const requests: Array<Record<string, unknown>> = []
   const fetchMock = stubReviewFetch(
@@ -716,7 +718,7 @@ test('a second model review publishes one full immutable version with exact cita
 })
 
 test('an incomplete source cannot produce a confident summary', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-limited')
   await t.run(async (ctx) => {
     const candidate = await ctx.db.get(seeded.candidateId)
@@ -781,7 +783,7 @@ test('an incomplete source cannot produce a confident summary', async () => {
 })
 
 test('core evidence disagreement is recorded as withheld and never becomes current', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-withheld')
   stubReviewFetch(
     JSON.stringify(reviewResponse(seeded.factIds, { '/title': 'unsupported' })),
@@ -807,7 +809,7 @@ test('core evidence disagreement is recorded as withheld and never becomes curre
 })
 
 test('a later withheld review does not replace the last published version', async () => {
-  const t = initTest()
+  const t = await initTest()
   const first = await seedValidatedCandidate(t, '-history')
   const second = await seedReextractedCandidate(t, first)
   stubReviewFetch([
@@ -856,7 +858,7 @@ test('a later withheld review does not replace the last published version', asyn
 })
 
 test('a first accepted publication records one new-decision event and matches its publishing body and place once', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-alert-match')
   const followIds = await t.run(async (ctx) => {
     const registry = await ctx.db.get(seeded.registryId)
@@ -1131,7 +1133,7 @@ test('a first accepted publication records one new-decision event and matches it
 })
 
 test('notification matching stops after body and place coverage lapse', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-coverage-lapse')
   await t.run(async (ctx) => {
     const registry = await ctx.db.get(seeded.registryId)
@@ -1190,7 +1192,7 @@ test('notification matching stops after body and place coverage lapse', async ()
 })
 
 test('a later accepted version records a comparison even when the public payload is unchanged', async () => {
-  const t = initTest()
+  const t = await initTest()
   const first = await seedValidatedCandidate(t, '-same-public-payload')
   const second = await seedReextractedCandidate(t, first)
   stubReviewFetch([
@@ -1226,7 +1228,7 @@ test('a later accepted version records a comparison even when the public payload
 })
 
 test('a reviewer verdict that hides its own disagreement fails without a publication version', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-mismatch')
   stubReviewFetch(
     JSON.stringify(
@@ -1259,7 +1261,7 @@ test('a reviewer verdict that hides its own disagreement fails without a publica
 })
 
 test('the reviewer cannot use the extraction model', async () => {
-  const t = initTest(TERRA_MODEL)
+  const t = await initTest(TERRA_MODEL)
   const seeded = await seedValidatedCandidate(t, '-same-model')
   const fetchMock = stubReviewFetch(
     JSON.stringify(reviewResponse(seeded.factIds)),
@@ -1282,7 +1284,7 @@ test('the reviewer cannot use the extraction model', async () => {
 })
 
 test('a gateway response cannot substitute the extraction model for review', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-gateway-model')
   stubReviewFetch(
     JSON.stringify(reviewResponse(seeded.factIds)),
@@ -1306,7 +1308,7 @@ test('a gateway response cannot substitute the extraction model for review', asy
 })
 
 test('replaying a succeeded extraction repairs a missing publication run', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-replay')
   const idempotencyKey = await extractionRunKey({
     registryId: seeded.registryId,
@@ -1377,7 +1379,7 @@ test('replaying a succeeded extraction repairs a missing publication run', async
 })
 
 test('review persistence rejects duplicate fact checks', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-persist-duplicates')
   const started = await t.mutation(
     internal.operations.publication.startCandidatePublication,
@@ -1418,7 +1420,7 @@ test('review persistence rejects duplicate fact checks', async () => {
 })
 
 test('publication finalization rejects persisted duplicate fact checks', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-finalize-duplicates')
   const started = await t.mutation(
     internal.operations.publication.startCandidatePublication,
@@ -1479,7 +1481,7 @@ test('publication finalization rejects persisted duplicate fact checks', async (
 })
 
 test('a late failure cannot reuse a succeeded review', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-failure-collision')
   const started = await t.mutation(
     internal.operations.publication.startCandidatePublication,
@@ -1689,7 +1691,7 @@ test('a limited finding on a core field is withheld', () => {
 })
 
 test('operator-assigned identity publishes without inventing a source ID fact', async () => {
-  const t = initTest()
+  const t = await initTest()
   const seeded = await makeOperatorAssignedPublicAction(
     t,
     await seedValidatedCandidate(t, '-operator-record-id'),
@@ -1807,7 +1809,7 @@ test('review completion budget accommodates high reasoning plus required JSON', 
 })
 
 test('review and publication retain exact partial-bold quotes with matching normalized offsets', async () => {
-  const t = initTest()
+  const t = await initTest()
   const source = SOURCE_TEXT.replace('Accept grant revenue', '**Accept grant** revenue')
   const seeded = await seedValidatedCandidate(t, '-partial-bold', source)
   const titleFact = seeded.factIds.find(fact => fact.fieldPath === '/title')!
