@@ -1792,5 +1792,7 @@ The full design, founder QA and production email checks remain the next phase.
 PR 190 deployed the morning report and passed independent production smoke.
 Aligned active guides with the shipped story loop, source continuation, retained
 images and exhausted source allowance. Preserved dated receipts and linked their
-successors. Global design, founder QA and production story mail remain pending.
+successors. Marked the replaced landing experiment as historical and clarified
+that existing merge authorization persists. Global design, founder QA and
+production story mail remain pending.
 This audit changes documentation only; its release verification follows the push.

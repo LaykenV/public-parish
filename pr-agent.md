@@ -134,13 +134,11 @@ the bot into Theo's T3-style PR flow. The human prompt collapses to
   until the review is clean on the latest commit. At the start of every thread,
   it tells the user that small reviews often take two to three minutes and large
   full-context reviews normally take six to nine. It reports active wait status
-  at least once a minute. It then asks "All passing.
-  Merging deploys production, then I will smoke-test it. Good to merge?"
-  through the harness's interactive question tool. A plain chat question works
-  where none exists. On a clear yes, it squash-merges, deletes the branch,
-  returns to `main`, watches the `Deploy production` workflow for the exact
-  merge commit, and runs `npm run smoke:production` independently. Anything
-  short of a clear yes merges nothing.
+  at least once a minute. Use existing explicit merge authorization from the
+  session. If it is missing, explain that merging deploys production and ask
+  for approval. After an authorized merge, watch the `Deploy production`
+  workflow for the exact merge commit and run `npm run smoke:production`
+  independently. Preserve concurrent worktrees and local changes throughout.
 
 The PR-shape rules (one concern, no drafts, no scope growth) also live in
 `AGENTS.md` as standing law, which PR-Agent feeds to the reviewer on every

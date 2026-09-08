@@ -1,7 +1,11 @@
-# Landing-page experiment — Field Notes (selected)
+# Historical landing-page experiment, Field Notes
 
-`variation-b-fieldnotes.html` is the selected direction. It was ported into
-the application as the signed-out landing page:
+This directory preserves the earlier selected concept. The stories-first Home
+superseded its application port. The files below are historical paths and no
+longer exist. Use [current design](../../docs/design.md) and
+[the work queue](../../docs/work.md) for the deployed experience.
+
+`variation-b-fieldnotes.html` was ported into the signed-out landing page:
 
 - Component: `src/features/landing/landing-page.tsx`
 - Styles: `src/features/landing/landing.css`
@@ -13,7 +17,7 @@ after the owner selected this one.
 ## Owner decisions applied during selection
 
 - Hero heading changed to "See how local government is changing." (owner
-  override of the brief's working copy; `docs/marketing-page.md` updated).
+  override of the brief's working copy; [the archived marketing-page plan](../../docs/archive/pre-stories-2026-09-07/docs/marketing-page.md) updated).
 - The gold highlight on "may" was removed; the heading is plain display
   type.
 
