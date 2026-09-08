@@ -752,3 +752,37 @@ test('image correction refuses anonymous callers, altered prose and unapproved i
   expect(await t.run(ctx => ctx.db.query('storyBuilds').collect())).toHaveLength(1)
   expect(await t.run(ctx => ctx.db.query('storyUpdateEvents').collect())).toHaveLength(0)
 })
+
+
+test('new evidence can retain the current image only through an owner revision and fresh review', async () => {
+  vi.useFakeTimers()
+  try {
+    const { t, owner, args, buildId, storyId } = await setup()
+    workflowTest.register(t)
+    const currentImageVersionId = await owner.mutation(api.stories.operations.approve, args)
+    const candidate = await t.run(async ctx => {
+      const parent = (await ctx.db.get(buildId))!
+      const { _id, _creationTime, versionId, ...fields } = parent
+      const id = await ctx.db.insert('storyBuilds', { ...fields, expectedGeneration: 1, state: 'reviewed', inputHash: 'd'.repeat(64), media: null })
+      return { id, draft: parent.draft! }
+    })
+    const request = { parentBuildId: candidate.id, parentDraftHash: args.draftHash, expectedGeneration: 1, draft: candidate.draft, currentImageVersionId }
+    await expect(t.mutation(api.stories.corrections.prepare, request)).rejects.toThrow('Sign in with Google')
+    await expect(owner.mutation(api.stories.corrections.prepare, { ...request, draft: { ...candidate.draft, title: { ...candidate.draft.title, text: 'Changed claim' } } })).rejects.toThrow('preserve the exact evidence draft')
+    const revised = await owner.mutation(api.stories.corrections.prepare, request)
+    expect(await owner.mutation(api.stories.corrections.prepare, request)).toBe(revised)
+    await t.run(async ctx => {
+      const result = (await ctx.db.get(revised))!
+      const current = (await ctx.db.get(currentImageVersionId))!
+      expect(result.media).toEqual(current.media)
+      expect(result.draft).toEqual(candidate.draft)
+      expect(result.state).toBe('drafted')
+      expect(result.review).toBeUndefined()
+      expect(result.reviewHash).toBeUndefined()
+      expect((await ctx.db.get(storyId))?.currentVersionId).toBe(currentImageVersionId)
+      expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0)
+      await ctx.db.patch(storyId, { state: 'withdrawn' })
+    })
+    await expect(owner.mutation(api.stories.corrections.prepare, request)).rejects.toThrow('current accepted story image')
+  } finally { vi.useRealTimers() }
+})
