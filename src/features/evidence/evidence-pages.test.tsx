@@ -12,7 +12,8 @@ import {
   MEETING_DETAIL_FIXTURES,
 } from './record-fixtures'
 
-vi.mock('@tanstack/react-router', () => ({
+vi.mock('@tanstack/react-router', async (importOriginal) => ({
+  ...await importOriginal<typeof import('@tanstack/react-router')>(),
   Link: ({ children }: { children: ReactNode }) => <a href="#">{children}</a>,
   useNavigate: () => () => {},
   useRouterState: ({

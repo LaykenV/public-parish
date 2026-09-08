@@ -8,7 +8,8 @@ import { CoveragePage, CoverageRequestPage } from './coverage-page'
 import { HowItWorksPage } from './how-it-works-page'
 import { COVERAGE_REGION_FIXTURES } from './fixtures'
 
-vi.mock('@tanstack/react-router', () => ({
+vi.mock('@tanstack/react-router', async (importOriginal) => ({
+  ...await importOriginal<typeof import('@tanstack/react-router')>(),
   Link: ({ children }: { children: ReactNode }) => <a href="#">{children}</a>,
 }))
 
