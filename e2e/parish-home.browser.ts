@@ -59,6 +59,7 @@ test('published parish records remain selectable with coverage limitations', asy
 test('home introduces Louisiana stories and switches to local issues after selection', async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.addInitScript(() => {
     if (!sessionStorage.getItem('home-qa-initialized')) {
       localStorage.removeItem('public-parish.area.v1')
@@ -97,6 +98,7 @@ test('home introduces Louisiana stories and switches to local issues after selec
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Showing Lafayette Parish',
   )
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused()
   await expect(page.locator('.pp-home-relief')).toHaveCount(0)
   await expect(page.locator('#stories article')).toHaveCount(3)
   expect(
@@ -183,6 +185,16 @@ for (const width of [320, 375]) {
     )
     await expect(index).toHaveText(`Issue ${count} of ${count}`)
     expect((await track.boundingBox())!.height).toBeCloseTo(heightBefore, 0)
+    // Load below-the-fold story images before taking full-page evidence.
+    for (const image of await page.locator('#stories img').all()) {
+      await image.scrollIntoViewIfNeeded()
+      await expect
+        .poll(() =>
+          image.evaluate((node) => (node as HTMLImageElement).naturalWidth),
+        )
+        .toBeGreaterThan(0)
+    }
+    await page.evaluate(() => window.scrollTo(0, 0))
     await page.screenshot({
       path: testInfo.outputPath(`home-swipe-${width}.png`),
       fullPage: true,
