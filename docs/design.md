@@ -148,8 +148,9 @@ visible after an area is selected. PR 182 implements this placement and passed
 CI and development browser layout checks. It deployed through PR 182, and
 production inspection confirmed the relief beside local selection.
 The owner-selected renderings are published after independent review under the
-explicit three-file exception. Keep rendering labels, alt text and honest
-attribution gaps. Do not treat image changes
+explicit three-file exception. The owner requested removal of all visible image
+subtext on Home and story pages. Keep descriptive alt text on the images and
+preserve captions, attribution and rights records in owner review. Do not treat image changes
 as material story updates.
 
 PR 180 makes ordinary story URLs provide approved social metadata and open the

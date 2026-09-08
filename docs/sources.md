@@ -96,7 +96,9 @@ On September 8, the owner approved publication of the three supplied renderings
 with unverified reuse rights. This exception covers only the exact story and file
 hashes in `convex/stories/ownerMedia.ts`. It is not a copyright license or verified
 rightsholder permission. Unknown original sources remain null. Captions identify
-renderings and disclose uncertain project attribution. These illustrations do
+renderings and disclose uncertain project attribution in the retained review
+record. At the owner's request, public pages omit visible image subtext while
+keeping descriptive alt text. These illustrations do
 not support factual claims about completed facilities.
 
 The owner-only correction path verifies storage hashes, retains the accepted

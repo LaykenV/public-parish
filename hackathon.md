@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T12:23:41Z
+- **Last updated:** 2026-09-08T12:53:18Z
 
 ## Log
 
@@ -1766,3 +1766,10 @@ reviews in development and production. Draft hashes and evidence stayed unchange
 no update events were created. Verified public image hashes, page loads, social
 image metadata, cache invalidation and replay. Estimated review cost was $0.03856.
 The owner's explicit exception records unverified rights without inventing a license.
+
+### 2026-09-08 - working tree, remove story image subtext
+
+Removed visible captions, credits and rights text beneath the three story images
+on Home and story details at the owner's request. Alt text and all retained
+review metadata remain. No story version, evidence or notification change.
+Automated validation runs in PR CI.

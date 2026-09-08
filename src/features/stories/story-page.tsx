@@ -12,9 +12,6 @@ function StoryImage({ media, compact = false }: { media: PublicStory['media'], c
   if (!media || failed) return <p className="pp-story-image-fallback">Image unavailable. The official evidence remains below.</p>
   return <figure className={compact ? 'pp-story-image compact' : 'pp-story-image'}>
     <img src={media.url} alt={media.alt} width={media.width} height={media.height} loading={compact ? 'lazy' : 'eager'} onError={() => setFailed(true)} />
-    <figcaption>{media.kind === 'rendering' ? 'Rendering. ' : media.kind === 'document_detail' ? 'Official document detail. ' : ''}{media.caption}{' '}
-      {media.originalUrl ? <a href={media.originalUrl} target="_blank" rel="noreferrer">{media.credit || 'Image source'}</a> : media.credit}. {media.license}
-    </figcaption>
   </figure>
 }
 
