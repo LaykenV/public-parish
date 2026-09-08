@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 
 import { Button } from '../../components/ui/button'
-import { formatTime } from '../discovery/format'
+import { formatDate, formatTime } from '../discovery/format'
 import type { AskRecentConversation, AskTurnState } from './contracts'
 
 /*
@@ -49,11 +49,11 @@ export function AskCooldownNotice({ retryAt }: { retryAt: string }) {
   return (
     <div className="ask-notice" data-tone="warning">
       <p className="ask-notice-title">
-        Ask is taking a short pause on this device
+        Ask is paused until capacity resets
       </p>
       <p className="ask-notice-text">
-        You can ask again at {formatTime(retryAt)}. Published records and
-        Sources still work.
+        You can ask again on {formatDate(retryAt)} at {formatTime(retryAt)}.
+        Published records and Sources still work.
       </p>
     </div>
   )

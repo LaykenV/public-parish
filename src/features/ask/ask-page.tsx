@@ -175,7 +175,7 @@ export function AskPage({
   const handleAvailability = useCallback((next: AskAvailability) => {
     setAvailability(next)
     if (next.kind === 'cooldown') {
-      setStatus('Ask is taking a short pause on this device')
+      setStatus('Ask is paused until capacity resets')
     }
     if (next.kind === 'captcha') {
       setStatus('Please complete this quick check')

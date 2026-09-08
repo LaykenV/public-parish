@@ -310,7 +310,8 @@ export class LiveAskAdapter implements AskAdapter {
     if (
       code === 'ask_request_limited' ||
       code === 'ask_daily_limited' ||
-      code === 'ask_token_limited' ||
+      code === 'ask_global_request_limited' ||
+      code === 'ask_global_daily_limited' ||
       code === 'answer_concurrent' ||
       code === 'answer_in_progress'
     ) {

@@ -291,7 +291,14 @@ test('rebuilds a refreshed conversation from Agent history and exact citations',
   })
 })
 
-test('turns server cooldown and expiry into resident states', async () => {
+test.each([
+  'ask_request_limited',
+  'ask_daily_limited',
+  'ask_global_request_limited',
+  'ask_global_daily_limited',
+  'answer_concurrent',
+  'answer_in_progress',
+])('turns %s into a retryable cooldown with the server reset time', async (code) => {
   const retryAt = Date.now() + 60_000
   const storage = memoryStorage()
   const mutation = vi
@@ -306,7 +313,7 @@ test('turns server cooldown and expiry into resident states', async () => {
   const client = {
     mutation,
     action: vi.fn().mockRejectedValue({
-      data: { code: 'ask_token_limited', retryAt },
+      data: { code, retryAt },
     }),
     query: vi.fn(),
   } as unknown as ConvexReactClient
@@ -326,7 +333,16 @@ test('turns server cooldown and expiry into resident states', async () => {
     },
   })
   expect(latestConversation(updates)?.turns[0]?.state).toBe('retryable_failure')
+})
 
+test('turns server expiry into an expired resident state', async () => {
+  const storage = memoryStorage()
+  storage.setItem('public-parish.ask.thread-handles.v1', JSON.stringify([{
+    threadId: 'agent-thread-cooldown',
+    scopeKey: 'corpus:lafayette-parish',
+    expiresAt: 2_000_000_000_000,
+    lastActivityAt: Date.now(),
+  }]))
   const expiredClient = {
     query: vi.fn().mockRejectedValue({
       data: { code: 'session_expired' },
