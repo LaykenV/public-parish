@@ -14,6 +14,13 @@ export const artifactPacket = v.object({
 export type ArtifactPacket = typeof artifactPacket.type
 const MAX_TRANSFER_AGE = 7 * 86_400_000
 
+// A custom public domain may replace CONVEX_SITE_URL. Signed transfers bind
+// the backend deployment, whose platform cloud URL remains stable.
+export function transferDeploymentSite(cloudUrl: string) {
+  if (!['https://woozy-wren-227.convex.cloud', 'https://befitting-flamingo-587.convex.cloud'].includes(cloudUrl)) throw new Error('Choose the reviewed transfer deployment')
+  return cloudUrl.replace('.convex.cloud', '.convex.site')
+}
+
 export function checkArtifactPacket(packet: ArtifactPacket, targetSite: string, now: number) {
   if (packet.targetSite !== targetSite || !/^https:\/\/[a-z0-9-]+\.convex\.site$/.test(packet.originSite)) throw new Error('Artifact transfer deployment mismatch')
   if (!Number.isFinite(packet.exportedAt) || packet.exportedAt > now + 60_000 || now - packet.exportedAt > MAX_TRANSFER_AGE || packet.retrievalTime > packet.exportedAt || packet.retrievalTime < 0) throw new Error('Artifact transfer receipt expired or has invalid provenance time')

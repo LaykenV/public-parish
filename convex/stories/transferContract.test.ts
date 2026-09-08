@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { checkArtifactPacket, signArtifactPacket, verifyArtifactPacket } from './transferContract'
+import { checkArtifactPacket, signArtifactPacket, verifyArtifactPacket, transferDeploymentSite } from './transferContract'
 import type { ArtifactPacket } from './transferContract'
 
 const packet: ArtifactPacket = { contract: 'story-artifact-transfer-v1', originSite: 'https://woozy-wren-227.convex.site', targetSite: 'https://befitting-flamingo-587.convex.site',
@@ -24,4 +24,12 @@ test('transfer refuses wrong deployment, stale export and unbounded artifacts', 
   expect(() => checkArtifactPacket(packet, packet.targetSite, packet.exportedAt + 8 * 86_400_000)).toThrow('expired')
   expect(() => checkArtifactPacket({ ...packet, retrievalTime: packet.exportedAt + 1 }, packet.targetSite, packet.exportedAt)).toThrow('provenance time')
   expect(() => checkArtifactPacket({ ...packet, rawBytes: 20_000_001 }, packet.targetSite, packet.exportedAt)).toThrow('bound')
+})
+
+
+test('transfer identity uses the backend deployment rather than the public custom domain', () => {
+  expect(transferDeploymentSite('https://befitting-flamingo-587.convex.cloud')).toBe('https://befitting-flamingo-587.convex.site')
+  expect(transferDeploymentSite('https://woozy-wren-227.convex.cloud')).toBe(packet.originSite)
+  expect(() => transferDeploymentSite('https://www.publicparish.com')).toThrow('reviewed transfer deployment')
+  expect(() => transferDeploymentSite('https://other.convex.cloud')).toThrow('reviewed transfer deployment')
 })
