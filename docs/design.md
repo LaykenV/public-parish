@@ -142,8 +142,11 @@ interface during this design pass.
 ## Owner corrections after story publication
 
 PR 181 restored the existing 3D Louisiana relief in the Home introduction.
-Desktop and mobile browser widths passed development inspection; the production
-Home renders the relief. The stories remain ahead of local selection.
+The owner corrected that placement. Keep the compact introduction and featured
+stories first, then the relief beside the region selector. Keep the relief
+visible after an area is selected. PR 182 implements this placement and passed
+CI and development browser layout checks. Production still has the PR 181
+placement until the correction is approved for release.
 Use the owner-selected project renderings after source credit and media review;
 keep accurate rendering labels, alt text and captions. Do not treat image changes
 as material story updates.
