@@ -1,5 +1,8 @@
 # Story image release, September 8, 2026
 
+This is a dated release receipt. Later image and evidence revisions, final costs
+and QA readiness are recorded in the [September 8 morning report](targeted-catchup-2026-09-08.md).
+
 PR 183 deployed application commit `cb2ae0014572b1f1054eb80a345e694ed29f73e2`.
 [Production workflow 34225263905](https://github.com/LaykenV/public-parish/actions/runs/34225263905)
 and independent `npm run smoke:production` passed. CI passed 637 tests and review

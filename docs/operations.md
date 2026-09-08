@@ -51,10 +51,12 @@ weaken citations, or activate all policies to increase a publication count.
 
 ## Allowances and production settings
 
-The last funded September 7 checkpoint recorded a $4 source AI allowance and a
-separate $0.50 Ask allowance expiring September 14 UTC. Only Metropolitan Council
-scheduled processing was enabled; other policies were paused and development
-source processing was off. See [the dated receipt](archive/pre-stories-2026-09-07/docs/bounded-catchup-2026-09-07.md).
+The September 8 [final source-work receipt](targeted-catchup-2026-09-08.md)
+records the restored $4 production source ceiling with $4.401016 charged, so
+new paid source processing is blocked. The separate $0.50 Ask ceiling had
+$0.376365 remaining, with its existing September 14 UTC expiry. Only the prior
+Metropolitan Council policy was enabled. Other policies remained paused.
+The continuation used $0.600803 in model charges and 86 Firecrawl credits.
 Read current settings before spending. These recorded amounts are not new caps
 for the launch plan and are not proof of today's remaining balances.
 
@@ -89,9 +91,10 @@ policy or create story data.
 
 ## Source stop, resume and diagnosis
 
-For the story release, Agent 1 owns all writes to personal development
-`woozy-wren-227`. The isolated implementation checkout does not isolate that
-deployment. Download the exact green PR's `development-frontend-<SHA>` artifact
+Name one operator for writes to shared personal development `woozy-wren-227`
+before a verification session. Earlier agent assignments are not continuing
+ownership. An isolated implementation checkout does not isolate that deployment.
+Download the exact green PR's `development-frontend-<SHA>` artifact
 for frontend sync. `convex dev --once --typecheck disable --codegen disable`
 performs the authorized backend sync without local automated validation. Upload
 the prebuilt artifact with static hosting's `upload --dist <artifact> --spa`.
@@ -102,8 +105,9 @@ Story verification uses a dedicated development AgentMail sender and a separate
 owned recipient. The development guard rejects other recipients. A mailbox
 existing or an outbound provider ID is not a completed round trip. Record the
 development webhook, receipt and grounded reply separately. Do not modify a
-production webhook to make a development check pass. Callback setup remains an
-open gate at the September 7 story checkpoint.
+production webhook to make a development check pass. The callback and controlled
+round trips passed the [development gate](story-development-certification.md).
+Production story email verification remains assigned to founder QA.
 
 Saved artifact hash differences require a new manifest version with corrected
 exact spans. Preserve the frozen predecessor. Repeating retrieval to force a
@@ -206,8 +210,8 @@ send unapproved mail or publish synthetic civic claims.
 ## Grok Bot handoff
 
 Use Layken's standalone Grok Bot Mac app. The concise [bot brief](../grok-bot.md)
-points here. The current assignments are three story dossiers, exact missing
-source research, bounded development diagnosis, and later reproducible UI QA.
+points here. Assign only named missing source evidence, reviewed successor
+bundles, bounded development diagnosis or reproducible UI QA from the work queue.
 Do not start an archive-completion mission or use a substitute cloud agent.
 
 Each handoff names the completed outcome, exact public source links, saved
@@ -236,3 +240,20 @@ review and approve its exact input, draft and review hashes. Repeat on the targe
 deployment using target IDs; do not copy development IDs. Check live image bytes,
 image dimensions, captions, social metadata and absence of new update events.
 The September 8 exception is limited to the three hashes in `ownerMedia.ts`.
+
+## Retaining images during evidence updates
+
+For a new unpublished source candidate, `stories/corrections:prepare` accepts
+`currentImageVersionId` to retain the same story's current accepted media. Supply
+the unchanged candidate draft and exact parent hash and generation. This cannot
+be combined with `replacementImageId`. Every retained caption evidence key must
+exist in the candidate. A `mediaCaption` correction must be nonempty and at most
+600 characters. Each new candidate needs fresh independent review and exact
+approval; image retention never copies approval or proves a license.
+
+Review reservations can exceed the expected charge when media is included.
+Inspect the reservation before retrying, preserve consumed counters and keep
+any temporary ceiling adjustment within the authorized finite task allowance.
+Restore prior ceilings and expiries after the batch. Verify image hashes,
+accepted text and notification intent after publication. See the
+[September 8 source continuation](targeted-catchup-2026-09-08.md).

@@ -1,10 +1,13 @@
 # Three-story development certification
 
+This is a dated release receipt. Later image and evidence revisions, final costs
+and QA readiness are recorded in the [September 8 morning report](targeted-catchup-2026-09-08.md).
+
 September 7, 2026. Application `decf363cd61fa423255e5508aff22a503b47f8e8`
 passes the bounded development gate. The later [production preparation](story-production-preparation.md) records the authorized code release and target reviews. The owner approved and published those exact candidates; bounded production story smoke passed. The founder's global design and full QA campaign has not run.
 
 The development app is https://woozy-wren-227.convex.site. Its backend and
-CI-built frontend use the same application commit. Verify run
+CI-built frontend used the same application commit at this certification. Verify run
 [34171994238](https://github.com/LaykenV/public-parish/actions/runs/34171994238)
 passed. Static-hosting release `e2a78b53-eaa7-473c-b2bb-86085cc33830` contains
 that artifact. No local tests, typechecks, builds or linters ran.
@@ -17,10 +20,11 @@ that artifact. No local tests, typechecks, builds or linters ran.
 | Secondary | `/stories/spacex-pecan-island` | `034e0280818600b61c26a046b21d1eb2c42d6be8da77691b7d5c5ccf112db748` |
 | Secondary | `/stories/applied-digital-boyce` | `3650094c7de6b0f5cf47075d12fa9a1e2f8e722c36b4ab8c00ec158495718539` |
 
-All three are LIMITED and reviewed through September 7, with the next editorial
+At this checkpoint all three were LIMITED and reviewed through September 7,
+with the next editorial
 review due September 10. Announcements establish plans and projections, not
 completed construction, measured employment or every required approval. Images
-are credited official document details, with permission evidence and exact
+were credited official document details, with permission evidence and exact
 caption support. No generated documentary imagery is used.
 
 ## Development and CI evidence

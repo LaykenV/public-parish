@@ -55,9 +55,10 @@ and public social links. Keep private payloads and identifying details out of
 public artifacts.
 
 The repository and live app were public at the September 7 inspection. The
-original local resident loop has prior controlled production evidence. New story
-capabilities, the founder QA campaign, real usage and submission require separate
-proof. An installed component or green build is not runtime behavior.
+original local resident loop has prior controlled production evidence.
+Story capabilities have bounded development and production proof in
+[Work](work.md). The founder QA campaign, real usage and submission still require
+separate proof. An installed component or green build is not runtime behavior.
 
 The organizer evaluates usefulness, Convex depth, actual sponsor work, public
 access, social engagement and the video demonstration. A credible entry shows
@@ -66,7 +67,7 @@ those things. This document does not assign a score or probability of winning.
 ## Submission checklist
 
 - [ ] Confirm registration and eligibility against the current organizer rules.
-- [ ] Close the three-story functional gate in the work plan.
+- [x] Close the three-story functional gate in the work plan.
 - [ ] Complete founder design and QA, fix blockers and record the private pilot.
 - [ ] Confirm story freshness and usable public-service allowances through judging.
 - [ ] Recheck signed-out Home, all story links, citations, Ask, local coverage,
@@ -83,17 +84,18 @@ those things. This document does not assign a score or probability of winning.
 - [ ] Prepare the complete vibeapps.dev entry for owner review.
 - [ ] Submit only after authorization and retain the actual confirmation.
 
-No submission, public launch post, resident outcome or story release is claimed
+No submission, public launch post or organic resident outcome is claimed
 by this documentation update. The older dated build and release evidence remains
 in [the archive](archive/README.md).
 
 ## Current release proof and remaining presentation work
 
-The three owner-approved LIMITED stories are published at application `771f660`.
-Bounded production route, evidence, image, search, share and nine anonymous Ask
-checks passed. Email round trips passed in development; the owner will perform
-the production email check during QA. Production application `7ababad` adds the
-restored Louisiana relief and ordinary-link social metadata. Its exact workflow
-and independent smoke passed. Facebook confirmed development metadata for all
-three stories and production Meta metadata. Replacement images, final production
-Facebook image crops, and the founder's full design and QA campaign remain open.
+The three owner-approved LIMITED stories are published. The September 8
+[source continuation](targeted-catchup-2026-09-08.md) records stronger Meta and
+SpaceX evidence, retained owner-selected renderings, four Youngsville decisions
+and final production checks. PR 190 deployed the handoff report at `864d405`;
+its exact production workflow and independent smoke passed.
+
+Production story email verification, final Facebook image-crop inspection and
+the founder's global design and QA campaign remain open. Development email
+round trips passed. [Work](work.md) owns the complete pending queue.

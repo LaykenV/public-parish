@@ -25,7 +25,7 @@ account-free delivery path.
 
 The working product promise is "Understand Louisiana's consequential stories,
 with the official evidence." This is proposed positioning for the coming design
-pass, not a claim that the story feature has shipped.
+pass. The story feature is deployed; [Work](docs/work.md) records its proof and limits.
 
 Stories-first is an adoption hypothesis. Measure whether visitors inspect
 sources, ask useful questions, follow, and return. Interest in a familiar project
@@ -38,15 +38,17 @@ Launch with exactly these three featured stories on Home:
 | Placement | Story | Geographic label |
 | --- | --- | --- |
 | Lead | Meta data center | Richland Parish, northeast Louisiana |
-| Secondary | SpaceX project | Pecan Island, Vermilion Parish |
+| Secondary | SpaceX project | Vermilion Parish |
 | Secondary | Applied Digital / Boyce data center | Rapides Parish |
 
 Use verified project names in published copy. "Monroe data center" can identify
-a research lead, but it does not replace the precise project geography.
+a research lead, but it does not replace the precise project geography. The
+legacy SpaceX research key and route contain Pecan Island; the accepted evidence
+does not establish that precise site location.
 
 All three stories and the complete story functionality must work before the
 founder's global design and full QA pass begins. Required functionality includes
-owner-controlled source intake and review, versioned publication, photos,
+owner-controlled source intake and review, versioned publication, images,
 citations, story-scoped Ask, story follows and sourced updates, email replies,
 sharing, search, and related local records. A collection of static articles does
 not close this phase. The [work plan](docs/work.md) owns acceptance and order.

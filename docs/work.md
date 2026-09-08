@@ -15,12 +15,17 @@ Supported. The stories remain LIMITED where official evidence is missing.
 remaining gaps, live checks, $0.600803 in model charges and 86 Firecrawl credits
 for this continuation.
 
-The latest inspected application release is `61fe72ec964c21f704d2cfaa559b54e6d1fee140`,
+The latest inspected behavior release is `61fe72ec964c21f704d2cfaa559b54e6d1fee140`,
 PR 189. Its production workflow
 [34244890498](https://github.com/LaykenV/public-parish/actions/runs/34244890498)
 and independent `npm run smoke:production` passed. Two final anonymous Ask checks
 preserved Act 874's qualifying conditions and exceptions. One raw citation marker
 remains a P2 formatting observation for the design pass below.
+
+The handoff documentation then deployed at `864d405` through PR 190. Production
+workflow [34246165533](https://github.com/LaykenV/public-parish/actions/runs/34246165533)
+and independent smoke passed. This is the verified checkpoint before the
+September 8 documentation audit, not a claim about later pushes.
 
 Earlier production application code `cb2ae0014572b1f1054eb80a345e694ed29f73e2`
 was deployed through PR 183. Production workflow
@@ -59,7 +64,7 @@ records the evidence and the production boundary.
 | Evidence pipeline | Immutable snapshots, deterministic validation, independent review, and full, limited, or withheld publication deployed |
 | Resident loop | Discovery, issues, decisions, evidence, anonymous Ask, Google and email-only follows, alerts, roundups, replies, and private reports deployed |
 | Coverage and operations | Owner compiler, bounded scheduled processing, coverage requests, launch notices, search, issue sharing, and reports deployed |
-| Latest inspected application release | Main commit `61fe72e`, successful production workflow [34244890498](https://github.com/LaykenV/public-parish/actions/runs/34244890498) and independent smoke |
+| Latest inspected behavior release | Main commit `61fe72e`, successful production workflow [34244890498](https://github.com/LaykenV/public-parish/actions/runs/34244890498) and independent smoke |
 | Local coverage | Live September 8 checks returned Supported for all twelve named bodies, including all seven Lafayette bodies. Four targeted Youngsville decisions are published; full archive catch-up remains incomplete |
 | Source automation | Only the prior Metropolitan Council policy is enabled. The restored $4 source allowance is exhausted, so new paid source processing is blocked. Ask has a separate funded allowance |
 | Existing corpus | September 7 public queries returned 50 decisions per parish, the query cap; 6 Lafayette, 20 Rapides at the issue cap, and 19 East Baton Rouge timelines |
@@ -112,9 +117,9 @@ pass, organic resident outcome, production story mail delivery or submission is 
 
 ## Phase 1: finish stories
 
-The owner implements and reviews the new functionality with agents. Use a
-bounded PR per concern; keep implementation verification inside each packet.
-Do not begin the full redesign campaign until this phase passes.
+This phase passed. The table preserves the implementation gate and development
+proof; the current checkpoint above records later production revisions. Keep
+future repairs bounded to one concern per PR.
 
 | Packet | Required outcome | Dependencies | State |
 | --- | --- | --- | --- |
@@ -123,13 +128,12 @@ Do not begin the full redesign campaign until this phase passes.
 | S3 | Published story routes, evidence view, all-three homepage composition, related records, search and social share HTML | S1, S2 | Development passed on all three routes, Home, images, search and share HTML |
 | S4 | Story-scoped anonymous Ask and private thread authorization using accepted story evidence | S1, S3 | Development passed, two supported and one unsupported question per story |
 | S5 | Google and verified-email story follows, material-update alerts, roundup integration, grounded replies, management and unsubscribe | S1, S3, S4 | Development passed with actual isolated provider callbacks, receipt, reply, management and unsubscribe proof |
-| S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Meta reviewed v3, SpaceX v2 and Boyce v2 accepted and published LIMITED in development |
+| S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Initial development bundles passed; Meta v5, SpaceX v3 and unchanged Boyce evidence are now published LIMITED in production |
 | S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Development gate passed; exact owner-approved production publication and bounded smoke passed. Production email is assigned to founder QA. |
 
-Build the first complete vertical path with the existing Boyce evidence if that
-reduces risk. Meta remains the lead on the delivered homepage. Research for all
-three can proceed while shared functionality is implemented. No fourth story is
-required. CCS is deferred; do not substitute it for the agreed launch set.
+Meta remains the lead on the delivered homepage. Future research is limited to
+named gaps in these three stories. No fourth story is required. CCS is deferred;
+do not substitute it for the agreed launch set.
 
 The full development evidence is recorded in
 [development certification](story-development-certification.md). The approved

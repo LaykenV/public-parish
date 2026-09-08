@@ -1,7 +1,8 @@
 # Design and resident experience
 
 This document owns the agreed information flow and the design-review process.
-The complete story functionality and all three accepted stories come first.
+The story functionality and evidence gate has passed. The global design and
+founder QA pass is next.
 [Work](work.md) owns the phase gate and QA ledger. The global redesign has not
 started. [Design-system reference](design-system.html) records the existing
 visual baseline until the owner changes it during that pass.
@@ -40,9 +41,9 @@ Explore, Ask, Following and Coverage access. A Stories navigation entry may link
 to Home's story section; a separate story index is not required for three stories.
 Keep the exact navigation presentation for the owner design pass.
 
-During implementation, functional pages use existing components. The final
-layout, colors and typography are design-pass decisions. Do not claim the new
-homepage exists because its structure is documented.
+The deployed homepage places the accepted stories before local setup and issues.
+It uses existing components. The final layout, colors and typography remain
+design-pass decisions.
 
 ## Story detail
 
@@ -70,8 +71,10 @@ record and generated depictions that look like documentary photographs.
 
 Store source, permission or license, caption and alt text. Label renderings as
 renderings. Captions that state project facts need evidence. Use responsive image
-sizes, reserved dimensions, useful crops, readable mobile captions and a fallback
-when an image fails. The share image should match the approved story version.
+sizes, reserved dimensions, useful crops and a fallback when an image fails.
+The owner requested no visible image subtext on Home or story pages. Retain
+descriptive alt text and review metadata, including captions and rights records.
+The share image should match the approved story version.
 
 ## Global pass
 

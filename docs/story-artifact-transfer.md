@@ -60,3 +60,15 @@ development artifact pairs passed signed export and identical replay. The three
 Boyce owner mapping previews and all three story replays passed on application
 decf363 with no additional model calls or update events. Production target
 artifact and payload hashes require revalidation after the approved code release.
+
+## September 8 successor publication
+
+The [source continuation](targeted-catchup-2026-09-08.md) transferred only three
+missing raw and normalized artifact pairs for Meta and SpaceX. Existing evidence
+was reused. Target-side reviews and exact approvals preceded publication.
+
+A retained draft does not by itself retain the current accepted image. Use the
+[reviewed image-retention procedure](operations.md#retaining-images-during-evidence-updates)
+when the source candidate needs that media. Preserve original retrieval times,
+image bytes and rights disclosures. A caption correction starts a fresh review;
+it cannot inherit the predecessor's approval.

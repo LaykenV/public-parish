@@ -1,5 +1,8 @@
 # Production story release
 
+This is a dated release receipt. Later image and evidence revisions, final costs
+and QA readiness are recorded in the [September 8 morning report](targeted-catchup-2026-09-08.md).
+
 September 8, 2026 UTC. The owner authorized the code release and bounded
 production preparation. PR 175 merged as `8d50baa`; PR 178 repaired a transfer
 identity mismatch and merged as `771f660d36435db9d93443d4be471c3a9c265670`.
@@ -31,7 +34,8 @@ $1.085776 and Ask was $0.463390. These are ledger values, not final provider
 invoices. No promotion mail was sent.
 
 The owner approved the exact candidates and published all three at generation 1.
-Their draft hashes remain unchanged. Baseline publication created zero story
+Their draft hashes were unchanged at this publication checkpoint.
+Baseline publication created zero story
 update events. The handoff preserves exact approval inputs and target versions.
 
 ## Production verification
@@ -46,8 +50,9 @@ Share HTML returned approved metadata and images; conditional requests returned
 Each story answered two supported questions with citations and returned an honest
 not-found response for an unsupported employment question. All nine anonymous
 Ask checks passed. Their 18 model calls cost an estimated $0.049127, under the
-$0.10 task ceiling. Current global source allowance remaining is $0.037866;
-Ask remaining is $0.414263. Later global source activity is separate from the
+$0.10 task ceiling. At that verification checkpoint, global source allowance
+remaining was $0.037866;
+Ask remaining was $0.414263. Later global source activity is separate from the
 three promotion reviews. No allowance was increased.
 
 No production mail was sent during this smoke. Actual email delivery and replies

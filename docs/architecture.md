@@ -1,6 +1,6 @@
 # Technical architecture
 
-This is the current engineering contract and the approved story extension.
+This is the engineering contract for the deployed local and story capabilities.
 Sections marked planned describe work that has not shipped. [Work](work.md)
 owns delivery status. [Operations](operations.md) owns runtime settings and
 procedures. Historical release descriptions live in [the archive](archive/README.md).
@@ -314,7 +314,7 @@ publication guarantees. Do not fabricate a decision merely to satisfy a table.
 
 ### Import and publication
 
-The development implementation lives in `convex/stories`. `storyImports` stores
+The deployed implementation lives in `convex/stories`. `storyImports` stores
 private research under the frozen 1.0.0 contract. `storyBuilds` binds sources,
 draft, review, notification intent and generation. `storyVersions` stores the
 immutable approved statements and exact shared snapshot spans. Reviewed story
@@ -375,7 +375,7 @@ claims as currently accepted. Define cache invalidation in the implementation.
 
 ### Story Ask
 
-Add a first-class story scope with the same anonymous ownership, retention,
+Story Ask has a first-class scope with the same anonymous ownership, retention,
 limits and receipts. Resolve only that story's accepted evidence set, including
 any explicitly supported direct facts. Use source documents and exact citations
 as evidence; generated story prose is not an independent source.
@@ -384,18 +384,20 @@ Fence each answer against the story version and its evidence revisions. A
 version change during selection or generation requires revalidation or a bounded
 retry. Old conversation text cannot override the current scope. Citation IDs
 from another story, draft, withheld version or unapproved document fail closed.
-Email replies use the same scope and checks.
+Email replies use the same scope and checks. Answers must preserve qualifying
+conditions and the exact people covered by a source, using short quotations when
+paraphrasing would lose a material limitation.
 
 ### Story following and material updates
 
-Add `story` as a follow target throughout validators, owner checks, enrollment,
+The `story` follow target is carried through validators, owner checks, enrollment,
 Following, preferences, fanout, delivery, roundup, reply scopes and management.
 Do not implement a second subscriber system. An underlying issue follow does not
 represent a whole-story subscription.
 
-Existing material-change and delivery records are decision-oriented. Extend them
-with explicit typed story-event references where needed; never invent a dummy
-decision ID. Publish the approved story version and its event atomically. Keep
+Material-change and delivery records carry explicit typed story-event references;
+never invent a dummy decision ID. Publish the approved story version and its event atomically.
+Keep
 one delivery per owner and substantive update, including overlaps with local
 follows when the same underlying change triggered both. The implementation must
 specify and verify that cross-target dedupe identity.
@@ -408,7 +410,9 @@ and unsubscribe are required before the full design pass.
 
 ### Story routes, Home, search and sharing
 
-Add `/stories/$storySlug` and `/share/stories/:slug`. A Stories navigation link
+Ordinary `/stories/$storySlug` URLs serve accepted social metadata and open the
+interactive app. Legacy `/share/stories/:slug` URLs redirect there.
+A Stories navigation link
 may target the homepage story section for the three-story launch; a separate
 editorial index is unnecessary. Existing issue and decision URLs remain stable.
 
@@ -418,10 +422,10 @@ Choosing a location does not filter them out. Owner-selected placement is
 independent of importance scores. [Design](design.md) owns composition and
 responsive behavior.
 
-Add story results to the current paginated search projection with an explicit
-result type and valid version references. Include published story evidence in
-corpus Ask through the same accepted-evidence resolver, with deduplication of
-shared source records. Do not count a story and its member decision as independent
+Paginated search includes typed story results with valid version references.
+Corpus Ask includes published story evidence through the same accepted-evidence
+resolver and deduplicates shared source records. Do not count a story and its
+member decision as independent
 corroboration.
 
 Share HTML uses only accepted metadata and the approved stored image. Escape

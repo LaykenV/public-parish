@@ -79,3 +79,10 @@ The starting inventory had 170 pending decisions and six failures. East Baton Ro
 Missing official permits and executed agreements remain research gaps. Unsupported claims remain unpublished. Broader archive completion, submission funding through judging, the founder pass and organic resident usefulness remain distinct work in [the active queue](work.md).
 
 Detailed private receipts are retained in `public-parish-catchup-evidence-20260908`. Frozen successor bundles and reviewed text are in `public-parish-story-handoff/catchup-20260908`. Predecessor bundles, the earlier overnight checkout and concurrent worktrees remain intact.
+
+## Final handoff deployment
+
+PR 190 published this report at `864d405277c3bca6d809fb0e184910621be8adb4`.
+Production workflow [34246165533](https://github.com/LaykenV/public-parish/actions/runs/34246165533)
+and independent `npm run smoke:production` passed. This documentation release
+changed no source evidence, publication version or provider allowance.

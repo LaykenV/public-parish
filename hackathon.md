@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T15:33:23Z
+- **Last updated:** 2026-09-08T15:56:35Z
 
 ## Log
 
@@ -1786,3 +1786,11 @@ passed. Ask preserved the tested legal qualifiers and refused a missing FAA
 license number. One citation-marker formatting item remains for design and QA.
 The continuation recorded $0.600803 in model charges and 86 Firecrawl credits.
 The full design, founder QA and production email checks remain the next phase.
+
+### 2026-09-08 - working tree, documentation audit after 864d405
+
+PR 190 deployed the morning report and passed independent production smoke.
+Aligned active guides with the shipped story loop, source continuation, retained
+images and exhausted source allowance. Preserved dated receipts and linked their
+successors. Global design, founder QA and production story mail remain pending.
+This audit changes documentation only; its release verification follows the push.

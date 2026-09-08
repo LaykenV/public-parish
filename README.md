@@ -4,12 +4,12 @@ Public Parish is a free, open-source, nonpartisan Louisiana civic application.
 Residents can inspect official evidence, ask grounded questions, follow issues
 and receive sourced updates.
 
-The original build through Slice 9 is deployed. The next release adds three
-featured Louisiana stories: Meta as the lead, with SpaceX in Vermilion Parish
-and the Boyce data center secondary. Story functionality and evidence come
-before the full design and QA pass, then public launch and outreach.
+Three reviewed Louisiana stories are live: Meta as the lead, with SpaceX in
+Vermilion Parish and the Boyce data center secondary. All three retain explicit
+LIMITED evidence status. Story functionality and targeted source work have passed
+the gate for the global design and founder QA pass. Public launch follows QA.
 See [current status and pending work](docs/work.md) for verified coverage,
-operating limits and acceptance gates. The new story feature is not shipped yet.
+operating limits and the remaining launch gates.
 
 - [Public app](https://www.publicparish.com)
 - [Qualifying hackathon host](https://befitting-flamingo-587.convex.site)
@@ -21,7 +21,7 @@ operating limits and acceptance gates. The new story feature is not shipped yet.
 | --- | --- |
 | [Business and product plan](PLAN.md) | Who is this for, what are we building, and why? |
 | [Current work](docs/work.md) | What is done, what is next, and what blocks launch? |
-| [Architecture](docs/architecture.md) | How does the system work, and how will stories fit? |
+| [Architecture](docs/architecture.md) | How do the evidence pipeline and stories work? |
 | [Design](docs/design.md) | How should Home and each resident journey work? |
 | [Sources](docs/sources.md) | What can we publish and which bodies do we cover? |
 | [Operations](docs/operations.md) | How do we spend, process, recover and release safely? |

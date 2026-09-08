@@ -1,6 +1,6 @@
 # Public Parish Grok Bot
 
-Updated September 7, 2026. Use Layken's standalone Grok Bot Mac app.
+Updated September 8, 2026. Use Layken's standalone Grok Bot Mac app.
 
 Read [AGENTS.md](AGENTS.md), [the work queue](docs/work.md), [sources](docs/sources.md),
 [architecture](docs/architecture.md), and [operations](docs/operations.md) before
@@ -8,14 +8,14 @@ starting. Current authorization and the named work order override old archived
 bot assignments. This file does not authorize a production action or external
 message.
 
-The current mission is to prepare complete, bounded official-source dossiers for
-Meta in Richland Parish, SpaceX at Pecan Island in Vermilion Parish, and Applied
-Digital near Boyce in Rapides Parish. Meta is the lead; the other two are
+All three stories are published. Use the work queue to assign bounded missing
+official evidence or QA for Meta in Richland Parish, SpaceX in Vermilion Parish,
+and Applied Digital near Boyce in Rapides Parish. Meta is the lead; the other two are
 secondary. Reuse the accepted Boyce evidence before seeking missing updates.
 Do not replace one of these with CCS or add another story.
 
 Find exact government documents, preserve their identity and dates, record
-precise excerpts and unanswered questions, and supply the planned JSON import
+precise excerpts and unanswered questions, and supply a versioned JSON import
 manifest with image provenance. Research prose is not accepted publication data.
 Use the story review and publication contract rather than writing directly to a
 public table. Do not claim continuous body coverage from a completed story.

@@ -1,6 +1,7 @@
 # Story research contract 1.0.0
 
-The JSON schema defines the frozen research exchange with Agent 2. The example
+The JSON schema defines the frozen research exchange used by owner source intake.
+The example
 and its artifact are fictional, complete formatting examples. They cannot be
 published. Do not copy example claims into a launch bundle.
 
@@ -26,14 +27,13 @@ bundle hash. Keep bundleKey stable across revisions. Unknown fields and versions
 are rejected. Contract changes require a separately versioned schema, migration
 instructions, and a handoff acknowledgement before bundle formatting changes.
 
-The next packet must verify official identity and artifact bytes, resolve shared
-accepted evidence, draft and independently review claims, bind owner approval to
-exact evidence and draft hashes, and publish immutable full or limited versions.
-There is no story publication endpoint in this first packet.
+The implemented publication workflow verifies official identity and artifact
+bytes, resolves shared accepted evidence, drafts and independently reviews claims,
+and binds owner approval to exact evidence and draft hashes before publication.
 
-## Reviewed publication packet, in development
+## Reviewed publication workflow
 
-The dependent publication branch adds a durable draft and independent review
+The deployed implementation runs a durable draft and independent review
 workflow over verified `sourceSnapshots`. Owner staging still cannot publish.
 `stories/build:start` checks saved raw and normalized bytes and exact excerpts,
 then freezes the input. The draft and independent review use the existing model
@@ -54,5 +54,6 @@ review check. These statements do not create fictional decision records or alter
 single-body issue membership. Generated story prose remains a projection of this
 evidence, never an independent source for Ask.
 
-Resident routes, story search, Ask and typed notification events follow in their
-own packets. This branch does not yet certify a complete resident story loop.
+Resident routes, story search, Ask and typed notification events are deployed.
+[Work](../work.md) records the verified development loop, production checks and
+remaining founder QA. The research contract alone does not certify those journeys.

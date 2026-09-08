@@ -19,8 +19,11 @@ promise every government entity or a complete historical archive.
 Lafayette Parish Council and unnamed Rapides planning bodies appeared in early
 plans. They are not additional certified bodies in this launch list. Never use a
 generic Planning Commission label in place of the separate Lafayette bodies.
-Youngsville's current limitation is recorded in the work plan and public health
-query. Previously accepted dated evidence remains accessible during degradation.
+The September 8 public health check returned Supported for all twelve named
+launch bodies, including Youngsville. This certifies coverage gates, not complete
+archives or continuous processing. [Work](work.md) records the checkpoint and
+operating limits. Previously accepted dated evidence remains accessible if a
+source later degrades.
 
 Code-owned approved roots are in `convex/coverage/roots.ts`. The exact current
 certification artifacts are in [launch-bodies.v4.json](coverage-gold-sets/launch-bodies.v4.json).
@@ -49,7 +52,7 @@ requirements; possessing an image does not make its accompanying claims true.
 | Story | Evidence questions to resolve | Starting point |
 | --- | --- | --- |
 | Meta, Richland Parish | What is announced, which government or utility actions are documented, what agreements or permits are settled, and what remains unknown? | Checked government records and utility proceedings; company information is a discovery lead |
-| SpaceX, Pecan Island, Vermilion Parish | Which official actions and project boundaries are documented, what approvals remain, and what public steps are actually listed? | [Louisiana Economic Development announcement](https://www.opportunitylouisiana.gov/news/spacex-launches-new-era-of-commercial-spaceflight-with-100-billion-louisiana-campus), followed by underlying official records |
+| SpaceX, Vermilion Parish | Which official actions and project boundaries are documented, what approvals remain, and what public steps are actually listed? | [Louisiana Economic Development announcement](https://www.opportunitylouisiana.gov/news/spacex-launches-new-era-of-commercial-spaceflight-with-100-billion-louisiana-campus), followed by underlying official records |
 | Applied Digital / Boyce, Rapides Parish | What do the term sheet, agreement drafting and project announcement establish, and is there a later supported action? | [Existing accepted issue](https://www.publicparish.com/issues/applied-digital-tax-incentive-term-sheet-cea-drafting-and-delta-forge--763577cb) and its immutable citations |
 
 These questions are research assignments, not claims about project status. The
