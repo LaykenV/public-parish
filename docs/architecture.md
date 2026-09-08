@@ -290,7 +290,7 @@ live in `convex/follows/retention.ts`, `convex/emailReplies/recovery.ts`, and
 ## Owner-curated story model
 
 The story schema and resident loop are implemented in `convex/stories` and the
-existing Ask, follow and email domains. Application `61c9fec` passed the bounded
+existing Ask, follow and email domains. Application `decf363` passed the bounded
 development gate. Production promotion remains owner-gated. The contracts below
 remain requirements for later revisions. See [development evidence](story-development-certification.md).
 
@@ -460,3 +460,9 @@ bytes and target-resolved stable identities. `stories/retainedDraft` binds exact
 accepted writing to a frozen manifest and target deployment. The target builder
 rechecks every span, retains the draft and runs a fresh independent review. It
 copies neither review nor approval. See [the bounded transfer procedure](story-artifact-transfer.md).
+
+Target promotion may use an owner-reviewed mapping from a frozen publication
+hint to a different target record key and payload hash. The target must already
+publish accepted evidence from the exact story source snapshot. The build stores
+the mapping and includes it in its input hash; owner approval still binds the
+fresh target review. The mapping does not change atomic records or issue links.

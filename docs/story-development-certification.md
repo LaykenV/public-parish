@@ -1,13 +1,13 @@
 # Three-story development certification
 
-September 7, 2026. Application `61c9fec9f19f527b09b0103b1dfe3199e5bd147b`
+September 7, 2026. Application `decf363cd61fa423255e5508aff22a503b47f8e8`
 passes the bounded development gate. Production promotion requires the owner's
 approval. The founder's global design and full QA campaign has not run.
 
 The development app is https://woozy-wren-227.convex.site. Its backend and
 CI-built frontend use the same application commit. Verify run
-[34169408937](https://github.com/LaykenV/public-parish/actions/runs/34169408937)
-passed. Static-hosting release `6087d2e3-adb8-4410-991d-82c5fce8eeab` contains
+[34171994238](https://github.com/LaykenV/public-parish/actions/runs/34171994238)
+passed. Static-hosting release `e2a78b53-eaa7-473c-b2bb-86085cc33830` contains
 that artifact. No local tests, typechecks, builds or linters ran.
 
 ## Accepted stories
@@ -61,13 +61,21 @@ approval. Target publication still requires the approved image, target evidence
 checks and exact owner approval. Missing-target and tampering cases passed CI;
 live evidence was not deleted to manufacture a missing target.
 
+Production preflight found different Boyce atomic identities across deployments.
+The owner can now preview explicit target mappings and bind the target's accepted
+publication hashes to the candidate. Three live development mapping previews and
+all three import replays passed without changing accepted versions, model-call
+counts or update events. All 632 tests in 80 files passed in CI. Production's
+private artifact and payload hash checks remain part of the approved promotion
+procedure; no production record was changed.
+
 The source allowance charged $0.358877 of $2.00 and Ask charged $0.080800 of
 $0.50 at the final provider checkpoint. These are application budget receipts,
 not final invoices. Source cost includes a conservative reservation after an
 earlier provider settlement timeout. Firecrawl's final provider charges remain
 unreconciled. No broad backfill or production setting changed.
 
-Application packets 140 through 173 remain unmerged. PR 159 is an older
+Application packets 140 through 173 and target mapping repair 176 remain unmerged. PR 159 is an older
 documentation side branch outside this candidate. The owner must review the
 combined release, bounded production transfer, three fresh target reviews and
 exact production candidates. After an approved merge, monitor its exact

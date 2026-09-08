@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-07T23:29:37Z
+- **Last updated:** 2026-09-08T00:06:00Z
 
 ## Log
 
@@ -1688,3 +1688,14 @@ controlled updates, a three-story roundup, grounded replies and unsubscribe.
 Retained artifact and draft promotion reuse saved work while requiring target
 review and approval. CI passed; no local suite or production promotion ran.
 The founder design and full QA campaign remains separate.
+
+
+### 2026-09-08 - decf363
+
+Fixed story promotion when existing local records have different development and
+production identities. Owner previews bind the target's accepted record hash to
+the candidate without changing the frozen research or retained writing. Historical
+receipts remain inspectable after related evidence changes. CI
+passed 632 tests. Development mapping and import replay preserved all three
+accepted stories with no new model calls or update events. Production remains
+unchanged and requires owner approval.

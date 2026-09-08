@@ -42,7 +42,21 @@ new candidate and target evidence hashes. This path avoids another MODEL_STRONG
 draft call; budget one independent review per story, with no automatic retries.
 No production model spending or data import is authorized by this document.
 
+Existing atomic record keys and payload hashes may differ between deployments.
+For each such manifest hint, the owner calls
+`stories/buildLedger:previewPublicationMapping` with the import, verified source
+bindings, source key, origin record key and proposed target record key. Review
+the returned title, source and current target payload hash. Pass each returned
+mapping as `publicationMappings` to `stories/build:start`. The builder requires
+an accepted current target publication on the exact verified story snapshot and
+records the mapping in the candidate's approval inputs. It does not rewrite the
+manifest, atomic record or issue membership. Changed hashes and unrelated source
+snapshots fail closed. Production artifact conflicts still stop promotion.
+
 Rehearse with development receipts and target IDs before promotion. Verify owner
 refusals, signature and byte tampering, target conflicts, replay, original retrieval
-time and zero new publications or mail. Automated cases run in PR CI. Live
-development transfer proof is pending.
+time and zero new publications or mail. Automated cases run in PR CI. Eleven live
+development artifact pairs passed signed export and identical replay. The three
+Boyce owner mapping previews and all three story replays passed on application
+decf363 with no additional model calls or update events. Production target
+artifact and payload hashes require revalidation after the approved code release.

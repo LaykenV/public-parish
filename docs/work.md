@@ -8,7 +8,7 @@ The approved order is stories, then design and QA, then launch and outreach.
 ## Current checkpoint
 
 The three-story functional release passes the development gate on application
-`61c9fec9f19f527b09b0103b1dfe3199e5bd147b`. PRs 140 through 173 are CI-passing
+`decf363cd61fa423255e5508aff22a503b47f8e8`. PRs 140 through 173 are CI-passing
 and reviewed; PR 159 is an older documentation side branch excluded from this
 candidate. All remain unmerged. The exact backend and CI-built frontend run at
 https://woozy-wren-227.convex.site.
@@ -110,7 +110,7 @@ silently replacing functionality or dropping a launch story.
 
 ## Phase 2: global design and full QA
 
-The S7 development gate has passed. The owner may begin this campaign now.
+The S7 development gate has passed. Target mapping repair 176 passed 632 CI tests and bounded development replay; production promotion requires explicit owner-reviewed mappings for existing Boyce records. The owner may begin this campaign now.
 Production promotion still needs its own exact release approval and smoke.
 [Design](design.md) owns the page contracts and review order.
 
