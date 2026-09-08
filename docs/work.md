@@ -62,8 +62,11 @@ pass, organic resident outcome, production story mail delivery or submission is 
   interactive application. Legacy share links redirect without another click.
   CI and PR review passed. Development HTTP checks covered all three story URLs,
   redirects and cache invalidation. The Meta route rendered the interactive app
-  with its accepted metadata. Facebook Sharing Debugger requires a signed-in
-  Facebook session; actual previews remain unverified.
+  with its accepted metadata. In signed-in Chrome, Facebook Sharing Debugger
+  returned 200 and constructed the correct title, description, canonical URL
+  and image URL for each development story. Each reported missing `fb:app_id`.
+  Native screenshot capture returned a blank window, so image crops are not
+  visually certified. Repeat the check on production after release.
 - PR 181 restores the existing 3D Louisiana relief beside the Home introduction.
   Keep featured stories directly below it and local selection below the stories.
   CI and PR review passed. Browser inspection confirmed the relief at 1280-pixel

@@ -1729,5 +1729,7 @@ These changes are not yet promoted; Facebook preview verification is pending.
 
 PRs 180 and 181 passed CI and review. Inspected the restored Louisiana relief
 at desktop and mobile browser widths. The ordinary Meta URL rendered its story
-and retained accepted social metadata. Facebook Sharing Debugger opened but
-required login, so no actual Facebook preview is certified. Production unchanged.
+and retained accepted social metadata. Signed-in Facebook Sharing Debugger
+returned 200 and the correct preview metadata for all three development stories.
+Each reported missing `fb:app_id`. Blank native screenshots prevented visual
+image-crop inspection. Production unchanged.
