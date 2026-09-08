@@ -276,6 +276,20 @@ test('the extraction contract preserves the complete CO-069-2026 minutes title c
   )
 })
 
+test('decoded ampersand citations retain offsets in the encoded PDF source', () => {
+  const source = 'Earlier &amp; text. Road construction, maintenance &amp; repairs. ($200,000)'
+  const excerpt = 'Road construction, maintenance & repairs. ($200,000)'
+  const location = locateSourceExcerpt(source, excerpt)!
+  expect(location.startOffset).toBe(source.indexOf('Road construction'))
+  expect(source.slice(location.startOffset, location.endOffset)).toBe(
+    'Road construction, maintenance &amp; repairs. ($200,000)',
+  )
+  expect(normalizeForMatch(source)).toBe(source)
+  expect(locateSourceExcerpt(source, excerpt.replace('$200,000', '$250,000'))).toBeNull()
+  expect(locateSourceExcerpt('J &amp; M Land Investments', 'J & C Land Investments')).toBeNull()
+  expect(locateSourceExcerpt('J &amp;amp; M Land Investments', 'J & M Land Investments')).toBeNull()
+})
+
 test('citation matching joins a hyphenated PDF line break', () => {
   const source = normalizeForMatch(
     'awarded through a federal Sub-\nAward Grant Agreement',
