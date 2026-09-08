@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T00:52:51Z
+- **Last updated:** 2026-09-08T01:27:11Z
 
 ## Log
 
@@ -1708,3 +1708,11 @@ production smoke passed. Eleven source snapshots and three official images are
 ready; retained drafts passed three fresh independent reviews for $0.013657.
 The three LIMITED candidates remain unpublished pending exact owner approval.
 No baseline notifications or promotion mail were sent.
+
+### 2026-09-08 - production publication at 771f660
+
+Published the three exact owner-approved LIMITED stories with Meta first.
+Production queries, routes, image hashes, citations, search and share caching
+passed. Nine anonymous Ask checks passed, with cited answers and unsupported
+questions returning not found, for an estimated $0.049127. Independent smoke
+passed after publication. Baseline publication created zero update events.

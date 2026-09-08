@@ -1,4 +1,4 @@
-# Production story preparation
+# Production story release
 
 September 8, 2026 UTC. The owner authorized the code release and bounded
 production preparation. PR 175 merged as `8d50baa`; PR 178 repaired a transfer
@@ -10,7 +10,7 @@ The smoke covered the direct Convex site, canonical domain, apex redirect,
 existing resident routes, coverage, search, issue evidence, share HTML and
 backend readiness. It does not certify unpublished production story routes.
 
-## Prepared candidates
+## Published stories
 
 All three frozen manifests from [development certification](story-development-certification.md)
 retain their hashes. Eight missing snapshots transferred from saved artifacts;
@@ -26,21 +26,32 @@ were resolved through explicit target mappings and exact payload hashes.
 
 The retained drafts required no new MODEL_STRONG work or Firecrawl retrieval.
 Exactly three fresh MODEL_FAST reviews succeeded. The application allowance
-charged $0.013657 against the $0.25 task ceiling. Source allowance remaining is
-$1.085776; Ask remains $0.463390. These are ledger values, not final provider
+charged $0.013657 against the $0.25 task ceiling. At that preparation checkpoint, source allowance remaining was
+$1.085776 and Ask was $0.463390. These are ledger values, not final provider
 invoices. No promotion mail was sent.
 
-All candidates remain unpublished at generation 0, with baseline notification
-intent and zero story update events. The owner's handoff contains full articles,
-images, evidence spans, target mappings and exact input/draft/review hashes.
-Approval must bind those production candidates before publication.
+The owner approved the exact candidates and published all three at generation 1.
+Their draft hashes remain unchanged. Baseline publication created zero story
+update events. The handoff preserves exact approval inputs and target versions.
 
-## Remaining gate
+## Production verification
 
-After exact owner approval, publish the three baseline versions and verify Home,
-direct story routes, approved images, search, share metadata and story Ask on
-production. Only the designated controlled recipient may receive test mail.
-No production provider round trip is claimed by development delivery evidence.
+All three public queries returned the approved LIMITED versions, with Meta rank
+0, SpaceX rank 1 and Boyce rank 2. Direct story routes returned 200. Downloaded
+images matched approved hashes. Exact evidence counts were 11, 14 and 11, with
+three related local records for Boyce. Typed story search found all three.
+Share HTML returned approved metadata and images; conditional requests returned
+304. Independent production smoke passed again after publication.
+
+Each story answered two supported questions with citations and returned an honest
+not-found response for an unsupported employment question. All nine anonymous
+Ask checks passed. Their 18 model calls cost an estimated $0.049127, under the
+$0.10 task ceiling. Current global source allowance remaining is $0.037866;
+Ask remaining is $0.414263. Later global source activity is separate from the
+three promotion reviews. No allowance was increased.
+
+No production mail was sent during this smoke. Actual email delivery and replies
+were verified in development and are not presented as production delivery proof.
 The founder's global design and full QA campaign remains separate.
 
 The transfer repair uses the known backend cloud identity to derive the signed

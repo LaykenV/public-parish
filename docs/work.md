@@ -14,9 +14,10 @@ transfer behind the production custom domain. Exact production workflow
 and independent `npm run smoke:production` passed.
 
 All eleven source snapshots and three images are ready in production. Three
-retained drafts passed fresh independent LIMITED reviews. They remain
-unpublished, with zero story update events. The next gate is owner approval of
-the exact production candidates, followed by publication and story smoke.
+retained drafts passed fresh independent LIMITED reviews. The owner approved
+and published the exact candidates at generation 1. Production story queries,
+route responses, image hashes, citations, typed search, share HTML and nine
+anonymous Ask checks passed. Baseline publication created zero update events.
 [Production preparation](story-production-preparation.md) records the evidence.
 
 The full development gate passed at `decf363`. The transfer repair and CI-built
@@ -39,7 +40,7 @@ records the evidence and the production boundary.
 | Source automation | Public health reads on September 7 showed only Metropolitan Council scheduled checks enabled |
 | Existing corpus | September 7 public queries returned 50 decisions per parish, the query cap; 6 Lafayette, 20 Rapides at the issue cap, and 19 East Baton Rouge timelines |
 | Boyce starting evidence | Existing Applied Digital issue returned three linked decisions and thirteen citations. This is a source base, not the new story page |
-| Remaining proof | Exact candidate publication approval and production story smoke, full founder design and QA pass, organic resident usefulness, final demo, and submission |
+| Remaining proof | Production story mail proof, full founder design and QA pass, organic resident usefulness, final demo, and submission |
 
 Many recent decisions are limited. Query counts are bounded results, not complete
 archive totals. A source can pass certification while its backlog remains
@@ -52,8 +53,8 @@ dated operating facts, not current live balances. The owner now permits targeted
 additional spending under [operations](operations.md#spending-policy).
 
 The older release record reports 560 CI tests and independent production smoke
-through PR #139. The new story evidence is development-only. No physical-device or screen-reader
-pass, organic resident outcome, production story release or submission is claimed.
+through PR #139. The three stories are published and passed bounded production smoke. No physical-device or screen-reader
+pass, organic resident outcome, production story mail delivery or submission is claimed.
 
 ## Phase 1: finish stories
 
