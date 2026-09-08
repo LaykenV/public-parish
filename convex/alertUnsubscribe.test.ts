@@ -42,11 +42,11 @@ test('an alert unsubscribe link requires confirmation and stops every email foll
     expect(tokens).toHaveLength(1)
     expect(tokens[0]).toMatchObject({
       subscriberId: fixture.subscriberId, kind: 'unsubscribe',
-      tokenHash: await hashAccessToken(url.pathname.split('/').at(-1) ?? ''),
+      tokenHash: await hashAccessToken(url.pathname.split('/').pop() ?? ''),
     })
     expect(tokens[0].followId).toBeUndefined()
     expect(tokens[0].encryptedAlertToken).toMatch(/^v1\./)
-    expect(JSON.stringify(tokens)).not.toContain(url.pathname.split('/').at(-1) ?? '')
+    expect(JSON.stringify(tokens)).not.toContain(url.pathname.split('/').pop() ?? '')
   })
   const confirmation = await t.fetch(url.pathname)
   expect(confirmation.status).toBe(200)
