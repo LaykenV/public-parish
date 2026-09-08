@@ -86,3 +86,14 @@ those things. This document does not assign a score or probability of winning.
 No submission, public launch post, resident outcome or story release is claimed
 by this documentation update. The older dated build and release evidence remains
 in [the archive](archive/README.md).
+
+## Current release proof and remaining presentation work
+
+The three owner-approved LIMITED stories are published at application `771f660`.
+Bounded production route, evidence, image, search, share and nine anonymous Ask
+checks passed. Email round trips passed in development; the owner will perform
+the production email check during QA. Production application `7ababad` adds the
+restored Louisiana relief and ordinary-link social metadata. Its exact workflow
+and independent smoke passed. Facebook confirmed development metadata for all
+three stories and production Meta metadata. Replacement images, final production
+Facebook image crops, and the founder's full design and QA campaign remain open.

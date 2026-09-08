@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T00:06:00Z
+- **Last updated:** 2026-09-08T02:52:08Z
 
 ## Log
 
@@ -1699,3 +1699,45 @@ receipts remain inspectable after related evidence changes. CI
 passed 632 tests. Development mapping and import replay preserved all three
 accepted stories with no new model calls or update events. Production remains
 unchanged and requires owner approval.
+
+### 2026-09-08 - 771f660
+
+Deployed the combined story code and repaired signed artifact transfer behind
+the production custom domain. Exact workflow 34174377315 and independent
+production smoke passed. Eleven source snapshots and three official images are
+ready; retained drafts passed three fresh independent reviews for $0.013657.
+The three LIMITED candidates remain unpublished pending exact owner approval.
+No baseline notifications or promotion mail were sent.
+
+### 2026-09-08 - production publication at 771f660
+
+Published the three exact owner-approved LIMITED stories with Meta first.
+Production queries, routes, image hashes, citations, search and share caching
+passed. Nine anonymous Ask checks passed, with cited answers and unsupported
+questions returning not found, for an estimated $0.049127. Independent smoke
+passed after publication. Baseline publication created zero update events.
+
+### 2026-09-08 - story presentation follow-up
+
+Prepared ordinary story URLs that return approved metadata with the interactive
+app, with legacy share links redirecting directly. Restored the existing 3D
+Louisiana relief in a separate PR. Preserved three owner-supplied rendering
+originals for media review. The owner will check production email during QA.
+These changes are not yet promoted; Facebook preview verification is pending.
+
+### 2026-09-08 - development presentation inspection at 7c76f8a
+
+PRs 180 and 181 passed CI and review. Inspected the restored Louisiana relief
+at desktop and mobile browser widths. The ordinary Meta URL rendered its story
+and retained accepted social metadata. Signed-in Facebook Sharing Debugger
+returned 200 and the correct preview metadata for all three development stories.
+Each reported missing `fb:app_id`. Blank native screenshots prevented visual
+image-crop inspection. Production unchanged.
+
+### 2026-09-08 - presentation production release at 7ababad
+
+Merged PR 180 as 0648c4d and PR 181 as 7ababad after owner approval. Each exact
+production workflow and independent smoke passed. Production Home renders the
+Louisiana relief and all three story links. Ordinary story URLs provide approved
+metadata and app scripts; legacy links redirect. Facebook confirmed production
+Meta metadata. Replacement media and final image-crop checks remain open.

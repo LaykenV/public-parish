@@ -130,3 +130,15 @@ Pause broad posting if citations, Ask, mobile navigation, follows or unsubscribe
 break, or if public operating allowances expire. Fix the failed journey before
 bringing more visitors into it. A missing newer government document calls for an
 honest limitation, not another unsupported headline.
+
+## Story link preview checkpoint
+
+Production PR 180 makes ordinary `/stories/` URLs return accepted title,
+description and image metadata with the interactive application. Old
+`/share/stories/` links redirect directly, without another click. All three
+canonical production URLs passed HTTP metadata and redirect checks. Facebook
+Sharing Debugger confirmed all three development previews and the production
+Meta preview metadata, with a missing `fb:app_id` warning. Native screenshots
+were blank, so image crops are not visually certified. Verify each production
+preview with the final approved image before outreach. The SpaceX and Boyce
+production Facebook checks and production email verification belong to QA.

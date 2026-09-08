@@ -1,8 +1,7 @@
 # Three-story development certification
 
 September 7, 2026. Application `decf363cd61fa423255e5508aff22a503b47f8e8`
-passes the bounded development gate. Production promotion requires the owner's
-approval. The founder's global design and full QA campaign has not run.
+passes the bounded development gate. The later [production preparation](story-production-preparation.md) records the authorized code release and target reviews. The owner approved and published those exact candidates; bounded production story smoke passed. The founder's global design and full QA campaign has not run.
 
 The development app is https://woozy-wren-227.convex.site. Its backend and
 CI-built frontend use the same application commit. Verify run

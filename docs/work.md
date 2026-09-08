@@ -7,13 +7,31 @@ The approved order is stories, then design and QA, then launch and outreach.
 
 ## Current checkpoint
 
-The three-story functional release passes the development gate on application
-`decf363cd61fa423255e5508aff22a503b47f8e8`. PRs 140 through 173 are CI-passing
-and reviewed; PR 159 is an older documentation side branch excluded from this
-candidate. All remain unmerged. The exact backend and CI-built frontend run at
-https://woozy-wren-227.convex.site.
+Production code `7ababad83d311609dd75648813e16500478ddd78` is deployed.
+PR 180 delivers accepted metadata and the interactive app at ordinary story
+URLs. PR 181 restores the Louisiana relief. Their production workflows
+[34180958554](https://github.com/LaykenV/public-parish/actions/runs/34180958554)
+and [34181213262](https://github.com/LaykenV/public-parish/actions/runs/34181213262)
+passed, followed by independent `npm run smoke:production` for each release.
+The production Home browser check found the relief and all three story links.
 
-Meta is the Home lead, with SpaceX and Boyce secondary. All three have accepted
+The earlier story publication release was `771f660`.
+PR 175 shipped the combined story release; PR 178 repaired signed artifact
+transfer behind the production custom domain. Exact production workflow
+[34174377315](https://github.com/LaykenV/public-parish/actions/runs/34174377315)
+and independent `npm run smoke:production` passed.
+
+All eleven source snapshots and three images are ready in production. Three
+retained drafts passed fresh independent LIMITED reviews. The owner approved
+and published the exact candidates at generation 1. Production story queries,
+route responses, image hashes, citations, typed search, share HTML and nine
+anonymous Ask checks passed. Baseline publication created zero update events.
+[Production preparation](story-production-preparation.md) records the evidence.
+
+The full development gate passed at `decf363`. The presentation follow-up backend
+and CI-built frontend now run at `7c76f8a` on https://woozy-wren-227.convex.site.
+
+In development, Meta is the Home lead, with SpaceX and Boyce secondary. All three have accepted
 LIMITED versions, official document images, exact citations and explicit gaps.
 Actual development verification covered Ask, Google and verified-email follows,
 three immediate updates, a three-story roundup, sourced replies, management and
@@ -25,12 +43,12 @@ records the evidence and the production boundary.
 | Evidence pipeline | Immutable snapshots, deterministic validation, independent review, and full, limited, or withheld publication deployed |
 | Resident loop | Discovery, issues, decisions, evidence, anonymous Ask, Google and email-only follows, alerts, roundups, replies, and private reports deployed |
 | Coverage and operations | Owner compiler, bounded scheduled processing, coverage requests, launch notices, search, issue sharing, and reports deployed |
-| Latest inspected release | Main commit `c2183d6`, successful production workflow [34143377017](https://github.com/LaykenV/public-parish/actions/runs/34143377017) |
+| Latest inspected release | Main commit `7ababad`, successful production workflow [34181213262](https://github.com/LaykenV/public-parish/actions/runs/34181213262) and independent smoke |
 | Local coverage | Eleven of twelve named bodies supported; Youngsville degraded. Lafayette accessible with a limitation; Rapides and East Baton Rouge available |
 | Source automation | Public health reads on September 7 showed only Metropolitan Council scheduled checks enabled |
 | Existing corpus | September 7 public queries returned 50 decisions per parish, the query cap; 6 Lafayette, 20 Rapides at the issue cap, and 19 East Baton Rouge timelines |
 | Boyce starting evidence | Existing Applied Digital issue returned three linked decisions and thirteen citations. This is a source base, not the new story page |
-| Remaining proof | Owner-approved production promotion and independent smoke, full founder design and QA pass, organic resident usefulness, final demo, and submission |
+| Remaining proof | Production story mail proof, full founder design and QA pass, organic resident usefulness, final demo, and submission |
 
 Many recent decisions are limited. Query counts are bounded results, not complete
 archive totals. A source can pass certification while its backlog remains
@@ -43,8 +61,32 @@ dated operating facts, not current live balances. The owner now permits targeted
 additional spending under [operations](operations.md#spending-policy).
 
 The older release record reports 560 CI tests and independent production smoke
-through PR #139. The new story evidence is development-only. No physical-device or screen-reader
-pass, organic resident outcome, production story release or submission is claimed.
+through PR #139. The three stories are published and passed bounded production smoke. No physical-device or screen-reader
+pass, organic resident outcome, production story mail delivery or submission is claimed.
+
+## Owner follow-up before outreach
+
+- PR 180 makes ordinary story URLs return accepted social metadata with the
+  interactive application. Legacy share links redirect without another click.
+  CI and PR review passed. Development HTTP checks covered all three story URLs,
+  redirects and cache invalidation. The Meta route rendered the interactive app
+  with its accepted metadata. In signed-in Chrome, Facebook Sharing Debugger
+  returned 200 and constructed the correct title, description, canonical URL
+  and image URL for each development story. Each reported missing `fb:app_id`.
+  Native screenshot capture returned a blank window, so image crops are not
+  visually certified. Facebook confirmed the production Meta preview metadata.
+  Production SpaceX and Boyce HTTP metadata and redirects passed; their Facebook
+  checks remain for QA after Chrome switched to another active task.
+- PR 181 restores the existing 3D Louisiana relief beside the Home introduction.
+  Keep featured stories directly below it and local selection below the stories.
+  CI and PR review passed. Browser inspection confirmed the relief at 1280-pixel
+  desktop and 390-pixel mobile widths. This is not a physical-device QA pass.
+- The owner supplied replacement renderings for Meta, Boyce and SpaceX. Originals
+  and hashes are preserved in the private handoff. Source credit and reuse
+  evidence are pending; do not present a rendering as completed construction.
+- The owner will perform production email verification during the founder QA
+  pass. Agent verification remains development-only for that provider loop.
+- PRs 180 and 181 are merged and production-smoked. PR 179 records this release.
 
 ## Phase 1: finish stories
 
@@ -60,20 +102,20 @@ Do not begin the full redesign campaign until this phase passes.
 | S4 | Story-scoped anonymous Ask and private thread authorization using accepted story evidence | S1, S3 | Development passed, two supported and one unsupported question per story |
 | S5 | Google and verified-email story follows, material-update alerts, roundup integration, grounded replies, management and unsubscribe | S1, S3, S4 | Development passed with actual isolated provider callbacks, receipt, reply, management and unsubscribe proof |
 | S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Meta reviewed v3, SpaceX v2 and Boyce v2 accepted and published LIMITED in development |
-| S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Development gate passed; owner-approved production release and independent smoke pending |
+| S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Development gate passed; exact owner-approved production publication and bounded smoke passed. Production email is assigned to founder QA. |
 
 Build the first complete vertical path with the existing Boyce evidence if that
 reduces risk. Meta remains the lead on the delivered homepage. Research for all
 three can proceed while shared functionality is implemented. No fourth story is
 required. CCS is deferred; do not substitute it for the agreed launch set.
 
-The final application frontend came from Verify run
-[34169408937](https://github.com/LaykenV/public-parish/actions/runs/34169408937),
-static-hosting release `6087d2e3-adb8-4410-991d-82c5fce8eeab`. No local automated
-validation ran. Eleven retained official source pairs passed signed artifact
-transfer and exact replay. A retained draft passed fresh independent review
-without another MODEL_STRONG call. Publishers remain candidate and monitoring
-remains off. Development execution is not production proof.
+The full development evidence is recorded in
+[development certification](story-development-certification.md). The approved
+production application is `7ababad`; its exact workflow and independent smoke
+passed. All eleven source snapshots and three images passed target checks.
+No new body or parish was certified and no broad monitoring was activated.
+The acceptance checks below describe the completed development gate; production
+email verification is assigned to the owner's QA pass.
 
 ### Story acceptance
 
@@ -95,7 +137,7 @@ remains off. Development execution is not production proof.
 - [x] Changed or withdrawn source evidence cannot remain silently current in a
   story, answer, search result, email, or social preview.
 - [x] Story search and share previews use the accepted story version and its
-  approved image. Direct refresh works in development. Production origins remain a separate gate.
+  approved image. Direct refresh and dedicated share HTML passed production smoke. Ordinary URL metadata and direct app delivery passed the PR 180 production follow-up.
 - [x] Story publication neither promotes a new parish nor enables agency-wide
   monitoring. Supported local coverage retains its existing gates.
 - [x] Owner review, retries, revisions, withholding, and rollback or withdrawal
@@ -110,8 +152,10 @@ silently replacing functionality or dropping a launch story.
 
 ## Phase 2: global design and full QA
 
-The S7 development gate has passed. Target mapping repair 176 passed 632 CI tests and bounded development replay; production promotion requires explicit owner-reviewed mappings for existing Boyce records. The owner may begin this campaign now.
-Production promotion still needs its own exact release approval and smoke.
+The S7 development gate and owner-approved production publication have passed.
+Boyce's exact target mappings were checked before publication. The owner may
+begin the full QA campaign now, including the production email check. Image,
+image replacement and final social-preview checks remain tracked above.
 [Design](design.md) owns the page contracts and review order.
 
 - [ ] Agree on global colors, type, spacing, button and input treatments,

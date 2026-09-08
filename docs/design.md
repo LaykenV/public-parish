@@ -138,3 +138,16 @@ previously accepted readable evidence.
 Keep small verified voter information with outbound official links. Do not build
 an election guide, candidate comparison, voting recommendation or prediction
 interface during this design pass.
+
+## Owner corrections after story publication
+
+PR 181 restored the existing 3D Louisiana relief in the Home introduction.
+Desktop and mobile browser widths passed development inspection; the production
+Home renders the relief. The stories remain ahead of local selection.
+Use the owner-selected project renderings after source credit and media review;
+keep accurate rendering labels, alt text and captions. Do not treat image changes
+as material story updates.
+
+PR 180 makes ordinary story URLs provide approved social metadata and open the
+interactive story directly. Legacy share links redirect. Verify actual
+Facebook previews before outreach; raw HTML inspection alone is not that proof.

@@ -53,7 +53,7 @@ requirements; possessing an image does not make its accompanying claims true.
 | Applied Digital / Boyce, Rapides Parish | What do the term sheet, agreement drafting and project announcement establish, and is there a later supported action? | [Existing accepted issue](https://www.publicparish.com/issues/applied-digital-tax-incentive-term-sheet-cea-drafting-and-delta-forge--763577cb) and its immutable citations |
 
 These questions are research assignments, not claims about project status. The
-three story packages remain pending until the work-plan gate passes. Meta is the
+three story packages passed the development gate and were published as LIMITED versions after exact owner approval. Meta is the
 lead story; SpaceX and Boyce are secondary. A future CCS story is outside this
 launch set.
 
@@ -79,7 +79,7 @@ Each dossier must identify:
 - Required additional retrieval, expected cost and a bounded stop condition.
 
 The owner can assemble this through computer use and a versioned JSON manifest.
-JSON upload is not publication. The planned importer must enforce the same
+JSON upload is not publication. The implemented importer enforces the same
 source checks, immutable storage, extraction, review and publication policy as
 other evidence. No free-form research prose becomes accepted data by import.
 
