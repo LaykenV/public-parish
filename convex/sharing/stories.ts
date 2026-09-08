@@ -47,7 +47,7 @@ export const shareStory = httpAction(async (ctx, request) => {
     if (!response.ok) return unavailable(503)
     shell = await response.text()
   } else return unavailable(503)
-  const revision = `${story.revision}:${asset.etag ?? await shellHash(shell)}`
+  const revision = await shellHash(`${story.revision}:${asset.etag ?? shell}`)
   const headers = { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=0, must-revalidate', ETag: `"${revision}"`,
     'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'strict-origin-when-cross-origin' }
   if (matchesIssueEtag(request.headers.get('If-None-Match'), revision)) return new Response(null, { status: 304, headers })
