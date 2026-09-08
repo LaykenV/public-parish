@@ -14,6 +14,7 @@ import type { ActionCtx } from '../_generated/server'
 import { action, env } from '../_generated/server'
 import { completeStructuredDirectFallback } from '../ai/provider'
 import type { CompleteStructuredOptions } from '../ai/provider'
+import { PermanentModelError } from '../ai/types'
 import type { AttemptRecord, ModelUsage } from '../ai/types'
 import { sha256HexOfText } from '../sources/hashing'
 import * as AskContracts from './contracts'
@@ -262,6 +263,7 @@ export const answerQuestion = action({
         prompt,
       })
     } catch (gatewayError) {
+      await failSpendingAdmission(ctx, claim, gatewayError)
       if (!allowsDirectFallback(gatewayError)) {
         await recordGatewayFailure(
           ctx,
@@ -307,7 +309,8 @@ export const answerQuestion = action({
               ASK_SCHEMA_VERSION,
             ),
         )
-      } catch {
+      } catch (error) {
+        await failSpendingAdmission(ctx, claim, error)
         await ctx.runMutation(internal.ask.ledger.failAnswer, {
           receiptId: claim.receiptId,
           answerAttempt: claim.attempt,
@@ -581,6 +584,7 @@ async function selectPublishedContext(
       prompt,
     })
   } catch (gatewayError) {
+    if (isSpendingAdmissionError(gatewayError)) throw gatewayError
     await recordGatewayFailure(
       ctx,
       args.receiptId,
@@ -609,7 +613,8 @@ async function selectPublishedContext(
       if (direct.outcome === 'success') {
         return validateModelSelection(direct.result.parsed, args.catalog)
       }
-    } catch {
+    } catch (error) {
+      if (isSpendingAdmissionError(error)) throw error
       return broadSelection()
     }
     return broadSelection()
@@ -1160,6 +1165,7 @@ async function failContextPreparation(
   claim: { receiptId: Id<'askAnswerReceipts'>; attempt: number },
   error: unknown,
 ): Promise<never> {
+  await failSpendingAdmission(ctx, claim, error)
   const scopeTooLarge =
     error instanceof ConvexError &&
     typeof error.data === 'object' &&
@@ -1176,4 +1182,22 @@ async function failContextPreparation(
     'answer_context_failed',
     'The published evidence context could not be verified',
   )
+}
+
+function isSpendingAdmissionError(error: unknown): error is PermanentModelError {
+  return error instanceof PermanentModelError && error.errorClass === 'ai_spending_limit'
+}
+
+async function failSpendingAdmission(
+  ctx: ActionCtx,
+  claim: { receiptId: Id<'askAnswerReceipts'>; attempt: number },
+  error: unknown,
+): Promise<void> {
+  if (!isSpendingAdmissionError(error)) return
+  await ctx.runMutation(internal.ask.ledger.failAnswer, {
+    receiptId: claim.receiptId,
+    answerAttempt: claim.attempt,
+    errorClass: 'ai_spending_limit',
+  })
+  throw askError('ai_spending_limit', 'Ask is paused because its paid allowance is unavailable.')
 }

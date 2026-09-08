@@ -11,6 +11,7 @@ import type { DataModel, Id } from './_generated/dataModel'
 import schema from './schema'
 import { sha256HexOfText } from './sources/hashing'
 import { currentAtomicExcerpts } from './stories/askEvidence'
+import { PermanentModelError } from './ai/types'
 import { normalizeForMatch } from './extraction/textMatch'
 import {
   allowsDirectFallback,
@@ -1340,4 +1341,23 @@ test('shared story evidence deduplication respects atomic normalization, scope a
     await ctx.db.patch(publication.recordId, { currentPublishedVersionId: undefined })
     expect(await currentAtomicExcerpts(ctx, seeded.snapshotId)).toEqual(new Set())
   })
+})
+
+test.each(['selector', 'answer'])('preserves a spending pause during %s without a provider-failure receipt', async stage => {
+  const t = initTest()
+  await seedEvidence(t)
+  const token = 'spending-paused-session-token-00000000000000000000000'
+  await t.mutation(api.ask.threads.createSession, { token })
+  const thread = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'corpus', areaKey: 'lafayette-parish' } })
+  const question = await t.mutation(api.ask.threads.appendQuestion, { token, threadId: thread.threadId, question: 'What changed?', idempotencyKey: 'spending-paused-question-0001' })
+  const stages: string[] = []
+  overrideAskGatewayForTests(async (_ctx, args) => {
+    stages.push(args.stage)
+    if (args.stage === stage) throw new PermanentModelError('ai_spending_limit', 'Paid work paused')
+    return gatewayResult({ retrievalMode: 'broad', targets: [] })
+  })
+  await expect(t.action(api.ask.answer.answerQuestion, { token, threadId: thread.threadId, questionMessageId: question.messageId })).rejects.toThrow('ai_spending_limit')
+  expect(stages).toEqual(stage === 'selector' ? ['selector'] : ['selector', 'answer'])
+  expect(await t.run(ctx => ctx.db.query('askAnswerReceipts').collect())).toMatchObject([{ state: 'failed', errorClass: 'ai_spending_limit' }])
+  expect(await t.run(ctx => ctx.db.query('askModelAttempts').collect())).toHaveLength(stage === 'selector' ? 0 : 1)
 })

@@ -54,7 +54,7 @@ export type AskNotFoundAnswer = {
 }
 
 export type AskTurnState =
-  'checking' | 'complete' | 'retryable_failure' | 'terminal_failure' | 'scope_too_large'
+  'checking' | 'complete' | 'retryable_failure' | 'terminal_failure' | 'scope_too_large' | 'allowance_paused'
 
 export type AskTurnView = {
   id: string

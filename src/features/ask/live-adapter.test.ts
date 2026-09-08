@@ -428,3 +428,20 @@ function memoryStorage(): Storage & { entries: () => Array<[string, string]> } {
     setItem: (key, value) => void values.set(key, value),
   }
 }
+
+test('shows a spending pause without inventing a cooldown deadline', async () => {
+  const client = {
+    mutation: vi.fn()
+      .mockResolvedValueOnce({ expiresAt: 2_000_000_000_000 })
+      .mockResolvedValueOnce({ threadId: 'agent-thread-allowance', expiresAt: 2_000_000_000_000, scope: { kind: 'corpus', areaKey: 'lafayette-parish' } })
+      .mockResolvedValueOnce({ messageId: 'question-allowance', replayed: false }),
+    action: vi.fn().mockRejectedValue({ data: { code: 'ai_spending_limit' } }),
+    query: vi.fn(),
+  } as unknown as ConvexReactClient
+  const adapter = new LiveAskAdapter(client, memoryStorage())
+  const updates: AskUpdate[] = []
+  adapter.subscribe(update => updates.push(update))
+  await adapter.submit({ scope: corpusScope('lafayette-parish'), question: 'What changed?', idempotencyKey: 'question-allowance-key-001' })
+  expect(latestConversation(updates)?.turns[0]?.state).toBe('allowance_paused')
+  expect(updates.some(update => update.kind === 'availability' && update.availability.kind === 'cooldown')).toBe(false)
+})
