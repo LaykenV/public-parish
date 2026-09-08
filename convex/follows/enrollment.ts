@@ -703,6 +703,14 @@ async function rotateTokens(
   unsubscribeTokenHash: string,
   now: number,
 ): Promise<void> {
+  const subscriber = await ctx.db.get(subscriberId)
+  if (subscriber?.alertUnsubscribeTokenId) {
+    const alertToken = await ctx.db.get(subscriber.alertUnsubscribeTokenId)
+    if (alertToken?.subscriberId === subscriberId && alertToken.kind === 'unsubscribe') {
+      await ctx.db.patch(alertToken._id, { revokedAt: now })
+    }
+    await ctx.db.patch(subscriberId, { alertUnsubscribeTokenId: undefined })
+  }
   const [managementTokens, unsubscribeTokens] = await Promise.all([
     ctx.db
       .query('emailAccessTokens')
