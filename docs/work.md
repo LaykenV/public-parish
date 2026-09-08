@@ -7,13 +7,22 @@ The approved order is stories, then design and QA, then launch and outreach.
 
 ## Current checkpoint
 
-The three-story functional release passes the development gate on application
-`decf363cd61fa423255e5508aff22a503b47f8e8`. PRs 140 through 173 are CI-passing
-and reviewed; PR 159 is an older documentation side branch excluded from this
-candidate. All remain unmerged. The exact backend and CI-built frontend run at
-https://woozy-wren-227.convex.site.
+Production code `771f660d36435db9d93443d4be471c3a9c265670` is deployed.
+PR 175 shipped the combined story release; PR 178 repaired signed artifact
+transfer behind the production custom domain. Exact production workflow
+[34174377315](https://github.com/LaykenV/public-parish/actions/runs/34174377315)
+and independent `npm run smoke:production` passed.
 
-Meta is the Home lead, with SpaceX and Boyce secondary. All three have accepted
+All eleven source snapshots and three images are ready in production. Three
+retained drafts passed fresh independent LIMITED reviews. They remain
+unpublished, with zero story update events. The next gate is owner approval of
+the exact production candidates, followed by publication and story smoke.
+[Production preparation](story-production-preparation.md) records the evidence.
+
+The full development gate passed at `decf363`. The transfer repair and CI-built
+frontend now run at `9138a83` on https://woozy-wren-227.convex.site.
+
+In development, Meta is the Home lead, with SpaceX and Boyce secondary. All three have accepted
 LIMITED versions, official document images, exact citations and explicit gaps.
 Actual development verification covered Ask, Google and verified-email follows,
 three immediate updates, a three-story roundup, sourced replies, management and
@@ -25,12 +34,12 @@ records the evidence and the production boundary.
 | Evidence pipeline | Immutable snapshots, deterministic validation, independent review, and full, limited, or withheld publication deployed |
 | Resident loop | Discovery, issues, decisions, evidence, anonymous Ask, Google and email-only follows, alerts, roundups, replies, and private reports deployed |
 | Coverage and operations | Owner compiler, bounded scheduled processing, coverage requests, launch notices, search, issue sharing, and reports deployed |
-| Latest inspected release | Main commit `c2183d6`, successful production workflow [34143377017](https://github.com/LaykenV/public-parish/actions/runs/34143377017) |
+| Latest inspected release | Main commit `771f660`, successful production workflow [34174377315](https://github.com/LaykenV/public-parish/actions/runs/34174377315) |
 | Local coverage | Eleven of twelve named bodies supported; Youngsville degraded. Lafayette accessible with a limitation; Rapides and East Baton Rouge available |
 | Source automation | Public health reads on September 7 showed only Metropolitan Council scheduled checks enabled |
 | Existing corpus | September 7 public queries returned 50 decisions per parish, the query cap; 6 Lafayette, 20 Rapides at the issue cap, and 19 East Baton Rouge timelines |
 | Boyce starting evidence | Existing Applied Digital issue returned three linked decisions and thirteen citations. This is a source base, not the new story page |
-| Remaining proof | Owner-approved production promotion and independent smoke, full founder design and QA pass, organic resident usefulness, final demo, and submission |
+| Remaining proof | Exact candidate publication approval and production story smoke, full founder design and QA pass, organic resident usefulness, final demo, and submission |
 
 Many recent decisions are limited. Query counts are bounded results, not complete
 archive totals. A source can pass certification while its backlog remains

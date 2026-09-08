@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T00:06:00Z
+- **Last updated:** 2026-09-08T00:52:51Z
 
 ## Log
 
@@ -1699,3 +1699,12 @@ receipts remain inspectable after related evidence changes. CI
 passed 632 tests. Development mapping and import replay preserved all three
 accepted stories with no new model calls or update events. Production remains
 unchanged and requires owner approval.
+
+### 2026-09-08 - 771f660
+
+Deployed the combined story code and repaired signed artifact transfer behind
+the production custom domain. Exact workflow 34174377315 and independent
+production smoke passed. Eleven source snapshots and three official images are
+ready; retained drafts passed three fresh independent reviews for $0.013657.
+The three LIMITED candidates remain unpublished pending exact owner approval.
+No baseline notifications or promotion mail were sent.
