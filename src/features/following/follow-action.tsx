@@ -7,6 +7,7 @@ import {
 import { useAction, useMutation, useQuery } from 'convex/react'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 
+import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
 import { api } from '../../../convex/_generated/api'
 import { Button } from '../../components/ui/button'
 import { useGoogleAuth } from '../auth/google-auth'
@@ -31,19 +32,32 @@ type FollowStep =
   | 'google-failed'
   | 'success'
 
-export function FollowAction({
-  available,
-  className,
-  label = 'Follow',
-  live = false,
-  target,
-}: {
+type FollowActionProps = {
   available: boolean
   className?: string
   label?: string
   live?: boolean
   target: FollowTarget
-}) {
+}
+
+export function FollowAction(props: FollowActionProps) {
+  return (
+    <ResidentSectionBoundary
+      label="Follow controls"
+      resetKey={`${props.target.kind}:${props.target.key}`}
+    >
+      <FollowActionContent {...props} />
+    </ResidentSectionBoundary>
+  )
+}
+
+function FollowActionContent({
+  available,
+  className,
+  label = 'Follow',
+  live = false,
+  target,
+}: FollowActionProps) {
   const titleId = useId()
   const [open, setOpen] = useState(false)
   const [step, setStep] = useState<FollowStep>('choose')

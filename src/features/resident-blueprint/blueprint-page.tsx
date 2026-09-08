@@ -105,8 +105,8 @@ export function BlueprintNotFound() {
             <p className="blueprint-eyebrow">Not found</p>
             <h1>This page does not exist.</h1>
             <p className="blueprint-description">
-              The final state will offer recovery through Home, Explore, or the
-              relevant Coverage page without guessing which record you meant.
+              Check the address, return home, or search Explore for the official
+              record you need.
             </p>
             <ActionRow
               actions={[

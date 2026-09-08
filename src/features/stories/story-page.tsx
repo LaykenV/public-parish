@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
+import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
+import { StoryOfficialSourceLink } from './story-source-link'
 import { ShareButton } from '../discovery/share'
 import { FollowAction } from '../following/follow-action'
 import { ReportProblem } from '../evidence/evidence-blocks'
@@ -16,6 +18,14 @@ function StoryImage({ media, compact = false }: { media: PublicStory['media'], c
 }
 
 export function FeaturedStories() {
+  return (
+    <ResidentSectionBoundary label="Featured stories" resetKey="featured-stories">
+      <FeaturedStoriesContent />
+    </ResidentSectionBoundary>
+  )
+}
+
+function FeaturedStoriesContent() {
   const stories = useFeaturedStories()
   return <section id="stories" className="pp-stories" aria-labelledby="stories-title">
     <header className="pp-stories-intro"><h1 id="stories-title">Louisiana stories, with the official evidence.</h1><p>Free to read. Ask a question, inspect the sources, and follow what changes.</p><a href="#local-content">Jump to local decisions</a></header>
@@ -48,7 +58,7 @@ export function StoryPage({ slug }: { slug: string }) {
     <section><h2>Timeline</h2>{story.payload.timeline.length ? <ol>{story.payload.timeline.map((event, i) => <li key={i}><p>{event.date ?? 'Date not stated'}</p><Statement statement={event.statement} story={story} /></li>)}</ol> : <p>The accepted evidence does not establish a dated sequence.</p>}</section>
     <section><h2>Next documented action</h2>{story.payload.nextAction ? <Statement statement={story.payload.nextAction} story={story} /> : <p>No next public action or deadline is established by these sources.</p>}</section>
     <section><h2>What remains unknown</h2>{story.payload.limitations.length ? <ul>{story.payload.limitations.map((gap, i) => <li key={i}>{gap}</li>)}</ul> : <p>This story covers only the official evidence listed below. It is not complete coverage of every permit or government body.</p>}</section>
-    <section><h2>Official evidence</h2>{story.evidence.map((source, i) => <details key={source.key} id={`story-source-${i}`} className="pp-story-source"><summary>Source {i + 1}{source.page ? `, page ${source.page}` : ''}{source.section ? `, ${source.section}` : ''}</summary><blockquote>{source.excerpt}</blockquote><a href={source.officialUrl} target="_blank" rel="noreferrer">Open official source at {new URL(source.officialUrl).hostname}</a>{source.snapshotUrl ? <p><a href={source.snapshotUrl} target="_blank" rel="noreferrer">Inspect the saved source artifact</a></p> : <p>Saved artifact is unavailable.</p>}</details>)}</section>
+    <section><h2>Official evidence</h2>{story.evidence.map((source, i) => <details key={source.key} id={`story-source-${i}`} className="pp-story-source"><summary>Source {i + 1}{source.page ? `, page ${source.page}` : ''}{source.section ? `, ${source.section}` : ''}</summary><blockquote>{source.excerpt}</blockquote><StoryOfficialSourceLink url={source.officialUrl} />{source.snapshotUrl ? <p><a href={source.snapshotUrl} target="_blank" rel="noreferrer">Inspect the saved source artifact</a></p> : <p>Saved artifact is unavailable.</p>}</details>)}</section>
     {story.relatedRecords.length ? <section><h2>Related local records</h2><ul>{story.relatedRecords.map(record => <li key={record.key}><Link to="/decisions/$recordKey" params={{ recordKey: record.key }}>{record.title}</Link></li>)}</ul></section> : null}
     <ReportProblem available recordUrl={`/stories/${story.slug}`} />
   </main>

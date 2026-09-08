@@ -1,3 +1,4 @@
+import type * as RouterModule from '@tanstack/react-router'
 import { readFileSync } from 'node:fs'
 
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -8,7 +9,8 @@ import { CoveragePage, CoverageRequestPage } from './coverage-page'
 import { HowItWorksPage } from './how-it-works-page'
 import { COVERAGE_REGION_FIXTURES } from './fixtures'
 
-vi.mock('@tanstack/react-router', () => ({
+vi.mock('@tanstack/react-router', async (importOriginal) => ({
+  ...await importOriginal<typeof RouterModule>(),
   Link: ({ children }: { children: ReactNode }) => <a href="#">{children}</a>,
 }))
 

@@ -4,6 +4,7 @@ import { Link } from '@tanstack/react-router'
 import { useConvexAuth } from '@convex-dev/auth/react'
 
 import { Button } from '../../components/ui/button'
+import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
 import { FeaturedStories } from '../stories/story-page'
 import { LouisianaRelief } from '../landing/louisiana-relief'
 import { AreaSelector } from './area-selector'
@@ -33,6 +34,22 @@ const HOME_SECTION_LIMIT = 6
 
 export function HomePage({ scenario }: { scenario?: HomeScenario }) {
   const area = useArea()
+  const fixturesEnabled = getActiveDiscoveryFixture(scenario) !== undefined
+  return (
+    <main className="pp-page" id="resident-main">
+      {!fixturesEnabled ? <FeaturedStories /> : null}
+      <ResidentSectionBoundary
+        label="Local decisions"
+        resetKey={`${area ?? 'all'}:${scenario ?? 'live'}`}
+      >
+        <LocalHomeContent scenario={scenario} />
+      </ResidentSectionBoundary>
+    </main>
+  )
+}
+
+function LocalHomeContent({ scenario }: { scenario?: HomeScenario }) {
+  const area = useArea()
   const activeScenario = getActiveDiscoveryFixture(scenario)
   const fixturesEnabled = activeScenario !== undefined
   const auth = useConvexAuth()
@@ -55,11 +72,10 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
   )
 
   return (
-    <main className="pp-page" id="resident-main">
+    <>
       <p aria-live="polite" className="visually-hidden" role="status">
         {refreshAnnouncement}
       </p>
-      {!fixturesEnabled ? <FeaturedStories /> : null}
       <section id="local-content" aria-label="Local decisions">
         <div className="pp-local-setup" data-relief-interaction>
           <div>
@@ -86,7 +102,7 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
           watching={watching}
         />
       </section>
-    </main>
+    </>
   )
 }
 
