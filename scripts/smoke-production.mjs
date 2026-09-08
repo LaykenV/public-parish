@@ -1,5 +1,6 @@
 import { ConvexHttpClient } from 'convex/browser'
 import { makeFunctionReference } from 'convex/server'
+import { smokeStories } from './smoke-stories.mjs'
 
 const DIRECT_ORIGIN = 'https://befitting-flamingo-587.convex.site'
 const CANONICAL_ORIGIN = 'https://www.publicparish.com'
@@ -86,3 +87,11 @@ for (const issue of issues.slice(0, 2)) {
 const missing = await fetch(`${DIRECT_ORIGIN}/share/issues/smoke-nonexistent-issue`, { signal: AbortSignal.timeout(30_000) })
 if (missing.status !== 404 || !missing.headers.get('cache-control')?.includes('no-store')) throw new Error('Missing share route did not fail closed')
 console.log('passed: direct resident routes, coverage, search, issue evidence, and share HTML')
+
+await smokeStories({
+  query: (name, args) => client.query(makeFunctionReference(name), args),
+  request: (url, options = {}) => fetch(url, { ...options, signal: AbortSignal.timeout(30_000) }),
+  origins: [DIRECT_ORIGIN, CANONICAL_ORIGIN],
+  canonicalOrigin: CANONICAL_ORIGIN,
+})
+console.log('passed: all three published stories, evidence references, images, app metadata, and share redirects on both origins')
