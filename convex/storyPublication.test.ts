@@ -762,7 +762,7 @@ test('new evidence can retain the current image only through an owner revision a
     const currentImageVersionId = await owner.mutation(api.stories.operations.approve, args)
     const candidate = await t.run(async ctx => {
       const parent = (await ctx.db.get(buildId))!
-      const { _id, _creationTime, versionId, ...fields } = parent
+      const { _id, _creationTime, versionId: _versionId, ...fields } = parent
       const id = await ctx.db.insert('storyBuilds', { ...fields, expectedGeneration: 1, state: 'reviewed', inputHash: 'd'.repeat(64), media: null })
       return { id, draft: parent.draft! }
     })
