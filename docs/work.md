@@ -92,13 +92,13 @@ reduces risk. Meta remains the lead on the delivered homepage. Research for all
 three can proceed while shared functionality is implemented. No fourth story is
 required. CCS is deferred; do not substitute it for the agreed launch set.
 
-The final application frontend came from Verify run
-[34169408937](https://github.com/LaykenV/public-parish/actions/runs/34169408937),
-static-hosting release `6087d2e3-adb8-4410-991d-82c5fce8eeab`. No local automated
-validation ran. Eleven retained official source pairs passed signed artifact
-transfer and exact replay. A retained draft passed fresh independent review
-without another MODEL_STRONG call. Publishers remain candidate and monitoring
-remains off. Development execution is not production proof.
+The full development evidence is recorded in
+[development certification](story-development-certification.md). The approved
+production application is `771f660`; its exact workflow and independent smoke
+passed. All eleven source snapshots and three images passed target checks.
+No new body or parish was certified and no broad monitoring was activated.
+The acceptance checks below describe the completed development gate; production
+email verification is assigned to the owner's QA pass.
 
 ### Story acceptance
 
@@ -120,7 +120,7 @@ remains off. Development execution is not production proof.
 - [x] Changed or withdrawn source evidence cannot remain silently current in a
   story, answer, search result, email, or social preview.
 - [x] Story search and share previews use the accepted story version and its
-  approved image. Direct refresh works in development. Production origins remain a separate gate.
+  approved image. Direct refresh and dedicated share HTML passed production smoke. Ordinary URL metadata is the PR 180 follow-up.
 - [x] Story publication neither promotes a new parish nor enables agency-wide
   monitoring. Supported local coverage retains its existing gates.
 - [x] Owner review, retries, revisions, withholding, and rollback or withdrawal
@@ -135,8 +135,10 @@ silently replacing functionality or dropping a launch story.
 
 ## Phase 2: global design and full QA
 
-The S7 development gate has passed. Target mapping repair 176 passed 632 CI tests and bounded development replay; production promotion requires explicit owner-reviewed mappings for existing Boyce records. The owner may begin this campaign now.
-Production promotion still needs its own exact release approval and smoke.
+The S7 development gate and owner-approved production publication have passed.
+Boyce's exact target mappings were checked before publication. The owner may
+begin the full QA campaign now, including the production email check. Image,
+hero and social-preview follow-ups remain tracked above.
 [Design](design.md) owns the page contracts and review order.
 
 - [ ] Agree on global colors, type, spacing, button and input treatments,
