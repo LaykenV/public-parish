@@ -167,6 +167,8 @@ database insertion or copied approval for this path.
 Use an explicitly authorized controlled recipient for verification, update,
 roundup, reply and unsubscribe checks. A provider-accepted message, inbox receipt,
 verified application callback and useful resident outcome are distinct results.
+The owner has assigned production email verification to the founder QA pass. Agents should not repeat production test mail for this follow-up.
+
 The story development gate used a dedicated development inbox and callback, with
 only the owner-controlled reports inbox as recipient. Production routing was not
 changed. Both deployments previously shared the updates inbox, so trace the

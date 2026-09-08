@@ -86,3 +86,12 @@ those things. This document does not assign a score or probability of winning.
 No submission, public launch post, resident outcome or story release is claimed
 by this documentation update. The older dated build and release evidence remains
 in [the archive](archive/README.md).
+
+## Current release proof and remaining presentation work
+
+The three owner-approved LIMITED stories are published at application `771f660`.
+Bounded production route, evidence, image, search, share and nine anonymous Ask
+checks passed. Email round trips passed in development; the owner will perform
+the production email check during QA. Replacement images, restored Louisiana
+relief and ordinary-link social previews are follow-up work. Actual Facebook
+previews and the founder's full design and QA campaign remain unverified.

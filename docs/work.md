@@ -56,6 +56,21 @@ The older release record reports 560 CI tests and independent production smoke
 through PR #139. The three stories are published and passed bounded production smoke. No physical-device or screen-reader
 pass, organic resident outcome, production story mail delivery or submission is claimed.
 
+## Owner follow-up before outreach
+
+- PR 180 makes ordinary story URLs return accepted social metadata with the
+  interactive application. Legacy share links redirect without another click.
+  CI and development checks must pass before an approved release. Actual
+  Facebook Sharing Debugger previews remain unverified.
+- PR 181 restores the existing 3D Louisiana relief beside the Home introduction.
+  Keep featured stories directly below it and local selection below the stories.
+- The owner supplied replacement renderings for Meta, Boyce and SpaceX. Originals
+  and hashes are preserved in the private handoff. Source credit and reuse
+  evidence are pending; do not present a rendering as completed construction.
+- The owner will perform production email verification during the founder QA
+  pass. Agent verification remains development-only for that provider loop.
+- PR 179 updates the release documentation. These follow-up PRs are unmerged.
+
 ## Phase 1: finish stories
 
 The owner implements and reviews the new functionality with agents. Use a

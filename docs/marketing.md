@@ -130,3 +130,13 @@ Pause broad posting if citations, Ask, mobile navigation, follows or unsubscribe
 break, or if public operating allowances expire. Fix the failed journey before
 bringing more visitors into it. A missing newer government document calls for an
 honest limitation, not another unsupported headline.
+
+## Story link preview checkpoint
+
+The deployed `771f660` release has story-specific metadata only on dedicated
+`/share/stories/` URLs, and those pages require another click. PR 180 prepares
+ordinary `/stories/` metadata with the interactive application and redirects old
+share links. Until that change is released and checked, use the Share button's
+links for prepared outreach drafts. Verify each actual Facebook preview with the
+final approved image before publishing outreach. No Facebook preview is certified
+yet. Production email verification belongs to the owner's QA pass.

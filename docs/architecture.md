@@ -291,7 +291,7 @@ live in `convex/follows/retention.ts`, `convex/emailReplies/recovery.ts`, and
 
 The story schema and resident loop are implemented in `convex/stories` and the
 existing Ask, follow and email domains. Application `decf363` passed the bounded
-development gate. Production promotion remains owner-gated. The contracts below
+development gate. The owner approved production publication at `771f660`; all three LIMITED stories passed bounded production smoke. Later publication remains owner-gated. The contracts below
 remain requirements for later revisions. See [development evidence](story-development-certification.md).
 
 A story has its own identity because it can cover several government bodies.
@@ -333,7 +333,7 @@ Reviewed cosmetic revisions retain a pending material event; a later material
 revision or suppressed historical baseline invalidates the older event. Replies
 recheck accepted citation IDs, inbox, sender, subscription and thread before send.
 These paths have CI coverage and passed the three-story development model and
-controlled email round trips. Production promotion remains pending.
+controlled email round trips. All three stories are published in production. The owner will verify production email during the founder QA pass.
 
 The owner supplies a versioned JSON manifest referencing exact approved sources,
 saved artifacts or existing accepted records, proposed grouping, questions and

@@ -1716,3 +1716,11 @@ Production queries, routes, image hashes, citations, search and share caching
 passed. Nine anonymous Ask checks passed, with cited answers and unsupported
 questions returning not found, for an estimated $0.049127. Independent smoke
 passed after publication. Baseline publication created zero update events.
+
+### 2026-09-08 - story presentation follow-up
+
+Prepared ordinary story URLs that return approved metadata with the interactive
+app, with legacy share links redirecting directly. Restored the existing 3D
+Louisiana relief in a separate PR. Preserved three owner-supplied rendering
+originals for media review. The owner will check production email during QA.
+These changes are not yet promoted; Facebook preview verification is pending.

@@ -138,3 +138,15 @@ previously accepted readable evidence.
 Keep small verified voter information with outbound official links. Do not build
 an election guide, candidate comparison, voting recommendation or prediction
 interface during this design pass.
+
+## Owner corrections after story publication
+
+Restore the existing 3D Louisiana relief in the Home introduction. The owner
+wants that visual retained. The stories remain ahead of local selection.
+Use the owner-selected project renderings after source credit and media review;
+keep accurate rendering labels, alt text and captions. Do not treat image changes
+as material story updates.
+
+Ordinary story URLs should provide approved social metadata and open the
+interactive story directly. Avoid an intermediate read-more page. Verify actual
+Facebook previews before outreach; raw HTML inspection alone is not that proof.
