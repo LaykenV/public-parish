@@ -195,8 +195,9 @@ separate bounded verification. Gateway credentials, secrets, and private data do
 not belong in docs or public logs. Source text and questions are untrusted input
 and cannot choose tools, domains, or publication policy.
 
-When the spending guard is active, separate source and Ask allowances reserve a
-conservative input estimate plus the output bound before each model request.
+Paid model requests require the spending guard to be active. Separate source
+and Ask allowances reserve a conservative input estimate plus the output bound
+before each model request.
 Known usage settles once. Failed calls or unknown usage retain the reservation.
 Retries need admission, and changing a ceiling does not erase charges. Allowances
 expire and never replenish automatically. These are estimated model-cost limits,

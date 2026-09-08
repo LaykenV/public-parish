@@ -20,8 +20,8 @@ export function reservationMicros(role: ModelRole, input: string, maxCompletionT
   return Math.max(1, Math.ceil(cost * MICROS_PER_DOLLAR))
 }
 
-export async function reserveModelSpend(ctx: ActionCtx, scope: SpendingScope, role: ModelRole, input: string, maxCompletionTokens: number): Promise<Id<'aiSpendingReservations'> | null> {
-  if (env.AI_SPENDING_GUARD_ENABLED !== 'true') return null
+export async function reserveModelSpend(ctx: ActionCtx, scope: SpendingScope, role: ModelRole, input: string, maxCompletionTokens: number): Promise<Id<'aiSpendingReservations'>> {
+  if (env.AI_SPENDING_GUARD_ENABLED !== 'true') throw new PermanentModelError('ai_spending_limit', 'ai_spending_limit: Paid AI processing is paused because its spending guard is disabled.')
   const reservationId = await ctx.runMutation(internal.ai.spendingLedger.reserve, { scope, micros: reservationMicros(role, input, maxCompletionTokens) })
   if (!reservationId) throw new PermanentModelError('ai_spending_limit', 'ai_spending_limit: Paid AI processing is paused because its approved allowance is exhausted, expired, or disabled.')
   return reservationId

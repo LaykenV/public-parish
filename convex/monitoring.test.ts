@@ -55,7 +55,9 @@ test('deployment switch keeps scheduled monitoring dormant', async () => {
 async function monitoringFixture() {
   const t = convexTest(schema, modules)
   vi.stubEnv('SOURCE_MONITORING_ENABLED', 'true')
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', 'true')
   const ids = await t.run(async ctx => {
+    await ctx.db.insert('aiSpendingAllowances', { scope: 'sources', enabled: true, allowanceMicros: 1_000_000, chargedMicros: 0, expiresAt: Date.now() + DAY, updatedAt: Date.now() })
     const jurisdictionId = await ctx.db.insert('jurisdictions', { name: 'Lafayette Parish', slug: 'lafayette-parish', state: 'LA', type: 'parish', publicStatus: 'supported' })
     const bodyId = await ctx.db.insert('governmentBodies', { jurisdictionId, name: 'Lafayette City Council', slug: 'lafayette-city-council', bodyType: 'city_council', publicStatus: 'supported' })
     const registryId = await ctx.db.insert('sourceRegistries', { governmentBodyId: bodyId, officialDomains: ['www.lafayettela.gov'], seedUrls: ['https://www.lafayettela.gov/agenda.pdf'], sourceKinds: ['agenda'], expectedCadence: { kind: 'monthly' }, discoveryMode: 'dynamic', status: 'supported', statusGeneration: 1 })
@@ -657,7 +659,7 @@ test('accepts a unique locator without copying an identifier outside that locato
 test('an exhausted source allowance blocks retrieval admissions and new monitoring runs', async () => {
   const f = await monitoringFixture()
   rateLimiterTest.register(f.t)
-  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', 'true')
+  await f.t.run(async ctx => { const allowance = await ctx.db.query('aiSpendingAllowances').first(); await ctx.db.delete(allowance!._id) })
   vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
   expect(await f.t.mutation(internal.monitoring.ledger.reserve, { runId: f.runId, units: 1 })).toBe(false)
   const owner = f.t.withIdentity({ subject: f.userId })
@@ -666,4 +668,15 @@ test('an exhausted source allowance blocks retrieval admissions and new monitori
   expect(await f.t.mutation(internal.monitoring.ledger.reserve, { runId: f.runId, units: 1 })).toBe(true)
   await f.t.mutation(internal.ai.spendingLedger.reserve, { scope: 'sources', micros: 100_000 })
   expect(await f.t.mutation(internal.monitoring.ledger.reserve, { runId: f.runId, units: 1 })).toBe(false)
+})
+
+test.each([undefined, 'false'])('a %s spending guard blocks monitoring even with funded allowance', async guard => {
+  const f = await monitoringFixture()
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', guard)
+  vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
+  expect(await f.t.mutation(internal.monitoring.ledger.reserve, { runId: f.runId, units: 1 })).toBe(false)
+  await expect(f.t.mutation(internal.monitoring.ledger.reserveRetrievalSlot, { runId: f.runId })).rejects.toThrow('monitoring_daily_limit')
+  await f.t.run(ctx => ctx.db.patch(f.policyId, { activeRunId: undefined }))
+  expect(await f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.checkNow, { policyId: f.policyId })).toBeNull()
+  expect(await f.t.run(ctx => ctx.db.query('sourceMonitoringRuns').collect())).toHaveLength(1)
 })
