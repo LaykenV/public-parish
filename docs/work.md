@@ -20,8 +20,8 @@ route responses, image hashes, citations, typed search, share HTML and nine
 anonymous Ask checks passed. Baseline publication created zero update events.
 [Production preparation](story-production-preparation.md) records the evidence.
 
-The full development gate passed at `decf363`. The transfer repair and CI-built
-frontend now run at `9138a83` on https://woozy-wren-227.convex.site.
+The full development gate passed at `decf363`. The presentation follow-up backend
+and CI-built frontend now run at `7c76f8a` on https://woozy-wren-227.convex.site.
 
 In development, Meta is the Home lead, with SpaceX and Boyce secondary. All three have accepted
 LIMITED versions, official document images, exact citations and explicit gaps.
@@ -60,10 +60,14 @@ pass, organic resident outcome, production story mail delivery or submission is 
 
 - PR 180 makes ordinary story URLs return accepted social metadata with the
   interactive application. Legacy share links redirect without another click.
-  CI and development checks must pass before an approved release. Actual
-  Facebook Sharing Debugger previews remain unverified.
+  CI and PR review passed. Development HTTP checks covered all three story URLs,
+  redirects and cache invalidation. The Meta route rendered the interactive app
+  with its accepted metadata. Facebook Sharing Debugger requires a signed-in
+  Facebook session; actual previews remain unverified.
 - PR 181 restores the existing 3D Louisiana relief beside the Home introduction.
   Keep featured stories directly below it and local selection below the stories.
+  CI and PR review passed. Browser inspection confirmed the relief at 1280-pixel
+  desktop and 390-pixel mobile widths. This is not a physical-device QA pass.
 - The owner supplied replacement renderings for Meta, Boyce and SpaceX. Originals
   and hashes are preserved in the private handoff. Source credit and reuse
   evidence are pending; do not present a rendering as completed construction.

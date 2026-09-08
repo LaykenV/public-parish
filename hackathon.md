@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T02:10:30Z
+- **Last updated:** 2026-09-08T02:25:47Z
 
 ## Log
 
@@ -1724,3 +1724,10 @@ app, with legacy share links redirecting directly. Restored the existing 3D
 Louisiana relief in a separate PR. Preserved three owner-supplied rendering
 originals for media review. The owner will check production email during QA.
 These changes are not yet promoted; Facebook preview verification is pending.
+
+### 2026-09-08 - development presentation inspection at 7c76f8a
+
+PRs 180 and 181 passed CI and review. Inspected the restored Louisiana relief
+at desktop and mobile browser widths. The ordinary Meta URL rendered its story
+and retained accepted social metadata. Facebook Sharing Debugger opened but
+required login, so no actual Facebook preview is certified. Production unchanged.
