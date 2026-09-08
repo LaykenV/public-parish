@@ -65,6 +65,14 @@ export function locateSourceExcerpt(
   let startOffset = normalizedSource.indexOf(normalizedExcerpt)
   if (startOffset >= 0) return { startOffset, endOffset: startOffset + normalizedExcerpt.length }
 
+  // Firecrawl can retain &amp; in PDF text while the model quotes its visible
+  // ampersand. Match against the encoded source so existing offsets stay valid.
+  const encodedAmpersands = normalizedExcerpt.replace(/&(?!amp;)/g, '&amp;')
+  if (encodedAmpersands !== normalizedExcerpt) {
+    startOffset = normalizedSource.indexOf(encodedAmpersands)
+    if (startOffset >= 0) return { startOffset, endOffset: startOffset + encodedAmpersands.length }
+  }
+
   const literalStart = source.indexOf(excerpt)
   if (literalStart < 0) return null
   // Only remove markers that the complete source proves are balanced bold
