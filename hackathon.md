@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T15:56:35Z
+- **Last updated:** 2026-09-08T16:27:27Z
 
 ## Log
 
@@ -1796,3 +1796,11 @@ successors. Marked the replaced landing experiment as historical and clarified
 that existing merge authorization persists. Global design, founder QA and
 production story mail remain pending.
 This audit changes documentation only; its release verification follows the push.
+
+### 2026-09-08 - working tree, resident failure recovery
+
+Added resident route recovery and replaced the prototype missing-page text.
+Home stories and local content fail independently, and a failed follow query
+leaves the surrounding evidence readable. Invalid official story links now leave
+the excerpt and saved artifact available. Added URL regression cases for CI.
+Static diff review passed; automated and visual verification remain pending.
