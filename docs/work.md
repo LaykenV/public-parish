@@ -85,7 +85,7 @@ Do not begin the full redesign campaign until this phase passes.
 | S4 | Story-scoped anonymous Ask and private thread authorization using accepted story evidence | S1, S3 | Development passed, two supported and one unsupported question per story |
 | S5 | Google and verified-email story follows, material-update alerts, roundup integration, grounded replies, management and unsubscribe | S1, S3, S4 | Development passed with actual isolated provider callbacks, receipt, reply, management and unsubscribe proof |
 | S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Meta reviewed v3, SpaceX v2 and Boyce v2 accepted and published LIMITED in development |
-| S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Development gate passed; owner-approved production release and independent smoke pending |
+| S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Development gate passed; exact owner-approved production publication and bounded smoke passed. Production email is assigned to founder QA. |
 
 Build the first complete vertical path with the existing Boyce evidence if that
 reduces risk. Meta remains the lead on the delivered homepage. Research for all
