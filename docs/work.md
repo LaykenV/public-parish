@@ -7,8 +7,23 @@ The approved order is stories, then design and QA, then launch and outreach.
 
 ## Current checkpoint
 
-Production application code `cb2ae0014572b1f1054eb80a345e694ed29f73e2`
-is deployed through PR 183. Production workflow
+Production is ready for the global design and founder QA pass. The September 8
+continuation published the targeted Youngsville records and stronger Meta and
+SpaceX versions with the accepted images. All twelve launch bodies report
+Supported. The stories remain LIMITED where official evidence is missing.
+[Morning report](targeted-catchup-2026-09-08.md) records the exact releases,
+remaining gaps, live checks, $0.600803 in model charges and 86 Firecrawl credits
+for this continuation.
+
+The latest inspected application release is `61fe72ec964c21f704d2cfaa559b54e6d1fee140`,
+PR 189. Its production workflow
+[34244890498](https://github.com/LaykenV/public-parish/actions/runs/34244890498)
+and independent `npm run smoke:production` passed. Two final anonymous Ask checks
+preserved Act 874's qualifying conditions and exceptions. One raw citation marker
+remains a P2 formatting observation for the design pass below.
+
+Earlier production application code `cb2ae0014572b1f1054eb80a345e694ed29f73e2`
+was deployed through PR 183. Production workflow
 [34225263905](https://github.com/LaykenV/public-parish/actions/runs/34225263905)
 and independent `npm run smoke:production` passed. PR 182 previously moved the
 Louisiana relief beside the region selector below featured stories. PR 180
@@ -21,14 +36,16 @@ transfer behind the production custom domain. Exact production workflow
 and independent `npm run smoke:production` passed.
 
 The initial release retained eleven source snapshots and published three
-independently reviewed LIMITED candidates at generation 1. The September 8 image
-revision retains those exact drafts and evidence in new immutable versions. Production story queries,
+independently reviewed LIMITED candidates at generation 1. The initial September 8 image
+revision retained those exact drafts and evidence in new immutable versions. The
+later source continuation published Meta and SpaceX successors with fresh reviews. Initial production story queries,
 route responses, image hashes, citations, typed search, share HTML and nine
 anonymous Ask checks passed. Baseline publication created zero update events.
 [Production preparation](story-production-preparation.md) records the evidence.
 
-The full development gate passed at `decf363`. The presentation follow-up backend
-and CI-built frontend now run at `03831bf` on https://woozy-wren-227.convex.site.
+The full development gate passed at `decf363`. The later presentation checkpoint used backend
+and CI-built frontend `03831bf` on https://woozy-wren-227.convex.site. Later
+backend rehearsals and source revisions are recorded in the morning report.
 
 In development, Meta is the Home lead, with SpaceX and Boyce secondary. All three have accepted
 LIMITED versions, owner-selected renderings, exact citations and explicit gaps.
@@ -42,9 +59,9 @@ records the evidence and the production boundary.
 | Evidence pipeline | Immutable snapshots, deterministic validation, independent review, and full, limited, or withheld publication deployed |
 | Resident loop | Discovery, issues, decisions, evidence, anonymous Ask, Google and email-only follows, alerts, roundups, replies, and private reports deployed |
 | Coverage and operations | Owner compiler, bounded scheduled processing, coverage requests, launch notices, search, issue sharing, and reports deployed |
-| Latest inspected application release | Main commit `cb2ae00`, successful production workflow [34225263905](https://github.com/LaykenV/public-parish/actions/runs/34225263905) and independent smoke |
-| Local coverage | Eleven of twelve named bodies supported; Youngsville degraded. Lafayette accessible with a limitation; Rapides and East Baton Rouge available |
-| Source automation | Public health reads on September 7 showed only Metropolitan Council scheduled checks enabled |
+| Latest inspected application release | Main commit `61fe72e`, successful production workflow [34244890498](https://github.com/LaykenV/public-parish/actions/runs/34244890498) and independent smoke |
+| Local coverage | Live September 8 checks returned Supported for all twelve named bodies, including all seven Lafayette bodies. Four targeted Youngsville decisions are published; full archive catch-up remains incomplete |
+| Source automation | Only the prior Metropolitan Council policy is enabled. The restored $4 source allowance is exhausted, so new paid source processing is blocked. Ask has a separate funded allowance |
 | Existing corpus | September 7 public queries returned 50 decisions per parish, the query cap; 6 Lafayette, 20 Rapides at the issue cap, and 19 East Baton Rouge timelines |
 | Boyce starting evidence | Existing Applied Digital issue returned three linked decisions and thirteen citations. This is a source base, not the new story page |
 | Remaining proof | Production story mail proof, full founder design and QA pass, organic resident usefulness, final demo, and submission |
@@ -185,7 +202,7 @@ screenshot. Do not put personal messages, emails, or private questions here.
 
 | ID | Route and viewport | Reproduction and expected behavior | Severity | Owner | State | Resolution evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| No findings recorded yet | Full pass pending | Record observations when the pass starts | Unassessed | Layken | Pending | None |
+| QA-001 | Story Ask, all viewports | The verified Act 874 exceptions answer includes a raw public evidence marker in its prose. Render readable citations without exposing the marker in answer text | P2 | Layken | Open for design and QA | September 8 anonymous production answer, prompt `ask-answer-v5`; factual qualifiers passed |
 
 P0 is an unsupported public claim, privacy leak, or destructive failure. P1 is a
 broken primary journey, unusable mobile layout, source link, Ask, follow, or

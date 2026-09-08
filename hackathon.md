@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T12:53:18Z
+- **Last updated:** 2026-09-08T15:33:23Z
 
 ## Log
 
@@ -1773,3 +1773,16 @@ Removed visible captions, credits and rights text beneath the three story images
 on Home and story details at the owner's request. Alt text and all retained
 review metadata remain. No story version, evidence or notification change.
 Automated validation runs in PR CI.
+
+### 2026-09-08 - 61fe72e
+
+Released citation-encoding, accepted-image retention, caption correction and Ask
+qualifier fixes through PRs 186 through 189. Each exact production deployment and
+independent smoke passed. CI passed 640 tests across 81 files and browser journeys.
+Published five LIMITED versions across four targeted Youngsville decisions and
+stronger Meta and SpaceX stories with the owner's images and fresh independent
+reviews. Anonymous story, decision, image and fourteen source-artifact checks
+passed. Ask preserved the tested legal qualifiers and refused a missing FAA
+license number. One citation-marker formatting item remains for design and QA.
+The continuation recorded $0.600803 in model charges and 86 Firecrawl credits.
+The full design, founder QA and production email checks remain the next phase.
