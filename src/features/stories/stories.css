@@ -10,7 +10,7 @@
 .pp-story-image img { display: block; max-width: 100%; width: 100%; height: auto; max-height: 40rem; object-fit: contain; background: var(--muted); }
 .pp-story-image.compact img { max-height: 16rem; }
 .lead .pp-story-image.compact img { max-height: 30rem; }
-.pp-story-image figcaption, .pp-story-meta, .pp-story-image-fallback { font-size: var(--pp-text-small); line-height: 1.5; margin-top: .5rem; }
+.pp-story-meta, .pp-story-image-fallback { font-size: var(--pp-text-small); line-height: 1.5; margin-top: .5rem; }
 .pp-story-detail { max-width: 54rem; }
 .pp-story-detail h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; }
 .pp-story-detail section { margin-block: 2rem; }
