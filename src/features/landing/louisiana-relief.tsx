@@ -205,7 +205,7 @@ export function LouisianaRelief() {
   return (
     <div className="relief-viewport" data-render-state={renderState}>
       <canvas
-        aria-label="Three-dimensional Louisiana relief with static pins marking Lafayette, Rapides, and East Baton Rouge as planned launch regions"
+        aria-label="Three-dimensional Louisiana relief with static pins marking Lafayette, Rapides, and East Baton Rouge as local coverage regions"
         className="relief-canvas"
         ref={canvasRef}
         role="img"

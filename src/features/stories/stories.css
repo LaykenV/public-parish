@@ -1,5 +1,7 @@
 .pp-stories { margin-block: 1.5rem 3rem; }
-.pp-stories > header { max-width: 48rem; margin-bottom: 1.5rem; }
+.pp-stories-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, .8fr); align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+.pp-stories-relief { height: clamp(16rem, 30vw, 23rem); min-width: 0; }
+@media (max-width: 700px) { .pp-stories-intro { grid-template-columns: 1fr; gap: .5rem; } .pp-stories-relief { height: 16rem; } }
 .pp-stories h1 { font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.15; }
 .pp-story-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; }
 .pp-story-card { min-width: 0; border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; }
