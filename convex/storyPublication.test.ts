@@ -23,6 +23,7 @@ afterEach(() => vi.unstubAllEnvs())
 // Synthetic failure fixtures. No model or provider call is represented by them.
 async function setup() {
   vi.stubEnv('ADMIN_EMAIL', 'owner@example.com')
+  vi.stubEnv('CONVEX_CLOUD_URL', 'https://woozy-wren-227.convex.cloud')
   const t = convexTest(schema, modules)
   agentTest.register(t)
   const manifest = structuredClone(example) as StoryManifest
@@ -133,6 +134,33 @@ test('retained draft promotion keeps writing but requires a fresh review and tar
       expect(await ctx.db.query('storyVersions').collect()).toHaveLength(1)
       expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0)
     })
+  } finally { vi.useRealTimers() }
+})
+
+test('a production custom domain preserves source and retained-draft deployment checks', async () => {
+  vi.useFakeTimers()
+  try {
+    const { t, owner, args, buildId, snapshotId } = await setup()
+    workflowTest.register(t)
+    vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')
+    vi.stubEnv('STORY_ARTIFACT_TRANSFER_KEY', '1'.repeat(64))
+    await owner.mutation(api.stories.operations.approve, args)
+    const build = (await t.run(ctx => ctx.db.get(buildId)))!
+    const imported = (await t.run(ctx => ctx.db.get(build.importId)))!
+    const snapshot = (await t.run(ctx => ctx.db.get(snapshotId)))!
+    const targetSite = 'https://befitting-flamingo-587.convex.site'
+    const exported = await owner.action(api.stories.transfer.exportSource, { storyKey: 'applied-digital-boyce', sourceKey: build.sourceBindings[0].sourceKey, targetSite })
+    const retained = await owner.query(api.stories.retainedDraft.exportDraft, { storyKey: 'applied-digital-boyce', targetSite })
+    vi.stubEnv('CONVEX_CLOUD_URL', 'https://befitting-flamingo-587.convex.cloud')
+    vi.stubEnv('CONVEX_SITE_URL', 'https://www.publicparish.com')
+    expect(await owner.action(api.stories.transfer.importSource, { importId: imported._id, bundleHash: imported.bundleHash, packet: exported.packet, signature: exported.signature, rawStorageId: snapshot.rawStorageId, normalizedStorageId: snapshot.normalizedStorageId })).toEqual({ snapshotId, reused: true })
+    const id = await owner.mutation(internal.stories.buildLedger.begin, { importId: imported._id, bindings: build.sourceBindings, media: null, retainedDraft: retained, notificationIntent: 'baseline' })
+    const candidate = (await t.run(ctx => ctx.db.get(id)))!
+    expect(candidate.draftHash).toBe(build.draftHash)
+    expect(candidate.state).toBe('drafted')
+    expect(candidate.versionId).toBeUndefined()
+    vi.stubEnv('CONVEX_CLOUD_URL', 'https://woozy-wren-227.convex.cloud')
+    await expect(owner.mutation(internal.stories.buildLedger.begin, { importId: imported._id, bindings: build.sourceBindings, media: null, retainedDraft: retained })).rejects.toThrow('target')
   } finally { vi.useRealTimers() }
 })
 

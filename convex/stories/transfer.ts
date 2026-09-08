@@ -10,7 +10,7 @@ import { isRegisteredSourceUrl } from '../sources/domains'
 import { currentVersionEvidence, resolveSources } from './evidence'
 import { parseStoryManifest } from './manifest'
 import { registeredSource } from './intake'
-import { artifactPacket, checkArtifactPacket, signArtifactPacket, verifyArtifactPacket } from './transferContract'
+import { artifactPacket, transferDeploymentSite, checkArtifactPacket, signArtifactPacket, verifyArtifactPacket } from './transferContract'
 import type { ArtifactPacket } from './transferContract'
 
 async function checkedBytes(ctx: ActionCtx, id: Id<'_storage'>, expectedHash: string, size: number) {
@@ -47,10 +47,10 @@ export const exportSource = action({
     const context = await ctx.runQuery(internal.stories.transfer.exportContext, { storyKey: args.storyKey, sourceKey: args.sourceKey })
     const source = JSON.parse(context.sourceJson) as { bodyKey: string; bodyName: string; retrieval: unknown }
     const snapshot = context.snapshot
-    if (!snapshot.normalizedContentHash || !env.CONVEX_SITE_URL) throw new Error('Transfer provenance is incomplete')
+    if (!snapshot.normalizedContentHash || !env.CONVEX_CLOUD_URL) throw new Error('Transfer provenance is incomplete')
     await checkedBytes(ctx, snapshot.rawStorageId, snapshot.contentHash, snapshot.rawByteLength)
     await checkedBytes(ctx, snapshot.normalizedStorageId, snapshot.normalizedContentHash, snapshot.normalizedByteLength)
-    const packet: ArtifactPacket = { contract: 'story-artifact-transfer-v1', originSite: env.CONVEX_SITE_URL, targetSite: args.targetSite, exportedAt: Date.now(),
+    const packet: ArtifactPacket = { contract: 'story-artifact-transfer-v1', originSite: transferDeploymentSite(env.CONVEX_CLOUD_URL), targetSite: args.targetSite, exportedAt: Date.now(),
       storyKey: args.storyKey, acceptedDraftHash: context.draftHash, sourceKey: args.sourceKey,
       bodyKey: source.bodyKey, bodyName: source.bodyName, canonicalUrl: snapshot.canonicalUrl, retrievedUrl: snapshot.retrievedUrl,
       rawHash: snapshot.contentHash, normalizedHash: snapshot.normalizedContentHash, rawBytes: snapshot.rawByteLength, normalizedBytes: snapshot.normalizedByteLength,
@@ -75,7 +75,7 @@ export const commitSource = internalMutation({
   handler: async (ctx, args) => {
     const owner = await requireOwner(ctx)
     const packet = args.packet
-    checkArtifactPacket(packet, env.CONVEX_SITE_URL, Date.now())
+    checkArtifactPacket(packet, transferDeploymentSite(env.CONVEX_CLOUD_URL), Date.now())
     await verifyArtifactPacket(packet, args.signature, env.STORY_ARTIFACT_TRANSFER_KEY)
     const imported = await ctx.db.get(args.importId)
     if (!imported || imported.bundleHash !== args.bundleHash || imported.storyKey !== packet.storyKey) throw new Error('Transfer import inputs changed')
@@ -115,7 +115,7 @@ export const importSource = action({
   handler: async (ctx, args): Promise<{ snapshotId: Id<'sourceSnapshots'>; reused: boolean }> => {
     // Owner authorization precedes reading caller-selected stored files.
     await ctx.runQuery(internal.stories.transfer.requireTransferOwner, {})
-    checkArtifactPacket(args.packet, env.CONVEX_SITE_URL, Date.now())
+    checkArtifactPacket(args.packet, transferDeploymentSite(env.CONVEX_CLOUD_URL), Date.now())
     await verifyArtifactPacket(args.packet, args.signature, env.STORY_ARTIFACT_TRANSFER_KEY)
     await checkedBytes(ctx, args.rawStorageId, args.packet.rawHash, args.packet.rawBytes)
     await checkedBytes(ctx, args.normalizedStorageId, args.packet.normalizedHash, args.packet.normalizedBytes)
