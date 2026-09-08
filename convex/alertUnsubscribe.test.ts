@@ -100,5 +100,7 @@ test('reverification revokes the cached alert token beyond the recent-token wind
   expect(await t.run(ctx => alertUnsubscribeUrl(ctx, subscriberId))).toBe(replacement)
   expect((await t.fetch(new URL(original).pathname, { method: 'POST' })).status).toBe(404)
   expect((await t.fetch(new URL(replacement).pathname, { method: 'POST' })).status).toBe(200)
-  await t.run(async ctx => expect((await ctx.db.query('emailAccessTokens').collect()).filter(token => token.encryptedAlertToken)).toHaveLength(2))
+  await t.run(async ctx => {
+    expect((await ctx.db.query('emailAccessTokens').collect()).filter(token => token.encryptedAlertToken)).toHaveLength(2)
+  })
 })
