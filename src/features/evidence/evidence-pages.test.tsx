@@ -1,3 +1,4 @@
+import type * as RouterModule from '@tanstack/react-router'
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it, vi } from 'vitest'
@@ -13,7 +14,7 @@ import {
 } from './record-fixtures'
 
 vi.mock('@tanstack/react-router', async (importOriginal) => ({
-  ...await importOriginal<typeof import('@tanstack/react-router')>(),
+  ...await importOriginal<typeof RouterModule>(),
   Link: ({ children }: { children: ReactNode }) => <a href="#">{children}</a>,
   useNavigate: () => () => {},
   useRouterState: ({
