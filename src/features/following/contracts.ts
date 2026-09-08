@@ -18,7 +18,7 @@ export type EmailManagementScenario =
   (typeof EMAIL_MANAGEMENT_SCENARIOS)[number]
 
 export type DeliveryFrequency = 'immediate' | 'weekly' | 'both'
-export type FollowKind = 'Issue' | 'Topic' | 'Government body' | 'Place'
+export type FollowKind = 'Story' | 'Issue' | 'Topic' | 'Government body' | 'Place'
 export type FollowStatus = 'Following' | 'Muted' | 'Verification needed'
 
 export const SAVED_AREA_SLUGS = [

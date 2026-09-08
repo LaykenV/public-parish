@@ -1,0 +1,10 @@
+.story-ops section { margin-block: 1.5rem; }
+.story-ops label { display: block; margin-block: 1rem; }
+.story-ops input, .story-ops select, .story-ops textarea { margin: .4rem; max-width: 100%; }
+.story-ops pre { white-space: pre-wrap; overflow-wrap: anywhere; border: 1px solid var(--border); padding: 1rem; font-size: .875rem; }
+.story-ops code { overflow-wrap: anywhere; }
+.story-ops li, .story-ops details { margin-block: 1rem; }
+.story-ops blockquote { border-left: 3px solid var(--border); padding-left: 1rem; }
+.story-review-image { max-width: 100%; height: auto; max-height: 36rem; object-fit: contain; }
+.story-review-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 760px) { .story-review-columns { grid-template-columns: 1fr; } }

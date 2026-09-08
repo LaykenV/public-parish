@@ -172,7 +172,7 @@ function SubscriberEmailManagementPage({
         <header className="following-head email-manage-head">
           <p className="following-kicker">Email-only follows</p>
           <h1>Manage email alerts</h1>
-          <p>This private link manages every follow for this verified address.</p>
+          <p>This private link manages the follows shown below for your verified address.</p>
         </header>
         {subscriptions.length === 0 ? (
           <section className="email-manage-result">
@@ -447,7 +447,7 @@ function ValidEmailManagement({
         aria-labelledby="email-unfollow-title"
       >
         <div>
-          <h2 id="email-unfollow-title">Unfollow this issue</h2>
+          <h2 id="email-unfollow-title">Stop following</h2>
           <p>This removes only this email subscription.</p>
         </div>
         {unfollowing ? (
@@ -456,14 +456,14 @@ function ValidEmailManagement({
             role="group"
             aria-label="Confirm unfollow"
           >
-            <p>Stop all updates for this issue?</p>
+            <p>Stop all updates for this follow?</p>
             <Button
               disabled={busy}
               onClick={() => void remove()}
               size="touch"
               variant="destructive-outline"
             >
-              Unfollow this issue
+              Stop following
             </Button>
             <Button
               onClick={() => setUnfollowing(false)}
@@ -559,11 +559,12 @@ export function toEmailManagedTarget(follow: {
   id: string
   resumeCadence: DeliveryFrequency
   targetKey: string
-  targetKind: 'issue' | 'topic' | 'government_body' | 'place'
+  targetKind: 'story' | 'issue' | 'topic' | 'government_body' | 'place'
   title: string
 }): FollowedTarget {
   const kind = {
     issue: 'Issue',
+    story: 'Story',
     topic: 'Topic',
     government_body: 'Government body',
     place: 'Place',

@@ -2,6 +2,8 @@ import { DAY, RateLimiter, calculateRateLimit } from '@convex-dev/rate-limiter'
 import { v } from 'convex/values'
 import { paginationOptsValidator } from 'convex/server'
 import { components, internal } from '../_generated/api'
+import { requireOwner } from '../auth/authorization'
+import { currentStoryUpdate } from '../stories/updates'
 import type { MutationCtx } from '../_generated/server'
 import type { Doc, Id } from '../_generated/dataModel'
 import { recordMaterialChange } from '../changes/material'
@@ -11,7 +13,7 @@ import { loadTimelineMembers } from '../issues/membership'
 import { coverageLinkDeployment } from '../coverage/gates'
 import { locateSourceExcerpt, normalizeForMatch } from '../extraction/textMatch'
 import { sha256HexOfText } from '../sources/hashing'
-import { env, internalAction, internalMutation, internalQuery } from '../_generated/server'
+import { env, internalAction, internalMutation, internalQuery, mutation } from '../_generated/server'
 
 // Exact normalization used by the first published corpus at 74ce97e.
 function originalCitationMatch(text: string): string {
@@ -207,9 +209,9 @@ export const controlledNotificationReceipts = internalAction({
     for (const thread of result.threads ?? []) {
       const detail = await mailboxApi(`/inboxes/${encodeURIComponent(inbox)}/threads/${encodeURIComponent(thread.thread_id)}`) as { messages?: Array<{ message_id: string; subject?: string; text?: string; in_reply_to?: string; from?: string }> }
       for (const message of detail.messages ?? []) {
-        if (!message.from?.includes(env.AGENTMAIL_UPDATES_INBOX_ID ?? 'missing') || !message.subject || !/(?:Public Parish|^(?:New decision|Decision update):)/.test(message.subject)) continue
-        if (message.subject.includes('verification') || message.subject.includes('coverage')) continue
-        receipts.push({ messageId: message.message_id, threadId: thread.thread_id, subject: message.subject, officialLinks: (message.text?.match(/https:\/\/(?:rppj\.com|www\.rppj\.com|hdlegisuite\.brla\.gov)\//g) ?? []).length, isReply: Boolean(message.in_reply_to) })
+        if (!message.from?.includes(env.AGENTMAIL_UPDATES_INBOX_ID ?? 'missing') || !message.subject || !/(?:Public Parish|^(?:\[Development verification\] )?(?:Story update|New decision|Decision update):)/.test(message.subject)) continue
+        if (message.subject === 'Your Public Parish verification code' || message.subject.includes('coverage')) continue
+        receipts.push({ messageId: message.message_id, threadId: thread.thread_id, subject: message.subject, officialLinks: (message.text?.match(/https:\/\/(?:(?:www\.)?(?:rppj\.com|englandairpark\.org|opportunitylouisiana\.gov|legis\.la\.gov)|hdlegisuite\.brla\.gov|lpscpubvalence\.lpsc\.louisiana\.gov)\//g) ?? []).length, isReply: Boolean(message.in_reply_to) })
       }
     }
     return receipts
@@ -217,15 +219,52 @@ export const controlledNotificationReceipts = internalAction({
 })
 
 export const replyToControlledNotification = internalAction({
-  args: { messageId: v.string() }, returns: v.object({ messageId: v.string(), threadId: v.string() }),
+  args: { messageId: v.string(), storyKey: v.optional(v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce'))) }, returns: v.object({ messageId: v.string(), threadId: v.string() }),
   handler: async (_ctx, args) => {
     requireDevelopment()
     const inbox = env.AGENTMAIL_REPORTS_INBOX_ID
     if (!inbox || inbox === env.AGENTMAIL_UPDATES_INBOX_ID) throw new Error('Separate controlled inbox required.')
-    const message = await mailboxApi(`/inboxes/${encodeURIComponent(inbox)}/messages/${encodeURIComponent(args.messageId)}`) as { from?: string; subject?: string }
-    if (!message.from?.includes(env.AGENTMAIL_UPDATES_INBOX_ID ?? 'missing') || !message.subject || !/(?:Public Parish|^(?:New decision|Decision update):)/.test(message.subject)) throw new Error('Only the controlled Public Parish delivery may receive this reply.')
-    const reply = await mailboxApi(`/inboxes/${encodeURIComponent(inbox)}/messages/${encodeURIComponent(args.messageId)}/reply`, { text: 'Controlled development check: What amount does this roundabout update authorize, and what does the accepted source say it pays for? Please distinguish an authorization from proof of completed construction.' }) as { message_id: string; thread_id: string }
+    const message = await mailboxApi(`/inboxes/${encodeURIComponent(inbox)}/messages/${encodeURIComponent(args.messageId)}`) as { from?: string; subject?: string; text?: string }
+    const sender = message.from?.match(/<([^<>]+)>/)?.[1] ?? message.from?.trim()
+    if (sender !== env.AGENTMAIL_UPDATES_INBOX_ID || !message.subject || !/(?:Public Parish|^(?:\[Development verification\] )?(?:Story update|New decision|Decision update):)/.test(message.subject)) throw new Error('Only the controlled Public Parish delivery may receive this reply.')
+    if (args.storyKey && !message.text?.includes(`https://woozy-wren-227.convex.site/stories/${args.storyKey}`)) throw new Error('The selected delivery does not contain this story.')
+    const questions = {
+      'meta-richland': 'What did the May commission order schedule for December 16, and did that order approve the application?',
+      'spacex-pecan-island': 'What construction and launch dates did the announcement target, and are those completed outcomes?',
+      'applied-digital-boyce': 'What did the district authorize on April 23, and does it prove a final PILOT agreement was executed?',
+    }
+    const text = args.storyKey ? `Controlled development check: ${questions[args.storyKey]}` : 'Controlled development check: What amount does this roundabout update authorize, and what does the accepted source say it pays for? Please distinguish an authorization from proof of completed construction.'
+    const reply = await mailboxApi(`/inboxes/${encodeURIComponent(inbox)}/messages/${encodeURIComponent(args.messageId)}/reply`, { text }) as { message_id: string; thread_id: string }
     return { messageId: reply.message_id, threadId: reply.thread_id }
+  },
+})
+
+export const collectControlledStoryRoundup = mutation({
+  args: {}, returns: v.id('roundupWindows'),
+  handler: async ctx => {
+    requireDevelopment()
+    await requireOwner(ctx)
+    const recipient = env.AGENTMAIL_REPORTS_INBOX_ID
+    if (recipient !== 'public-parish-reports@agentmail.to' || env.AGENTMAIL_UPDATES_INBOX_ID !== 'public-parish-development@agentmail.to') throw new Error('Controlled story routing is required')
+    const addressHash = await hashAddress(recipient)
+    const subscriber = await ctx.db.query('emailSubscribers').withIndex('by_address_hash', q => q.eq('addressHash', addressHash)).unique()
+    if (!subscriber || subscriber.state !== 'verified' || await decryptAddress(subscriber.encryptedAddress) !== recipient) throw new Error('Controlled story recipient is not verified')
+    const matches = await ctx.db.query('notificationMatches').withIndex('by_owner_key_and_matched_at', q => q.eq('ownerKey', `email:${subscriber._id}`).gte('matchedAt', Date.now() - DAY)).order('desc').take(101)
+    if (matches.length > 100) throw new Error('Controlled roundup exceeds its match bound')
+    const selected = []
+    for (const key of ['meta-richland', 'spacex-pecan-island', 'applied-digital-boyce']) {
+      const match = matches.find(item => item.targetKind === 'story' && item.targetKey === key && item.storyUpdateId && ['both', 'weekly'].includes(item.cadenceAtMatch))
+      if (!match?.storyUpdateId || !await currentStoryUpdate(ctx, match.storyUpdateId)) throw new Error(`No current material story match for ${key}`)
+      selected.push(match)
+    }
+    const windowKey = 'development-three-story-historical-roundup-v1'
+    const previous = await ctx.db.query('roundupWindows').withIndex('by_window_key', q => q.eq('windowKey', windowKey)).unique()
+    if (previous) return previous._id
+    const now = Date.now()
+    const id = await ctx.db.insert('roundupWindows', { windowKey, startsAt: Math.min(...selected.map(item => item.matchedAt)), endsAt: Math.max(...selected.map(item => item.matchedAt)) + 1,
+      state: 'collecting', entryCount: 0, deliveryCount: 0, createdAt: now, updatedAt: now })
+    await ctx.scheduler.runAfter(0, internal.follows.agentmailClient.collectWeeklyRoundupPage, { roundupWindowId: id, paginationOpts: { numItems: 50, cursor: null } })
+    return id
   },
 })
 

@@ -1,3 +1,4 @@
+import { resolvePublicStory } from '../stories/resident'
 import { paginationOptsValidator, paginationResultValidator } from 'convex/server'
 import { v } from 'convex/values'
 import type { Id } from '../_generated/dataModel'
@@ -46,7 +47,7 @@ export async function indexIssue(ctx: MutationCtx, issueId: Id<'issues'>) {
   await advanceCorpusRevision(ctx)
 }
 export const search = query({
-  args: { paginationOpts: paginationOptsValidator, q: v.optional(v.string()), kind: v.optional(v.union(v.literal('decision'), v.literal('issue'), v.literal('meeting'), v.literal('body'))), place: v.optional(v.string()), body: v.optional(v.string()), lifecycle: v.optional(v.string()), source: v.optional(v.string()), topic: v.optional(v.string()), date: v.optional(v.string()), sort: v.optional(v.union(v.literal('newest'), v.literal('oldest'))) },
+  args: { paginationOpts: paginationOptsValidator, q: v.optional(v.string()), kind: v.optional(v.union(v.literal('decision'), v.literal('issue'), v.literal('meeting'), v.literal('body'), v.literal('story'))), place: v.optional(v.string()), body: v.optional(v.string()), lifecycle: v.optional(v.string()), source: v.optional(v.string()), topic: v.optional(v.string()), date: v.optional(v.string()), sort: v.optional(v.union(v.literal('newest'), v.literal('oldest'))) },
   returns: paginationResultValidator(publicSearchEntry),
   handler: async (ctx, args) => {
     if ((args.q?.length ?? 0) > 300 || args.paginationOpts.numItems > 50) throw new Error('Search request exceeds its bounds.')
@@ -77,7 +78,10 @@ export const search = query({
     for (const row of records.page) {
       // A meeting or body does not inherit one member decision's lifecycle or mode.
       if ((row.kind === 'meeting' || row.kind === 'body') && (args.lifecycle || args.source)) continue
-      if (row.kind === 'issue') {
+      if (row.kind === 'story') {
+        const record = await ctx.db.query('stories').withIndex('by_slug', q => q.eq('slug', row.key.slice('story:'.length))).unique()
+        if (!record || record.currentVersionId !== row.revision || !await resolvePublicStory(ctx, record)) continue
+      } else if (row.kind === 'issue') {
         const issue = await ctx.db.query('issues').withIndex('by_slug', q => q.eq('slug', row.key.slice('issue:'.length))).unique()
         if (!issue?.currentVersionId || issue.currentVersionId !== row.revision) continue
         const links = await ctx.db.query('issueDecisionLinks').withIndex('by_issue_version', q => q.eq('issueVersionId', issue.currentVersionId!)).take(201)

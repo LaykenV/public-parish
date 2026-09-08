@@ -9,6 +9,7 @@ import type { MutationCtx } from '../_generated/server'
 import { action, env, internalMutation, mutation } from '../_generated/server'
 import { requireOwner } from '../auth/authorization'
 import { agentmail, updatesInboxId } from '../follows/agentmailClient'
+import { checkedRecipient } from '../follows/developmentRouting'
 import { createOpaqueToken, createVerificationCode, decryptAddress, encryptAddress, hashAccessToken, hashAddress, hashVerificationCode, normalizeEmail } from '../follows/secrets'
 import { sha256HexOfText } from '../sources/hashing'
 import { placeIsSupported } from './publicHealth'
@@ -78,7 +79,7 @@ export const prepareNotice = internalMutation({
     const now = Date.now()
     const subscriberId = prior?._id ?? await ctx.db.insert('emailSubscribers', { addressHash: args.addressHash, encryptedAddress: args.encryptedAddress, encryptionVersion: 1, state: 'pending', createdAt: now, updatedAt: now })
     const challenge = await ctx.db.insert('coverageNoticeChallenges', { requestId: request._id, subscriberId, challengeId: args.challengeId, codeHash: args.codeHash, expiresAt: now + 15 * MINUTE, attempts: 0, createdAt: now })
-    const outboundId = await agentmail.sendMessage(ctx, updatesInboxId(), { to: args.email, subject: 'Verify your Public Parish coverage notice', text: `Your verification code is ${args.code}. It expires in 15 minutes.\n\nYour request for ${request.placeName} is already saved. Verification enables one notice when that place becomes supported. It creates no account and no issue follow.\n\nIf you did not request this code, ignore it.`, labels: ['public-parish', 'coverage-verification'] })
+    const outboundId = await agentmail.sendMessage(ctx, updatesInboxId(), { to: checkedRecipient(args.email), subject: 'Verify your Public Parish coverage notice', text: `Your verification code is ${args.code}. It expires in 15 minutes.\n\nYour request for ${request.placeName} is already saved. Verification enables one notice when that place becomes supported. It creates no account and no issue follow.\n\nIf you did not request this code, ignore it.`, labels: ['public-parish', 'coverage-verification'] })
     await ctx.db.patch(challenge, { outboundId })
     return { challengeId: args.challengeId }
   },
@@ -130,7 +131,7 @@ export const deliver = internalMutation({
     const token = createOpaqueToken()
     await ctx.db.insert('emailAccessTokens', { subscriberId: subscriber._id, kind: 'unsubscribe', tokenHash: await hashAccessToken(token), createdAt: Date.now() })
     const base = env.CONVEX_SITE_URL.replace(/\/$/, '')
-    const outboundId = await agentmail.sendMessage(ctx, updatesInboxId(), { to: await decryptAddress(subscriber.encryptedAddress), subject: `Public Parish coverage is available for ${subscription.placeName}`, text: `${subscription.placeName} now meets Public Parish's coverage checks. Read the exact supported government bodies and limitations at ${base}/coverage.\n\nThis is the one launch notice you requested. Public Parish is free and nonpartisan.\n\nUnsubscribe from all email notices: ${base}/coverage/unsubscribe/${encodeURIComponent(token)}`, labels: ['public-parish', 'coverage-launch'] })
+    const outboundId = await agentmail.sendMessage(ctx, updatesInboxId(), { to: checkedRecipient(await decryptAddress(subscriber.encryptedAddress)), subject: `Public Parish coverage is available for ${subscription.placeName}`, text: `${subscription.placeName} now meets Public Parish's coverage checks. Read the exact supported government bodies and limitations at ${base}/coverage.\n\nThis is the one launch notice you requested. Public Parish is free and nonpartisan.\n\nUnsubscribe from all email notices: ${base}/coverage/unsubscribe/${encodeURIComponent(token)}`, labels: ['public-parish', 'coverage-launch'] })
     await ctx.db.patch(subscription._id, { state: 'queued', launchedSlug: slug, outboundId, updatedAt: Date.now() })
     return null
   },

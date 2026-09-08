@@ -187,7 +187,7 @@ describe('resident following interface', () => {
     )
     expect(html).toContain('Manage this follow')
     expect(html).toContain('one subscription')
-    expect(html).toContain('Unfollow this issue')
+    expect(html).toContain('Stop following')
     expect(html).not.toContain('Unfollow all')
 
     const bothValue = html.indexOf('value="both"')

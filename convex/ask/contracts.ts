@@ -10,6 +10,7 @@ export const askScope = v.union(
     areaKey: v.optional(v.string()),
   }),
   v.object({ kind: v.literal('issue'), issueSlug: v.string() }),
+  v.object({ kind: v.literal('story'), storySlug: v.string() }),
   v.object({ kind: v.literal('meeting'), meetingId: v.string() }),
 )
 
@@ -33,6 +34,7 @@ export const askEvidence = v.object({
 export type AskEvidence = typeof askEvidence.type
 
 export const askRecordContext = v.object({
+  targetKind: v.optional(v.union(v.literal('decision'), v.literal('story'))),
   recordKey: v.string(),
   sourceRecordId: v.string(),
   placeName: v.string(),
@@ -126,6 +128,7 @@ export const askSelectionTarget = v.object({
     v.literal('issue'),
     v.literal('meeting'),
     v.literal('decision'),
+    v.literal('story'),
   ),
   id: v.string(),
 })
@@ -162,12 +165,14 @@ export const askAnswerResult = v.object({
 export type AskAnswerResult = typeof askAnswerResult.type
 
 export function scopeKey(scope: AskScope): string {
+  if (scope.kind === 'story') return scope.storySlug
   if (scope.kind === 'issue') return scope.issueSlug
   if (scope.kind === 'meeting') return scope.meetingId
   return scope.areaKey ?? '*'
 }
 
 export function storedScope(kind: AskScope['kind'], key: string): AskScope {
+  if (kind === 'story') return { kind, storySlug: key }
   if (kind === 'issue') return { kind, issueSlug: key }
   if (kind === 'meeting') return { kind, meetingId: key }
   return key === '*' ? { kind } : { kind, areaKey: key }

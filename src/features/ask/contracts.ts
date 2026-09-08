@@ -12,6 +12,7 @@ import { parseResidentReturnTo } from '../resident-handoff/navigation'
 
 export type AskScope =
   | { kind: 'corpus'; areaKey?: AreaSlug; label: string }
+  | { kind: 'story'; storySlug: string; label: string; recordTitle: string; returnTo: string }
   | {
       kind: 'issue'
       issueSlug: string
@@ -85,6 +86,7 @@ export type AskAvailability =
 export type AskRouteSearch = (
   | { scope?: 'corpus'; area?: AreaSlug; source?: string }
   | { scope: 'issue'; issue: string; source?: string }
+  | { scope: 'story'; story: string; source?: string }
   | { scope: 'meeting'; meeting: string; source?: string }
 ) & { returnTo?: string }
 
@@ -221,10 +223,14 @@ export function parseAskSearch(search: Record<string, unknown>): AskSearch {
       : undefined
   const scope =
     typeof search.scope === 'string' &&
-    ['corpus', 'issue', 'meeting'].includes(search.scope)
+    ['corpus', 'issue', 'meeting', 'story'].includes(search.scope)
       ? search.scope
       : undefined
 
+  if (scope === 'story') {
+    const story = pickText(search.story)
+    if (story) return { scope: 'story', story, returnTo, source, fixture }
+  }
   if (scope === 'issue') {
     const issue = pickText(search.issue)
     if (issue) return { scope: 'issue', issue, returnTo, source, fixture }
@@ -251,12 +257,14 @@ export function parseAskSearch(search: Record<string, unknown>): AskSearch {
 }
 
 export function askScopeKey(search: AskSearch): string {
+  if (search.scope === 'story') return `story:${search.story}`
   if (search.scope === 'issue') return issueAskKey(search.issue)
   if (search.scope === 'meeting') return meetingAskKey(search.meeting)
   return search.area ? `corpus:${search.area}` : 'corpus'
 }
 
 export function routeSearchFromScopeKey(key: string): AskRouteSearch {
+  if (key.startsWith('story:')) return { scope: 'story', story: key.slice(6) }
   if (key.startsWith('issue:')) return { scope: 'issue', issue: key.slice(6) }
   if (key.startsWith('meeting:'))
     return { scope: 'meeting', meeting: key.slice(8) }
@@ -275,6 +283,8 @@ export function meetingAskKey(meetingId: string): string {
 
 export function askScopeIdentity(scope: AskScope): string {
   switch (scope.kind) {
+    case 'story':
+      return `story:${scope.storySlug}`
     case 'corpus':
       return scope.areaKey ? `corpus:${scope.areaKey}` : 'corpus'
     case 'issue':

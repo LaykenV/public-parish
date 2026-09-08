@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router'
 import { useConvexAuth } from '@convex-dev/auth/react'
 
 import { Button } from '../../components/ui/button'
-import { LouisianaRelief } from '../landing/louisiana-relief'
+import { FeaturedStories } from '../stories/story-page'
 import { AreaSelector } from './area-selector'
 import { useArea } from './area-store'
 import { areaName, getActiveDiscoveryFixture } from './contracts'
@@ -58,6 +58,8 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
       <p aria-live="polite" className="visually-hidden" role="status">
         {refreshAnnouncement}
       </p>
+      {!fixturesEnabled ? <FeaturedStories /> : null}
+      <section id="local-content" aria-label="Local decisions">
       {watching.length === 0 ? (
         <FirstVisitHero />
       ) : (
@@ -75,6 +77,7 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
         scenario={activeScenario}
         watching={watching}
       />
+      </section>
     </main>
   )
 }
@@ -83,12 +86,12 @@ function WatchingHeader({ watching }: { watching: AreaSlug[] }) {
   return (
     <header className="pp-watching">
       <div className="pp-watching-copy">
-        <h1 className="pp-watching-title">
+        <h2 className="pp-watching-title">
           <span>Watching</span>{' '}
           {watching.length === 1
             ? areaName(watching[0])
             : `${watching.length} areas`}
-        </h1>
+        </h2>
         {watching.length > 1 ? (
           <ul className="pp-watching-areas">
             {watching.map((slug) => (
@@ -115,50 +118,11 @@ function WatchingHeader({ watching }: { watching: AreaSlug[] }) {
 
 function FirstVisitHero() {
   return (
-    <section className="pp-hero" data-relief-interaction>
-      <div className="pp-hero-grid">
-        <div className="pp-hero-intro">
-          <p className="pp-hero-kicker">
-            Louisiana local decisions, with receipts.
-          </p>
-          <h1 id="home-title">Follow the local issues taking shape.</h1>
-        </div>
-        <div className="pp-hero-details">
-          <p className="pp-hero-lede">
-            Public Parish connects related government decisions into issue
-            timelines, with the official evidence beside every published fact.
-          </p>
-          <div className="pp-hero-actions">
-            <AreaSelector
-              trigger={(props) => (
-                <button {...props} className="pp-area-field" type="button">
-                  <SearchIcon
-                    aria-hidden="true"
-                    className="pp-area-field-icon"
-                  />
-                  <span className="pp-area-field-label">
-                    Choose a parish or city
-                  </span>
-                </button>
-              )}
-            />
-            <Button
-              className="pp-hero-skip"
-              render={<a href="#current-issues" />}
-              size="touch"
-              variant="link"
-            >
-              Browse current issues
-            </Button>
-            <p className="pp-hero-note">
-              Free. Open source. No account needed to read.
-            </p>
-          </div>
-        </div>
-        <div className="pp-hero-relief">
-          <LouisianaRelief />
-        </div>
-      </div>
+    <section className="pp-watching">
+      <div><h2>Decisions near you</h2><p>Choose an area to browse its published local records.</p></div>
+      <AreaSelector trigger={(props) => (
+        <Button {...props} size="touch" variant="outline"><SearchIcon aria-hidden="true" /> Choose a parish or city</Button>
+      )} />
     </section>
   )
 }

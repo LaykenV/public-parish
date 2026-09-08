@@ -8,6 +8,21 @@
  * @module
  */
 
+import type * as stories_contracts from "../stories/contracts.js";
+import type * as stories_corrections from "../stories/corrections.js";
+import type * as stories_retainedDraft from "../stories/retainedDraft.js";
+import type * as stories_transfer from "../stories/transfer.js";
+import type * as stories_evidence from "../stories/evidence.js";
+import type * as stories_operations from "../stories/operations.js";
+import type * as stories_buildLedger from "../stories/buildLedger.js";
+import type * as stories_build from "../stories/build.js";
+import type * as stories_workflow from "../stories/workflow.js";
+import type * as stories_resident from "../stories/resident.js";
+import type * as stories_search from "../stories/search.js";
+import type * as stories_updates from "../stories/updates.js";
+import type * as stories_intake from "../stories/intake.js";
+import type * as sharing_stories from "../sharing/stories.js";
+import type * as stories_imports from "../stories/imports.js";
 import type * as ai_chatCompletions from "../ai/chatCompletions.js";
 import type * as ai_provider from "../ai/provider.js";
 import type * as ai_spending from "../ai/spending.js";
@@ -142,6 +157,21 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  "sharing/stories": typeof sharing_stories;
+  "stories/search": typeof stories_search;
+  "stories/updates": typeof stories_updates;
+  "stories/intake": typeof stories_intake;
+  "stories/resident": typeof stories_resident;
+  "stories/workflow": typeof stories_workflow;
+  "stories/build": typeof stories_build;
+  "stories/buildLedger": typeof stories_buildLedger;
+  "stories/operations": typeof stories_operations;
+  "stories/evidence": typeof stories_evidence;
+  "stories/contracts": typeof stories_contracts;
+  "stories/corrections": typeof stories_corrections;
+  "stories/retainedDraft": typeof stories_retainedDraft;
+  "stories/transfer": typeof stories_transfer;
+  "stories/imports": typeof stories_imports;
   "ai/chatCompletions": typeof ai_chatCompletions;
   "ai/provider": typeof ai_provider;
   "ai/spending": typeof ai_spending;

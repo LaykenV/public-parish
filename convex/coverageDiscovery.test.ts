@@ -398,6 +398,7 @@ function stubSuccessfulProviders() {
     ],
   }))
   overrideCoverageClassifierForTests(async (request, contractCheck) => {
+    if (typeof request.messages[1].content !== 'string') throw new Error('Coverage classification must remain text-only')
     const input = JSON.parse(request.messages[1].content) as {
       bodyKey: string
       candidates: Array<{

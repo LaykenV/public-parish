@@ -7,8 +7,18 @@ The approved order is stories, then design and QA, then launch and outreach.
 
 ## Current checkpoint
 
-The original feature build is complete through Slice 9. The new story work is
-planned and unimplemented. Documentation changes do not certify story support.
+The three-story functional release passes the development gate on application
+`decf363cd61fa423255e5508aff22a503b47f8e8`. PRs 140 through 173 are CI-passing
+and reviewed; PR 159 is an older documentation side branch excluded from this
+candidate. All remain unmerged. The exact backend and CI-built frontend run at
+https://woozy-wren-227.convex.site.
+
+Meta is the Home lead, with SpaceX and Boyce secondary. All three have accepted
+LIMITED versions, official document images, exact citations and explicit gaps.
+Actual development verification covered Ask, Google and verified-email follows,
+three immediate updates, a three-story roundup, sourced replies, management and
+unsubscribe. [Development certification](story-development-certification.md)
+records the evidence and the production boundary.
 
 | Capability | Evidence and limitation |
 | --- | --- |
@@ -20,7 +30,7 @@ planned and unimplemented. Documentation changes do not certify story support.
 | Source automation | Public health reads on September 7 showed only Metropolitan Council scheduled checks enabled |
 | Existing corpus | September 7 public queries returned 50 decisions per parish, the query cap; 6 Lafayette, 20 Rapides at the issue cap, and 19 East Baton Rouge timelines |
 | Boyce starting evidence | Existing Applied Digital issue returned three linked decisions and thirteen citations. This is a source base, not the new story page |
-| Remaining proof | Three completed stories, full founder design and QA pass, organic resident usefulness, final demo, and submission |
+| Remaining proof | Owner-approved production promotion and independent smoke, full founder design and QA pass, organic resident usefulness, final demo, and submission |
 
 Many recent decisions are limited. Query counts are bounded results, not complete
 archive totals. A source can pass certification while its backlog remains
@@ -33,9 +43,8 @@ dated operating facts, not current live balances. The owner now permits targeted
 additional spending under [operations](operations.md#spending-policy).
 
 The older release record reports 560 CI tests and independent production smoke
-through PR #139. This docs session does not rerun or extend that proof. No
-physical-device or screen-reader pass, organic resident outcome, story release,
-or submission is claimed.
+through PR #139. The new story evidence is development-only. No physical-device or screen-reader
+pass, organic resident outcome, production story release or submission is claimed.
 
 ## Phase 1: finish stories
 
@@ -45,45 +54,53 @@ Do not begin the full redesign campaign until this phase passes.
 
 | Packet | Required outcome | Dependencies | State |
 | --- | --- | --- | --- |
-| S1 | Versioned story contract, owner authorization, source intake, exact evidence references, image provenance, review and publication policy | Architecture and source contracts | Pending |
-| S2 | Owner JSON import, preview, approve, revise and withdraw workflow; replay and stale-evidence protection | S1 | Pending |
-| S3 | Published story routes, evidence view, all-three homepage composition, related records, search and social share HTML | S1, S2 | Pending |
-| S4 | Story-scoped anonymous Ask and private thread authorization using accepted story evidence | S1, S3 | Pending |
-| S5 | Google and verified-email story follows, material-update alerts, roundup integration, grounded replies, management and unsubscribe | S1, S3, S4 | Pending |
-| S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Pending |
-| S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Pending |
+| S1 | Versioned story contract, owner authorization, source intake, exact evidence references, image provenance, review and publication policy | Architecture and source contracts | Implemented and CI passed; real staging and bounded retrieval exercised in development |
+| S2 | Owner JSON import, preview, approve, revise and withdraw workflow; replay and stale-evidence protection | S1 | Development passed; exact owner approval and revision exercised, stale/withdrawal negatives passed CI |
+| S3 | Published story routes, evidence view, all-three homepage composition, related records, search and social share HTML | S1, S2 | Development passed on all three routes, Home, images, search and share HTML |
+| S4 | Story-scoped anonymous Ask and private thread authorization using accepted story evidence | S1, S3 | Development passed, two supported and one unsupported question per story |
+| S5 | Google and verified-email story follows, material-update alerts, roundup integration, grounded replies, management and unsubscribe | S1, S3, S4 | Development passed with actual isolated provider callbacks, receipt, reply, management and unsubscribe proof |
+| S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Meta reviewed v3, SpaceX v2 and Boyce v2 accepted and published LIMITED in development |
+| S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Development gate passed; owner-approved production release and independent smoke pending |
 
 Build the first complete vertical path with the existing Boyce evidence if that
 reduces risk. Meta remains the lead on the delivered homepage. Research for all
 three can proceed while shared functionality is implemented. No fourth story is
 required. CCS is deferred; do not substitute it for the agreed launch set.
 
+The final application frontend came from Verify run
+[34169408937](https://github.com/LaykenV/public-parish/actions/runs/34169408937),
+static-hosting release `6087d2e3-adb8-4410-991d-82c5fce8eeab`. No local automated
+validation ran. Eleven retained official source pairs passed signed artifact
+transfer and exact replay. A retained draft passed fresh independent review
+without another MODEL_STRONG call. Publishers remain candidate and monitoring
+remains off. Development execution is not production proof.
+
 ### Story acceptance
 
-- [ ] Home shows Meta as the lead and SpaceX and Boyce as secondary stories on
+- [x] Home shows Meta as the lead and SpaceX and Boyce as secondary stories on
   desktop and mobile. No carousel or location-selection gate hides a story.
-- [ ] Every story has a stable direct URL, substantive reviewed explanation,
+- [x] Every story has a stable direct URL, substantive reviewed explanation,
   relevant image, source credit, exact citations, timeline, known gaps,
   reviewed-through date, related records, and update expectations.
-- [ ] Official source identity, full artifact retention, hashes, exact spans,
+- [x] Official source identity, full artifact retention, hashes, exact spans,
   independent review, deterministic checks, and owner approval all pass.
-- [ ] An anonymous visitor can ask two related story questions and an unsupported
+- [x] An anonymous visitor can ask two related story questions and an unsupported
   question. Answers cite accepted evidence; not-found and exhausted-budget
   states remain honest. No open-web civic answer path is added.
-- [ ] Google and verified-email visitors can follow each story, manage delivery,
+- [x] Google and verified-email visitors can follow each story, manage delivery,
   receive a controlled material update, reply, and unsubscribe. Replays and
   overlapping follows do not create duplicate updates.
-- [ ] A caption, image, headline-style, or featured-order change alone sends no
+- [x] A caption, image, headline-style, or featured-order change alone sends no
   material-change alert. An initial import sends no historical alert batch.
-- [ ] Changed or withdrawn source evidence cannot remain silently current in a
+- [x] Changed or withdrawn source evidence cannot remain silently current in a
   story, answer, search result, email, or social preview.
-- [ ] Story search and share previews use the accepted story version and its
-  approved image. Direct refresh works on both production origins.
-- [ ] Story publication neither promotes a new parish nor enables agency-wide
+- [x] Story search and share previews use the accepted story version and its
+  approved image. Direct refresh works in development. Production origins remain a separate gate.
+- [x] Story publication neither promotes a new parish nor enables agency-wide
   monitoring. Supported local coverage retains its existing gates.
-- [ ] Owner review, retries, revisions, withholding, and rollback or withdrawal
+- [x] Owner review, retries, revisions, withholding, and rollback or withdrawal
   have a repeatable documented path. New versions preserve prior evidence.
-- [ ] Record development and CI results separately from production proof. Capture
+- [x] Record development and CI results separately from production proof. Capture
   the exact release, live paths, controlled inbox evidence, and cost.
 
 Story following is required. A link to an underlying issue follow is useful
@@ -93,7 +110,9 @@ silently replacing functionality or dropping a launch story.
 
 ## Phase 2: global design and full QA
 
-Start only after S7. [Design](design.md) owns the page contracts and review order.
+The S7 development gate has passed. Target mapping repair 176 passed 632 CI tests and bounded development replay; production promotion requires explicit owner-reviewed mappings for existing Boyce records. The owner may begin this campaign now.
+Production promotion still needs its own exact release approval and smoke.
+[Design](design.md) owns the page contracts and review order.
 
 - [ ] Agree on global colors, type, spacing, button and input treatments,
   navigation, cards, statuses, image treatment, and evidence interactions.

@@ -33,6 +33,7 @@ type Env = {
   readonly ADMIN_EMAIL: string | undefined;
   readonly AGENTMAIL_API_KEY: string;
   readonly AGENTMAIL_REPORTS_INBOX_ID: string | undefined;
+  readonly STORY_ARTIFACT_TRANSFER_KEY: string | undefined;
   readonly AGENTMAIL_UPDATES_INBOX_ID: string | undefined;
   readonly AGENTMAIL_WEBHOOK_SECRET: string | undefined;
   readonly AUTH_GOOGLE_CLIENT_ID: string;

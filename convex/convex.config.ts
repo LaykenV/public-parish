@@ -30,6 +30,7 @@ const app = defineApp({
     AGENTMAIL_REPORTS_INBOX_ID: v.optional(v.string()),
     EMAIL_ADDRESS_HMAC_KEY: v.optional(v.string()),
     EMAIL_ENCRYPTION_KEY: v.optional(v.string()),
+    STORY_ARTIFACT_TRANSFER_KEY: v.optional(v.string()),
   },
 })
 

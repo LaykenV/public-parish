@@ -548,7 +548,7 @@ function FollowingList({
       </div>
 
       <div aria-label="Filter follows" className="following-filters">
-        {(['All', 'Issue', 'Topic', 'Government body', 'Place'] as const).map(
+        {(['All', 'Story', 'Issue', 'Topic', 'Government body', 'Place'] as const).map(
           (item) => (
             <button
               aria-pressed={filter === item}
@@ -557,7 +557,7 @@ function FollowingList({
               onClick={() => setFilter(item)}
               type="button"
             >
-              {item === 'Government body'
+              {item === 'Story' ? 'Stories' : item === 'Government body'
                 ? 'Bodies'
                 : `${item}${item === 'All' ? '' : 's'}`}
             </button>
@@ -717,7 +717,7 @@ function FollowRow({
                 }}
                 to={target.href}
               >
-                {target.evidenceScenario === 'update'
+                {target.kind === 'Story' ? 'Open story' : target.evidenceScenario === 'update'
                   ? 'Open changed issue'
                   : 'Open issue'}
               </Link>

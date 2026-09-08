@@ -1,3 +1,4 @@
+import { storyKey, storyMode, sourceBinding, storySpan, storyDraft, storyReview, storyMedia, relatedPublication, publicationMapping } from './stories/contracts'
 import { civicEvent } from './analytics/civicContracts'
 import { searchEntry } from './resident/searchContracts'
 import { defineSchema, defineTable } from 'convex/server'
@@ -114,6 +115,62 @@ const analyticsAreaCounts = v.object({
 })
 
 export default defineSchema({
+  stories: defineTable({
+    storyKey, slug: v.string(), rank: v.number(),
+    state: v.union(v.literal('unpublished'), v.literal('active'), v.literal('withdrawn')),
+    currentVersionId: v.optional(v.id('storyVersions')),
+    withdrawalReason: v.optional(v.string()),
+    generation: v.number(), createdAt: v.number(), updatedAt: v.number(),
+  }).index('by_story_key', ['storyKey']).index('by_slug', ['slug']).index('by_state_and_rank', ['state', 'rank']),
+  storyBuilds: defineTable({
+    publicationMappings: v.optional(v.array(publicationMapping)),
+    notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))),
+    retryCount: v.optional(v.number()),
+    importId: v.id('storyImports'), storyId: v.id('stories'),
+    expectedGeneration: v.number(), inputHash: v.string(),
+    sourceBindings: v.array(sourceBinding), spans: v.array(storySpan),
+    relatedPublications: v.array(relatedPublication), media: v.union(v.null(), storyMedia),
+    state: v.union(v.literal('queued'), v.literal('drafted'), v.literal('reviewed'), v.literal('failed'), v.literal('published'), v.literal('withheld')),
+    draft: v.optional(storyDraft), draftHash: v.optional(v.string()), draftModel: v.optional(v.string()),
+    retainedDraftReceipt: v.optional(v.object({ packetJson: v.string(), signature: v.string() })),
+    draftProvenance: v.optional(v.object({ kind: v.literal('owner_correction'), parentBuildId: v.id('storyBuilds'), parentDraftHash: v.string() })),
+    review: v.optional(storyReview), reviewHash: v.optional(v.string()), reviewModel: v.optional(v.string()),
+    runId: v.id('pipelineRuns'), workflowId: v.optional(v.string()),
+    error: v.optional(v.string()), startedBy: v.id('users'), createdAt: v.number(),
+    versionId: v.optional(v.id('storyVersions')),
+  }).index('by_input_hash', ['inputHash']).index('by_import_id', ['importId']).index('by_story_id_and_created_at', ['storyId', 'createdAt']),
+  storySourceRetrievals: defineTable({
+    importId: v.id('storyImports'), sourceKey: v.string(), attempts: v.number(),
+    state: v.union(v.literal('running'), v.literal('complete'), v.literal('failed')),
+    snapshotId: v.optional(v.id('sourceSnapshots')), error: v.optional(v.string()),
+    startedAt: v.number(), completedAt: v.optional(v.number()),
+  }).index('by_import_and_source', ['importId', 'sourceKey']),
+  storyVersions: defineTable({
+    storyId: v.id('stories'), buildId: v.id('storyBuilds'), version: v.number(),
+    mode: storyMode, inputHash: v.string(), draftHash: v.string(), reviewHash: v.string(),
+    payload: storyDraft, spans: v.array(storySpan), relatedPublications: v.array(relatedPublication),
+    media: v.union(v.null(), storyMedia), geography: v.array(v.string()),
+    reviewedThrough: v.string(), nextReviewAt: v.string(), reviewResponsibility: v.string(),
+    approvedBy: v.id('users'), approvedAt: v.number(),
+  }).index('by_story_id_and_version', ['storyId', 'version']).index('by_build_id', ['buildId']),
+  // Staging is private research. It has no public pointer or publication API.
+  storyImports: defineTable({
+    storyKey: v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce')),
+    bundleKey: v.string(),
+    bundleVersion: v.number(),
+    contractVersion: v.literal('1.0.0'),
+    bundleHash: v.string(),
+    manifestJson: v.string(),
+    state: v.literal('staged'),
+    blockers: v.array(v.string()),
+    stagedBy: v.id('users'),
+    createdAt: v.number(),
+  })
+    .index('by_bundle_hash', ['bundleHash'])
+    .index('by_bundle_key_and_bundle_version', ['bundleKey', 'bundleVersion'])
+    .index('by_story_key_and_created_at', ['storyKey', 'createdAt'])
+    .index('by_created_at', ['createdAt']),
+
   users: defineTable({
     googleAccountId: v.string(),
     email: v.string(),
@@ -256,9 +313,24 @@ export default defineSchema({
     updatedAt: v.number(),
   }).index('by_user_id', ['userId']),
 
+  storyUpdateEvents: defineTable({
+    storyId: v.id('stories'),
+    previousVersionId: v.id('storyVersions'),
+    currentVersionId: v.id('storyVersions'),
+    changeKeys: v.array(v.string()),
+    createdAt: v.number(),
+  }).index('by_current_version', ['currentVersionId']).index('by_story_and_created_at', ['storyId', 'createdAt']),
+
+  notificationChangeClaims: defineTable({
+    ownerKey: v.string(), changeKey: v.string(),
+    cadenceKey: v.string(), deliveryId: v.id('notificationDeliveries'),
+    createdAt: v.number(),
+  }).index('by_owner_change_and_cadence', ['ownerKey', 'changeKey', 'cadenceKey']).index('by_delivery', ['deliveryId']),
+
   notificationMatches: defineTable({
     followId: v.id('follows'),
-    materialChangeId: v.id('materialChanges'),
+    materialChangeId: v.optional(v.id('materialChanges')),
+    storyUpdateId: v.optional(v.id('storyUpdateEvents')),
     ownerKind: v.union(v.literal('google'), v.literal('email')),
     ownerKey: v.string(),
     targetKind: followTargetKind,
@@ -266,6 +338,8 @@ export default defineSchema({
     cadenceAtMatch: activeDeliveryCadence,
     matchedAt: v.number(),
   })
+    .index('by_follow_and_story_update', ['followId', 'storyUpdateId'])
+    .index('by_story_update_and_owner', ['storyUpdateId', 'ownerKey'])
     .index('by_follow_id_and_material_change_id', [
       'followId',
       'materialChangeId',
@@ -278,8 +352,9 @@ export default defineSchema({
     .index('by_matched_at', ['matchedAt']),
 
   notificationFanouts: defineTable({
-    materialChangeId: v.id('materialChanges'),
-    phase: v.union(v.literal('decision'), v.literal('issue')),
+    materialChangeId: v.optional(v.id('materialChanges')),
+    storyUpdateId: v.optional(v.id('storyUpdateEvents')),
+    phase: v.union(v.literal('decision'), v.literal('issue'), v.literal('story')),
     issueVersionId: v.optional(v.id('issueVersions')),
     targetIndex: v.number(),
     cursor: v.optional(v.string()),
@@ -288,6 +363,8 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index('by_phase_state_and_updated_at', ['phase', 'state', 'updatedAt'])
+    .index('by_story_update', ['storyUpdateId'])
     .index('by_material_change_id_and_phase_and_issue_version_id', [
       'materialChangeId',
       'phase',
@@ -296,6 +373,7 @@ export default defineSchema({
     .index('by_state_and_updated_at', ['state', 'updatedAt']),
 
   notificationDeliveries: defineTable({
+    storyUpdateId: v.optional(v.id('storyUpdateEvents')),
     ownerKind: v.union(v.literal('google'), v.literal('email')),
     ownerKey: v.string(),
     kind: v.union(v.literal('immediate'), v.literal('weekly')),
@@ -323,6 +401,7 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index('by_owner_and_story_update', ['ownerKey', 'storyUpdateId'])
     .index('by_owner_key_and_kind_and_material_change_id', [
       'ownerKey',
       'kind',
@@ -344,6 +423,7 @@ export default defineSchema({
     preparingEventId: v.optional(v.id('emailReplyEvents')),
     preparingStartedAt: v.optional(v.number()),
     scopeKind: v.union(
+      v.literal('story'),
       v.literal('corpus'),
       v.literal('issue'),
       v.literal('meeting'),
@@ -359,6 +439,8 @@ export default defineSchema({
     .index('by_updated_at', ['updatedAt']),
 
   emailReplyEvents: defineTable({
+    inboundInboxId: v.optional(v.string()),
+    senderHash: v.optional(v.string()),
     providerEventId: v.string(),
     agentmailThreadId: v.string(),
     inboundMessageId: v.string(),
@@ -385,6 +467,7 @@ export default defineSchema({
     updatedAt: v.number(),
   })
     .index('by_provider_event_id', ['providerEventId'])
+    .index('by_inbox_and_message', ['inboundInboxId', 'inboundMessageId'])
     .index('by_agentmail_thread_id_and_created_at', [
       'agentmailThreadId',
       'createdAt',
@@ -415,10 +498,12 @@ export default defineSchema({
   roundupEntries: defineTable({
     roundupWindowId: v.id('roundupWindows'),
     deliveryId: v.id('notificationDeliveries'),
-    materialChangeId: v.id('materialChanges'),
+    materialChangeId: v.optional(v.id('materialChanges')),
+    storyUpdateId: v.optional(v.id('storyUpdateEvents')),
     followIds: v.array(v.id('follows')),
     createdAt: v.number(),
   })
+    .index('by_delivery_and_story_update', ['deliveryId', 'storyUpdateId'])
     .index('by_delivery_id_and_material_change_id', [
       'deliveryId',
       'materialChangeId',
@@ -511,7 +596,7 @@ export default defineSchema({
   jurisdictions: defineTable({
     name: v.string(),
     slug: v.string(),
-    type: v.union(v.literal('parish'), v.literal('municipality')),
+    type: v.union(v.literal('parish'), v.literal('municipality'), v.literal('state')),
     state: v.string(),
     parentJurisdictionId: v.optional(v.id('jurisdictions')),
     publicStatus: coverageStatuses,
@@ -837,6 +922,11 @@ export default defineSchema({
       'deployment',
       'checkedAt',
     ]),
+
+  storyArtifactTransfers: defineTable({
+    snapshotId: v.id('sourceSnapshots'), importId: v.id('storyImports'), sourceKey: v.string(),
+    packetJson: v.string(), signature: v.string(), importedBy: v.id('users'), createdAt: v.number(),
+  }).index('by_snapshot', ['snapshotId']),
 
   sourceSnapshots: defineTable({
     registryId: v.id('sourceRegistries'),
@@ -1497,6 +1587,7 @@ export default defineSchema({
     sessionId: v.id('anonymousSessions'),
     threadId: v.string(),
     scopeKind: v.union(
+      v.literal('story'),
       v.literal('corpus'),
       v.literal('issue'),
       v.literal('meeting'),

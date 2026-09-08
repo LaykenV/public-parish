@@ -297,6 +297,11 @@ async function authorizeThreadMutation(
 }
 
 async function requirePublishedScope(ctx: MutationCtx, scope: AskScope) {
+  if (scope.kind === 'story') {
+    const story = await ctx.runQuery(api.stories.resident.get, { slug: scope.storySlug })
+    if (story.state !== 'active') throw askError('scope_unavailable', 'Story evidence is unavailable')
+    return
+  }
   if (scope.kind === 'issue') {
     const issue = await ctx.runQuery(api.resident.evidence.getPublishedIssue, {
       slug: scope.issueSlug,

@@ -10,6 +10,8 @@ import { api, internal } from './_generated/api'
 import type { DataModel, Id } from './_generated/dataModel'
 import schema from './schema'
 import { sha256HexOfText } from './sources/hashing'
+import { currentAtomicExcerpts } from './stories/askEvidence'
+import { normalizeForMatch } from './extraction/textMatch'
 import {
   allowsDirectFallback,
   overrideAskGatewayForTests,
@@ -350,7 +352,7 @@ test('answers follow-ups with retrieved citations and replays the Agent message'
         schemaVersion: 'ask-selector-v2-batched',
       }),
       expect.objectContaining({
-        promptVersion: 'ask-answer-v3',
+        promptVersion: 'ask-answer-v4',
         schemaVersion: 'ask-answer-v3',
       }),
     ]),
@@ -427,7 +429,7 @@ test('invalid selector targets fall back to the complete accepted scope', async 
         status: 'selection_invalid',
       }),
       expect.objectContaining({
-        promptVersion: 'ask-answer-v3',
+        promptVersion: 'ask-answer-v4',
         status: 'success',
       }),
     ]),
@@ -604,7 +606,7 @@ test('records unknown provider usage without preempting later answers', async ()
     answerAttempt: claim.attempt,
     route: 'ai_gateway',
     modelId: 'openai/gpt-5.6-luna',
-    promptVersion: 'ask-answer-v3',
+    promptVersion: 'ask-answer-v4',
     schemaVersion: 'ask-answer-v3',
     attempt: 1,
     status: 'failed',
@@ -798,7 +800,7 @@ test('fences a stale answer after its lease is retried', async () => {
       answerAttempt: first.attempt,
       route: 'ai_gateway',
       modelId: 'openai/gpt-5.6-luna',
-      promptVersion: 'ask-answer-v3',
+      promptVersion: 'ask-answer-v4',
       schemaVersion: 'ask-answer-v3',
       attempt: 1,
       status: 'success',
@@ -879,6 +881,24 @@ test('rejects invented citations before an assistant message is saved', async ()
   expect(receipts).toMatchObject([
     { state: 'failed', errorClass: 'schema_invalid' },
   ])
+  const attempts = await t.run(ctx => ctx.db.query('askModelAttempts').collect())
+  expect(attempts.find(attempt => attempt.status === 'schema_invalid')?.errorDetail).toBe('Answer cited evidence outside the retrieved set')
+})
+
+test('answer abstention cannot publish uncited model background facts', async () => {
+  const t = initTest()
+  await seedEvidence(t)
+  const token = 'abstention-background-session-000000000000000000000000'
+  await t.mutation(api.ask.threads.createSession, { token })
+  const thread = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'corpus', areaKey: 'lafayette-parish' } })
+  const question = await t.mutation(api.ask.threads.appendQuestion, { token, threadId: thread.threadId, question: 'How many workers are employed today?', idempotencyKey: 'abstention-background-0001' })
+  overrideAskGatewayForTests(async (_ctx, args) => gatewayResult(args.stage === 'selector' ? { retrievalMode: 'broad', targets: [] } : {
+    kind: 'not_found', answer: 'No current count, but 1,000 workers were projected.', evidenceIds: [], followUps: ['Was the 1,000-worker projection met?'],
+  }))
+  const answer = await t.action(api.ask.answer.answerQuestion, { token, threadId: thread.threadId, questionMessageId: question.messageId })
+  expect(answer).toMatchObject({ kind: 'not_found', answer: 'The published evidence available for this scope does not answer that question.', citations: [], followUps: [] })
+  const history = await t.query(api.ask.threads.getHistory, { token, threadId: thread.threadId, paginationOpts: { numItems: 40, cursor: null } })
+  expect(JSON.stringify(history)).not.toContain('1,000')
 })
 
 test('lets the selector abstain after reviewing the full scope', async () => {
@@ -1303,3 +1323,21 @@ test('a thousand-record corpus searches old history and selects evidence across 
   expect(receipt?.selectorComplete).toBe(true)
   expect(receipt?.selectorBatches).toBeGreaterThan(30)
 }, 120_000)
+
+test('shared story evidence deduplication respects atomic normalization, scope and current publication', async () => {
+  const t = initTest()
+  const seeded = await seedEvidence(t)
+  await t.run(async ctx => {
+    const excerpt = 'The council approved the Audubon Boulevard drainage agreement.'
+    const citation = (await ctx.db.query('citations').withIndex('by_snapshot', q => q.eq('snapshotId', seeded.snapshotId)).collect()).find(row => row.fieldPath === '/title')!
+    // Atomic matching offsets differ from exact document offsets. Both retain
+    // the same accepted quotation despite layout whitespace.
+    await ctx.db.patch(citation._id, { normalizedStartOffset: 0, normalizedEndOffset: excerpt.length, excerpt: excerpt.replaceAll(' ', '\n') })
+    expect((await currentAtomicExcerpts(ctx, seeded.snapshotId)).has(normalizeForMatch(excerpt))).toBe(true)
+    expect((await currentAtomicExcerpts(ctx, seeded.snapshotId, 'lafayette-parish')).has(normalizeForMatch(excerpt))).toBe(true)
+    expect(await currentAtomicExcerpts(ctx, seeded.snapshotId, 'richland-parish')).toEqual(new Set())
+    const publication = (await ctx.db.get(citation.publicationVersionId))!
+    await ctx.db.patch(publication.recordId, { currentPublishedVersionId: undefined })
+    expect(await currentAtomicExcerpts(ctx, seeded.snapshotId)).toEqual(new Set())
+  })
+})

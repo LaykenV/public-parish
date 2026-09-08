@@ -443,6 +443,7 @@ function createAskFixtureAdapter(scenario: AskScenario): AskAdapter {
 
   return {
     async resolveScope(input: AskRouteSearch): Promise<AskScope> {
+      if (input.scope === 'story') throw new Error('Story Ask requires accepted live evidence, not a local issue fixture')
       if (input.scope === 'issue')
         return issueScope(input.issue, input.returnTo) ?? fixtureCorpusScope()
       if (input.scope === 'meeting')

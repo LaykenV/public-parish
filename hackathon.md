@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-07T17:49:05Z
+- **Last updated:** 2026-09-08T00:06:00Z
 
 ## Log
 
@@ -1659,3 +1659,43 @@ selected Meta as the lead story with SpaceX and Boyce secondary, required the fu
 story loop before design and QA, and approved targeted launch spending. Stories
 remain planned. This session changed documentation only; no new runtime feature,
 paid processing, deployment or submission is claimed.
+
+### 2026-09-07 - working tree: story research intake
+
+Added the frozen story research contract and owner-only staging, preview and
+paginated history. Exact bundle hashes fence changed inputs and make identical
+replay reuse its receipt. Regression tests cover private access, malformed
+references and replay. Automated validation is deferred to PR CI. Story drafting,
+publication and the resident story loop remain unfinished; no deployment or
+provider round trip is claimed.
+
+### 2026-09-07 - 78ab15d
+
+Implemented owner story publication, resident routes, accepted-evidence Ask and
+story follows through existing alerts and replies. PR CI passed, and the exact
+backend and CI-built frontend run on personal development. Staged all three
+frozen research bundles and reused the existing Boyce snapshots. Eight missing
+official documents were retrieved with one bounded rate-limit retry. Corrected
+manifests, real drafting, owner approvals and mail round trips remain pending.
+No story publication, production deployment or resident delivery is claimed.
+
+
+### 2026-09-07 - 61c9fec
+
+Published all three reviewed launch stories in development, with Meta first on
+Home. Verified exact evidence, images, anonymous Ask, story follows, real
+controlled updates, a three-story roundup, grounded replies and unsubscribe.
+Retained artifact and draft promotion reuse saved work while requiring target
+review and approval. CI passed; no local suite or production promotion ran.
+The founder design and full QA campaign remains separate.
+
+
+### 2026-09-08 - decf363
+
+Fixed story promotion when existing local records have different development and
+production identities. Owner previews bind the target's accepted record hash to
+the candidate without changing the frozen research or retained writing. Historical
+receipts remain inspectable after related evidence changes. CI
+passed 632 tests. Development mapping and import replay preserved all three
+accepted stories with no new model calls or update events. Production remains
+unchanged and requires owner approval.

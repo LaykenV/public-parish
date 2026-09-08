@@ -15,6 +15,11 @@ import {
 } from './secrets'
 import { MANAGEMENT_TOKEN_TTL_MS } from './enrollmentContracts'
 import { weeklyRoundupWindowAt } from './roundupTime'
+import { claimDeliveryChanges, updateChangeKeys, validUpdateReference } from './updateEvents'
+import type { UpdateReference } from './updateEvents'
+import { currentStoryUpdate } from '../stories/updates'
+import { acceptedStorySpans } from '../stories/evidence'
+import { checkedRecipient, labelDevelopmentStoryMail } from './developmentRouting'
 
 export const agentmail: AgentMail = new AgentMail(components.agentmail, {
   webhookSecret: env.AGENTMAIL_WEBHOOK_SECRET ?? '',
@@ -40,12 +45,14 @@ const ROUNDUP_STALE_AFTER_MS = 15 * 60_000
 
 export const reserveImmediateDelivery = internalMutation({
   args: {
-    materialChangeId: v.id('materialChanges'),
+    materialChangeId: v.optional(v.id('materialChanges')),
+    storyUpdateId: v.optional(v.id('storyUpdateEvents')),
     ownerKey: v.string(),
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const existing = await ctx.db
+    if (!validUpdateReference(args)) throw new Error('Supply exactly one typed update event')
+    const existing = args.storyUpdateId ? await ctx.db.query('notificationDeliveries').withIndex('by_owner_and_story_update', q => q.eq('ownerKey', args.ownerKey).eq('storyUpdateId', args.storyUpdateId)).unique() : await ctx.db
       .query('notificationDeliveries')
       .withIndex('by_owner_key_and_kind_and_material_change_id', (index) =>
         index
@@ -62,7 +69,7 @@ export const reserveImmediateDelivery = internalMutation({
     ) {
       return null
     }
-    const matches = await ctx.db
+    const matches = args.storyUpdateId ? await ctx.db.query('notificationMatches').withIndex('by_story_update_and_owner', q => q.eq('storyUpdateId', args.storyUpdateId).eq('ownerKey', args.ownerKey)).take(50) : await ctx.db
       .query('notificationMatches')
       .withIndex('by_material_change_id_and_owner_key', (index) =>
         index
@@ -128,7 +135,7 @@ export const reserveImmediateDelivery = internalMutation({
 
     const projected = await projectImmediateEmail(
       ctx,
-      args.materialChangeId,
+      args,
       managementUrl,
     )
     if (!projected) return null
@@ -140,12 +147,18 @@ export const reserveImmediateDelivery = internalMutation({
           ownerKey: args.ownerKey,
           kind: 'immediate',
           materialChangeId: args.materialChangeId,
+          storyUpdateId: args.storyUpdateId,
           state: 'reserved',
           enqueueAttempts: 0,
           reconcileAttempts: 0,
           createdAt: now,
           updatedAt: now,
         })
+    const reserved = (await ctx.db.get(deliveryId))!
+    if (!await claimDeliveryChanges(ctx, reserved, await updateChangeKeys(ctx, args))) {
+      await suppressDelivery(ctx, reserved, 'This underlying change already has a delivery or is no longer current')
+      return null
+    }
     const enqueueAttempts = (existing?.enqueueAttempts ?? 0) + 1
     await ctx.db.patch(deliveryId, {
       state: 'reserved',
@@ -155,7 +168,7 @@ export const reserveImmediateDelivery = internalMutation({
     })
     try {
       const outboundId = await agentmail.sendMessage(ctx, updatesInboxId(), {
-        to: recipient,
+        to: checkedRecipient(recipient),
         subject: projected.subject,
         text: projected.text,
         labels: ['public-parish', 'sourced-alert', 'immediate'],
@@ -387,7 +400,8 @@ export const collectWeeklyRoundupPage = internalMutation({
         deliveryCount += 1
       }
       if (!delivery || delivery.kind !== 'weekly') continue
-      const existingEntry = await ctx.db
+      if (!validUpdateReference(match)) continue
+      const existingEntry = match.storyUpdateId ? await ctx.db.query('roundupEntries').withIndex('by_delivery_and_story_update', q => q.eq('deliveryId', delivery._id).eq('storyUpdateId', match.storyUpdateId)).unique() : await ctx.db
         .query('roundupEntries')
         .withIndex('by_delivery_id_and_material_change_id', (index) =>
           index
@@ -407,6 +421,7 @@ export const collectWeeklyRoundupPage = internalMutation({
         roundupWindowId: window._id,
         deliveryId: delivery._id,
         materialChangeId: match.materialChangeId,
+        storyUpdateId: match.storyUpdateId,
         followIds: [follow._id],
         createdAt: Date.now(),
       })
@@ -586,7 +601,7 @@ async function enqueueWeeklyDelivery(
   })
   try {
     const outboundId = await agentmail.sendMessage(ctx, updatesInboxId(), {
-      to: recipient,
+      to: checkedRecipient(recipient),
       subject: projected.subject,
       text: projected.text,
       labels: ['public-parish', 'sourced-alert', 'weekly'],
@@ -627,8 +642,11 @@ async function currentWeeklySelection(
   follow: Doc<'follows'>
 } | null> {
   const eligibleEntries: Array<Doc<'roundupEntries'>> = []
+  const selectedKeys = new Set<string>()
   let recipientFollow: Doc<'follows'> | null = null
   for (const entry of entries) {
+    const keys = await updateChangeKeys(ctx, entry)
+    if (!keys.length || keys.every(key => selectedKeys.has(key))) continue
     let entryIsEligible = false
     for (const followId of entry.followIds) {
       const follow = await ctx.db.get(followId)
@@ -654,7 +672,10 @@ async function currentWeeklySelection(
         break
       }
     }
-    if (entryIsEligible) eligibleEntries.push(entry)
+    if (entryIsEligible && await claimDeliveryChanges(ctx, delivery, keys)) {
+      eligibleEntries.push(entry)
+      keys.forEach(key => selectedKeys.add(key))
+    }
   }
   return recipientFollow
     ? { entries: eligibleEntries, follow: recipientFollow }
@@ -675,7 +696,12 @@ async function projectWeeklyEmail(
     href: string
   }> = []
   for (const entry of entries) {
-    const change = await ctx.db.get(entry.materialChangeId)
+    if (entry.storyUpdateId) {
+      const current = await currentStoryUpdate(ctx, entry.storyUpdateId)
+      if (current) items.push({ place: current.version.geography.join(' · '), title: current.version.payload.title.text, change: 'Approved story update', source: acceptedStorySpans(current.version)[0]?.officialUrl ?? '', href: appUrl(`/stories/${current.story.slug}`) })
+      continue
+    }
+    const change = entry.materialChangeId ? await ctx.db.get(entry.materialChangeId) : null
     const version = change
       ? await ctx.db.get(change.currentPublicationVersionId)
       : null
@@ -684,7 +710,7 @@ async function projectWeeklyEmail(
     const jurisdiction = body
       ? await ctx.db.get(body.jurisdictionId)
       : null
-    if (!change?.material || !version?.payload || !record || !jurisdiction) {
+    if (!change?.material || !version?.payload || version.mode === 'withheld' || !record || record.currentPublishedVersionId !== version._id || !jurisdiction) {
       continue
     }
     const issue = await currentIssueLink(ctx, record._id, version._id)
@@ -727,10 +753,11 @@ async function projectWeeklyEmail(
     )
   }
   lines.push(`Manage alerts: ${managementUrl}`)
-  return {
+  const message = {
     subject: `${items.length} ${items.length === 1 ? 'update' : 'updates'} in your Public Parish roundup`,
     text: lines.join('\n'),
   }
+  return entries.some(entry => entry.storyUpdateId) ? labelDevelopmentStoryMail(message) : message
 }
 
 async function suppressDelivery(
@@ -749,15 +776,23 @@ type DeliveryCtx = MutationCtx
 
 async function projectImmediateEmail(
   ctx: DeliveryCtx,
-  materialChangeId: Doc<'materialChanges'>['_id'],
+  reference: UpdateReference,
   managementUrl: string,
 ): Promise<{ subject: string; text: string } | null> {
-  const change = await ctx.db.get(materialChangeId)
+  if (reference.storyUpdateId) {
+    const current = await currentStoryUpdate(ctx, reference.storyUpdateId)
+    if (!current) return null
+    const lines = ['An approved story has new evidence.', '', current.version.payload.title.text, '', current.version.payload.summary.text, '', 'Official sources', ...new Set(acceptedStorySpans(current.version).map(span => span.officialUrl)), '', `View in Public Parish: ${appUrl(`/stories/${current.story.slug}`)}`]
+    if (emailRepliesAvailable()) lines.push('Reply with a question about this story. Answers use its current accepted evidence.')
+    lines.push(`Manage alerts: ${managementUrl}`)
+    return labelDevelopmentStoryMail({ subject: `Story update: ${current.version.payload.title.text}`, text: lines.join('\n') })
+  }
+  const change = reference.materialChangeId ? await ctx.db.get(reference.materialChangeId) : null
   const version = change
     ? await ctx.db.get(change.currentPublicationVersionId)
     : null
   const record = change ? await ctx.db.get(change.recordId) : null
-  if (!change?.material || !version?.payload || !record) return null
+  if (!change?.material || !version?.payload || version.mode === 'withheld' || !record || record.currentPublishedVersionId !== version._id) return null
   const citations = await ctx.db
     .query('citations')
     .withIndex('by_publication_and_field_path', (index) =>

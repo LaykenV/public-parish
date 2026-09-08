@@ -7,7 +7,8 @@ import type { Id } from '../_generated/dataModel'
 import { internalMutation } from '../_generated/server'
 import { aiRoutes, estimateCostUsd } from '../ai/types'
 import { sha256HexOfText } from '../sources/hashing'
-import { askModelAnswer } from './contracts'
+import { askModelAnswer, storedScope } from './contracts'
+import { storyAskCatalog } from '../stories/askEvidence'
 import {
   ASK_RUN_LEASE_MS,
   ASK_TOKEN_RESERVATION,
@@ -258,6 +259,14 @@ export const persistAnswer = internalMutation({
     if (receipt.corpusRevision !== undefined) {
       const revision = (await ctx.db.query('publicCorpusState').withIndex('by_key', q => q.eq('key', 'published')).unique())?.revision ?? 0
       if (!receipt.selectorComplete || receipt.corpusRevision !== revision) throw askError('ask_evidence_changed', 'Published evidence changed. Retry the question.')
+    }
+    const storyIds = [...new Set([...(receipt.selectorEvidenceIds ?? []), ...args.answer.evidenceIds])].filter(id => id.startsWith('story:'))
+    if (storyIds.length) {
+      const mapping = await ctx.db.query('askThreadAccess').withIndex('by_thread_id', q => q.eq('threadId', receipt.threadId)).unique()
+      if (!mapping || mapping.detachedAt || mapping.expiresAt <= Date.now()) throw askError('thread_not_found', 'Ask thread is unavailable')
+      const catalog = await storyAskCatalog(ctx, storedScope(mapping.scopeKind, mapping.scopeKey))
+      const accepted = new Set(catalog.sources.map(source => source.evidence.evidenceId))
+      if (storyIds.some(id => !accepted.has(id))) throw askError('ask_evidence_changed', 'Story evidence changed. Retry the question.')
     }
     const saved = await saveMessage(ctx, components.agent, {
       threadId: receipt.threadId,

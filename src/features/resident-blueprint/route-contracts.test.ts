@@ -10,7 +10,7 @@ import {
 
 type ResidentRoutePath = Exclude<
   keyof FileRoutesByFullPath,
-  '/' | '/operations/coverage'
+  '/' | '/operations/coverage' | '/operations/stories'
 >
 
 const EXPECTED_RESIDENT_ROUTES = [
@@ -21,6 +21,7 @@ const EXPECTED_RESIDENT_ROUTES = [
   '/coverage/request',
   '/issues',
   '/issues/$issueSlug',
+  '/stories/$storySlug',
   '/decisions/$recordKey',
   '/meetings/$meetingId',
   '/how-it-works',
@@ -49,7 +50,7 @@ const issuesRoute = readFileSync(
 
 describe('resident interface Slice 1 contracts', () => {
   it('accounts for every resident route outside the existing home page', () => {
-    expect(EXPECTED_RESIDENT_ROUTES).toHaveLength(15)
+    expect(EXPECTED_RESIDENT_ROUTES).toHaveLength(16)
     expect(routeGraphIsComplete).toBe(true)
   })
 
