@@ -1876,3 +1876,27 @@ button.pp-area-row:hover {
     transition-duration: 1ms !important;
   }
 }
+
+/* Region setup stays below the featured stories. */
+.pp-local-setup {
+  display: grid;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.pp-local-relief {
+  height: 16rem;
+  min-width: 0;
+}
+
+@media (min-width: 64.0625rem) {
+  .pp-local-setup {
+    grid-template-columns: minmax(0, 1.02fr) minmax(24rem, .98fr);
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+
+  .pp-local-relief {
+    height: clamp(26rem, 34vw, 34rem);
+  }
+}

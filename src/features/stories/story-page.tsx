@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { LouisianaRelief } from '../landing/louisiana-relief'
 import { ShareButton } from '../discovery/share'
 import { FollowAction } from '../following/follow-action'
 import { ReportProblem } from '../evidence/evidence-blocks'
@@ -22,7 +21,7 @@ function StoryImage({ media, compact = false }: { media: PublicStory['media'], c
 export function FeaturedStories() {
   const stories = useFeaturedStories()
   return <section id="stories" className="pp-stories" aria-labelledby="stories-title">
-    <header className="pp-stories-intro" data-relief-interaction><div><h1 id="stories-title">Louisiana stories, with the official evidence.</h1><p>Free to read. Ask a question, inspect the sources, and follow what changes.</p><a href="#local-content">Jump to local decisions</a></div><div className="pp-stories-relief"><LouisianaRelief /></div></header>
+    <header className="pp-stories-intro"><h1 id="stories-title">Louisiana stories, with the official evidence.</h1><p>Free to read. Ask a question, inspect the sources, and follow what changes.</p><a href="#local-content">Jump to local decisions</a></header>
     {stories === undefined ? <p role="status">Loading reviewed stories...</p> : !stories.length ? <p>Featured stories are under review. Browse published local decisions below.</p> :
       <div className="pp-story-grid">{stories.map(story => <article key={story.id} className={story.rank === 0 ? 'pp-story-card lead' : 'pp-story-card'}>
         <StoryImage key={story.media?.url} media={story.media} compact />

@@ -5,6 +5,7 @@ import { useConvexAuth } from '@convex-dev/auth/react'
 
 import { Button } from '../../components/ui/button'
 import { FeaturedStories } from '../stories/story-page'
+import { LouisianaRelief } from '../landing/louisiana-relief'
 import { AreaSelector } from './area-selector'
 import { useArea } from './area-store'
 import { areaName, getActiveDiscoveryFixture } from './contracts'
@@ -60,23 +61,30 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
       </p>
       {!fixturesEnabled ? <FeaturedStories /> : null}
       <section id="local-content" aria-label="Local decisions">
-      {watching.length === 0 ? (
-        <FirstVisitHero />
-      ) : (
-        <WatchingHeader watching={watching} />
-      )}
-      <HomeFeed
-        fixturesEnabled={fixturesEnabled}
-        onRefresh={() => {
-          setRefreshed(true)
-          announceRefresh()
-        }}
-        publishedDecisions={publishedDecisions}
-        publishedIssues={publishedIssues}
-        refreshed={refreshed}
-        scenario={activeScenario}
-        watching={watching}
-      />
+        <div className="pp-local-setup" data-relief-interaction>
+          <div>
+            {watching.length === 0 ? (
+              <FirstVisitHero />
+            ) : (
+              <WatchingHeader watching={watching} />
+            )}
+          </div>
+          <div className="pp-local-relief">
+            <LouisianaRelief />
+          </div>
+        </div>
+        <HomeFeed
+          fixturesEnabled={fixturesEnabled}
+          onRefresh={() => {
+            setRefreshed(true)
+            announceRefresh()
+          }}
+          publishedDecisions={publishedDecisions}
+          publishedIssues={publishedIssues}
+          refreshed={refreshed}
+          scenario={activeScenario}
+          watching={watching}
+        />
       </section>
     </main>
   )

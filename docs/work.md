@@ -77,10 +77,10 @@ pass, organic resident outcome, production story mail delivery or submission is 
   visually certified. Facebook confirmed the production Meta preview metadata.
   Production SpaceX and Boyce HTTP metadata and redirects passed; their Facebook
   checks remain for QA after Chrome switched to another active task.
-- PR 181 restores the existing 3D Louisiana relief beside the Home introduction.
-  Keep featured stories directly below it and local selection below the stories.
-  CI and PR review passed. Browser inspection confirmed the relief at 1280-pixel
-  desktop and 390-pixel mobile widths. This is not a physical-device QA pass.
+- The owner corrected the PR 181 relief placement. The prepared correction puts
+  the existing 3D Louisiana relief beside the region selector below the featured
+  stories, including after an area is selected. CI and development inspection
+  for this correction are pending. Production still has the PR 181 placement.
 - The owner supplied replacement renderings for Meta, Boyce and SpaceX. Originals
   and hashes are preserved in the private handoff. Source credit and reuse
   evidence are pending; do not present a rendering as completed construction.

@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T02:52:08Z
+- **Last updated:** 2026-09-08T03:15:00Z
 
 ## Log
 
@@ -1741,3 +1741,10 @@ production workflow and independent smoke passed. Production Home renders the
 Louisiana relief and all three story links. Ordinary story URLs provide approved
 metadata and app scripts; legacy links redirect. Facebook confirmed production
 Meta metadata. Replacement media and final image-crop checks remain open.
+
+### 2026-09-08 - working tree, region selector placement
+
+Moved the existing Louisiana relief below featured stories beside the local
+region selector, including the selected-area state. Kept the introduction
+compact. This corrects the owner-rejected placement from PR 181. Static diff
+review passed; automated checks and development inspection are pending.
