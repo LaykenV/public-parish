@@ -12,7 +12,9 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T15:56:35Z
+- **Last updated:** 2026-09-08T17:13:34Z
+
+Demo video: not recorded yet. The final submission link remains pending.
 
 ## Log
 
@@ -1778,7 +1780,9 @@ Automated validation runs in PR CI.
 
 Released citation-encoding, accepted-image retention, caption correction and Ask
 qualifier fixes through PRs 186 through 189. Each exact production deployment and
-independent smoke passed. CI passed 640 tests across 81 files and browser journeys.
+independent smoke passed. CI passed 640 tests across 81 files. The browser
+journey steps were skipped in Verify run 34244530223; this release does not
+claim a new Playwright pass.
 Published five LIMITED versions across four targeted Youngsville decisions and
 stronger Meta and SpaceX stories with the owner's images and fresh independent
 reviews. Anonymous story, decision, image and fourteen source-artifact checks
@@ -1796,3 +1800,25 @@ successors. Marked the replaced landing experiment as historical and clarified
 that existing merge authorization persists. Global design, founder QA and
 production story mail remain pending.
 This audit changes documentation only; its release verification follows the push.
+
+### 2026-09-08 - working tree, story release checks
+
+Extended production smoke to require all three accepted stories in the approved
+order, current detail versions, retained evidence links, reachable images and
+matching social metadata on both public origins. Missing-story responses and
+legacy share redirects have explicit checks. Added failure regressions for CI.
+Corrected the earlier browser-journey claim against the skipped workflow steps.
+These changes are pending PR validation and deployment. The smoke does not run
+paid Ask or provider mail, which still need separate controlled verification.
+
+### 2026-09-08 - c820809
+
+Released honest Ask rate-limit and allowance notices, resident error recovery,
+malformed-source-link handling and email-only unsubscribe links through PRs 191,
+192, 193 and 195. Reusable encrypted unsubscribe tokens avoid per-alert growth
+and are revoked on re-verification. PR 195's initial deployment stopped on a
+test-only Array.at incompatibility. PR 196 replaced it and added the Convex
+TypeScript configuration to PR validation. Production workflow 34255328183 and
+independent smoke passed at c820809. Earlier releases 2683b1a, 5f9764a and
+236e3ea passed their exact workflows and independent smoke. No paid allowance,
+source policy or controlled provider-mail verification changed during release.
