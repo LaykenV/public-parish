@@ -85,8 +85,10 @@ pass, organic resident outcome, production story mail delivery or submission is 
   overflow. WebGPU reported ready. Screenshot capture failed, so visual QA is
   not claimed. Production still has the PR 181 placement.
 - The owner supplied replacement renderings for Meta, Boyce and SpaceX. Originals
-  and hashes are preserved in the private handoff. Source credit and reuse
-  evidence are pending; do not present a rendering as completed construction.
+  and hashes are preserved in the private handoff. On September 8 the owner
+  approved an exception for these exact files with unverified rights recorded.
+  Implementation retains story evidence and requires fresh image review.
+  Publication and production image checks are pending.
 - The owner will perform production email verification during the founder QA
   pass. Agent verification remains development-only for that provider loop.
 - PRs 180 and 181 are merged and production-smoked. PR 179 records this release.

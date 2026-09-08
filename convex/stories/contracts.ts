@@ -30,8 +30,9 @@ export const storyReview = v.object({
 })
 export type StoryReview = typeof storyReview.type
 export const storyMedia = v.object({
-  storageId: v.id('_storage'), sha256: v.string(), originalUrl: v.string(),
-  credit: v.string(), license: v.string(), permissionEvidenceUrl: v.string(),
+  storageId: v.id('_storage'), sha256: v.string(), originalUrl: v.union(v.string(), v.null()),
+  credit: v.string(), license: v.string(), permissionEvidenceUrl: v.union(v.string(), v.null()),
+  rightsStatus: v.optional(v.literal('owner_selected_unverified')),
   kind: v.union(v.literal('photo'), v.literal('rendering'), v.literal('document_detail'), v.literal('diagram')),
   caption: v.string(), alt: v.string(), width: v.number(), height: v.number(),
   captionEvidenceKeys: v.array(v.string()),

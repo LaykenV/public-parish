@@ -226,3 +226,13 @@ new content. [Work](work.md) records findings and completion evidence.
 The [historical runbook](archive/pre-stories-2026-09-07/docs/slice-9-operations-runbook.md)
 preserves old one-time commands and receipts. They are not current grants or
 instructions to replay a previous development or production exception.
+
+## Publishing the owner-selected rendering replacements
+
+Use owner-authorized `stories/operations:uploadImage` for each exact PNG, then
+`stories/corrections:prepare` with the current accepted build, unchanged draft,
+parent hash, generation and `replacementImageId`. Preview the fresh independent
+review and approve its exact input, draft and review hashes. Repeat on the target
+deployment using target IDs; do not copy development IDs. Check live image bytes,
+image dimensions, captions, social metadata and absence of new update events.
+The September 8 exception is limited to the three hashes in `ownerMedia.ts`.

@@ -90,6 +90,20 @@ preserve real provenance, bytes, hashes, completeness and page evidence. Do not
 replace a source with a screenshot of a summary or fabricate Firecrawl metadata.
 A new intake path needs implementation and verification before use.
 
+## Owner-selected rendering exception
+
+On September 8, the owner approved publication of the three supplied renderings
+with unverified reuse rights. This exception covers only the exact story and file
+hashes in `convex/stories/ownerMedia.ts`. It is not a copyright license or verified
+rightsholder permission. Unknown original sources remain null. Captions identify
+renderings and disclose uncertain project attribution. These illustrations do
+not support factual claims about completed facilities.
+
+The owner-only correction path verifies storage hashes, retains the accepted
+story text and evidence, runs fresh independent review, and requires exact-hash
+approval of a new immutable version. The normal manifest permission gate stays
+in force for other images. Image-only changes send no material update.
+
 ## Coverage gates
 
 A body becomes supported only when the current evaluator proves all ten:
