@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 
 import { Button } from '../../components/ui/button'
-import { Spinner } from '../../components/ui/spinner'
+import { PageLoading } from '../resident-blueprint/resident-loading'
 import { formatDate } from '../discovery/format'
 import { Notice } from '../discovery/notice'
 import { ShareButton } from '../discovery/share'
@@ -152,10 +152,7 @@ function PublishedIssuePage({
 function EvidenceLoading() {
   return (
     <main className="ev-page" id="resident-main">
-      <div className="ev-loading" role="status">
-        <Spinner aria-hidden="true" />
-        <span>Loading published evidence</span>
-      </div>
+      <PageLoading />
     </main>
   )
 }

@@ -1,6 +1,6 @@
 # Business and product plan
 
-Owner decisions updated September 7, 2026. Current delivery status and all
+Owner decisions updated September 8, 2026. Current delivery status and all
 unfinished work live in [the work plan](docs/work.md). Technical contracts live
 in [architecture](docs/architecture.md).
 
@@ -17,9 +17,9 @@ record, legal notice, or an agency's answer.
 
 ## Audience and positioning
 
-Lead with recognizable Louisiana stories. Give a visitor a reason to read before
-asking them to configure local coverage. Then offer the decisions affecting their
-selected area. Reading and Ask require no account. Google sign-in supports saved
+Introduce Public Parish with the Louisiana hero and an optional area selector.
+Show recognizable Louisiana stories before issues when no area is selected.
+After selection, collapse the hero and place local issues before the stories. Reading and Ask require no account. Google sign-in supports saved
 interests and managed follows. Verified email subscriptions are a separate
 account-free delivery path.
 
@@ -147,3 +147,12 @@ story-follow fallback are superseded by this scope.
 
 [Historical plans and release evidence](docs/archive/README.md) remain available.
 Do not use their unfinished checkboxes as the current work queue.
+
+On September 8 the owner approved restoring the original Home hero, changing
+content order after area selection, deep purple and lavender shared colors,
+a mobile hamburger menu, and compact election information. The Home QA follow-up
+moves election information into the footer, uses a lavender off-white page with
+a white issues section, and gives mobile issues a horizontal row. All three
+mobile stories use full-sized images.
+The collapsed hero hides the Louisiana visual. A single centered global spinner
+replaces skeleton loading. This supersedes the earlier fixed stories-first order.

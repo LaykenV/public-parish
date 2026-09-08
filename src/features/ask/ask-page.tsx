@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 
 import { Button } from '../../components/ui/button'
-import { Spinner } from '../../components/ui/spinner'
+import { PageLoading } from '../resident-blueprint/resident-loading'
 import { resolveCitationId } from '../evidence/contracts'
 import type { CitationMap } from '../evidence/contracts'
 import { EvidencePanel, EvidenceProvider } from '../evidence/evidence-surface'
@@ -482,10 +482,7 @@ export function AskPage({
       {data.availability.kind === 'unavailable' && !data.scenario ? (
         <AskUnavailable />
       ) : !adapter ? (
-        <div className="ask-waiting" role="status">
-          <Spinner aria-hidden="true" />
-          <span className="visually-hidden">Preparing Ask</span>
-        </div>
+        <PageLoading />
       ) : (
         <EvidenceProvider
           citations={citations}

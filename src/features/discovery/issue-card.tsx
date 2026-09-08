@@ -104,10 +104,15 @@ export function IssueCard({
             </Link>
           )}
         </h3>
-        <p className="pp-card-date">{dateLine}</p>
         {issue.whyMatter ? (
           <p className="pp-card-why">{issue.whyMatter}</p>
         ) : null}
+        <p
+          className="pp-card-date"
+          data-dated={issue.nextDate || issue.latestOutcome ? '' : undefined}
+        >
+          {dateLine}
+        </p>
       </div>
       <footer className="pp-card-side">
         <p
@@ -134,7 +139,7 @@ export function IssueCard({
               )
             }
             size="touch"
-            variant={variant === 'lead' ? 'default' : 'outline'}
+            variant={variant === 'rail' ? 'outline' : 'default'}
           >
             {issue.primaryActionLabel ?? 'View issue'}
           </Button>
@@ -151,7 +156,12 @@ export function IssueCard({
                   detail: `${issue.place} · ${issue.body}`,
                 }}
               />
-              <ShareButton path={'/issues/' + issue.slug} title={issue.title} />
+              <ShareButton
+                variant="ghost"
+                className="pp-card-share"
+                path={'/issues/' + issue.slug}
+                title={issue.title}
+              />
             </>
           ) : null}
         </div>

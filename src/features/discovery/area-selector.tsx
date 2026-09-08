@@ -6,6 +6,7 @@ import { useRecordAreaSelection } from '../analytics/product-analytics'
 import { setArea, useArea } from './area-store'
 import { useCoverageAreas } from './live-areas'
 import { Sheet } from './sheet'
+import { Input } from '../../components/ui/input'
 
 type AreaSelectorProps = {
   onOpenChange?: (open: boolean) => void
@@ -73,7 +74,8 @@ function AreaSelectorDialog({
     >
       <div className="pp-area-search">
         <SearchIcon aria-hidden="true" />
-        <input
+        <Input
+          unstyled
           aria-label="Search places"
           autoComplete="off"
           onChange={(event) => setQuery(event.target.value)}
@@ -121,8 +123,12 @@ function AreaSelectorDialog({
               >
                 <span className="pp-area-name">{place.name}</span>
                 <span className="pp-area-status">
-                  {place.status === 'limited' ? <Clock3Icon aria-hidden="true" /> : <CheckCircle2Icon aria-hidden="true" />}
-                  {selected ? 'Watching' : 'Records available'}
+                  {place.status === 'limited' ? (
+                    <Clock3Icon aria-hidden="true" />
+                  ) : (
+                    <CheckCircle2Icon aria-hidden="true" />
+                  )}
+                  {selected ? 'Selected' : 'Records available'}
                 </span>
                 {place.note ? (
                   <span className="pp-area-note">{place.note}</span>

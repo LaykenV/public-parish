@@ -9,6 +9,7 @@ type ShareButtonProps = {
   label?: string
   path: string
   title: string
+  variant?: 'outline' | 'ghost'
 }
 
 export function ShareButton({
@@ -16,6 +17,7 @@ export function ShareButton({
   label = 'Share',
   path,
   title,
+  variant = 'outline',
 }: ShareButtonProps) {
   const [copied, setCopied] = useState(false)
   const [failedUrl, setFailedUrl] = useState('')
@@ -26,7 +28,10 @@ export function ShareButton({
   const share = async () => {
     const backend = import.meta.env.VITE_CONVEX_URL as string | undefined
     const hasShareRoute = path.startsWith('/issues/')
-    const base = hasShareRoute && backend ? backend.replace(/\.convex\.cloud\/?$/, '.convex.site') : window.location.origin
+    const base =
+      hasShareRoute && backend
+        ? backend.replace(/\.convex\.cloud\/?$/, '.convex.site')
+        : window.location.origin
     const sharePath = hasShareRoute ? `/share${path}` : path
     const url = `${base}${sharePath}`
     setFailedUrl('')
@@ -55,24 +60,28 @@ export function ShareButton({
 
   return (
     <>
-    <Button
-      className={cn('pp-inline-action', className)}
-      data-copied={copied || undefined}
-      onClick={share}
-      size="touch"
-      variant="outline"
-    >
-      {copied ? (
-        <CheckIcon aria-hidden="true" />
-      ) : (
-        <ShareIcon aria-hidden="true" />
-      )}
-      <span>{label}</span>
-      <span aria-live="polite" className="visually-hidden">
-        {copied ? 'Link copied' : ''}
-      </span>
-    </Button>
-    {failedUrl ? <span role="status">Copy this link: <a href={failedUrl}>{failedUrl}</a></span> : null}
+      <Button
+        className={cn('pp-inline-action', className)}
+        data-copied={copied || undefined}
+        onClick={share}
+        size="touch"
+        variant={variant}
+      >
+        {copied ? (
+          <CheckIcon aria-hidden="true" />
+        ) : (
+          <ShareIcon aria-hidden="true" />
+        )}
+        <span>{label}</span>
+        <span aria-live="polite" className="visually-hidden">
+          {copied ? 'Link copied' : ''}
+        </span>
+      </Button>
+      {failedUrl ? (
+        <span role="status">
+          Copy this link: <a href={failedUrl}>{failedUrl}</a>
+        </span>
+      ) : null}
     </>
   )
 }

@@ -11,32 +11,28 @@
 
 .route-loading-region {
   position: fixed;
-  top: 0;
-  left: 50%;
+  inset: 0;
   z-index: 100;
   display: grid;
-  width: 3rem;
-  height: 3rem;
   place-items: center;
   pointer-events: none;
-  transform: translateX(-50%);
 }
 
 .route-loading-region svg {
-  width: 1rem;
-  height: 1rem;
-  padding: 0.35rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.75rem;
   border: 1px solid var(--border);
   border-radius: 50%;
-  color: var(--info-foreground);
+  color: var(--primary);
   background: var(--card);
+  box-shadow: var(--pp-shadow-control);
   box-sizing: content-box;
 }
 
 .resident-blueprint {
   min-height: 100vh;
   min-height: 100dvh;
-  padding-bottom: 5.25rem;
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-sans);
@@ -46,11 +42,6 @@
   background:
     linear-gradient(var(--border) 1px, transparent 1px), var(--background);
   background-size: 100% 4rem;
-}
-
-.resident-blueprint[data-keyboard-open] .resident-mobile-nav,
-.resident-blueprint[data-overlay-open] .resident-mobile-nav {
-  display: none;
 }
 
 .resident-blueprint :focus-visible {
@@ -80,7 +71,7 @@
   position: relative;
   z-index: 40;
   border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--background) 94%, transparent);
+  background: color-mix(in srgb, var(--card) 96%, transparent);
   backdrop-filter: blur(16px);
 }
 
@@ -95,6 +86,55 @@
 
 .resident-blueprint-standalone {
   padding-bottom: 0;
+}
+
+.resident-voter {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 0.25rem 1.5rem;
+  padding-block: 1rem;
+  border-block: 1px solid var(--border);
+}
+
+.resident-voter .resident-voter-date {
+  color: var(--foreground);
+  font-size: var(--pp-text-small);
+}
+
+.resident-voter-date strong {
+  margin-left: 0.5rem;
+  white-space: nowrap;
+}
+
+.resident-voter-text a {
+  display: inline-flex;
+  min-height: var(--pp-control-height);
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--primary);
+  font-size: var(--pp-text-small);
+  text-underline-offset: 0.2em;
+}
+
+.resident-voter-text svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+@media (min-width: 48rem) {
+  .resident-footer .resident-voter {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .resident-footer .resident-voter p {
+    grid-column: auto;
+  }
+
+  .resident-footer .resident-voter .resident-voter-note {
+    grid-column: 1 / -1;
+  }
 }
 
 .resident-blueprint-standalone .blueprint-main {
@@ -129,7 +169,7 @@
 }
 
 .resident-context-controls {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 0.4rem;
 }
@@ -189,7 +229,7 @@
 }
 
 .resident-nav-link[data-active] {
-  color: var(--foreground);
+  color: var(--primary);
 }
 
 .resident-nav-link[data-active]::after {
@@ -199,7 +239,7 @@
   left: 0.4rem;
   height: 2px;
   content: '';
-  background: var(--info);
+  background: var(--primary);
 }
 
 .resident-nav-link svg {
@@ -207,29 +247,93 @@
   height: 1.05rem;
 }
 
-.resident-mobile-nav {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 50;
+.resident-menu-trigger {
+  flex: none;
+}
+
+.resident-menu {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.resident-menu :focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+
+.resident-menu-links {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  min-height: 4.25rem;
-  padding: 0.35rem max(0.35rem, env(safe-area-inset-right))
-    max(0.35rem, env(safe-area-inset-bottom))
-    max(0.35rem, env(safe-area-inset-left));
-  border-top: 1px solid var(--border);
-  background: color-mix(in srgb, var(--card) 96%, transparent);
-  backdrop-filter: blur(18px);
+  gap: 0.25rem;
+}
+
+.resident-menu-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.25rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-lg);
+  color: var(--foreground);
+  font-size: var(--pp-text-body);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.resident-menu-links a:hover,
+.resident-menu-links a[aria-current='page'] {
+  color: var(--primary);
+  background: var(--accent);
+}
+
+.resident-menu-links svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.resident-menu .resident-menu-heading {
+  flex: none;
+  min-height: 3.5rem;
+  padding: 0;
+}
+
+.resident-menu .resident-menu-bottom {
+  flex: none;
+  flex-direction: column;
+  align-items: stretch;
+  margin-top: auto;
+  padding: 1.25rem 1.5rem;
+}
+
+.resident-menu-area {
+  margin: 0;
+}
+
+.resident-menu-area p {
+  margin: 0 0 0.75rem;
+  color: var(--muted-foreground);
+  font-size: var(--pp-text-small);
+}
+
+.resident-menu-account {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--pp-control-height);
+  margin-top: 0.25rem;
+  color: var(--primary);
+  font-size: var(--pp-text-small);
+  text-underline-offset: 0.25em;
 }
 
 .resident-footer {
-  display: grid;
-  width: min(100% - 2rem, 76rem);
-  margin-inline: auto;
-  padding-block: 2rem 1rem;
+  padding: 2rem 1rem max(2rem, env(safe-area-inset-bottom));
   border-top: 1px solid var(--border);
+  background: var(--footer);
+}
+
+.resident-footer-inner {
+  display: grid;
+  width: min(100%, 74rem);
+  margin-inline: auto;
   gap: 1rem;
 }
 
@@ -239,27 +343,21 @@
   gap: 0.5rem 1.25rem;
 }
 
-.resident-footer a {
+.resident-footer nav a {
   min-height: 2.75rem;
   display: inline-flex;
   align-items: center;
   color: var(--foreground);
   font-size: var(--pp-text-small);
-  font-weight: 650;
+  font-weight: 600;
   text-underline-offset: 0.2em;
 }
 
 .resident-footer p {
-  max-width: 34rem;
   margin: 0;
   color: var(--muted-foreground);
   font-size: var(--pp-text-caption);
   line-height: 1.55;
-}
-
-.resident-mobile-nav .resident-nav-link {
-  flex-direction: column;
-  gap: 0.15rem;
 }
 
 .blueprint-main {
@@ -490,8 +588,21 @@
     padding-bottom: 0;
   }
 
-  .resident-mobile-nav {
+  .resident-menu-trigger {
     display: none;
+  }
+
+  .resident-context-controls {
+    display: flex;
+  }
+
+  .resident-footer-inner {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .resident-footer p {
+    grid-column: 1 / -1;
   }
 
   .resident-header {

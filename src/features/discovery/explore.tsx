@@ -1,3 +1,4 @@
+import { PageLoading } from '../resident-blueprint/resident-loading'
 import { SearchIcon, SlidersHorizontalIcon, XIcon } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
@@ -331,11 +332,7 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
       liveSearch.status === 'LoadingFirstPage'
     ) {
       return (
-        <div className="pp-empty" role="status">
-          <p className="pp-empty-title">
-            Loading published issues and records...
-          </p>
-        </div>
+        <PageLoading />
       )
     }
 

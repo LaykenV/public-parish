@@ -11,26 +11,31 @@
     <style>
       /* Internal design reference. Coss UI supplies the component and token model. */
       :root {
-        --background: #fafaf9;
+        --background: #f7f6fa;
         --card: #ffffff;
-        --foreground: #171717;
-        --primary: #171717;
+        --section: #fdfcfe;
+        --body-foreground: #494352;
+        --footer: #eeeaf4;
+        --foreground: #242131;
+        --primary: #6340a3;
+        --primary-hover: #4f2f89;
+        --accent: #eee8f7;
         --primary-foreground: #fafafa;
-        --info: #315bea;
-        --info-foreground: #2446bd;
+        --info: #566696;
+        --info-foreground: #40527f;
         --success: #10b981;
-        --success-foreground: #047857;
+        --success-foreground: #267563;
         --warning: #f59e0b;
-        --warning-foreground: #a16207;
-        --muted: #f5f5f4;
-        --muted-foreground: #686864;
-        --border: rgb(0 0 0 / 9%);
-        --ring: #8a8a86;
+        --warning-foreground: #895b18;
+        --muted: #f2f0f6;
+        --muted-foreground: #6b6575;
+        --border: #e2ddea;
+        --ring: #6340a3;
         --color-paper: var(--background);
         --color-surface: var(--card);
         --color-ink: var(--foreground);
         --color-purple: var(--primary);
-        --color-purple-strong: #0a0a0a;
+        --color-purple-strong: #4f2f89;
         --color-gold: var(--info);
         --color-cypress: var(--success-foreground);
         --color-muted: var(--muted-foreground);
@@ -307,7 +312,7 @@
         role="img"
         aria-label="Public Parish mark"
       >
-        <rect x="1" y="1" width="62" height="62" rx="15" fill="#171717" />
+        <rect x="1" y="1" width="62" height="62" rx="15" fill="#242131" />
         <path
           d="M13 48V17h6.5C26 17 30 20.4 30 26s-4 9-10.5 9H13M35 48V17h6.5C48 17 52 20.4 52 26s-4 9-10.5 9H35"
           fill="none"
@@ -320,7 +325,7 @@
       <div>
         <h1>Public Parish design system</h1>
         <p class="summary">
-          Version 0.2. This file records the selected Coss UI component model,
+          Version 0.3. This file records the selected Coss UI component model,
           semantic colors, typography, logo, interaction rules, and product
           contracts.
         </p>
@@ -410,15 +415,76 @@
         </div>
       </section>
 
+      <section aria-labelledby="home-flow-title">
+        <h2 id="home-flow-title">Home reference</h2>
+        <p>
+          September 8 owner-approved direction. Implementation is local; visual
+          QA remains pending.
+        </p>
+        <div class="grid">
+          <article class="panel">
+            <h3>Before choosing an area</h3>
+            <p>
+              Restore "See how local government is changing" with the selector
+              below and 3D Louisiana beside it. Stack a short Louisiana visual
+              below the copy on mobile.
+            </p>
+            <p>
+              Follow with Across Louisiana, issues across covered areas, and
+              decision records. Put compact election information in the footer.
+            </p>
+          </article>
+          <article class="panel">
+            <h3>After choosing an area</h3>
+            <p>
+              Show "Showing X Parish" and Change area. Hide the 3D Louisiana.
+              Put issues before Across Louisiana, with decision records below.
+            </p>
+            <p>
+              Meta remains the lead story. SpaceX and Boyce use compact
+              secondary entries. One centered global spinner handles initial
+              loading; no skeletons.
+            </p>
+          </article>
+        </div>
+      </section>
+
       <section aria-labelledby="color-title">
         <h2 id="color-title">Color system</h2>
         <p class="section-intro">
-          Public Parish uses the Coss UI semantic token model. Neutral ink owns
-          identity and primary actions. River blue marks information and focus.
-          Green and amber appear only for factual success, source health, and
-          warning states. Color never carries a status by itself.
+          Public Parish uses the Coss UI semantic token model. Deep purple marks
+          primary actions, selection and focus. A lavender off-white page
+          surrounds near-white desktop sections and white cards. Mobile cards sit
+          directly on the page to preserve reading width. Dark plum carries
+          headings, softer ink carries body text, and muted text marks metadata. Green and
+          amber appear only for factual success, source health, and warning
+          states. Color never carries a status by itself.
         </p>
         <div class="swatches">
+          <article class="swatch">
+            <div class="swatch-color" style="--swatch: var(--primary)"></div>
+            <div class="swatch-copy">
+              <h3>Primary purple</h3>
+              <code>#6340A3</code>
+            </div>
+          </article>
+          <article class="swatch">
+            <div
+              class="swatch-color"
+              style="--swatch: var(--primary-hover)"
+            ></div>
+            <div class="swatch-copy">
+              <h3>Hover purple</h3>
+              <code>#4F2F89</code>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-color" style="--swatch: var(--accent)"></div>
+            <div class="swatch-copy">
+              <h3>Lavender</h3>
+              <code>#EEE8F7</code>
+            </div>
+          </article>
           <article class="swatch">
             <div
               class="swatch-color"
@@ -426,7 +492,7 @@
             ></div>
             <div class="swatch-copy">
               <h3>Background</h3>
-              <code>#FAFAF9</code>
+              <code>#F7F6FA</code>
             </div>
           </article>
           <article class="swatch">
@@ -443,14 +509,14 @@
             <div class="swatch-color" style="--swatch: var(--color-ink)"></div>
             <div class="swatch-copy">
               <h3>Foreground</h3>
-              <code>#171717</code>
+              <code>#242131</code>
             </div>
           </article>
           <article class="swatch">
             <div class="swatch-color" style="--swatch: var(--info)"></div>
             <div class="swatch-copy">
               <h3>Information</h3>
-              <code>#315BEA</code>
+              <code>#566696</code>
             </div>
           </article>
           <article class="swatch">
@@ -467,7 +533,7 @@
             ></div>
             <div class="swatch-copy">
               <h3>Muted foreground</h3>
-              <code>#686864</code>
+              <code>#6B6575</code>
             </div>
           </article>
         </div>
@@ -508,21 +574,23 @@
           </tbody>
         </table>
         <pre><code>:root {
-  --background: #fafaf9;
+  --background: #f7f6fa;
   --card: #ffffff;
-  --foreground: #171717;
-  --primary: #171717;
+  --foreground: #242131;
+  --primary: #6340A3;
+        --primary-hover: #4F2F89;
+        --accent: #EEE8F7;
   --primary-foreground: #fafafa;
-  --info: #315bea;
-  --info-foreground: #2446bd;
+  --info: #566696;
+  --info-foreground: #40527f;
   --success: #10b981;
-  --success-foreground: #047857;
+  --success-foreground: #267563;
   --warning: #f59e0b;
-  --warning-foreground: #a16207;
-  --muted: #f5f5f4;
-  --muted-foreground: #686864;
-  --border: rgb(0 0 0 / 9%);
-  --ring: #8a8a86;
+  --warning-foreground: #895b18;
+  --muted: #f2f0f6;
+  --muted-foreground: #6B6575;
+  --border: #e2ddea;
+  --ring: #6340A3;
 }</code></pre>
       </section>
 
@@ -536,7 +604,7 @@
               role="img"
               aria-label="Public Parish double P mark"
             >
-              <rect x="1" y="1" width="62" height="62" rx="15" fill="#171717" />
+              <rect x="1" y="1" width="62" height="62" rx="15" fill="#242131" />
               <path
                 d="M13 48V17h6.5C26 17 30 20.4 30 26s-4 9-10.5 9H13M35 48V17h6.5C48 17 52 20.4 52 26s-4 9-10.5 9H35"
                 fill="none"
@@ -676,7 +744,7 @@
               </li>
               <li>
                 Use native overflow and
-                <code>scroll-snap-type: x proximity</code>.
+                <code>scroll-snap-type: x mandatory</code>.
               </li>
               <li>
                 Show part of the next card so touch users discover the rail.
@@ -692,13 +760,15 @@
             <h3>Vertical space contract</h3>
             <ul>
               <li>The mobile top bar scrolls away with the page.</li>
-              <li>Only the four-item bottom navigation remains fixed.</li>
+              <li>The top-right hamburger opens a Coss right-side Sheet.</li>
               <li>
-                Before safe-area padding, top and bottom app chrome use no more
-                than 8 rem on a 375-by-667-pixel viewport.
+                The mobile header uses a 3.5 rem row with a 44-pixel menu
+                button. Home, Explore, Ask, Following and Coverage remain in the
+                menu.
               </li>
               <li>
-                Hide bottom navigation for the keyboard and full-height sheets.
+                Remove bottom navigation and its reserved space. Close, Escape
+                and backdrop dismissal return focus to the menu opener.
               </li>
               <li>
                 Do not stack a fixed notice, composer, and navigation bar over
@@ -824,10 +894,10 @@
             <tr>
               <td>Header</td>
               <td>
-                The mark and live-text name link to Home. For You, Explore, Ask,
-                and Coverage appear only when their destinations work. The
-                mobile top bar scrolls away while the bottom navigation stays
-                fixed.
+                The mark and live-text name link to Home. Desktop keeps its
+                existing navigation. Mobile uses a top-right menu with Home,
+                Explore, Ask, Following, Coverage, area selection and account
+                controls.
               </td>
               <td>Coss border, spacing, and button treatment selected</td>
             </tr>
@@ -933,17 +1003,20 @@
 
     <script type="application/json" id="public-parish-design-foundation">
       {
-        "version": "0.2",
-        "status": "selected prelaunch system",
+        "version": "0.3",
+        "status": "Home system implemented locally, visual QA pending",
         "sourceOfTruth": "docs/design-system.html",
         "colors": {
-          "background": "#FAFAF9",
+          "background": "#F7F6FA",
           "card": "#FFFFFF",
-          "foreground": "#171717",
-          "info": "#315BEA",
+          "foreground": "#242131",
+          "primary": "#6340A3",
+          "primaryHover": "#4F2F89",
+          "accent": "#EEE8F7",
+          "info": "#566696",
           "success": "#10B981",
           "warning": "#F59E0B",
-          "mutedForeground": "#686864",
+          "mutedForeground": "#6B6575",
           "border": "rgb(0 0 0 / 9%)"
         },
         "logo": {
@@ -966,7 +1039,28 @@
         "mobileChrome": {
           "maximumInitialRemBeforeSafeAreas": 8,
           "topBar": "scrolls with page, maximum 3.5rem",
-          "bottomNavigation": "fixed four-item navigation, maximum 4.25rem before safe area"
+          "navigation": "top-right hamburger opens Coss right-side Sheet",
+          "bottomNavigation": "none"
+        },
+        "home": {
+          "unselected": [
+            "Louisiana hero and selector",
+            "stories",
+            "issues",
+            "decision records"
+          ],
+          "selected": [
+            "Showing area and Change area",
+            "issues",
+            "stories",
+            "decision records"
+          ],
+          "reliefAfterSelection": "hidden",
+          "loading": "one centered global spinner, no skeletons",
+          "mobileIssues": "horizontal swipe row",
+          "mobileStories": "all full-sized",
+          "voterInformation": "footer",
+          "mobileMenu": "no visible brand header, area and account controls at bottom"
         },
         "mobileSheets": {
           "opener": "written control",

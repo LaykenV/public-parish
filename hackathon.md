@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T17:13:34Z
+- **Last updated:** 2026-09-08T21:26:15Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -1822,3 +1822,30 @@ TypeScript configuration to PR validation. Production workflow 34255328183 and
 independent smoke passed at c820809. Earlier releases 2683b1a, 5f9764a and
 236e3ea passed their exact workflows and independent smoke. No paid allowance,
 source policy or controlled provider-mail verification changed during release.
+
+### 2026-09-08 - working tree, Home design reference
+
+Implemented the owner's two Home layouts with the original Louisiana hero,
+selected-parish issue priority, three-story composition, purple and lavender
+colors, compact voter information, and mobile hamburger navigation. Added Coss
+Sheet, Scroll Area and Input components. Removed bottom navigation and adjusted
+the Ask composer offset. Initial page loading and navigation share one centered
+spinner; the owner explicitly rejected skeletons. Separate section failures
+preserve other readable content. Updated the design reference and browser
+regressions. Static diff review passed. Automated validation is deferred to PR
+CI; browser visual QA and production release remain pending. No backend data,
+paid processing, source publication or deployment changed in this session.
+
+The owner's next Home critique moves voter information into the footer and
+reverses the section contrast to a lavender off-white page with white issues.
+Mobile issues use a horizontal scroll row; every mobile story uses a full-sized
+image. The menu omits its visible brand header and anchors area and account
+controls at the bottom. "Showing" uses the same text color as the parish.
+These refinements remain local and await owner visual QA.
+
+The next mobile refinement removes nested section padding and widens issue cards.
+Native touch scrolling snaps to each card without navigation arrows. The owner then chose a shared card height
+and a noninteractive dot index with the current issue count. Revised shared colors separate the page,
+sections, cards, reading text and actions. A bounded 390-pixel Chrome inspection
+showed the wider card and compact height. Final touch and viewport QA remain
+pending, with automated checks deferred to PR CI.
