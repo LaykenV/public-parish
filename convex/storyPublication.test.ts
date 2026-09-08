@@ -786,3 +786,31 @@ test('new evidence can retain the current image only through an owner revision a
     await expect(owner.mutation(api.stories.corrections.prepare, request)).rejects.toThrow('current accepted story image')
   } finally { vi.useRealTimers() }
 })
+
+
+test('caption corrections retain image bytes and require a new independent review', async () => {
+  vi.useFakeTimers()
+  try {
+    const { t, owner, args, buildId, storyId } = await setup()
+    workflowTest.register(t)
+    const versionId = await owner.mutation(api.stories.operations.approve, args)
+    const parent = (await t.run(ctx => ctx.db.get(buildId)))!
+    const request = { parentBuildId: buildId, parentDraftHash: args.draftHash, expectedGeneration: 1, draft: parent.draft!, mediaCaption: 'Illustrative rendering. The depicted project is unverified.' }
+    await expect(t.mutation(api.stories.corrections.prepare, request)).rejects.toThrow('Sign in with Google')
+    await expect(owner.mutation(api.stories.corrections.prepare, { ...request, mediaCaption: ' ' })).rejects.toThrow('1 to 600 characters')
+    await expect(owner.mutation(api.stories.corrections.prepare, { ...request, mediaCaption: 'x'.repeat(601) })).rejects.toThrow('1 to 600 characters')
+    await expect(owner.mutation(api.stories.corrections.prepare, { ...request, mediaCaption: parent.media!.caption })).rejects.toThrow('caption must change')
+    const id = await owner.mutation(api.stories.corrections.prepare, request)
+    expect(await owner.mutation(api.stories.corrections.prepare, request)).toBe(id)
+    await t.run(async ctx => {
+      const result = (await ctx.db.get(id))!
+      expect(result.media).toEqual({ ...parent.media, caption: request.mediaCaption })
+      expect(result.draftHash).toBe(parent.draftHash)
+      expect(result.review).toBeUndefined()
+      expect(result.reviewHash).toBeUndefined()
+      expect(result.state).toBe('drafted')
+      expect((await ctx.db.get(storyId))?.currentVersionId).toBe(versionId)
+      expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0)
+    })
+  } finally { vi.useRealTimers() }
+})
