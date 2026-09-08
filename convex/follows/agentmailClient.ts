@@ -13,6 +13,7 @@ import {
   decryptAddress,
   hashAccessToken,
 } from './secrets'
+import { alertUnsubscribeUrl } from './unsubscribeLink'
 import { MANAGEMENT_TOKEN_TTL_MS } from './enrollmentContracts'
 import { weeklyRoundupWindowAt } from './roundupTime'
 import { claimDeliveryChanges, updateChangeKeys, validUpdateReference } from './updateEvents'
@@ -112,6 +113,7 @@ export const reserveImmediateDelivery = internalMutation({
     const first = eligible[0]
     let recipient: string
     let managementUrl: string
+    let unsubscribeUrl: string | undefined
     if (first.follow.ownerKind === 'google') {
       const user = await ctx.db.get(first.follow.userId)
       if (!user) return null
@@ -131,12 +133,14 @@ export const reserveImmediateDelivery = internalMutation({
         createdAt: now,
       })
       managementUrl = appUrl(`/email/manage/${encodeURIComponent(token)}`)
+      unsubscribeUrl = await alertUnsubscribeUrl(ctx, subscriber._id)
     }
 
     const projected = await projectImmediateEmail(
       ctx,
       args,
       managementUrl,
+      unsubscribeUrl,
     )
     if (!projected) return null
     const now = Date.now()
@@ -559,6 +563,7 @@ async function enqueueWeeklyDelivery(
   const { follow } = selection
   let recipient: string
   let managementUrl: string
+  let unsubscribeUrl: string | undefined
   if (follow.ownerKind === 'google') {
     const user = await ctx.db.get(follow.userId)
     if (!user) {
@@ -584,12 +589,14 @@ async function enqueueWeeklyDelivery(
       createdAt: now,
     })
     managementUrl = appUrl(`/email/manage/${encodeURIComponent(token)}`)
+    unsubscribeUrl = await alertUnsubscribeUrl(ctx, subscriber._id)
   }
   const projected = await projectWeeklyEmail(
     ctx,
     delivery,
     selection.entries,
     managementUrl,
+    unsubscribeUrl,
   )
   if (!projected) return
   const enqueueAttempts = delivery.enqueueAttempts + 1
@@ -687,6 +694,7 @@ async function projectWeeklyEmail(
   delivery: Doc<'notificationDeliveries'>,
   entries: Array<Doc<'roundupEntries'>>,
   managementUrl: string,
+  unsubscribeUrl?: string,
 ): Promise<{ subject: string; text: string } | null> {
   const items: Array<{
     place: string
@@ -753,6 +761,7 @@ async function projectWeeklyEmail(
     )
   }
   lines.push(`Manage alerts: ${managementUrl}`)
+  if (unsubscribeUrl) lines.push(`Stop all email notices: ${unsubscribeUrl}`)
   const message = {
     subject: `${items.length} ${items.length === 1 ? 'update' : 'updates'} in your Public Parish roundup`,
     text: lines.join('\n'),
@@ -778,6 +787,7 @@ async function projectImmediateEmail(
   ctx: DeliveryCtx,
   reference: UpdateReference,
   managementUrl: string,
+  unsubscribeUrl?: string,
 ): Promise<{ subject: string; text: string } | null> {
   if (reference.storyUpdateId) {
     const current = await currentStoryUpdate(ctx, reference.storyUpdateId)
@@ -785,6 +795,7 @@ async function projectImmediateEmail(
     const lines = ['An approved story has new evidence.', '', current.version.payload.title.text, '', current.version.payload.summary.text, '', 'Official sources', ...new Set(acceptedStorySpans(current.version).map(span => span.officialUrl)), '', `View in Public Parish: ${appUrl(`/stories/${current.story.slug}`)}`]
     if (emailRepliesAvailable()) lines.push('Reply with a question about this story. Answers use its current accepted evidence.')
     lines.push(`Manage alerts: ${managementUrl}`)
+    if (unsubscribeUrl) lines.push(`Stop all email notices: ${unsubscribeUrl}`)
     return labelDevelopmentStoryMail({ subject: `Story update: ${current.version.payload.title.text}`, text: lines.join('\n') })
   }
   const change = reference.materialChangeId ? await ctx.db.get(reference.materialChangeId) : null
@@ -835,6 +846,7 @@ async function projectImmediateEmail(
     )
   }
   lines.push(`Manage alerts: ${managementUrl}`)
+  if (unsubscribeUrl) lines.push(`Stop all email notices: ${unsubscribeUrl}`)
   return {
     subject: `${change.classification === 'new_decision' ? 'New decision' : 'Decision update'}: ${version.payload.title}`,
     text: lines.join('\n'),

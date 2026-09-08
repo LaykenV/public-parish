@@ -206,6 +206,7 @@ export default defineSchema({
     verifiedAt: v.optional(v.number()),
     unsubscribedAt: v.optional(v.number()),
     agentmailThreadId: v.optional(v.string()),
+    alertUnsubscribeTokenId: v.optional(v.id('emailAccessTokens')),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
@@ -515,6 +516,7 @@ export default defineSchema({
     followId: v.optional(v.id('follows')),
     kind: emailTokenKind,
     tokenHash: v.string(),
+    encryptedAlertToken: v.optional(v.string()),
     expiresAt: v.optional(v.number()),
     consumedAt: v.optional(v.number()),
     revokedAt: v.optional(v.number()),
