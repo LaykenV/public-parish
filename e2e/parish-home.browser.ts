@@ -169,11 +169,11 @@ for (const width of [320, 375]) {
     await expect
       .poll(() =>
         cards.nth(1).evaluate((node) => {
-          const track = node.parentElement!
+          const row = node.parentElement!
           return Math.abs(
             node.getBoundingClientRect().left -
-              track.getBoundingClientRect().left -
-              parseFloat(getComputedStyle(track).paddingLeft),
+              row.getBoundingClientRect().left -
+              parseFloat(getComputedStyle(row).paddingLeft),
           )
         }),
       )

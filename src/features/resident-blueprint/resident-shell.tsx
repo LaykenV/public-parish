@@ -14,7 +14,13 @@ import { Link, useRouterState } from '@tanstack/react-router'
 import { AreaSelector } from '../discovery/area-selector'
 import { useArea } from '../discovery/area-store'
 import { areaName } from '../discovery/contracts'
-import { useKeyboardOpen, useOnline, useOverlayOpen } from '../discovery/hooks'
+import {
+  useKeyboardOpen,
+  useMediaQuery,
+  useOnline,
+  useOverlay,
+  useOverlayOpen,
+} from '../discovery/hooks'
 import { parseResidentReturnTo } from '../resident-handoff/navigation'
 
 import { Button } from '../../components/ui/button'
@@ -27,7 +33,6 @@ import {
   SheetFooter,
   SheetPanel,
 } from '../../components/ui/sheet'
-import { useMediaQuery, useOverlay } from '../discovery/hooks'
 
 import { LOUISIANA_OUTLINE_PATH } from '../landing/louisiana-path'
 
