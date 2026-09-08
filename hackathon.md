@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T03:15:00Z
+- **Last updated:** 2026-09-08T12:23:41Z
 
 ## Log
 
@@ -1757,3 +1757,12 @@ Implemented the owner's explicit exception for three supplied rendering hashes.
 The correction path retains accepted prose and evidence, validates the exact
 image, and starts independent review before a new immutable publication.
 Unknown rights and source attribution stay explicit. PR CI and release pending.
+
+### 2026-09-08 - production rendering replacement at cb2ae00
+
+PR 183 passed 637 CI tests and review, deployed, and passed independent production
+smoke. Published the exact three supplied renderings after fresh independent
+reviews in development and production. Draft hashes and evidence stayed unchanged;
+no update events were created. Verified public image hashes, page loads, social
+image metadata, cache invalidation and replay. Estimated review cost was $0.03856.
+The owner's explicit exception records unverified rights without inventing a license.

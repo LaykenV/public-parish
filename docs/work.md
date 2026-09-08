@@ -1,19 +1,18 @@
 # Current work and launch gates
 
-Updated September 7, 2026. This is the only active status and pending-work queue.
+Updated September 8, 2026. This is the only active status and pending-work queue.
 The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
 ## Current checkpoint
 
-Production code `7ababad83d311609dd75648813e16500478ddd78` is deployed.
-PR 180 delivers accepted metadata and the interactive app at ordinary story
-URLs. PR 181 restores the Louisiana relief. Their production workflows
-[34180958554](https://github.com/LaykenV/public-parish/actions/runs/34180958554)
-and [34181213262](https://github.com/LaykenV/public-parish/actions/runs/34181213262)
-passed, followed by independent `npm run smoke:production` for each release.
-The production Home browser check found the relief and all three story links.
+Production application code `cb2ae0014572b1f1054eb80a345e694ed29f73e2`
+is deployed through PR 183. Production workflow
+[34225263905](https://github.com/LaykenV/public-parish/actions/runs/34225263905)
+and independent `npm run smoke:production` passed. PR 182 previously moved the
+Louisiana relief beside the region selector below featured stories. PR 180
+serves accepted social metadata and the interactive app at ordinary story URLs.
 
 The earlier story publication release was `771f660`.
 PR 175 shipped the combined story release; PR 178 repaired signed artifact
@@ -21,18 +20,18 @@ transfer behind the production custom domain. Exact production workflow
 [34174377315](https://github.com/LaykenV/public-parish/actions/runs/34174377315)
 and independent `npm run smoke:production` passed.
 
-All eleven source snapshots and three images are ready in production. Three
-retained drafts passed fresh independent LIMITED reviews. The owner approved
-and published the exact candidates at generation 1. Production story queries,
+The initial release retained eleven source snapshots and published three
+independently reviewed LIMITED candidates at generation 1. The September 8 image
+revision retains those exact drafts and evidence in new immutable versions. Production story queries,
 route responses, image hashes, citations, typed search, share HTML and nine
 anonymous Ask checks passed. Baseline publication created zero update events.
 [Production preparation](story-production-preparation.md) records the evidence.
 
 The full development gate passed at `decf363`. The presentation follow-up backend
-and CI-built frontend now run at `7c76f8a` on https://woozy-wren-227.convex.site.
+and CI-built frontend now run at `03831bf` on https://woozy-wren-227.convex.site.
 
 In development, Meta is the Home lead, with SpaceX and Boyce secondary. All three have accepted
-LIMITED versions, official document images, exact citations and explicit gaps.
+LIMITED versions, owner-selected renderings, exact citations and explicit gaps.
 Actual development verification covered Ask, Google and verified-email follows,
 three immediate updates, a three-story roundup, sourced replies, management and
 unsubscribe. [Development certification](story-development-certification.md)
@@ -43,7 +42,7 @@ records the evidence and the production boundary.
 | Evidence pipeline | Immutable snapshots, deterministic validation, independent review, and full, limited, or withheld publication deployed |
 | Resident loop | Discovery, issues, decisions, evidence, anonymous Ask, Google and email-only follows, alerts, roundups, replies, and private reports deployed |
 | Coverage and operations | Owner compiler, bounded scheduled processing, coverage requests, launch notices, search, issue sharing, and reports deployed |
-| Latest inspected release | Main commit `7ababad`, successful production workflow [34181213262](https://github.com/LaykenV/public-parish/actions/runs/34181213262) and independent smoke |
+| Latest inspected application release | Main commit `cb2ae00`, successful production workflow [34225263905](https://github.com/LaykenV/public-parish/actions/runs/34225263905) and independent smoke |
 | Local coverage | Eleven of twelve named bodies supported; Youngsville degraded. Lafayette accessible with a limitation; Rapides and East Baton Rouge available |
 | Source automation | Public health reads on September 7 showed only Metropolitan Council scheduled checks enabled |
 | Existing corpus | September 7 public queries returned 50 decisions per parish, the query cap; 6 Lafayette, 20 Rapides at the issue cap, and 19 East Baton Rouge timelines |
@@ -77,18 +76,19 @@ pass, organic resident outcome, production story mail delivery or submission is 
   visually certified. Facebook confirmed the production Meta preview metadata.
   Production SpaceX and Boyce HTTP metadata and redirects passed; their Facebook
   checks remain for QA after Chrome switched to another active task.
-- The owner corrected the PR 181 relief placement. The prepared correction puts
-  the existing 3D Louisiana relief beside the region selector below the featured
-  stories, including after an area is selected. PR 182 passed CI and review at
-  `3cd0257`. Its CI-built frontend is in development. Browser layout checks at
-  1280 and 390 pixels found the relief in the local section without horizontal
-  overflow. WebGPU reported ready. Screenshot capture failed, so visual QA is
-  not claimed. Production still has the PR 181 placement.
+- PR 182 deployed the existing 3D Louisiana relief beside the region selector
+  below featured stories, including after an area is selected. Development
+  checks covered 1280 and 390 pixels without horizontal overflow. Production
+  inspection confirmed the placement with WebGPU ready. This is not full QA.
 - The owner supplied replacement renderings for Meta, Boyce and SpaceX. Originals
   and hashes are preserved in the private handoff. On September 8 the owner
   approved an exception for these exact files with unverified rights recorded.
-  Implementation retains story evidence and requires fresh image review.
-  Publication and production image checks are pending.
+  All three replacements are published in production after fresh independent
+  LIMITED reviews. Public image bytes match the supplied hashes; the unchanged
+  drafts and evidence created no update events. Replay returned the same builds.
+  Home and direct story routes load the new images. Ordinary story HTML uses the
+  new social images and invalidates prior ETags. Facebook cache refresh remains
+  a separate QA check. See [image release](story-image-release.md).
 - The owner will perform production email verification during the founder QA
   pass. Agent verification remains development-only for that provider loop.
 - PRs 180 and 181 are merged and production-smoked. PR 179 records this release.

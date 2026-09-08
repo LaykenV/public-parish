@@ -145,10 +145,11 @@ PR 181 restored the existing 3D Louisiana relief in the Home introduction.
 The owner corrected that placement. Keep the compact introduction and featured
 stories first, then the relief beside the region selector. Keep the relief
 visible after an area is selected. PR 182 implements this placement and passed
-CI and development browser layout checks. Production still has the PR 181
-placement until the correction is approved for release.
-Use the owner-selected project renderings after source credit and media review;
-keep accurate rendering labels, alt text and captions. Do not treat image changes
+CI and development browser layout checks. It deployed through PR 182, and
+production inspection confirmed the relief beside local selection.
+The owner-selected renderings are published after independent review under the
+explicit three-file exception. Keep rendering labels, alt text and honest
+attribution gaps. Do not treat image changes
 as material story updates.
 
 PR 180 makes ordinary story URLs provide approved social metadata and open the
