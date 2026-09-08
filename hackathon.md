@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T02:25:47Z
+- **Last updated:** 2026-09-08T02:52:08Z
 
 ## Log
 
@@ -1733,3 +1733,11 @@ and retained accepted social metadata. Signed-in Facebook Sharing Debugger
 returned 200 and the correct preview metadata for all three development stories.
 Each reported missing `fb:app_id`. Blank native screenshots prevented visual
 image-crop inspection. Production unchanged.
+
+### 2026-09-08 - presentation production release at 7ababad
+
+Merged PR 180 as 0648c4d and PR 181 as 7ababad after owner approval. Each exact
+production workflow and independent smoke passed. Production Home renders the
+Louisiana relief and all three story links. Ordinary story URLs provide approved
+metadata and app scripts; legacy links redirect. Facebook confirmed production
+Meta metadata. Replacement media and final image-crop checks remain open.

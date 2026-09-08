@@ -7,7 +7,15 @@ The approved order is stories, then design and QA, then launch and outreach.
 
 ## Current checkpoint
 
-Production code `771f660d36435db9d93443d4be471c3a9c265670` is deployed.
+Production code `7ababad83d311609dd75648813e16500478ddd78` is deployed.
+PR 180 delivers accepted metadata and the interactive app at ordinary story
+URLs. PR 181 restores the Louisiana relief. Their production workflows
+[34180958554](https://github.com/LaykenV/public-parish/actions/runs/34180958554)
+and [34181213262](https://github.com/LaykenV/public-parish/actions/runs/34181213262)
+passed, followed by independent `npm run smoke:production` for each release.
+The production Home browser check found the relief and all three story links.
+
+The earlier story publication release was `771f660`.
 PR 175 shipped the combined story release; PR 178 repaired signed artifact
 transfer behind the production custom domain. Exact production workflow
 [34174377315](https://github.com/LaykenV/public-parish/actions/runs/34174377315)
@@ -35,7 +43,7 @@ records the evidence and the production boundary.
 | Evidence pipeline | Immutable snapshots, deterministic validation, independent review, and full, limited, or withheld publication deployed |
 | Resident loop | Discovery, issues, decisions, evidence, anonymous Ask, Google and email-only follows, alerts, roundups, replies, and private reports deployed |
 | Coverage and operations | Owner compiler, bounded scheduled processing, coverage requests, launch notices, search, issue sharing, and reports deployed |
-| Latest inspected release | Main commit `771f660`, successful production workflow [34174377315](https://github.com/LaykenV/public-parish/actions/runs/34174377315) |
+| Latest inspected release | Main commit `7ababad`, successful production workflow [34181213262](https://github.com/LaykenV/public-parish/actions/runs/34181213262) and independent smoke |
 | Local coverage | Eleven of twelve named bodies supported; Youngsville degraded. Lafayette accessible with a limitation; Rapides and East Baton Rouge available |
 | Source automation | Public health reads on September 7 showed only Metropolitan Council scheduled checks enabled |
 | Existing corpus | September 7 public queries returned 50 decisions per parish, the query cap; 6 Lafayette, 20 Rapides at the issue cap, and 19 East Baton Rouge timelines |
@@ -66,7 +74,9 @@ pass, organic resident outcome, production story mail delivery or submission is 
   returned 200 and constructed the correct title, description, canonical URL
   and image URL for each development story. Each reported missing `fb:app_id`.
   Native screenshot capture returned a blank window, so image crops are not
-  visually certified. Repeat the check on production after release.
+  visually certified. Facebook confirmed the production Meta preview metadata.
+  Production SpaceX and Boyce HTTP metadata and redirects passed; their Facebook
+  checks remain for QA after Chrome switched to another active task.
 - PR 181 restores the existing 3D Louisiana relief beside the Home introduction.
   Keep featured stories directly below it and local selection below the stories.
   CI and PR review passed. Browser inspection confirmed the relief at 1280-pixel
@@ -76,7 +86,7 @@ pass, organic resident outcome, production story mail delivery or submission is 
   evidence are pending; do not present a rendering as completed construction.
 - The owner will perform production email verification during the founder QA
   pass. Agent verification remains development-only for that provider loop.
-- PR 179 updates the release documentation. These follow-up PRs are unmerged.
+- PRs 180 and 181 are merged and production-smoked. PR 179 records this release.
 
 ## Phase 1: finish stories
 
@@ -101,7 +111,7 @@ required. CCS is deferred; do not substitute it for the agreed launch set.
 
 The full development evidence is recorded in
 [development certification](story-development-certification.md). The approved
-production application is `771f660`; its exact workflow and independent smoke
+production application is `7ababad`; its exact workflow and independent smoke
 passed. All eleven source snapshots and three images passed target checks.
 No new body or parish was certified and no broad monitoring was activated.
 The acceptance checks below describe the completed development gate; production
@@ -127,7 +137,7 @@ email verification is assigned to the owner's QA pass.
 - [x] Changed or withdrawn source evidence cannot remain silently current in a
   story, answer, search result, email, or social preview.
 - [x] Story search and share previews use the accepted story version and its
-  approved image. Direct refresh and dedicated share HTML passed production smoke. Ordinary URL metadata is the PR 180 follow-up.
+  approved image. Direct refresh and dedicated share HTML passed production smoke. Ordinary URL metadata and direct app delivery passed the PR 180 production follow-up.
 - [x] Story publication neither promotes a new parish nor enables agency-wide
   monitoring. Supported local coverage retains its existing gates.
 - [x] Owner review, retries, revisions, withholding, and rollback or withdrawal
@@ -145,7 +155,7 @@ silently replacing functionality or dropping a launch story.
 The S7 development gate and owner-approved production publication have passed.
 Boyce's exact target mappings were checked before publication. The owner may
 begin the full QA campaign now, including the production email check. Image,
-hero and social-preview follow-ups remain tracked above.
+image replacement and final social-preview checks remain tracked above.
 [Design](design.md) owns the page contracts and review order.
 
 - [ ] Agree on global colors, type, spacing, button and input treatments,

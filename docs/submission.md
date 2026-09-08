@@ -92,6 +92,8 @@ in [the archive](archive/README.md).
 The three owner-approved LIMITED stories are published at application `771f660`.
 Bounded production route, evidence, image, search, share and nine anonymous Ask
 checks passed. Email round trips passed in development; the owner will perform
-the production email check during QA. Replacement images, restored Louisiana
-relief and ordinary-link social previews are follow-up work. Actual Facebook
-previews and the founder's full design and QA campaign remain unverified.
+the production email check during QA. Production application `7ababad` adds the
+restored Louisiana relief and ordinary-link social metadata. Its exact workflow
+and independent smoke passed. Facebook confirmed development metadata for all
+three stories and production Meta metadata. Replacement images, final production
+Facebook image crops, and the founder's full design and QA campaign remain open.
