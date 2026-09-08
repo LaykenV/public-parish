@@ -1747,4 +1747,6 @@ Meta metadata. Replacement media and final image-crop checks remain open.
 Moved the existing Louisiana relief below featured stories beside the local
 region selector, including the selected-area state. Kept the introduction
 compact. This corrects the owner-rejected placement from PR 181. Static diff
-review passed; automated checks and development inspection are pending.
+review passed. PR 182 passed CI and review at 3cd0257. Its CI-built frontend
+passed development layout checks at 1280 and 390 pixels, with WebGPU ready.
+Screenshot capture failed, so visual QA is not claimed. Production unchanged.

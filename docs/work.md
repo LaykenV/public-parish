@@ -79,8 +79,11 @@ pass, organic resident outcome, production story mail delivery or submission is 
   checks remain for QA after Chrome switched to another active task.
 - The owner corrected the PR 181 relief placement. The prepared correction puts
   the existing 3D Louisiana relief beside the region selector below the featured
-  stories, including after an area is selected. CI and development inspection
-  for this correction are pending. Production still has the PR 181 placement.
+  stories, including after an area is selected. PR 182 passed CI and review at
+  `3cd0257`. Its CI-built frontend is in development. Browser layout checks at
+  1280 and 390 pixels found the relief in the local section without horizontal
+  overflow. WebGPU reported ready. Screenshot capture failed, so visual QA is
+  not claimed. Production still has the PR 181 placement.
 - The owner supplied replacement renderings for Meta, Boyce and SpaceX. Originals
   and hashes are preserved in the private handoff. Source credit and reuse
   evidence are pending; do not present a rendering as completed construction.
