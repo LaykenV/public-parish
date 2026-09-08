@@ -7,6 +7,15 @@ import type { PublicationMapping } from './contracts'
 // A target mapping is a new owner proposal, not portable publication approval.
 // Frozen research and retained writing stay byte-identical across deployments.
 
+export function canonicalPublicationMappings(sources: StoryManifest['sources'], mappings: PublicationMapping[]) {
+  if (mappings.length > 24 || new Set(mappings.map(item => JSON.stringify([item.sourceKey, item.originRecordKey]))).size !== mappings.length) throw new Error('Duplicate or excessive publication mappings')
+  return mappings.filter(mapping => {
+    const hint = sources.find(source => source.sourceKey === mapping.sourceKey)?.existingPublicationReferences.find(hint => hint.kind === 'decision' && hint.stableKey === mapping.originRecordKey)
+    if (!hint) throw new Error('Publication mapping is outside the manifest references')
+    return mapping.targetRecordKey !== hint.stableKey || mapping.targetPayloadHash !== hint.versionHash
+  }).sort((a, b) => a.sourceKey.localeCompare(b.sourceKey) || a.originRecordKey.localeCompare(b.originRecordKey))
+}
+
 export async function resolvePublicationReferences(
   ctx: Pick<QueryCtx | MutationCtx, 'db'>,
   sources: Array<{ source: StoryManifest['sources'][number]; snapshot: Doc<'sourceSnapshots'> }>,

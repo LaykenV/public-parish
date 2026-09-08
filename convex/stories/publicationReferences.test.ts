@@ -2,7 +2,7 @@ import { expect, test, vi } from 'vitest'
 import type { Doc } from '../_generated/dataModel'
 import type { QueryCtx } from '../_generated/server'
 import type { StoryManifest } from './manifestTypes'
-import { resolvePublicationReferences } from './publicationReferences'
+import { canonicalPublicationMappings, resolvePublicationReferences } from './publicationReferences'
 
 // Synthetic resolver fixtures. These are not publication or provider evidence.
 function fixture() {
@@ -39,4 +39,14 @@ test('mapping refuses another source, withdrawn publication, duplicate and unreq
   const f = fixture()
   await expect(resolvePublicationReferences(f.ctx, f.sources, [f.mapping, f.mapping])).rejects.toThrow('Duplicate')
   await expect(resolvePublicationReferences(f.ctx, f.sources, [f.mapping, { ...f.mapping, originRecordKey: 'unrequested' }])).rejects.toThrow('outside')
+})
+
+
+test('mapping identity ignores redundant origin hints but preserves changed target hashes', () => {
+  const f = fixture()
+  const original = { ...f.mapping, targetRecordKey: 'origin-key', targetPayloadHash: 'origin-hash' }
+  expect(canonicalPublicationMappings([f.source], [original])).toEqual([])
+  expect(canonicalPublicationMappings([f.source], [f.mapping])).toEqual([f.mapping])
+  expect(canonicalPublicationMappings([f.source], [{ ...original, targetPayloadHash: 'changed' }])).toHaveLength(1)
+  expect(() => canonicalPublicationMappings([f.source], [original, original])).toThrow('Duplicate')
 })

@@ -9,7 +9,7 @@ import { parseStoryManifest, LAUNCH_STORIES } from './manifest'
 import { publicationMapping, sourceBinding, storyDraft, storyReview, storyMedia, checkDraft, checkReview, MAX_STORY_BUILD_RETRIES } from './contracts'
 import { evidenceHash, proposedSpans, resolveSources } from './evidence'
 import { retainedDraft, checkRetainedDraft } from './retainedDraft'
-import { resolvePublicationReferences } from './publicationReferences'
+import { canonicalPublicationMappings, resolvePublicationReferences } from './publicationReferences'
 import { aiRoutes, modelRoles } from '../ai/types'
 
 export const prepare = query({
@@ -36,7 +36,7 @@ export const begin = internalMutation({
     const sources = await resolveSources(ctx, manifest, args.bindings)
     const spans = proposedSpans(manifest, sources)
     if (args.retainedDraft) await checkRetainedDraft(args.retainedDraft, manifest.story.storyKey, imported.bundleHash, spans)
-    const relatedPublications = await resolvePublicationReferences(ctx, sources, args.publicationMappings ?? [])
+    const publicationMappings = canonicalPublicationMappings(manifest.sources, args.publicationMappings ?? [])
     const media = args.media
     if (media && media.captionEvidenceKeys.some(key => !spans.some(span => span.key === key))) throw new Error('Image caption cites unknown evidence')
     let story = await ctx.db.query('stories').withIndex('by_story_key', q => q.eq('storyKey', manifest.story.storyKey)).unique()
@@ -46,7 +46,7 @@ export const begin = internalMutation({
     }
     const mediaIdentity = media ? { ...media, storageId: undefined } : null
     const notificationIntent = args.notificationIntent ?? (story.currentVersionId ? 'update' : 'baseline')
-    const inputHash = await hashStoryValue({ contract: 'story-build-2', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation, notificationIntent, retainedDraftHash: args.retainedDraft?.packet.draftHash, publicationMappings: args.publicationMappings?.length ? args.publicationMappings : undefined })
+    const inputHash = await hashStoryValue({ contract: 'story-build-2', bundleHash: imported.bundleHash, evidenceHash: await evidenceHash(spans), media: mediaIdentity, expectedGeneration: story.generation, notificationIntent, retainedDraftHash: args.retainedDraft?.packet.draftHash, publicationMappings: publicationMappings.length ? publicationMappings : undefined })
     const existing = await ctx.db.query('storyBuilds').withIndex('by_input_hash', q => q.eq('inputHash', inputHash)).unique()
     if (existing) return existing._id
     // Replaying a historical accepted bundle returns its receipt, never a new
@@ -54,10 +54,11 @@ export const begin = internalMutation({
     // new versioned bundle. Bound alternate image attempts for one import.
     const priorBuilds = await ctx.db.query('storyBuilds').withIndex('by_import_id', q => q.eq('importId', imported._id)).take(101)
     if (priorBuilds.length > 100) throw new Error('Import build history exceeds the replay bound')
-    const publishedReplay = priorBuilds.find(build => build.state === 'published' && build.versionId && canonicalStoryJson(build.media ? { ...build.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity) && canonicalStoryJson(build.relatedPublications) === canonicalStoryJson(relatedPublications))
+    const publishedReplay = priorBuilds.find(build => build.state === 'published' && build.versionId && canonicalStoryJson(build.media ? { ...build.media, storageId: undefined } : null) === canonicalStoryJson(mediaIdentity) && canonicalStoryJson(canonicalPublicationMappings(manifest.sources, build.publicationMappings ?? [])) === canonicalStoryJson(publicationMappings))
     if (publishedReplay) return publishedReplay._id
+    const relatedPublications = await resolvePublicationReferences(ctx, sources, publicationMappings)
     const runId = await ctx.db.insert('pipelineRuns', { registryId: sources[0].snapshot.registryId, trigger: 'manual_story_build', state: 'queued', processorVersion: 'story-v1', suppressNotifications: true, startedAt: Date.now() })
-    const buildId = await ctx.db.insert('storyBuilds', { importId: imported._id, storyId: story._id, expectedGeneration: story.generation, inputHash, publicationMappings: args.publicationMappings, sourceBindings: args.bindings, spans, relatedPublications, media,
+    const buildId = await ctx.db.insert('storyBuilds', { importId: imported._id, storyId: story._id, expectedGeneration: story.generation, inputHash, publicationMappings: publicationMappings.length ? publicationMappings : undefined, sourceBindings: args.bindings, spans, relatedPublications, media,
       ...(args.retainedDraft ? { draft: args.retainedDraft.packet.draft, draftHash: args.retainedDraft.packet.draftHash, draftModel: args.retainedDraft.packet.draftModel, retainedDraftReceipt: { packetJson: canonicalStoryJson(args.retainedDraft.packet), signature: args.retainedDraft.signature } } : {}),
       state: args.retainedDraft ? 'drafted' : 'queued', notificationIntent, runId, startedBy: owner._id, createdAt: Date.now() })
     const workflowId = await issueWorkflowManager.start(ctx, internal.stories.workflow.buildStory, { buildId })

@@ -74,6 +74,26 @@ test('controlled roundup refuses unauthenticated callers, production, and an unv
   expect(await t.run(ctx => ctx.db.query('roundupWindows').collect())).toHaveLength(0)
 })
 
+test('historical accepted replay remains inspectable after a related target no longer resolves', async () => {
+  const { t, owner, args, buildId } = await setup()
+  await owner.mutation(api.stories.operations.approve, args)
+  const original = await t.run(async ctx => {
+    const build = (await ctx.db.get(buildId))!
+    const imported = (await ctx.db.get(build.importId))!
+    const manifest = JSON.parse(imported.manifestJson) as StoryManifest
+    // Simulate a historical hint whose record is no longer available. The
+    // already accepted receipt must remain inspectable without another workflow.
+    manifest.sources[0].existingPublicationReferences = [{ kind: 'decision', stableKey: 'historical-record', versionHash: 'b'.repeat(64), sourceHash: manifest.sources[0].rawArtifact.sha256, citationKeys: [], environmentHint: null, idHint: null }]
+    await ctx.db.patch(imported._id, { manifestJson: JSON.stringify(manifest) })
+    return build
+  })
+  const replay = { importId: original.importId, bindings: original.sourceBindings, media: original.media, notificationIntent: 'baseline' as const }
+  expect(await owner.mutation(internal.stories.buildLedger.begin, replay)).toBe(buildId)
+  // A changed target is new work and must resolve before any workflow starts.
+  await expect(owner.mutation(internal.stories.buildLedger.begin, { ...replay, publicationMappings: [{ sourceKey: original.sourceBindings[0].sourceKey, originRecordKey: 'historical-record', targetRecordKey: 'new-target', targetPayloadHash: 'c'.repeat(64) }] })).rejects.toThrow('does not resolve')
+  expect(await t.run(ctx => ctx.db.query('storyBuilds').collect())).toHaveLength(1)
+})
+
 test('publication mapping preview is owner-only and rejects an unknown target', async () => {
   const { t, owner, buildId } = await setup()
   const build = (await t.run(ctx => ctx.db.get(buildId)))!
