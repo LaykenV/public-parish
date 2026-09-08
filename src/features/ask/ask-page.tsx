@@ -200,6 +200,9 @@ export function AskPage({
     }
     for (const turn of next.turns) {
       const before = previous.turns.find((item) => item.id === turn.id)
+      if (before?.state === 'checking' && turn.state === 'allowance_paused') {
+        setStatus('Ask is paused because its paid allowance is unavailable. No restart time is available yet.')
+      }
       if (
         before?.state === 'checking' &&
         turn.state === 'complete' &&
