@@ -25,7 +25,7 @@ export function ShareButton({
 
   const share = async () => {
     const backend = import.meta.env.VITE_CONVEX_URL as string | undefined
-    const hasShareRoute = path.startsWith('/issues/') || path.startsWith('/stories/')
+    const hasShareRoute = path.startsWith('/issues/')
     const base = hasShareRoute && backend ? backend.replace(/\.convex\.cloud\/?$/, '.convex.site') : window.location.origin
     const sharePath = hasShareRoute ? `/share${path}` : path
     const url = `${base}${sharePath}`
