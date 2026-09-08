@@ -1,7 +1,9 @@
+import { VoterFooter } from './voter-footer'
 import {
   CircleUserRoundIcon,
   HouseIcon,
   MapPinIcon,
+  MenuIcon,
   MessageCircleQuestionIcon,
   SearchIcon,
 } from 'lucide-react'
@@ -12,10 +14,26 @@ import { Link, useRouterState } from '@tanstack/react-router'
 import { AreaSelector } from '../discovery/area-selector'
 import { useArea } from '../discovery/area-store'
 import { areaName } from '../discovery/contracts'
-import { useKeyboardOpen, useOnline, useOverlayOpen } from '../discovery/hooks'
+import {
+  useKeyboardOpen,
+  useMediaQuery,
+  useOnline,
+  useOverlay,
+  useOverlayOpen,
+} from '../discovery/hooks'
 import { parseResidentReturnTo } from '../resident-handoff/navigation'
 
-import { Spinner } from '../../components/ui/spinner'
+import { Button } from '../../components/ui/button'
+import {
+  Sheet,
+  SheetTrigger,
+  SheetPopup,
+  SheetHeader,
+  SheetTitle,
+  SheetFooter,
+  SheetPanel,
+} from '../../components/ui/sheet'
+
 import { LOUISIANA_OUTLINE_PATH } from '../landing/louisiana-path'
 
 import './resident-blueprint.css'
@@ -162,26 +180,6 @@ function LouisianaIcon(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-export function RouteLoadingRegion() {
-  const isLoading = useRouterState({ select: (state) => state.isLoading })
-
-  return (
-    <div
-      aria-atomic="true"
-      aria-busy={isLoading}
-      className="route-loading-region"
-      role="status"
-    >
-      {isLoading ? (
-        <>
-          <Spinner aria-hidden="true" />
-          <span className="visually-hidden">Loading page</span>
-        </>
-      ) : null}
-    </div>
-  )
-}
-
 export function ResidentShell({ children }: { children: ReactNode }) {
   const { currentHref, pathname } = useRouterState({
     select: (state) => ({
@@ -255,6 +253,7 @@ export function ResidentShell({ children }: { children: ReactNode }) {
               <CircleUserRoundIcon aria-hidden="true" />
             </Link>
           </div>
+          <MobileNavigation pathname={pathname} />
         </div>
       </header>
 
@@ -267,30 +266,117 @@ export function ResidentShell({ children }: { children: ReactNode }) {
       {children}
 
       <footer className="resident-footer">
-        <nav aria-label="About Public Parish">
-          <Link to="/how-it-works">How it works</Link>
-          <Link to="/privacy">Privacy</Link>
-          <a
-            href="https://github.com/LaykenV/public-parish"
-            rel="noreferrer"
-            target="_blank"
+        <div className="resident-footer-inner">
+          <Link
+            className="resident-brand"
+            to="/"
+            aria-label="Public Parish home"
           >
-            Source code
-          </a>
-        </nav>
-        <p>Official evidence is public. Resident activity stays private.</p>
+            <img src="/brand-mark.svg" alt="" width="32" height="32" />
+            <span>Public Parish</span>
+          </Link>
+          <nav aria-label="About Public Parish">
+            <Link to="/how-it-works">How it works</Link>
+            <Link to="/coverage">Coverage</Link>
+            <Link to="/privacy">Privacy</Link>
+            <a
+              href="https://github.com/LaykenV/public-parish"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Source code
+            </a>
+          </nav>
+          <VoterFooter />
+          <p>Official evidence is public. Resident activity stays private.</p>
+        </div>
       </footer>
-
-      <nav className="resident-mobile-nav" aria-label="Primary navigation">
-        {PRIMARY_NAVIGATION.map((item) => (
-          <ResidentNavigationLink
-            item={item}
-            key={item.href}
-            pathname={pathname}
-          />
-        ))}
-      </nav>
     </div>
+  )
+}
+
+function MobileNavigation({ pathname }: { pathname: string }) {
+  const [open, setOpen] = useState(false)
+  const area = useArea()
+  const desktop = useMediaQuery('(min-width: 64.0625rem)')
+  useOverlay(open)
+
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname, desktop])
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger
+        render={
+          <Button
+            className="resident-menu-trigger"
+            size="icon-xl"
+            variant="ghost"
+          />
+        }
+        aria-label="Open menu"
+      >
+        <MenuIcon aria-hidden="true" />
+      </SheetTrigger>
+      <SheetPopup
+        className="resident-menu"
+        closeProps={{ 'aria-label': 'Close menu' }}
+      >
+        <SheetHeader className="resident-menu-heading">
+          <SheetTitle className="visually-hidden">Menu</SheetTitle>
+        </SheetHeader>
+        <SheetPanel>
+          <nav aria-label="Primary navigation" className="resident-menu-links">
+            {[
+              ...PRIMARY_NAVIGATION.slice(0, 3),
+              {
+                href: '/following',
+                icon: CircleUserRoundIcon,
+                label: 'Following',
+              },
+              PRIMARY_NAVIGATION[3],
+            ].map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                onClick={() => setOpen(false)}
+                aria-current={
+                  pathname === item.href || pathname.startsWith(`${item.href}/`)
+                    ? 'page'
+                    : undefined
+                }
+              >
+                <item.icon aria-hidden="true" />
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </SheetPanel>
+        <SheetFooter className="resident-menu-bottom">
+          <div className="resident-menu-area">
+            <p>
+              {area ? `Showing ${areaName(area)}` : 'Choose your local area'}
+            </p>
+            <AreaSelector
+              trigger={(props) => (
+                <Button {...props} size="touch" variant="outline">
+                  <MapPinIcon aria-hidden="true" />
+                  Change area
+                </Button>
+              )}
+            />
+          </div>
+          <Link
+            className="resident-menu-account"
+            to="/following"
+            onClick={() => setOpen(false)}
+          >
+            Account and notification settings
+          </Link>
+        </SheetFooter>
+      </SheetPopup>
+    </Sheet>
   )
 }
 

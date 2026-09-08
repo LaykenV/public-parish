@@ -5,10 +5,9 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import ConvexProvider from '../integrations/convex/provider'
 import { ProductAnalyticsTracker } from '../features/analytics/product-analytics'
 import { BlueprintNotFound } from '../features/resident-blueprint/blueprint-page'
-import {
-  ResidentRouteAccessibility,
-  RouteLoadingRegion,
-} from '../features/resident-blueprint/resident-shell'
+import { ResidentRouteAccessibility } from '../features/resident-blueprint/resident-shell'
+
+import { ResidentLoadingProvider } from '../features/resident-blueprint/resident-loading'
 
 import appCss from '../styles.css?url'
 
@@ -32,7 +31,7 @@ export const Route = createRootRoute({
       },
       {
         name: 'theme-color',
-        content: '#FAFAF9',
+        content: '#F7F6FA',
       },
     ],
     links: [
@@ -76,21 +75,22 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ConvexProvider>
-          <ProductAnalyticsTracker />
-          <ResidentRouteAccessibility />
-          <RouteLoadingRegion />
-          {children}
-          <TanStackDevtools
-            config={{
-              position: 'bottom-right',
-            }}
-            plugins={[
-              {
-                name: 'Tanstack Router',
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-            ]}
-          />
+          <ResidentLoadingProvider>
+            <ProductAnalyticsTracker />
+            <ResidentRouteAccessibility />
+            {children}
+            <TanStackDevtools
+              config={{
+                position: 'bottom-right',
+              }}
+              plugins={[
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+              ]}
+            />
+          </ResidentLoadingProvider>
         </ConvexProvider>
         <Scripts />
       </body>

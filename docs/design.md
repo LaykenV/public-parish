@@ -3,47 +3,57 @@
 This document owns the agreed information flow and the design-review process.
 The story functionality and evidence gate has passed. The global design and
 founder QA pass is next.
-[Work](work.md) owns the phase gate and QA ledger. The global redesign has not
-started. [Design-system reference](design-system.html) records the existing
+[Work](work.md) owns the phase gate and QA ledger. The September 8 Home redesign is implemented locally and awaits owner visual QA
+and PR validation. [Design-system reference](design-system.html) records the existing
 visual baseline until the owner changes it during that pass.
 
 ## Homepage flow
 
-Use a compact introduction and a story-led first screen. Avoid a tall separate
-marketing hero that pushes the lead story below the fold. Integrate the product
-promise with the featured-story area.
+The owner approved the following Home system on September 8. This supersedes
+always placing stories above local setup and issues.
 
-```text
-Navigation and Public Parish identity
-Compact introduction, free access and evidence promise
-Meta lead story with a relevant image and clear read action
-SpaceX secondary story | Boyce secondary story
-Local section heading and parish or city selector
-Issues for the selected area, with coverage limitations
-Recent atomic decision records and Explore link
-Small dated official voter-information strip
-Method, coverage, privacy and open-source links
-```
+| Order | No area selected | Area selected |
+| --- | --- | --- |
+| Introduction | "See how local government is changing" with selector at left and existing 3D Louisiana at right | "Showing X Parish" and Change area |
+| First content | Across Louisiana, Meta lead with SpaceX and Boyce secondary | Issues in the selected parish |
+| Second content | Issues across covered areas | Across Louisiana with all three stories |
+| Records | Latest decision records | Latest decision records for the selected parish |
+| Footer | Brand, site links and compact dated voter information | Same footer |
 
-Desktop can place the Meta lead beside the two secondary stories. Mobile stacks
-Meta, SpaceX and Boyce in that order. All three remain discoverable without a
-carousel, horizontal-only rail, account, or completed location setup.
+On mobile, stack the hero copy and selector above a short Louisiana visual.
+Hide the visual when the hero collapses after selection. Remember the chosen
+area on return visits. The selected parish controls Home even when an account
+has other saved areas. Selecting an area filters reading; it does not enroll
+someone in email alerts. Saved areas remain in Following.
 
-On a first visit, the local section offers the selector and a way to browse the
-existing launch-area evidence. After selection, its heading and issue feed name
-the chosen area and retain the selection. Signed-in saved areas remain usable.
-Keep Change area visible in the local section. Changing an area does not remove
-or reorder the featured Louisiana stories.
+The stories section uses one large Meta image and two compact secondary entries.
+Desktop places the secondary entries beside Meta. Mobile gives all three stories the same full-width image and headline treatment.
+Keep accepted titles and summaries, precise geography, reviewed-through dates,
+and limitations. All three stories remain discoverable without a carousel,
+account or completed location setup. Image subtext remains omitted as requested.
 
-Give returning visitors a direct jump to local issues or Following so they do
-not have to scroll through the entire introduction on each visit. Preserve Home,
-Explore, Ask, Following and Coverage access. A Stories navigation entry may link
-to Home's story section; a separate story index is not required for three stories.
-Keep the exact navigation presentation for the owner design pass.
+Issue cards emphasize title, consequence and next documented date or latest
+outcome. Keep evidence limitations readable and actions distinct. Use a soft lavender off-white page, white cards and a near-white desktop issues
+section. On phones, remove the outer section panel and nested padding. Give each
+issue nearly the full viewport width with a peek of the next card. Native touch
+swiping snaps to cards without arrow buttons. Cards share one height across the row, sized to fit the longest issue.
+A noninteractive dot index and current issue count sit below the row. Keep vertical page scrolling and keyboard access to every card. Decision
+records retain their compact layout. Stories, issues and records have separate
+failure boundaries.
 
-The deployed homepage places the accepted stories before local setup and issues.
-It uses existing components. The final layout, colors and typography remain
-design-pass decisions.
+Desktop navigation retains its arrangement. Mobile has the brand and a top-right
+hamburger button opening a Coss right-side Sheet. The menu contains Home, Explore,
+Ask, Following, Coverage, area selection and account settings. Omit the visible menu brand header. Anchor
+area and account controls at the bottom, separate from the scrolling navigation.
+Close, Escape,
+backdrop dismissal and focus return remain available. Remove bottom navigation
+and its reserved space, including the Ask composer offset.
+
+One centered global spinner covers navigation and initial page-data loading.
+Concurrent pending sections share that indicator. Settling or unmounting a
+section releases its loading registration. Do not use skeletons. Existing readable
+content stays available while another section loads. Button submissions and Ask
+answer generation retain their action-specific feedback.
 
 ## Story detail
 
@@ -93,9 +103,20 @@ Use Home and story detail as reference pages. Update shared components and
 existing brand mark unless the owner changes it. One coherent light theme is
 sufficient for the hackathon; theme expansion is not a requirement.
 
-Current baseline uses Inter, Geist Mono for compact metadata, neutral paper and
-ink, blue actions, green success and amber limitations. These are current design
-facts, not restrictions on the coming owner-directed redesign.
+The approved system uses Inter for headings and body text, with Geist Mono for
+technical metadata. Background is `#F7F6FA`, cards are `#FFFFFF`, headings are
+`#242131`, reading text is `#494352` and secondary text is `#6B6575`. Primary
+purple is `#6340A3`, hover purple is `#4F2F89` and selection lavender is `#EEE8F7`.
+Use `#FDFCFE` for the desktop issues section and `#EEEAF4` for the footer.
+Evidence labels and missing-date notices use the reading font. Missing dates
+remain neutral; actual dates may use purple.
+Purple marks actions, selection and focus. Green remains success and amber marks
+limitations. An approved government action is not a success judgment.
+
+Shared controls use Coss components on Base UI. The Home pass adds the Coss Sheet,
+Scroll Area and Input registry components to the existing Button and Badge.
+The design reference records the same palette and layout. Visual, contrast,
+keyboard and responsive QA remain pending until actually inspected.
 
 ## Page-by-page pass
 
@@ -144,12 +165,9 @@ interface during this design pass.
 
 ## Owner corrections after story publication
 
-PR 181 restored the existing 3D Louisiana relief in the Home introduction.
-The owner corrected that placement. Keep the compact introduction and featured
-stories first, then the relief beside the region selector. Keep the relief
-visible after an area is selected. PR 182 implements this placement and passed
-CI and development browser layout checks. It deployed through PR 182, and
-production inspection confirmed the relief beside local selection.
+PRs 181 and 182 restored and repositioned the existing 3D Louisiana. The
+September 8 owner decision above supersedes their placement and selected-area
+visibility rules.
 The owner-selected renderings are published after independent review under the
 explicit three-file exception. The owner requested removal of all visible image
 subtext on Home and story pages. Keep descriptive alt text on the images and

@@ -417,8 +417,9 @@ A Stories navigation link
 may target the homepage story section for the three-story launch; a separate
 editorial index is unnecessary. Existing issue and decision URLs remain stable.
 
-Home displays all three accepted launch stories before local setup and local
-issues. It queries featured stories separately from the bounded local feed.
+Home displays the hero and all three accepted launch stories before issues
+when no area is selected. After selection, it collapses the hero and places local
+issues before the stories. It queries stories separately from the local feed.
 Choosing a location does not filter them out. Owner-selected placement is
 independent of importance scores. [Design](design.md) owns composition and
 responsive behavior.

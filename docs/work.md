@@ -95,6 +95,32 @@ The older release record reports 560 CI tests and independent production smoke
 through PR #139. The three stories are published and passed bounded production smoke. No physical-device or screen-reader
 pass, organic resident outcome, production story mail delivery or submission is claimed.
 
+## Home design pass, September 8
+
+Implemented locally on `feat/home-design-qa`, not released. The owner approved
+the two Home layouts, restored Louisiana hero, purple and lavender system,
+redesigned story and issue cards, mobile menu and footer voter information.
+The next owner critique adopts a lavender off-white page with a white issues
+section, horizontal mobile issues, full-sized mobile stories, and menu area and
+account controls at the bottom without a visible brand heading.
+The owner then selected a centered global spinner instead of skeletons.
+The mobile refinement removes nested issue-section padding and uses nearly
+full-width cards with native touch snapping, without arrow buttons. Cards share one height and display an index below the swipe row. The palette now separates near-white sections, white
+cards, dark reading text, purple actions and a pale lavender footer.
+[Design](design.md) records the adopted behavior and shared controls.
+
+- Static diff review is the local validation step. Automated checks remain
+  deferred to PR CI. A bounded 390-pixel Chrome inspection confirmed wider
+  cards and removal of the tall internal gaps. Final touch interaction and the
+  complete viewport matrix still need browser QA.
+- Review first visit, parish selection, returning visit, area changes, three
+  stories in both orders, mobile menu and focus return, loading, partial failures,
+  empty issues, long headlines and failed images at 320, 375, tablet and desktop.
+- Confirm shared colors and action states on Home before the remaining pages.
+  Recheck Ask's composer after removal of the bottom navigation.
+- Browser regressions cover Home ordering, persisted selection and mobile menu
+  navigation. Execution and production release remain pending.
+
 ## Owner follow-up before outreach
 
 - PR 180 makes ordinary story URLs return accepted social metadata with the

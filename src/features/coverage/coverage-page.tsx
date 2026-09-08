@@ -1,3 +1,4 @@
+import { PageLoading } from '../resident-blueprint/resident-loading'
 import { useAction, useMutation, useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import {
@@ -51,7 +52,7 @@ export function CoveragePage({ data }: { data: CoveragePageData }) {
   const liveRegions = useQuery(api.coverage.publicHealth.regions, data.scenario ? 'skip' : {})
   const regions = data.scenario ? data.regions : liveRegions
   if (!data.available) return <CoverageUnavailable />
-  if (!regions) return <main id="resident-main" className="coverage-page"><p role="status">Loading current source health...</p></main>
+  if (!regions) return <main id="resident-main" className="coverage-page"><PageLoading /></main>
 
   const requestSearch = data.scenario ? { fixture: 'new' as const } : {}
 

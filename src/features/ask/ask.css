@@ -616,19 +616,11 @@
 
 /* Composer dock */
 
-/*
-  The empty composer stays in normal document flow. Pinning it there would
-  park it under the fixed mobile navigation, and a sticky element cannot be
-  scrolled out from behind the software keyboard.
-
-  Once a thread exists a compact invitation sticks above the bottom
-  navigation. It expands only while the resident is writing, so the answer
-  remains readable. The expanded composer follows the keyboard through the
-  visual viewport inset.
-*/
+/* Keep the empty composer in document flow. During a conversation, the
+   compact composer follows the keyboard without covering the answer. */
 .ask-dock[data-sticky] {
   position: sticky;
-  bottom: calc(5.25rem + var(--ask-kb, 0rem));
+  bottom: calc(max(0.5rem, env(safe-area-inset-bottom)) + var(--ask-kb, 0rem));
   z-index: 10;
 }
 
@@ -785,8 +777,7 @@
 
   /*
     The answer is the reading point, so nothing floats over it here. A phone
-    and tablet keep the sticky composer because the bottom navigation and
-    thumb reach are the reason for it; a desktop page just scrolls.
+    and tablet keep the composer within thumb reach; a desktop page scrolls.
   */
   .ask-dock[data-sticky] {
     position: static;

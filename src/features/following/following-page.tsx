@@ -1,3 +1,4 @@
+import { PageLoading } from '../resident-blueprint/resident-loading'
 import {
   BellRingIcon,
   CheckIcon,
@@ -157,11 +158,7 @@ function LiveFollowingPage({
 function FollowingLoading() {
   return (
     <main className="following-page" id="resident-main">
-      <div aria-live="polite" className="following-return" role="status">
-        <p className="following-kicker">Following</p>
-        <h1>Loading your saved setup</h1>
-        <p>Checking this browser's Google session.</p>
-      </div>
+      <PageLoading />
     </main>
   )
 }
