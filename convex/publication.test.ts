@@ -6,6 +6,8 @@ import type { TestConvexForDataModelAndIdentity } from 'convex-test'
 import { afterEach, expect, test, vi } from 'vitest'
 
 import { internal } from './_generated/api'
+import { agentmail } from './follows/agentmailClient'
+import { encryptAddress } from './follows/secrets'
 import type { DataModel, Id } from './_generated/dataModel'
 import {
   overrideGatewayTokenMinterForTests,
@@ -857,8 +859,11 @@ test('a later withheld review does not replace the last published version', asyn
   ])
 })
 
-test('a first accepted publication records one new-decision event and matches its publishing body and place once', async () => {
+test.each(['google', 'email'] as const)('a first accepted publication matches %s follows once and includes delivery controls', async ownerKind => {
   const t = await initTest()
+  vi.stubEnv('EMAIL_ADDRESS_HMAC_KEY', btoa('alert-delivery-test-key'))
+  vi.stubEnv('EMAIL_ENCRYPTION_KEY', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=')
+  const sendMessage = vi.spyOn(agentmail, 'sendMessage').mockRejectedValue(new Error('AGENTMAIL_API_KEY is not configured'))
   const seeded = await seedValidatedCandidate(t, '-alert-match')
   const followIds = await t.run(async (ctx) => {
     const registry = await ctx.db.get(seeded.registryId)
@@ -879,7 +884,13 @@ test('a first accepted publication records one new-decision event and matches it
       updatedAt: 1,
       lastSignedInAt: 1,
     })
-    const ownerKey = `google:${userId}`
+    const subscriberId = await ctx.db.insert('emailSubscribers', {
+      addressHash: 'alert-match-email', encryptedAddress: await encryptAddress('alert-match@example.com'),
+      encryptionVersion: 1, state: 'verified', createdAt: 1, updatedAt: 1,
+    })
+    const owner = ownerKind === 'google'
+      ? { ownerKind, ownerKey: `google:${userId}`, userId }
+      : { ownerKind, ownerKey: `email:${subscriberId}`, emailSubscriberId: subscriberId }
     const targets = [
       ['government_body', body.slug],
       ['place', jurisdiction.slug],
@@ -888,9 +899,7 @@ test('a first accepted publication records one new-decision event and matches it
     const ids: Id<'follows'>[] = []
     for (const [targetKind, targetKey] of targets) {
       const followId = await ctx.db.insert('follows', {
-        ownerKind: 'google',
-        ownerKey,
-        userId,
+        ...owner,
         targetKind,
         targetKey,
         targetTitle: targetKey,
@@ -1082,6 +1091,17 @@ test('a first accepted publication records one new-decision event and matches it
       errorDetail: expect.stringContaining('AGENTMAIL_API_KEY'),
     })
   })
+
+  expect(sendMessage).toHaveBeenCalledTimes(3)
+  for (const call of sendMessage.mock.calls) {
+    const message = call[2]
+    expect(message.text).toContain('Manage alerts:')
+    if (ownerKind === 'email') {
+      expect(message.text).toMatch(/Stop all email notices: https:\/\/public-parish-test\.convex\.site\/coverage\/unsubscribe\/[A-Za-z0-9_-]{32,100}/)
+    } else {
+      expect(message.text).not.toContain('Stop all email notices:')
+    }
+  }
 
   const emptyWindowId = await t.run(async (ctx) => {
     return await ctx.db.insert('roundupWindows', {
