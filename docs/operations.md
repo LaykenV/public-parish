@@ -60,6 +60,10 @@ The continuation used $0.600803 in model charges and 86 Firecrawl credits.
 Read current settings before spending. These recorded amounts are not new caps
 for the launch plan and are not proof of today's remaining balances.
 
+Paid AI and monitoring admissions require `AI_SPENDING_GUARD_ENABLED=true`.
+An absent or disabled guard pauses paid work even if an allowance is funded.
+Existing model reservations can still settle after the guard is disabled.
+
 The guard uses `ai/spendingLedger:configure` and owner-only `status`. Source and
 Ask scopes have separate enabled flags, ceilings and expiries. Configure both
 deliberately before enabling paid work. Expiry never renews automatically.

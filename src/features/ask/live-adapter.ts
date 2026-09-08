@@ -302,6 +302,10 @@ export class LiveAskAdapter implements AskAdapter {
       this.push({ kind: 'expired' })
       return
     }
+    if (code === 'ai_spending_limit') {
+      this.updateTurn(turnId, turn => ({ ...turn, state: 'allowance_paused' }))
+      return
+    }
     if (code === 'ask_scope_too_large') {
       this.updateTurn(turnId, turn => ({ ...turn, state: 'scope_too_large' }))
       return

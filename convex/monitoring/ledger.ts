@@ -56,7 +56,7 @@ export const configureGlobalBudget = mutation({
 })
 
 async function hasSourceAllowance(ctx: Pick<QueryCtx, 'db'>, now: number): Promise<boolean> {
-  if (env.AI_SPENDING_GUARD_ENABLED !== 'true') return true
+  if (env.AI_SPENDING_GUARD_ENABLED !== 'true') return false
   const allowance = await ctx.db.query('aiSpendingAllowances').withIndex('by_scope', q => q.eq('scope', 'sources')).unique()
   return Boolean(allowance?.enabled && allowance.expiresAt > now && allowance.chargedMicros < allowance.allowanceMicros)
 }

@@ -619,11 +619,13 @@ function stubFetch(options: {
   return fetchMock
 }
 
-function initTest() {
+async function initTest() {
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', 'true')
   vi.stubEnv('FIRECRAWL_API_KEY', 'fc-test-key')
   vi.stubEnv('MODEL_STRONG_ID', MODEL_ID)
   overrideGatewayTokenMinterForTests(async () => 'test-scoped-token')
   const t = convexTest(schema, modules)
+  await t.run(ctx => ctx.db.insert('aiSpendingAllowances', { scope: 'sources', enabled: true, allowanceMicros: 10_000_000, chargedMicros: 0, expiresAt: Date.now() + 31 * 86_400_000, updatedAt: Date.now() }))
   firecrawlTest.register(t)
   workflowTest.register(t)
   return t
@@ -720,7 +722,7 @@ afterEach(() => {
 })
 
 test('gold case: a valid CO-029-2026 extraction validates and records the full evidence chain', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelRequests: Array<Record<string, unknown>> = []
   const modelResponses: ModelResponseSpec[] = []
   const fetchMock = stubFetch({ modelRequests, modelResponses })
@@ -879,7 +881,7 @@ test('gold case: a valid CO-029-2026 extraction validates and records the full e
 })
 
 test('operator-assigned routing IDs validate without a fabricated source ID fact', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelRequests: Array<Record<string, unknown>> = []
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelRequests, modelResponses })
@@ -929,7 +931,7 @@ test('operator-assigned routing IDs validate without a fabricated source ID fact
 })
 
 test('the publication pipeline fails closed when MODEL_FAST is not configured', async () => {
-  const t = initTest()
+  const t = await initTest()
   expect('decisionRecords' in schema.tables).toBe(true)
   expect('citations' in schema.tables).toBe(true)
   expect('reviews' in schema.tables).toBe(true)
@@ -976,7 +978,7 @@ test('the publication pipeline fails closed when MODEL_FAST is not configured', 
 })
 
 test('a repeated start returns the existing successful run', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1004,7 +1006,7 @@ test('a repeated start returns the existing successful run', async () => {
 })
 
 test('an unregistered source kind fails before any model call', async () => {
-  const t = initTest()
+  const t = await initTest()
   const fetchMock = stubFetch({})
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
 
@@ -1028,7 +1030,7 @@ test('an unregistered source kind fails before any model call', async () => {
 })
 
 test('a blank or multiline target ID is rejected before a run exists', async () => {
-  const t = initTest()
+  const t = await initTest()
   stubFetch({})
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
 
@@ -1046,7 +1048,7 @@ test('a blank or multiline target ID is rejected before a run exists', async () 
 })
 
 test('a workflow crash closes the run and writes failure evidence', async () => {
-  const t = initTest()
+  const t = await initTest()
   stubFetch({})
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
   const start = await startExtraction(t, registryId, snapshotId)
@@ -1072,7 +1074,7 @@ test('a workflow crash closes the run and writes failure evidence', async () => 
 })
 
 test('failure evidence cannot be attached to a different extraction target', async () => {
-  const t = initTest()
+  const t = await initTest()
   stubFetch({})
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
   const start = await startExtraction(t, registryId, snapshotId)
@@ -1096,7 +1098,7 @@ test('failure evidence cannot be attached to a different extraction target', asy
 })
 
 test('a stage attempt cannot be charged to another run', async () => {
-  const t = initTest()
+  const t = await initTest()
   stubFetch({})
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
   const first = await startExtraction(t, registryId, snapshotId)
@@ -1118,7 +1120,7 @@ test('a stage attempt cannot be charged to another run', async () => {
 })
 
 test('an old processor run cannot persist under the new processor label', async () => {
-  const t = initTest()
+  const t = await initTest()
   stubFetch({})
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
   const start = await startExtraction(t, registryId, snapshotId)
@@ -1166,7 +1168,7 @@ test('an old processor run cannot persist under the new processor label', async 
 })
 
 test('a run cannot complete until both stages prove the same extraction', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1191,7 +1193,7 @@ test('a run cannot complete until both stages prove the same extraction', async 
 })
 
 test('a validated candidate cannot be flipped to validation failed', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1216,7 +1218,7 @@ test('a validated candidate cannot be flipped to validation failed', async () =>
 })
 
 test('a replayed model action reuses the persisted extraction without another call', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   const fetchMock = stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1307,7 +1309,7 @@ test('prompt, processor, schema, target, or snapshot changes create a new extrac
 })
 
 test('a transient extraction failure retries the model step without creating a second run', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   const fetchMock = stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1350,7 +1352,7 @@ test('a transient extraction failure retries the model step without creating a s
 })
 
 test('a 429 honors Retry-After evidence and retries the model step', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1372,7 +1374,7 @@ test('a 429 honors Retry-After evidence and retries the model step', async () =>
 })
 
 test('three transient failures exhaust the model retry budget once', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = [
     { status: 503, body: 'upstream unavailable' },
     { status: 503, body: 'upstream unavailable' },
@@ -1401,7 +1403,7 @@ test('three transient failures exhaust the model retry budget once', async () =>
 })
 
 test('a permanent model rejection does not retry', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = [
     {
       status: 400,
@@ -1425,7 +1427,7 @@ test('a permanent model rejection does not retry', async () => {
 })
 
 test('an invalid HTTP response envelope fails once with its own class', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = [{ rawBody: '{"choices":' }]
   const fetchMock = stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1445,7 +1447,7 @@ test('an invalid HTTP response envelope fails once with its own class', async ()
 })
 
 test('malformed, filtered, and missing model content get distinct failures', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = [
     '{"status":',
     { finishReason: 'content_filter', content: '{}' },
@@ -1467,7 +1469,7 @@ test('malformed, filtered, and missing model content get distinct failures', asy
 })
 
 test('a schema-invalid response persists the failed attempt but creates no validated candidate', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1503,7 +1505,7 @@ test('a schema-invalid response persists the failed attempt but creates no valid
 })
 
 test('a refusal and a length cutoff create terminal structured failures', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1543,7 +1545,7 @@ test('a refusal and a length cutoff create terminal structured failures', async 
 })
 
 test('a not_found response completes the run without a candidate', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1578,7 +1580,7 @@ test('a not_found response completes the run without a candidate', async () => {
 })
 
 test('a made-up amount fails amount validation', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1605,7 +1607,7 @@ test('a made-up amount fails amount validation', async () => {
 })
 
 test('a made-up date fails date validation', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1650,7 +1652,7 @@ test.each([
     expectedCode: 'citation_snapshot_mismatch',
   },
 ])('$name fails deterministic validation', async ({ mutate, expectedCode }) => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1704,7 +1706,7 @@ test.each([
     expectedCode: null,
   },
 ])('$name', async ({ excerpt, lifecycleState, expectedCode }) => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses, markdown: `${AGENDA_MARKDOWN}\n${excerpt}` })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1741,7 +1743,7 @@ test.each([
 })
 
 test('a cited public-action deadline requires the exact date and time', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({
     modelResponses,
@@ -1801,7 +1803,7 @@ test('a cited public-action deadline requires the exact date and time', async ()
 })
 
 test('a wrong body fails body validation', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1820,7 +1822,7 @@ test('a wrong body fails body validation', async () => {
 })
 
 test('a missing excerpt fails citation validation', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1851,7 +1853,7 @@ test('a missing excerpt fails citation validation', async () => {
 })
 
 test('a page number without a page map fails page verification', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1875,7 +1877,7 @@ test('a page number without a page map fails page verification', async () => {
 })
 
 test('a page map proves an excerpt against offsets in the uncollapsed source', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1904,7 +1906,7 @@ test('a page map proves an excerpt against offsets in the uncollapsed source', a
 })
 
 test('an uncited material field fails validation', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1939,7 +1941,7 @@ test('an uncited material field fails validation', async () => {
 })
 
 test('a fact value that differs from its candidate field fails validation', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1960,7 +1962,7 @@ test('a fact value that differs from its candidate field fails validation', asyn
 })
 
 test('unknown and duplicate material paths fail validation', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -1984,7 +1986,7 @@ test('unknown and duplicate material paths fail validation', async () => {
 })
 
 test('a blank citation excerpt fails the extraction contract', async () => {
-  const t = initTest()
+  const t = await initTest()
   const modelResponses: ModelResponseSpec[] = []
   stubFetch({ modelResponses })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
@@ -2006,7 +2008,7 @@ test('a blank citation excerpt fails the extraction contract', async () => {
 })
 
 test('a truncated snapshot fails before any model call', async () => {
-  const t = initTest()
+  const t = await initTest()
   const fetchMock = stubFetch({ modelResponses: [] })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
   await t.run(async (ctx) => {
@@ -2036,7 +2038,7 @@ test('a truncated snapshot fails before any model call', async () => {
 })
 
 test('an outside-domain snapshot fails domain validation before any model call', async () => {
-  const t = initTest()
+  const t = await initTest()
   const fetchMock = stubFetch({ modelResponses: [] })
   const { registryId, snapshotId } = await createAgendaSnapshot(t)
   await t.run(async (ctx) => {
@@ -2060,7 +2062,7 @@ test('an outside-domain snapshot fails domain validation before any model call',
 })
 
 test('the AI Gateway falling back to direct OpenAI still validates the candidate', async () => {
-  const t = initTest()
+  const t = await initTest()
   vi.stubEnv('DIRECT_OPENAI_FALLBACK_ENABLED', 'true')
   vi.stubEnv('OPENAI_API_KEY', 'sk-test-direct')
   const modelResponses: ModelResponseSpec[] = []

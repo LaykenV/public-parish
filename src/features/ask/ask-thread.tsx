@@ -66,7 +66,7 @@ function AskTurn({
         <AskAnswer answer={turn.answer} onSuggestion={onSuggestion} />
       ) : null}
       {turn.state === 'retryable_failure' ||
-      turn.state === 'terminal_failure' || turn.state === 'scope_too_large' ? (
+      turn.state === 'terminal_failure' || turn.state === 'allowance_paused' || turn.state === 'scope_too_large' ? (
         <div id={`ask-failure-${turn.id}`} tabIndex={-1}>
           <AskTurnFailure
             dismissed={dismissed}

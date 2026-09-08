@@ -6,7 +6,7 @@ import { api, internal } from './_generated/api'
 import type { ActionCtx } from './_generated/server'
 import schema from './schema'
 import { completeStructured } from './ai/provider'
-import { reservationMicros } from './ai/spending'
+import { reservationMicros, reserveModelSpend, settleModelSpend } from './ai/spending'
 
 const modules = import.meta.glob('./**/*.ts')
 afterEach(() => vi.unstubAllEnvs())
@@ -69,4 +69,34 @@ test('reservation estimates include framing, Unicode bytes, and bounded output',
   expect(reservationMicros('MODEL_STRONG', 'é', 100)).toBeGreaterThan(reservationMicros('MODEL_STRONG', 'e', 100))
   expect(() => reservationMicros('MODEL_FAST', '', Number.POSITIVE_INFINITY)).toThrow()
   expect(() => reservationMicros('MODEL_FAST', '', 32_001)).toThrow()
+})
+
+test.each([undefined, 'false'])('a %s spending guard blocks paid providers before fetch', async guard => {
+  const { t, owner } = await fixture()
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', guard)
+  vi.stubEnv('MODEL_FAST_ID', 'test-model')
+  for (const scope of ['sources', 'ask'] as const) {
+    await owner.mutation(api.ai.spendingLedger.configure, { scope, allowanceUsd: 1, expiresAt: Date.now() + 60_000, enabled: true })
+  }
+  const fetchSpy = vi.spyOn(globalThis, 'fetch')
+  const ctx = { runMutation: (reference: Parameters<typeof t.mutation>[0], args: Record<string, unknown>) => t.mutation(reference, args) } as unknown as ActionCtx
+  try {
+    await expect(completeStructured({ ctx, request: { role: 'MODEL_FAST', messages: [{ role: 'user', content: 'test' }], schemaName: 'test', jsonSchema: {}, reasoningEffort: 'low', maxCompletionTokens: 100 }, responseValidator: v.object({}), contractCheck: () => null })).rejects.toThrow('ai_spending_limit: Paid AI processing')
+    await expect(reserveModelSpend(ctx, 'ask', 'MODEL_FAST', 'question', 100)).rejects.toThrow('ai_spending_limit: Paid AI processing')
+    expect(fetchSpy).not.toHaveBeenCalled()
+    expect(await t.run(ctx => ctx.db.query('aiSpendingReservations').collect())).toEqual([])
+  } finally { fetchSpy.mockRestore() }
+})
+
+test('an enabled funded guard reserves Ask spend and settles after the guard is disabled', async () => {
+  const { t, owner } = await fixture()
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', 'true')
+  await owner.mutation(api.ai.spendingLedger.configure, { scope: 'ask', allowanceUsd: 1, expiresAt: Date.now() + 60_000, enabled: true })
+  const ctx = { runMutation: (reference: Parameters<typeof t.mutation>[0], args: Record<string, unknown>) => t.mutation(reference, args) } as unknown as ActionCtx
+  const reservationId = await reserveModelSpend(ctx, 'ask', 'MODEL_FAST', 'question', 100)
+  expect(await t.run(ctx => ctx.db.get(reservationId))).toMatchObject({ reservedMicros: reservationMicros('MODEL_FAST', 'question', 100) })
+  expect((await t.run(ctx => ctx.db.get(reservationId)))?.settledAt).toBeUndefined()
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', 'false')
+  await settleModelSpend(ctx, reservationId, 'MODEL_FAST', { promptTokens: 1, completionTokens: 1, totalTokens: 2, cachedTokens: 0, reasoningTokens: null })
+  expect((await t.run(ctx => ctx.db.get(reservationId)))?.settledAt).toEqual(expect.any(Number))
 })
