@@ -1750,3 +1750,10 @@ compact. This corrects the owner-rejected placement from PR 181. Static diff
 review passed. PR 182 passed CI and review at 3cd0257. Its CI-built frontend
 passed development layout checks at 1280 and 390 pixels, with WebGPU ready.
 Screenshot capture failed, so visual QA is not claimed. Production unchanged.
+
+### 2026-09-08 - owner-selected story images, working tree
+
+Implemented the owner's explicit exception for three supplied rendering hashes.
+The correction path retains accepted prose and evidence, validates the exact
+image, and starts independent review before a new immutable publication.
+Unknown rights and source attribution stay explicit. PR CI and release pending.

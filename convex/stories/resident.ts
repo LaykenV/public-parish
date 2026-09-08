@@ -10,7 +10,7 @@ export const publicStory = v.object({
   mode: v.union(v.literal('full'), v.literal('limited')), payload: storyDraft,
   evidence: v.array(storySpan.extend({ snapshotUrl: v.union(v.null(), v.string()) })), geography: v.array(v.string()),
   reviewedThrough: v.string(), nextReviewAt: v.string(),
-  media: v.union(v.null(), v.object({ url: v.string(), caption: v.string(), alt: v.string(), credit: v.string(), originalUrl: v.string(), license: v.string(), kind: v.string(), width: v.number(), height: v.number() })),
+  media: v.union(v.null(), v.object({ url: v.string(), caption: v.string(), alt: v.string(), credit: v.string(), originalUrl: v.union(v.string(), v.null()), license: v.string(), kind: v.string(), width: v.number(), height: v.number() })),
   relatedRecords: v.array(v.object({ key: v.string(), title: v.string() })),
 })
 export type PublicStory = typeof publicStory.type

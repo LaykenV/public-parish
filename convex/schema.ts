@@ -133,7 +133,7 @@ export default defineSchema({
     state: v.union(v.literal('queued'), v.literal('drafted'), v.literal('reviewed'), v.literal('failed'), v.literal('published'), v.literal('withheld')),
     draft: v.optional(storyDraft), draftHash: v.optional(v.string()), draftModel: v.optional(v.string()),
     retainedDraftReceipt: v.optional(v.object({ packetJson: v.string(), signature: v.string() })),
-    draftProvenance: v.optional(v.object({ kind: v.literal('owner_correction'), parentBuildId: v.id('storyBuilds'), parentDraftHash: v.string() })),
+    draftProvenance: v.optional(v.object({ kind: v.union(v.literal('owner_correction'), v.literal('owner_media_revision')), parentBuildId: v.id('storyBuilds'), parentDraftHash: v.string() })),
     review: v.optional(storyReview), reviewHash: v.optional(v.string()), reviewModel: v.optional(v.string()),
     runId: v.id('pipelineRuns'), workflowId: v.optional(v.string()),
     error: v.optional(v.string()), startedBy: v.id('users'), createdAt: v.number(),

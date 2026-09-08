@@ -740,3 +740,15 @@ test('a local notification only covers a story revision when every changed excer
     expect(hasIndependentStoryChange(previous, { ...previous, draftHash: 'c'.repeat(64) }, covered)).toBe(true)
   })
 })
+
+test('image correction refuses anonymous callers, altered prose and unapproved image bytes', async () => {
+  const { t, owner, args, buildId } = await setup()
+  await owner.mutation(api.stories.operations.approve, args)
+  const parent = (await t.run(ctx => ctx.db.get(buildId)))!
+  const request = { parentBuildId: buildId, parentDraftHash: args.draftHash, expectedGeneration: 1, draft: parent.draft!, replacementImageId: parent.media!.storageId }
+  await expect(t.mutation(api.stories.corrections.prepare, request)).rejects.toThrow('Sign in with Google')
+  await expect(owner.mutation(api.stories.corrections.prepare, { ...request, draft: { ...request.draft, title: { ...request.draft.title, text: 'Changed claim' } } })).rejects.toThrow('retain the exact accepted draft')
+  await expect(owner.mutation(api.stories.corrections.prepare, request)).rejects.toThrow('exact owner-approved file')
+  expect(await t.run(ctx => ctx.db.query('storyBuilds').collect())).toHaveLength(1)
+  expect(await t.run(ctx => ctx.db.query('storyUpdateEvents').collect())).toHaveLength(0)
+})

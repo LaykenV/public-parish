@@ -466,3 +466,13 @@ hint to a different target record key and payload hash. The target must already
 publish accepted evidence from the exact story source snapshot. The build stores
 the mapping and includes it in its input hash; owner approval still binds the
 fresh target review. The mapping does not change atomic records or issue links.
+
+## Image-only story corrections
+
+The owner correction path accepts a replacement storage ID only for the three
+owner-approved rendering hashes. It verifies storage metadata, freezes the
+accepted draft, copies no review or approval, and starts the existing review
+workflow. Nullable original-source and permission URLs represent known gaps.
+The optional rights status records the editorial exception in the build and
+immutable version. Ordinary source manifests retain their existing permission
+requirements. Cosmetic revisions do not create story update events.
