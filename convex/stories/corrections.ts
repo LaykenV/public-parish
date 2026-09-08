@@ -10,7 +10,7 @@ import { hashStoryValue } from './hashing'
 import { approvedOwnerMedia } from './ownerMedia'
 
 export const prepare = mutation({
-  args: { parentBuildId: v.id('storyBuilds'), parentDraftHash: v.string(), expectedGeneration: v.number(), draft: storyDraft, replacementImageId: v.optional(v.id('_storage')),
+  args: { parentBuildId: v.id('storyBuilds'), parentDraftHash: v.string(), expectedGeneration: v.number(), draft: storyDraft, replacementImageId: v.optional(v.id('_storage')), currentImageVersionId: v.optional(v.id('storyVersions')),
     notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
   returns: v.id('storyBuilds'),
   handler: async (ctx, args) => {
@@ -31,7 +31,15 @@ export const prepare = mutation({
     if (error) throw new Error(error)
     const draftHash = await hashStoryValue(args.draft)
     let media = parent.media
-    if (args.replacementImageId) {
+    if (args.currentImageVersionId) {
+      if (args.replacementImageId) throw new Error('Choose one image revision')
+      const current = await ctx.db.get(args.currentImageVersionId)
+      if (story.state !== 'active' || story.currentVersionId !== args.currentImageVersionId || current?.storyId !== story._id || !current.media) throw new Error('Image retention requires the current accepted story image')
+      if (parent.versionId || parent.expectedGeneration !== story.generation) throw new Error('Image retention requires a current unpublished evidence draft')
+      if (draftHash !== parent.draftHash) throw new Error('Image retention must preserve the exact evidence draft')
+      if (current.media.captionEvidenceKeys.some(key => !parent.spans.some(span => span.key === key))) throw new Error('Retained image caption cites missing evidence')
+      media = current.media
+    } else if (args.replacementImageId) {
       if (draftHash !== parent.draftHash) throw new Error('An image-only revision must retain the exact accepted draft')
       media = approvedOwnerMedia(story.storyKey, args.replacementImageId, await ctx.db.system.get('_storage', args.replacementImageId))
     } else if (draftHash === parent.draftHash) throw new Error('The corrected draft must change')
@@ -50,7 +58,7 @@ export const prepare = mutation({
       inputHash, sourceBindings: parent.sourceBindings, spans: parent.spans, relatedPublications: parent.relatedPublications, media,
       publicationMappings: parent.publicationMappings,
       state: 'drafted', draft: args.draft, draftHash, draftModel: parent.draftModel,
-      draftProvenance: { kind: args.replacementImageId ? 'owner_media_revision' : 'owner_correction', parentBuildId: parent._id, parentDraftHash: parent.draftHash },
+      draftProvenance: { kind: args.replacementImageId || args.currentImageVersionId ? 'owner_media_revision' : 'owner_correction', parentBuildId: parent._id, parentDraftHash: parent.draftHash },
       notificationIntent: args.notificationIntent ?? (story.currentVersionId ? 'update' : 'baseline'), runId, startedBy: owner._id, createdAt: Date.now() })
     // The workflow retains this saved draft and always starts a fresh independent
     // review. No prior approval or review is copied into the new candidate.
