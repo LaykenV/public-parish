@@ -13,7 +13,7 @@ for (const [slug, name] of [
     )
     await page.goto('/')
     await expect(page.getByRole('heading', { level: 1 })).toContainText(
-      `Showing ${name}`,
+      `Issues in ${name}`,
     )
     const issues = page.locator('#current-issues')
     await expect(issues.locator('a[href^="/issues/"]').first()).toBeVisible()
@@ -37,7 +37,15 @@ test('published parish records remain selectable with coverage limitations', asy
     localStorage.setItem('public-parish.area.v1', 'lafayette-parish'),
   )
   await page.goto('/')
-  await page.getByRole('button', { name: 'Change area', exact: true }).click()
+  const menu = page.getByRole('button', { name: 'Open menu', exact: true })
+  if (await menu.isVisible()) {
+    await menu.click()
+    await page.getByRole('button', { name: 'Change area', exact: true }).click()
+  } else {
+    await page
+      .getByRole('button', { name: 'Lafayette Parish', exact: true })
+      .click()
+  }
   const dialog = page.getByRole('dialog', { name: 'Choose a parish or city' })
   await expect(dialog).toBeVisible()
   const choice = dialog.getByRole('button', { name: /Rapides Parish/ })
@@ -49,7 +57,7 @@ test('published parish records remain selectable with coverage limitations', asy
   await choice.click()
   await expect(dialog).not.toBeVisible()
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Showing Rapides Parish',
+    'Issues in Rapides Parish',
   )
   await expect(
     page.locator('#current-issues a[href^="/issues/"]').first(),
@@ -96,9 +104,10 @@ test('home introduces Louisiana stories and switches to local issues after selec
   await dialog.getByRole('button', { name: /Lafayette Parish/ }).click()
   await expect(dialog).not.toBeVisible()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Showing Lafayette Parish',
+    'Issues in Lafayette Parish',
   )
   await expect(page.getByRole('heading', { level: 1 })).toBeFocused()
+  await expect(page.locator('.pp-home-hero')).toHaveCount(0)
   await expect(page.locator('.pp-home-relief')).toHaveCount(0)
   await expect(page.locator('#stories article')).toHaveCount(3)
   expect(
@@ -116,7 +125,7 @@ test('home introduces Louisiana stories and switches to local issues after selec
   ).toBeVisible()
   await page.reload()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Showing Lafayette Parish',
+    'Issues in Lafayette Parish',
   )
 })
 
@@ -131,6 +140,11 @@ test('mobile menu closes with Escape and returns focus to its opener', async ({
   await expect(
     menu.getByRole('link', { name: 'Following', exact: true }),
   ).toBeVisible()
+  const close = page.getByRole('button', { name: 'Close menu', exact: true })
+  await expect(close).toBeVisible()
+  await close.click()
+  await expect(menu).not.toBeVisible()
+  await opener.click()
   await page.keyboard.press('Escape')
   await expect(menu).not.toBeVisible()
   await expect(opener).toBeFocused()

@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from 'lucide-react'
 import { Link, useRouterState } from '@tanstack/react-router'
 
+import { Badge } from '../../components/ui/badge'
 import { formatDate } from './format'
 import type { ResultRowData } from './contracts'
 import {
@@ -8,7 +9,13 @@ import {
   evidenceScenarioFromRouteSearch,
 } from '../resident-handoff/navigation'
 
-export function ResultRow({ row }: { row: ResultRowData }) {
+export function ResultRow({
+  row,
+  layout = 'default',
+}: {
+  row: ResultRowData
+  layout?: 'default' | 'decision'
+}) {
   const journey = useRouterState({
     select: (state) => ({
       currentHref: state.location.href,
@@ -48,7 +55,32 @@ export function ResultRow({ row }: { row: ResultRowData }) {
     )
   }
 
-  const content = (
+  const decisionLayout = layout === 'decision' && row.kind === 'Decision record'
+  const className = decisionLayout ? 'pp-row pp-decision-row' : 'pp-row'
+  const content = decisionLayout ? (
+    <>
+      <span className="pp-decision-date">
+        <span className="pp-decision-date-label">Meeting date</span>
+        <span>{row.date ? formatDate(row.date) : 'Not stated'}</span>
+      </span>
+      <span className="pp-row-main">
+        <span className="pp-row-title">{row.title}</span>
+        <span className="pp-row-meta">
+          {[row.place, row.body, row.id].filter(Boolean).join(' · ')}
+        </span>
+        {row.state ||
+        (row.sourceStatus && row.sourceStatus !== 'Evidence available') ? (
+          <span className="pp-decision-status">
+            {row.state ? <Badge variant="secondary">{row.state}</Badge> : null}
+            {row.sourceStatus && row.sourceStatus !== 'Evidence available' ? (
+              <Badge variant="warning">{row.sourceStatus}</Badge>
+            ) : null}
+          </span>
+        ) : null}
+      </span>
+      <ChevronRightIcon aria-hidden="true" className="pp-row-chevron" />
+    </>
+  ) : (
     <>
       <span className="pp-row-type">{row.kind}</span>
       <span className="pp-row-main">
@@ -63,7 +95,7 @@ export function ResultRow({ row }: { row: ResultRowData }) {
 
   return row.href.startsWith('https://') || row.href.startsWith('http://') ? (
     <a
-      className="pp-row"
+      className={className}
       data-kind={row.kind}
       href={row.href}
       rel="noreferrer"
@@ -73,7 +105,7 @@ export function ResultRow({ row }: { row: ResultRowData }) {
     </a>
   ) : (
     <Link
-      className="pp-row"
+      className={className}
       data-kind={row.kind}
       search={detailSearch}
       to={row.href}

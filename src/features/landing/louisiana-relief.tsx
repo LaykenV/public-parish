@@ -163,6 +163,8 @@ export function LouisianaRelief() {
         canvasSurface = surface(nextGpu, canvas, {
           dpr: [1, 1.25],
           label: 'Public Parish Louisiana relief',
+          alphaMode: 'premultiplied',
+          clearColor: [0, 0, 0, 0],
         })
         relief = effect(nextGpu, reliefShader, {
           label: 'Louisiana relief shader',

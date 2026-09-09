@@ -42,3 +42,48 @@ for (const width of [320, 375]) test(`public coverage fits ${width} pixels and e
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   await expect(page.getByText(/This body has not completed|Coverage includes|Previously accepted evidence/).first()).toBeVisible()
 })
+
+test('follow choices fit portrait phones and keep cadence through email entry', async ({
+  page,
+}, testInfo) => {
+  await page.goto(
+    '/issues/roundabout-funding-at-bluebonnet-and-harveston-way-824dde42',
+  )
+  for (const width of [320, 375, 1280]) {
+    await page.setViewportSize({ width, height: width < 768 ? 640 : 900 })
+    await page
+      .getByRole('button', { name: 'Follow this issue', exact: true })
+      .click()
+    const dialog = page.getByRole('dialog', {
+      name: 'Get updates about this issue',
+    })
+    await expect(dialog).toBeVisible()
+    const body = dialog.locator('.pp-sheet-body')
+    await expect
+      .poll(() =>
+        body.evaluate((node) => node.scrollHeight - node.clientHeight),
+      )
+      .toBeLessThanOrEqual(1)
+    await dialog
+      .getByRole('radio', { name: 'Weekly roundup', exact: true })
+      .check()
+    await page.screenshot({
+      path: testInfo.outputPath(`follow-choices-${width}.png`),
+    })
+    await dialog.getByRole('button', { name: 'Use email only' }).click()
+    await expect(
+      dialog.getByRole('textbox', { name: 'Email address' }),
+    ).toBeVisible()
+    await expect
+      .poll(() =>
+        body.evaluate((node) => node.scrollHeight - node.clientHeight),
+      )
+      .toBeLessThanOrEqual(1)
+    await dialog.getByRole('button', { name: 'Change delivery choice' }).click()
+    await expect(
+      dialog.getByRole('radio', { name: 'Weekly roundup', exact: true }),
+    ).toBeChecked()
+    await page.keyboard.press('Escape')
+    await expect(dialog).not.toBeVisible()
+  }
+})

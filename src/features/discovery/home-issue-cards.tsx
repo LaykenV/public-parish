@@ -77,7 +77,7 @@ export function HomeIssueCards({ issues }: { issues: IssueCardData[] }) {
               />
             ))}
           </div>
-          <p role="status" aria-atomic="true">
+          <p className="visually-hidden" role="status" aria-atomic="true">
             Issue {Math.min(active + 1, issues.length)} of {issues.length}
           </p>
         </div>

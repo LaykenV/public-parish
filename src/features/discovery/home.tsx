@@ -63,7 +63,7 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
 
   return (
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>
-      {selected ? <WatchingHeader watching={watching} /> : <FirstVisitHero />}
+      {!selected ? <FirstVisitHero /> : null}
       {!selected && !fixturesEnabled ? <FeaturedStories /> : null}
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
@@ -82,38 +82,6 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
         />
       </ResidentSectionBoundary>
     </main>
-  )
-}
-
-function WatchingHeader({ watching }: { watching: AreaSlug[] }) {
-  return (
-    <header className="pp-watching pp-home-area">
-      <div className="pp-watching-copy">
-        <h1 className="pp-watching-title" tabIndex={-1}>
-          <span>Showing</span>{' '}
-          {watching.length === 1
-            ? areaName(watching[0])
-            : `${watching.length} saved areas`}
-        </h1>
-        {watching.length > 1 ? (
-          <p className="pp-section-copy">
-            {watching.map(areaName).join(' · ')}
-          </p>
-        ) : null}
-      </div>
-      <AreaSelector
-        trigger={(props) => (
-          <Button
-            {...props}
-            className="pp-inline-action"
-            size="touch"
-            variant="outline"
-          >
-            Change area
-          </Button>
-        )}
-      />
-    </header>
   )
 }
 
@@ -258,6 +226,7 @@ function IssuesSection({
 }) {
   const [recovered, setRecovered] = useState(false)
   const showFailure = scenario === 'section-failure' && !recovered
+  const Heading = watching.length ? 'h1' : 'h2'
   const title =
     watching.length === 1
       ? `Issues in ${areaName(watching[0])}`
@@ -273,7 +242,12 @@ function IssuesSection({
     >
       <div className="pp-section-head">
         <div>
-          <h2 id="current-issues-title">{title}</h2>
+          <Heading
+            id="current-issues-title"
+            tabIndex={watching.length ? -1 : undefined}
+          >
+            {title}
+          </Heading>
         </div>
         <Button
           className="pp-section-link"
@@ -336,7 +310,7 @@ function DecisionRecordsSection({
   return (
     <section
       aria-labelledby="decision-records-title"
-      className="pp-section"
+      className="pp-section pp-home-decisions"
       id="decision-records"
     >
       <div className="pp-section-head">
@@ -362,7 +336,11 @@ function DecisionRecordsSection({
       ) : rows.length > 0 ? (
         <div className="pp-row-list">
           {rows.slice(0, HOME_SECTION_LIMIT).map((row, index) => (
-            <ResultRow key={`${row.href}-${index}`} row={row} />
+            <ResultRow
+              key={`${row.href}-${index}`}
+              row={row}
+              layout="decision"
+            />
           ))}
         </div>
       ) : (

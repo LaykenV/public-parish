@@ -1,9 +1,4 @@
-/*
-  Resident ownership is presented as a delivery ledger. The one expressive
-  element is the receipt: target, cadence, and destination stay visible as a
-  follow moves through Google or email verification. Everything else uses
-  rules, spacing, and the existing resident tokens.
-*/
+/* Following and notification preferences share the resident color tokens. */
 
 .following-page {
   width: min(100% - 2rem, 66rem);
@@ -560,6 +555,53 @@
 .manage-follow {
   display: grid;
   gap: 1rem;
+}
+
+/* Keep the common enrollment steps within a phone's visible drawer. */
+.follow-sheet .follow-flow,
+.follow-sheet .follow-form {
+  gap: 0.75rem;
+}
+
+.follow-target-summary {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: var(--pp-text-small);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.follow-sheet .follow-receipt {
+  border-radius: var(--radius-md);
+  border-left-width: 1px;
+}
+
+.follow-sheet .follow-receipt::before {
+  display: none;
+}
+
+.follow-sheet .follow-receipt > div {
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 0.45rem 0.65rem;
+}
+
+.follow-sheet .follow-receipt dt {
+  font-family: var(--font-sans);
+  font-size: var(--pp-text-caption);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.follow-frequency-options[data-compact] label {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  align-items: center;
+}
+
+.follow-frequency-options[data-compact] input {
+  margin: 0;
+  accent-color: var(--primary);
 }
 
 .follow-receipt {

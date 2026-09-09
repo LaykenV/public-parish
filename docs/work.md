@@ -97,7 +97,9 @@ pass, organic resident outcome, production story mail delivery or submission is 
 
 ## Home design pass, September 8
 
-Implemented locally on `feat/home-design-qa`, not released. The owner approved
+Released through [PR 197](https://github.com/LaykenV/public-parish/pull/197)
+at `fbda95b`. [Production workflow](https://github.com/LaykenV/public-parish/actions/runs/34287037797)
+and independent `npm run smoke:production` passed. The owner approved
 the two Home layouts, restored Louisiana hero, purple and lavender system,
 redesigned story and issue cards, mobile menu and footer voter information.
 The next owner critique adopts a lavender off-white page with a white issues
@@ -109,17 +111,38 @@ full-width cards with native touch snapping, without arrow buttons. Cards share 
 cards, dark reading text, purple actions and a pale lavender footer.
 [Design](design.md) records the adopted behavior and shared controls.
 
-- Static diff review is the local validation step. Automated checks remain
-  deferred to PR CI. A bounded 390-pixel Chrome inspection confirmed wider
-  cards and removal of the tall internal gaps. Final touch interaction and the
-  complete viewport matrix still need browser QA.
+- PR head `3dbddbe` passed 670 application tests and 22 browser journeys in CI.
+  Chromium and WebKit covered equal issue-card heights, native snapping, index
+  changes, the 320/375/768/1280 pixel layouts, menu focus return, and hero focus
+  with normal motion enabled. Saved screenshots were inspected. No physical-device
+  or screen-reader pass is claimed.
+- Production smoke passed the direct and canonical origins, apex redirect,
+  resident routes, coverage, search, issue evidence, all three story images and
+  evidence references, share behavior, and backend readiness. It did not repeat
+  paid Ask or provider-mail verification.
 - Review first visit, parish selection, returning visit, area changes, three
   stories in both orders, mobile menu and focus return, loading, partial failures,
   empty issues, long headlines and failed images at 320, 375, tablet and desktop.
 - Confirm shared colors and action states on Home before the remaining pages.
   Recheck Ask's composer after removal of the bottom navigation.
-- Browser regressions cover Home ordering, persisted selection and mobile menu
-  navigation. Execution and production release remain pending.
+
+### Local Home follow-up
+
+The next owner critique removes the selected-area hero, leaving the parish issues
+heading as the page heading. Louisiana uses purple lighting and a transparent
+canvas. Header and footer share the lavender off-white page background. Mobile
+issues keep only the visible dot index, with a screen-reader position announcement.
+Follow enrollment replaces the initial receipt with the target title and compact
+cadence choices. The mobile menu uses the portfolio hamburger-to-X animation and
+a floating Coss Popover, with area and account controls at the bottom. The open
+menu X has no button background. Home decision records use a white list with
+separate meeting dates, larger titles and lifecycle badges. Dates stack above
+titles on phones. The design document lists all five Home fixture URLs.
+
+Static review and `git diff --check` passed. Browser regressions were updated for
+the heading, menu toggle, area selection and compact follow controls. Automated
+execution is deferred to PR CI. Visual QA is pending because Chrome was in active
+use during the inspection attempt. These follow-up changes are not deployed.
 
 ## Owner follow-up before outreach
 

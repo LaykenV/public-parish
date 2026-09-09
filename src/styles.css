@@ -46,7 +46,7 @@
   --card: #ffffff;
   --section: #fdfcfe;
   --body-foreground: #494352;
-  --footer: #eeeaf4;
+  --footer: var(--background);
   --pp-shadow-card: 0 2px 8px rgb(36 33 49 / 3%);
   --card-foreground: #242131;
   --popover: #ffffff;
