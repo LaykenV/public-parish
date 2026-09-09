@@ -59,11 +59,13 @@ const EXPIRY_SWEEP_MS = 30_000
 
 export function AskPage({
   data,
+  embedded = false,
   onRestoreScope,
   onSelectSource,
   source,
 }: {
   data: AskRouteData
+  embedded?: boolean
   onRestoreScope: (scope: AskScope) => Promise<void>
   onSelectSource: (id: string | null) => void
   source?: string
@@ -463,11 +465,12 @@ export function AskPage({
   const empty = turns.length === 0 && !expired
   const kbStyle = { '--ask-kb': `${kbInset}px` } as CSSProperties
 
+  const Container = embedded ? 'div' : 'main'
   return (
-    <main
-      className="ask-page"
+    <Container
+      className={embedded ? 'ask-page ask-page-embedded' : 'ask-page'}
       data-panel-open={panelOpen || undefined}
-      id="resident-main"
+      id={embedded ? undefined : 'resident-main'}
       style={kbStyle}
     >
       <AskStatusRegion message={status} />
@@ -595,7 +598,7 @@ export function AskPage({
           </div>
         </EvidenceProvider>
       )}
-    </main>
+    </Container>
   )
 }
 

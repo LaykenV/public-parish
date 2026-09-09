@@ -15,6 +15,7 @@ import type { ComponentType, FormEvent, SVGProps } from 'react'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 
+import { formatDate } from '../discovery/format'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { FollowAction } from '../following/follow-action'
@@ -84,11 +85,8 @@ export function CoveragePage({ data }: { data: CoveragePageData }) {
         </div>
       </header>
 
-      <section aria-labelledby="coverage-key-title" className="coverage-key">
-        <div className="coverage-section-heading">
-          <h2 id="coverage-key-title">What the statuses mean</h2>
-          <p>Every state has a written definition. Color is secondary.</p>
-        </div>
+      <details className="coverage-key">
+        <summary>What the statuses mean</summary>
         <ul>
           {COVERAGE_STATES.map((state) => (
             <li key={state}>
@@ -97,7 +95,7 @@ export function CoveragePage({ data }: { data: CoveragePageData }) {
             </li>
           ))}
         </ul>
-      </section>
+      </details>
 
       <div className="coverage-regions">
         {regions.map((region) => (
@@ -180,7 +178,7 @@ function CoverageBodyRow({
             <ShieldCheckIcon aria-hidden="true" />
             Last successful check
           </dt>
-          <dd>{body.lastSuccessfulCheck ?? 'No successful check yet'}</dd>
+          <dd>{body.lastSuccessfulCheck ? formatDate(body.lastSuccessfulCheck) : 'No successful check yet'}</dd>
         </div>
         <div>
           <dt>
@@ -373,18 +371,6 @@ export function CoverageRequestPage({
           </p>
         </header>
 
-        <aside className="coverage-request-assurance">
-          <ShieldCheckIcon aria-hidden="true" />
-          <div>
-            <h2>One gate for every place</h2>
-            <p>
-              Public Parish validates official domains, source history,
-              citations, freshness, and direct links before calling a body
-              supported.
-            </p>
-          </div>
-        </aside>
-
         {step === 'form' ? (
           <form className="coverage-request-form" onSubmit={completeRequest}>
             <label className="coverage-field"><span>Place type</span><select value={placeKind} onChange={event => setPlaceKind(event.target.value as typeof placeKind)}><option value="parish">Parish</option><option value="municipality">Municipality</option><option value="unknown">Not sure</option></select></label>
@@ -554,6 +540,18 @@ export function CoverageRequestPage({
             </div>
           </section>
         ) : null}
+
+        <aside className="coverage-request-assurance">
+          <ShieldCheckIcon aria-hidden="true" />
+          <div>
+            <h2>One gate for every place</h2>
+            <p>
+              Public Parish validates official domains, source history,
+              citations, freshness, and direct links before calling a body
+              supported.
+            </p>
+          </div>
+        </aside>
       </div>
     </main>
   )

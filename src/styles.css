@@ -77,6 +77,8 @@
   --pp-text-reading: 0.9375rem;
   --pp-text-subhead: 1.125rem;
   --pp-text-card-title: 1.25rem;
+  --pp-text-page: clamp(1.85rem, 4vw, 2.75rem);
+  --pp-page-space: clamp(1.5rem, 4vw, 3rem);
   --pp-text-section: clamp(1.5rem, 2.5vw, 2rem);
   --pp-control-height: 2.75rem;
   --pp-control-height-large: 3.25rem;

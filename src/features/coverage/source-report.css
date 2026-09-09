@@ -178,3 +178,15 @@
     transition-duration: 1ms !important;
   }
 }
+
+@media (max-width: 48rem) {
+  .source-report-field input,
+  .source-report-field select,
+  .source-report-field textarea {
+    font-size: var(--pp-text-body);
+  }
+}
+.source-report-sheet[data-modal-kind='drawer'][data-size='full'] {
+  height: calc(100dvh - 2rem);
+  max-height: calc(100dvh - 2rem);
+}

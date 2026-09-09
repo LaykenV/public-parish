@@ -142,7 +142,7 @@ describe('resident coverage interface', () => {
 
   it('keeps private reporting factual and preserves the attached record', () => {
     expect(reportSource).toContain('Report sent privately')
-    expect(reportSource).toContain('does not open a public thread')
+    expect(reportSource).toContain('Reports are never posted publicly.')
     expect(reportSource).toContain('recordUrl')
     expect(reportSource).toContain('provider-failure')
   })

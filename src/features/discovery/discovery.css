@@ -796,7 +796,6 @@
   margin-block: 1.5rem;
   padding: 1rem 1.25rem;
   border: 1px solid var(--border);
-  border-left: 3px solid var(--info);
   border-radius: var(--radius-md);
   background: var(--card);
 }
@@ -1878,4 +1877,86 @@ button.pp-area-row:hover {
     animation-iteration-count: 1 !important;
     transition-duration: 1ms !important;
   }
+}
+
+/* Explore uses the Home reading hierarchy without changing the Home feed. */
+.pp-explore-page {
+  padding-top: var(--pp-page-space);
+}
+.pp-explore-page .pp-page-head h1 {
+  font-size: var(--pp-text-page);
+  line-height: 1.15;
+}
+.pp-explore-page .pp-page-lede {
+  font-size: var(--pp-text-body);
+  color: var(--body-foreground);
+}
+.pp-explore-page .pp-search {
+  margin-top: 1.75rem;
+}
+.pp-explore-page .pp-search-field {
+  height: var(--pp-control-height-large);
+  border-color: var(--input);
+  box-shadow: var(--pp-shadow-card);
+}
+.pp-explore-page .pp-search-field:focus-within {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2px var(--secondary);
+}
+.pp-explore-page .pp-result-count {
+  font-family: var(--font-sans);
+  font-size: var(--pp-text-small);
+}
+.pp-explore-page .pp-result-sequence .pp-row {
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--pp-shadow-card);
+}
+.pp-explore-page .pp-row-title {
+  font-size: var(--pp-text-card-title);
+  line-height: 1.4;
+}
+.pp-explore-results > [data-slot='button']:last-child {
+  margin-top: 1.5rem;
+}
+@media (max-width: 30rem) {
+  .pp-explore-page .pp-search > [data-slot='button'] {
+    width: 100%;
+  }
+  .pp-explore-page .pp-result-sequence .pp-row {
+    padding: 1rem;
+  }
+}
+.pp-explore-page .pp-row-type,
+.pp-filter-group legend {
+  font-family: var(--font-sans);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.pp-filter-option input {
+  accent-color: var(--primary);
+}
+.pp-filter-select {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  color: var(--muted-foreground);
+  font-size: var(--pp-text-small);
+  font-weight: 600;
+}
+.pp-filter-select select {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--pp-control-height);
+  padding: 0.65rem 0.5rem;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-md);
+  color: var(--foreground);
+  background: var(--card);
+  font: inherit;
+  font-size: var(--pp-text-body);
+}
+.pp-filter-column {
+  max-height: calc(100dvh - 6rem);
+  overflow-y: auto;
 }

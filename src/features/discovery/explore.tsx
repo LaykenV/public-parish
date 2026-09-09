@@ -8,6 +8,7 @@ import { AreaSelector } from './area-selector'
 import {
   DATE_OPTIONS,
   BODY_OPTIONS,
+  LEGACY_BODY_OPTIONS,
   LIFECYCLE_OPTIONS,
   PLACE_OPTIONS,
   SORT_OPTIONS,
@@ -125,14 +126,21 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
 
   const moreFilters = (
     <MoreFiltersPanel activeCount={activeFilters} onClear={clearAll}>
-      <FilterGroup
-        allLabel="All bodies"
-        label="Body"
-        name="filter-body"
-        onChange={(value) => patch({ body: value || undefined })}
-        options={BODY_OPTIONS}
-        value={search.body ?? ''}
-      />
+      <label className="pp-filter-select">
+        <span>Government body</span>
+        <select
+          value={search.body ?? ''}
+          onChange={(event) => patch({ body: event.target.value || undefined })}
+        >
+          <option value="">All bodies</option>
+          {BODY_OPTIONS.map((body) => (
+            <option key={body} value={body}>{body}</option>
+          ))}
+          {LEGACY_BODY_OPTIONS.filter((body) => fixturesEnabled || body === search.body).map((body) => (
+            <option key={body} value={body}>{body}</option>
+          ))}
+        </select>
+      </label>
       <FilterGroup
         allLabel="All lifecycle states"
         label="Lifecycle"
@@ -177,15 +185,14 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
   }
 
   return (
-    <main className="pp-page" id="resident-main">
+    <main className="pp-page pp-explore-page" id="resident-main">
       <p aria-live="polite" className="visually-hidden" role="status">
         {refreshAnnouncement}
       </p>
       <header className="pp-page-head">
         <h1>Explore</h1>
         <p className="pp-page-lede">
-          Search published issues and individual decision records from the
-          official sources Public Parish has checked.
+          Find stories, issues, and decisions in the official evidence.
         </p>
       </header>
 
@@ -197,11 +204,11 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
         <div className="pp-search-field">
           <SearchIcon aria-hidden="true" />
           <input
-            aria-label="Search issues and records"
+            aria-label="Search stories, issues and records"
             maxLength={300}
             autoComplete="off"
             onChange={(event) => setQueryDebounced(event.target.value)}
-            placeholder="Search issues, decision records, meetings"
+            placeholder="Search a project, topic, or decision"
             type="search"
             value={query}
           />

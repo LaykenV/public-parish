@@ -1,3 +1,4 @@
+import { MobileAsk } from '../ask/mobile-ask'
 import { recordCivicEvent } from '../analytics/product-analytics'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
@@ -201,7 +202,9 @@ function IssueDetail({
       onSelect={onSelectSource}
       selected={selected}
     >
-      <main className="ev-page" id="resident-main">
+      <main className="ev-page ev-page-with-chat" id="resident-main">
+        <MobileAsk key={issue.slug} scopeKey={`issue:${issue.slug}`} returnTo={currentIssueHref} scenario={search.fixture ? 'empty-issue' : undefined} />
+
         <BackLink label="Back to Home" returnTo={search.returnTo} to="/" />
 
         <header className="ev-head">

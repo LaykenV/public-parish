@@ -11,6 +11,7 @@ import { Link } from '@tanstack/react-router'
 
 import { api } from '../../../convex/_generated/api'
 import type { Id } from '../../../convex/_generated/dataModel'
+import { PageLoading } from '../resident-blueprint/resident-loading'
 import { Button } from '../../components/ui/button'
 import { ResidentStandalone } from '../resident-blueprint/resident-shell'
 import type { DeliveryFrequency, FollowedTarget } from './contracts'
@@ -57,12 +58,7 @@ export function LiveEmailManagementPage({ token }: { token: string }) {
     return (
       <ResidentStandalone>
         <main className="email-manage-page" id="resident-main">
-          <section aria-live="polite" className="email-expired" role="status">
-            <MailIcon aria-hidden="true" />
-            <p className="following-kicker">Email-only follow</p>
-            <h1>Checking this management link</h1>
-            <p>Public Parish is checking the link without signing you in.</p>
-          </section>
+          <PageLoading />
         </main>
       </ResidentStandalone>
     )

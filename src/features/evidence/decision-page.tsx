@@ -1,3 +1,4 @@
+import { MobileAsk } from '../ask/mobile-ask'
 import { Link } from '@tanstack/react-router'
 
 import { Button } from '../../components/ui/button'
@@ -104,7 +105,8 @@ function DecisionView({
       onSelect={onSelectSource}
       selected={selected}
     >
-      <main className="ev-page" id="resident-main">
+      <main className="ev-page ev-page-with-chat" id="resident-main">
+        <MobileAsk key={`${decision.recordKey}:${decision.issue?.slug ?? 'corpus'}`} scopeKey={decision.issue ? `issue:${decision.issue.slug}` : 'corpus'} returnTo={currentDecisionHref} scenario={search.fixture ? 'empty-issue' : undefined} />
         <BackLink
           label="Back to Explore"
           returnTo={search.returnTo}

@@ -238,33 +238,33 @@ fn launch_pin_head_distance(map_point: vec2f) -> f32 {
     let wall = 1.0 - smoothstep(0.12, 0.6, abs(normal.y));
     let diffuse = max(dot(normal, to_light), 0.0);
 
-    let side_color = vec3f(0.045, 0.032, 0.065);
-    let top_color = vec3f(0.130, 0.085, 0.180);
+    let side_color = vec3f(0.060, 0.058, 0.065);
+    let top_color = vec3f(0.160, 0.155, 0.175);
     color = mix(side_color, top_color, top);
     color *= 0.68 + diffuse * 0.62;
 
     let seam = smoothstep(-EXTRUSION - 0.02, EXTRUSION - 0.01, local.y);
-    color += vec3f(0.20, 0.07, 0.38) * wall * seam * 0.5;
-    color += vec3f(1.05, 0.65, 1.60) * spec * wall * (1.1 + params.energy * 0.7);
+    color += vec3f(0.10, 0.09, 0.13) * wall * seam * 0.5;
+    color += vec3f(0.70, 0.66, 0.78) * spec * wall * (1.1 + params.energy * 0.7);
 
     let rim = pow(1.0 - max(dot(normal, view), 0.0), 2.4);
-    color += vec3f(0.20, 0.10, 0.30) * rim * (0.72 + params.energy * 0.25);
+    color += vec3f(0.13, 0.12, 0.15) * rim * (0.72 + params.energy * 0.25);
 
     let edge = abs(louisiana_distance(map_point));
     let breath = 0.85 + 0.15 * sin(params.time * 1.4);
     let led = exp(-edge * 90.0) * (0.45 + params.energy * 0.30) +
       exp(-edge * 320.0) * 0.85;
-    color += vec3f(0.75, 0.30, 1.25) * led * breath * (0.3 + 0.7 * top);
+    color += vec3f(0.25, 0.22, 0.32) * led * breath * (0.3 + 0.7 * top);
 
     let pin_distance = launch_pin_distance(map_point);
     let pin_head_distance = launch_pin_head_distance(map_point);
     let pin = 1.0 - smoothstep(-0.002, 0.008, pin_distance);
     let pin_halo = 1.0 - smoothstep(0.030, 0.062, pin_head_distance);
     let pin_core = 1.0 - smoothstep(0.010, 0.020, pin_head_distance);
-    color += vec3f(0.40, 0.12, 0.72) * pin_halo * top * (1.0 - pin) *
+    color += vec3f(0.15, 0.12, 0.20) * pin_halo * top * (1.0 - pin) *
       (0.8 + params.energy * 0.5);
-    color = mix(color, vec3f(1.10, 0.65, 1.90), pin * top);
-    color = mix(color, vec3f(1.90, 1.60, 2.10), pin_core * top);
+    color = mix(color, vec3f(0.65, 0.58, 0.78), pin * top);
+    color = mix(color, vec3f(1.10, 1.05, 1.18), pin_core * top);
   } else {
     return vec4f(0.0);
   }

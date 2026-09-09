@@ -1,3 +1,4 @@
+import { PageLoading } from '../resident-blueprint/resident-loading'
 import { useRef, useState } from 'react'
 import { useAction, useMutation, useQuery } from 'convex/react'
 import { Link } from '@tanstack/react-router'
@@ -15,9 +16,9 @@ import './story-operations.css'
 export function StoryOperationsPage() {
   const auth = useGoogleAuth('/operations/stories')
   const user = useQuery(api.auth.currentUser, auth.isAuthenticated ? {} : 'skip')
-  if (auth.isLoading || auth.isAuthenticated && user === undefined) return <main className="coverage-ops" id="resident-main"><h1>Checking owner access</h1></main>
-  if (!auth.isAuthenticated) return <main className="coverage-ops" id="resident-main"><h1>Owner sign-in required</h1><p>Source intake and publication are private owner operations.</p><Button onClick={() => void auth.signInGoogle()}>Continue with Google</Button>{auth.error ? <p role="alert">{auth.error}</p> : null}</main>
-  if (!user?.isOwner) return <main className="coverage-ops" id="resident-main"><h1>This account is not the owner</h1><Button onClick={() => void auth.signOut()}>Sign out</Button></main>
+  if (auth.isLoading || auth.isAuthenticated && user === undefined) return <main className="coverage-ops" id="resident-main"><PageLoading /></main>
+  if (!auth.isAuthenticated) return <main className="pp-page pp-recovery" id="resident-main"><h1>Owner sign-in required</h1><p>Source intake and publication are private owner operations.</p><Button onClick={() => void auth.signInGoogle()}>Continue with Google</Button>{auth.error ? <p role="alert">{auth.error}</p> : null}</main>
+  if (!user?.isOwner) return <main className="pp-page pp-recovery" id="resident-main"><h1>This account is not the owner</h1><Button onClick={() => void auth.signOut()}>Sign out</Button></main>
   return <OwnerStories />
 }
 

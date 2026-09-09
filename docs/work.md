@@ -1,9 +1,46 @@
 # Current work and launch gates
 
-Updated September 8, 2026. This is the only active status and pending-work queue.
+Updated September 9, 2026. This is the only active status and pending-work queue.
 The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
+
+## Overnight resident design pass, September 9
+
+The owner requested the rest of the app follow the approved Home design. The
+local branch `design/resident-app-home-patterns`, based on `f7742d5`, now contains
+that pass. The [morning report](design-morning-report-2026-09-09.md) records the
+changed pages, native Chrome desktop/mobile checks and remaining proof.
+The owner authorized a PR, review monitoring and a merge after checks pass.
+Production verification remains pending.
+
+- [x] Implement consistent resident-page typography, controls, cards and phone layouts.
+- [x] Repair current-body filter links, story citation focus, cramped email details,
+  the short source-report drawer and hidden focus during sheet closing.
+- [x] Perform bounded native Chrome visual and keyboard checks and static diff review.
+- [x] PR 199 initial head passed 671 application tests and all 42 Chromium/WebKit
+  journeys. A final source-quote styling correction awaits latest-head checks.
+- [ ] Inspect authenticated owner workflows. Local Google sign-in did not complete.
+- [ ] Complete physical-device, screen-reader, offline/image-failure and founder QA.
+- [ ] Use the authorized merge after green checks, then verify the exact deployment
+  and independent production smoke. Production mail proof remains a separate gate.
+
+### September 9 owner corrections
+
+The local pass now uses charcoal Louisiana with muted violet highlights, mobile
+chat drawers on stories/issues/decisions, rectangular source controls, shorter
+decision links and visible Following tabs. Colored left-edge card accents were
+removed at the owner's request. The owner authorized release after green PR checks.
+
+The dedicated preview browser verified a story draft surviving drawer close and
+reopen, a sourced fixture answer on the decision page, nested source inspection
+and focus return, the 320-pixel Following navigation and the rendered charcoal
+WebGPU model. Native Chrome controls became unreliable, so later checks used the
+app's dedicated preview. A development hot-reload context error cleared on a
+fresh route load; the subsequent fixture answer and source inspection completed.
+Initial PR CI passed; the latest-head recheck and physical-phone keyboard behavior
+remain pending. The story browser
+regressions now cover the mobile drawer and draft retention.
 
 ## Current checkpoint
 
@@ -126,7 +163,7 @@ cards, dark reading text, purple actions and a pale lavender footer.
 - Confirm shared colors and action states on Home before the remaining pages.
   Recheck Ask's composer after removal of the bottom navigation.
 
-### Local Home follow-up
+### Home follow-up release, September 8
 
 The next owner critique removes the selected-area hero, leaving the parish issues
 heading as the page heading. Louisiana uses purple lighting and a transparent
@@ -139,10 +176,18 @@ menu X has no button background. Home decision records use a white list with
 separate meeting dates, larger titles and lifecycle badges. Dates stack above
 titles on phones. The design document lists all five Home fixture URLs.
 
-Static review and `git diff --check` passed. Browser regressions were updated for
-the heading, menu toggle, area selection and compact follow controls. Automated
-execution is deferred to PR CI. Visual QA is pending because Chrome was in active
-use during the inspection attempt. These follow-up changes are not deployed.
+Released through [PR 198](https://github.com/LaykenV/public-parish/pull/198) at
+`f7742d5`. The owner approved the local appearance. Head `7f258f1` passed 670
+application tests and 24 Chromium/WebKit browser journeys, including compact
+follow controls at 320/375/1280 pixels, area changes through the floating menu,
+hero focus and native issue snapping. The initial area test needed to wait for
+the control for its configured viewport. Latest-head review found no major
+issues; no review threads remained open. CI screenshots were inspected.
+[Production workflow](https://github.com/LaykenV/public-parish/actions/runs/34307373914)
+and independent `npm run smoke:production` passed for the merge commit. This
+checks both origins, apex redirect, resident routes, coverage, search, issue and
+story evidence, images, sharing and backend readiness. No paid Ask or provider
+mail verification was repeated. Founder QA continues with the remaining pages.
 
 ## Owner follow-up before outreach
 
@@ -266,6 +311,10 @@ screenshot. Do not put personal messages, emails, or private questions here.
 | ID | Route and viewport | Reproduction and expected behavior | Severity | Owner | State | Resolution evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 | QA-001 | Story Ask, all viewports | The verified Act 874 exceptions answer includes a raw public evidence marker in its prose. Render readable citations without exposing the marker in answer text | P2 | Layken | Open for design and QA | September 8 anonymous production answer, prompt `ask-answer-v5`; factual qualifiers passed |
+| QA-002 | Explore, desktop and mobile | Current-body links such as Pineville lost their body filter during URL parsing. Preserve current names and show the selected body | P2 | Agent | Fixed locally, CI pending | Pineville URL and live results checked in native Chrome; parser and browser regressions added |
+| QA-003 | Private source report, 375 pixels | Full-size drawer used a short height. Give the form room and preserve access to its submit action | P2 | Agent | Fixed locally, CI pending | Native Chrome form and local invalid-input focus checked |
+| QA-004 | Email management, 320 pixels | Destination address split across a cramped ledger. Stack destination and status on phones | P2 | Agent | Fixed locally, CI pending | Final 320-pixel fixture inspected |
+| QA-005 | Shared sheet close, 375 pixels | Closing hid a focused descendant and triggered a Chrome accessibility warning. Release popup focus before hiding and restore opener focus | P2 | Agent | Fixed locally, CI pending | Escape and Close returned focus without a new hidden-focus warning; browser regression added |
 
 P0 is an unsupported public claim, privacy leak, or destructive failure. P1 is a
 broken primary journey, unusable mobile layout, source link, Ask, follow, or

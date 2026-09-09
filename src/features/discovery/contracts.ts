@@ -140,10 +140,24 @@ export const DATE_OPTIONS = [
 ] as const
 
 export const BODY_OPTIONS = [
-  'Lafayette City-Parish Council',
   'Lafayette City Council',
-  'Baton Rouge Metropolitan Council',
+  'Lafayette City Planning Commission',
+  'Lafayette Parish Planning Commission',
+  'City Zoning Commission',
+  'Lafayette Board of Zoning Adjustment',
+  'Hearing Examiner',
+  'Youngsville City Council',
+  'Alexandria City Council',
+  'Pineville City Council',
   'Rapides Parish Police Jury',
+  'Metropolitan Council',
+  'Planning and Zoning Commission',
+] as const
+
+// Keep older public links and development fixtures readable.
+export const LEGACY_BODY_OPTIONS = [
+  'Lafayette City-Parish Council',
+  'Baton Rouge Metropolitan Council',
 ] as const
 
 export const LIFECYCLE_OPTIONS = [
@@ -226,7 +240,7 @@ export function parseExploreSearch(
   search: Record<string, unknown>,
 ): ExploreSearch {
   return {
-    body: pick(search.body, BODY_OPTIONS),
+    body: pick(search.body, [...BODY_OPTIONS, ...LEGACY_BODY_OPTIONS]),
     date: pick(
       search.date,
       DATE_OPTIONS.map((option) => option.value).filter(

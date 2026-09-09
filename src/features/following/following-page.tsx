@@ -2,7 +2,6 @@ import { PageLoading } from '../resident-blueprint/resident-loading'
 import {
   BellRingIcon,
   CheckIcon,
-  ChevronDownIcon,
   CircleAlertIcon,
   EllipsisIcon,
   MailIcon,
@@ -12,7 +11,7 @@ import {
   VolumeXIcon,
 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 
 import { Button } from '../../components/ui/button'
 import { AUTH_RETURN_KEY, useGoogleAuth } from '../auth/google-auth'
@@ -210,9 +209,9 @@ function FollowingDashboard({
           {view === 'following'
             ? data.mode === 'live'
               ? 'Manage the civic updates saved to this Google account.'
-              : 'Every target, delivery schedule, and destination you manage.'
+              : 'Manage what you follow and when you receive updates.'
             : view === 'areas'
-              ? 'Saved areas shape Home. Explore filters stay temporary.'
+              ? 'Save places and topics to your account. The area menu chooses the parish shown on Home.'
               : data.notificationsAvailable
                 ? 'Choose when useful changes reach you. Empty roundups are never sent.'
                 : 'Email delivery will appear here after verified subscriptions ship.'}
@@ -405,7 +404,6 @@ function FollowingNavigation({
   scenario?: FollowingScenario
   view: FollowingView
 }) {
-  const navigate = useNavigate()
   return (
     <>
       <nav aria-label="Following views" className="following-tabs">
@@ -421,27 +419,7 @@ function FollowingNavigation({
           </Link>
         ))}
       </nav>
-      <label className="following-view-select">
-        <span>View</span>
-        <span className="following-select-control">
-          <select
-            onChange={(event) =>
-              void navigate({
-                search: { fixture: scenario },
-                to: VIEW_PATHS[event.target.value as FollowingView],
-              })
-            }
-            value={view}
-          >
-            {(Object.keys(VIEW_LABELS) as FollowingView[]).map((item) => (
-              <option key={item} value={item}>
-                {VIEW_LABELS[item]}
-              </option>
-            ))}
-          </select>
-          <ChevronDownIcon aria-hidden="true" />
-        </span>
-      </label>
+
     </>
   )
 }
@@ -535,7 +513,7 @@ function FollowingList({
     <section className="following-section" aria-labelledby="followed-title">
       <div className="following-section-head">
         <div>
-          <p className="following-count">{targets.length} followed targets</p>
+          <p className="following-count">{targets.length} followed</p>
           <h2 id="followed-title">Latest changes first</h2>
         </div>
         <Button render={<Link to="/explore" />} size="touch" variant="outline">
@@ -988,7 +966,7 @@ function AreasAndTopics({
           description={
             selectedArea
               ? 'Change one saved area without affecting your other interests.'
-              : 'Save a launch area to shape Home. No street address is needed.'
+              : 'Save a covered parish to your account. No street address is needed.'
           }
           onOpenChange={(open) => {
             if (!open) setAreaAction(null)

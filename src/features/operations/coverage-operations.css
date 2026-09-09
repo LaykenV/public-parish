@@ -189,7 +189,7 @@
   background: var(--card);
 }
 .coverage-ops-run[aria-current='true'] {
-  box-shadow: inset 3px 0 var(--info);
+  box-shadow: none;
 }
 .coverage-ops-run:focus-visible {
   outline: 2px solid var(--ring);
@@ -628,5 +628,50 @@
     transition:
       background var(--dur-fast) var(--ease-out),
       box-shadow var(--dur-fast) var(--ease-out);
+  }
+}
+
+/* Owner tools retain technical metadata within the Home page rhythm. */
+.coverage-ops {
+  padding-top: var(--pp-page-space);
+}
+.coverage-ops h1,
+.coverage-ops-centered h1 {
+  max-width: 26ch;
+  font-size: var(--pp-text-page);
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.coverage-ops-head {
+  gap: 1.5rem;
+  border-color: var(--border);
+}
+.coverage-ops-ledger-grid {
+  overflow: clip;
+  border-color: var(--border);
+  border-radius: var(--radius-lg);
+}
+.coverage-ops-run[aria-current='true'] {
+  box-shadow: none;
+  background: var(--secondary);
+}
+.coverage-ops-root,
+.coverage-ops-detail,
+.coverage-ops-candidates li > div {
+  min-width: 0;
+}
+@media (max-width: 30rem) {
+  .coverage-ops-root {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .coverage-ops-root-action {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .coverage-ops-detail {
+    padding: 1rem;
   }
 }
