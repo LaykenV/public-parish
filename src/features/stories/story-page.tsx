@@ -1,9 +1,12 @@
-import { ArrowUpRightIcon } from 'lucide-react'
+import { MobileAsk } from '../ask/mobile-ask'
+import { ArrowLeftIcon, ArrowUpRightIcon, MessageCircleIcon } from 'lucide-react'
 import { PageLoading } from '../resident-blueprint/resident-loading'
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
 import { StoryOfficialSourceLink } from './story-source-link'
+import { formatDate } from '../discovery/format'
+import { Button } from '../../components/ui/button'
 import { ShareButton } from '../discovery/share'
 import { FollowAction } from '../following/follow-action'
 import { ReportProblem } from '../evidence/evidence-blocks'
@@ -125,56 +128,73 @@ export function StoryPage({ slug }: { slug: string }) {
     )
   if (!result.story)
     return (
-      <main className="pp-page" id="resident-main">
+      <main className="pp-page pp-recovery" id="resident-main">
         <h1>
           {result.state === 'withdrawn'
             ? 'Story withdrawn'
             : 'Story unavailable'}
         </h1>
         <p>{result.reason}</p>
-        <Link to="/">Return to Home</Link>
+        <Button render={<Link to="/" />} size="touch">Return to Home</Button>
       </main>
     )
   const story = result.story
   return (
     <main className="pp-page pp-story-detail" id="resident-main">
-      <Link to="/">All featured stories</Link>
-      <header>
-        <p>{story.geography.join(' · ')}</p>
+      <MobileAsk key={story.slug} scopeKey={`story:${story.slug}`} returnTo={`/stories/${story.slug}`} />
+
+      <Link className="pp-story-back" to="/">
+        <ArrowLeftIcon aria-hidden="true" /> All featured stories
+      </Link>
+      <header className="pp-story-head">
+        <p className="pp-story-place">{story.geography.join(' · ')}</p>
         <h1>{story.payload.title.text}</h1>
         <Statement statement={story.payload.summary} story={story} />
         <p className="pp-story-meta">
-          Reviewed through {story.reviewedThrough}. Next owner review planned{' '}
-          {story.nextReviewAt}.{' '}
+          Reviewed through {formatDate(story.reviewedThrough)}. Next review planned{' '}
+          {formatDate(story.nextReviewAt)}.{' '}
           {story.mode === 'limited' ? 'Some questions remain unanswered.' : ''}
         </p>
-        <ShareButton
-          path={`/stories/${story.slug}`}
-          title={story.payload.title.text}
-        />
-        <FollowAction
-          available
-          live
-          label="Follow this story"
-          target={{
-            kind: 'Story',
-            key: story.slug,
-            title: story.payload.title.text,
-            detail: story.geography.join(' · '),
-          }}
-        />
-        <Link
-          to="/ask"
-          search={{
-            scope: 'story',
-            story: story.slug,
-            returnTo: `/stories/${story.slug}`,
-          }}
-        >
-          Ask about this story
-        </Link>
+        <div className="pp-story-actions">
+          <Button
+            render={
+              <Link
+                to="/ask"
+                search={{
+                  scope: 'story',
+                  story: story.slug,
+                  returnTo: `/stories/${story.slug}`,
+                }}
+              />
+            }
+            size="touch"
+          >
+            <MessageCircleIcon aria-hidden="true" /> Ask about this story
+          </Button>
+          <FollowAction
+            available
+            live
+            label="Follow this story"
+            target={{
+              kind: 'Story',
+              key: story.slug,
+              title: story.payload.title.text,
+              detail: story.geography.join(' · '),
+            }}
+          />
+          <ShareButton
+            path={`/stories/${story.slug}`}
+            title={story.payload.title.text}
+          />
+        </div>
       </header>
       <StoryImage key={story.media?.url} media={story.media} />
+      <nav className="pp-story-jump" aria-label="In this story">
+        <a href="#story-timeline">Timeline</a>
+        <a href="#story-next-action">Next action</a>
+        <a href="#story-unknowns">What remains unknown</a>
+        <a href="#story-evidence">Official evidence</a>
+      </nav>
       {story.payload.sections.map((section, i) => (
         <section key={i}>
           <h2>{section.heading}</h2>
@@ -183,13 +203,13 @@ export function StoryPage({ slug }: { slug: string }) {
           ))}
         </section>
       ))}
-      <section>
+      <section id="story-timeline">
         <h2>Timeline</h2>
         {story.payload.timeline.length ? (
-          <ol>
+          <ol className="pp-story-timeline">
             {story.payload.timeline.map((event, i) => (
               <li key={i}>
-                <p>{event.date ?? 'Date not stated'}</p>
+                <p>{event.date ? formatDate(event.date) : 'Date not stated'}</p>
                 <Statement statement={event.statement} story={story} />
               </li>
             ))}
@@ -198,7 +218,7 @@ export function StoryPage({ slug }: { slug: string }) {
           <p>The accepted evidence does not establish a dated sequence.</p>
         )}
       </section>
-      <section>
+      <section id="story-next-action" className="pp-story-callout">
         <h2>Next documented action</h2>
         {story.payload.nextAction ? (
           <Statement statement={story.payload.nextAction} story={story} />
@@ -208,7 +228,7 @@ export function StoryPage({ slug }: { slug: string }) {
           </p>
         )}
       </section>
-      <section>
+      <section id="story-unknowns" className="pp-story-unknowns">
         <h2>What remains unknown</h2>
         {story.payload.limitations.length ? (
           <ul>
@@ -223,13 +243,14 @@ export function StoryPage({ slug }: { slug: string }) {
           </p>
         )}
       </section>
-      <section>
+      <section id="story-evidence">
         <h2>Official evidence</h2>
         {story.evidence.map((source, i) => (
           <details
             key={source.key}
             id={`story-source-${i}`}
             className="pp-story-source"
+            tabIndex={-1}
           >
             <summary>
               Source {i + 1}
@@ -291,7 +312,9 @@ function Statement({
             href={`#story-source-${index}`}
             onClick={() => {
               const target = document.getElementById(`story-source-${index}`)
-              if (target instanceof HTMLDetailsElement) target.open = true
+              if (target instanceof HTMLDetailsElement) {
+                target.open = true
+              }
             }}
             aria-label={`Inspect source ${index + 1}`}
           >

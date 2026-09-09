@@ -1,3 +1,4 @@
+import { PageLoading } from '../resident-blueprint/resident-loading'
 import { MonitoringPanel } from './monitoring-panel'
 import {
   BanIcon,
@@ -45,10 +46,9 @@ export function CoverageOperationsPage() {
 
   if (auth.isLoading || (auth.isAuthenticated && currentUser === undefined)) {
     return (
-      <OperationsState
-        title="Checking owner access"
-        detail="Reading this Google session."
-      />
+      <main className="coverage-ops" id="resident-main">
+        <PageLoading />
+      </main>
     )
   }
 
@@ -173,7 +173,7 @@ function OwnerCoverageOperations() {
           </p>
         </div>
         {roots === undefined ? (
-          <p className="coverage-ops-empty">Loading checked roots.</p>
+          <PageLoading />
         ) : (
           <div className="coverage-ops-root-grid">
             {roots.map((root) => {
@@ -234,7 +234,7 @@ function OwnerCoverageOperations() {
             className="coverage-ops-run-list"
           >
             {runs === undefined ? (
-              <p className="coverage-ops-empty">Loading runs.</p>
+              <PageLoading />
             ) : runs.length === 0 ? (
               <p className="coverage-ops-empty">
                 No run has started in this deployment.

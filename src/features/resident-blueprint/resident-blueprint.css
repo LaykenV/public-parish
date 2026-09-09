@@ -566,7 +566,7 @@
 
 .blueprint-contract-rail > .blueprint-evidence-region {
   border-color: color-mix(in srgb, var(--info) 42%, transparent);
-  box-shadow: inset 3px 0 0 var(--info);
+  box-shadow: none;
 }
 
 .blueprint-evidence-heading {
@@ -689,4 +689,45 @@
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+/* Recovery pages keep the same quiet background and actions as Home. */
+.blueprint-backdrop:has(.blueprint-not-found) {
+  background: var(--background);
+}
+.blueprint-not-found .blueprint-page-header {
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.blueprint-not-found h1 {
+  font-size: var(--pp-text-page);
+  line-height: 1.2;
+}
+.blueprint-not-found .blueprint-eyebrow {
+  color: var(--muted-foreground);
+  font-family: var(--font-sans);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.pp-recovery {
+  max-width: 44rem;
+  margin-block: var(--pp-page-space);
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.pp-recovery h1 {
+  margin: 0;
+  font-size: var(--pp-text-page);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+.pp-recovery > p {
+  margin-block: 1rem 1.5rem;
+  color: var(--body-foreground);
+  line-height: 1.65;
 }

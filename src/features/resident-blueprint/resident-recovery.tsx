@@ -9,7 +9,7 @@ import { ResidentStandalone } from './resident-shell'
 export function ResidentRouteError() {
   return (
     <ResidentStandalone>
-      <main className="pp-page" id="resident-main">
+      <main className="pp-page pp-recovery" id="resident-main">
         <h1>This page could not load.</h1>
         <p>Try loading it again, or return to Home to find published records.</p>
         <div className="blueprint-actions">

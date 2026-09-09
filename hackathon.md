@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-09T02:47:19Z
+- **Last updated:** 2026-09-09T14:08:27Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -1869,3 +1869,40 @@ side sheet with a floating Coss Popover using the portfolio hamburger animation.
 Removed the open-menu X background and refined Home decision rows with separate
 meeting dates, larger titles and neutral lifecycle badges. Documented Home fixture
 URLs. Static review passed; automated checks await PR CI and visual QA remains pending.
+
+
+### 2026-09-09 - f7742d5
+
+Released the owner-approved Home polish through PR 198. The latest PR head passed
+670 application tests and 24 Chromium/WebKit journeys after correcting an early
+visibility check in the area-selection test. Review found no major issues.
+Production workflow 34307373914 and independent production smoke passed for the
+merge commit on both public origins. No paid Ask or provider-mail check was repeated.
+
+
+### 2026-09-09 - working tree, resident design pass
+
+Extended the owner-approved Home visual system to the remaining resident pages,
+forms, recovery views and owner-tool styling. Added story section navigation and
+source focus, repaired Explore links for current launch bodies, expanded the
+mobile source-report drawer and corrected hidden focus during sheet closing.
+Native Chrome desktop and responsive checks covered the route families and
+selected recovery states. Added browser regressions and a body-parser regression;
+automated validation remains deferred to PR CI under the repository rules.
+Local Google sign-in did not complete, so protected owner views remain unverified.
+No commit, deployment, paid source work or provider email was performed. The
+[morning report](docs/design-morning-report-2026-09-09.md) records the evidence;
+[docs/work.md](docs/work.md) retains the pending checks.
+
+
+### 2026-09-09 - working tree, owner mobile corrections
+
+Added mobile Ask drawers to stories, issues and decisions using the existing
+conversation adapter. Drafts survive closing the drawer, and answer citations
+open a nested source drawer. Following now uses visible route tabs on phones.
+Refined source controls and decision links, changed Louisiana to charcoal with
+muted violet highlights, and removed colored left-edge card accents. Dedicated
+preview checks covered a retained story draft, a sourced fixture answer, nested
+citation focus return, 320-pixel navigation and the rendered WebGPU model.
+Updated browser regressions, with automated checks still deferred to CI. No
+production change or paid Ask call was made.

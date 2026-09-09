@@ -163,7 +163,7 @@ export function Timeline({
                     search={{ fixture, returnTo }}
                     to="/decisions/$recordKey"
                   >
-                    View decision {entry.recordKey}
+                    View decision
                   </Link>
                 ) : null}
               </div>

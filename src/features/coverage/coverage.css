@@ -183,10 +183,10 @@
   gap: 0.4rem;
   align-items: center;
   color: var(--muted-foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--pp-text-caption);
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
 }
 
 .coverage-body-ledger dt svg {
@@ -417,7 +417,7 @@
 .method-principles svg {
   width: 1.35rem;
   height: 1.35rem;
-  color: var(--info-foreground);
+  color: var(--primary);
 }
 
 .method-section-heading p,
@@ -455,8 +455,8 @@
   place-items: center;
   border: 1px solid var(--pp-border-strong);
   border-radius: 50%;
-  color: var(--info-foreground);
-  font-family: var(--font-mono);
+  color: var(--primary);
+  font-family: var(--font-sans);
   font-size: var(--pp-text-small);
   font-variant-numeric: tabular-nums;
   font-weight: 650;
@@ -635,7 +635,7 @@
 @media (hover: hover) and (pointer: fine) {
   .coverage-back-link:hover,
   .method-technical summary:hover {
-    color: var(--info-foreground);
+    color: var(--primary);
   }
 }
 
@@ -654,4 +654,152 @@
     animation-iteration-count: 1 !important;
     transition-duration: 1ms !important;
   }
+}
+
+/* Hallmark · genre: editorial · macrostructure: directory and reading pages
+ * design-system: docs/design.md · designed-as-app */
+.coverage-page,
+.coverage-request-page,
+.method-page {
+  padding-block: var(--pp-page-space) 4rem;
+  color: var(--body-foreground);
+}
+.coverage-page h1,
+.coverage-request-page h1,
+.method-page h1 {
+  max-width: 26ch;
+  font-size: var(--pp-text-page);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+.coverage-page-intro,
+.method-intro {
+  padding-bottom: 2rem;
+  border-color: var(--border);
+}
+.coverage-body-list {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  border-top: 0;
+}
+.coverage-body {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  box-shadow: var(--pp-shadow-card);
+}
+.coverage-body:last-child {
+  border-bottom: 1px solid var(--border);
+}
+.coverage-region {
+  padding-block: 2rem;
+  border-color: var(--border);
+}
+.coverage-key {
+  gap: 1rem;
+}
+.coverage-key li {
+  line-height: 1.5;
+}
+.coverage-body-ledger dd {
+  overflow-wrap: anywhere;
+}
+.method-page {
+  max-width: 60rem;
+}
+.method-intro > [data-slot='button'] {
+  justify-self: start;
+}
+.method-technical summary {
+  width: auto;
+  white-space: normal;
+  line-height: 1.5;
+}
+.method-technical summary svg {
+  flex: none;
+}
+@media (min-width: 48rem) {
+  .coverage-region {
+    grid-template-columns: minmax(12rem, 1fr) minmax(0, 3fr);
+    gap: 2rem;
+  }
+  .coverage-page-intro,
+  .method-intro {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .coverage-key {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .coverage-key ul {
+    grid-column: 1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .coverage-key li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 30rem) {
+  .coverage-key li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .coverage-body {
+    padding: 1rem;
+  }
+  .coverage-body-actions > [data-slot='button'] {
+    width: 100%;
+  }
+}
+.coverage-key [data-slot='badge'] {
+  justify-self: start;
+}
+.coverage-field select {
+  width: 100%;
+  min-height: var(--pp-control-height);
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-md);
+  color: var(--foreground);
+  background: var(--card);
+  font: inherit;
+  font-weight: 400;
+}
+.coverage-field input,
+.coverage-field select {
+  font-size: var(--pp-text-body);
+}
+.coverage-request-form {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+@media (max-width: 30rem) {
+  .coverage-request-form {
+    padding: 1rem;
+  }
+  .coverage-page-actions > [data-slot='button'] {
+    max-width: 100%;
+    height: auto;
+    min-height: var(--pp-control-height);
+    white-space: normal;
+  }
+}
+.coverage-key {
+  display: block;
+  padding-block: 0.75rem;
+}
+.coverage-key > summary {
+  min-height: var(--pp-control-height);
+  padding-block: 0.75rem;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+.coverage-key[open] > summary {
+  margin-bottom: 0.75rem;
 }

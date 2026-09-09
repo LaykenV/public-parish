@@ -8,3 +8,83 @@
 .story-review-image { max-width: 100%; height: auto; max-height: 36rem; object-fit: contain; }
 .story-review-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 @media (max-width: 760px) { .story-review-columns { grid-template-columns: 1fr; } }
+
+.story-ops {
+  padding-top: var(--pp-page-space);
+}
+.story-ops h1 {
+  font-size: var(--pp-text-page);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+.story-ops section {
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.story-ops h2 {
+  font-size: var(--pp-text-section);
+  line-height: 1.25;
+}
+.story-ops input,
+.story-ops select,
+.story-ops textarea {
+  display: block;
+  width: 100%;
+  min-height: var(--pp-control-height);
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  color: var(--foreground);
+  font: inherit;
+}
+.story-ops input[type='checkbox'] {
+  display: inline-block;
+  width: auto;
+  min-height: auto;
+  accent-color: var(--primary);
+}
+.story-ops textarea {
+  min-height: 10rem;
+  resize: vertical;
+  font-family: var(--font-mono);
+  font-size: var(--pp-text-small);
+}
+.story-ops pre {
+  border-radius: var(--radius-md);
+  background: var(--background);
+  line-height: 1.6;
+}
+.story-ops button {
+  min-height: var(--pp-control-height);
+  max-width: 100%;
+  margin: 0.25rem 0.5rem 0.25rem 0;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-md);
+  background: var(--secondary);
+  color: var(--primary);
+  font: inherit;
+  font-weight: 600;
+  white-space: normal;
+  cursor: pointer;
+}
+.story-ops button:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+.story-ops button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.story-ops summary {
+  min-height: var(--pp-control-height);
+  padding-block: 0.75rem;
+  cursor: pointer;
+}
+.story-review-columns > * {
+  min-width: 0;
+}

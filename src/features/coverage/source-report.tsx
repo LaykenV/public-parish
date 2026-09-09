@@ -100,7 +100,7 @@ export function SourceProblemReport({
   return (
     <Sheet
       className="source-report-sheet"
-      description="This goes to Public Parish privately. It does not open a public thread or start automatic reprocessing."
+      description="Send a private report to Public Parish. Reports are never posted publicly."
       onOpenChange={handleOpenChange}
       open={open}
       size="full"
@@ -214,13 +214,7 @@ export function SourceProblemReport({
             }
           }}
         >
-          <div className="source-report-private-note">
-            <LockKeyholeIcon aria-hidden="true" />
-            <p>
-              Sent privately. The report is never published as a comment or
-              correction thread.
-            </p>
-          </div>
+
 
           <label className="source-report-field">
             <span>Problem type</span>

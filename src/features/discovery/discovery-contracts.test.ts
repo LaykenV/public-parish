@@ -52,6 +52,20 @@ describe('resident interface Slice 2 discovery contracts', () => {
     })
   })
 
+  it('preserves current launch-body links and older accepted body names', () => {
+    for (const body of [
+      'Pineville City Council',
+      'Youngsville City Council',
+      'Hearing Examiner',
+      'City Zoning Commission',
+      'Metropolitan Council',
+      'Planning and Zoning Commission',
+      'Lafayette City-Parish Council',
+    ]) {
+      expect(parseExploreSearch({ body })).toEqual({ body })
+    }
+  })
+
   it('shows the forced no-results state before the default browse view', () => {
     expect(getExploreViewMode({ fixture: 'no-results' }, 0)).toBe('empty')
     expect(getExploreViewMode({}, 0)).toBe('browse')

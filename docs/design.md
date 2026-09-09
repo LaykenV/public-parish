@@ -2,9 +2,10 @@
 
 This document owns the agreed information flow and the design-review process.
 The story functionality and evidence gate has passed. The global design and
-founder QA pass is next.
+founder QA pass is in progress.
 [Work](work.md) owns the phase gate and QA ledger. The September 8 Home redesign shipped through PR 197 at `fbda95b`.
-CI browser checks and bounded production smoke passed for that release. The follow-up below is local and awaits visual QA. [Design-system reference](design-system.html) records the existing
+CI browser checks and bounded production smoke passed for that release. The owner approved the follow-up below, released through PR 198 at `f7742d5`.
+Its 24 CI browser journeys, exact production workflow and independent smoke passed. [Design-system reference](design-system.html) records the existing
 visual baseline until the owner changes it during that pass.
 
 ## Homepage flow
@@ -21,7 +22,8 @@ always placing stories above local setup and issues.
 | Footer | Brand, site links and compact dated voter information | Same footer |
 
 On mobile, stack the hero copy and selector above a short Louisiana visual.
-Use purple lighting on a transparent canvas so the page color shows through.
+Use charcoal material with muted violet highlights on a transparent canvas.
+The September 9 owner correction rejects both saturated purple and a return to blue.
 Remove the entire hero after selection. Remember the chosen
 area on return visits. The selected parish controls Home even when an account
 has other saved areas. Selecting an area filters reading; it does not enroll
@@ -210,3 +212,50 @@ normal Home URL for the complete layout and current published stories.
 
 The saved parish still filters fixture content. With no parish saved, the
 signed-in fixture uses Lafayette and East Baton Rouge as sample saved areas.
+
+
+## Resident-page pass, September 9
+
+The overnight working tree extends the approved Home system to stories, Explore,
+Ask, evidence pages, Following, email management, Coverage, request/report forms,
+Privacy, How it works, recovery and owner tools. This is a local implementation,
+not a released design checkpoint. See the
+[morning inspection report](design-morning-report-2026-09-09.md).
+
+Use the shared page-title size and page spacing tokens. Keep resident metadata
+in Inter, reserve monospace for technical owner values, and reuse Home's purple
+actions, lavender selections, white cards and readable body color. Long titles
+must wrap without shrinking the controls. Government outcomes use neutral status
+colors; evidence health retains its written status and distinct warning colors.
+
+Story pages put Ask, Follow and Share together and provide section links to the
+timeline, next action, unknowns and evidence. A citation opens and focuses its
+source disclosure. Accepted text, citations and image policy stay intact.
+Coverage definitions expand on demand. Coverage request forms precede supporting
+explanation on phones. Private source reports use the full drawer height.
+Account copy distinguishes saved areas from the Home parish selector.
+
+Manual checks covered native Chrome desktop, narrow phones and selected tablet
+views. CI, authenticated owner views, physical-device and screen-reader checks
+remain pending. Keep their status in `docs/work.md`.
+
+
+## Mobile reading and chat, September 9 owner correction
+
+On phone-sized story, issue and decision pages, a circular purple chat button
+sits at the bottom right. It opens the existing Ask conversation in a full-height
+drawer without leaving the record. The drawer preserves drafts and conversation
+state when closed and reopened. Citations open above the conversation and return
+focus to their source control. Desktop keeps the existing Ask entry points.
+Decisions retain their existing linked-issue scope, or the published corpus when
+there is no linked issue. Do not imply a new decision-only evidence scope.
+
+Mobile sources use small rectangular controls. Timeline links say "View decision"
+instead of exposing a long record key. Following uses visible route tabs on
+phones and desktop, with an underline on the current view and no View dropdown.
+
+Do not use a colored strip on the left edge of a card. Use a plain border,
+written status and restrained text or background emphasis. This applies to Ask
+scope cards, notices, cadence choices and owner selections as well as reading
+pages. Ordinary neutral timeline rules and quotation indentation are distinct
+from an accent strip on a card.

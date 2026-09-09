@@ -15,12 +15,12 @@
 .following-entry-label,
 .following-count {
   margin: 0;
-  color: var(--info-foreground);
-  font-family: var(--font-mono);
+  color: var(--primary);
+  font-family: var(--font-sans);
   font-size: var(--pp-text-caption);
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .following-head h1,
@@ -73,7 +73,7 @@
   left: 0;
   height: 2px;
   content: '';
-  background: var(--info);
+  background: var(--primary);
 }
 
 .following-view-select {
@@ -81,11 +81,11 @@
   gap: 0.35rem;
   margin-top: 1.5rem;
   color: var(--muted-foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--pp-text-caption);
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .following-select-control {
@@ -204,11 +204,11 @@
   align-items: center;
   justify-content: space-between;
   color: var(--muted-foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--pp-text-caption);
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .following-row-status {
@@ -265,11 +265,11 @@
 .following-row-ledger dt,
 .email-manage-ledger dt {
   color: var(--muted-foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .following-row-ledger dd,
@@ -287,7 +287,7 @@
   width: fit-content;
   min-height: 2.75rem;
   margin-top: 0.35rem;
-  color: var(--info-foreground);
+  color: var(--primary);
   font-weight: 650;
   text-decoration: underline;
   text-underline-offset: 0.2em;
@@ -298,7 +298,7 @@
   display: flex;
   gap: 0.7rem;
   padding: 0.8rem;
-  border-left: 3px solid var(--warning);
+  border: 1px solid var(--border);
   color: var(--warning-foreground);
   background: color-mix(in srgb, var(--warning) 7%, var(--card));
 }
@@ -511,7 +511,7 @@
   margin-top: 2rem;
   padding: 1.25rem;
   border: 1px solid var(--border);
-  border-left: 3px solid var(--info);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--card);
 }
@@ -521,7 +521,7 @@
   width: 1.25rem;
   height: 1.25rem;
   margin-top: 0.15rem;
-  color: var(--info-foreground);
+  color: var(--primary);
 }
 
 .following-unavailable h2,
@@ -547,7 +547,7 @@
 /* Follow flow and delivery receipt */
 
 .follow-sheet {
-  --follow-rule: color-mix(in srgb, var(--info) 30%, var(--border));
+  --follow-rule: color-mix(in srgb, var(--primary) 30%, var(--border));
 }
 
 .follow-flow,
@@ -609,8 +609,8 @@
   display: grid;
   margin: 0;
   border: 1px solid var(--follow-rule, var(--border));
-  border-left: 3px solid var(--info);
-  background: color-mix(in srgb, var(--info) 3%, var(--card));
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--primary) 3%, var(--card));
 }
 
 .follow-receipt::before {
@@ -622,7 +622,7 @@
   border: 2px solid var(--card);
   border-radius: 50%;
   content: '';
-  background: var(--info);
+  background: var(--primary);
 }
 
 .follow-receipt > div {
@@ -638,12 +638,12 @@
 }
 
 .follow-receipt dt {
-  color: var(--info-foreground);
-  font-family: var(--font-mono);
+  color: var(--primary);
+  font-family: var(--font-sans);
   font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .follow-receipt dd {
@@ -701,15 +701,15 @@
 }
 
 .follow-frequency-options label[data-selected] {
-  background: color-mix(in srgb, var(--info) 6%, var(--card));
-  box-shadow: inset 3px 0 0 var(--info);
+  background: color-mix(in srgb, var(--primary) 6%, var(--card));
+  box-shadow: none;
 }
 
 .follow-frequency-options input {
   width: 1rem;
   height: 1rem;
   margin-top: 0.15rem;
-  accent-color: var(--foreground);
+  accent-color: var(--primary);
 }
 
 .follow-frequency-options strong,
@@ -844,7 +844,7 @@
 
 .follow-code-input {
   max-width: 12rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 1.3rem;
   letter-spacing: 0.25em;
 }
@@ -887,8 +887,8 @@
   display: flex;
   gap: 0.75rem;
   padding: 0.9rem;
-  border-left: 3px solid var(--info);
-  background: color-mix(in srgb, var(--info) 5%, var(--card));
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--primary) 5%, var(--card));
 }
 
 .follow-unavailable > svg {
@@ -896,7 +896,7 @@
   width: 1.1rem;
   height: 1.1rem;
   margin-top: 0.1rem;
-  color: var(--info-foreground);
+  color: var(--primary);
 }
 
 .follow-unavailable p {
@@ -923,7 +923,7 @@
 
 .manage-destination span {
   color: var(--muted-foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--pp-text-caption);
 }
 
@@ -992,7 +992,7 @@
 .following-topic-grid input {
   width: 1rem;
   height: 1rem;
-  accent-color: var(--foreground);
+  accent-color: var(--primary);
 }
 
 .following-save-row {
@@ -1038,7 +1038,7 @@
   width: 1rem;
   height: 1rem;
   margin-top: 0.2rem;
-  color: var(--info-foreground);
+  color: var(--primary);
 }
 
 .notification-preview > header p,
@@ -1048,11 +1048,11 @@
 
 .notification-preview > header p {
   color: var(--muted-foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .notification-preview > header h3 {
@@ -1084,7 +1084,7 @@
 .notification-preview li::before {
   grid-row: 1 / span 2;
   color: var(--muted-foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--pp-text-caption);
   content: counter(alert-section, decimal-leading-zero);
 }
@@ -1120,7 +1120,7 @@
 
 .roundup-preview .roundup-rule {
   color: var(--success-foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--pp-text-caption);
   font-weight: 600;
 }
@@ -1132,7 +1132,7 @@
   margin-top: auto;
   padding: 0.8rem 1rem;
   border-top: 1px solid var(--border);
-  color: var(--info-foreground);
+  color: var(--primary);
   background: var(--muted);
   font-size: 0.68rem;
   font-weight: 650;
@@ -1184,7 +1184,7 @@
   width: 1.1rem;
   height: 1.1rem;
   margin-top: 0.2rem;
-  color: var(--info-foreground);
+  color: var(--primary);
 }
 
 .email-manage-identity h2,
@@ -1221,7 +1221,7 @@
   gap: 0.65rem;
   margin-top: 1.25rem;
   padding: 0.9rem;
-  border-left: 3px solid var(--success);
+  border: 1px solid var(--border);
   background: color-mix(in srgb, var(--success) 7%, var(--card));
 }
 
@@ -1319,5 +1319,90 @@
   .email-manage-page * {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Saved preferences and email management use the same compact Home system. */
+.following-page {
+  padding-top: var(--pp-page-space);
+}
+.following-head h1,
+.following-return h1,
+.email-expired h1,
+.email-manage-result h1 {
+  font-size: var(--pp-text-page);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.following-head > p:last-child,
+.following-entry-card > p:not(.following-entry-label) {
+  color: var(--body-foreground);
+  line-height: 1.65;
+}
+.following-entry-card,
+.email-manage-card {
+  box-shadow: var(--pp-shadow-card);
+}
+.following-tabs a[data-active] {
+  color: var(--primary);
+}
+.following-filters button[data-selected] {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--secondary);
+}
+.following-row {
+  margin-top: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.following-row:first-child {
+  border-top-color: var(--border);
+}
+.following-row h3 {
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.following-entry-card > [data-slot='button'] {
+  justify-self: start;
+}
+@media (max-width: 30rem) {
+  .following-row,
+  .following-entry-card,
+  .email-manage-card {
+    padding: 1rem;
+  }
+  .following-entry-card > [data-slot='button'] {
+    width: 100%;
+    white-space: normal;
+    height: auto;
+    min-height: var(--pp-control-height);
+  }
+}
+.following-page input[type='checkbox'],
+.following-page input[type='radio'] {
+  accent-color: var(--primary);
+}
+@media (max-width: 30rem) {
+  .email-manage-ledger {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 47.999rem) {
+  .following-tabs {
+    display: flex;
+    gap: 0;
+    margin-top: 1.5rem;
+    width: 100%;
+  }
+  .following-tabs a {
+    flex: 1;
+    padding: 0.85rem 0.25rem;
+    text-align: center;
+    font-size: 0.75rem;
+    white-space: nowrap;
   }
 }

@@ -1,7 +1,7 @@
 import { Dialog } from '@base-ui/react/dialog'
 import { Drawer } from '@base-ui/react/drawer'
 import { XIcon } from 'lucide-react'
-import type { ReactElement, ReactNode } from 'react'
+import type { CSSProperties, ReactElement, ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
 import { useMediaQuery, useOverlay } from './hooks'
@@ -14,6 +14,8 @@ type SheetProps = {
   onOpenChange: (open: boolean) => void
   open: boolean
   popupId?: string
+  keepMounted?: boolean
+  style?: CSSProperties
   size?: 'medium' | 'tall' | 'full'
   title: string
   triggerId?: string | null
@@ -59,6 +61,8 @@ export function Sheet({
   className,
   footer,
   popupId,
+  keepMounted = false,
+  style,
   size = 'tall',
   trigger,
 }: SheetProps) {
@@ -132,6 +136,12 @@ export function Sheet({
       },
       sheetExitDelay(),
     )
+    // The closing popup becomes inert immediately. Release its focus before
+    // hiding it; the existing return timer restores the opener after motion.
+    const active = document.activeElement
+    if (active instanceof HTMLElement && active.closest('.pp-sheet')) {
+      active.blur()
+    }
     onOpenChange(false)
   }
   const renderTrigger = trigger
@@ -153,12 +163,13 @@ export function Sheet({
         swipeDirection="down"
       >
         {renderTrigger ? <Drawer.Trigger render={renderTrigger} /> : null}
-        <Drawer.Portal>
+        <Drawer.Portal keepMounted={keepMounted}>
           <Drawer.Backdrop className="pp-backdrop" />
           <Drawer.Viewport className="pp-drawer-viewport">
             <Drawer.Popup
               aria-hidden={open ? undefined : true}
               className={['pp-sheet', className].filter(Boolean).join(' ')}
+              style={style}
               data-modal-kind="drawer"
               data-size={size}
               finalFocus={triggerId ? resolveFinalFocus : undefined}
@@ -201,11 +212,12 @@ export function Sheet({
   return (
     <Dialog.Root onOpenChange={handleRootOpenChange} open={open}>
       {renderTrigger ? <Dialog.Trigger render={renderTrigger} /> : null}
-      <Dialog.Portal>
+      <Dialog.Portal keepMounted={keepMounted}>
         <Dialog.Backdrop className="pp-backdrop" />
         <Dialog.Popup
           aria-hidden={open ? undefined : true}
           className={['pp-sheet', className].filter(Boolean).join(' ')}
+          style={style}
           data-modal-kind="dialog"
           data-size={size}
           finalFocus={triggerId ? resolveFinalFocus : undefined}

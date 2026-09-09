@@ -21,12 +21,12 @@
 
 .privacy-intro > p {
   margin: 0;
-  color: var(--info-foreground);
-  font-family: var(--font-mono);
+  color: var(--primary);
+  font-family: var(--font-sans);
   font-size: var(--pp-text-caption);
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .privacy-intro h1 {
@@ -54,7 +54,7 @@
 .privacy-intro > div time,
 .privacy-ledger .privacy-retention {
   color: var(--muted-foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--pp-text-caption);
   line-height: 1.5;
 }
@@ -80,7 +80,7 @@
 .privacy-contact > svg {
   width: 1.35rem;
   height: 1.35rem;
-  color: var(--info-foreground);
+  color: var(--primary);
 }
 
 .privacy-section-heading h2,
@@ -124,7 +124,7 @@
 .privacy-ledger dt svg {
   width: 1rem;
   height: 1rem;
-  color: var(--info-foreground);
+  color: var(--primary);
 }
 
 .privacy-ledger dd {
@@ -153,7 +153,7 @@
 }
 
 .privacy-controls li::marker {
-  color: var(--info-foreground);
+  color: var(--primary);
 }
 
 .privacy-contact {
@@ -196,4 +196,53 @@
       minmax(10rem, 0.6fr) minmax(0, 1.5fr) minmax(9rem, 0.6fr);
     gap: 1.5rem;
   }
+}
+
+/* Privacy is a readable reference within the shared resident system. */
+.privacy-page {
+  max-width: 62rem;
+  padding-block: var(--pp-page-space) 4rem;
+}
+.privacy-intro {
+  gap: 0.75rem;
+  padding-bottom: 2rem;
+  border-color: var(--border);
+}
+.privacy-intro h1 {
+  max-width: 26ch;
+  font-size: var(--pp-text-page);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+.privacy-ledger,
+.privacy-processors,
+.privacy-controls,
+.privacy-boundary {
+  padding-block: 2rem;
+  border-color: var(--border);
+}
+.privacy-section-heading h2,
+.privacy-boundary h2,
+.privacy-controls h2 {
+  font-size: var(--pp-text-section);
+  font-weight: 650;
+  line-height: 1.25;
+}
+.privacy-ledger dl {
+  padding-inline: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+.privacy-ledger dl > div:last-child {
+  border-bottom: 0;
+}
+.privacy-ledger dd,
+.privacy-section-heading p,
+.privacy-boundary p {
+  color: var(--body-foreground);
+}
+.privacy-contact a {
+  color: var(--primary);
 }
