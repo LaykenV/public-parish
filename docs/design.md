@@ -22,8 +22,9 @@ always placing stories above local setup and issues.
 | Footer | Brand, site links and compact dated voter information | Same footer |
 
 On mobile, stack the hero copy and selector above a short Louisiana visual.
-Use charcoal material with muted violet highlights on a transparent canvas.
-The September 9 owner correction rejects both saturated purple and a return to blue.
+Use warm limestone material with muted violet highlights on a transparent canvas.
+The owner selected warm limestone from the September 9 color comparison,
+replacing charcoal. Keep the quiet violet pins and existing lighting.
 Remove the entire hero after selection. Remember the chosen
 area on return visits. The selected parish controls Home even when an account
 has other saved areas. Selecting an area filters reading; it does not enroll

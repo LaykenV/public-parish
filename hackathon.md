@@ -1912,3 +1912,9 @@ production change or paid Ask call was made.
 Head `8231446` passed 671 application tests and 42 Chromium/WebKit journeys.
 Reviewed CI screenshots and removed a remaining purple quote rule in story
 source cards. The final revision awaits PR checks and authorized release.
+
+### 2026-09-09 - warm limestone selection
+
+Applied the owner-selected warm limestone material to the Louisiana relief,
+using the exact shader colors from the local comparison. Matched the SVG
+fallback to the same warm neutral finish. PR validation and release are pending.
