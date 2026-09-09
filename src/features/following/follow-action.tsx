@@ -279,7 +279,7 @@ function FollowActionContent({
       className="follow-sheet"
       description={
         available
-          ? 'Choose when to hear from Public Parish, then choose where the update should go.'
+          ? undefined
           : 'The resident follow interface is ready, but delivery is not connected yet.'
       }
       onOpenChange={handleOpenChange}
@@ -326,7 +326,6 @@ function FollowActionContent({
               }}
               onSubmit={() => void sendCode()}
               submitting={requestingCode}
-              target={target}
             />
           ) : null}
           {step === 'code' ? (
@@ -418,14 +417,10 @@ function FollowChoice({
 }) {
   return (
     <>
-      <DeliveryReceipt
-        destination="Choose Google or email"
-        frequency={frequency}
-        target={target}
-      />
+      <p className="follow-target-summary">{target.title}</p>
       <fieldset className="follow-fieldset">
         <legend>Send me</legend>
-        <FrequencyOptions onChange={onFrequency} value={frequency} />
+        <FrequencyOptions compact onChange={onFrequency} value={frequency} />
       </fieldset>
       <div className="follow-provider-grid">
         <Button disabled={googleBusy} onClick={onGoogle} size="touch">
@@ -436,10 +431,6 @@ function FollowChoice({
           Use email only
         </Button>
       </div>
-      <p className="follow-provider-note">
-        Both choices send the same updates. Email-only creates an alert
-        subscription, not an account.
-      </p>
       {import.meta.env.DEV ? (
         <button
           className="follow-fixture-link"
@@ -460,7 +451,6 @@ function EmailEntry({
   onChange,
   onSubmit,
   submitting,
-  target,
 }: {
   email: string
   error: string
@@ -468,7 +458,6 @@ function EmailEntry({
   onChange: (value: string) => void
   onSubmit: () => void
   submitting: boolean
-  target: FollowTarget
 }) {
   return (
     <form
@@ -483,8 +472,7 @@ function EmailEntry({
         <p className="follow-step-label">Email-only alert</p>
         <h3>Where should updates go?</h3>
         <p className="follow-step-copy">
-          Public Parish will send a short-lived code before following{' '}
-          <strong>{target.title}</strong>.
+          This creates an alert subscription, not an account.
         </p>
       </div>
       <label className="follow-input-label" htmlFor="follow-email">
@@ -510,9 +498,6 @@ function EmailEntry({
       <Button disabled={submitting} size="touch" type="submit">
         {submitting ? 'Sending code...' : 'Send verification code'}
       </Button>
-      <p className="follow-provider-note">
-        This creates an alert subscription, not an account.
-      </p>
     </form>
   )
 }
@@ -735,9 +720,11 @@ export function DeliveryReceipt({
 }
 
 export function FrequencyOptions({
+  compact = false,
   onChange,
   value,
 }: {
+  compact?: boolean
   onChange: (value: DeliveryFrequency) => void
   value: DeliveryFrequency
 }) {
@@ -762,7 +749,10 @@ export function FrequencyOptions({
     ]
 
   return (
-    <div className="follow-frequency-options">
+    <div
+      className="follow-frequency-options"
+      data-compact={compact ? '' : undefined}
+    >
       {options.map((option) => (
         <label
           data-selected={value === option.value ? '' : undefined}
@@ -777,7 +767,7 @@ export function FrequencyOptions({
           />
           <span>
             <strong>{option.label}</strong>
-            <small>{option.detail}</small>
+            {!compact ? <small>{option.detail}</small> : null}
           </span>
         </label>
       ))}

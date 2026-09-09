@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-08T21:26:15Z
+- **Last updated:** 2026-09-09T02:47:19Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -1849,3 +1849,23 @@ and a noninteractive dot index with the current issue count. Revised shared colo
 sections, cards, reading text and actions. A bounded 390-pixel Chrome inspection
 showed the wider card and compact height. Final touch and viewport QA remain
 pending, with automated checks deferred to PR CI.
+
+
+### 2026-09-08 - fbda95b
+
+Released the Home design pass through PR 197, including equal-height mobile
+issue cards with native snapping and a bottom index. PR CI passed 670 application
+tests and 22 Chromium/WebKit browser journeys. Normal-motion hero focus passed;
+the review's conditional focus finding did not reproduce. Production workflow
+34287037797 and independent `npm run smoke:production` passed on the merge commit.
+Founder QA continues. No paid Ask or provider-mail verification was repeated.
+
+### 2026-09-08 - working tree, Home polish
+
+Matched Louisiana lighting to purple and made its canvas transparent. Removed
+the selected-area hero and header/footer color boundaries. Kept only visible
+dots beneath mobile issues. Compacted follow enrollment and replaced the mobile
+side sheet with a floating Coss Popover using the portfolio hamburger animation.
+Removed the open-menu X background and refined Home decision rows with separate
+meeting dates, larger titles and neutral lifecycle badges. Documented Home fixture
+URLs. Static review passed; automated checks await PR CI and visual QA remains pending.

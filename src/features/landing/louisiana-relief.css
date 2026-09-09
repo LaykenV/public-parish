@@ -49,11 +49,11 @@
   align-items: center;
   min-height: 1.35rem;
   padding-inline: 0.45rem;
-  border: 1px solid rgb(49 91 234 / 22%);
+  border: 1px solid color-mix(in srgb, var(--primary) 22%, transparent);
   border-radius: 0.35rem;
-  color: #26335f;
+  color: var(--primary-hover);
   background: rgb(255 255 255 / 88%);
-  box-shadow: 0 2px 8px rgb(31 48 95 / 9%);
+  box-shadow: 0 2px 8px rgb(55 35 85 / 9%);
   font-family: var(--font-mono);
   font-size: 0.58rem;
   font-weight: 600;
@@ -66,7 +66,7 @@
 .relief-map-label::after {
   position: absolute;
   content: '';
-  background: rgb(49 91 234 / 38%);
+  background: color-mix(in srgb, var(--primary) 38%, transparent);
 }
 
 .relief-map-label-rapides {
@@ -116,14 +116,14 @@
 }
 
 .relief-fallback-state {
-  fill: #1b2130;
+  fill: var(--foreground);
   stroke: #080b11;
   stroke-linejoin: round;
   stroke-width: 1.2;
 }
 
 .relief-fallback-pins path {
-  fill: #315bea;
+  fill: var(--primary);
   stroke: #fff;
   stroke-width: 1;
 }

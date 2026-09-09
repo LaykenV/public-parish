@@ -3,8 +3,8 @@
 This document owns the agreed information flow and the design-review process.
 The story functionality and evidence gate has passed. The global design and
 founder QA pass is next.
-[Work](work.md) owns the phase gate and QA ledger. The September 8 Home redesign is implemented locally and awaits owner visual QA
-and PR validation. [Design-system reference](design-system.html) records the existing
+[Work](work.md) owns the phase gate and QA ledger. The September 8 Home redesign shipped through PR 197 at `fbda95b`.
+CI browser checks and bounded production smoke passed for that release. The follow-up below is local and awaits visual QA. [Design-system reference](design-system.html) records the existing
 visual baseline until the owner changes it during that pass.
 
 ## Homepage flow
@@ -14,14 +14,15 @@ always placing stories above local setup and issues.
 
 | Order | No area selected | Area selected |
 | --- | --- | --- |
-| Introduction | "See how local government is changing" with selector at left and existing 3D Louisiana at right | "Showing X Parish" and Change area |
+| Introduction | "See how local government is changing" with selector at left and existing 3D Louisiana at right | No hero, begin with the issues heading |
 | First content | Across Louisiana, Meta lead with SpaceX and Boyce secondary | Issues in the selected parish |
 | Second content | Issues across covered areas | Across Louisiana with all three stories |
 | Records | Latest decision records | Latest decision records for the selected parish |
 | Footer | Brand, site links and compact dated voter information | Same footer |
 
 On mobile, stack the hero copy and selector above a short Louisiana visual.
-Hide the visual when the hero collapses after selection. Remember the chosen
+Use purple lighting on a transparent canvas so the page color shows through.
+Remove the entire hero after selection. Remember the chosen
 area on return visits. The selected parish controls Home even when an account
 has other saved areas. Selecting an area filters reading; it does not enroll
 someone in email alerts. Saved areas remain in Following.
@@ -37,16 +38,21 @@ outcome. Keep evidence limitations readable and actions distinct. Use a soft lav
 section. On phones, remove the outer section panel and nested padding. Give each
 issue nearly the full viewport width with a peek of the next card. Native touch
 swiping snaps to cards without arrow buttons. Cards share one height across the row, sized to fit the longest issue.
-A noninteractive dot index and current issue count sit below the row. Keep vertical page scrolling and keyboard access to every card. Decision
-records retain their compact layout. Stories, issues and records have separate
+A noninteractive dot index sits below the row. Announce the current issue count
+only to screen readers. Keep vertical page scrolling and keyboard access to every card. Decision
+records use a white list with larger titles, a separate meeting-date column on
+desktop, and neutral lifecycle badges. Move the date above the title on phones.
+Keep source limitations visible and each full row clickable. Stories, issues and records have separate
 failure boundaries.
 
 Desktop navigation retains its arrangement. Mobile has the brand and a top-right
-hamburger button opening a Coss right-side Sheet. The menu contains Home, Explore,
+hamburger button opening a floating Coss Popover. Use the animated hamburger-to-X
+paths and timing from the portfolio mobile menu, with a reduced-motion fallback.
+The menu contains Home, Explore,
 Ask, Following, Coverage, area selection and account settings. Omit the visible menu brand header. Anchor
-area and account controls at the bottom, separate from the scrolling navigation.
-Close, Escape,
-backdrop dismissal and focus return remain available. Remove bottom navigation
+area and account controls at the bottom of the panel. The same button closes
+the menu. Escape, outside dismissal and keyboard focus handling remain available.
+Constrain the panel to the viewport, with overflow available on short screens. Remove bottom navigation
 and its reserved space, including the Ask composer offset.
 
 One centered global spinner covers navigation and initial page-data loading.
@@ -54,6 +60,15 @@ Concurrent pending sections share that indicator. Settling or unmounting a
 section releases its loading registration. Do not use skeletons. Existing readable
 content stays available while another section loads. Button submissions and Ask
 answer generation retain their action-specific feedback.
+
+## Follow controls
+
+The chooser shows the target title once, compact cadence radio choices, and
+Google and email buttons. Omit repeated target, cadence and destination rows
+until confirmation, and omit explanatory subtext below the buttons. Keep the
+email-only account distinction above the email field. Confirmation receipts use
+compact rows. Aim to fit the ordinary steps without scrolling on portrait phones;
+retain overflow for short screens, text enlargement and long content.
 
 ## Story detail
 
@@ -107,13 +122,14 @@ The approved system uses Inter for headings and body text, with Geist Mono for
 technical metadata. Background is `#F7F6FA`, cards are `#FFFFFF`, headings are
 `#242131`, reading text is `#494352` and secondary text is `#6B6575`. Primary
 purple is `#6340A3`, hover purple is `#4F2F89` and selection lavender is `#EEE8F7`.
-Use `#FDFCFE` for the desktop issues section and `#EEEAF4` for the footer.
+Use `#FDFCFE` for the desktop issues section. The header, page and footer share
+`#F7F6FA` without shell border lines.
 Evidence labels and missing-date notices use the reading font. Missing dates
 remain neutral; actual dates may use purple.
 Purple marks actions, selection and focus. Green remains success and amber marks
 limitations. An approved government action is not a success judgment.
 
-Shared controls use Coss components on Base UI. The Home pass adds the Coss Sheet,
+Shared controls use Coss components on Base UI. The Home pass adds the Coss Popover, Sheet,
 Scroll Area and Input registry components to the existing Button and Badge.
 The design reference records the same palette and layout. Visual, contrast,
 keyboard and responsive QA remain pending until actually inspected.
@@ -177,3 +193,20 @@ as material story updates.
 PR 180 makes ordinary story URLs provide approved social metadata and open the
 interactive story directly. Legacy share links redirect. Verify actual
 Facebook previews before outreach; raw HTML inspection alone is not that proof.
+
+## Home fixture URLs
+
+Development fixtures run only on the local dev server. They replace issues and
+decision rows with sample data and omit the statewide story section. Use the
+normal Home URL for the complete layout and current published stories.
+
+| URL | Preview |
+| --- | --- |
+| `/?fixture=no-issues` | Empty issues with decision records below |
+| `/?fixture=degraded` | Delayed-source notice |
+| `/?fixture=signed-in` | Sample saved-area layout, without authenticating |
+| `/?fixture=section-failure` | Issue-section failure and retry |
+| `/?fixture=update` | New-record update notice and refresh |
+
+The saved parish still filters fixture content. With no parish saved, the
+signed-in fixture uses Lafayette and East Baton Rouge as sample saved areas.

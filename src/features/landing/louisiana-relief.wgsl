@@ -195,32 +195,6 @@ fn launch_pin_head_distance(map_point: vec2f) -> f32 {
   return min(lafayette, min(rapides, baton_rouge));
 }
 
-fn background(ro: vec3f, rd: vec3f, uv: vec2f) -> vec3f {
-  var color = vec3f(0.9804, 0.9804, 0.9765);
-
-  if (rd.y < -0.0001) {
-    let ground_time = (-0.18 - ro.y) / rd.y;
-    if (ground_time > 0.0) {
-      let ground_world = ro + rd * ground_time;
-      let ground = to_local(ground_world);
-      let map_point = vec2f(ground.x, -ground.z);
-      let outside = max(louisiana_distance(map_point), 0.0);
-      let depth_falloff = exp(-ground_time * 0.12);
-
-      let shadow = exp(-outside * 5.8) * depth_falloff;
-      color -= vec3f(0.060, 0.064, 0.078) * shadow;
-
-      let edge_tint = exp(-outside * 14.0);
-      let hot = ground_world.xz - flare_light().xz;
-      let hotspot = exp(-dot(hot, hot) * 1.9);
-      let radiance = edge_tint * (0.18 + hotspot * (0.30 + params.energy * 0.25));
-      color = mix(color, vec3f(0.42, 0.55, 1.0), min(radiance, 0.30));
-    }
-  }
-
-  return color;
-}
-
 @fragment fn fs_main(@location(0) uv: vec2f) -> @location(0) vec4f {
   let camera = vec3f(0.70, 7.60, 4.20);
   let look_at = vec3f(0.0, -0.02, -0.03);
@@ -264,35 +238,35 @@ fn background(ro: vec3f, rd: vec3f, uv: vec2f) -> vec3f {
     let wall = 1.0 - smoothstep(0.12, 0.6, abs(normal.y));
     let diffuse = max(dot(normal, to_light), 0.0);
 
-    let side_color = vec3f(0.035, 0.041, 0.055);
-    let top_color = vec3f(0.092, 0.112, 0.174);
+    let side_color = vec3f(0.045, 0.032, 0.065);
+    let top_color = vec3f(0.130, 0.085, 0.180);
     color = mix(side_color, top_color, top);
     color *= 0.68 + diffuse * 0.62;
 
     let seam = smoothstep(-EXTRUSION - 0.02, EXTRUSION - 0.01, local.y);
-    color += vec3f(0.05, 0.12, 0.38) * wall * seam * 0.5;
-    color += vec3f(0.55, 0.75, 1.60) * spec * wall * (1.1 + params.energy * 0.7);
+    color += vec3f(0.20, 0.07, 0.38) * wall * seam * 0.5;
+    color += vec3f(1.05, 0.65, 1.60) * spec * wall * (1.1 + params.energy * 0.7);
 
     let rim = pow(1.0 - max(dot(normal, view), 0.0), 2.4);
-    color += vec3f(0.10, 0.14, 0.28) * rim * (0.72 + params.energy * 0.25);
+    color += vec3f(0.20, 0.10, 0.30) * rim * (0.72 + params.energy * 0.25);
 
     let edge = abs(louisiana_distance(map_point));
     let breath = 0.85 + 0.15 * sin(params.time * 1.4);
     let led = exp(-edge * 90.0) * (0.45 + params.energy * 0.30) +
       exp(-edge * 320.0) * 0.85;
-    color += vec3f(0.25, 0.45, 1.25) * led * breath * (0.3 + 0.7 * top);
+    color += vec3f(0.75, 0.30, 1.25) * led * breath * (0.3 + 0.7 * top);
 
     let pin_distance = launch_pin_distance(map_point);
     let pin_head_distance = launch_pin_head_distance(map_point);
     let pin = 1.0 - smoothstep(-0.002, 0.008, pin_distance);
     let pin_halo = 1.0 - smoothstep(0.030, 0.062, pin_head_distance);
     let pin_core = 1.0 - smoothstep(0.010, 0.020, pin_head_distance);
-    color += vec3f(0.08, 0.20, 0.72) * pin_halo * top * (1.0 - pin) *
+    color += vec3f(0.40, 0.12, 0.72) * pin_halo * top * (1.0 - pin) *
       (0.8 + params.energy * 0.5);
-    color = mix(color, vec3f(0.45, 0.75, 1.90), pin * top);
-    color = mix(color, vec3f(1.50, 1.70, 2.10), pin_core * top);
+    color = mix(color, vec3f(1.10, 0.65, 1.90), pin * top);
+    color = mix(color, vec3f(1.90, 1.60, 2.10), pin_core * top);
   } else {
-    color = background(ray_origin, ray, uv);
+    return vec4f(0.0);
   }
 
   let grain = (hash12(uv * params.resolution + fract(params.time) * 41.7) - 0.5) * 0.005;

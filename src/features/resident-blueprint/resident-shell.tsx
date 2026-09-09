@@ -3,7 +3,6 @@ import {
   CircleUserRoundIcon,
   HouseIcon,
   MapPinIcon,
-  MenuIcon,
   MessageCircleQuestionIcon,
   SearchIcon,
 } from 'lucide-react'
@@ -25,14 +24,11 @@ import { parseResidentReturnTo } from '../resident-handoff/navigation'
 
 import { Button } from '../../components/ui/button'
 import {
-  Sheet,
-  SheetTrigger,
-  SheetPopup,
-  SheetHeader,
-  SheetTitle,
-  SheetFooter,
-  SheetPanel,
-} from '../../components/ui/sheet'
+  Popover,
+  PopoverTrigger,
+  PopoverPopup,
+  PopoverTitle,
+} from '../../components/ui/popover'
 
 import { LOUISIANA_OUTLINE_PATH } from '../landing/louisiana-path'
 
@@ -297,17 +293,30 @@ export function ResidentShell({ children }: { children: ReactNode }) {
 
 function MobileNavigation({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false)
+  const [areaOpen, setAreaOpen] = useState(false)
   const area = useArea()
   const desktop = useMediaQuery('(min-width: 64.0625rem)')
   useOverlay(open)
 
   useEffect(() => {
     setOpen(false)
+    setAreaOpen(false)
   }, [pathname, desktop])
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger
+    <Popover
+      open={open}
+      onOpenChange={(next, details) => {
+        // The area drawer has its own portal and focus manager. Keep its
+        // containing menu mounted while focus moves into that drawer.
+        if (!next && areaOpen) {
+          details.cancel()
+          return
+        }
+        setOpen(next)
+      }}
+    >
+      <PopoverTrigger
         render={
           <Button
             className="resident-menu-trigger"
@@ -315,50 +324,56 @@ function MobileNavigation({ pathname }: { pathname: string }) {
             variant="ghost"
           />
         }
-        aria-label="Open menu"
+        aria-label={open ? 'Close menu' : 'Open menu'}
+        data-open={open ? '' : undefined}
       >
-        <MenuIcon aria-hidden="true" />
-      </SheetTrigger>
-      <SheetPopup
-        className="resident-menu"
-        closeProps={{ 'aria-label': 'Close menu' }}
-      >
-        <SheetHeader className="resident-menu-heading">
-          <SheetTitle className="visually-hidden">Menu</SheetTitle>
-        </SheetHeader>
-        <SheetPanel>
-          <nav aria-label="Primary navigation" className="resident-menu-links">
-            {[
-              ...PRIMARY_NAVIGATION.slice(0, 3),
-              {
-                href: '/following',
-                icon: CircleUserRoundIcon,
-                label: 'Following',
-              },
-              PRIMARY_NAVIGATION[3],
-            ].map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                onClick={() => setOpen(false)}
-                aria-current={
-                  pathname === item.href || pathname.startsWith(`${item.href}/`)
-                    ? 'page'
-                    : undefined
-                }
-              >
-                <item.icon aria-hidden="true" />
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-        </SheetPanel>
-        <SheetFooter className="resident-menu-bottom">
+        <svg
+          className="resident-hamburger"
+          viewBox="0 0 32 32"
+          aria-hidden="true"
+        >
+          <path
+            className="resident-hamburger-line resident-hamburger-ends"
+            d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+          />
+          <path className="resident-hamburger-line" d="M7 16 27 16" />
+        </svg>
+      </PopoverTrigger>
+      <PopoverPopup className="resident-menu" align="end" sideOffset={12}>
+        <PopoverTitle className="visually-hidden">Menu</PopoverTitle>
+        <nav aria-label="Primary navigation" className="resident-menu-links">
+          {[
+            ...PRIMARY_NAVIGATION.slice(0, 3),
+            {
+              href: '/following',
+              icon: CircleUserRoundIcon,
+              label: 'Following',
+            },
+            PRIMARY_NAVIGATION[3],
+          ].map((item) => (
+            <Link
+              key={item.href}
+              to={item.href}
+              onClick={() => setOpen(false)}
+              aria-current={
+                pathname === item.href || pathname.startsWith(`${item.href}/`)
+                  ? 'page'
+                  : undefined
+              }
+            >
+              <item.icon aria-hidden="true" />
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="resident-menu-bottom">
           <div className="resident-menu-area">
             <p>
               {area ? `Showing ${areaName(area)}` : 'Choose your local area'}
             </p>
             <AreaSelector
+              open={areaOpen}
+              onOpenChange={setAreaOpen}
               trigger={(props) => (
                 <Button {...props} size="touch" variant="outline">
                   <MapPinIcon aria-hidden="true" />
@@ -374,9 +389,9 @@ function MobileNavigation({ pathname }: { pathname: string }) {
           >
             Account and notification settings
           </Link>
-        </SheetFooter>
-      </SheetPopup>
-    </Sheet>
+        </div>
+      </PopoverPopup>
+    </Popover>
   )
 }
 

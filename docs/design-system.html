@@ -15,7 +15,7 @@
         --card: #ffffff;
         --section: #fdfcfe;
         --body-foreground: #494352;
-        --footer: #eeeaf4;
+        --footer: var(--background);
         --foreground: #242131;
         --primary: #6340a3;
         --primary-hover: #4f2f89;
@@ -437,8 +437,9 @@
           <article class="panel">
             <h3>After choosing an area</h3>
             <p>
-              Show "Showing X Parish" and Change area. Hide the 3D Louisiana.
-              Put issues before Across Louisiana, with decision records below.
+              Remove the hero and 3D Louisiana. Begin with the parish issues
+              heading. Put issues before Across Louisiana, with decision records
+              below.
             </p>
             <p>
               Meta remains the lead story. SpaceX and Boyce use compact
@@ -454,11 +455,11 @@
         <p class="section-intro">
           Public Parish uses the Coss UI semantic token model. Deep purple marks
           primary actions, selection and focus. A lavender off-white page
-          surrounds near-white desktop sections and white cards. Mobile cards sit
-          directly on the page to preserve reading width. Dark plum carries
-          headings, softer ink carries body text, and muted text marks metadata. Green and
-          amber appear only for factual success, source health, and warning
-          states. Color never carries a status by itself.
+          surrounds near-white desktop sections and white cards. Mobile cards
+          sit directly on the page to preserve reading width. Dark plum carries
+          headings, softer ink carries body text, and muted text marks metadata.
+          Green and amber appear only for factual success, source health, and
+          warning states. Color never carries a status by itself.
         </p>
         <div class="swatches">
           <article class="swatch">
@@ -760,7 +761,7 @@
             <h3>Vertical space contract</h3>
             <ul>
               <li>The mobile top bar scrolls away with the page.</li>
-              <li>The top-right hamburger opens a Coss right-side Sheet.</li>
+              <li>The animated hamburger opens a floating Coss Popover.</li>
               <li>
                 The mobile header uses a 3.5 rem row with a 44-pixel menu
                 button. Home, Explore, Ask, Following and Coverage remain in the
@@ -768,7 +769,8 @@
               </li>
               <li>
                 Remove bottom navigation and its reserved space. Close, Escape
-                and backdrop dismissal return focus to the menu opener.
+                and outside dismissal remain available with keyboard focus
+                handling.
               </li>
               <li>
                 Do not stack a fixed notice, composer, and navigation bar over
@@ -1039,7 +1041,7 @@
         "mobileChrome": {
           "maximumInitialRemBeforeSafeAreas": 8,
           "topBar": "scrolls with page, maximum 3.5rem",
-          "navigation": "top-right hamburger opens Coss right-side Sheet",
+          "navigation": "animated top-right hamburger opens a floating Coss Popover",
           "bottomNavigation": "none"
         },
         "home": {
@@ -1049,15 +1051,10 @@
             "issues",
             "decision records"
           ],
-          "selected": [
-            "Showing area and Change area",
-            "issues",
-            "stories",
-            "decision records"
-          ],
+          "selected": ["issues", "stories", "decision records"],
           "reliefAfterSelection": "hidden",
           "loading": "one centered global spinner, no skeletons",
-          "mobileIssues": "horizontal swipe row",
+          "mobileIssues": "equal-height native snap row with a visible dot index",
           "mobileStories": "all full-sized",
           "voterInformation": "footer",
           "mobileMenu": "no visible brand header, area and account controls at bottom"
