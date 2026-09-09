@@ -1906,3 +1906,9 @@ preview checks covered a retained story draft, a sourced fixture answer, nested
 citation focus return, 320-pixel navigation and the rendered WebGPU model.
 Updated browser regressions, with automated checks still deferred to CI. No
 production change or paid Ask call was made.
+
+### 2026-09-09 - PR 199 validation
+
+Head `8231446` passed 671 application tests and 42 Chromium/WebKit journeys.
+Reviewed CI screenshots and removed a remaining purple quote rule in story
+source cards. The final revision awaits PR checks and authorized release.

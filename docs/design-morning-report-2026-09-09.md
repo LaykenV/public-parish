@@ -104,3 +104,11 @@ Following navigation at 320 pixels. The WebGPU homepage relief rendered in its
 new neutral colors. No paid Ask call was sent. A transient development hot-reload
 context error cleared after fresh navigation. Automated checks still await CI,
 and physical mobile keyboard behavior remains unverified.
+
+## PR validation follow-up
+
+PR 199 head `8231446` passed 671 application tests and all 42 Chromium/WebKit
+journeys. The saved mobile story screenshot revealed one purple quote rule
+inside a source card. It was removed before the final PR recheck. The review's
+unused Following prop finding was disproved by the active-tab attributes.
+Release and latest-head validation are recorded in the PR.

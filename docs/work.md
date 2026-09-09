@@ -18,8 +18,8 @@ Production verification remains pending.
 - [x] Repair current-body filter links, story citation focus, cramped email details,
   the short source-report drawer and hidden focus during sheet closing.
 - [x] Perform bounded native Chrome visual and keyboard checks and static diff review.
-- [ ] Run PR CI and review the new browser and body-parser regressions. Local
-  automated validation remains deferred under the repository instructions.
+- [x] PR 199 initial head passed 671 application tests and all 42 Chromium/WebKit
+  journeys. A final source-quote styling correction awaits latest-head checks.
 - [ ] Inspect authenticated owner workflows. Local Google sign-in did not complete.
 - [ ] Complete physical-device, screen-reader, offline/image-failure and founder QA.
 - [ ] Use the authorized merge after green checks, then verify the exact deployment
@@ -38,7 +38,8 @@ and focus return, the 320-pixel Following navigation and the rendered charcoal
 WebGPU model. Native Chrome controls became unreliable, so later checks used the
 app's dedicated preview. A development hot-reload context error cleared on a
 fresh route load; the subsequent fixture answer and source inspection completed.
-CI and physical-phone keyboard behavior remain pending. The story browser
+Initial PR CI passed; the latest-head recheck and physical-phone keyboard behavior
+remain pending. The story browser
 regressions now cover the mobile drawer and draft retention.
 
 ## Current checkpoint
