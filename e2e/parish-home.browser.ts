@@ -38,7 +38,7 @@ test('published parish records remain selectable with coverage limitations', asy
   )
   await page.goto('/')
   const menu = page.getByRole('button', { name: 'Open menu', exact: true })
-  if (await menu.isVisible()) {
+  if ((page.viewportSize()?.width ?? 1280) <= 1024) {
     await menu.click()
     await page.getByRole('button', { name: 'Change area', exact: true }).click()
   } else {
