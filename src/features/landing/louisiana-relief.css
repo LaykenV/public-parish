@@ -116,8 +116,8 @@
 }
 
 .relief-fallback-state {
-  fill: var(--foreground);
-  stroke: #080b11;
+  fill: #b9b0a0;
+  stroke: #7c7061;
   stroke-linejoin: round;
   stroke-width: 1.2;
 }

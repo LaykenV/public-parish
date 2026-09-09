@@ -238,8 +238,8 @@ fn launch_pin_head_distance(map_point: vec2f) -> f32 {
     let wall = 1.0 - smoothstep(0.12, 0.6, abs(normal.y));
     let diffuse = max(dot(normal, to_light), 0.0);
 
-    let side_color = vec3f(0.060, 0.058, 0.065);
-    let top_color = vec3f(0.160, 0.155, 0.175);
+    let side_color = vec3f(0.34, 0.31, 0.27);
+    let top_color = vec3f(0.66, 0.62, 0.55);
     color = mix(side_color, top_color, top);
     color *= 0.68 + diffuse * 0.62;
 
