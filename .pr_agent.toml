@@ -1,4 +1,4 @@
-# PR-Agent configuration — read from the repository root.
+# Shared PR-Agent defaults. The workflow selects two independent review models.
 # Docs: https://docs.pr-agent.ai/usage-guide/configuration_options/
 [config]
 model = "openrouter/z-ai/glm-5.3-flash"
@@ -8,7 +8,7 @@ fallback_models = ["openrouter/z-ai/glm-5.3-flash"]
 custom_model_max_tokens = 1000000
 # PR-Agent otherwise caps every model at 32K and prunes files from larger diffs.
 max_model_tokens = 1000000
-# v0.40+ feature: re-runs edit existing inline findings instead of posting duplicates.
+# Native publication defaults. Matrix reviews use separate workflow comments.
 persistent_inline_comments = true
 # Least-privilege: lets the workflow run with contents: read (no repo-write permission).
 restricted_mode = true

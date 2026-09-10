@@ -1,145 +1,119 @@
 # PR-Agent setup
 
-How this repo got an automated PR reviewer that costs a fraction of a cent per review,
-with no third-party SaaS touching the code.
+Public Parish runs two independent PR-Agent reviews through OpenRouter:
+GLM 5.3 Flash and DeepSeek V4.1 Flash. Each model owns one summary comment.
+GLM alone writes PR descriptions and answers `/ask` questions.
 
-## What runs
+The workflow uses `the-pr-agent/pr-agent@v0.43.0`. The upstream action's Dockerfile
+pulls `pragent/pr-agent:github_action`, a mutable image tag. The action release
+reference therefore does not pin the container contents. Recheck output and
+configuration compatibility when the upstream image changes.
 
-[PR-Agent](https://github.com/The-PR-Agent/pr-agent) reviews every pull request here.
-It is the original open-source reviewer (Apache 2.0, ~12.7k stars), community-maintained
-after Qodo split off its commercial product. That split matters: the Action runs from the
-open repo and calls the model we choose, so PR diffs go to OpenRouter and nowhere else.
-No Qodo account, no hosted app, no invitation-only tier.
+PR diffs go through OpenRouter to the selected model provider. This is a
+self-hosted GitHub Action, with no Qodo account or hosted review app.
 
-The model is `openrouter/z-ai/glm-5.3-flash`, routed through LiteLLM's `openrouter/`
-prefix. At setup time OpenRouter listed it at $0.075 per million input tokens and $0.25
-per million output tokens, with a 1,310,720-token context window.
+## Configuration
 
-Two files make it work:
+[.github/workflows/pr-agent.yml](.github/workflows/pr-agent.yml) defines the two
+review jobs as a matrix with `fail-fast: false`. A failure in one model does not
+cancel the other. Each job has a 20-minute timeout and a 32,768-token completion
+cap, including reasoning tokens. Both use the existing `OPENROUTER_API_KEY`
+Actions secret, passed as `OPENROUTER__KEY`. GitHub supplies `GITHUB_TOKEN`.
 
-- `.pr_agent.toml` sits in the repo root. PR-Agent reads it at runtime for model choice,
-  token limits, and which tools run on which events.
-- `.github/workflows/pr-agent.yml` triggers on `pull_request` and `issue_comment`
-  events and runs `the-pr-agent/pr-agent@v0.43.0`, pinned to a release tag.
+The workflow explicitly selects each model and repeats that same model in its
+fallback list. A failed DeepSeek call cannot turn into a second GLM review.
+OpenRouter can still route between providers serving the selected model.
+DeepSeek prefers its own provider through OpenRouter. The first live attempt
+hit shared-pool rate limits at Novita, Venice, and DeepInfra, so that route
+preference avoids starting with those pools. Provider fallback remains enabled.
+Fallback providers can charge more than the direct-provider rates below.
+DeepSeek uses low reasoning effort. Its first successful inference exhausted
+the 32,768-token completion cap on reasoning without returning review text.
+The publisher rejected that empty result; the total output cap remains in place.
 
-One secret is required: `OPENROUTER_API_KEY` (Settings → Secrets and variables →
-Actions). `GITHUB_TOKEN` is provided automatically. The workflow passes it to PR-Agent
-as `OPENROUTER__KEY`, because PR-Agent maps double underscores to config sections.
+[.pr_agent.toml](.pr_agent.toml) holds shared review settings and the GLM default
+for commands. Workflow environment overrides take precedence over that file.
+Both reviewers use a 900,000-token input ceiling and a 1,000,000-token custom
+model limit. This leaves response room within DeepSeek's 1,048,576-token context.
+PR-Agent can still prune a diff larger than the configured ceiling.
 
-## Config choices worth explaining
+## Events and commands
 
-Two settings raise the review ceiling to one million tokens. They do different jobs.
-`custom_model_max_tokens = 1000000` tells PR-Agent how much context GLM supports because
-the model is not in PR-Agent's built-in token table. `max_model_tokens = 1000000`
-replaces PR-Agent's separate 32,000-token quality cap. Without the second setting,
-PR-Agent prunes larger diffs even though the model can accept them. One million leaves
-room inside the model's 1.31M-token context window for the response.
+| Event                                             | Behavior                                                             |
+| ------------------------------------------------- | -------------------------------------------------------------------- |
+| PR opened, reopened, or marked ready              | Both models review. GLM generates the description in a separate job. |
+| Push to an open PR                                | Both models review. No description rewrite.                          |
+| Exact comment `/review`                           | Both models review the current head.                                 |
+| Exact comment `/describe`                         | GLM updates the description.                                         |
+| Comment starting with `/ask `                     | GLM answers the question.                                            |
+| Ordinary discussion, bot comments, other commands | No model call.                                                       |
 
-`persistent_inline_comments = true` (a v0.40 feature) stops the same finding from being
-posted again on every push. `persistent_comment = true` keeps the score-and-summary as a
-single comment that gets rewritten instead of a thread of stale reviews. Together they
-make the fix-push-recheck loop usable: the review reflects the latest commit, and you
-never scroll a changelog of dead scores.
+The workflow accepts only the commands listed above. `/review` arguments and
+`/review -i` are unsupported. Full reviews keep both models on the same PR head.
+New pushes or `/review` requests cancel stale review runs. Ordinary discussion
+has a separate concurrency key so it cannot cancel an active review. Description
+and question commands do not cancel reviews.
 
-`restricted_mode = true` lets the workflow run with `contents: read`. Without it,
-PR-Agent's examples ask for `contents: write`, which a review bot does not need.
+## Separate review comments
 
-The `[openrouter] provider_only = ["z-ai"]` line is commented out. It would pin routing
-to Z.ai's infrastructure. The default routing works, so it stays off until there is a
-reason to turn it on.
+PR-Agent's native persistent review lookup matches a shared heading. Two models
+using that lookup could overwrite one another. The review jobs therefore set
+`config.publish_output = false` and request the action's structured `review`
+output. A GitHub Script step publishes each model's result with its own marker:
 
-## Event flow
+- `<!-- public-parish-review:glm -->`
+- `<!-- public-parish-review:deepseek -->`
 
-The behavior comes from both files and one non-obvious fact about the runner.
+The publisher updates only the matching `github-actions[bot]` comment. It
+includes the model name, reviewed commit, findings with commit-specific source
+links, and the full structured result in a collapsible section. Findings remain
+in these summaries. The dual review jobs do not create inline threads or labels.
+The old single-review comment, if present, stays as historical output.
 
-| Event                                           | What runs                                                     |
-| ----------------------------------------------- | ------------------------------------------------------------- |
-| PR opened, reopened, or marked ready            | `/describe` and `/review`, one LLM call each                  |
-| Push to an open PR                              | `/review` only, via `handle_push_trigger` and `push_commands` |
-| Comment `/review`, `/describe`, or `/ask "..."` | That tool, on demand                                          |
+Missing output, malformed findings, and oversized comments fail the job. A PR
+that closes or changes head during review also fails publication, so old output
+cannot be presented as a review of the new commit. An earlier successful summary
+keeps its original commit link if a later run fails. Read both check results and
+commit links before treating the latest head as reviewed.
 
-The non-obvious part: the original setup guide suggested putting `synchronize` in both
-`pr_actions` and the workflow trigger types while also setting `handle_push_trigger =
-true`. That looks like a double-run waiting to happen. Reading
-`pr_agent/servers/github_action_runner.py` settled it. The runner handles `synchronize`
-before it checks `pr_actions`, runs the push commands, and returns. The `synchronize`
-entry in `pr_actions` is inert. Nothing runs twice.
+The script lives inside the workflow. The publication job does not check out or
+execute code from the PR. PR-Agent still loads repository instructions and diffs
+through GitHub's API.
 
-Two guards matter. The job's `if: github.event.sender.type != 'Bot'` condition stops
-the agent's own comments from retriggering it, which would otherwise loop forever on
-`issue_comment`. The `concurrency` group cancels a stale run when you push again before
-the previous review finishes.
+## Price reference, September 10, 2026
 
-A bonus from v0.39: PR-Agent feeds the repo's `AGENTS.md` to the reviewer by default,
-so this project's conventions reach the model without any extra wiring.
+OpenRouter's live model catalog listed the following dollars per million tokens.
+Rates can change, and actual charges depend on routing, cache hits, and reasoning.
+GLM's old $0.075 input and $0.25 output launch discount has ended.
 
-## Verification
+| Model                         | Uncached input | Output | Cached input |
+| ----------------------------- | -------------: | -----: | -----------: |
+| GLM 5.3 Flash                 |          $0.15 |  $0.50 |        $0.03 |
+| DeepSeek V4.1 Flash, off-peak |          $0.15 |  $0.60 |       $0.003 |
+| DeepSeek V4.1 Flash, peak     |          $0.30 |  $1.20 |       $0.006 |
 
-A throwaway PR (`#1`) with a markdown file containing two planted issues put the
-pipeline through its paces:
+DeepSeek peak hours are weekdays 01:00 to 04:00 and 06:00 to 10:00 UTC.
+At 50,000 uncached input tokens and 5,000 billed output tokens per model, the
+pair costs $0.0205 off-peak or $0.031 at peak. Description generation, retries,
+and GitHub runner costs are separate.
 
-- First run: the bot posted a description and a review with a score of 85. It caught the
-  planted impossible date (`2026-02-30`) and correctly refused to treat the second
-  planted issue as real, since the referenced `let` variable existed only in the prose.
-  End-to-end runtime was 2 minutes 25 seconds.
-- A fix commit went up without any manual trigger. The workflow re-ran `/review`,
-  edited the existing review comment in place, raised the score to 92, and dropped the
-  resolved finding. No duplicate inline comments.
-- The action logs confirmed every call was served by
-  `openrouter/z-ai/glm-5.3-flash`.
-- Three LLM calls total, less than half a cent on the OpenRouter dashboard.
-- Later production reviews exposed PR-Agent's separate 32,000-token cap. Diffs with
-  41,590, 43,233, and 63,145 tokens all logged `pruning diff` even though
-  `custom_model_max_tokens` was already one million. Setting `max_model_tokens` to one
-  million moved those diff sizes below the pruning threshold.
-- Full-context runtime grows with the diff. PR #24's large resident-interface
-  review took 7 minutes 8 seconds and completed normally. Babysitting should set
-  a six-to-nine-minute expectation for large PRs instead of applying the
-  throwaway PR's 2-minute-25-second timing to every review.
+Sources: [OpenRouter live model catalog](https://openrouter.ai/api/v1/models)
+and [DeepSeek pricing](https://api-docs.deepseek.com/quick_start/pricing/).
 
-## Notes for future changes
+## Validation and rollout
 
-- Both files must be on the default branch before the bot activates on new PRs.
-- If a review appears to omit files, inspect the Action log for `total tokens over
-limit` and `pruning diff`. The model-capacity setting and PR-Agent's own cap are
-  independent.
-- Each push leaves a one-line "Persistent review updated" stub comment under the
-  main review. The summary itself never duplicates, but stubs do accumulate on
-  busy PRs.
-- The `fallback_models` entry repeats the primary model, which acts as a retry. A real
-  fallback (for example `openrouter/z-ai/glm-5.3`) is a one-line change if Flash is ever
-  unavailable.
-- To upgrade, bump the tag in the workflow file. Check the
-  [releases page](https://github.com/The-PR-Agent/pr-agent/releases) for breaking
-  changes first.
+`scripts/pr-agent.test.mjs` executes the publisher embedded in the workflow with
+mock GitHub responses. It covers separate model comments, updates, copied user
+markers, stale commits, closed PRs, malformed output, empty reviews, source links,
+and comment size limits. Run it with `npx vitest run scripts/pr-agent.test.mjs`.
+These checks do not call a model or publish GitHub comments.
 
-## The agent loop around the bot
+The workflow must reach the default branch before the setup is fully active,
+including manual comment triggers. After release, verify both model names in the
+Action logs, two separate summaries on one head, and in-place updates after a
+push. Confirm `/describe` still runs once and `/review` reruns both models.
+Local tests do not prove model availability or live billing.
 
-Two local skills (in `.agents/skills/`, mirrored into `.claude/skills/`) turn
-the bot into Theo's T3-style PR flow. The human prompt collapses to
-"diagnose and fix, file and babysit".
-
-- `file-pr` runs the pre-flight (clean tree, existing-PR check,
-  `git diff --check`, diff read), writes the title and problem-first body, and
-  opens a real PR. It leaves tests, typechecks, builds, and lint to GitHub
-  Actions so parallel local reviewers do not compete for the developer's CPU.
-  The body survives `/describe` because PR-Agent keeps user content above its
-  generated section (`add_original_user_description`, default true) and only
-  rewrites the title when `generate_ai_title` is on (default false). Editing the
-  body while the bot runs can race and lose text, so the skill files the final
-  body in one `gh pr create` call.
-- `babysit-pr` polls checks, review threads, and labels newer than the last
-  push, verifies every bot finding against source, fixes real ones, dismisses
-  false positives with a written reason and a resolved thread, and repeats
-  until the review is clean on the latest commit. At the start of every thread,
-  it tells the user that small reviews often take two to three minutes and large
-  full-context reviews normally take six to nine. It reports active wait status
-  at least once a minute. Use existing explicit merge authorization from the
-  session. If it is missing, explain that merging deploys production and ask
-  for approval. After an authorized merge, watch the `Deploy production`
-  workflow for the exact merge commit and run `npm run smoke:production`
-  independently. Preserve concurrent worktrees and local changes throughout.
-
-The PR-shape rules (one concern, no drafts, no scope growth) also live in
-`AGENTS.md` as standing law, which PR-Agent feeds to the reviewer on every
-pass (a v0.39+ default).
+During the first 10 to 20 PRs, compare confirmed bugs unique to each model, false
+positives, review time, and actual costs. Verify each finding against source.
+The review score is a model opinion, not a merge gate.

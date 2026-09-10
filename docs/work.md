@@ -1,9 +1,23 @@
 # Current work and launch gates
 
-Updated September 9, 2026. This is the only active status and pending-work queue.
+Updated September 10, 2026. This is the only active status and pending-work queue.
 The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
+
+## Parallel PR reviews, September 10
+
+[PR #201](https://github.com/LaykenV/public-parish/pull/201) adds independent GLM 5.3 Flash and DeepSeek V4.1 Flash
+reviews. Each model updates its own summary comment. GLM retains descriptions
+and questions. Publisher tests and workflow lint pass. See [PR-Agent setup](../pr-agent.md).
+
+- [ ] Merge after checks and reviews pass. Full application CI and the first GLM
+      review passed and updated its existing comment after a push. DeepSeek hit
+      upstream rate limits and an empty response after exhausting its reasoning
+      allowance. A retry with low reasoning effort awaits verification.
+- [ ] Verify two model summaries on the same commit, updates after a push, and
+      manual commands. Compare unique confirmed bugs, false positives, time, and
+      cost during the first 10 to 20 PRs.
 
 ## Overnight resident design pass, September 9
 

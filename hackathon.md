@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-09T14:08:27Z
+- **Last updated:** 2026-09-10T14:22:26Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -21,6 +21,16 @@ Demo video: not recorded yet. The final submission link remains pending.
 Current status and pending work are in [docs/work.md](docs/work.md). The entries
 below preserve their original release context and repository paths. Earlier
 plans are indexed in [the archive](docs/archive/README.md).
+
+### 2026-09-10 - Local PR review tooling
+
+Prepared parallel GLM 5.3 Flash and DeepSeek V4.1 Flash reviews with separate
+persistent summaries, commit checks, and bounded runs. Fifteen publisher tests
+and Actionlint pass. This is development tooling, with no change to the app's
+model roles or deployment. GitHub publication and live model verification remain
+pending in [docs/work.md](docs/work.md). The requested local
+`convex-hackathon-skill` was unavailable on this machine, so this entry records
+the repository evidence directly.
 
 ### 2026-09-04 - 2fa1cff
 
