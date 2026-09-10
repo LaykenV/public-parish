@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-10T15:15:47Z
+- **Last updated:** 2026-09-10T22:54:45Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -1947,3 +1947,10 @@ Raised its output cap to 131,072 tokens and reserved context space with an
 850,000-token input ceiling. GLM settings are unchanged. Fifteen publisher
 tests and Actionlint passed. This change is local; live verification is pending.
 The copied hackathon skill is now available and was used for this update.
+
+### 2026-09-10 - working tree, mobile navigation
+
+Added a 48-pixel sticky mobile header with blur after scrolling and a full-screen
+navigation menu. Eight Chromium and WebKit checks cover Escape, focus return, nested area selection
+and retained reading position at 320 and 375 pixels. Build, typecheck and lint pass.
+PR checks and development deployment are pending. Production is unchanged.

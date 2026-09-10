@@ -56,6 +56,9 @@ test('published parish records remain selectable with coverage limitations', asy
   })
   await choice.click()
   await expect(dialog).not.toBeVisible()
+  if ((page.viewportSize()?.width ?? 1280) <= 1024) {
+    await page.getByRole('button', { name: 'Close menu', exact: true }).click()
+  }
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'Issues in Rapides Parish',
   )
@@ -225,5 +228,64 @@ for (const width of [320, 375]) {
         fullPage: true,
       })
     }
+  })
+}
+
+for (const viewport of [
+  { width: 375, height: 812 },
+  { width: 320, height: 480 },
+]) {
+  test(`mobile navigation stays available while reading at ${viewport.width}px`, async ({
+    page,
+  }, testInfo) => {
+    await page.setViewportSize(viewport)
+    await page.goto('/how-it-works')
+    const header = page.locator('.resident-header')
+    const opener = page.getByRole('button', { name: 'Open menu', exact: true })
+    await expect(header).not.toHaveAttribute('data-scrolled')
+    await page.evaluate(() => window.scrollTo(0, 650))
+    await expect(header).toHaveAttribute('data-scrolled', 'true')
+    const scrollY = await page.evaluate(() => window.scrollY)
+    expect(scrollY).toBeGreaterThan(0)
+    await expect
+      .poll(() => header.evaluate((node) => node.getBoundingClientRect().top))
+      .toBe(0)
+    expect((await header.boundingBox())?.height).toBe(48)
+    await page.screenshot({
+      path: testInfo.outputPath('mobile-scrolled-header.png'),
+    })
+    await opener.click()
+    const menu = page.getByRole('dialog', { name: 'Menu', exact: true })
+    await expect(menu).toBeVisible()
+    expect((await menu.boundingBox())?.height).toBe(viewport.height)
+    await page.screenshot({ path: testInfo.outputPath('mobile-full-menu.png') })
+    await menu.getByRole('button', { name: 'Change area', exact: true }).click()
+    const area = page.getByRole('dialog', { name: 'Choose a parish or city' })
+    await expect(area).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(area).not.toBeVisible()
+    await expect(
+      menu.getByRole('button', { name: 'Change area', exact: true }),
+    ).toBeFocused()
+    await menu
+      .getByRole('link', { name: 'Account and notification settings' })
+      .focus()
+    await page.keyboard.press('Tab')
+    await expect(
+      menu.getByRole('button', { name: 'Close menu', exact: true }),
+    ).toBeFocused()
+    await page.keyboard.press('Escape')
+    await expect(menu).not.toBeVisible()
+    await expect(opener).toBeFocused()
+    await expect
+      .poll(async () =>
+        Math.abs((await page.evaluate(() => window.scrollY)) - scrollY),
+      )
+      .toBeLessThanOrEqual(1)
+    await page.evaluate(() => window.scrollTo(0, 0))
+    await expect(header).not.toHaveAttribute('data-scrolled')
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBe(viewport.width)
   })
 }
