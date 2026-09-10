@@ -355,7 +355,7 @@ function MobileNavigation({ pathname }: { pathname: string }) {
                 {
                   href: '/following',
                   icon: CircleUserRoundIcon,
-                  label: 'Following',
+                  label: 'Account',
                 },
                 PRIMARY_NAVIGATION[3],
               ].map((item) => (
@@ -370,6 +370,7 @@ function MobileNavigation({ pathname }: { pathname: string }) {
                       : undefined
                   }
                 >
+                  <item.icon aria-hidden="true" />
                   {item.label}
                 </Link>
               ))}
@@ -385,20 +386,18 @@ function MobileNavigation({ pathname }: { pathname: string }) {
                   open={areaOpen}
                   onOpenChange={setAreaOpen}
                   trigger={(props) => (
-                    <Button {...props} size="touch" variant="outline">
+                    <Button
+                      {...props}
+                      className="resident-menu-area-button"
+                      size="touch"
+                      variant="outline"
+                    >
                       <MapPinIcon aria-hidden="true" />
                       Change area
                     </Button>
                   )}
                 />
               </div>
-              <Link
-                className="resident-menu-account"
-                to="/following"
-                onClick={() => setOpen(false)}
-              >
-                Account and notification settings
-              </Link>
             </div>
           </div>
         </Dialog.Popup>

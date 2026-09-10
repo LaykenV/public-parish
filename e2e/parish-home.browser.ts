@@ -135,13 +135,14 @@ test('home introduces Louisiana stories and switches to local issues after selec
 test('mobile menu closes with Escape and returns focus to its opener', async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.setViewportSize({ width: 375, height: 812 })
   await page.goto('/')
   const opener = page.getByRole('button', { name: 'Open menu', exact: true })
   await opener.click()
   const menu = page.getByRole('dialog', { name: 'Menu', exact: true })
   await expect(
-    menu.getByRole('link', { name: 'Following', exact: true }),
+    menu.getByRole('link', { name: 'Account', exact: true }),
   ).toBeVisible()
   const close = page.getByRole('button', { name: 'Close menu', exact: true })
   await expect(close).toBeVisible()
@@ -272,9 +273,7 @@ for (const viewport of [
     await expect(
       menu.getByRole('button', { name: 'Change area', exact: true }),
     ).toBeFocused()
-    await menu
-      .getByRole('link', { name: 'Account and notification settings' })
-      .focus()
+    await menu.getByRole('button', { name: 'Change area', exact: true }).focus()
     await page.keyboard.press('Tab')
     await expect(
       menu.getByRole('button', { name: 'Close menu', exact: true }),

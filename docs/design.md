@@ -54,11 +54,16 @@ uses a translucent lavender background, blur and a faint bottom border. Browsers
 without blur support retain a solid background. Keep 44-pixel touch targets.
 
 The menu opens as a full-screen modal with large text links for Home, Explore,
-Ask, Following and Coverage. Area selection and account settings sit below the
-links. A close button occupies the opener's position. Escape closes the menu
+Ask, Account and Coverage, each with its navigation icon. The mobile Account
+link opens the existing Following page. Desktop labels stay unchanged. A full-width,
+56-pixel Change area button sits below the links. Omit the duplicate settings link. A close button occupies the opener's position. Escape closes the menu
 and returns focus without losing the reading position. Trap focus and lock page
 scrolling while open. The menu body scrolls on short screens; its close control
 stays visible. Preserve nested area selection and reduced-motion support.
+The menu expands down from the header over 420ms with a cubic ease. Links fade
+in with short staggered delays. The two button lines meet, then rotate into an X
+over 240ms; closing reverses the sequence. Reduced motion removes the animation.
+The scrolled header uses 72 percent background opacity with 20-pixel blur.
 There is no bottom navigation or reserved space for it.
 
 One centered global spinner covers navigation and initial page-data loading.

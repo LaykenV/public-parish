@@ -13,6 +13,8 @@ adds a 48-pixel header with blur after scrolling and large menu links.
 Production release is not authorized for this task.
 
 - [x] Implement the header, modal menu and nested area selector.
+- [x] Apply the owner's follow-up: more transparency, nav icons, mobile Account,
+  larger Change area and Apple-style expansion with a two-stage menu icon.
 - [x] Check phone screenshots and pass eight navigation checks in Chromium and WebKit.
 - [ ] Pass latest-head CI and both PR reviews, then upload the verified development artifact.
 - [ ] Owner tests the development URL on a physical phone.

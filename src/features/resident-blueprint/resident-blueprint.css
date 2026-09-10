@@ -82,11 +82,11 @@
   box-shadow: 0 1px 0 color-mix(in srgb, var(--border) 65%, transparent);
 }
 
-@supports (backdrop-filter: blur(16px)) or (-webkit-backdrop-filter: blur(16px)) {
+@supports (backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px)) {
   .resident-header[data-scrolled] {
-    background: color-mix(in srgb, var(--background) 85%, transparent);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
+    background: color-mix(in srgb, var(--background) 72%, transparent);
+    -webkit-backdrop-filter: saturate(1.8) blur(20px);
+    backdrop-filter: saturate(1.8) blur(20px);
   }
 }
 
@@ -272,24 +272,23 @@
 }
 
 .resident-menu {
+  --menu-header-height: calc(3rem + env(safe-area-inset-top));
   position: fixed;
   inset: 0;
   z-index: 50;
   display: flex;
   flex-direction: column;
   height: 100dvh;
+  overflow: hidden;
   background: var(--background);
   color: var(--foreground);
   outline: none;
-  transition:
-    opacity 180ms ease,
-    transform 180ms ease;
+  transition: height 420ms cubic-bezier(0.4, 0, 0.6, 1);
 }
 
 .resident-menu[data-starting-style],
 .resident-menu[data-ending-style] {
-  opacity: 0;
-  transform: translateY(-0.5rem);
+  height: var(--menu-header-height);
 }
 
 .resident-menu-head {
@@ -303,9 +302,10 @@
 
 .resident-menu-body {
   display: flex;
-  flex: 1;
+  flex: none;
   flex-direction: column;
   gap: 2rem;
+  height: calc(100dvh - var(--menu-header-height));
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -396,14 +396,142 @@
   font-size: var(--pp-text-small);
 }
 
-.resident-menu-account {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--pp-control-height);
-  margin-top: 0.25rem;
-  color: var(--primary);
-  font-size: var(--pp-text-small);
-  text-underline-offset: 0.25em;
+.resident-menu-area-button {
+  width: 100%;
+  min-height: 3.5rem;
+  justify-content: flex-start;
+  padding-inline: 1rem;
+  font-size: 1.125rem;
+}
+
+.resident-menu-area-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.resident-menu-links svg {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke-width: 1.6;
+}
+
+.resident-menu-links a,
+.resident-menu-bottom {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 240ms ease-out,
+    transform 320ms ease-out;
+  transition-delay: 80ms;
+}
+
+.resident-menu-links a:nth-child(2) {
+  transition-delay: 100ms;
+}
+.resident-menu-links a:nth-child(3) {
+  transition-delay: 120ms;
+}
+.resident-menu-links a:nth-child(4) {
+  transition-delay: 140ms;
+}
+.resident-menu-links a:nth-child(5) {
+  transition-delay: 160ms;
+}
+
+.resident-menu[data-starting-style] .resident-menu-links a,
+.resident-menu[data-starting-style] .resident-menu-bottom {
+  opacity: 0;
+  transform: translateY(-0.5rem);
+}
+
+.resident-menu[data-ending-style] .resident-menu-links a,
+.resident-menu[data-ending-style] .resident-menu-bottom {
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  transition-duration: 160ms;
+  transition-delay: 0ms;
+}
+
+.resident-menu .resident-hamburger-line:first-child {
+  animation: menu-top-open 240ms both;
+}
+
+.resident-menu .resident-hamburger-line:last-child {
+  animation: menu-bottom-open 240ms both;
+}
+
+.resident-menu[data-ending-style] .resident-hamburger-line:first-child {
+  animation-name: menu-top-close;
+}
+
+.resident-menu[data-ending-style] .resident-hamburger-line:last-child {
+  animation-name: menu-bottom-close;
+}
+
+@keyframes menu-top-open {
+  0% {
+    transform: translateY(0) rotate(0);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: translateY(4px) rotate(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: translateY(4px) rotate(45deg);
+  }
+}
+
+@keyframes menu-bottom-open {
+  0% {
+    transform: translateY(0) rotate(0);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: translateY(-4px) rotate(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+}
+
+@keyframes menu-top-close {
+  0% {
+    transform: translateY(4px) rotate(45deg);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: translateY(4px) rotate(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+}
+
+@keyframes menu-bottom-close {
+  0% {
+    transform: translateY(-4px) rotate(-45deg);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: translateY(-4px) rotate(0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resident-menu .resident-hamburger-line,
+  .resident-menu .resident-menu-links a,
+  .resident-menu .resident-menu-bottom {
+    animation: none;
+    transition: none;
+  }
 }
 
 .resident-footer {

@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-10T22:54:45Z
+- **Last updated:** 2026-09-10T23:20:12Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -1956,3 +1956,12 @@ and retained reading position at 320 and 375 pixels. Build, typecheck and lint p
 The first CI pass exposed font swapping during the scroll test; the test now waits
 for fonts before recording its starting position. PR checks and development
 deployment are pending. Production is unchanged.
+
+### 2026-09-10 - working tree, mobile menu refinements
+
+Applied the owner's phone-test feedback: more header transparency, restored nav
+icons, Account as the mobile label, and a larger Change area button without the
+duplicate settings link. Inspected Apple's live mobile menu and matched its
+expanding panel and two-stage menu icon motion. Updated browser checks retain
+reduced-motion coverage and exercise normal animation. Eight targeted Chromium
+and WebKit checks, build, typecheck and targeted lint passed. PR CI is pending.
