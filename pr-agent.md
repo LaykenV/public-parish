@@ -16,8 +16,9 @@ self-hosted GitHub Action, with no Qodo account or hosted review app.
 
 [.github/workflows/pr-agent.yml](.github/workflows/pr-agent.yml) defines the two
 review jobs as a matrix with `fail-fast: false`. A failure in one model does not
-cancel the other. Each job has a 20-minute timeout and a 32,768-token completion
-cap, including reasoning tokens. Both use the existing `OPENROUTER_API_KEY`
+cancel the other. Each job has a 20-minute timeout. GLM has a 32,768-token
+completion cap; DeepSeek has a 131,072-token completion cap. Both caps include
+reasoning tokens. Both use the existing `OPENROUTER_API_KEY`
 Actions secret, passed as `OPENROUTER__KEY`. GitHub supplies `GITHUB_TOKEN`.
 
 The workflow explicitly selects each model and repeats that same model in its
@@ -27,14 +28,17 @@ DeepSeek prefers its own provider through OpenRouter. The first live attempt
 hit shared-pool rate limits at Novita, Venice, and DeepInfra, so that route
 preference avoids starting with those pools. Provider fallback remains enabled.
 Fallback providers can charge more than the direct-provider rates below.
-DeepSeek uses low reasoning effort. Its first successful inference exhausted
-the 32,768-token completion cap on reasoning without returning review text.
-The publisher rejected that empty result; the total output cap remains in place.
+DeepSeek uses high reasoning effort at the owner's request. An earlier inference
+exhausted the old 32,768-token cap on reasoning without returning review text.
+Its new 131,072-token cap leaves more room for reasoning and the final review.
+High effort is not a fixed reasoning-token allocation. Empty output still fails
+publication. GLM continues to use its provider's default reasoning effort.
 
 [.pr_agent.toml](.pr_agent.toml) holds shared review settings and the GLM default
 for commands. Workflow environment overrides take precedence over that file.
-Both reviewers use a 900,000-token input ceiling and a 1,000,000-token custom
-model limit. This leaves response room within DeepSeek's 1,048,576-token context.
+GLM uses a 900,000-token input ceiling; DeepSeek uses 850,000 tokens. Both use
+a 1,000,000-token custom model limit. DeepSeek's lower input ceiling reserves
+space for its larger output cap, including on routes with a 1,000,000-token context.
 PR-Agent can still prune a diff larger than the configured ceiling.
 
 ## Events and commands
