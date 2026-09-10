@@ -240,6 +240,11 @@ for (const viewport of [
   }, testInfo) => {
     await page.setViewportSize(viewport)
     await page.goto('/how-it-works')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      'How Public Parish works',
+    )
+    // Font swapping changes paragraph heights independently of menu scrolling.
+    await page.evaluate(() => document.fonts.ready)
     const header = page.locator('.resident-header')
     const opener = page.getByRole('button', { name: 'Open menu', exact: true })
     await expect(header).not.toHaveAttribute('data-scrolled')

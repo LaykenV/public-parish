@@ -1953,4 +1953,6 @@ The copied hackathon skill is now available and was used for this update.
 Added a 48-pixel sticky mobile header with blur after scrolling and a full-screen
 navigation menu. Eight Chromium and WebKit checks cover Escape, focus return, nested area selection
 and retained reading position at 320 and 375 pixels. Build, typecheck and lint pass.
-PR checks and development deployment are pending. Production is unchanged.
+The first CI pass exposed font swapping during the scroll test; the test now waits
+for fonts before recording its starting position. PR checks and development
+deployment are pending. Production is unchanged.

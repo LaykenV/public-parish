@@ -8,8 +8,8 @@ The approved order is stories, then design and QA, then launch and outreach.
 ## Mobile navigation, September 10
 
 The owner requested a compact sticky header and full-screen menu, followed by a
-PR, review monitoring and development deployment for phone testing. The working
-branch adds a 48-pixel header with blur after scrolling and large menu links.
+PR, review monitoring and development deployment for phone testing. [PR #203](https://github.com/LaykenV/public-parish/pull/203)
+adds a 48-pixel header with blur after scrolling and large menu links.
 Production release is not authorized for this task.
 
 - [x] Implement the header, modal menu and nested area selector.
