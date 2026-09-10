@@ -27,6 +27,9 @@ DeepSeek prefers its own provider through OpenRouter. The first live attempt
 hit shared-pool rate limits at Novita, Venice, and DeepInfra, so that route
 preference avoids starting with those pools. Provider fallback remains enabled.
 Fallback providers can charge more than the direct-provider rates below.
+DeepSeek uses low reasoning effort. Its first successful inference exhausted
+the 32,768-token completion cap on reasoning without returning review text.
+The publisher rejected that empty result; the total output cap remains in place.
 
 [.pr_agent.toml](.pr_agent.toml) holds shared review settings and the GLM default
 for commands. Workflow environment overrides take precedence over that file.

@@ -12,8 +12,9 @@ reviews. Each model updates its own summary comment. GLM retains descriptions
 and questions. Publisher tests and workflow lint pass. See [PR-Agent setup](../pr-agent.md).
 
 - [ ] Merge after checks and reviews pass. Full application CI and the first GLM
-      review passed. DeepSeek hit upstream shared-pool rate limits; a retry with
-      preference for the DeepSeek provider awaits verification.
+      review passed and updated its existing comment after a push. DeepSeek hit
+      upstream rate limits and an empty response after exhausting its reasoning
+      allowance. A retry with low reasoning effort awaits verification.
 - [ ] Verify two model summaries on the same commit, updates after a push, and
       manual commands. Compare unique confirmed bugs, false positives, time, and
       cost during the first 10 to 20 PRs.

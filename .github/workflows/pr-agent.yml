@@ -25,10 +25,12 @@ jobs:
             label: GLM 5.3 Flash
             model: openrouter/z-ai/glm-5.3-flash
             provider_order: '[]'
+            reasoning_effort: ''
           - reviewer: deepseek
             label: DeepSeek V4.1 Flash
             model: openrouter/deepseek/deepseek-v4.1-flash
             provider_order: '["deepseek"]'
+            reasoning_effort: low
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -56,6 +58,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENROUTER__KEY: ${{ secrets.OPENROUTER_API_KEY }}
           OPENROUTER__PROVIDER_ORDER: ${{ matrix.provider_order }}
+          OPENROUTER__REASONING_EFFORT: ${{ matrix.reasoning_effort }}
           CONFIG__MODEL: ${{ matrix.model }}
           CONFIG__FALLBACK_MODELS: '["${{ matrix.model }}"]'
           CONFIG__PUBLISH_OUTPUT: 'false'
