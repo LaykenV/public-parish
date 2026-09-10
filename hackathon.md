@@ -25,7 +25,7 @@ plans are indexed in [the archive](docs/archive/README.md).
 ### 2026-09-10 - Local PR review tooling
 
 Prepared parallel GLM 5.3 Flash and DeepSeek V4.1 Flash reviews with separate
-persistent summaries, commit checks, and bounded runs. Fourteen publisher tests
+persistent summaries, commit checks, and bounded runs. Fifteen publisher tests
 and Actionlint pass. This is development tooling, with no change to the app's
 model roles or deployment. GitHub publication and live model verification remain
 pending in [docs/work.md](docs/work.md). The requested local

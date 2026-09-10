@@ -140,6 +140,21 @@ describe('parallel PR review publication', () => {
     },
   )
 
+  it('trims YAML block scalar values in the summary', async () => {
+    const f = fixture({
+      review: {
+        score: '89\n',
+        relevant_tests: 'Yes\n',
+        security_concerns: 'No\n',
+        key_issues_to_review: [],
+      },
+    })
+    await f.run()
+    const { body } = f.issues.createComment.mock.calls[0][0]
+    expect(body).toContain('Model score: 89/100.')
+    expect(body).toContain('Relevant tests: Yes\n\nSecurity concerns: No\n\n')
+  })
+
   it('rejects malformed findings instead of claiming a clean review', async () => {
     const f = fixture({
       review: { key_issues_to_review: [{ ...finding, start_line: 0 }] },

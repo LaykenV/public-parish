@@ -23,6 +23,10 @@ Actions secret, passed as `OPENROUTER__KEY`. GitHub supplies `GITHUB_TOKEN`.
 The workflow explicitly selects each model and repeats that same model in its
 fallback list. A failed DeepSeek call cannot turn into a second GLM review.
 OpenRouter can still route between providers serving the selected model.
+DeepSeek prefers its own provider through OpenRouter. The first live attempt
+hit shared-pool rate limits at Novita, Venice, and DeepInfra, so that route
+preference avoids starting with those pools. Provider fallback remains enabled.
+Fallback providers can charge more than the direct-provider rates below.
 
 [.pr_agent.toml](.pr_agent.toml) holds shared review settings and the GLM default
 for commands. Workflow environment overrides take precedence over that file.

@@ -7,12 +7,13 @@ The approved order is stories, then design and QA, then launch and outreach.
 
 ## Parallel PR reviews, September 10
 
-Local tooling changes add independent GLM 5.3 Flash and DeepSeek V4.1 Flash
+[PR #201](https://github.com/LaykenV/public-parish/pull/201) adds independent GLM 5.3 Flash and DeepSeek V4.1 Flash
 reviews. Each model updates its own summary comment. GLM retains descriptions
 and questions. Publisher tests and workflow lint pass. See [PR-Agent setup](../pr-agent.md).
 
-- [ ] Publish the change through an authorized PR and merge. No live dual-review
-      result has been verified yet.
+- [ ] Merge after checks and reviews pass. Full application CI and the first GLM
+      review passed. DeepSeek hit upstream shared-pool rate limits; a retry with
+      preference for the DeepSeek provider awaits verification.
 - [ ] Verify two model summaries on the same commit, updates after a push, and
       manual commands. Compare unique confirmed bugs, false positives, time, and
       cost during the first 10 to 20 PRs.

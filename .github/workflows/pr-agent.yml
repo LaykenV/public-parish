@@ -24,9 +24,11 @@ jobs:
           - reviewer: glm
             label: GLM 5.3 Flash
             model: openrouter/z-ai/glm-5.3-flash
+            provider_order: '[]'
           - reviewer: deepseek
             label: DeepSeek V4.1 Flash
             model: openrouter/deepseek/deepseek-v4.1-flash
+            provider_order: '["deepseek"]'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -53,6 +55,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENROUTER__KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER__PROVIDER_ORDER: ${{ matrix.provider_order }}
           CONFIG__MODEL: ${{ matrix.model }}
           CONFIG__FALLBACK_MODELS: '["${{ matrix.model }}"]'
           CONFIG__PUBLISH_OUTPUT: 'false'
@@ -92,9 +95,9 @@ jobs:
             const parts = [marker, `## ${REVIEWER_LABEL} review`,
               `Reviewed commit [${REVIEW_SHA.slice(0, 7)}](${repoUrl}/commit/${REVIEW_SHA}).`,
               `Model: \`${REVIEW_MODEL}\``];
-            if (review.score != null) parts.push(`Model score: ${review.score}/100.`);
-            if (review.relevant_tests != null) parts.push(`Relevant tests: ${review.relevant_tests}`);
-            if (review.security_concerns != null) parts.push(`Security concerns: ${review.security_concerns}`);
+            if (review.score != null) parts.push(`Model score: ${String(review.score).trim()}/100.`);
+            if (review.relevant_tests != null) parts.push(`Relevant tests: ${String(review.relevant_tests).trim()}`);
+            if (review.security_concerns != null) parts.push(`Security concerns: ${String(review.security_concerns).trim()}`);
             for (const issue of review.key_issues_to_review) {
               if (!issue || typeof issue.relevant_file !== 'string' ||
                   typeof issue.issue_header !== 'string' || typeof issue.issue_content !== 'string' ||
