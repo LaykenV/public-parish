@@ -7,28 +7,147 @@ on:
     types: [created]
 
 concurrency:
-  group: pr-agent-${{ github.event.pull_request.number || github.event.issue.number }}
+  # Ordinary discussion must not cancel an active review.
+  group: pr-agent-${{ github.event.pull_request.number || github.event.issue.number }}-${{ github.event_name == 'issue_comment' && github.event.comment.body != '/review' && github.event.comment.id || 'review' }}
   cancel-in-progress: true
 
 jobs:
   pr_agent_job:
-    # Bot guard: slash-command comments posted by the agent itself must not retrigger it.
-    if: ${{ github.event.sender.type != 'Bot' }}
+    if: >-
+      github.event.sender.type != 'Bot' &&
+      (github.event_name == 'pull_request' ||
+       (github.event.issue.pull_request && github.event.comment.body == '/review'))
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - reviewer: glm
+            label: GLM 5.3 Flash
+            model: openrouter/z-ai/glm-5.3-flash
+          - reviewer: deepseek
+            label: DeepSeek V4.1 Flash
+            model: openrouter/deepseek/deepseek-v4.1-flash
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
       issues: write
       pull-requests: write
-    name: Run pr agent on every pull request, respond to user comments
+    name: Review with ${{ matrix.label }}
     steps:
-      - name: PR Agent action step
+      - name: Record the PR head before review
+        id: head
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const number = context.payload.pull_request?.number ?? context.payload.issue.number;
+            const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: number });
+            const expected = context.payload.pull_request?.head.sha;
+            if (pr.state !== 'open' || (expected && pr.head.sha !== expected)) {
+              throw new Error('This review event is stale or the PR is closed.');
+            }
+            core.setOutput('sha', pr.head.sha);
+      - name: Generate review
         id: pragent
         uses: the-pr-agent/pr-agent@v0.43.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENROUTER__KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          github_action_config.auto_review: "true"
-          github_action_config.auto_describe: "true"
-          github_action_config.auto_improve: "false"
-          github_action_config.pr_actions: '["opened", "reopened", "ready_for_review", "synchronize"]'
-          github_action_config.handle_push_trigger: "true"
+          CONFIG__MODEL: ${{ matrix.model }}
+          CONFIG__FALLBACK_MODELS: '["${{ matrix.model }}"]'
+          CONFIG__PUBLISH_OUTPUT: 'false'
+          CONFIG__PROPAGATE_TOOL_ERRORS: 'true'
+          # Reserve output space inside DeepSeek's smaller context window.
+          CONFIG__CUSTOM_MODEL_MAX_TOKENS: '1000000'
+          CONFIG__MAX_MODEL_TOKENS: '900000'
+          OPENROUTER__MAX_TOKENS: '32768'
+          GITHUB_ACTION_CONFIG__ENABLE_OUTPUT: 'true'
+          GITHUB_ACTION_CONFIG__AUTO_REVIEW: 'true'
+          GITHUB_ACTION_CONFIG__AUTO_DESCRIBE: 'false'
+          GITHUB_ACTION_CONFIG__AUTO_IMPROVE: 'false'
+          GITHUB_ACTION_CONFIG__HANDLE_PUSH_TRIGGER: 'true'
+          GITHUB_ACTION_CONFIG__PUSH_COMMANDS: '["/review"]'
+      - name: Publish the model's review
+        uses: actions/github-script@v8
+        env:
+          REVIEW_JSON: ${{ steps.pragent.outputs.review }}
+          REVIEWER: ${{ matrix.reviewer }}
+          REVIEWER_LABEL: ${{ matrix.label }}
+          REVIEW_MODEL: ${{ matrix.model }}
+          REVIEW_SHA: ${{ steps.head.outputs.sha }}
+        with:
+          script: |
+            const { REVIEW_JSON, REVIEWER, REVIEWER_LABEL, REVIEW_MODEL, REVIEW_SHA } = process.env;
+            const review = JSON.parse(REVIEW_JSON || 'null');
+            if (!review || !Array.isArray(review.key_issues_to_review)) {
+              throw new Error('PR-Agent did not return a valid review.');
+            }
+            const number = context.payload.pull_request?.number ?? context.payload.issue.number;
+            const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: number });
+            if (pr.state !== 'open' || pr.head.sha !== REVIEW_SHA) {
+              throw new Error('The PR changed during review. Discarding stale output.');
+            }
+            const marker = `<!-- public-parish-review:${REVIEWER} -->`;
+            const repoUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}`;
+            const parts = [marker, `## ${REVIEWER_LABEL} review`,
+              `Reviewed commit [${REVIEW_SHA.slice(0, 7)}](${repoUrl}/commit/${REVIEW_SHA}).`,
+              `Model: \`${REVIEW_MODEL}\``];
+            if (review.score != null) parts.push(`Model score: ${review.score}/100.`);
+            if (review.relevant_tests != null) parts.push(`Relevant tests: ${review.relevant_tests}`);
+            if (review.security_concerns != null) parts.push(`Security concerns: ${review.security_concerns}`);
+            for (const issue of review.key_issues_to_review) {
+              if (!issue || typeof issue.relevant_file !== 'string' ||
+                  typeof issue.issue_header !== 'string' || typeof issue.issue_content !== 'string' ||
+                  !Number.isInteger(issue.start_line) || issue.start_line < 1 ||
+                  !Number.isInteger(issue.end_line) || issue.end_line < issue.start_line) {
+                throw new Error('PR-Agent returned a malformed finding.');
+              }
+              const file = issue.relevant_file.trim();
+              const path = file.split('/').map(encodeURIComponent).join('/');
+              const link = `${repoUrl}/blob/${REVIEW_SHA}/${path}#L${issue.start_line}-L${issue.end_line}`;
+              parts.push(`### ${issue.issue_header.trim()}\n\n[${file}:${issue.start_line}](${link})\n\n${issue.issue_content.trim()}`);
+            }
+            if (!review.key_issues_to_review.length) parts.push('No key issues reported by this model.');
+            parts.push('<details>\n<summary>Full structured review</summary>\n\n<pre>' +
+              JSON.stringify(review, null, 2).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;') +
+              '\n</pre>\n</details>');
+            const body = parts.join('\n\n');
+            if (body.length > 60000) throw new Error('Review exceeds the comment limit. Refusing to truncate findings.');
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              ...context.repo, issue_number: number, per_page: 100,
+            });
+            const existing = comments.find(comment =>
+              comment.user?.login === 'github-actions[bot]' && comment.body?.startsWith(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ ...context.repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: number, body });
+            }
+
+  pr_agent_commands:
+    # GLM alone owns descriptions and non-review commands.
+    if: >-
+      github.event.sender.type != 'Bot' &&
+      ((github.event_name == 'pull_request' && github.event.action != 'synchronize') ||
+       (github.event.issue.pull_request &&
+        (github.event.comment.body == '/describe' || startsWith(github.event.comment.body, '/ask '))))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    name: GLM description and questions
+    steps:
+      - name: Run GLM commands
+        uses: the-pr-agent/pr-agent@v0.43.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENROUTER__KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CONFIG__MODEL: openrouter/z-ai/glm-5.3-flash
+          CONFIG__FALLBACK_MODELS: '["openrouter/z-ai/glm-5.3-flash"]'
+          CONFIG__PROPAGATE_TOOL_ERRORS: 'true'
+          OPENROUTER__MAX_TOKENS: '32768'
+          GITHUB_ACTION_CONFIG__AUTO_REVIEW: 'false'
+          GITHUB_ACTION_CONFIG__AUTO_DESCRIBE: 'true'
+          GITHUB_ACTION_CONFIG__AUTO_IMPROVE: 'false'
