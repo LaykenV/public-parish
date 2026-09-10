@@ -51,10 +51,9 @@ Switching a worktree does not create a separate backend or database. Coordinate
 syncs before using another branch. `npm run dev:web` and `npm run dev:convex`
 start those processes individually when needed.
 
-Agents follow [AGENTS.md](AGENTS.md). Automated validation runs in PR CI unless
-the owner authorizes the exact local command. `npm run verify` combines the
-project's typecheck, tests, build and lint. Do not interpret setup examples as
-permission for an agent to run these checks or sync a deployment.
+Agents follow [AGENTS.md](AGENTS.md). Run automated validation locally with
+`npm run verify`, which combines the project's typecheck, tests, build and lint.
+PR CI repeats these checks. Setup examples do not authorize deployment syncs.
 
 Every push to `main` deploys production, including docs-only pushes. Follow the
 [release procedure](docs/operations.md#releases-and-validation), watch the exact

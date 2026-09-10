@@ -195,9 +195,9 @@ metadata and the existing expiry behavior, not private descriptions in logs.
 ## Releases and validation
 
 Follow [AGENTS.md](../AGENTS.md) and [PR-Agent instructions](../pr-agent.md).
-One concern per real PR. Review source and diffs statically. Agents may run
-`git diff --check`; local automated tests, builds, typechecks and lint require
-authorization for the exact command. PR CI runs the automated checks.
+One concern per real PR. Review source and diffs, and run local tests, builds,
+typechecks and lint as needed. `npm run verify` runs the full suite. PR CI
+repeats the automated checks.
 
 Only commit, push, open a PR, merge or deploy when authorized for that action.
 Merging or pushing `main` deploys the backend and frontend, including docs-only
