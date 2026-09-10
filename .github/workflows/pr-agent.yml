@@ -26,11 +26,15 @@ jobs:
             model: openrouter/z-ai/glm-5.3-flash
             provider_order: '[]'
             reasoning_effort: ''
+            max_input_tokens: 900000
+            max_output_tokens: 32768
           - reviewer: deepseek
             label: DeepSeek V4.1 Flash
             model: openrouter/deepseek/deepseek-v4.1-flash
             provider_order: '["deepseek"]'
-            reasoning_effort: low
+            reasoning_effort: high
+            max_input_tokens: 850000
+            max_output_tokens: 131072
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -65,8 +69,8 @@ jobs:
           CONFIG__PROPAGATE_TOOL_ERRORS: 'true'
           # Reserve output space inside DeepSeek's smaller context window.
           CONFIG__CUSTOM_MODEL_MAX_TOKENS: '1000000'
-          CONFIG__MAX_MODEL_TOKENS: '900000'
-          OPENROUTER__MAX_TOKENS: '32768'
+          CONFIG__MAX_MODEL_TOKENS: ${{ matrix.max_input_tokens }}
+          OPENROUTER__MAX_TOKENS: ${{ matrix.max_output_tokens }}
           GITHUB_ACTION_CONFIG__ENABLE_OUTPUT: 'true'
           GITHUB_ACTION_CONFIG__AUTO_REVIEW: 'true'
           GITHUB_ACTION_CONFIG__AUTO_DESCRIBE: 'false'

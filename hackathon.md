@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-10T14:22:26Z
+- **Last updated:** 2026-09-10T15:15:47Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -21,6 +21,17 @@ Demo video: not recorded yet. The final submission link remains pending.
 Current status and pending work are in [docs/work.md](docs/work.md). The entries
 below preserve their original release context and repository paths. Earlier
 plans are indexed in [the archive](docs/archive/README.md).
+
+### 2026-09-10 - 7cbd36c
+
+Released parallel PR reviews through PR #201. GLM 5.3 Flash and DeepSeek V4.1
+Flash each reviewed commit `6e9fbd3` with no key issues and posted separate
+summaries. GLM reused its comment across pushes. DeepSeek completed after setting
+low reasoning effort and preferring its own provider through OpenRouter.
+Full CI passed 686 tests. Production workflow `34490896584` and the independent
+production smoke passed for merge commit `7cbd36c`, including both public origins,
+the three stories, evidence links, images, sharing, and backend readiness.
+The hackathon skill remains absent pending transfer from the owner's Mac.
 
 ### 2026-09-10 - Local PR review tooling
 
@@ -1928,3 +1939,11 @@ source cards. The final revision awaits PR checks and authorized release.
 Applied the owner-selected warm limestone material to the Louisiana relief,
 using the exact shader colors from the local comparison. Matched the SVG
 fallback to the same warm neutral finish. PR validation and release are pending.
+
+### 2026-09-10 - working tree, DeepSeek high reasoning
+
+Configured DeepSeek V4.1 Flash for high reasoning at the owner's request.
+Raised its output cap to 131,072 tokens and reserved context space with an
+850,000-token input ceiling. GLM settings are unchanged. Fifteen publisher
+tests and Actionlint passed. This change is local; live verification is pending.
+The copied hackathon skill is now available and was used for this update.

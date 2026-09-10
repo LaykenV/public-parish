@@ -7,17 +7,23 @@ The approved order is stories, then design and QA, then launch and outreach.
 
 ## Parallel PR reviews, September 10
 
-[PR #201](https://github.com/LaykenV/public-parish/pull/201) adds independent GLM 5.3 Flash and DeepSeek V4.1 Flash
-reviews. Each model updates its own summary comment. GLM retains descriptions
-and questions. Publisher tests and workflow lint pass. See [PR-Agent setup](../pr-agent.md).
+[PR #201](https://github.com/LaykenV/public-parish/pull/201) merged as `7cbd36c`.
+GLM 5.3 Flash and DeepSeek V4.1 Flash each published a separate clean review of
+head `6e9fbd3`. GLM updated its original comment after pushes. DeepSeek completed
+with low reasoning effort and preference for its own provider through OpenRouter.
+Full CI passed 686 tests. [Production run 34490896584](https://github.com/LaykenV/public-parish/actions/runs/34490896584)
+and independent `npm run smoke:production` passed for the release.
 
-- [ ] Merge after checks and reviews pass. Full application CI and the first GLM
-      review passed and updated its existing comment after a push. DeepSeek hit
-      upstream rate limits and an empty response after exhausting its reasoning
-      allowance. A retry with low reasoning effort awaits verification.
-- [ ] Verify two model summaries on the same commit, updates after a push, and
-      manual commands. Compare unique confirmed bugs, false positives, time, and
-      cost during the first 10 to 20 PRs.
+- [x] Merge the parallel reviewer setup after checks and both reviews pass.
+- [x] Verify separate model summaries on the same commit and GLM comment updates.
+- [ ] Verify a manual `/review` on an open PR after rollout and a DeepSeek comment
+      update on a subsequent push.
+- [ ] Compare unique confirmed bugs, false positives, time, and cost during the
+      first 10 to 20 PRs. See [PR-Agent setup](../pr-agent.md).
+- [x] Confirm the copied `convex-hackathon-skill` is available in this repository.
+- [ ] Release and verify the owner-requested DeepSeek high-reasoning setting.
+      The local workflow raises its output cap to 131,072 tokens and lowers its
+      input ceiling to 850,000. GLM retains its existing settings.
 
 ## Overnight resident design pass, September 9
 
