@@ -821,7 +821,16 @@
 
   .resident-header-inner {
     width: min(100% - 3rem, 80rem);
-    min-height: 4rem;
+    min-height: 3rem;
+  }
+
+  @supports (backdrop-filter: blur(20px)) or
+    (-webkit-backdrop-filter: blur(20px)) {
+    .resident-header {
+      background: color-mix(in srgb, var(--background) 80%, transparent);
+      -webkit-backdrop-filter: saturate(1.8) blur(20px);
+      backdrop-filter: saturate(1.8) blur(20px);
+    }
   }
 
   .resident-desktop-nav {

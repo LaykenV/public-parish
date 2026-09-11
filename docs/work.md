@@ -5,6 +5,14 @@ The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## Compact desktop header, September 10
+
+The owner requested the same compact, translucent header treatment on desktop.
+The working branch reduces desktop height from 64 to 48 pixels and enables blur
+at the top of the page. Existing navigation and 44-pixel controls remain intact.
+Build and Chromium/WebKit visual checks passed at 1025, 1440 and 375 pixels.
+PR checks and the development preview are pending.
+
 ## Mobile navigation, September 10
 
 The owner requested a compact sticky header and full-screen menu, followed by a

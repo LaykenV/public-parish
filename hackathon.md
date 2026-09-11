@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-10T23:20:12Z
+- **Last updated:** 2026-09-11T01:23:17Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -1965,3 +1965,10 @@ duplicate settings link. Inspected Apple's live mobile menu and matched its
 expanding panel and two-stage menu icon motion. Updated browser checks retain
 reduced-motion coverage and exercise normal animation. Eight targeted Chromium
 and WebKit checks, build, typecheck and targeted lint passed. PR CI is pending.
+
+### 2026-09-10 - working tree, compact desktop header
+
+Reduced the desktop header from 64 to 48 pixels at the owner's request.
+Added a translucent blurred background at the top of the page while preserving
+the shared scrolled treatment and existing control sizes. Build and Chromium/WebKit
+visual checks passed at desktop and mobile widths. PR and development checks are pending.
