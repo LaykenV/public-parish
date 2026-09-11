@@ -36,6 +36,9 @@ for (const path of ['/', '/coverage', '/stories/meta-richland']) {
     release()
     await expect(loading).toHaveAttribute('aria-busy', 'false')
     await expect(page.locator('#resident-main')).toBeVisible()
+    await expect(page.locator('.resident-loading-content')).not.toHaveAttribute(
+      'inert',
+    )
     await expect(page.locator('.resident-footer')).toBeVisible()
     await expect(loading.locator('svg')).toHaveCount(0)
   })
@@ -63,4 +66,22 @@ test('leaving a pending page releases loading for a static page', async ({
     'false',
   )
   await expect(page.locator('#resident-main')).toBeVisible()
+})
+
+test('offline loading keeps a reconnect notice in the header', async ({
+  page,
+  context,
+}) => {
+  await page.routeWebSocket(/convex\.cloud/, () => {})
+  await page.goto('/coverage')
+  await expect(page.locator('.route-loading-region')).toHaveAttribute(
+    'aria-busy',
+    'true',
+  )
+  await context.setOffline(true)
+  await expect(page.locator('.resident-header').getByRole('status')).toHaveText(
+    'You are offline. Reconnect to load this page.',
+  )
+  await expect(page.locator('#resident-main')).toBeHidden()
+  await expect(page.locator('.resident-footer')).toBeHidden()
 })

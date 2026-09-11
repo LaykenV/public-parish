@@ -184,6 +184,7 @@ export function ResidentShell({ children }: { children: ReactNode }) {
   const keyboardOpen = useKeyboardOpen()
   const overlayOpen = useOverlayOpen()
   const online = useOnline()
+  const pageLoading = usePageLoading()
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -256,15 +257,16 @@ export function ResidentShell({ children }: { children: ReactNode }) {
           </div>
           <MobileNavigation pathname={pathname} />
         </div>
+        {online ? null : (
+          <div className="pp-offline-bar" role="status">
+            {pageLoading
+              ? 'You are offline. Reconnect to load this page.'
+              : 'You are offline. Showing the information already loaded.'}
+          </div>
+        )}
       </header>
 
       <ResidentLoadingContent>
-        {online ? null : (
-          <div className="pp-offline-bar" role="status">
-            You are offline. Showing the information already loaded.
-          </div>
-        )}
-
         {children}
 
         <footer className="resident-footer">
