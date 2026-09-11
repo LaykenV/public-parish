@@ -5,6 +5,18 @@ The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## Full-screen mobile chat, September 11
+
+The owner approved a full-screen conversation based on T3 Code screenshots after
+rejecting the keyboard-constrained drawer. Mobile chat now has one Back/title
+bar, an opaque screen and a compact growing composer. Sources retain drawers.
+Standalone Ask shares the layout. Work remains in PR #205 for dev review.
+
+- [x] Replace mobile chat drawers and preserve drafts and reading position.
+- [x] Verify full-height chat, compact composer and keyboard bounds in both engines.
+- [ ] Complete final CI/review and refresh the verified development artifact.
+- [ ] Owner tests the native iPhone keyboard again.
+
 ## Mobile review corrections, September 11
 
 The owner's iPhone review found that opening the keyboard moved chat drawers

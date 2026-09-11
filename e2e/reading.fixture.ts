@@ -44,6 +44,8 @@ for (const [kind, path] of records) {
       name: 'Ask Public Parish',
       exact: true,
     })
+    await page.evaluate(() => scrollTo(0, 450))
+    const readingPosition = await page.evaluate(() => scrollY)
     await trigger.click()
     const chat = page.getByRole('dialog', {
       name: 'Ask Public Parish',
@@ -51,8 +53,9 @@ for (const [kind, path] of records) {
     })
     const input = chat.getByRole('textbox')
     await input.fill('Who received the truck?')
-    await chat.getByRole('button', { name: 'Close', exact: true }).click()
+    await chat.getByRole('button', { name: 'Back to reading', exact: true }).click()
     await expect(trigger).toBeFocused()
+    expect(await page.evaluate(() => scrollY)).toBe(readingPosition)
     await trigger.click()
     await expect(input).toHaveValue('Who received the truck?')
     await chat
@@ -183,6 +186,15 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
     await page.addStyleTag({ content: '.pp-sheet { padding-bottom: 34px; }' })
     const container = kind === 'ask' ? page.locator('.ask-page') : page.getByRole('dialog', { name: 'Ask Public Parish', exact: true })
     const input = container.getByRole('textbox')
+    const initialComposer = await container.locator('.ask-composer').boundingBox()
+    expect(initialComposer!.height).toBeLessThan(70)
+    await page.screenshot({ path: info.outputPath(`${kind}-chat-resting.png`) })
+    if (kind !== 'ask') {
+      const screen = await container.boundingBox()
+      expect(screen!.y).toBe(0)
+      expect(screen!.height).toBe(812)
+      await expect(container.locator('.pp-sheet-grabber')).toHaveCount(0)
+    }
     await input.fill('Keep this keyboard draft')
     for (const bounds of [{ height: 360, top: 0 }, { height: 360, top: 120 }, { height: 290, top: 70 }]) {
       await page.evaluate(({ height, top }) => {
@@ -201,7 +213,7 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
       await expect(input).toHaveValue('Keep this keyboard draft')
       await expect(input).toBeFocused()
       if (kind !== 'ask') {
-        const close = await container.getByRole('button', { name: 'Close', exact: true }).boundingBox()
+        const close = await container.getByRole('button', { name: 'Back to reading', exact: true }).boundingBox()
         expect(close!.y).toBeGreaterThanOrEqual(bounds.top)
       }
     }

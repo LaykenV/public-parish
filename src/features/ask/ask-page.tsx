@@ -8,7 +8,7 @@ import { PageLoading } from '../resident-blueprint/resident-loading'
 import { resolveCitationId } from '../evidence/contracts'
 import type { CitationMap } from '../evidence/contracts'
 import { EvidenceProvider } from '../evidence/evidence-surface'
-import { useVisualViewport, useOnline } from '../discovery/hooks'
+import { useVisualViewport, useOnline, useMediaQuery } from '../discovery/hooks'
 import {
   AskRequestError,
   askScopeIdentity,
@@ -59,17 +59,20 @@ const EXPIRY_SWEEP_MS = 30_000
 export function AskPage({
   data,
   embedded = false,
+  onBack,
   onRestoreScope,
   onSelectSource,
   source,
 }: {
   data: AskRouteData
   embedded?: boolean
+  onBack?: () => void
   onRestoreScope: (scope: AskScope) => Promise<void>
   onSelectSource: (id: string | null) => void
   source?: string
 }) {
   const viewport = useVisualViewport()
+  const mobile = useMediaQuery('(max-width: 48rem)')
   const convex = useConvex()
   const online = useOnline()
 
@@ -471,13 +474,24 @@ export function AskPage({
       style={kbStyle}
     >
       <AskStatusRegion message={status} />
+      {mobile ? <header className="ask-screen-header">
+        {onBack ? (
+          <button aria-label="Back to reading" className="ask-screen-back" onClick={onBack} type="button"><ArrowLeftIcon aria-hidden="true" /></button>
+        ) : (
+          <Link aria-label={viewScope.kind === 'corpus' ? 'Back to Home' : 'Back to reading'} className="ask-screen-back" to={viewScope.kind === 'corpus' ? '/' : viewScope.returnTo} resetScroll={false}><ArrowLeftIcon aria-hidden="true" /></Link>
+        )}
+        <div className="ask-screen-heading">
+          <h1 className="ask-screen-name">{viewScope.kind === 'corpus' ? 'Ask Public Parish' : viewScope.recordTitle}</h1>
+          <p className="ask-screen-context">{viewScope.kind === 'corpus' ? viewScope.label : 'Ask Public Parish'}</p>
+        </div>
+      </header> : null}
 
-      <header className="ask-head">
+      {!mobile ? <header className="ask-head">
         <h1 className="ask-title">Ask Public Parish</h1>
         <p className="ask-lede">
           Answers come only from published, validated official evidence.
         </p>
-      </header>
+      </header> : null}
 
       {data.availability.kind === 'unavailable' && !data.scenario ? (
         <AskUnavailable />

@@ -76,8 +76,8 @@ export function AskComposer({
             if (canSubmit) onSubmit()
           }}
           ref={inputRef}
-          placeholder={label}
-          rows={2}
+          placeholder="Ask a question…"
+          rows={1}
           value={draft}
         />
         <div className="ask-composer-row">

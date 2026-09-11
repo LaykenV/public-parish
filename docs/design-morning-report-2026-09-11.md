@@ -77,3 +77,23 @@ The mobile timeline arrow had inherited absolute positioning from a touch-target
 pseudo-element. It now stays in the link's normal layout. Route heading focus
 still announces navigation without outlining the heading. Account follow rows
 use a plain Manage follow action with a chevron.
+
+
+## Full-screen conversation revision
+
+The owner rejected the resized drawer after a second native iPhone check and
+provided T3 Code screenshots as the preferred reference. Mobile Ask now uses a
+full-screen conversation with one Back/title bar, an opaque background and a
+single-line composer that grows with the draft. Back retains the reading
+position and mounted conversation. Source inspection remains in drawers.
+Standalone Ask uses the same mobile header and composer.
+
+Reference inspected: T3 Code's public `ThreadDetailScreen.tsx` and
+`ThreadComposer.tsx`, which separate the conversation from the keyboard-attached
+composer and distinguish compact and expanded composer layouts. Public Parish
+uses browser viewport measurements and its own styles and controls.
+https://github.com/pingdotgg/t3code/tree/main/apps/mobile/src/features/threads
+
+Automated checks require a full-height chat view, a resting composer under 70px,
+retained drafts, nested source inspection and visible controls with a shifted
+keyboard viewport. Native iPhone confirmation remains part of owner review.

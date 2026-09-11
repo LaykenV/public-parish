@@ -250,12 +250,12 @@ views. CI, authenticated owner views, physical-device and screen-reader checks
 remain pending. Keep their status in `docs/work.md`.
 
 
-## Mobile reading and chat, September 9 owner correction
+## Mobile reading and chat, September 11 owner correction
 
 On phone-sized story, issue, decision and meeting pages, a circular purple chat button
-sits at the bottom right. It opens the existing Ask conversation in a full-height
-drawer without leaving the record. The drawer preserves drafts and conversation
-state when closed and reopened. Citations open above the conversation and return
+sits at the bottom right. It opens a full-screen conversation with an opaque
+background, one Back/title bar and a compact composer. Back restores the reading
+position and retains drafts and conversation state. Citations open above the conversation and return
 focus to their source control. Desktop keeps the existing Ask entry points.
 Decisions retain their existing linked-issue scope, or the published corpus when
 there is no linked issue. Do not imply a new decision-only evidence scope.
@@ -287,6 +287,8 @@ baseline and an active underline, without a second rule above the first section.
 Ask uses one scrollable conversation above an always-visible composer. The send
 control is an up arrow at its lower right with an accessible name. Empty-state
 suggestions appear above the composer and disappear after the first question.
-Drafts and conversations survive closing and reopening a reading-page drawer.
+Drafts and conversations survive leaving and reopening full-screen chat.
+The composer starts as one line and grows with the draft. Standalone mobile Ask
+uses the same compact header and composer.
 Short screens and keyboard resizing keep the composer reachable. Existing
 scope, evidence, retry, expiration and availability rules remain in force.

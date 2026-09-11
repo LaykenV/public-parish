@@ -36,7 +36,7 @@ for (const slug of ['meta-richland', 'spacex-pecan-island', 'applied-digital-boy
       await expect(drawer.locator('.ask-scope-label')).toHaveText('Answering from this story')
       const question = drawer.getByRole('textbox')
       await question.fill('What does this mean for residents?')
-      await drawer.getByRole('button', { name: 'Close', exact: true }).click()
+      await drawer.getByRole('button', { name: 'Back to reading', exact: true }).click()
       await expect(article.getByRole('button', { name: 'Ask Public Parish', exact: true })).toBeFocused()
       await article.getByRole('button', { name: 'Ask Public Parish', exact: true }).click()
       await expect(drawer.getByRole('textbox')).toHaveValue('What does this mean for residents?')

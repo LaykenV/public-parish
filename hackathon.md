@@ -1992,3 +1992,14 @@ subtraction with visible viewport bounds and adds resize/pan regression checks.
 It also fixes touch timeline arrows and route heading outlines and simplifies
 Account follow controls. This entry records implementation; final CI and dev
 upload receipts belong in PR #205 after validation.
+
+
+## September 11, full-screen conversation revision
+
+The owner supplied T3 Code reference screenshots after rejecting the resized
+chat drawer. The new mobile conversation covers the reading page, has one
+Back/title bar and starts with a single-line composer. Source drawers remain.
+T3's public thread screen and composer code informed the layout approach;
+Public Parish retains its own browser implementation. Draft, source and
+keyboard tests passed locally. Final CI and development receipts remain in
+PR #205; native iPhone confirmation remains with the owner.
