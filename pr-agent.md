@@ -1,7 +1,7 @@
 # PR-Agent setup
 
 Public Parish runs two independent PR-Agent reviews through OpenRouter:
-GLM 5.3 Flash and DeepSeek V4.1 Flash. Each model owns one summary comment.
+GLM 5.3 Flash and Muse Spark 1.3 Contributor. Each model owns one summary comment.
 GLM alone writes PR descriptions and answers `/ask` questions.
 
 The workflow uses `the-pr-agent/pr-agent@v0.43.0`. The upstream action's Dockerfile
@@ -17,28 +17,29 @@ self-hosted GitHub Action, with no Qodo account or hosted review app.
 [.github/workflows/pr-agent.yml](.github/workflows/pr-agent.yml) defines the two
 review jobs as a matrix with `fail-fast: false`. A failure in one model does not
 cancel the other. Each job has a 20-minute timeout. GLM has a 32,768-token
-completion cap; DeepSeek has a 131,072-token completion cap. Both caps include
+completion cap; Muse has a 131,072-token completion cap. Both caps include
 reasoning tokens. Both use the existing `OPENROUTER_API_KEY`
 Actions secret, passed as `OPENROUTER__KEY`. GitHub supplies `GITHUB_TOKEN`.
 
 The workflow explicitly selects each model and repeats that same model in its
-fallback list. A failed DeepSeek call cannot turn into a second GLM review.
+fallback list. A failed Muse call cannot turn into a second GLM review.
 OpenRouter can still route between providers serving the selected model.
-DeepSeek prefers its own provider through OpenRouter. The first live attempt
-hit shared-pool rate limits at Novita, Venice, and DeepInfra, so that route
-preference avoids starting with those pools. Provider fallback remains enabled.
-Fallback providers can charge more than the direct-provider rates below.
-DeepSeek uses high reasoning effort at the owner's request. An earlier inference
-exhausted the old 32,768-token cap on reasoning without returning review text.
-Its new 131,072-token cap leaves more room for reasoning and the final review.
-High effort is not a fixed reasoning-token allocation. Empty output still fails
-publication. GLM continues to use its provider's default reasoning effort.
+Muse uses `openrouter/meta/muse-spark-1.3-contributor`, which selects the cheaper
+Contributor tier directly. It uses high reasoning effort with a 131,072-token
+completion cap. High effort is not a fixed reasoning-token allocation. Empty
+output still fails publication. GLM uses its provider's default reasoning effort.
+These are per-call limits, not a total PR token or dollar budget. Retries and
+additional calls can increase the total.
+
+Contributor prompts and outputs may be used to improve Meta's products. This
+includes the PR code and review instructions sent to the provider. The owner
+selected this tier for this public repository after reviewing that tradeoff.
 
 [.pr_agent.toml](.pr_agent.toml) holds shared review settings and the GLM default
 for commands. Workflow environment overrides take precedence over that file.
-GLM uses a 900,000-token input ceiling; DeepSeek uses 850,000 tokens. Both use
-a 1,000,000-token custom model limit. DeepSeek's lower input ceiling reserves
-space for its larger output cap, including on routes with a 1,000,000-token context.
+GLM uses a 900,000-token input ceiling; Muse uses 850,000 tokens. Both use
+a 1,000,000-token custom model limit. Muse's lower input ceiling reserves
+space for its larger output cap, within its 1,048,576-token context.
 PR-Agent can still prune a diff larger than the configured ceiling.
 
 ## Events and commands
@@ -66,13 +67,14 @@ using that lookup could overwrite one another. The review jobs therefore set
 output. A GitHub Script step publishes each model's result with its own marker:
 
 - `<!-- public-parish-review:glm -->`
-- `<!-- public-parish-review:deepseek -->`
+- `<!-- public-parish-review:muse -->`
 
 The publisher updates only the matching `github-actions[bot]` comment. It
 includes the model name, reviewed commit, findings with commit-specific source
 links, and the full structured result in a collapsible section. Findings remain
 in these summaries. The dual review jobs do not create inline threads or labels.
-The old single-review comment, if present, stays as historical output.
+Old single-review and DeepSeek comments stay as historical output. Muse creates
+its own comment and does not update the retired DeepSeek marker.
 
 Missing output, malformed findings, and oversized comments fail the job. A PR
 that closes or changes head during review also fails publication, so old output
@@ -84,25 +86,23 @@ The script lives inside the workflow. The publication job does not check out or
 execute code from the PR. PR-Agent still loads repository instructions and diffs
 through GitHub's API.
 
-## Price reference, September 10, 2026
+## Price reference, September 11, 2026
 
 OpenRouter's live model catalog listed the following dollars per million tokens.
 Rates can change, and actual charges depend on routing, cache hits, and reasoning.
-GLM's old $0.075 input and $0.25 output launch discount has ended.
 
-| Model                         | Uncached input | Output | Cached input |
-| ----------------------------- | -------------: | -----: | -----------: |
-| GLM 5.3 Flash                 |          $0.15 |  $0.50 |        $0.03 |
-| DeepSeek V4.1 Flash, off-peak |          $0.15 |  $0.60 |       $0.003 |
-| DeepSeek V4.1 Flash, peak     |          $0.30 |  $1.20 |       $0.006 |
+| Model                      | Uncached input | Output | Cached input |
+| -------------------------- | -------------: | -----: | -----------: |
+| GLM 5.3 Flash              |          $0.15 |  $0.50 |        $0.03 |
+| Muse Spark 1.3 Contributor |          $0.10 |  $0.20 |       $0.002 |
 
-DeepSeek peak hours are weekdays 01:00 to 04:00 and 06:00 to 10:00 UTC.
 At 50,000 uncached input tokens and 5,000 billed output tokens per model, the
-pair costs $0.0205 off-peak or $0.031 at peak. Description generation, retries,
-and GitHub runner costs are separate.
+pair costs $0.016. Muse's share is $0.006. Description generation, retries,
+and GitHub runner costs are separate. Lower token prices do not guarantee a
+lower total bill or faster review, since token use and latency vary by model.
 
 Sources: [OpenRouter live model catalog](https://openrouter.ai/api/v1/models)
-and [DeepSeek pricing](https://api-docs.deepseek.com/quick_start/pricing/).
+and [Muse Contributor pricing and data use](https://openrouter.ai/meta/muse-spark-1.3-contributor).
 
 ## Validation and rollout
 

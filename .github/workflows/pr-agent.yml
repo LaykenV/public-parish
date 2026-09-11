@@ -28,10 +28,10 @@ jobs:
             reasoning_effort: ''
             max_input_tokens: 900000
             max_output_tokens: 32768
-          - reviewer: deepseek
-            label: DeepSeek V4.1 Flash
-            model: openrouter/deepseek/deepseek-v4.1-flash
-            provider_order: '["deepseek"]'
+          - reviewer: muse
+            label: Muse Spark 1.3 Contributor
+            model: openrouter/meta/muse-spark-1.3-contributor
+            provider_order: '[]'
             reasoning_effort: high
             max_input_tokens: 850000
             max_output_tokens: 131072
@@ -67,7 +67,7 @@ jobs:
           CONFIG__FALLBACK_MODELS: '["${{ matrix.model }}"]'
           CONFIG__PUBLISH_OUTPUT: 'false'
           CONFIG__PROPAGATE_TOOL_ERRORS: 'true'
-          # Reserve output space inside DeepSeek's smaller context window.
+          # Reserve context space for completion and reasoning tokens.
           CONFIG__CUSTOM_MODEL_MAX_TOKENS: '1000000'
           CONFIG__MAX_MODEL_TOKENS: ${{ matrix.max_input_tokens }}
           OPENROUTER__MAX_TOKENS: ${{ matrix.max_output_tokens }}

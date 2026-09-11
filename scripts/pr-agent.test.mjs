@@ -65,7 +65,7 @@ function fixture({
     ),
     REVIEWER: reviewer,
     REVIEWER_LABEL:
-      reviewer === 'glm' ? 'GLM 5.3 Flash' : 'DeepSeek V4.1 Flash',
+      reviewer === 'glm' ? 'GLM 5.3 Flash' : 'Muse Spark 1.3 Contributor',
     REVIEW_MODEL: reviewer,
     REVIEW_SHA: sha,
   }
@@ -87,22 +87,26 @@ const comment = (reviewer, id, login = 'github-actions[bot]') => ({
 describe('parallel PR review publication', () => {
   it('keeps both models in separate comments when they finish together', async () => {
     const glm = fixture()
-    const deepseek = fixture({ reviewer: 'deepseek' })
-    await Promise.all([glm.run(), deepseek.run()])
+    const muse = fixture({ reviewer: 'muse' })
+    await Promise.all([glm.run(), muse.run()])
     expect(glm.issues.createComment.mock.calls[0][0].body).toContain(
       'public-parish-review:glm',
     )
-    expect(deepseek.issues.createComment.mock.calls[0][0].body).toContain(
-      'public-parish-review:deepseek',
+    expect(muse.issues.createComment.mock.calls[0][0].body).toContain(
+      'public-parish-review:muse',
     )
   })
 
-  it.each(['glm', 'deepseek'])(
+  it.each(['glm', 'muse'])(
     'updates only the existing %s bot comment',
     async (reviewer) => {
       const f = fixture({
         reviewer,
-        comments: [comment('glm', 1), comment('deepseek', 2)],
+        comments: [
+          comment('deepseek', 3),
+          comment('glm', 1),
+          comment('muse', 2),
+        ],
       })
       await f.run()
       expect(f.issues.updateComment).toHaveBeenCalledWith(
