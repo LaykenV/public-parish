@@ -9,6 +9,7 @@ import { resolveCitationId } from '../evidence/contracts'
 import type { CitationMap } from '../evidence/contracts'
 import { EvidenceProvider } from '../evidence/evidence-surface'
 import { useVisualViewport, useOnline, useMediaQuery } from '../discovery/hooks'
+import type { VisualViewportBounds } from '../discovery/hooks'
 import {
   AskRequestError,
   askScopeIdentity,
@@ -63,6 +64,7 @@ export function AskPage({
   onRestoreScope,
   onSelectSource,
   source,
+  viewport: screenViewport,
 }: {
   data: AskRouteData
   embedded?: boolean
@@ -70,8 +72,10 @@ export function AskPage({
   onRestoreScope: (scope: AskScope) => Promise<void>
   onSelectSource: (id: string | null) => void
   source?: string
+  viewport?: VisualViewportBounds
 }) {
-  const viewport = useVisualViewport()
+  const pageViewport = useVisualViewport(!embedded)
+  const viewport = screenViewport ?? pageViewport
   const mobile = useMediaQuery('(max-width: 48rem)')
   const convex = useConvex()
   const online = useOnline()

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 let overlayCount = 0
 const overlayListeners = new Set<() => void>()
@@ -38,37 +38,49 @@ export function useOverlayOpen(): boolean {
   return useSyncExternalStore(subscribeOverlay, getOverlayOpen, () => false)
 }
 
-// Keyboard opening can resize and pan the visual viewport independently of
-// the layout viewport. Track both dimensions instead of subtracting from dvh.
-export function useVisualViewport() {
-  const [bounds, setBounds] = useState({ height: undefined as number | undefined, top: 0, keyboardOpen: false })
-  useEffect(() => {
+export type VisualViewportBounds = {
+  height: number | undefined
+  top: number
+  keyboardOpen: boolean
+}
+
+// Safari can resize innerHeight while its layout viewport stays taller. Read
+// the root's clientHeight for layout coordinates. Always accept viewport
+// updates, including zoom, and distinguish zoom from keyboard occlusion.
+export function useVisualViewport(enabled = true): VisualViewportBounds {
+  const [bounds, setBounds] = useState<VisualViewportBounds>({ height: undefined, top: 0, keyboardOpen: false })
+  useLayoutEffect(() => {
+    if (!enabled) return
     const viewport = window.visualViewport
     if (!viewport) return
     const update = () => {
-      // Let browser zoom work without reflowing the page around the zoomed view.
-      if (viewport.scale !== 1) return
-      const layoutHeight = window.innerHeight
+      const layoutHeight = document.documentElement.clientHeight
       const height = Math.min(viewport.height, layoutHeight)
-      // iOS can leave a stale offsetTop after the keyboard closes. A screen
-      // sized to the visible area must still end inside the layout viewport.
-      const top = Math.max(0, Math.min(viewport.offsetTop, layoutHeight - height))
-      setBounds({
-        height,
-        top,
-        keyboardOpen: layoutHeight - viewport.height > 100,
-      })
+      // Pinching reduces CSS-pixel height without a keyboard. Normalize only
+      // the occlusion check; keep the actual CSS pixels for panel geometry.
+      const keyboardOpen = layoutHeight - viewport.height * viewport.scale > 100
+      // During keyboard panning Safari may expose an area beyond the layout
+      // viewport's original bottom. Follow that real offset while it is open.
+      // Once it closes, discard any stale offset rather than leaving a gap.
+      const top = keyboardOpen
+        ? Math.max(0, viewport.offsetTop)
+        : Math.max(0, Math.min(viewport.offsetTop, layoutHeight - height))
+      setBounds({ height, top, keyboardOpen })
     }
     viewport.addEventListener('resize', update)
     viewport.addEventListener('scroll', update)
+    viewport.addEventListener('scrollend', update)
     window.addEventListener('resize', update)
+    window.addEventListener('scroll', update)
     update()
     return () => {
       viewport.removeEventListener('resize', update)
       viewport.removeEventListener('scroll', update)
+      viewport.removeEventListener('scrollend', update)
       window.removeEventListener('resize', update)
+      window.removeEventListener('scroll', update)
     }
-  }, [])
+  }, [enabled])
   return bounds
 }
 

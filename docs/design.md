@@ -260,9 +260,10 @@ arrow, the record title on one line and "Ask Public Parish" beneath it, with a
 hairline below; the conversation scrolls under it. Back restores the reading
 position and retains drafts and conversation state. The screen is sized and
 positioned from the visible viewport so the composer sits directly above the
-keyboard; that position is clamped inside the layout viewport. The screen
-shrinks at once when the keyboard opens and eases back over 200 milliseconds
-when it closes, so the return reads as one motion rather than a snap. Every
+keyboard. One viewport measurement drives the screen and its contents. Read the
+layout height from the root element, keep keyboard panning offsets, and discard
+stale offsets once the keyboard closes. Never reject updates because the zoom
+scale differs from one. Keyboard geometry updates without a CSS tween. Every
 phone entry point renders this same screen: the Ask route on a phone opens it
 in place of the page, with the site header and footer hidden behind it, and
 Back plays the same fade-and-slide exit before the previous page returns.
@@ -316,9 +317,9 @@ expiration and availability rules remain in force.
 While mobile chat is open, make the reading document transparent without
 removing it. Safari can show document pixels through its keyboard controls beyond
 the visual viewport. Restore the document when returning focus and retain the
-reading position. Freeze the document position while the phone chat is open,
-and clip the outer panel so focus cannot scroll its header out of view.
-Only the conversation and textarea scroll. Standalone Ask hides the surrounding site header and footer.
+reading position. Keep the body in its ordinary document position. Base UI owns
+the overflow lock; the outer panel clips overflow while the conversation and
+textarea own scrolling. Standalone Ask hides the surrounding site header and footer.
 
 ## September 11 mobile reading refinements
 
@@ -341,3 +342,12 @@ Recent conversations live in the Account page's Conversations section, available
 without sign-in. Keep device-only storage and the 24-hour expiry. Opening a
 conversation restores its evidence scope without putting its private handle in
 the URL. The chat screen has no recent-history list or clearing controls.
+
+The September 11 keyboard follow-up examined T3 Code web commit
+[18f7254](https://github.com/pingdotgg/t3code/tree/18f7254e0adbd7d642f4d78f9b9c8e6cb569af56/apps/web).
+Its thread layout uses bounded flex panes, internal scrolling and a small-viewport
+height on phones. Its viewport meta requests `interactive-widget=resizes-content`.
+Public Parish adopts that supported-browser hint, stable geometry and one owner
+for chat bounds. T3's web code has no visual-viewport keyboard handler to copy;
+its native mobile app uses a native keyboard controller. Public Parish still
+needs visual-viewport sizing on Safari. Native iPhone acceptance is required.

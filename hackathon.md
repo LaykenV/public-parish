@@ -2038,3 +2038,27 @@ handoff test checked separately. Chromium and WebKit passed Account history,
 menu-to-Ask keyboard bounds, reduced-motion dots, reopened chat drafts and
 nested source drawers. Native iPhone acceptance and updated dev deployment
 remain pending. No backend or production changes were made.
+
+## September 11, keyboard regression after the body-position change
+
+The owner's next iPhone recording showed both chat entry points moving out of
+view when the keyboard opened. The previous browser pass did not certify native
+keyboard behavior. This follow-up removes fixed-body positioning and geometry
+tweens, gives each mobile chat one viewport measurement, uses root client height
+for layout coordinates and accepts fractional and pinched zoom updates. Keyboard
+panning keeps its real offset; closing the keyboard discards stale offsets.
+Recent conversations on Account and the three-dot wait remain.
+
+T3 Code web commit `18f7254` informed the pane layout and supported-browser
+`interactive-widget=resizes-content` meta. Its web app does not contain a
+Safari visual-viewport handler; its native app uses a native keyboard controller.
+
+A bounded WebKit comparison against the deployed build reproduced an 812-pixel
+chat after the visible area shrank to 320 pixels with fractional scale and a
+resized innerHeight. The revised local build measured 320 pixels, followed the
+120-pixel visible offset and hid the privacy note. No chat request was sent.
+The comparison tests geometry inputs, not a native iPhone keyboard. Local
+verification passed 686 tests, typechecks, build and lint with 15 existing
+warnings. Eighteen focused browser checks passed in Chromium and WebKit,
+including zoom, resize, Back, retained drafts and nested source drawers.
+CI, the next dev upload and native iPhone acceptance remain pending.

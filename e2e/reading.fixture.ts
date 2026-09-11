@@ -290,7 +290,7 @@ test('short mobile chat clamps stale keyboard offsets and keeps long drafts reac
         const box = await chat.locator('.ask-composer').boundingBox()
         return box!.y >= expectedTop && box!.y + box!.height <= expectedBottom
       }).toBe(true)
-      // Growing back after the keyboard leaves is eased, so wait for the bar to settle.
+      // Wait for the viewport event to put the bar back at its resting position.
       await expect.poll(async () => (await chat.locator('.ask-screen-header').boundingBox())!.y).toBe(expectedTop)
       if (viewport.height === 290) await page.screenshot({ path: info.outputPath(path.startsWith('/ask') ? 'ask-short-keyboard.png' : 'issue-short-keyboard.png') })
     }
@@ -420,7 +420,7 @@ test('menu Ask keeps the outer screen fixed with saved device history and a pann
   const chat = page.getByRole('dialog', { name: 'Ask Public Parish', exact: true })
   await expect(chat.getByRole('textbox')).toBeVisible()
   await expect(chat.locator('.ask-recent')).toHaveCount(0)
-  await expect(page.locator('body')).toHaveCSS('position', 'fixed')
+  await expect(page.locator('body')).not.toHaveCSS('position', 'fixed')
   await chat.getByRole('textbox').fill('A question with the keyboard open')
   await page.evaluate(() => {
     Object.defineProperties(visualViewport, {
@@ -455,4 +455,68 @@ test('answer wait uses three dots and keeps the send spinner', async ({ page }, 
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await expect(page.locator('.ask-typing > span').first()).toHaveCSS('animation-name', 'ask-typing')
   await page.screenshot({ path: info.outputPath('answer-wait-dots.png') })
+})
+
+for (const [kind, path] of [['ask', '/ask?fixture=empty-corpus'], records[0]] as const) {
+  test(`${kind} keyboard uses layout height with fractional scale and Safari window resizing`, async ({ page }, info) => {
+    await page.setViewportSize({ width: 375, height: 812 })
+    await page.goto(path)
+    if (kind !== 'ask') await page.getByRole('button', { name: 'Ask Public Parish', exact: true }).click()
+    const chat = page.getByRole('dialog', { name: 'Ask Public Parish', exact: true })
+    await chat.getByRole('textbox').fill('Keep my draft while Safari opens the keyboard')
+    await expect(page.locator('body')).not.toHaveCSS('position', 'fixed')
+    const originalHeight = await page.evaluate(() => window.innerHeight)
+    for (const top of [120, 620]) {
+      await page.evaluate((offset) => {
+        Object.defineProperty(window, 'innerHeight', { configurable: true, value: 320 })
+        Object.defineProperties(visualViewport, {
+          height: { configurable: true, value: 320 },
+          offsetTop: { configurable: true, value: offset },
+          scale: { configurable: true, value: 1.00000012 },
+        })
+        visualViewport!.dispatchEvent(new Event('resize'))
+        visualViewport!.dispatchEvent(new Event('scroll'))
+      }, top)
+      await expect(chat).toHaveAttribute('data-keyboard-open')
+      await expect(chat.locator('.ask-intro')).toBeHidden()
+      await expect(chat.locator('.ask-composer-privacy')).toBeHidden()
+      await expect.poll(async () => (await chat.locator('.ask-screen-header').boundingBox())!.y).toBe(top)
+      const composer = await chat.locator('.ask-composer').boundingBox()
+      expect(composer!.y).toBeGreaterThan(top)
+      expect(composer!.y + composer!.height).toBeLessThanOrEqual(top + 320)
+    }
+    await page.screenshot({ path: info.outputPath(`${kind}-safari-keyboard.png`) })
+    await page.evaluate((height) => {
+      Object.defineProperty(window, 'innerHeight', { configurable: true, value: height })
+      delete (visualViewport as unknown as Record<string, unknown>).height
+      delete (visualViewport as unknown as Record<string, unknown>).scale
+      // Safari may keep its panned offset after the keyboard closes.
+      Object.defineProperty(visualViewport, 'offsetTop', { configurable: true, value: 620 })
+      visualViewport!.dispatchEvent(new Event('resize'))
+    }, originalHeight)
+    await expect(chat).not.toHaveAttribute('data-keyboard-open')
+    await expect(chat.locator('.ask-intro')).toBeVisible()
+    await expect.poll(async () => (await chat.locator('.ask-screen-header').boundingBox())!.y).toBe(0)
+    await expect(chat.getByRole('textbox')).toHaveValue('Keep my draft while Safari opens the keyboard')
+  })
+}
+
+test('pinch zoom keeps viewport updates active without pretending the keyboard opened', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/ask?fixture=empty-corpus')
+  const chat = page.getByRole('dialog', { name: 'Ask Public Parish', exact: true })
+  await expect(chat.getByRole('textbox')).toBeVisible()
+  await page.evaluate(() => {
+    Object.defineProperties(visualViewport, {
+      height: { configurable: true, value: 406 },
+      offsetTop: { configurable: true, value: 50 },
+      scale: { configurable: true, value: 2 },
+    })
+    visualViewport!.dispatchEvent(new Event('resize'))
+  })
+  await expect.poll(async () => (await chat.boundingBox())!.height).toBe(406)
+  await expect(chat).not.toHaveAttribute('data-keyboard-open')
+  await expect(chat.locator('.ask-intro')).toBeVisible()
+  await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content', /interactive-widget=resizes-content/)
+  await expect(page.locator('meta[name="viewport"]')).not.toHaveAttribute('content', /user-scalable=no|maximum-scale/)
 })
