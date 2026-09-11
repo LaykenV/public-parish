@@ -4,12 +4,11 @@ import { ArrowLeftIcon } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 
-import { Button } from '../../components/ui/button'
 import { PageLoading } from '../resident-blueprint/resident-loading'
 import { resolveCitationId } from '../evidence/contracts'
 import type { CitationMap } from '../evidence/contracts'
-import { EvidencePanel, EvidenceProvider } from '../evidence/evidence-surface'
-import { useKeyboardInset, useMediaQuery, useOnline } from '../discovery/hooks'
+import { EvidenceProvider } from '../evidence/evidence-surface'
+import { useKeyboardInset, useOnline } from '../discovery/hooks'
 import {
   AskRequestError,
   askScopeIdentity,
@@ -73,7 +72,6 @@ export function AskPage({
   const kbInset = useKeyboardInset()
   const convex = useConvex()
   const online = useOnline()
-  const wide = useMediaQuery('(min-width: 64.0625rem)')
 
   const [adapter, setAdapter] = useState<AskAdapter | null>(null)
   const [availability, setAvailability] = useState<AskAvailability>(
@@ -89,7 +87,6 @@ export function AskPage({
     () => new Set(),
   )
   const [expired, setExpired] = useState(false)
-  const [composerExpanded, setComposerExpanded] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [status, setStatus] = useState('')
   const [pendingScope, setPendingScope] = useState<{
@@ -119,7 +116,6 @@ export function AskPage({
     setPendingScope(null)
     setViewScope(data.scope)
     setExpired(false)
-    setComposerExpanded(false)
     setDismissed(new Set())
     if (handed) {
       previousConversation.current = null
@@ -203,7 +199,9 @@ export function AskPage({
     for (const turn of next.turns) {
       const before = previous.turns.find((item) => item.id === turn.id)
       if (before?.state === 'checking' && turn.state === 'allowance_paused') {
-        setStatus('Ask is paused because its paid allowance is unavailable. No restart time is available yet.')
+        setStatus(
+          'Ask is paused because its paid allowance is unavailable. No restart time is available yet.',
+        )
       }
       if (
         before?.state === 'checking' &&
@@ -257,7 +255,13 @@ export function AskPage({
   const lastTurnState: AskTurnState | null = lastTurn?.state ?? null
   useEffect(() => {
     if (lastTurnId && lastTurnState === 'checking') {
-      document.getElementById(`ask-turn-${lastTurnId}`)?.focus()
+      const question = document.getElementById(`ask-turn-${lastTurnId}`)
+      const region = question?.closest('.ask-thread-region')
+      if (region && question) {
+        region.scrollTop +=
+          question.getBoundingClientRect().top -
+          region.getBoundingClientRect().top
+      }
     }
     if (
       lastTurnId &&
@@ -294,7 +298,6 @@ export function AskPage({
       previousConversation.current = null
       setConversation(null)
       setExpired(true)
-      setComposerExpanded(false)
       setDismissed(new Set())
       setDraft('')
       void adapter.listRecent().then(setRecent)
@@ -312,13 +315,11 @@ export function AskPage({
           current.filter((item) => item.localHandle !== handle.localHandle),
         )
         setExpired(true)
-        setComposerExpanded(false)
         previousConversation.current = null
         setConversation(null)
         return
       }
       setExpired(false)
-      setComposerExpanded(false)
       setDismissed(new Set())
       setViewScope(view.scope)
       // Install the conversation first so the route-sync effect recognizes
@@ -344,7 +345,6 @@ export function AskPage({
     setConversation(null)
     setViewScope(pending.scope)
     setExpired(false)
-    setComposerExpanded(false)
     setDismissed(new Set())
     setDraft(pending.draft ?? '')
     void adapter?.startNew(pending.scope)
@@ -369,7 +369,6 @@ export function AskPage({
   }, [adapter])
 
   const expandComposer = useCallback(() => {
-    setComposerExpanded(true)
     window.requestAnimationFrame(() => inputRef.current?.focus())
   }, [])
 
@@ -412,7 +411,6 @@ export function AskPage({
     // Clear the draft only after the submission is accepted.
     setDraft('')
     setExpired(false)
-    setComposerExpanded(false)
   }, [
     adapter,
     canSubmit,
@@ -460,7 +458,6 @@ export function AskPage({
   }, [conversation])
 
   const selected = resolveCitationId(citations, source)
-  const panelOpen = wide && selected != null
   const sticky = turns.length > 0
   const empty = turns.length === 0 && !expired
   const kbStyle = { '--ask-kb': `${kbInset}px` } as CSSProperties
@@ -469,8 +466,8 @@ export function AskPage({
   return (
     <Container
       className={embedded ? 'ask-page ask-page-embedded' : 'ask-page'}
-      data-panel-open={panelOpen || undefined}
       id={embedded ? undefined : 'resident-main'}
+      data-keyboard-open={kbInset > 100 || undefined}
       style={kbStyle}
     >
       <AskStatusRegion message={status} />
@@ -494,7 +491,7 @@ export function AskPage({
         >
           <AskScopeBar scope={viewScope} />
 
-          <div className="ask-layout" data-panel-open={panelOpen || undefined}>
+          <div className="ask-layout">
             <div className="ask-reading">
               <section aria-label="Conversation" className="ask-thread-region">
                 {expired ? (
@@ -525,48 +522,14 @@ export function AskPage({
                 {offline ? <AskOfflineNotice /> : null}
               </section>
 
-              {!expired ? (
-                <div className="ask-dock" data-sticky={sticky || undefined}>
-                  {pendingScope ? (
-                    <AskScopeConfirm
-                      onCancel={cancelScopeChange}
-                      onConfirm={confirmScopeChange}
-                    />
-                  ) : sticky && !composerExpanded && draft.length === 0 ? (
-                    <Button
-                      className="ask-compose-open"
-                      disabled={composerDisabled}
-                      onClick={expandComposer}
-                      size="touch"
-                      variant="outline"
-                    >
-                      Ask another question
-                    </Button>
-                  ) : (
-                    <AskComposer
-                      canSubmit={canSubmit}
-                      draft={draft}
-                      inputRef={inputRef}
-                      label={
-                        sticky
-                          ? 'Ask another question'
-                          : 'What do you want to understand?'
-                      }
-                      onDraftChange={setDraft}
-                      onSubmit={() => void handleSubmit()}
-                      pending={checking || submitting}
-                      privacyNote={turns.length === 0}
-                      sendLabel={sticky ? 'Send' : 'Send question'}
-                    />
-                  )}
-                </div>
-              ) : null}
-
-              {empty && viewScope.kind === 'corpus' ? (
+              {empty ? (
                 <div className="ask-examples">
                   <h2 className="ask-examples-head">Try asking</h2>
                   <ul className="ask-suggestions-list">
-                    {ASK_EXAMPLES.map((example) => (
+                    {(viewScope.kind === 'corpus'
+                      ? ASK_EXAMPLES
+                      : ['What has been decided so far?', 'What happens next?']
+                    ).map((example) => (
                       <li key={example}>
                         <button
                           className="ask-suggestion"
@@ -588,13 +551,34 @@ export function AskPage({
                   recent={recent}
                 />
               ) : null}
-            </div>
 
-            {panelOpen ? (
-              <aside aria-label="Official source" className="ask-rail">
-                <EvidencePanel />
-              </aside>
-            ) : null}
+              {!expired ? (
+                <div className="ask-dock" data-sticky={sticky || undefined}>
+                  {pendingScope ? (
+                    <AskScopeConfirm
+                      onCancel={cancelScopeChange}
+                      onConfirm={confirmScopeChange}
+                    />
+                  ) : (
+                    <AskComposer
+                      canSubmit={canSubmit}
+                      draft={draft}
+                      inputRef={inputRef}
+                      label={
+                        sticky
+                          ? 'Ask another question'
+                          : 'What do you want to understand?'
+                      }
+                      onDraftChange={setDraft}
+                      onSubmit={() => void handleSubmit()}
+                      pending={checking || submitting}
+                      privacyNote={turns.length === 0}
+                      sendLabel={sticky ? 'Send' : 'Send question'}
+                    />
+                  )}
+                </div>
+              ) : null}
+            </div>
           </div>
         </EvidenceProvider>
       )}
@@ -614,7 +598,11 @@ function AskScopeBar({ scope }: { scope: AskScope }) {
         <p className="ask-scope-title">{scope.recordTitle}</p>
         <Link className="ask-scope-back" to={scope.returnTo}>
           <ArrowLeftIcon aria-hidden="true" />
-          {scope.kind === 'story' ? 'Back to story' : scope.kind === 'issue' ? 'Back to issue' : 'Back to meeting'}
+          {scope.kind === 'story'
+            ? 'Back to story'
+            : scope.kind === 'issue'
+              ? 'Back to issue'
+              : 'Back to meeting'}
         </Link>
       </div>
     </div>

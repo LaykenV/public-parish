@@ -79,17 +79,19 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <ProductAnalyticsTracker />
             <ResidentRouteAccessibility />
             {children}
-            <TanStackDevtools
-              config={{
-                position: 'bottom-right',
-              }}
-              plugins={[
-                {
-                  name: 'Tanstack Router',
-                  render: <TanStackRouterDevtoolsPanel />,
-                },
-              ]}
-            />
+            {import.meta.env.MODE !== 'browser-test' ? (
+              <TanStackDevtools
+                config={{
+                  position: 'bottom-right',
+                }}
+                plugins={[
+                  {
+                    name: 'Tanstack Router',
+                    render: <TanStackRouterDevtoolsPanel />,
+                  },
+                ]}
+              />
+            ) : null}
           </ResidentLoadingProvider>
         </ConvexProvider>
         <Scripts />

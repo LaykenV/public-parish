@@ -257,7 +257,7 @@
 
       .status {
         padding-left: var(--space-3);
-        border-left: 0.25rem solid var(--color-gold);
+        border: 1px solid var(--color-rule);
       }
 
       footer {
@@ -426,8 +426,8 @@
             <h3>Before choosing an area</h3>
             <p>
               Restore "See how local government is changing" with the selector
-              below and 3D Louisiana beside it. Stack a short Louisiana visual
-              below the copy on mobile.
+              below and 3D Louisiana beside it on desktop. Omit the Louisiana
+              visual on mobile.
             </p>
             <p>
               Follow with Across Louisiana, issues across covered areas, and
@@ -437,8 +437,8 @@
           <article class="panel">
             <h3>After choosing an area</h3>
             <p>
-              Remove the hero and 3D Louisiana. Begin with the parish issues
-              heading. Put issues before Across Louisiana, with decision records
+              Remove the hero and 3D Louisiana. Keep Across Louisiana before
+              the selected parish issues, with decision records
               below.
             </p>
             <p>
@@ -743,6 +743,19 @@
         </div>
       </section>
 
+      <section aria-labelledby="reading-update-title">
+        <h2 id="reading-update-title">Reading and Ask, September 10</h2>
+        <p>Stories stay above local issues even after area selection. Mobile omits
+          the 3D Louisiana. Issues, decisions and meetings share numbered source
+          controls, plain notices and narrow-screen reading layouts.</p>
+        <p>Keep conversations above a persistent composer with an up-arrow send
+          button at the lower right. Empty suggestions sit above the composer.
+          Mobile reading pages open Ask in a drawer and retain drafts on close.</p>
+        <p>Drawers use 420ms cubic-bezier(0.4, 0, 0.6, 1) motion. Phone drawers rise
+          from below; desktop source drawers enter from the right. Reduced motion
+          removes transitions. Keep Close visible and preserve reading position.</p>
+      </section>
+
       <section aria-labelledby="mobile-title">
         <h2 id="mobile-title">Mobile and touch</h2>
         <p class="section-intro">
@@ -905,16 +918,18 @@
             <tr>
               <td>Citation control</td>
               <td>
-                Sits beside the claim, opens the exact excerpt or page, names
-                the official source, and returns focus when closed.
+                A numbered button beside the claim opens its exact excerpt in a drawer.
+                Keep original and saved source links. Return focus without moving
+                the page or conversation scroll position.
               </td>
               <td>Open</td>
             </tr>
             <tr>
               <td>Status label</td>
               <td>
-                Uses text and an icon or shape. Color never carries meaning
-                alone. Labels stay factual and explain limited states.
+                Uses written status without decorative dots inside pills. Color never
+                carries meaning alone. Keep limited states explicit and omit
+                colored strips on card edges.
               </td>
               <td>Coss Badge, always paired with status text</td>
             </tr>
@@ -1065,8 +1080,8 @@
         "minimumTouchTargetPx": 44,
         "mobileChrome": {
           "maximumInitialRemBeforeSafeAreas": 8,
-          "topBar": "scrolls with page, maximum 3.5rem",
-          "navigation": "animated top-right hamburger opens a floating Coss Popover",
+          "topBar": "48px sticky, transparent blur after scrolling",
+          "navigation": "full-screen menu with nav icons, Account and Change area",
           "bottomNavigation": "none"
         },
         "home": {
@@ -1076,13 +1091,14 @@
             "issues",
             "decision records"
           ],
-          "selected": ["issues", "stories", "decision records"],
+          "selected": ["stories", "issues", "decision records"],
           "reliefAfterSelection": "hidden",
+          "reliefOnMobile": "not mounted",
           "loading": "one centered global spinner, no skeletons",
           "mobileIssues": "equal-height native snap row with a visible dot index",
           "mobileStories": "all full-sized",
           "voterInformation": "footer",
-          "mobileMenu": "no visible brand header, area and account controls at bottom"
+          "mobileMenu": "48px header and full-screen expanding menu"
         },
         "mobileSheets": {
           "opener": "written control",

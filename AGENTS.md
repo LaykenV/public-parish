@@ -63,7 +63,7 @@ The approved launch adds three homepage stories: Meta in Richland Parish as the
 lead, SpaceX in Vermilion Parish and the Boyce data center as secondary stories.
 All three and story-scoped Ask, follows, updates, replies, sharing, source review
 and images must pass before the full design and QA campaign. Use the restored hero and stories before issues until an area is selected.
-After selection, remove the hero and begin with local issues before stories. Do not add a fourth story or
+After selection, remove the hero and keep stories before local issues. Do not add a fourth story or
 replace this set without an owner decision.
 
 The owner permits additional targeted hackathon spending under

@@ -9,7 +9,6 @@ import { AskAnswer } from './ask-answer'
 import type { AskNotFoundAnswer } from './contracts'
 
 const page = readFileSync(new URL('./ask-page.tsx', import.meta.url), 'utf8')
-const css = readFileSync(new URL('./ask.css', import.meta.url), 'utf8')
 const route = readFileSync(
   new URL('../../routes/ask.tsx', import.meta.url),
   'utf8',
@@ -62,13 +61,6 @@ describe('Ask page ship boundaries', () => {
     ).toBeLessThan(retry.indexOf('await adapter.retry'))
   })
 
-  it('uses one compact active-thread control instead of covering the answer', () => {
-    expect(page).toContain('className="ask-compose-open"')
-    expect(page).toContain('sticky && !composerExpanded && draft.length === 0')
-    expect(css).toContain('.ask-compose-open')
-    expect(css).toContain('width: fit-content')
-    expect(css).toContain('margin-left: auto')
-  })
 
   it('attaches scope confirmation to the route-change path', () => {
     expect(page).toContain(

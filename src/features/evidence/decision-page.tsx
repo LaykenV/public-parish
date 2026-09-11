@@ -18,7 +18,6 @@ import {
 } from './evidence-blocks'
 import {
   Claim,
-  EvidencePanel,
   EvidenceProvider,
   SourceControl,
 } from './evidence-surface'
@@ -165,7 +164,6 @@ function DecisionView({
 
         <div className="ev-layout">
           <aside aria-label="Record status" className="ev-rail">
-            <EvidencePanel />
             <div className="ev-status">
               <p className="ev-status-row">
                 <span className="ev-status-label">Government body</span>

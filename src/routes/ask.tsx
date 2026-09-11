@@ -35,6 +35,7 @@ function ResidentAsk() {
         onRestoreScope={(scope) =>
           navigate({
             replace: true,
+            resetScroll: false,
             search: (prev) => ({
               ...routeSearchFromScopeKey(askScopeIdentity(scope)),
               fixture: prev.fixture,
@@ -49,6 +50,7 @@ function ResidentAsk() {
         onSelectSource={(selected) =>
           navigate({
             replace: true,
+            resetScroll: false,
             search: (prev) => ({ ...prev, source: selected ?? undefined }),
           })
         }

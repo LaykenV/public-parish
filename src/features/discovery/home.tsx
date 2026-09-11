@@ -17,7 +17,7 @@ import type {
   ResultRowData,
 } from './contracts'
 import { EXPLORE_ROW_FIXTURES, PUBLISHED_ISSUE_FIXTURES } from './fixtures'
-import { useRepeatedAnnouncement } from './hooks'
+import { useRepeatedAnnouncement, useMediaQuery } from './hooks'
 import { HomeIssueCards } from './home-issue-cards'
 import {
   toDecisionRow,
@@ -64,7 +64,7 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
   return (
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>
       {!selected ? <FirstVisitHero /> : null}
-      {!selected && !fixturesEnabled ? <FeaturedStories /> : null}
+      {!fixturesEnabled ? <FeaturedStories /> : null}
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
           <LocalIssues
@@ -74,7 +74,6 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
           />
         </ResidentSectionBoundary>
       </div>
-      {selected && !fixturesEnabled ? <FeaturedStories /> : null}
       <ResidentSectionBoundary label="Decision records" resetKey={resetKey}>
         <LocalDecisionRecords
           fixturesEnabled={fixturesEnabled}
@@ -86,6 +85,7 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
 }
 
 function FirstVisitHero() {
+  const desktop = useMediaQuery('(min-width: 48.001rem)')
   return (
     <section
       className="pp-home-hero"
@@ -115,7 +115,7 @@ function FirstVisitHero() {
         </p>
       </div>
       <div className="pp-home-relief">
-        <LouisianaRelief />
+        {desktop ? <LouisianaRelief /> : null}
       </div>
     </section>
   )

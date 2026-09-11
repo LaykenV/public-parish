@@ -124,7 +124,7 @@
 .following-section {
   margin-top: 2rem;
   padding-top: 1.35rem;
-  border-top: 1px solid var(--border);
+  border-top: 0;
 }
 
 .following-section-head {

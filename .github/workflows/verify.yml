@@ -42,12 +42,18 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'development-certification')
         run: npx playwright test
 
+      - name: Check reading and chat presentation states
+        if: contains(github.event.pull_request.labels.*.name, 'development-certification')
+        run: npx playwright test --config playwright.fixtures.config.ts
+
       - name: Preserve parish feed screenshots
         if: always() && contains(github.event.pull_request.labels.*.name, 'development-certification')
         uses: actions/upload-artifact@v4
         with:
           name: parish-feed-${{ github.event.pull_request.head.sha }}
-          path: test-results/**/*.png
+          path: |
+            test-results/**/*.png
+            test-results/**/*.webm
           if-no-files-found: ignore
 
       - name: Preserve browser failure evidence

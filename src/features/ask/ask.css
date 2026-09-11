@@ -686,95 +686,6 @@
   line-height: 1.5;
 }
 
-/* Evidence gutter inside the answer */
-
-/*
-  From 48rem the answer's Source controls move into the card's left padding,
-  the same margin the Issue and Decision pages use. The evidence.css rules
-  position them; here the card reserves the space.
-*/
-@media (min-width: 48rem) {
-  .ask-page {
-    --ev-gutter: 6rem;
-
-    width: min(100% - 3rem, 46rem);
-  }
-
-  /*
-    One text edge down the column. The answer card reserves the gutter inside
-    its own padding so Source controls stay on the card surface, and the
-    question and the wait block inset by the same amount so the reading edge
-    never shifts between a resident's question and its answer.
-  */
-  .ask-answer,
-  .ask-checking {
-    padding-left: calc(var(--ev-gutter) + 1.1rem);
-  }
-
-  .ask-turn-head,
-  .ask-turn-question {
-    padding-left: calc(var(--ev-gutter) + 1.1rem);
-  }
-
-  /* Two claims can share one source; the second control stacks below. */
-  .ask-answer .ev-claim > .ev-source {
-    grid-row: auto;
-  }
-}
-
-/*
-  From 64.0625rem a selected Source docks the existing 320px panel beside the
-  reading column, on the same grid the Issue and Decision pages use. The
-  column keeps its left edge either way, so docking the panel never slides
-  the conversation sideways, and no blank panel is reserved before selection.
-*/
-@media (min-width: 64.0625rem) {
-  .ask-page {
-    --ev-rail: 20rem;
-    --ev-rail-gap: 2.5rem;
-  }
-
-  .ask-page[data-panel-open] {
-    width: min(100% - 3rem, 68.5rem);
-  }
-
-  .ask-page[data-panel-open] .ask-head,
-  .ask-page[data-panel-open] .ask-scope,
-  .ask-page[data-panel-open] .ask-scope-line {
-    max-width: calc(var(--ev-gutter) + 40rem);
-  }
-
-  .ask-layout[data-panel-open] {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--ev-rail);
-    column-gap: var(--ev-rail-gap);
-    align-items: start;
-    max-width: none;
-  }
-
-  .ask-layout[data-panel-open] .ask-reading {
-    grid-row: 1;
-    grid-column: 1;
-    max-width: calc(var(--ev-gutter) + 40rem);
-  }
-
-  .ask-rail {
-    position: sticky;
-    top: 5rem;
-    grid-row: 1;
-    grid-column: 2;
-    min-width: 0;
-  }
-
-  /*
-    The answer is the reading point, so nothing floats over it here. A phone
-    and tablet keep the composer within thumb reach; a desktop page scrolls.
-  */
-  .ask-dock[data-sticky] {
-    position: static;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .ask-answer {
     animation-duration: 1ms !important;
@@ -824,9 +735,62 @@
   line-height: 1.5;
 }
 .ask-composer-field {
-  min-height: 7rem;
+  min-height: 3rem;
   background: var(--card);
 }
 .ask-composer-field:focus-visible {
   border-color: var(--primary);
 }
+
+/* A conversation has one scrolling reading area and a persistent composer. */
+.ask-page {
+  display: flex;
+  flex-direction: column;
+  width: min(100% - 2rem, 48rem);
+  height: calc(100dvh - 3rem - var(--ask-kb, 0px));
+  min-height: 24rem;
+  padding-block: clamp(1rem, 3vh, 2rem) max(0.75rem, env(safe-area-inset-bottom));
+}
+.ask-head { flex: none; margin-bottom: 0.5rem; }
+.ask-title { font-size: clamp(1.7rem, 4vw, 2.25rem); }
+.ask-scope-line { align-self: flex-start; margin-bottom: 0; background: transparent; border: 0; padding: 0; color: var(--muted-foreground); }
+.ask-scope { flex: none; margin-top: 0; padding: 0.65rem 0; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: transparent; }
+.ask-layout { display: flex; flex: 1; min-height: 0; margin-top: 1rem; }
+.ask-reading { flex: 1; gap: 0.75rem; min-height: 0; }
+.ask-thread-region, .ask-thread-region:empty {
+  display: block; flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  padding: 0.25rem 0.5rem 1rem 0; scroll-padding-block: 1rem;
+}
+.ask-examples { flex: none; max-height: 24vh; overflow-y: auto; }
+.ask-examples .ask-suggestions-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.ask-examples .ask-suggestions-list li { flex: 1 1 12rem; }
+.ask-examples .ask-suggestion {
+  height: 100%; padding: 0.7rem 0.85rem; border: 1px solid var(--border);
+  border-radius: var(--radius-lg); color: var(--body-foreground); background: var(--card); font-weight: 500;
+}
+.ask-examples .ask-suggestion:hover { background: var(--muted); text-decoration: none; }
+.ask-dock, .ask-dock[data-sticky] { flex: none; position: static; }
+.ask-composer { position: relative; gap: 0.35rem; padding: 0.8rem 0.9rem; border-radius: 1.25rem; }
+.ask-composer:focus-within { border-color: var(--primary); box-shadow: 0 0 0 2px var(--accent); }
+.ask-composer-field { padding: 0.25rem; border: 0; border-radius: 0; background: transparent; max-height: min(8rem, 20dvh); }
+.ask-composer-field:focus-visible { outline: 0; }
+.ask-composer-row { justify-content: flex-end; min-height: 2.75rem; }
+.ask-composer-count { margin-right: auto; }
+.ask-send { width: 2.75rem; height: 2.75rem; padding: 0; border-radius: 50%; }
+.ask-send svg { width: 1.3rem; height: 1.3rem; }
+.ask-composer-privacy { max-width: 42ch; padding-right: 0.25rem; font-size: 0.7rem; }
+.ask-turn-head { color: var(--muted-foreground); font-size: var(--pp-text-caption); }
+.ask-turn-question { margin-left: auto; max-width: 90%; padding: 0.85rem 1rem; border-radius: 1rem; background: var(--accent); font-size: var(--pp-text-body); }
+.ask-answer { padding: 1rem 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.ask-recent { max-height: 18vh; overflow-y: auto; flex: none; }
+.ask-page-embedded { height: 100%; min-height: 0; padding: 0; }
+@media (max-height: 600px) {
+  .ask-page { min-height: 0; }
+  .ask-head .ask-lede, .ask-composer-privacy { display: none; }
+  .ask-examples { max-height: 5rem; }
+}
+
+.ask-page[data-keyboard-open] .ask-examples, .ask-page[data-keyboard-open] .ask-recent { display: none; }
+.ask-page-embedded .ask-scope-title { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.ask-composer-privacy { margin: 0.5rem auto 0; padding: 0; text-align: center; }

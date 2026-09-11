@@ -5,27 +5,25 @@ The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
-## Compact desktop header, September 10
+## Resident reading and Ask pass, September 10
 
-The owner requested the same compact, translucent header treatment on desktop.
-The working branch reduces desktop height from 64 to 48 pixels and enables blur
-at the top of the page. Existing navigation and 44-pixel controls remain intact.
-Build and Chromium/WebKit visual checks passed at 1025, 1440 and 375 pixels.
-PR checks and the development preview are pending.
+The owner completed a broad app review and requested consistent reading,
+sources and chat across stories, issues, decisions and meetings. The authorized
+handoff is a reviewed green PR and a development URL for morning inspection.
+Production shipment requires the owner's approval of that preview.
 
-## Mobile navigation, September 10
+- [x] Keep stories above issues after area selection and remove the mobile 3D model.
+- [x] Add meeting chat, compact sources, shared source drawers and scroll preservation.
+- [x] Repair narrow timelines, remove pill dots and colored notice edges, and simplify Account tab rules.
+- [x] Keep Ask's composer below the conversation with an up-arrow send control.
+- [x] Add shared drawer motion with reduced-motion support.
+- [x] Pass local verification, 685 application tests and 66 Chromium/WebKit journeys.
+- [ ] File and babysit the PR, then upload the exact green development artifact.
+- [ ] Deliver the morning report and dev link.
 
-The owner requested a compact sticky header and full-screen menu, followed by a
-PR, review monitoring and development deployment for phone testing. [PR #203](https://github.com/LaykenV/public-parish/pull/203)
-adds a 48-pixel header with blur after scrolling and large menu links.
-Production release is not authorized for this task.
-
-- [x] Implement the header, modal menu and nested area selector.
-- [x] Apply the owner's follow-up: more transparency, nav icons, mobile Account,
-  larger Change area and Apple-style expansion with a two-stage menu icon.
-- [x] Check phone screenshots and pass eight navigation checks in Chromium and WebKit.
-- [ ] Pass latest-head CI and both PR reviews, then upload the verified development artifact.
-- [ ] Owner tests the development URL on a physical phone.
+The approved header releases are PR #203 at `0c5b16b` and PR #204 at `0500f63`.
+Both production workflows and independent smoke tests passed. The desktop
+header is 48px with 80 percent top opacity and 72 percent scrolled opacity.
 
 ## Parallel PR reviews, September 10
 

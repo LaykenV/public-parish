@@ -23,22 +23,13 @@ type SheetProps = {
 }
 
 const SHEET_DESKTOP_QUERY = '(min-width: 64.0625rem)'
-const SHEET_EXIT_FALLBACK_MS = 240
+const SHEET_EXIT_FALLBACK_MS = 420
 
-// Focus returns to the opener once the sheet has finished animating out. The
-// desktop dialog has no exit animation, so waiting there is dead time. Reading
-// `--dur-standard` keeps this in step with the motion tokens in styles.css.
+// Keep focus return in step with the shared drawer transition.
 export function sheetExitDelay(): number {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 0
-  if (window.matchMedia(SHEET_DESKTOP_QUERY).matches) return 0
-
-  const token = window
-    .getComputedStyle(document.documentElement)
-    .getPropertyValue('--dur-standard')
-    .trim()
-  const value = Number.parseFloat(token)
-  if (!Number.isFinite(value) || value <= 0) return SHEET_EXIT_FALLBACK_MS
-  return token.endsWith('ms') ? value : value * 1000
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ? 0
+    : SHEET_EXIT_FALLBACK_MS
 }
 
 export function shouldRestoreSheetFocus(): boolean {
@@ -96,7 +87,7 @@ export function Sheet({
     focusFrameRef.current = window.requestAnimationFrame(() => {
       focusInnerFrameRef.current = window.requestAnimationFrame(() => {
         const close = closeRef.current
-        if (close?.closest('.pp-sheet[data-open]')) close.focus()
+        if (close?.closest('.pp-sheet[data-open]')) close.focus({ preventScroll: true })
       })
     })
     return () => {
@@ -130,7 +121,7 @@ export function Sheet({
         const target = finalFocus?.isConnected
           ? finalFocus
           : resolveFinalFocus()
-        if (shouldRestoreSheetFocus()) target?.focus()
+        if (shouldRestoreSheetFocus()) target?.focus({ preventScroll: true })
         openerRef.current = null
         focusReturnTimerRef.current = null
       },

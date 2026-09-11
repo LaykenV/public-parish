@@ -22,7 +22,7 @@ const config = defineConfig(({ command, mode }) => {
   return {
     resolve: { tsconfigPaths: true },
     plugins: [
-      devtools(),
+      ...(mode === 'browser-test' ? [] : [devtools()]),
       tailwindcss(),
       wgslVitePlugin(),
       tanstackStart({

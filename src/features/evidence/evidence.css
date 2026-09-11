@@ -57,7 +57,7 @@
   text-transform: none;
 }
 
-.ev-kicker > span + span::before {
+.ev-kicker > span + span:not(.ev-state)::before {
   margin-right: 0.75rem;
   color: color-mix(in srgb, var(--muted-foreground) 45%, transparent);
   content: '·';
@@ -765,36 +765,6 @@
   text-transform: none;
 }
 
-.ev-artifact-status::before {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  content: '';
-}
-
-.ev-artifact-status[data-tone='ok'] {
-  color: var(--success-foreground);
-}
-
-.ev-artifact-status[data-tone='ok']::before {
-  background: var(--success);
-}
-
-.ev-artifact-status[data-tone='warning'] {
-  color: var(--warning-foreground);
-}
-
-.ev-artifact-status[data-tone='warning']::before {
-  background: var(--warning);
-}
-
-.ev-artifact-status[data-tone='muted'] {
-  color: var(--muted-foreground);
-}
-
-.ev-artifact-status[data-tone='muted']::before {
-  border: 1.5px solid var(--muted-foreground);
-}
 
 .ev-artifact-note {
   margin: 0.35rem 0 0;
@@ -1271,6 +1241,8 @@
 }
 
 .ev-quote {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   margin: 0.9rem 0 0;
   padding: 0.9rem 1rem;
   border: 1px solid var(--border);
@@ -1345,121 +1317,8 @@
   height: calc(100dvh - 2rem);
 }
 
-/* From 48rem the Source control moves into the margin */
-
 @media (min-width: 48rem) {
-  .ev-page {
-    --ev-gutter: 6rem;
-
-    width: min(100% - 3rem, 74rem);
-  }
-
-  .ev-title {
-    font-size: clamp(2.1rem, 4.4vw, 2.9rem);
-  }
-
-  .ev-claim {
-    display: grid;
-    grid-template-columns: var(--ev-gutter) minmax(0, 1fr);
-    margin-left: calc(var(--ev-gutter) * -1);
-    padding-block: 0.4rem;
-  }
-
-  .ev-claim-body {
-    grid-column: 2;
-    grid-row: 1;
-    min-width: 0;
-  }
-
-  .ev-claim > .ev-source {
-    grid-column: 1;
-    grid-row: 1;
-    display: grid;
-    gap: 0.1rem;
-    justify-items: start;
-    align-self: start;
-    width: calc(var(--ev-gutter) - 1.1rem);
-    margin-top: 0;
-    padding: 0.3rem 0 0.3rem 0.1rem;
-    border: 0;
-    border-radius: var(--radius-sm);
-    background: none;
-  }
-
-  .ev-claim > .ev-source:hover .ev-source-label {
-    text-decoration: underline;
-  }
-
-  .ev-claim > .ev-source[data-selected] {
-    background: none;
-  }
-
-  .ev-claim > .ev-source .ev-source-locator {
-    overflow-wrap: anywhere;
-  }
-
-  .ev-claim::before {
-    position: absolute;
-    top: 0.35rem;
-    bottom: 0.35rem;
-    left: calc(var(--ev-gutter) - 0.85rem);
-    width: 2px;
-    border-radius: 1px;
-    background: transparent;
-    content: '';
-  }
-
-  .ev-claim[data-selected]::before {
-    background: var(--primary);
-  }
-
-  .ev-actions .ev-claim,
-  .ev-factors .ev-claim,
-  .ev-fields .ev-claim,
-  .ev-timeline .ev-claim,
-  .ev-changes .ev-claim,
-  .ev-artifacts .ev-claim,
-  .ev-decision-rows .ev-claim,
-  .ev-uncertain-list .ev-claim {
-    border-top-color: transparent;
-    box-shadow: inset 0 1px 0 var(--border);
-  }
-
-  .ev-actions .ev-claim:first-child,
-  .ev-factors .ev-claim:first-child,
-  .ev-fields .ev-claim:first-child,
-  .ev-timeline .ev-claim:first-child,
-  .ev-changes .ev-claim:first-child,
-  .ev-artifacts .ev-claim:first-child,
-  .ev-decision-rows .ev-claim:first-child,
-  .ev-uncertain-list .ev-claim:first-child {
-    box-shadow: none;
-  }
-
-  .ev-uncertain {
-    margin-left: 0;
-  }
-
-  .ev-uncertain-list .ev-claim {
-    display: block;
-    margin-left: 0;
-  }
-
-  .ev-uncertain-list .ev-claim::before {
-    display: none;
-  }
-
-  .ev-uncertain-list .ev-claim > .ev-source {
-    display: inline-flex;
-    gap: 0.5rem;
-    align-items: center;
-    width: auto;
-    margin-top: 0.55rem;
-    padding: 0.25rem 0.75rem;
-    border: 1px solid var(--pp-border-control);
-    border-radius: 999px;
-    background: var(--card);
-  }
+  .ev-page { width: min(100% - 3rem, 74rem); }
 }
 
 /* Desktop: the rail docks the panel beside the claim */
@@ -1492,15 +1351,6 @@
     max-width: 26ch;
   }
 
-  .ev-claim[data-selected]::after {
-    position: absolute;
-    top: 0;
-    left: calc(var(--ev-gutter) - 0.85rem);
-    right: calc(var(--ev-rail-gap) * -1);
-    height: 1px;
-    background: color-mix(in srgb, var(--primary) 55%, transparent);
-    content: '';
-  }
 
   .ev-section {
     max-width: none;
@@ -1624,4 +1474,60 @@
     overflow-wrap: anywhere;
   }
   .ev-timeline .ev-inline-link::after { content: '→'; flex: none; }
+}
+
+/* Compact numbered citations follow their claim on every screen. */
+.pp-source-control,
+.ev-source.pp-source-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  margin: 0.15rem 0.2rem 0 0;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--muted);
+  color: var(--primary);
+  font: inherit;
+  font-size: var(--pp-text-caption);
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  vertical-align: baseline;
+  cursor: pointer;
+}
+.pp-source-control:hover { background: var(--accent); border-color: var(--pp-border-hover); }
+.ev-claim { min-width: 0; }
+.ev-timeline-entry { display: block; }
+.ev-timeline-entry::before { content: none; }
+.ev-timeline-main { min-width: 0; }
+.ev-timeline-type { display: block; line-height: 1.5; }
+.ev-timeline-type .ev-state { margin: 0.3rem 0 0.3rem 0.5rem; vertical-align: middle; }
+.ev-timeline-summary, .ev-timeline-change { overflow-wrap: anywhere; }
+.ev-timeline-change { border: 0; padding: 0; }
+.ev-claim[data-selected] { background: var(--muted); }
+.ev-sheet .ev-viewer { padding-bottom: 1rem; }
+@media (min-width: 64.0625rem) {
+  .pp-sheet.ev-sheet[data-modal-kind='dialog'] {
+    inset: 0 0 0 auto;
+    width: min(32rem, 100vw - 3rem);
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    transform: translateX(0);
+  }
+  .pp-sheet.ev-sheet[data-modal-kind='dialog'][data-starting-style],
+  .pp-sheet.ev-sheet[data-modal-kind='dialog'][data-ending-style] { transform: translateX(100%); }
+}
+
+.ev-viewer { min-width: 0; overflow-wrap: anywhere; }
+.ev-claim-body:has(> p:only-child) { display: inline; }
+.ev-claim-body > p:only-child { display: inline; }
+
+@media (pointer: fine) {
+  .pp-source-control, .ev-source.pp-source-control {
+    min-width: 1.75rem; min-height: 1.75rem; padding: 0.15rem 0.35rem;
+  }
 }
