@@ -97,6 +97,7 @@ export function AskPage({
     scope: AskScope
   } | null>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const threadRef = useRef<HTMLElement>(null)
   const previousConversation = useRef<AskConversationView | null>(null)
   const submitLock = useRef(false)
 
@@ -275,6 +276,36 @@ export function AskPage({
     }
   }, [dismissed, lastTurnId, lastTurnState])
 
+  // A reopened conversation starts at its latest exchange.
+  const conversationId = conversation?.id ?? null
+  useEffect(() => {
+    const region = threadRef.current
+    if (!region || !conversationId) return
+    region.scrollTop = region.scrollHeight
+  }, [conversationId])
+
+  // A keyboard shrinks the conversation from below. A reader who was at the
+  // latest answer stays there instead of losing it behind the keyboard.
+  useEffect(() => {
+    const region = threadRef.current
+    if (!region || typeof ResizeObserver === 'undefined') return
+    let nearBottom =
+      region.scrollHeight - region.scrollTop - region.clientHeight < 48
+    const track = () => {
+      nearBottom =
+        region.scrollHeight - region.scrollTop - region.clientHeight < 48
+    }
+    const observer = new ResizeObserver(() => {
+      if (nearBottom) region.scrollTop = region.scrollHeight
+    })
+    region.addEventListener('scroll', track, { passive: true })
+    observer.observe(region)
+    return () => {
+      region.removeEventListener('scroll', track)
+      observer.disconnect()
+    }
+  }, [adapter])
+
   // A paused device returns to Ask once its own retry time has passed.
   useEffect(() => {
     if (availability.kind !== 'cooldown') return
@@ -372,7 +403,9 @@ export function AskPage({
   }, [adapter])
 
   const expandComposer = useCallback(() => {
-    window.requestAnimationFrame(() => inputRef.current?.focus())
+    window.requestAnimationFrame(() =>
+      inputRef.current?.focus({ preventScroll: true }),
+    )
   }, [])
 
   const handleSuggestion = useCallback(
@@ -475,17 +508,41 @@ export function AskPage({
       style={kbStyle}
     >
       <AskStatusRegion message={status} />
-      {mobile ? <header className="ask-screen-header">
-        {onBack ? (
-          <button aria-label="Back to reading" className="ask-screen-back" onClick={onBack} type="button"><ArrowLeftIcon aria-hidden="true" /></button>
-        ) : (
-          <Link aria-label={viewScope.kind === 'corpus' ? 'Back to Home' : 'Back to reading'} className="ask-screen-back" to={viewScope.kind === 'corpus' ? '/' : viewScope.returnTo} resetScroll={false}><ArrowLeftIcon aria-hidden="true" /></Link>
-        )}
-        <div className="ask-screen-heading">
-          <h1 className="ask-screen-name">{viewScope.kind === 'corpus' ? 'Ask Public Parish' : viewScope.recordTitle}</h1>
-          <p className="ask-screen-context">{viewScope.kind === 'corpus' ? viewScope.label : 'Ask Public Parish'}</p>
-        </div>
-      </header> : null}
+      {mobile ? (
+        <header className="ask-screen-header">
+          {onBack ? (
+            <button
+              aria-label="Back to reading"
+              className="ask-screen-back"
+              onClick={onBack}
+              type="button"
+            >
+              <ArrowLeftIcon aria-hidden="true" />
+            </button>
+          ) : (
+            <Link
+              aria-label={
+                viewScope.kind === 'corpus' ? 'Back to Home' : 'Back to reading'
+              }
+              className="ask-screen-back"
+              to={viewScope.kind === 'corpus' ? '/' : viewScope.returnTo}
+              resetScroll={false}
+            >
+              <ArrowLeftIcon aria-hidden="true" />
+            </Link>
+          )}
+          <div className="ask-screen-heading">
+            <h1 className="ask-screen-name">
+              {viewScope.kind === 'corpus'
+                ? 'Ask Public Parish'
+                : viewScope.recordTitle}
+            </h1>
+            <p className="ask-screen-context">
+              {viewScope.kind === 'corpus' ? viewScope.label : 'Ask Public Parish'}
+            </p>
+          </div>
+        </header>
+      ) : null}
 
       {!mobile ? <header className="ask-head">
         <h1 className="ask-title">Ask Public Parish</h1>
@@ -508,7 +565,24 @@ export function AskPage({
 
           <div className="ask-layout">
             <div className="ask-reading">
-              <section aria-label="Conversation" className="ask-thread-region">
+              {mobile && empty ? (
+                <div className="ask-intro">
+                  <p className="ask-intro-title">
+                    {viewScope.kind === 'corpus'
+                      ? 'What do you want to understand?'
+                      : `What do you want to understand about this ${viewScope.kind}?`}
+                  </p>
+                  <p className="ask-intro-text">
+                    Answers come only from published, validated official
+                    evidence.
+                  </p>
+                </div>
+              ) : null}
+              <section
+                aria-label="Conversation"
+                className="ask-thread-region"
+                ref={threadRef}
+              >
                 {expired ? (
                   <AskExpiredNotice
                     onRestart={() => {

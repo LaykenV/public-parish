@@ -189,8 +189,13 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
     const input = container.getByRole('textbox')
     const initialComposer = await container.locator('.ask-composer').boundingBox()
     expect(initialComposer!.height).toBeLessThan(70)
-    expect(initialComposer!.y).toBeGreaterThan(250)
-    expect(initialComposer!.y + initialComposer!.height).toBeLessThan(620)
+    // The composer rests at the bottom, under the suggestions and above the
+    // privacy note, with the intro filling the space above.
+    expect(initialComposer!.y).toBeGreaterThan(600)
+    expect(812 - initialComposer!.y - initialComposer!.height).toBeLessThan(80)
+    await expect(container.locator('.ask-intro')).toBeVisible()
+    const examples = await container.locator('.ask-examples').boundingBox()
+    expect(examples!.y + examples!.height).toBeLessThanOrEqual(initialComposer!.y)
     const underlyingPage = page.locator(kind === 'ask' ? '.resident-header' : '.resident-blueprint')
     await expect(underlyingPage).toHaveCSS('opacity', '0')
     await page.screenshot({ path: info.outputPath(`${kind}-chat-resting.png`) })
@@ -210,7 +215,8 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
         window.visualViewport!.dispatchEvent(new Event('resize'))
         window.visualViewport!.dispatchEvent(new Event('scroll'))
       }, bounds)
-      await expect(container.locator('.ask-examples')).toBeHidden()
+      await expect(container.locator('.ask-intro')).toBeHidden()
+      await expect(container.locator('.ask-examples')).toBeVisible()
       await expect.poll(async () => {
         const box = await container.locator('.ask-composer').boundingBox()
         return box!.y >= bounds.top && box!.y + box!.height <= bounds.top + bounds.height
@@ -233,6 +239,7 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
       delete (window.visualViewport as unknown as Record<string, unknown>).offsetTop
       window.visualViewport!.dispatchEvent(new Event('resize'))
     })
+    await expect(container.locator('.ask-intro')).toBeVisible()
     await expect(container.locator('.ask-examples')).toBeVisible()
     await expect(input).toHaveValue('Keep this keyboard draft')
   })

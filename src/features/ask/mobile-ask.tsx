@@ -1,6 +1,7 @@
 import { Dialog } from '@base-ui/react/dialog'
-import { MessageCircleIcon } from 'lucide-react'
+import { ArrowLeftIcon, MessageCircleIcon } from 'lucide-react'
 import { lazy, Suspense, useEffect, useId, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 
 import { Button } from '../../components/ui/button'
 import { loadAskPageData } from '../../routes/ask.data'
@@ -12,6 +13,7 @@ import {
 } from '../discovery/hooks'
 import { askScopeIdentity } from './contracts'
 import type { AskScenario } from './contracts'
+import './ask.css'
 import './mobile-ask.css'
 
 const EmbeddedAskPage = lazy(() =>
@@ -54,15 +56,20 @@ export function MobileAsk({
 
   if (!mobile) return null
   const loading = (
-    <div className="ask-screen-loading">
-      <Button
-        aria-label="Back to reading"
-        className="ask-screen-back"
-        onClick={() => setOpen(false)}
-        type="button"
-      >
-        Back
-      </Button>
+    <div className="ask-page ask-page-embedded ask-screen-loading">
+      <header className="ask-screen-header">
+        <button
+          aria-label="Back to reading"
+          className="ask-screen-back"
+          onClick={() => setOpen(false)}
+          type="button"
+        >
+          <ArrowLeftIcon aria-hidden="true" />
+        </button>
+        <div className="ask-screen-heading">
+          <p className="ask-screen-name">Ask Public Parish</p>
+        </div>
+      </header>
       <p role="status">
         {failed
           ? 'Chat could not open. Go back and try again.'
@@ -70,6 +77,11 @@ export function MobileAsk({
       </p>
     </div>
   )
+  const screenStyle = {
+    '--ask-viewport-top': `${viewport.top}px`,
+    '--ask-viewport-height':
+      viewport.height === undefined ? '100dvh' : `${viewport.height}px`,
+  } as CSSProperties
   return (
     <>
       <Button
@@ -100,10 +112,7 @@ export function MobileAsk({
             ref={popupRef}
             aria-hidden={open ? undefined : true}
             inert={open ? undefined : true}
-            style={{
-              top: viewport.top,
-              height: viewport.height ?? '100dvh',
-            }}
+            style={screenStyle}
             initialFocus={() => {
               popupRef.current
                 ?.querySelector<HTMLButtonElement>('.ask-screen-back')

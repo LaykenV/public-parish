@@ -1,6 +1,6 @@
 # Current work and launch gates
 
-Updated September 10, 2026. This is the only active status and pending-work queue.
+Updated September 11, 2026. This is the only active status and pending-work queue.
 The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
@@ -17,8 +17,21 @@ Work remains in PR #205 for dev review.
 
 - [x] Replace mobile chat drawers and preserve drafts and reading position.
 - [x] Verify full-height chat, compact composer and keyboard bounds in both engines.
-- [ ] Complete final CI/review and refresh the verified development artifact.
+- [x] PR #205 merged at `60b43d9`.
 - [ ] Owner tests the native iPhone keyboard again.
+
+The owner's review of that release found the chat still looked poor and the
+composer still fought the keyboard. The design pass that follows keeps the
+composer at the bottom in every state, adds a centered intro to the empty
+screen, replaces the bordered circular back control with a plain arrow in a
+48-pixel bar, hides the redundant "You asked" label, shrinks inline source tags
+to text size while keeping their 44-pixel touch area, and fixes the send
+control's overflowing spinner. The screen position is clamped inside the layout
+viewport and standalone Ask locks the document behind it.
+
+- [x] Rebuild the mobile chat layout with the composer at the bottom.
+- [ ] Owner checks the native iPhone keyboard: no jump on focus, composer above
+      the keyboard, examples reachable while typing, Back and title in view.
 
 ## Mobile review corrections, September 11
 

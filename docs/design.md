@@ -254,8 +254,13 @@ remain pending. Keep their status in `docs/work.md`.
 
 On phone-sized story, issue, decision and meeting pages, a circular purple chat button
 sits at the bottom right. It opens a full-screen conversation with an opaque
-background, one Back/title bar and a compact composer. Back restores the reading
-position and retains drafts and conversation state. Citations open above the conversation and return
+background, one 48-pixel bar and a compact composer. The bar holds a plain back
+arrow, the record title on one line and "Ask Public Parish" beneath it, with a
+hairline below; the conversation scrolls under it. Back restores the reading
+position and retains drafts and conversation state. The screen is sized and
+positioned from the visible viewport so the composer sits directly above the
+keyboard; that position is clamped inside the layout viewport, and standalone
+Ask locks the document behind it so a keyboard has no page to pan. Citations open above the conversation and return
 focus to their source control. Desktop keeps the existing Ask entry points.
 Decisions retain their existing linked-issue scope, or the published corpus when
 there is no linked issue. Do not imply a new decision-only evidence scope.
@@ -284,16 +289,22 @@ status and a separate decision link. Pills never inherit metadata separator dots
 Notices have a plain border without a colored left edge. Account tabs have one
 baseline and an active underline, without a second rule above the first section.
 
-On mobile, an empty Ask conversation centers its suggestions and composer.
-After the first question, Ask uses one scrollable conversation above a composer
-at the bottom. The send
-control is an up arrow at its lower right with an accessible name. Empty-state
-suggestions appear above the composer and disappear after the first question.
-Drafts and conversations survive leaving and reopening full-screen chat.
-The composer starts as one line and grows with the draft. Standalone mobile Ask
-uses the same compact header and composer.
-Short screens and keyboard resizing keep the composer reachable. Existing
-scope, evidence, retry, expiration and availability rules remain in force.
+On mobile, the composer always rests at the bottom of the chat screen. An empty
+conversation centers a short intro in the free space above it: "What do you
+want to understand?", or the same question naming the story, issue or meeting,
+with the one-line evidence promise beneath. Two example questions sit directly
+above the composer. When the keyboard opens, the intro gives way and the
+examples stay one tap above the field; they disappear after the first
+question. After the first question, Ask uses one scrollable conversation above
+the composer. The send control is an up arrow at its lower right with an
+accessible name; while an answer is being checked, the spinner replaces the
+arrow. Drafts and conversations survive leaving and reopening full-screen chat,
+and a reopened conversation starts at its latest exchange. The composer starts
+as one line and grows with the draft. Standalone mobile Ask uses the same
+compact bar and composer. Short screens and keyboard resizing keep the composer
+reachable, and a conversation that was scrolled to its latest answer stays
+there when the keyboard shrinks the screen. Existing scope, evidence, retry,
+expiration and availability rules remain in force.
 
 While mobile chat is open, make the reading document transparent without
 removing it. Safari can show document pixels through its keyboard controls beyond

@@ -48,10 +48,15 @@ export function useVisualViewport() {
     const update = () => {
       // Let browser zoom work without reflowing the page around the zoomed view.
       if (viewport.scale !== 1) return
+      const layoutHeight = window.innerHeight
+      const height = Math.min(viewport.height, layoutHeight)
+      // iOS can leave a stale offsetTop after the keyboard closes. A screen
+      // sized to the visible area must still end inside the layout viewport.
+      const top = Math.max(0, Math.min(viewport.offsetTop, layoutHeight - height))
       setBounds({
-        height: viewport.height,
-        top: viewport.offsetTop,
-        keyboardOpen: window.innerHeight - viewport.height > 100,
+        height,
+        top,
+        keyboardOpen: layoutHeight - viewport.height > 100,
       })
     }
     viewport.addEventListener('resize', update)

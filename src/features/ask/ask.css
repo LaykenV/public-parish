@@ -778,6 +778,10 @@
 .ask-composer-count { margin-right: auto; }
 .ask-send { width: 2.75rem; height: 2.75rem; padding: 0; border-radius: 50%; }
 .ask-send svg { width: 1.3rem; height: 1.3rem; }
+/* A round send control has room for one glyph: the arrow, or the spinner. */
+.ask-send [data-slot='button-loading-spacer'],
+.ask-send:not([data-loading]) [data-slot='button-loading-slot'],
+.ask-send[data-loading] > svg { display: none; }
 .ask-composer-privacy { max-width: 42ch; padding-right: 0.25rem; font-size: 0.7rem; }
 .ask-turn-head { color: var(--muted-foreground); font-size: var(--pp-text-caption); }
 .ask-turn-question { margin-left: auto; max-width: 90%; padding: 0.85rem 1rem; border-radius: 1rem; background: var(--accent); font-size: var(--pp-text-body); }
@@ -790,52 +794,42 @@
   .ask-examples { max-height: 5rem; }
 }
 
-.ask-page[data-keyboard-open] .ask-examples, .ask-page[data-keyboard-open] .ask-recent { display: none; }
+.ask-page[data-keyboard-open] .ask-recent { display: none; }
 .ask-page-embedded .ask-scope-title { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
 .ask-composer-privacy { margin: 0.5rem auto 0; padding: 0; text-align: center; }
 
 
-/* Full-screen mobile conversations share one compact navigation bar. */
-.ask-screen-header { display: none; }
-.ask-screen-back {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  color: var(--foreground);
-  background: var(--card);
-  cursor: pointer;
-}
-.ask-screen-back svg { width: 1.25rem; height: 1.25rem; }
-.ask-screen-header {
-  flex: none;
-  align-items: center;
-  gap: 0.75rem;
-  min-height: 4rem;
-  padding: 0.5rem 1rem;
-  background: color-mix(in srgb, var(--background) 94%, transparent);
-  backdrop-filter: blur(16px);
-}
-.ask-screen-heading { min-width: 0; }
-.ask-screen-name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin: 0; font-weight: 650; font-size: 1rem; }
-.ask-screen-context { margin: 0.1rem 0 0; font-size: 0.75rem; color: var(--muted-foreground); }
 .ask-composer { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 0.5rem; padding: 0.35rem 0.4rem 0.35rem 0.8rem; border-radius: 1.7rem; box-shadow: none; }
 .ask-composer-field { min-height: 2.75rem; max-height: 8rem; padding: 0.65rem 0; line-height: 1.4; resize: none; }
 .ask-composer-row { display: flex; flex: none; min-height: 2.75rem; }
 .ask-composer-count { position: absolute; bottom: 100%; left: 0.75rem; margin: 0 0 0.35rem; }
 .ask-composer:has(.ask-composer-count) { margin-top: 1.75rem; }
 .ask-composer:focus-within { box-shadow: 0 0 0 1px var(--accent); }
+
+/*
+  Phone chat screen. One bar, one scrolling conversation, one composer at the
+  bottom. The screen is sized to the visible viewport so the composer sits
+  directly above the keyboard, and the document behind it never scrolls.
+*/
+
+.ask-screen-header {
+  display: none;
+}
+
 @media (max-width: 48rem) {
+  /* Standalone Ask owns the display. Nothing behind it may scroll, so a
+     keyboard has no page to pan. */
+  :root:has(.ask-page:not(.ask-page-embedded)) {
+    height: 100%;
+    overflow: hidden;
+  }
+
   .ask-page:not(.ask-page-embedded) {
     position: fixed;
     top: var(--ask-viewport-top, 0px);
-    left: 0;
     right: 0;
+    left: 0;
     z-index: 41;
     width: 100%;
     height: var(--ask-viewport-height, 100dvh);
@@ -844,38 +838,287 @@
     padding: 0;
     background: var(--background);
   }
-  .ask-page .ask-screen-header { display: flex; }
-  .ask-page .ask-head, .ask-page .ask-scope, .ask-page .ask-scope-line { display: none; }
-  .ask-page .ask-layout { margin-top: 0; padding: 0 0.75rem; padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
-  .ask-page .ask-composer-field { font-size: 1rem; max-height: min(8rem, calc(var(--ask-viewport-height, 100dvh) * 0.25)); }
-  .ask-page .ask-composer-privacy { font-size: 0.65rem; }
-  .ask-page[data-keyboard-open] .ask-layout { padding-bottom: 0.5rem; }
-  .ask-page[data-keyboard-open] .ask-composer-privacy { display: none; }
-  .ask-page[data-keyboard-open] .ask-reading { gap: 0.5rem; }
-  .ask-page[data-keyboard-open] .ask-thread-region { padding-block: 0; }
-}
 
-@media (max-width: 48rem) {
-  .ask-page:not(.ask-page-embedded)::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: var(--background);
+  .ask-page .ask-head,
+  .ask-page .ask-scope,
+  .ask-page .ask-scope-line {
+    display: none;
   }
-}
 
-/* Center the first question, then give the conversation the available height. */
-@media (max-width: 48rem) {
-  .ask-page .ask-reading { width: 100%; max-width: 40rem; margin-inline: auto; }
-  .ask-page[data-empty] .ask-reading { justify-content: center; }
-  .ask-page[data-empty] .ask-thread-region { flex: 0 1 auto; }
-  .ask-page[data-empty] .ask-thread-region:empty { display: none; }
+  /* Bar */
+
+  .ask-page .ask-screen-header {
+    display: flex;
+    flex: none;
+    gap: 0.25rem;
+    align-items: center;
+    min-height: calc(3rem + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 0.75rem 0 0.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ask-screen-back {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    border-radius: var(--radius-md);
+    color: var(--foreground);
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .ask-screen-back:hover {
+    background: var(--accent);
+  }
+
+  .ask-screen-back svg {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+
+  .ask-screen-heading {
+    display: grid;
+    min-width: 0;
+  }
+
+  .ask-screen-name,
+  .ask-screen-context {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .ask-screen-name {
+    font-size: 0.9375rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  .ask-screen-context {
+    color: var(--muted-foreground);
+    font-size: var(--pp-text-caption);
+    line-height: 1.3;
+  }
+
+  /* Body */
+
+  .ask-page .ask-layout {
+    margin-top: 0;
+    padding: 0 1rem max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  .ask-page .ask-reading {
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: auto;
+    gap: 0.75rem;
+  }
+
+  .ask-page .ask-thread-region {
+    padding: 0.75rem 0 0.5rem;
+  }
+
+  /* Empty: the intro takes the free space; suggestions and the composer
+     stay at the bottom where the thumb and the keyboard are. */
+
+  .ask-intro {
+    display: grid;
+    flex: 1 1 auto;
+    gap: 0.5rem;
+    align-content: center;
+    justify-items: center;
+    min-height: 0;
+    padding: 1rem 0.5rem;
+    text-align: center;
+  }
+
+  .ask-intro-title {
+    max-width: 18ch;
+    margin: 0;
+    font-size: 1.375rem;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  .ask-intro-text {
+    max-width: 32ch;
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: var(--pp-text-small);
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .ask-page[data-empty] .ask-thread-region {
+    flex: 0 1 auto;
+  }
+
+  .ask-page[data-empty] .ask-thread-region:empty {
+    display: none;
+  }
+
+  .ask-page .ask-examples {
+    flex: none;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .ask-page .ask-examples-head,
+  .ask-page .ask-turn-head {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .ask-page .ask-examples .ask-suggestions-list {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .ask-page .ask-examples .ask-suggestion {
+    min-height: 3rem;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    font-size: var(--pp-text-small);
+  }
+
+  .ask-page .ask-recent {
+    flex: none;
+    max-height: 9rem;
+  }
+
+  /* With the keyboard up, the examples stay one tap above the field and the
+     intro gives way. The composer keeps the bottom whatever is hidden. */
+  .ask-page[data-keyboard-open] .ask-intro {
+    display: none;
+  }
+
+  .ask-page[data-empty] .ask-examples {
+    margin-top: auto;
+  }
+
+  /* Thread. Bubbles already separate turns, so no rules between them. */
+
+  .ask-page .ask-turn {
+    margin-top: 1.5rem;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .ask-page .ask-turn:first-child {
+    margin-top: 0;
+  }
+
+  .ask-page .ask-turn-question {
+    margin: 0 0 0 auto;
+    max-width: 85%;
+    padding: 0.7rem 0.95rem;
+    border-radius: 1.125rem 1.125rem 0.375rem 1.125rem;
+    font-size: var(--pp-text-body);
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  .ask-page .ask-answer,
+  .ask-page .ask-checking {
+    margin-top: 0.9rem;
+  }
+
+  .ask-page .ask-answer {
+    padding: 0.25rem 0 0;
+  }
+
+  .ask-page .ask-answer-stamp {
+    margin-bottom: 0.5rem;
+  }
+
+  .ask-page .ask-lead .ask-claim-text {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  .ask-page .ask-claim-text {
+    line-height: 1.6;
+  }
+
+  /* Numbered sources stay inline with their sentence. The visible tag is
+     small; the touch target around it remains 44 pixels. */
+
+  .ask-page .ev-source.pp-source-control {
+    position: relative;
+    min-width: 1.75rem;
+    min-height: 1.75rem;
+    margin: 0 0.15rem 0 0.1rem;
+    padding: 0.1rem 0.4rem;
+    vertical-align: 0.1em;
+  }
+
+  .ask-page .ev-source.pp-source-control::after {
+    content: '';
+    position: absolute;
+    inset: -0.5rem;
+  }
+
+  /* Composer */
+
+  .ask-page .ask-dock {
+    flex: none;
+  }
+
+  .ask-page .ask-composer {
+    border-color: var(--input);
+  }
+
+  .ask-page .ask-composer:focus-within {
+    border-color: var(--primary);
+    box-shadow: none;
+  }
+
+  .ask-page .ask-composer-field {
+    font-size: 1rem;
+    max-height: min(8rem, calc(var(--ask-viewport-height, 100dvh) * 0.25));
+  }
+
+  .ask-page .ask-composer-privacy {
+    font-size: 0.7rem;
+  }
+
+  .ask-page[data-keyboard-open] .ask-layout {
+    padding-bottom: 0.5rem;
+  }
+
+  .ask-page[data-keyboard-open] .ask-composer-privacy {
+    display: none;
+  }
+
+  .ask-page[data-keyboard-open] .ask-reading {
+    gap: 0.5rem;
+  }
+
+  .ask-page[data-keyboard-open] .ask-thread-region {
+    padding-block: 0.5rem 0.25rem;
+  }
 
   /* Safari samples the document behind its translucent keyboard controls. */
+
   .resident-blueprint:has(.mobile-ask-trigger[aria-expanded='true']) {
     opacity: 0;
   }
+
   .resident-blueprint:has(> .ask-page:not(.ask-page-embedded)) > :not(.ask-page) {
     opacity: 0;
   }
