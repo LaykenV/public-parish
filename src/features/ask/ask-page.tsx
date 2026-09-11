@@ -470,6 +470,7 @@ export function AskPage({
     <Container
       className={embedded ? 'ask-page ask-page-embedded' : 'ask-page'}
       id={embedded ? undefined : 'resident-main'}
+      data-empty={empty || undefined}
       data-keyboard-open={viewport.keyboardOpen || undefined}
       style={kbStyle}
     >

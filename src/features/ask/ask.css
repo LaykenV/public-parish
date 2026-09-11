@@ -864,3 +864,19 @@
     background: var(--background);
   }
 }
+
+/* Center the first question, then give the conversation the available height. */
+@media (max-width: 48rem) {
+  .ask-page .ask-reading { width: 100%; max-width: 40rem; margin-inline: auto; }
+  .ask-page[data-empty] .ask-reading { justify-content: center; }
+  .ask-page[data-empty] .ask-thread-region { flex: 0 1 auto; }
+  .ask-page[data-empty] .ask-thread-region:empty { display: none; }
+
+  /* Safari samples the document behind its translucent keyboard controls. */
+  .resident-blueprint:has(.mobile-ask-trigger[aria-expanded='true']) {
+    opacity: 0;
+  }
+  .resident-blueprint:has(> .ask-page:not(.ask-page-embedded)) > :not(.ask-page) {
+    opacity: 0;
+  }
+}

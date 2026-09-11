@@ -284,7 +284,9 @@ status and a separate decision link. Pills never inherit metadata separator dots
 Notices have a plain border without a colored left edge. Account tabs have one
 baseline and an active underline, without a second rule above the first section.
 
-Ask uses one scrollable conversation above an always-visible composer. The send
+On mobile, an empty Ask conversation centers its suggestions and composer.
+After the first question, Ask uses one scrollable conversation above a composer
+at the bottom. The send
 control is an up arrow at its lower right with an accessible name. Empty-state
 suggestions appear above the composer and disappear after the first question.
 Drafts and conversations survive leaving and reopening full-screen chat.
@@ -292,3 +294,8 @@ The composer starts as one line and grows with the draft. Standalone mobile Ask
 uses the same compact header and composer.
 Short screens and keyboard resizing keep the composer reachable. Existing
 scope, evidence, retry, expiration and availability rules remain in force.
+
+While mobile chat is open, make the reading document transparent without
+removing it. Safari can show document pixels through its keyboard controls beyond
+the visual viewport. Restore the document when returning focus and retain the
+reading position. Standalone Ask hides the surrounding site header and footer.

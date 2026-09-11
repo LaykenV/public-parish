@@ -55,6 +55,7 @@ for (const [kind, path] of records) {
     await input.fill('Who received the truck?')
     await chat.getByRole('button', { name: 'Back to reading', exact: true }).click()
     await expect(trigger).toBeFocused()
+    await expect(page.locator('.resident-blueprint')).toHaveCSS('opacity', '1')
     expect(await page.evaluate(() => scrollY)).toBe(readingPosition)
     await trigger.click()
     await expect(input).toHaveValue('Who received the truck?')
@@ -188,6 +189,10 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
     const input = container.getByRole('textbox')
     const initialComposer = await container.locator('.ask-composer').boundingBox()
     expect(initialComposer!.height).toBeLessThan(70)
+    expect(initialComposer!.y).toBeGreaterThan(250)
+    expect(initialComposer!.y + initialComposer!.height).toBeLessThan(620)
+    const underlyingPage = page.locator(kind === 'ask' ? '.resident-header' : '.resident-blueprint')
+    await expect(underlyingPage).toHaveCSS('opacity', '0')
     await page.screenshot({ path: info.outputPath(`${kind}-chat-resting.png`) })
     if (kind !== 'ask') {
       const screen = await container.boundingBox()
@@ -212,6 +217,7 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
       }).toBe(true)
       await expect(input).toHaveValue('Keep this keyboard draft')
       await expect(input).toBeFocused()
+      await expect(underlyingPage).toHaveCSS('opacity', '0')
       if (kind !== 'ask') {
         const close = await container.getByRole('button', { name: 'Back to reading', exact: true }).boundingBox()
         expect(close!.y).toBeGreaterThanOrEqual(bounds.top)

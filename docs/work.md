@@ -10,7 +10,10 @@ The approved order is stories, then design and QA, then launch and outreach.
 The owner approved a full-screen conversation based on T3 Code screenshots after
 rejecting the keyboard-constrained drawer. Mobile chat now has one Back/title
 bar, an opaque screen and a compact growing composer. Sources retain drawers.
-Standalone Ask shares the layout. Work remains in PR #205 for dev review.
+Standalone Ask shares the layout. The next phone review showed the article
+through Safari keyboard controls. The follow-up hides the reading document while
+chat is open and centers the empty composer, informed by T3 Chat mobile.
+Work remains in PR #205 for dev review.
 
 - [x] Replace mobile chat drawers and preserve drafts and reading position.
 - [x] Verify full-height chat, compact composer and keyboard bounds in both engines.

@@ -2003,3 +2003,12 @@ T3's public thread screen and composer code informed the layout approach;
 Public Parish retains its own browser implementation. Draft, source and
 keyboard tests passed locally. Final CI and development receipts remain in
 PR #205; native iPhone confirmation remains with the owner.
+
+## September 11, Safari underlay and empty chat layout
+
+Owner screenshots showed article pixels through Safari keyboard controls despite
+the full-screen chat backdrop. The follow-up hides the reading document without
+removing its layout or state. T3 Chat mobile informed the centered empty composer;
+messages retain the bottom composer. Regression checks cover document visibility,
+reading focus restoration and keyboard bounds. Native iPhone confirmation remains
+pending; CI and development receipts belong in PR #205.
