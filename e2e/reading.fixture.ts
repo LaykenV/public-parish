@@ -185,7 +185,8 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
     if (kind !== 'ask') await page.getByRole('button', { name: 'Ask Public Parish', exact: true }).click()
     // Simulate the home-indicator padding that desktop browsers do not expose.
     await page.addStyleTag({ content: '.pp-sheet { padding-bottom: 34px; }' })
-    const container = kind === 'ask' ? page.locator('.ask-page') : page.getByRole('dialog', { name: 'Ask Public Parish', exact: true })
+    // Every phone entry point renders the same chat screen.
+    const container = page.getByRole('dialog', { name: 'Ask Public Parish', exact: true })
     const input = container.getByRole('textbox')
     const initialComposer = await container.locator('.ask-composer').boundingBox()
     expect(initialComposer!.height).toBeLessThan(70)
@@ -199,12 +200,10 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
     const underlyingPage = page.locator(kind === 'ask' ? '.resident-header' : '.resident-blueprint')
     await expect(underlyingPage).toHaveCSS('opacity', '0')
     await page.screenshot({ path: info.outputPath(`${kind}-chat-resting.png`) })
-    if (kind !== 'ask') {
-      const screen = await container.boundingBox()
-      expect(screen!.y).toBe(0)
-      expect(screen!.height).toBe(812)
-      await expect(container.locator('.pp-sheet-grabber')).toHaveCount(0)
-    }
+    const screen = await container.boundingBox()
+    expect(screen!.y).toBe(0)
+    expect(screen!.height).toBe(812)
+    await expect(container.locator('.pp-sheet-grabber')).toHaveCount(0)
     await input.fill('Keep this keyboard draft')
     for (const bounds of [{ height: 360, top: 0 }, { height: 360, top: 120 }, { height: 290, top: 70 }]) {
       await page.evaluate(({ height, top }) => {
@@ -224,10 +223,8 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
       await expect(input).toHaveValue('Keep this keyboard draft')
       await expect(input).toBeFocused()
       await expect(underlyingPage).toHaveCSS('opacity', '0')
-      if (kind !== 'ask') {
-        const close = await container.getByRole('button', { name: 'Back to reading', exact: true }).boundingBox()
-        expect(close!.y).toBeGreaterThanOrEqual(bounds.top)
-      }
+      const close = await container.locator('.ask-screen-back').boundingBox()
+      expect(close!.y).toBeGreaterThanOrEqual(bounds.top)
     }
     await input.fill('A long draft line\n'.repeat(12))
     const send = await container.getByRole('button', { name: 'Send question', exact: true }).boundingBox()
@@ -293,8 +290,8 @@ test('short mobile chat clamps stale keyboard offsets and keeps long drafts reac
         const box = await chat.locator('.ask-composer').boundingBox()
         return box!.y >= expectedTop && box!.y + box!.height <= expectedBottom
       }).toBe(true)
-      const header = await chat.locator('.ask-screen-header').boundingBox()
-      expect(header!.y).toBe(expectedTop)
+      // Growing back after the keyboard leaves is eased, so wait for the bar to settle.
+      await expect.poll(async () => (await chat.locator('.ask-screen-header').boundingBox())!.y).toBe(expectedTop)
       if (viewport.height === 290) await page.screenshot({ path: info.outputPath(path.startsWith('/ask') ? 'ask-short-keyboard.png' : 'issue-short-keyboard.png') })
     }
   }
@@ -315,9 +312,12 @@ test('standalone Ask source drawers preserve the document lock and release it on
   expect(await region.evaluate(el => el.scrollTop)).toBe(position)
   await expect(page.locator('html')).toHaveCSS('overflow', 'hidden')
   await expect(page.locator('.resident-header')).toHaveCSS('visibility', 'hidden')
-  await page.locator('.ask-screen-back').click()
+  await page.getByRole('button', { name: 'Back to Home', exact: true }).click()
+  // The screen plays its exit motion, then the route hands back to Home.
+  await expect(page).toHaveURL(/\/$/)
   await expect(page.locator('.ask-page')).toHaveCount(0)
   await expect(page.locator('html')).not.toHaveCSS('overflow', 'hidden')
+  await expect(page.locator('.resident-header')).toHaveCSS('visibility', 'visible')
 })
 
 test('mobile menu anchors Account with the area controls and keeps it reachable on short screens', async ({ page }, info) => {

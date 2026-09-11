@@ -26,7 +26,15 @@ expandable delivery details, groups meeting source documents by their known
 types, labels Explore loading and anchors Account above the menu's area controls.
 Home and source drawer layouts remain as approved.
 
+The owner's phone recording showed the standalone Ask route and the chat-button
+screen diverging under the keyboard: the button screen resized between a pinned
+bar and the composer, while the route's whole page panned and snapped back on
+close. Both now render one chat screen through the same portal, backdrop and
+scroll lock; the route opens it in place of the page and Back plays the shared
+exit motion before navigating. Regrowth after the keyboard closes is eased.
+
 - [x] Review the chat implementation and run all 34 existing fixture journeys.
+- [x] Route standalone phone Ask through the chat-button screen.
 - [x] Implement the selected reading and navigation refinements.
 - [ ] Finish expanded browser checks, application validation and both PR reviews.
 - [ ] Upload the exact green CI frontend to development and inspect it there.

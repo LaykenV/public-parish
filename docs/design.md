@@ -260,8 +260,13 @@ arrow, the record title on one line and "Ask Public Parish" beneath it, with a
 hairline below; the conversation scrolls under it. Back restores the reading
 position and retains drafts and conversation state. The screen is sized and
 positioned from the visible viewport so the composer sits directly above the
-keyboard; that position is clamped inside the layout viewport, and standalone
-Ask locks the document behind it so a keyboard has no page to pan. Citations open above the conversation and return
+keyboard; that position is clamped inside the layout viewport. The screen
+shrinks at once when the keyboard opens and eases back over 200 milliseconds
+when it closes, so the return reads as one motion rather than a snap. Every
+phone entry point renders this same screen: the Ask route on a phone opens it
+in place of the page, with the site header and footer hidden behind it, and
+Back plays the same fade-and-slide exit before the previous page returns.
+Citations open above the conversation and return
 focus to their source control. Desktop keeps the existing Ask entry points.
 Decisions retain their existing linked-issue scope, or the published corpus when
 there is no linked issue. Do not imply a new decision-only evidence scope.

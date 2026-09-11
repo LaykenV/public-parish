@@ -809,8 +809,8 @@
 
 /*
   Phone chat screen. One bar, one scrolling conversation, one composer at the
-  bottom. The screen is sized to the visible viewport so the composer sits
-  directly above the keyboard, and the document behind it never scrolls.
+  bottom. Every phone entry point renders the page inside .mobile-chat-screen
+  (see mobile-ask.css), which owns the viewport sizing and the scroll lock.
 */
 
 .ask-screen-header {
@@ -818,27 +818,6 @@
 }
 
 @media (max-width: 48rem) {
-  /* Standalone Ask owns the display. Nothing behind it may scroll, so a
-     keyboard has no page to pan. */
-  :root:has(.ask-page:not(.ask-page-embedded)) {
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .ask-page:not(.ask-page-embedded) {
-    position: fixed;
-    top: var(--ask-viewport-top, 0px);
-    right: 0;
-    left: 0;
-    z-index: 41;
-    width: 100%;
-    height: var(--ask-viewport-height, 100dvh);
-    min-height: 0;
-    margin: 0;
-    padding: 0;
-    background: var(--background);
-  }
-
   .ask-page .ask-head,
   .ask-page .ask-scope,
   .ask-page .ask-scope-line {
@@ -1101,7 +1080,9 @@
     opacity: 0;
   }
 
-  .resident-blueprint:has(> .ask-page:not(.ask-page-embedded)) > :not(.ask-page) {
+  /* Standalone Ask leaves the shell in the document only as the route's
+     landmark; the chat screen is the whole display. */
+  .resident-blueprint:has(> .ask-screen-anchor) > :not(.ask-screen-anchor) {
     opacity: 0;
     visibility: hidden;
   }

@@ -512,7 +512,9 @@ export function AskPage({
         <header className="ask-screen-header">
           {onBack ? (
             <button
-              aria-label="Back to reading"
+              aria-label={
+                viewScope.kind === 'corpus' ? 'Back to Home' : 'Back to reading'
+              }
               className="ask-screen-back"
               onClick={onBack}
               type="button"
