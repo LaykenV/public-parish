@@ -52,6 +52,10 @@ histories, meeting chat, nested sources, preserved drafts and content order.
 Fixture chat checks exercise presentation and interaction without paid model
 calls. They do not claim a new live provider or email certification.
 
+PR #205 review caught two small regressions. Warning text retains its status
+color without a dot, and inventory source buttons expose their full visible
+page and section details to screen readers. Both were corrected.
+
 A real-content check caught a long URL widening the SpaceX source drawer and
 pushing Close off-screen. The drawer now constrains its grid width and wraps
 long source text. The regression checks require Close to remain in the viewport.

@@ -18,7 +18,8 @@ Production shipment requires the owner's approval of that preview.
 - [x] Keep Ask's composer below the conversation with an up-arrow send control.
 - [x] Add shared drawer motion with reduced-motion support.
 - [x] Pass local verification, 685 application tests and 66 Chromium/WebKit journeys.
-- [ ] File and babysit the PR, then upload the exact green development artifact.
+- [x] File PR #205 and verify both reviewers' findings.
+- [ ] Finish final-head checks and upload the exact green development artifact.
 - [ ] Deliver the morning report and dev link.
 
 The approved header releases are PR #203 at `0c5b16b` and PR #204 at `0500f63`.

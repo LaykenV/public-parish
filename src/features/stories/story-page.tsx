@@ -401,7 +401,7 @@ function StorySourceButton({
     <button
       type="button"
       id={id}
-      aria-label={`Inspect source ${index + 1}`}
+      aria-label={inventory ? undefined : `Inspect source ${index + 1}`}
       aria-haspopup="dialog"
       className={
         inventory

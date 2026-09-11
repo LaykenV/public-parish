@@ -765,6 +765,17 @@
   text-transform: none;
 }
 
+.ev-artifact-status[data-tone='ok'] {
+  color: var(--success-foreground);
+}
+
+.ev-artifact-status[data-tone='warning'] {
+  color: var(--warning-foreground);
+}
+
+.ev-artifact-status[data-tone='muted'] {
+  color: var(--muted-foreground);
+}
 
 .ev-artifact-note {
   margin: 0.35rem 0 0;
