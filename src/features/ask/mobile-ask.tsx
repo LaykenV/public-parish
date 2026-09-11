@@ -5,7 +5,6 @@ import { lazy, Suspense, useEffect, useId, useRef, useState } from 'react'
 import { Button } from '../../components/ui/button'
 import { loadAskPageData } from '../../routes/ask.data'
 import type { AskRouteData } from '../../routes/ask.data'
-import type { CSSProperties } from 'react'
 import {
   useMediaQuery,
   useOverlay,
@@ -101,12 +100,10 @@ export function MobileAsk({
             ref={popupRef}
             aria-hidden={open ? undefined : true}
             inert={open ? undefined : true}
-            style={
-              {
-                top: viewport.top,
-                height: viewport.height ?? '100dvh',
-              } as CSSProperties
-            }
+            style={{
+              top: viewport.top,
+              height: viewport.height ?? '100dvh',
+            }}
             initialFocus={() => {
               popupRef.current
                 ?.querySelector<HTMLButtonElement>('.ask-screen-back')
