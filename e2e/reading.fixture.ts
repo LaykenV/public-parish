@@ -179,6 +179,8 @@ for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['a
     await page.setViewportSize({ width: 375, height: 812 })
     await page.goto(path)
     if (kind !== 'ask') await page.getByRole('button', { name: 'Ask Public Parish', exact: true }).click()
+    // Simulate the home-indicator padding that desktop browsers do not expose.
+    await page.addStyleTag({ content: '.pp-sheet { padding-bottom: 34px; }' })
     const container = kind === 'ask' ? page.locator('.ask-page') : page.getByRole('dialog', { name: 'Ask Public Parish', exact: true })
     const input = container.getByRole('textbox')
     await input.fill('Keep this keyboard draft')

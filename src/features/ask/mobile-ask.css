@@ -45,3 +45,5 @@
 .mobile-ask-sheet[data-keyboard-open] .ask-scope { padding-block: 0.25rem; }
 .mobile-ask-sheet[data-keyboard-open] .ask-scope-label { display: none; }
 .mobile-ask-sheet[data-keyboard-open] .ask-page .ask-scope-title { -webkit-line-clamp: 1; }
+/* The keyboard replaces the home-indicator area while it is visible. */
+.mobile-ask-sheet[data-keyboard-open] { padding-bottom: 0.5rem; }
