@@ -172,3 +172,78 @@ test('Account tabs have one baseline across every view', async ({ page }, info) 
     await page.screenshot({ path: info.outputPath(`${path.replaceAll('/', '-')}-tabs.png`) })
   }
 })
+
+
+for (const [kind, path] of [...records, ['story', '/stories/meta-richland'], ['ask', '/ask?fixture=empty']]) {
+  test(`${kind} composer follows a keyboard that shrinks and pans only the visual viewport`, async ({ page }, info) => {
+    await page.setViewportSize({ width: 375, height: 812 })
+    await page.goto(path)
+    if (kind !== 'ask') await page.getByRole('button', { name: 'Ask Public Parish', exact: true }).click()
+    const container = kind === 'ask' ? page.locator('.ask-page') : page.getByRole('dialog', { name: 'Ask Public Parish', exact: true })
+    const input = container.getByRole('textbox')
+    await input.fill('Keep this keyboard draft')
+    for (const bounds of [{ height: 360, top: 0 }, { height: 360, top: 120 }, { height: 290, top: 70 }]) {
+      await page.evaluate(({ height, top }) => {
+        Object.defineProperties(window.visualViewport, {
+          height: { configurable: true, value: height },
+          offsetTop: { configurable: true, value: top },
+        })
+        window.visualViewport!.dispatchEvent(new Event('resize'))
+        window.visualViewport!.dispatchEvent(new Event('scroll'))
+      }, bounds)
+      await expect(container.locator('.ask-examples')).toBeHidden()
+      await expect.poll(async () => {
+        const box = await container.locator('.ask-composer').boundingBox()
+        return box!.y >= bounds.top && box!.y + box!.height <= bounds.top + bounds.height
+      }).toBe(true)
+      await expect(input).toHaveValue('Keep this keyboard draft')
+      await expect(input).toBeFocused()
+      if (kind !== 'ask') {
+        const close = await container.getByRole('button', { name: 'Close', exact: true }).boundingBox()
+        expect(close!.y).toBeGreaterThanOrEqual(bounds.top)
+      }
+    }
+    await input.fill('A long draft line\n'.repeat(12))
+    const send = await container.getByRole('button', { name: 'Send question', exact: true }).boundingBox()
+    expect(send!.y + send!.height).toBeLessThanOrEqual(360)
+    await input.fill('Keep this keyboard draft')
+    await page.screenshot({ path: info.outputPath(`${kind}-keyboard.png`) })
+    await page.evaluate(() => {
+      delete (window.visualViewport as unknown as Record<string, unknown>).height
+      delete (window.visualViewport as unknown as Record<string, unknown>).offsetTop
+      window.visualViewport!.dispatchEvent(new Event('resize'))
+    })
+    await expect(container.locator('.ask-examples')).toBeVisible()
+    await expect(input).toHaveValue('Keep this keyboard draft')
+  })
+}
+
+test('touch timeline arrows stay at the end of the decision link', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 700 })
+  await page.goto(records[0][1])
+  const link = page.locator('.ev-timeline .ev-inline-link').first()
+  await expect(link).toBeVisible()
+  const arrow = await link.evaluate(el => {
+    const css = getComputedStyle(el, '::after')
+    return { position: css.position, transform: css.transform, width: css.minWidth }
+  })
+  expect(arrow).toEqual({ position: 'static', transform: 'none', width: '0px' })
+  const box = await link.boundingBox()
+  expect(box!.height).toBeGreaterThanOrEqual(44)
+})
+
+test('route heading focus stays quiet and follow management is a simple text action', async ({ page }, info) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/following?fixture=active')
+  const manage = page.locator('.following-manage').first()
+  await expect(manage).toHaveText('Manage follow')
+  await manage.click()
+  await expect(page.getByRole('dialog')).toBeVisible()
+  await page.getByRole('button', { name: 'Close', exact: true }).click()
+  await expect(manage).toBeFocused()
+  await page.screenshot({ path: info.outputPath('account-manage.png') })
+  const heading = page.locator('h1').first()
+  await heading.evaluate(el => { el.setAttribute('tabindex', '-1'); el.focus() })
+  await expect(heading).toBeFocused()
+  expect(await heading.evaluate(el => getComputedStyle(el).outlineStyle)).toBe('none')
+})

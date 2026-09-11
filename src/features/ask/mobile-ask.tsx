@@ -1,11 +1,10 @@
 import { MessageCircleIcon } from 'lucide-react'
 import { lazy, Suspense, useEffect, useId, useState } from 'react'
-import type { CSSProperties } from 'react'
 
 import { Button } from '../../components/ui/button'
 import { loadAskPageData } from '../../routes/ask.data'
 import type { AskRouteData } from '../../routes/ask.data'
-import { useKeyboardInset, useMediaQuery } from '../discovery/hooks'
+import { useMediaQuery } from '../discovery/hooks'
 import { Sheet } from '../discovery/sheet'
 import { askScopeIdentity } from './contracts'
 import type { AskScenario } from './contracts'
@@ -19,7 +18,6 @@ export function MobileAsk({ scopeKey, returnTo, scenario }: {
   scenario?: AskScenario
 }) {
   const mobile = useMediaQuery('(max-width: 48rem)')
-  const keyboardInset = useKeyboardInset()
   const [open, setOpen] = useState(false)
   const [data, setData] = useState<AskRouteData | null>(null)
   const [source, setSource] = useState<string>()
@@ -55,7 +53,6 @@ export function MobileAsk({ scopeKey, returnTo, scenario }: {
         open={open}
         onOpenChange={(next) => { setOpen(next); if (!next) setSource(undefined) }}
         size="full"
-        style={{ '--mobile-chat-inset': `${keyboardInset}px` } as CSSProperties}
         title="Ask Public Parish"
         triggerId={triggerId}
       >

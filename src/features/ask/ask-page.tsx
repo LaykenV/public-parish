@@ -8,7 +8,7 @@ import { PageLoading } from '../resident-blueprint/resident-loading'
 import { resolveCitationId } from '../evidence/contracts'
 import type { CitationMap } from '../evidence/contracts'
 import { EvidenceProvider } from '../evidence/evidence-surface'
-import { useKeyboardInset, useOnline } from '../discovery/hooks'
+import { useVisualViewport, useOnline } from '../discovery/hooks'
 import {
   AskRequestError,
   askScopeIdentity,
@@ -69,7 +69,7 @@ export function AskPage({
   onSelectSource: (id: string | null) => void
   source?: string
 }) {
-  const kbInset = useKeyboardInset()
+  const viewport = useVisualViewport()
   const convex = useConvex()
   const online = useOnline()
 
@@ -460,14 +460,14 @@ export function AskPage({
   const selected = resolveCitationId(citations, source)
   const sticky = turns.length > 0
   const empty = turns.length === 0 && !expired
-  const kbStyle = { '--ask-kb': `${kbInset}px` } as CSSProperties
+  const kbStyle = { '--ask-viewport-height': viewport.height === undefined ? '100dvh' : `${viewport.height}px`, '--ask-viewport-top': `${viewport.top}px` } as CSSProperties
 
   const Container = embedded ? 'div' : 'main'
   return (
     <Container
       className={embedded ? 'ask-page ask-page-embedded' : 'ask-page'}
       id={embedded ? undefined : 'resident-main'}
-      data-keyboard-open={kbInset > 100 || undefined}
+      data-keyboard-open={viewport.keyboardOpen || undefined}
       style={kbStyle}
     >
       <AskStatusRegion message={status} />

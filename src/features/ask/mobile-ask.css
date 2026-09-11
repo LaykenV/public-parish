@@ -12,9 +12,9 @@
 }
 .mobile-ask-trigger svg { width: 1.5rem; height: 1.5rem; }
 .mobile-ask-sheet[data-modal-kind='drawer'][data-size='full'] {
-  height: calc(100dvh - var(--mobile-chat-inset, 0px) - 1rem);
-  max-height: calc(100dvh - var(--mobile-chat-inset, 0px) - 1rem);
-  margin-bottom: var(--mobile-chat-inset, 0px);
+  height: calc(var(--sheet-viewport-height, 100dvh) - 2rem);
+  max-height: calc(var(--sheet-viewport-height, 100dvh) - 2rem);
+  margin-bottom: 0;
 }
 .mobile-ask-sheet .pp-sheet-body { padding: 0 1rem 1rem; }
 .mobile-ask-sheet .ask-page-embedded {
@@ -39,3 +39,9 @@
 .mobile-ask-sheet .ask-page-embedded { height: 100%; min-height: 0; padding-bottom: 0.25rem; }
 .mobile-ask-sheet .ask-scope { padding: 0.5rem 0; margin: 0; }
 .mobile-ask-sheet .ask-composer { padding: 0.7rem 0.8rem; }
+
+.mobile-ask-sheet[data-keyboard-open] .pp-sheet-head { padding-top: 0; }
+.mobile-ask-sheet[data-keyboard-open] .pp-sheet-grabber { margin-top: 0.25rem; }
+.mobile-ask-sheet[data-keyboard-open] .ask-scope { padding-block: 0.25rem; }
+.mobile-ask-sheet[data-keyboard-open] .ask-scope-label { display: none; }
+.mobile-ask-sheet[data-keyboard-open] .ask-page .ask-scope-title { -webkit-line-clamp: 1; }

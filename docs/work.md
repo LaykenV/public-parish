@@ -5,6 +5,19 @@ The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## Mobile review corrections, September 11
+
+The owner's iPhone review found that opening the keyboard moved chat drawers
+above the screen and broke standalone Ask. Follow-up work uses visual viewport
+height and offset, compacts the keyboard layout and limits composer growth.
+It also separates the timeline arrow from its touch target, removes the route
+heading's decorative focus outline, and simplifies the Account follow action.
+
+- [x] Reproduce keyboard resize and pan without shrinking the layout viewport.
+- [x] Correct touch arrows, heading focus presentation and the follow action.
+- [ ] Finish final validation, update PR #205 and replace the development preview.
+- [ ] Owner repeats the physical iPhone keyboard check.
+
 ## Resident reading and Ask pass, September 10
 
 The owner completed a broad app review and requested consistent reading,

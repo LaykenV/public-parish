@@ -3,7 +3,7 @@ import {
   BellRingIcon,
   CheckIcon,
   CircleAlertIcon,
-  EllipsisIcon,
+  ChevronRightIcon,
   MailIcon,
   MapPinIcon,
   PlusIcon,
@@ -722,14 +722,15 @@ function FollowRow({
         </div>
       ) : null}
       <Button
-        aria-label={`Manage ${target.title}`}
+        aria-label={`Manage follow for ${target.title}`}
+        className="following-manage"
         id={`follow-manage-${target.id}`}
         onClick={onManage}
         size="touch"
         variant="outline"
       >
-        <EllipsisIcon aria-hidden="true" />
-        Manage
+        Manage follow
+        <ChevronRightIcon aria-hidden="true" />
       </Button>
     </li>
   )

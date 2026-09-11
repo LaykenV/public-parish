@@ -1406,3 +1406,17 @@
     white-space: nowrap;
   }
 }
+
+.following-row > .following-manage {
+  justify-self: start;
+  justify-content: flex-start;
+  width: auto;
+  min-height: 2.75rem;
+  padding: 0.5rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  box-shadow: none;
+}
+.following-row > .following-manage:hover { text-decoration: underline; }
+.following-manage::before { display: none; }

@@ -1484,7 +1484,7 @@
     text-decoration: none;
     overflow-wrap: anywhere;
   }
-  .ev-timeline .ev-inline-link::after { content: '→'; flex: none; }
+  .ev-timeline .ev-inline-link::after { content: '→'; position: static; width: auto; min-width: 0; height: auto; transform: none; flex: none; }
 }
 
 /* Compact numbered citations follow their claim on every screen. */

@@ -747,7 +747,7 @@
   display: flex;
   flex-direction: column;
   width: min(100% - 2rem, 48rem);
-  height: calc(100dvh - 3rem - var(--ask-kb, 0px));
+  height: calc(var(--ask-viewport-height, 100dvh) - 3rem);
   min-height: 24rem;
   padding-block: clamp(1rem, 3vh, 2rem) max(0.75rem, env(safe-area-inset-bottom));
 }
@@ -794,3 +794,29 @@
 .ask-page-embedded .ask-scope-title { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
 .ask-composer-privacy { margin: 0.5rem auto 0; padding: 0; text-align: center; }
+
+@media (max-width: 48rem) {
+  .ask-composer-field { font-size: 1rem; }
+  .ask-page[data-keyboard-open]:not(.ask-page-embedded) {
+    position: fixed;
+    top: var(--ask-viewport-top, 0px);
+    left: 0;
+    right: 0;
+    z-index: 41;
+    width: 100%;
+    height: var(--ask-viewport-height, 100dvh);
+    min-height: 0;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background: var(--background);
+  }
+  .ask-page[data-keyboard-open] .ask-head,
+  .ask-page[data-keyboard-open] .ask-composer-privacy { display: none; }
+  .ask-page[data-keyboard-open] .ask-layout { margin-top: 0.5rem; }
+  .ask-page[data-keyboard-open] .ask-scope-title { -webkit-line-clamp: 2; }
+}
+
+.ask-page[data-keyboard-open] .ask-thread-region { padding-block: 0; }
+.ask-page[data-keyboard-open] .ask-reading { gap: 0.5rem; }
+
+.ask-page[data-keyboard-open] .ask-composer-field { max-height: 3.5rem; }

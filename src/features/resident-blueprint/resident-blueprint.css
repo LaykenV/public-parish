@@ -916,3 +916,6 @@
     scroll-margin-top: calc(3.5rem + env(safe-area-inset-top));
   }
 }
+
+/* Route headings receive focus for announcements, not as interactive controls. */
+.resident-blueprint h1[tabindex='-1']:focus { outline: none; }

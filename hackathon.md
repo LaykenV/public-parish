@@ -1982,3 +1982,13 @@ regressions for sources, drafts, narrow layouts, notices and tabs. A real SpaceX
 excerpt exposed horizontal drawer overflow, now constrained and wrapped.
 Local checks passed 685 application tests and 66 browser journeys. PR review
 and the development upload remain pending.
+
+
+## September 11, owner phone review corrections
+
+The owner supplied before-and-after iPhone screenshots showing chat leaving the
+visible screen when the keyboard opened. The follow-up replaces keyboard
+subtraction with visible viewport bounds and adds resize/pan regression checks.
+It also fixes touch timeline arrows and route heading outlines and simplifies
+Account follow controls. This entry records implementation; final CI and dev
+upload receipts belong in PR #205 after validation.

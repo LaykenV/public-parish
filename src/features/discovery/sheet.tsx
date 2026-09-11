@@ -4,7 +4,7 @@ import { XIcon } from 'lucide-react'
 import type { CSSProperties, ReactElement, ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
-import { useMediaQuery, useOverlay } from './hooks'
+import { useMediaQuery, useOverlay, useVisualViewport } from './hooks'
 
 type SheetProps = {
   children: ReactNode
@@ -58,6 +58,7 @@ export function Sheet({
   trigger,
 }: SheetProps) {
   useOverlay(open)
+  const viewport = useVisualViewport()
   const desktopMatch = useMediaQuery(SHEET_DESKTOP_QUERY)
   const [hydrated, setHydrated] = useState(false)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -156,12 +157,18 @@ export function Sheet({
         {renderTrigger ? <Drawer.Trigger render={renderTrigger} /> : null}
         <Drawer.Portal keepMounted={keepMounted}>
           <Drawer.Backdrop className="pp-backdrop" />
-          <Drawer.Viewport className="pp-drawer-viewport">
+          <Drawer.Viewport className="pp-drawer-viewport" style={{
+            top: viewport.top,
+            height: viewport.height,
+            bottom: viewport.height === undefined ? 0 : 'auto',
+            '--sheet-viewport-height': viewport.height === undefined ? '100dvh' : `${viewport.height}px`,
+          } as CSSProperties}>
             <Drawer.Popup
               aria-hidden={open ? undefined : true}
               className={['pp-sheet', className].filter(Boolean).join(' ')}
               style={style}
               data-modal-kind="drawer"
+              data-keyboard-open={viewport.keyboardOpen || undefined}
               data-size={size}
               finalFocus={triggerId ? resolveFinalFocus : undefined}
               id={popupId}

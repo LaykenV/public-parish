@@ -62,3 +62,18 @@ long source text. The regression checks require Close to remain in the viewport.
 
 Physical iPhone keyboard and screen-reader testing remain owner checks. Automated
 WebKit, touch emulation and short-viewport checks are recorded separately.
+
+
+## Follow-up from the owner's phone review
+
+The first physical review exposed keyboard behavior that short-window tests did
+not simulate. Chat now sizes and positions itself using both the visible
+viewport's height and its offset. Tests independently shrink and pan that
+viewport while the layout viewport remains full height, then dismiss the
+keyboard and verify the draft survives. Keyboard layouts compact their scope
+and cap textarea growth to keep Send reachable.
+
+The mobile timeline arrow had inherited absolute positioning from a touch-target
+pseudo-element. It now stays in the link's normal layout. Route heading focus
+still announces navigation without outlining the heading. Account follow rows
+use a plain Manage follow action with a chevron.
