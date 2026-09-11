@@ -130,7 +130,7 @@ describe('resident interface Slice 7 system', () => {
     expect(sheetSource).toContain('initialFocus={resolveInitialFocus}')
     expect(sheetSource).not.toContain('onClick={() => onOpenChange(false)}')
     expect(sheetSource).toContain('inert={open ? undefined : true}')
-    expect(sheetSource).toContain('target?.focus()')
+    expect(sheetSource).toContain('target?.focus({ preventScroll: true })')
     expect(sheetSource).toContain('if (shouldRestoreSheetFocus())')
     expect(sheetSource).toContain(
       'window.clearTimeout(focusReturnTimerRef.current)',
@@ -141,7 +141,7 @@ describe('resident interface Slice 7 system', () => {
     )
     expect(evidenceSurfaceSource).toContain('restoreFocus()')
     expect(evidenceSurfaceSource).toContain('sheetExitDelay()')
-    expect(sheetSource).toContain("getPropertyValue('--dur-standard')")
+    expect(sheetSource).toContain('SHEET_EXIT_FALLBACK_MS = 420')
     expect(sheetSource).not.toMatch(/FALLBACK_MS = 300|DELAY_MS = 300/)
   })
 })

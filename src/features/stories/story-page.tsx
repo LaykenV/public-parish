@@ -1,7 +1,12 @@
 import { MobileAsk } from '../ask/mobile-ask'
-import { ArrowLeftIcon, ArrowUpRightIcon, MessageCircleIcon } from 'lucide-react'
+import {
+  ArrowLeftIcon,
+  ArrowUpRightIcon,
+  MessageCircleIcon,
+} from 'lucide-react'
 import { PageLoading } from '../resident-blueprint/resident-loading'
-import { useState } from 'react'
+import { useEffect, useId, useState } from 'react'
+import { Sheet } from '../discovery/sheet'
 import { Link } from '@tanstack/react-router'
 import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
 import { StoryOfficialSourceLink } from './story-source-link'
@@ -119,6 +124,16 @@ function FeaturedStoriesContent() {
 }
 
 export function StoryPage({ slug }: { slug: string }) {
+  const [selectedSource, setSelectedSource] = useState<{
+    index: number
+    evidence: PublicStory['evidence'][number]
+  } | null>(null)
+  const [sourceOpen, setSourceOpen] = useState(false)
+  const [sourceTrigger, setSourceTrigger] = useState<string | null>(null)
+  useEffect(() => {
+    setSourceOpen(false)
+    setSelectedSource(null)
+  }, [slug])
   const result = useStory(slug)
   if (result === undefined)
     return (
@@ -135,13 +150,25 @@ export function StoryPage({ slug }: { slug: string }) {
             : 'Story unavailable'}
         </h1>
         <p>{result.reason}</p>
-        <Button render={<Link to="/" />} size="touch">Return to Home</Button>
+        <Button render={<Link to="/" />} size="touch">
+          Return to Home
+        </Button>
       </main>
     )
   const story = result.story
+  const selectedEvidence = selectedSource?.evidence
+  const selectSource = (index: number, triggerId: string) => {
+    setSelectedSource({ index, evidence: story.evidence[index] })
+    setSourceTrigger(triggerId)
+    setSourceOpen(true)
+  }
   return (
     <main className="pp-page pp-story-detail" id="resident-main">
-      <MobileAsk key={story.slug} scopeKey={`story:${story.slug}`} returnTo={`/stories/${story.slug}`} />
+      <MobileAsk
+        key={story.slug}
+        scopeKey={`story:${story.slug}`}
+        returnTo={`/stories/${story.slug}`}
+      />
 
       <Link className="pp-story-back" to="/">
         <ArrowLeftIcon aria-hidden="true" /> All featured stories
@@ -149,10 +176,14 @@ export function StoryPage({ slug }: { slug: string }) {
       <header className="pp-story-head">
         <p className="pp-story-place">{story.geography.join(' · ')}</p>
         <h1>{story.payload.title.text}</h1>
-        <Statement statement={story.payload.summary} story={story} />
+        <Statement
+          onSelect={selectSource}
+          statement={story.payload.summary}
+          story={story}
+        />
         <p className="pp-story-meta">
-          Reviewed through {formatDate(story.reviewedThrough)}. Next review planned{' '}
-          {formatDate(story.nextReviewAt)}.{' '}
+          Reviewed through {formatDate(story.reviewedThrough)}. Next review
+          planned {formatDate(story.nextReviewAt)}.{' '}
           {story.mode === 'limited' ? 'Some questions remain unanswered.' : ''}
         </p>
         <div className="pp-story-actions">
@@ -199,7 +230,12 @@ export function StoryPage({ slug }: { slug: string }) {
         <section key={i}>
           <h2>{section.heading}</h2>
           {section.statements.map((statement, j) => (
-            <Statement key={j} statement={statement} story={story} />
+            <Statement
+              onSelect={selectSource}
+              key={j}
+              statement={statement}
+              story={story}
+            />
           ))}
         </section>
       ))}
@@ -210,7 +246,11 @@ export function StoryPage({ slug }: { slug: string }) {
             {story.payload.timeline.map((event, i) => (
               <li key={i}>
                 <p>{event.date ? formatDate(event.date) : 'Date not stated'}</p>
-                <Statement statement={event.statement} story={story} />
+                <Statement
+                  onSelect={selectSource}
+                  statement={event.statement}
+                  story={story}
+                />
               </li>
             ))}
           </ol>
@@ -221,7 +261,11 @@ export function StoryPage({ slug }: { slug: string }) {
       <section id="story-next-action" className="pp-story-callout">
         <h2>Next documented action</h2>
         {story.payload.nextAction ? (
-          <Statement statement={story.payload.nextAction} story={story} />
+          <Statement
+            onSelect={selectSource}
+            statement={story.payload.nextAction}
+            story={story}
+          />
         ) : (
           <p>
             No next public action or deadline is established by these sources.
@@ -245,31 +289,20 @@ export function StoryPage({ slug }: { slug: string }) {
       </section>
       <section id="story-evidence">
         <h2>Official evidence</h2>
-        {story.evidence.map((source, i) => (
-          <details
-            key={source.key}
-            id={`story-source-${i}`}
-            className="pp-story-source"
-            tabIndex={-1}
-          >
-            <summary>
+        <div className="pp-story-source-list">
+          {story.evidence.map((source, i) => (
+            <StorySourceButton
+              key={source.key}
+              index={i}
+              onSelect={selectSource}
+              inventory
+            >
               Source {i + 1}
               {source.page ? `, page ${source.page}` : ''}
               {source.section ? `, ${source.section}` : ''}
-            </summary>
-            <blockquote>{source.excerpt}</blockquote>
-            <StoryOfficialSourceLink url={source.officialUrl} />
-            {source.snapshotUrl ? (
-              <p>
-                <a href={source.snapshotUrl} target="_blank" rel="noreferrer">
-                  Inspect the saved source artifact
-                </a>
-              </p>
-            ) : (
-              <p>Saved artifact is unavailable.</p>
-            )}
-          </details>
-        ))}
+            </StorySourceButton>
+          ))}
+        </div>
       </section>
       {story.relatedRecords.length ? (
         <section>
@@ -289,14 +322,53 @@ export function StoryPage({ slug }: { slug: string }) {
         </section>
       ) : null}
       <ReportProblem available recordUrl={`/stories/${story.slug}`} />
+      <Sheet
+        className="ev-sheet"
+        open={sourceOpen}
+        onOpenChange={setSourceOpen}
+        title="Official source"
+        size="tall"
+        triggerId={sourceTrigger}
+      >
+        {selectedEvidence ? (
+          <div className="ev-viewer">
+            <p className="ev-viewer-meta">
+              Source {selectedSource.index + 1}
+              {selectedEvidence.page ? ` · Page ${selectedEvidence.page}` : ''}
+            </p>
+            {selectedEvidence.section ? (
+              <h3 className="ev-viewer-title">{selectedEvidence.section}</h3>
+            ) : null}
+            <blockquote className="ev-quote">
+              {selectedEvidence.excerpt}
+            </blockquote>
+            <StoryOfficialSourceLink url={selectedEvidence.officialUrl} />
+            {selectedEvidence.snapshotUrl ? (
+              <p>
+                <a
+                  href={selectedEvidence.snapshotUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Inspect the saved source artifact
+                </a>
+              </p>
+            ) : (
+              <p>Saved artifact is unavailable.</p>
+            )}
+          </div>
+        ) : null}
+      </Sheet>
     </main>
   )
 }
 
 function Statement({
+  onSelect,
   statement,
   story,
 }: {
+  onSelect: (index: number, triggerId: string) => void
   statement: { text: string; evidenceKeys: string[] }
   story: PublicStory
 }) {
@@ -306,22 +378,39 @@ function Statement({
       {statement.evidenceKeys.map((key) => {
         const index = story.evidence.findIndex((source) => source.key === key)
         return index >= 0 ? (
-          <a
-            key={key}
-            className="pp-story-citation"
-            href={`#story-source-${index}`}
-            onClick={() => {
-              const target = document.getElementById(`story-source-${index}`)
-              if (target instanceof HTMLDetailsElement) {
-                target.open = true
-              }
-            }}
-            aria-label={`Inspect source ${index + 1}`}
-          >
-            [{index + 1}]
-          </a>
+          <StorySourceButton key={key} index={index} onSelect={onSelect} />
         ) : null
       })}
     </p>
+  )
+}
+
+function StorySourceButton({
+  index,
+  onSelect,
+  inventory = false,
+  children,
+}: {
+  index: number
+  onSelect: (index: number, triggerId: string) => void
+  inventory?: boolean
+  children?: React.ReactNode
+}) {
+  const id = useId()
+  return (
+    <button
+      type="button"
+      id={id}
+      aria-label={inventory ? undefined : `Inspect source ${index + 1}`}
+      aria-haspopup="dialog"
+      className={
+        inventory
+          ? 'pp-story-source-row'
+          : 'pp-story-citation pp-source-control'
+      }
+      onClick={() => onSelect(index, id)}
+    >
+      {children ?? `[${index + 1}]`}
+    </button>
   )
 }

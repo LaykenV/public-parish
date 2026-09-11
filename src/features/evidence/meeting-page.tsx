@@ -1,3 +1,4 @@
+import { MobileAsk } from '../ask/mobile-ask'
 import { ExternalLinkIcon } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 
@@ -17,7 +18,6 @@ import {
 } from './evidence-blocks'
 import {
   Claim,
-  EvidencePanel,
   EvidenceProvider,
   SourceControl,
 } from './evidence-surface'
@@ -107,7 +107,8 @@ function MeetingView({
       onSelect={onSelectSource}
       selected={selected}
     >
-      <main className="ev-page" id="resident-main">
+      <main className="ev-page ev-page-with-chat" id="resident-main">
+        <MobileAsk key={meeting.id} scopeKey={`meeting:${meeting.id}`} returnTo={currentMeetingHref} scenario={search.fixture ? 'empty-meeting' : undefined} />
         <BackLink
           label="Back to Explore"
           returnTo={search.returnTo}
@@ -125,7 +126,6 @@ function MeetingView({
 
         <div className="ev-layout">
           <aside aria-label="Meeting status" className="ev-rail">
-            <EvidencePanel />
             <div className="ev-status">
               <div className="ev-status-date" data-tone="next">
                 <p className="ev-status-label">Meeting</p>

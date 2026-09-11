@@ -67,7 +67,7 @@ test('published parish records remain selectable with coverage limitations', asy
   ).toBeVisible()
 })
 
-test('home introduces Louisiana stories and switches to local issues after selection', async ({
+test('home keeps Louisiana stories first after selecting an area', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
@@ -81,7 +81,12 @@ test('home introduces Louisiana stories and switches to local issues after selec
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'See how local government is changing.',
   )
-  await expect(page.locator('.pp-home-relief')).toBeVisible()
+  if ((page.viewportSize()?.width ?? 1280) > 768) {
+    await expect(page.locator('.pp-home-relief')).toBeVisible()
+  } else {
+    await expect(page.locator('.pp-home-relief')).not.toBeVisible()
+    await expect(page.locator('.pp-home-relief canvas')).toHaveCount(0)
+  }
   await expect(
     page.locator('#stories a[href^="/stories/"]').first(),
   ).toBeVisible()
@@ -119,7 +124,7 @@ test('home introduces Louisiana stories and switches to local issues after selec
       .evaluate((issues) =>
         Boolean(
           issues.compareDocumentPosition(document.querySelector('#stories')!) &
-          Node.DOCUMENT_POSITION_FOLLOWING,
+          Node.DOCUMENT_POSITION_PRECEDING,
         ),
       ),
   ).toBe(true)

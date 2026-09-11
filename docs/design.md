@@ -10,18 +10,17 @@ visual baseline until the owner changes it during that pass.
 
 ## Homepage flow
 
-The owner approved the following Home system on September 8. This supersedes
-always placing stories above local setup and issues.
+The September 10 owner review keeps stories above issues with or without a selected area.
 
 | Order | No area selected | Area selected |
 | --- | --- | --- |
-| Introduction | "See how local government is changing" with selector at left and existing 3D Louisiana at right | No hero, begin with the issues heading |
-| First content | Across Louisiana, Meta lead with SpaceX and Boyce secondary | Issues in the selected parish |
-| Second content | Issues across covered areas | Across Louisiana with all three stories |
+| Introduction | "See how local government is changing" with selector at left and existing 3D Louisiana at right | No hero, begin with Across Louisiana |
+| First content | Across Louisiana, Meta lead with SpaceX and Boyce secondary | Same three stories |
+| Second content | Issues across covered areas | Issues in the selected parish |
 | Records | Latest decision records | Latest decision records for the selected parish |
 | Footer | Brand, site links and compact dated voter information | Same footer |
 
-On mobile, stack the hero copy and selector above a short Louisiana visual.
+On mobile, show the hero copy and selector without Louisiana. Mount the 3D visual only above 48rem.
 Use warm limestone material with muted violet highlights on a transparent canvas.
 The owner selected warm limestone from the September 9 color comparison,
 replacing charcoal. Keep the quiet violet pins and existing lighting.
@@ -241,8 +240,7 @@ must wrap without shrinking the controls. Government outcomes use neutral status
 colors; evidence health retains its written status and distinct warning colors.
 
 Story pages put Ask, Follow and Share together and provide section links to the
-timeline, next action, unknowns and evidence. A citation opens and focuses its
-source disclosure. Accepted text, citations and image policy stay intact.
+timeline, next action, unknowns and evidence. A citation opens its exact source in a drawer and preserves the reading position. Accepted text, citations and image policy stay intact.
 Coverage definitions expand on demand. Coverage request forms precede supporting
 explanation on phones. Private source reports use the full drawer height.
 Account copy distinguishes saved areas from the Home parish selector.
@@ -252,12 +250,12 @@ views. CI, authenticated owner views, physical-device and screen-reader checks
 remain pending. Keep their status in `docs/work.md`.
 
 
-## Mobile reading and chat, September 9 owner correction
+## Mobile reading and chat, September 11 owner correction
 
-On phone-sized story, issue and decision pages, a circular purple chat button
-sits at the bottom right. It opens the existing Ask conversation in a full-height
-drawer without leaving the record. The drawer preserves drafts and conversation
-state when closed and reopened. Citations open above the conversation and return
+On phone-sized story, issue, decision and meeting pages, a circular purple chat button
+sits at the bottom right. It opens a full-screen conversation with an opaque
+background, one Back/title bar and a compact composer. Back restores the reading
+position and retains drafts and conversation state. Citations open above the conversation and return
 focus to their source control. Desktop keeps the existing Ask entry points.
 Decisions retain their existing linked-issue scope, or the published corpus when
 there is no linked issue. Do not imply a new decision-only evidence scope.
@@ -271,3 +269,33 @@ written status and restrained text or background emphasis. This applies to Ask
 scope cards, notices, cadence choices and owner selections as well as reading
 pages. Ordinary neutral timeline rules and quotation indentation are distinct
 from an accent strip on a card.
+
+## September 10 reading and Ask corrections
+
+Use compact numbered source buttons after claims on every screen. Keep the
+exact quotation, original document link and available saved story artifact in
+a drawer. Opening or closing a source must retain the page and conversation
+scroll positions. Desktop sources slide in from the right; phone sources rise
+from the bottom. Use the header menu's 420ms cubic easing, preserve swipe close
+on phones and remove transitions for reduced motion. Keep explicit close buttons.
+
+Timelines use a single column on phones with the date above each event, readable
+status and a separate decision link. Pills never inherit metadata separator dots.
+Notices have a plain border without a colored left edge. Account tabs have one
+baseline and an active underline, without a second rule above the first section.
+
+On mobile, an empty Ask conversation centers its suggestions and composer.
+After the first question, Ask uses one scrollable conversation above a composer
+at the bottom. The send
+control is an up arrow at its lower right with an accessible name. Empty-state
+suggestions appear above the composer and disappear after the first question.
+Drafts and conversations survive leaving and reopening full-screen chat.
+The composer starts as one line and grows with the draft. Standalone mobile Ask
+uses the same compact header and composer.
+Short screens and keyboard resizing keep the composer reachable. Existing
+scope, evidence, retry, expiration and availability rules remain in force.
+
+While mobile chat is open, make the reading document transparent without
+removing it. Safari can show document pixels through its keyboard controls beyond
+the visual viewport. Restore the document when returning focus and retain the
+reading position. Standalone Ask hides the surrounding site header and footer.

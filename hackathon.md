@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-11T01:23:17Z
+- **Last updated:** 2026-09-11T03:06:22Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -1972,3 +1972,43 @@ Reduced the desktop header from 64 to 48 pixels at the owner's request.
 Added a translucent blurred background at the top of the page while preserving
 the shared scrolled treatment and existing control sizes. Build and Chromium/WebKit
 visual checks passed at desktop and mobile widths. PR and development checks are pending.
+
+### 2026-09-11 - working tree, resident reading and Ask
+
+Applied the owner's review across Home, stories, issues, decisions, meetings,
+Ask and Account. Sources open in shared drawers without resetting reading;
+chat keeps its composer below the conversation. Added Chromium and WebKit
+regressions for sources, drafts, narrow layouts, notices and tabs. A real SpaceX
+excerpt exposed horizontal drawer overflow, now constrained and wrapped.
+Local checks passed 685 application tests and 66 browser journeys. PR review
+and the development upload remain pending.
+
+
+## September 11, owner phone review corrections
+
+The owner supplied before-and-after iPhone screenshots showing chat leaving the
+visible screen when the keyboard opened. The follow-up replaces keyboard
+subtraction with visible viewport bounds and adds resize/pan regression checks.
+It also fixes touch timeline arrows and route heading outlines and simplifies
+Account follow controls. This entry records implementation; final CI and dev
+upload receipts belong in PR #205 after validation.
+
+
+## September 11, full-screen conversation revision
+
+The owner supplied T3 Code reference screenshots after rejecting the resized
+chat drawer. The new mobile conversation covers the reading page, has one
+Back/title bar and starts with a single-line composer. Source drawers remain.
+T3's public thread screen and composer code informed the layout approach;
+Public Parish retains its own browser implementation. Draft, source and
+keyboard tests passed locally. Final CI and development receipts remain in
+PR #205; native iPhone confirmation remains with the owner.
+
+## September 11, Safari underlay and empty chat layout
+
+Owner screenshots showed article pixels through Safari keyboard controls despite
+the full-screen chat backdrop. The follow-up hides the reading document without
+removing its layout or state. T3 Chat mobile informed the centered empty composer;
+messages retain the bottom composer. Regression checks cover document visibility,
+reading focus restoration and keyboard bounds. Native iPhone confirmation remains
+pending; CI and development receipts belong in PR #205.

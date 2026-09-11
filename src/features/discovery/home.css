@@ -366,3 +366,5 @@
     align-self: center;
   }
 }
+
+@media (max-width: 48rem) { .pp-home-relief { display: none; } }

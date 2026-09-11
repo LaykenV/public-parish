@@ -19,7 +19,7 @@ record, legal notice, or an agency's answer.
 
 Introduce Public Parish with the Louisiana hero and an optional area selector.
 Show recognizable Louisiana stories before issues when no area is selected.
-After selection, remove the hero and begin with local issues before the stories. Reading and Ask require no account. Google sign-in supports saved
+After selection, remove the hero and keep stories before local issues. Reading and Ask require no account. Google sign-in supports saved
 interests and managed follows. Verified email subscriptions are a separate
 account-free delivery path.
 
@@ -155,9 +155,14 @@ moves election information into the footer, uses a lavender off-white page with
 a white issues section, and gives mobile issues a horizontal row. All three
 mobile stories use full-sized images.
 After selection, remove the hero and Louisiana visual. A single centered global spinner
-replaces skeleton loading. This supersedes the earlier fixed stories-first order.
+replaces skeleton loading. The September 10 owner review restores stories before issues for every area selection.
 
 The next Home refinement matches Louisiana lighting to purple on a transparent
 canvas, shares the page background through the header and footer, and shows only
 dots below mobile issues. Follow enrollment uses compact choices. The mobile
 menu floats below the animated hamburger button using the portfolio pattern.
+
+On September 10 the owner requested a shared reading experience across stories,
+issues, decisions and meetings. Stories stay above local issues with an area
+selected. The 3D Louisiana is desktop-only. Sources open in drawers without
+moving the reading position, and chat keeps its composer below the conversation.

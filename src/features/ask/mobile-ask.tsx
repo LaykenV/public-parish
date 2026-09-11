@@ -1,26 +1,37 @@
+import { Dialog } from '@base-ui/react/dialog'
 import { MessageCircleIcon } from 'lucide-react'
-import { lazy, Suspense, useEffect, useId, useState } from 'react'
-import type { CSSProperties } from 'react'
+import { lazy, Suspense, useEffect, useId, useRef, useState } from 'react'
 
 import { Button } from '../../components/ui/button'
 import { loadAskPageData } from '../../routes/ask.data'
 import type { AskRouteData } from '../../routes/ask.data'
-import { useKeyboardInset, useMediaQuery } from '../discovery/hooks'
-import { Sheet } from '../discovery/sheet'
+import {
+  useMediaQuery,
+  useOverlay,
+  useVisualViewport,
+} from '../discovery/hooks'
 import { askScopeIdentity } from './contracts'
 import type { AskScenario } from './contracts'
 import './mobile-ask.css'
 
-const EmbeddedAskPage = lazy(() => import('./ask-page').then((module) => ({ default: module.AskPage })))
+const EmbeddedAskPage = lazy(() =>
+  import('./ask-page').then((module) => ({ default: module.AskPage })),
+)
 
-export function MobileAsk({ scopeKey, returnTo, scenario }: {
+export function MobileAsk({
+  scopeKey,
+  returnTo,
+  scenario,
+}: {
   scopeKey: string
   returnTo: string
   scenario?: AskScenario
 }) {
   const mobile = useMediaQuery('(max-width: 48rem)')
-  const keyboardInset = useKeyboardInset()
   const [open, setOpen] = useState(false)
+  const viewport = useVisualViewport()
+  const popupRef = useRef<HTMLDivElement>(null)
+  useOverlay(open && mobile)
   const [data, setData] = useState<AskRouteData | null>(null)
   const [source, setSource] = useState<string>()
   const [failed, setFailed] = useState(false)
@@ -29,13 +40,36 @@ export function MobileAsk({ scopeKey, returnTo, scenario }: {
   useEffect(() => {
     if (!open || data) return
     let cancelled = false
-    void loadAskPageData(scenario, scopeKey, returnTo).then((next) => {
-      if (!cancelled) setData(next)
-    }).catch(() => { if (!cancelled) setFailed(true) })
-    return () => { cancelled = true }
+    void loadAskPageData(scenario, scopeKey, returnTo)
+      .then((next) => {
+        if (!cancelled) setData(next)
+      })
+      .catch(() => {
+        if (!cancelled) setFailed(true)
+      })
+    return () => {
+      cancelled = true
+    }
   }, [open, data, scopeKey, returnTo, scenario])
 
   if (!mobile) return null
+  const loading = (
+    <div className="ask-screen-loading">
+      <Button
+        aria-label="Back to reading"
+        className="ask-screen-back"
+        onClick={() => setOpen(false)}
+        type="button"
+      >
+        Back
+      </Button>
+      <p role="status">
+        {failed
+          ? 'Chat could not open. Go back and try again.'
+          : 'Opening chat…'}
+      </p>
+    </div>
+  )
   return (
     <>
       <Button
@@ -44,35 +78,74 @@ export function MobileAsk({ scopeKey, returnTo, scenario }: {
         aria-expanded={open}
         className="mobile-ask-trigger"
         id={triggerId}
-        onClick={() => { setFailed(false); setOpen(true) }}
+        onClick={() => {
+          setFailed(false)
+          setOpen(true)
+        }}
         size="icon"
       >
         <MessageCircleIcon aria-hidden="true" />
       </Button>
-      <Sheet
-        className="mobile-ask-sheet"
-        keepMounted={data !== null}
+      <Dialog.Root
         open={open}
-        onOpenChange={(next) => { setOpen(next); if (!next) setSource(undefined) }}
-        size="full"
-        style={{ '--mobile-chat-inset': `${keyboardInset}px` } as CSSProperties}
-        title="Ask Public Parish"
-        triggerId={triggerId}
+        onOpenChange={(next) => {
+          setOpen(next)
+          if (!next) setSource(undefined)
+        }}
       >
-        {data ? (
-          <Suspense fallback={<p role="status">Opening chat…</p>}>
-            <EmbeddedAskPage
-              data={data}
-              embedded
-              onRestoreScope={async (scope) => {
-                setData(await loadAskPageData(scenario, askScopeIdentity(scope), returnTo))
-              }}
-              onSelectSource={(id) => setSource(id ?? undefined)}
-              source={source}
-            />
-          </Suspense>
-        ) : <p role="status">{failed ? 'Chat could not open. Close this drawer and try again.' : 'Opening chat…'}</p>}
-      </Sheet>
+        <Dialog.Portal keepMounted={data !== null}>
+          <Dialog.Backdrop className="mobile-chat-backdrop" />
+          <Dialog.Popup
+            className="mobile-chat-screen"
+            ref={popupRef}
+            aria-hidden={open ? undefined : true}
+            inert={open ? undefined : true}
+            style={{
+              top: viewport.top,
+              height: viewport.height ?? '100dvh',
+            }}
+            initialFocus={() => {
+              popupRef.current
+                ?.querySelector<HTMLButtonElement>('.ask-screen-back')
+                ?.focus({ preventScroll: true })
+              return false
+            }}
+            finalFocus={() => {
+              document.getElementById(triggerId)?.focus({ preventScroll: true })
+              return false
+            }}
+          >
+            <Dialog.Title className="visually-hidden">
+              Ask Public Parish
+            </Dialog.Title>
+            {data ? (
+              <Suspense fallback={loading}>
+                <EmbeddedAskPage
+                  data={data}
+                  embedded
+                  onBack={() => {
+                    setOpen(false)
+                    setSource(undefined)
+                  }}
+                  onRestoreScope={async (scope) => {
+                    setData(
+                      await loadAskPageData(
+                        scenario,
+                        askScopeIdentity(scope),
+                        returnTo,
+                      ),
+                    )
+                  }}
+                  onSelectSource={(id) => setSource(id ?? undefined)}
+                  source={source}
+                />
+              </Suspense>
+            ) : (
+              loading
+            )}
+          </Dialog.Popup>
+        </Dialog.Portal>
+      </Dialog.Root>
     </>
   )
 }

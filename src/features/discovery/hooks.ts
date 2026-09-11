@@ -38,49 +38,37 @@ export function useOverlayOpen(): boolean {
   return useSyncExternalStore(subscribeOverlay, getOverlayOpen, () => false)
 }
 
-export function useKeyboardOpen(): boolean {
-  const [open, setOpen] = useState(false)
-
+// Keyboard opening can resize and pan the visual viewport independently of
+// the layout viewport. Track both dimensions instead of subtracting from dvh.
+export function useVisualViewport() {
+  const [bounds, setBounds] = useState({ height: undefined as number | undefined, top: 0, keyboardOpen: false })
   useEffect(() => {
     const viewport = window.visualViewport
     if (!viewport) return
     const update = () => {
-      setOpen(window.innerHeight - viewport.height > 150)
+      // Let browser zoom work without reflowing the page around the zoomed view.
+      if (viewport.scale !== 1) return
+      setBounds({
+        height: viewport.height,
+        top: viewport.offsetTop,
+        keyboardOpen: window.innerHeight - viewport.height > 100,
+      })
     }
     viewport.addEventListener('resize', update)
     viewport.addEventListener('scroll', update)
+    window.addEventListener('resize', update)
     update()
     return () => {
       viewport.removeEventListener('resize', update)
       viewport.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
     }
   }, [])
-
-  return open
+  return bounds
 }
 
-/*
-  Pixel height the software keyboard covers inside the layout viewport. Sticky
-  bottom docks add it back so a composer stays above the keyboard.
-*/
-export function useKeyboardInset(): number {
-  const [inset, setInset] = useState(0)
-
-  useEffect(() => {
-    const viewport = window.visualViewport
-    if (!viewport) return
-    const update = () =>
-      setInset(Math.max(0, Math.round(window.innerHeight - viewport.height)))
-    viewport.addEventListener('resize', update)
-    viewport.addEventListener('scroll', update)
-    update()
-    return () => {
-      viewport.removeEventListener('resize', update)
-      viewport.removeEventListener('scroll', update)
-    }
-  }, [])
-
-  return inset
+export function useKeyboardOpen(): boolean {
+  return useVisualViewport().keyboardOpen
 }
 
 type ConnectivityRequest = (

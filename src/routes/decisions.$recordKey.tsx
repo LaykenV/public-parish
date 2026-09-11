@@ -31,6 +31,7 @@ function ResidentDecision() {
         onSelectSource={(source) =>
           navigate({
             replace: true,
+            resetScroll: false,
             search: (prev) => ({ ...prev, source: source ?? undefined }),
           })
         }

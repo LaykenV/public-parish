@@ -1,3 +1,4 @@
+import { ArrowUpIcon } from 'lucide-react'
 import type { RefObject } from 'react'
 import { useEffect, useId } from 'react'
 
@@ -45,61 +46,66 @@ export function AskComposer({
   }, [draft, inputRef])
 
   return (
-    <form
-      aria-label={label}
-      className="ask-composer"
-      onSubmit={(event) => {
-        event.preventDefault()
-        if (canSubmit) onSubmit()
-      }}
-    >
-      <label className="ask-composer-label" htmlFor={fieldId}>
-        {label}
-      </label>
-      <textarea
-        aria-describedby={nearLimit ? countId : undefined}
-        className="ask-composer-field"
-        id={fieldId}
-        onChange={(event) => onDraftChange(event.target.value)}
-        onKeyDown={(event) => {
-          if (
-            event.key !== 'Enter' ||
-            event.shiftKey ||
-            event.nativeEvent.isComposing
-          ) {
-            return
-          }
-          if (!window.matchMedia('(pointer: fine)').matches) return
+    <>
+      <form
+        aria-label={label}
+        className="ask-composer"
+        onSubmit={(event) => {
           event.preventDefault()
           if (canSubmit) onSubmit()
         }}
-        ref={inputRef}
-        rows={2}
-        value={draft}
-      />
-      <div className="ask-composer-row">
-        {nearLimit ? (
-          <p className="ask-composer-count" id={countId}>
-            {overLimit
-              ? `${draft.length - MAX_ASK_LENGTH} over the limit`
-              : `${MAX_ASK_LENGTH - draft.length} characters left`}
-          </p>
-        ) : null}
-        <Button
-          disabled={!canSubmit}
-          loading={pending}
-          size="touch"
-          type="submit"
-        >
-          {sendLabel}
-        </Button>
-      </div>
+      >
+        <label className="visually-hidden" htmlFor={fieldId}>
+          {label}
+        </label>
+        <textarea
+          aria-describedby={nearLimit ? countId : undefined}
+          className="ask-composer-field"
+          id={fieldId}
+          onChange={(event) => onDraftChange(event.target.value)}
+          onKeyDown={(event) => {
+            if (
+              event.key !== 'Enter' ||
+              event.shiftKey ||
+              event.nativeEvent.isComposing
+            ) {
+              return
+            }
+            if (!window.matchMedia('(pointer: fine)').matches) return
+            event.preventDefault()
+            if (canSubmit) onSubmit()
+          }}
+          ref={inputRef}
+          placeholder="Ask a question…"
+          rows={1}
+          value={draft}
+        />
+        <div className="ask-composer-row">
+          {nearLimit ? (
+            <p className="ask-composer-count" id={countId}>
+              {overLimit
+                ? `${draft.length - MAX_ASK_LENGTH} over the limit`
+                : `${MAX_ASK_LENGTH - draft.length} characters left`}
+            </p>
+          ) : null}
+          <Button
+            aria-label={sendLabel}
+            className="ask-send"
+            disabled={!canSubmit}
+            loading={pending}
+            size="touch"
+            type="submit"
+          >
+            <ArrowUpIcon aria-hidden="true" />
+          </Button>
+        </div>
+      </form>
       {privacyNote ? (
         <p className="ask-composer-privacy">
           No account needed. This anonymous conversation is available on this
           device for 24 hours.
         </p>
       ) : null}
-    </form>
+    </>
   )
 }

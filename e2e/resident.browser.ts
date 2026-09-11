@@ -2,15 +2,13 @@ import { expect, test } from '@playwright/test'
 
 const issuePath = '/issues/pafford-ems-ambulance-contract-award-and-december-2025-required-report-6b14cb3d'
 
-test('accepted evidence opens by keyboard and returns focus under reduced motion', async ({ page }, testInfo) => {
+test('accepted evidence opens by keyboard and returns focus under reduced motion', async ({ page }) => {
   await page.goto(issuePath)
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Pafford')
   expect(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true)
-  const trigger = page.getByRole('button', { name: /^Source / }).first()
+  const trigger = page.getByRole('button', { name: /^Source[, ]/ }).first()
   await trigger.press('Enter')
-  const source = testInfo.project.name === 'mobile-webkit'
-    ? page.getByRole('dialog', { name: 'Official source', exact: true })
-    : page.getByRole('region', { name: 'Official source', exact: true })
+  const source = page.getByRole('dialog', { name: 'Official source', exact: true })
   await expect(source).toBeVisible()
   await expect(source.getByRole('link', { name: /original|official document/i })).toHaveAttribute('href', /^https:\/\/rppj\.com\//)
   await page.keyboard.press('Escape')

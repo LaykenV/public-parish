@@ -25,7 +25,6 @@ import {
 } from './evidence-blocks'
 import {
   Claim,
-  EvidencePanel,
   EvidenceProvider,
   SourceControl,
 } from './evidence-surface'
@@ -272,7 +271,6 @@ function IssueDetail({
 
         <div className="ev-layout">
           <aside aria-label="Issue status" className="ev-rail">
-            <EvidencePanel />
             <div className="ev-status">
               <p className="ev-status-row">
                 <span className="ev-status-label">Current state</span>

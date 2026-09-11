@@ -1,10 +1,5 @@
 import { recordCivicEvent } from '../analytics/product-analytics'
-import {
-  ExternalLinkIcon,
-  FileTextIcon,
-  TriangleAlertIcon,
-  XIcon,
-} from 'lucide-react'
+import { ExternalLinkIcon, TriangleAlertIcon } from 'lucide-react'
 import {
   createContext,
   useCallback,
@@ -18,7 +13,6 @@ import {
 import type { ElementType, ReactNode } from 'react'
 
 import { formatDate } from '../discovery/format'
-import { useMediaQuery } from '../discovery/hooks'
 import {
   Sheet,
   sheetExitDelay,
@@ -33,11 +27,8 @@ import type { CitationData, CitationMap } from './contracts'
 
 import './evidence.css'
 
-const PANEL_ID = 'pp-evidence-panel'
-
 type EvidenceContextValue = {
   citations: CitationMap
-  docked: boolean
   panelId: string
   restoreFocus: () => void
   select: (id: string | null, opener?: HTMLElement | null) => void
@@ -64,15 +55,11 @@ export function EvidenceProvider({
   onSelect: (id: string | null) => void
   selected: string | null
 }) {
-  const wide = useMediaQuery('(min-width: 64.0625rem)')
-  const [hydrated, setHydrated] = useState(false)
+  const panelId = useId()
   const [triggerId, setTriggerId] = useState<string | null>(null)
-  useEffect(() => setHydrated(true), [])
-  const docked = hydrated && wide
 
   const openerRef = useRef<HTMLElement | null>(null)
   const openerCitationRef = useRef<string | null>(null)
-  const previousSelected = useRef<string | null>(null)
 
   const select = useCallback(
     (id: string | null, opener?: HTMLElement | null) => {
@@ -88,7 +75,7 @@ export function EvidenceProvider({
   )
 
   const restoreFocus = useCallback(() => {
-    openerRef.current?.focus()
+    openerRef.current?.focus({ preventScroll: true })
     openerRef.current = null
     openerCitationRef.current = null
     setTriggerId(null)
@@ -106,38 +93,26 @@ export function EvidenceProvider({
     setTriggerId(fallback?.id ?? null)
   }, [selected])
 
-  useEffect(() => {
-    const was = previousSelected.current
-    previousSelected.current = selected
-    if (docked && was !== null && selected === null) restoreFocus()
-  }, [docked, restoreFocus, selected])
-
   const value = useMemo(
     () => ({
       citations,
-      docked,
-      panelId: PANEL_ID,
+      panelId,
       restoreFocus,
       select,
       selected,
       triggerId,
     }),
-    [citations, docked, restoreFocus, select, selected, triggerId],
+    [citations, panelId, restoreFocus, select, selected, triggerId],
   )
 
   return (
     <EvidenceContext.Provider value={value}>
       {children}
-      {docked ? null : <EvidenceSheet />}
+      <EvidenceSheet />
     </EvidenceContext.Provider>
   )
 }
 
-/*
-  The gutter claim. On a phone the Source control follows the sentence it
-  supports. From 48rem up it moves into the left margin so the page reads as a
-  record with its citations in the margin.
-*/
 export function Claim({
   children,
   citationId,
@@ -174,7 +149,7 @@ export function useEvidenceSelect() {
 }
 
 export function SourceControl({ citationId }: { citationId: string }) {
-  const { citations, docked, panelId, select, selected } = useEvidence()
+  const { citations, panelId, select, selected } = useEvidence()
   const controlId = useId()
   const citation = citations[citationId]
   if (!citation) return null
@@ -185,8 +160,8 @@ export function SourceControl({ citationId }: { citationId: string }) {
     <button
       aria-controls={panelId}
       aria-expanded={isSelected}
-      aria-haspopup={docked ? undefined : 'dialog'}
-      className="ev-source"
+      aria-haspopup="dialog"
+      className="ev-source pp-source-control"
       data-citation-id={citationId}
       data-selected={isSelected ? '' : undefined}
       id={controlId}
@@ -195,76 +170,19 @@ export function SourceControl({ citationId }: { citationId: string }) {
       }
       type="button"
     >
-      <span className="ev-source-label">Source</span>
-      <span className="ev-source-locator">{citation.locator}</span>
+      <span aria-hidden="true">
+        [{Object.keys(citations).indexOf(citationId) + 1}]
+      </span>
       <span className="visually-hidden">
-        , {citationSummary(citation)}, {citation.body}
+        Source, {citationSummary(citation)}, {citation.body}
       </span>
     </button>
   )
 }
 
-/*
-  Desktop only. The panel docks in the rail beside the highlighted claim and
-  keeps its own close control so focus can return to the Source that opened it.
-  An empty hidden target keeps the Source aria-controls reference truthful
-  while no citation is selected.
-*/
-export function EvidencePanel() {
-  const { citations, docked, panelId, select, selected } = useEvidence()
-  const panelRef = useRef<HTMLElement>(null)
-  const citation = selected ? citations[selected] : undefined
-
-  useEffect(() => {
-    if (!docked || !citation) return
-    const active = document.activeElement
-    if (
-      active instanceof HTMLElement &&
-      active.classList.contains('ev-source')
-    ) {
-      panelRef.current?.focus()
-    }
-  }, [citation, docked])
-
-  if (!docked) return null
-
-  if (!citation) return <div hidden id={panelId} />
-
-  return (
-    <section
-      aria-label="Official source"
-      className="ev-panel"
-      id={panelId}
-      onKeyDown={(event) => {
-        if (event.key === 'Escape') {
-          event.stopPropagation()
-          select(null)
-        }
-      }}
-      ref={panelRef}
-      tabIndex={-1}
-    >
-      <header className="ev-panel-head">
-        <p className="ev-panel-kicker">
-          <FileTextIcon aria-hidden="true" />
-          Official source
-        </p>
-        <button
-          aria-label="Close the source"
-          className="ev-panel-close"
-          onClick={() => select(null)}
-          type="button"
-        >
-          <XIcon aria-hidden="true" />
-        </button>
-      </header>
-      <EvidenceBody citation={citation} />
-    </section>
-  )
-}
-
 function EvidenceSheet() {
-  const { citations, restoreFocus, select, selected, triggerId } = useEvidence()
+  const { citations, panelId, restoreFocus, select, selected, triggerId } =
+    useEvidence()
   const citation = selected ? citations[selected] : undefined
   const focusReturnTimerRef = useRef<number | null>(null)
   const lastCitationRef = useRef<CitationData | undefined>(citation)
@@ -305,7 +223,7 @@ function EvidenceSheet() {
         }
       }}
       open={Boolean(citation)}
-      popupId={PANEL_ID}
+      popupId={panelId}
       size={renderedCitation ? evidenceSheetSize(renderedCitation) : 'medium'}
       title="Official source"
       triggerId={triggerId}
