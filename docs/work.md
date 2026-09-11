@@ -5,6 +5,14 @@ The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## App-wide loading, September 11
+
+The loading fix hides page content and the footer until pending page sections
+settle. Only the header and spinner remain visible. The spinner container stays
+still. Local validation on the original checkout passed 686 tests, both typechecks,
+build, lint and eight Chromium/WebKit loading checks. The PR rebases this change
+onto the current production code. CI validation of that combined version is pending.
+
 ## Mobile chat and reading review, September 11
 
 PR #205 shipped as `60b43d9` after the owner's phone review. PR #207 refines

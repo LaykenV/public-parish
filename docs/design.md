@@ -70,9 +70,10 @@ There is no bottom navigation or reserved space for it.
 
 One centered global spinner covers navigation and initial page-data loading.
 Concurrent pending sections share that indicator. Settling or unmounting a
-section releases its loading registration. Explore includes a visible loading
-message naming the selected parish when present. Do not use skeletons. Existing readable
-content stays available while another section loads. Button submissions and Ask
+section releases its loading registration. Do not use skeletons. Until all pending
+page sections settle, show only the header and spinner. Hide page content and the
+footer from view and keyboard access. Keep the spinner container still and rotate
+only the icon. Button submissions and Ask
 answer generation retain their action-specific feedback.
 
 ## Follow controls

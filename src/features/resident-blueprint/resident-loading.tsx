@@ -2,7 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useState,
 } from 'react'
 import type { ReactNode } from 'react'
@@ -10,20 +10,40 @@ import { useRouterState } from '@tanstack/react-router'
 
 import { Spinner } from '../../components/ui/spinner'
 
+const LoadingStateContext = createContext(false)
+
+export function usePageLoading() {
+  return useContext(LoadingStateContext)
+}
+
+// Keep queries mounted while their content is hidden so they can finish loading.
+export function ResidentLoadingContent({ children }: { children: ReactNode }) {
+  const loading = usePageLoading()
+  return (
+    <div className="resident-loading-content" hidden={loading} inert={loading}>
+      {children}
+    </div>
+  )
+}
+
 const LoadingContext = createContext<(() => () => void) | null>(null)
 
 export function ResidentLoadingProvider({ children }: { children: ReactNode }) {
+  const [initializing, setInitializing] = useState(true)
+  useLayoutEffect(() => setInitializing(false), [])
   const [pending, setPending] = useState(0)
   const register = useCallback(() => {
     setPending((count) => count + 1)
     return () => setPending((count) => count - 1)
   }, [])
   const navigating = useRouterState({ select: (state) => state.isLoading })
-  const loading = navigating || pending > 0
+  const loading = initializing || navigating || pending > 0
 
   return (
     <LoadingContext.Provider value={register}>
-      {children}
+      <LoadingStateContext.Provider value={loading}>
+        {children}
+      </LoadingStateContext.Provider>
       <div
         className="route-loading-region"
         aria-live="polite"
@@ -33,7 +53,9 @@ export function ResidentLoadingProvider({ children }: { children: ReactNode }) {
       >
         {loading ? (
           <>
-            <Spinner aria-hidden="true" />
+            <div className="route-loading-indicator">
+              <Spinner aria-hidden="true" />
+            </div>
             <span className="visually-hidden">Loading page</span>
           </>
         ) : null}
@@ -46,6 +68,6 @@ export function ResidentLoadingProvider({ children }: { children: ReactNode }) {
 // including when an error boundary replaces the section.
 export function PageLoading() {
   const register = useContext(LoadingContext)
-  useEffect(() => register?.(), [register])
+  useLayoutEffect(() => register?.(), [register])
   return null
 }
