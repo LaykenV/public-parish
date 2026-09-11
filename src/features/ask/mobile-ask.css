@@ -52,7 +52,7 @@
   width: 100%;
   height: var(--ask-viewport-height, 100dvh);
   padding: 0;
-  overflow: hidden;
+  overflow: clip;
   border: 0;
   outline: 0;
   background: var(--background);

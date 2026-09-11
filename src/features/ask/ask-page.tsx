@@ -25,6 +25,7 @@ import type {
   AskTurnState,
 } from './contracts'
 import { setAskDraftHandoff, takeAskDraftHandoff } from './draft-handoff'
+import { takeRecentAskHandoff } from './recent-handoff'
 import { AskComposer } from './ask-composer'
 import { createLiveAskAdapter } from './live-adapter'
 import { AskThread } from './ask-thread'
@@ -33,7 +34,6 @@ import {
   AskCooldownNotice,
   AskExpiredNotice,
   AskOfflineNotice,
-  AskRecent,
   AskScopeConfirm,
   AskStatusRegion,
   AskUnavailable,
@@ -83,7 +83,6 @@ export function AskPage({
   const [conversation, setConversation] = useState<AskConversationView | null>(
     null,
   )
-  const [recent, setRecent] = useState<AskRecentConversation[]>([])
   const [viewScope, setViewScope] = useState<AskScope>(data.scope)
   const [draft, setDraft] = useState('')
   const [dismissed, setDismissed] = useState<ReadonlySet<string>>(
@@ -228,8 +227,7 @@ export function AskPage({
         handleConversation(update.conversation)
       else if (update.kind === 'availability')
         handleAvailability(update.availability)
-      else if (update.kind === 'recent') setRecent(update.recent)
-      else {
+      else if (update.kind === 'expired') {
         previousConversation.current = null
         setConversation(null)
         setExpired(true)
@@ -334,7 +332,6 @@ export function AskPage({
       setExpired(true)
       setDismissed(new Set())
       setDraft('')
-      void adapter.listRecent().then(setRecent)
     }
     const timer = window.setInterval(sweep, EXPIRY_SWEEP_MS)
     return () => window.clearInterval(timer)
@@ -345,9 +342,6 @@ export function AskPage({
       if (!adapter) return
       const view = await adapter.open(handle.localHandle)
       if (!view) {
-        setRecent((current) =>
-          current.filter((item) => item.localHandle !== handle.localHandle),
-        )
         setExpired(true)
         previousConversation.current = null
         setConversation(null)
@@ -364,12 +358,14 @@ export function AskPage({
     [adapter, handleConversation, onRestoreScope],
   )
 
-  const handleOpenRecent = useCallback(
-    (handle: AskRecentConversation) => {
-      void openHandle(handle)
-    },
-    [openHandle],
-  )
+  useEffect(() => {
+    if (!adapter) return
+    const handle = takeRecentAskHandoff()
+    if (!handle) return
+    void openHandle(handle).catch(() => {
+      setStatus('This conversation could not open. Try again from Account.')
+    })
+  }, [adapter, openHandle])
 
   const confirmScopeChange = useCallback(() => {
     const pending = pendingScope
@@ -395,12 +391,6 @@ export function AskPage({
     }
     void onRestoreScope(viewScope)
   }, [onRestoreScope, pendingScope, viewScope])
-
-  const handleClearRecent = useCallback(async () => {
-    if (!adapter) return
-    await adapter.clearRecent()
-    setRecent([])
-  }, [adapter])
 
   const expandComposer = useCallback(() => {
     window.requestAnimationFrame(() =>
@@ -633,14 +623,6 @@ export function AskPage({
                     ))}
                   </ul>
                 </div>
-              ) : null}
-
-              {empty ? (
-                <AskRecent
-                  onClear={() => void handleClearRecent()}
-                  onOpen={handleOpenRecent}
-                  recent={recent}
-                />
               ) : null}
 
               {!expired ? (

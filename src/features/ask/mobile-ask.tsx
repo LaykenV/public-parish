@@ -1,6 +1,6 @@
 import { Dialog } from '@base-ui/react/dialog'
 import { ArrowLeftIcon, MessageCircleIcon } from 'lucide-react'
-import { lazy, Suspense, useEffect, useId, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 
 import { Button } from '../../components/ui/button'
@@ -52,6 +52,31 @@ export function MobileChatScreen({
   onSelectSource: (id: string | null) => void
   finalFocus?: () => false
 }) {
+  // Safari can pan the document to reveal a focused textarea even while its
+  // overflow is hidden. Freeze the reading document until the screen closes.
+  // Only own positioning here; Base UI still owns overflow and nested locks.
+  useLayoutEffect(() => {
+    if (!open) return
+    const body = document.body
+    const position = { x: window.scrollX, y: window.scrollY }
+    const before = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      width: body.style.width,
+    }
+    Object.assign(body.style, {
+      position: 'fixed',
+      top: `${-position.y}px`,
+      left: `${-position.x}px`,
+      width: '100%',
+    })
+    return () => {
+      Object.assign(body.style, before)
+      window.scrollTo({ left: position.x, top: position.y, behavior: 'instant' })
+    }
+  }, [open])
+
   const viewport = useVisualViewport()
   const popupRef = useRef<HTMLDivElement>(null)
   const loading = (

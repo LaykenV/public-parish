@@ -1432,3 +1432,12 @@
   .following-row-details[open] summary::after { content: '−'; }
   .following-row-details .following-row-ledger { margin-top: 0.5rem; }
 }
+
+.account-conversations {
+  margin-top: 0;
+  padding-top: 0;
+}
+.account-conversations h2 { font-size: var(--pp-text-section); }
+.account-conversations-note { color: var(--muted-foreground); }
+.account-conversations .ask-recent-head { display: none; }
+.account-conversations .ask-recent { margin-top: 1rem; }

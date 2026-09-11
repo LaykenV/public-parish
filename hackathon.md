@@ -2022,3 +2022,19 @@ checks. The owner's reading refinements add small mobile citations, one issue
 action row, compact follow cards, grouped meeting source documents, Explore
 loading text and Account at the bottom of the mobile menu. Validation and dev
 upload receipts will be recorded on PR #207. No production release is included.
+
+## September 11, chat keyboard and device history follow-up
+
+The owner reported that standalone Ask still panned away on iPhone while the
+floating chat worked. PR #207 now freezes the reading document during phone
+chat and clips the outer panel to prevent focus-driven panel scrolling.
+Recent conversations move to Account with anonymous access and the existing
+24-hour device-only expiry. A memory-only handoff restores the selected chat
+and scope. Three bouncing dots replace the answer-wait card while the send
+button retains its spinner.
+
+Local application verification passed, with 685 existing tests and one new
+handoff test checked separately. Chromium and WebKit passed Account history,
+menu-to-Ask keyboard bounds, reduced-motion dots, reopened chat drafts and
+nested source drawers. Native iPhone acceptance and updated dev deployment
+remain pending. No backend or production changes were made.

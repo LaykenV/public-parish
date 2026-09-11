@@ -386,3 +386,73 @@ test('mobile reading uses small citations with touch areas and groups meeting do
   expect(await toolbar.evaluate(el => el.scrollWidth)).toBeLessThanOrEqual(288)
   await page.screenshot({ path: info.outputPath('issue-compact-header.png') })
 })
+
+test('Account opens and clears device conversations without putting history in the chat', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/following?fixture=signed-out')
+  const history = page.getByRole('region', { name: 'Conversations on this device', exact: true })
+  await expect(history).toContainText('No sign-in needed')
+  await history.getByRole('button', { name: /Surplus pickup donations/ }).click()
+  const chat = page.getByRole('dialog', { name: 'Ask Public Parish', exact: true })
+  await expect(chat.locator('.ask-thread')).toContainText('Who received the truck?')
+  await expect(page).toHaveURL(/scope=issue/)
+  expect(page.url()).not.toContain('ask-fixture-thread')
+  await expect(chat.locator('.ask-recent')).toHaveCount(0)
+  await chat.getByRole('button', { name: 'Back to reading', exact: true }).click()
+  await expect(chat).toBeHidden()
+  await expect(page.locator('body')).not.toHaveCSS('position', 'fixed')
+  await page.goto('/following?fixture=signed-out')
+  await history.getByRole('button', { name: 'Clear recent conversations' }).click()
+  await history.getByRole('button', { name: 'Clear', exact: true }).click()
+  await expect(history).toContainText('No recent conversations on this device')
+})
+
+test('menu Ask keeps the outer screen fixed with saved device history and a panned keyboard', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/following?fixture=signed-out')
+  await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+  const menu = page.getByRole('dialog', { name: 'Menu', exact: true })
+  // This is a local-only handle. Opening Ask must not fetch its private history.
+  await page.evaluate(() => localStorage.setItem('public-parish.ask.thread-handles.v1', JSON.stringify([
+    { threadId: 'device-history-test', scopeKey: 'corpus', expiresAt: Date.now() + 86400000, lastActivityAt: Date.now() },
+  ])))
+  await menu.getByRole('link', { name: 'Ask', exact: true }).click()
+  const chat = page.getByRole('dialog', { name: 'Ask Public Parish', exact: true })
+  await expect(chat.getByRole('textbox')).toBeVisible()
+  await expect(chat.locator('.ask-recent')).toHaveCount(0)
+  await expect(page.locator('body')).toHaveCSS('position', 'fixed')
+  await chat.getByRole('textbox').fill('A question with the keyboard open')
+  await page.evaluate(() => {
+    Object.defineProperties(visualViewport, {
+      height: { configurable: true, value: 290 },
+      offsetTop: { configurable: true, value: 120 },
+    })
+    visualViewport!.dispatchEvent(new Event('resize'))
+    window.scrollTo(0, 500)
+    document.querySelector('.mobile-chat-screen')!.scrollTop = 500
+  })
+  await expect.poll(async () => (await chat.locator('.ask-screen-header').boundingBox())!.y).toBe(120)
+  expect(await chat.evaluate(el => el.scrollTop)).toBe(0)
+  const composer = await chat.locator('.ask-composer').boundingBox()
+  expect(composer!.y + composer!.height).toBeLessThanOrEqual(410)
+  await page.evaluate(() => {
+    delete (visualViewport as unknown as Record<string, unknown>).height
+    delete (visualViewport as unknown as Record<string, unknown>).offsetTop
+    visualViewport!.dispatchEvent(new Event('resize'))
+  })
+  await chat.getByRole('button', { name: 'Back to Home', exact: true }).click()
+  await expect(page).toHaveURL(/\/$/)
+  await expect(page.locator('body')).not.toHaveCSS('position', 'fixed')
+})
+
+test('answer wait uses three dots and keeps the send spinner', async ({ page }, info) => {
+  await page.goto('/ask?fixture=checking')
+  await expect(page.locator('.ask-typing > span')).toHaveCount(3)
+  await expect(page.locator('.ask-checking svg')).toHaveCount(0)
+  await expect(page.locator('.ask-checking')).not.toContainText('The answer will appear')
+  await expect(page.locator('.ask-send')).toHaveAttribute('data-loading')
+  await expect(page.locator('.ask-typing > span').first()).toHaveCSS('animation-name', 'none')
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await expect(page.locator('.ask-typing > span').first()).toHaveCSS('animation-name', 'ask-typing')
+  await page.screenshot({ path: info.outputPath('answer-wait-dots.png') })
+})

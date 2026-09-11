@@ -426,3 +426,21 @@ cost; repeated retrieval of its old packet is not a launch prerequisite.
 Keep completed tasks with their release or observation evidence until the next
 checkpoint, then archive the dated record. Do not reopen the original nine
 implementation slices or eight design slices from historical checklists.
+
+## September 11, mobile chat keyboard and history follow-up
+
+The owner's iPhone screenshot showed standalone Ask panning away while its
+recent-history controls remained visible. The floating chat looked correct.
+This follow-up freezes the document position during phone chat and prevents
+programmatic scrolling of the outer panel. Conversation and textarea scrolling
+remain available. Recent device conversations move to Account, including for
+signed-out readers. A memory-only handoff restores each conversation and scope.
+Three bouncing dots replace the answer-wait card; the send spinner stays.
+
+Local verification passed 685 existing tests, typechecks, build and lint with
+15 existing warnings. The new memory-handoff test passed separately. Browser
+checks passed the new Account, menu-to-Ask and three-dot states in Chromium and
+WebKit, plus the existing chat reopen and nested-source checks. The first
+Account fixture run exposed an invalid fixture name, corrected before the
+passing rerun. CI and the updated development upload are pending. Native
+iPhone keyboard acceptance remains pending.

@@ -304,7 +304,8 @@ examples stay one tap above the field; they disappear after the first
 question. After the first question, Ask uses one scrollable conversation above
 the composer. The send control is an up arrow at its lower right with an
 accessible name; while an answer is being checked, the spinner replaces the
-arrow. Drafts and conversations survive leaving and reopening full-screen chat,
+arrow. The answer wait beneath the question uses three small bouncing dots,
+with a static indicator under reduced motion. Drafts and conversations survive leaving and reopening full-screen chat,
 and a reopened conversation starts at its latest exchange. The composer starts
 as one line and grows with the draft. Standalone mobile Ask uses the same
 compact bar and composer. Short screens and keyboard resizing keep the composer
@@ -315,7 +316,9 @@ expiration and availability rules remain in force.
 While mobile chat is open, make the reading document transparent without
 removing it. Safari can show document pixels through its keyboard controls beyond
 the visual viewport. Restore the document when returning focus and retain the
-reading position. Standalone Ask hides the surrounding site header and footer.
+reading position. Freeze the document position while the phone chat is open,
+and clip the outer panel so focus cannot scroll its header out of view.
+Only the conversation and textarea scroll. Standalone Ask hides the surrounding site header and footer.
 
 ## September 11 mobile reading refinements
 
@@ -333,3 +336,8 @@ warnings visible without opening that disclosure.
 Meeting source lists group documents by their actual types when more than one
 type exists. Do not invent agenda sections or add sticky headings for singleton
 groups. Preserve every document link, citation and retrieval date.
+
+Recent conversations live in the Account page's Conversations section, available
+without sign-in. Keep device-only storage and the 24-hour expiry. Opening a
+conversation restores its evidence scope without putting its private handle in
+the URL. The chat screen has no recent-history list or clearing controls.
