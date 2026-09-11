@@ -1,3 +1,4 @@
+import { Dialog } from '@base-ui/react/dialog'
 import { VoterFooter } from './voter-footer'
 import {
   CircleUserRoundIcon,
@@ -23,12 +24,6 @@ import {
 import { parseResidentReturnTo } from '../resident-handoff/navigation'
 
 import { Button } from '../../components/ui/button'
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverPopup,
-  PopoverTitle,
-} from '../../components/ui/popover'
 
 import { LOUISIANA_OUTLINE_PATH } from '../landing/louisiana-path'
 
@@ -187,6 +182,14 @@ export function ResidentShell({ children }: { children: ReactNode }) {
   const keyboardOpen = useKeyboardOpen()
   const overlayOpen = useOverlayOpen()
   const online = useOnline()
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const updateScrolled = () => setScrolled(window.scrollY > 8)
+    updateScrolled()
+    window.addEventListener('scroll', updateScrolled, { passive: true })
+    return () => window.removeEventListener('scroll', updateScrolled)
+  }, [])
 
   return (
     <div
@@ -199,7 +202,7 @@ export function ResidentShell({ children }: { children: ReactNode }) {
         Skip to content
       </a>
 
-      <header className="resident-header">
+      <header className="resident-header" data-scrolled={scrolled || undefined}>
         <div className="resident-header-inner">
           <Link
             aria-current={pathname === '/' ? 'page' : undefined}
@@ -304,7 +307,7 @@ function MobileNavigation({ pathname }: { pathname: string }) {
   }, [pathname, desktop])
 
   return (
-    <Popover
+    <Dialog.Root
       open={open}
       onOpenChange={(next, details) => {
         // The area drawer has its own portal and focus manager. Keep its
@@ -316,7 +319,7 @@ function MobileNavigation({ pathname }: { pathname: string }) {
         setOpen(next)
       }}
     >
-      <PopoverTrigger
+      <Dialog.Trigger
         render={
           <Button
             className="resident-menu-trigger"
@@ -324,74 +327,91 @@ function MobileNavigation({ pathname }: { pathname: string }) {
             variant="ghost"
           />
         }
-        aria-label={open ? 'Close menu' : 'Open menu'}
+        aria-label="Open menu"
         data-open={open ? '' : undefined}
       >
-        <svg
-          className="resident-hamburger"
-          viewBox="0 0 32 32"
-          aria-hidden="true"
-        >
-          <path
-            className="resident-hamburger-line resident-hamburger-ends"
-            d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
-          />
-          <path className="resident-hamburger-line" d="M7 16 27 16" />
-        </svg>
-      </PopoverTrigger>
-      <PopoverPopup className="resident-menu" align="end" sideOffset={12}>
-        <PopoverTitle className="visually-hidden">Menu</PopoverTitle>
-        <nav aria-label="Primary navigation" className="resident-menu-links">
-          {[
-            ...PRIMARY_NAVIGATION.slice(0, 3),
-            {
-              href: '/following',
-              icon: CircleUserRoundIcon,
-              label: 'Following',
-            },
-            PRIMARY_NAVIGATION[3],
-          ].map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              onClick={() => setOpen(false)}
-              aria-current={
-                pathname === item.href || pathname.startsWith(`${item.href}/`)
-                  ? 'page'
-                  : undefined
-              }
+        <MobileMenuIcon />
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Popup className="resident-menu">
+          <Dialog.Title className="visually-hidden">Menu</Dialog.Title>
+          <div className="resident-menu-head">
+            <Dialog.Close
+              aria-label="Close menu"
+              className="resident-menu-trigger"
+              render={<Button size="icon-xl" variant="ghost" />}
+              data-open
             >
-              <item.icon aria-hidden="true" />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="resident-menu-bottom">
-          <div className="resident-menu-area">
-            <p>
-              {area ? `Showing ${areaName(area)}` : 'Choose your local area'}
-            </p>
-            <AreaSelector
-              open={areaOpen}
-              onOpenChange={setAreaOpen}
-              trigger={(props) => (
-                <Button {...props} size="touch" variant="outline">
-                  <MapPinIcon aria-hidden="true" />
-                  Change area
-                </Button>
-              )}
-            />
+              <MobileMenuIcon />
+            </Dialog.Close>
           </div>
-          <Link
-            className="resident-menu-account"
-            to="/following"
-            onClick={() => setOpen(false)}
-          >
-            Account and notification settings
-          </Link>
-        </div>
-      </PopoverPopup>
-    </Popover>
+          <div className="resident-menu-body">
+            <nav
+              aria-label="Primary navigation"
+              className="resident-menu-links"
+            >
+              {[
+                ...PRIMARY_NAVIGATION.slice(0, 3),
+                {
+                  href: '/following',
+                  icon: CircleUserRoundIcon,
+                  label: 'Account',
+                },
+                PRIMARY_NAVIGATION[3],
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={
+                    pathname === item.href ||
+                    pathname.startsWith(`${item.href}/`)
+                      ? 'page'
+                      : undefined
+                  }
+                >
+                  <item.icon aria-hidden="true" />
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <div className="resident-menu-bottom">
+              <div className="resident-menu-area">
+                <p>
+                  {area
+                    ? `Showing ${areaName(area)}`
+                    : 'Choose your local area'}
+                </p>
+                <AreaSelector
+                  open={areaOpen}
+                  onOpenChange={setAreaOpen}
+                  trigger={(props) => (
+                    <Button
+                      {...props}
+                      className="resident-menu-area-button"
+                      size="touch"
+                      variant="outline"
+                    >
+                      <MapPinIcon aria-hidden="true" />
+                      Change area
+                    </Button>
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+        </Dialog.Popup>
+      </Dialog.Portal>
+    </Dialog.Root>
+  )
+}
+
+function MobileMenuIcon() {
+  return (
+    <svg className="resident-hamburger" viewBox="0 0 24 24" aria-hidden="true">
+      <path className="resident-hamburger-line" d="M4 8h16" />
+      <path className="resident-hamburger-line" d="M4 16h16" />
+    </svg>
   )
 }
 

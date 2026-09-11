@@ -5,6 +5,20 @@ The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## Mobile navigation, September 10
+
+The owner requested a compact sticky header and full-screen menu, followed by a
+PR, review monitoring and development deployment for phone testing. [PR #203](https://github.com/LaykenV/public-parish/pull/203)
+adds a 48-pixel header with blur after scrolling and large menu links.
+Production release is not authorized for this task.
+
+- [x] Implement the header, modal menu and nested area selector.
+- [x] Apply the owner's follow-up: more transparency, nav icons, mobile Account,
+  larger Change area and Apple-style expansion with a two-stage menu icon.
+- [x] Check phone screenshots and pass eight navigation checks in Chromium and WebKit.
+- [ ] Pass latest-head CI and both PR reviews, then upload the verified development artifact.
+- [ ] Owner tests the development URL on a physical phone.
+
 ## Parallel PR reviews, September 10
 
 [PR #201](https://github.com/LaykenV/public-parish/pull/201) merged as `7cbd36c`.
