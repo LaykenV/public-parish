@@ -48,7 +48,10 @@ desktop, and neutral lifecycle badges. Move the date above the title on phones.
 Keep source limitations visible and each full row clickable. Stories, issues and records have separate
 failure boundaries.
 
-Desktop navigation retains its arrangement. Mobile uses a 48-pixel sticky header
+Desktop navigation retains its links and controls in a 48-pixel sticky header.
+Its background uses 80 percent opacity with blur at the top, then the shared
+72 percent opacity after scrolling. Controls retain their 44-pixel touch targets.
+Mobile uses a 48-pixel sticky header
 with the existing brand and a two-line menu button. After scrolling, the header
 uses a translucent lavender background, blur and a faint bottom border. Browsers
 without blur support retain a solid background. Keep 44-pixel touch targets.
