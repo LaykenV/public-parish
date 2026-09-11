@@ -1055,24 +1055,6 @@
     line-height: 1.6;
   }
 
-  /* Numbered sources stay inline with their sentence. The visible tag is
-     small; the touch target around it remains 44 pixels. */
-
-  .ask-page .ev-source.pp-source-control {
-    position: relative;
-    min-width: 1.75rem;
-    min-height: 1.75rem;
-    margin: 0 0.15rem 0 0.1rem;
-    padding: 0.1rem 0.4rem;
-    vertical-align: 0.1em;
-  }
-
-  .ask-page .ev-source.pp-source-control::after {
-    content: '';
-    position: absolute;
-    inset: -0.5rem;
-  }
-
   /* Composer */
 
   .ask-page .ask-dock {
@@ -1121,5 +1103,6 @@
 
   .resident-blueprint:has(> .ask-page:not(.ask-page-embedded)) > :not(.ask-page) {
     opacity: 0;
+    visibility: hidden;
   }
 }

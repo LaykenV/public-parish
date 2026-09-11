@@ -339,7 +339,10 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
       liveSearch.status === 'LoadingFirstPage'
     ) {
       return (
-        <PageLoading />
+        <div className="pp-explore-loading">
+          <PageLoading />
+          <p>Loading {search.place ? `${search.place} records` : 'published records'}…</p>
+        </div>
       )
     }
 

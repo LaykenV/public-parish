@@ -5,6 +5,7 @@ import { Link } from '@tanstack/react-router'
 import { Button } from '../../components/ui/button'
 import { PageLoading } from '../resident-blueprint/resident-loading'
 import { formatDate, formatTime } from '../discovery/format'
+import { useMediaQuery } from '../discovery/hooks'
 import { IssueCard } from '../discovery/issue-card'
 import { evidenceRouteHref } from '../resident-handoff/navigation'
 import {
@@ -16,11 +17,7 @@ import {
   StateLine,
   VersionHistory,
 } from './evidence-blocks'
-import {
-  Claim,
-  EvidenceProvider,
-  SourceControl,
-} from './evidence-surface'
+import { Claim, EvidenceProvider, SourceControl } from './evidence-surface'
 import { artifactTone } from './evidence-model'
 import { resolveCitationId } from './contracts'
 import type { EvidenceSearch, MeetingDecisionRow } from './contracts'
@@ -93,6 +90,7 @@ function MeetingView({
   onSelectSource: (id: string | null) => void
   search: EvidenceSearch
 }) {
+  const mobile = useMediaQuery('(max-width: 48rem)')
   const { fixture, issues } = data
   const { citations, meeting } = fixture
   const selected = resolveCitationId(citations, search.source)
@@ -108,7 +106,12 @@ function MeetingView({
       selected={selected}
     >
       <main className="ev-page ev-page-with-chat" id="resident-main">
-        <MobileAsk key={meeting.id} scopeKey={`meeting:${meeting.id}`} returnTo={currentMeetingHref} scenario={search.fixture ? 'empty-meeting' : undefined} />
+        <MobileAsk
+          key={meeting.id}
+          scopeKey={`meeting:${meeting.id}`}
+          returnTo={currentMeetingHref}
+          scenario={search.fixture ? 'empty-meeting' : undefined}
+        />
         <BackLink
           label="Back to Explore"
           returnTo={search.returnTo}
@@ -122,7 +125,9 @@ function MeetingView({
           </p>
           <h1 className="ev-title">{meeting.title}</h1>
         </header>
-        {meeting.coverageNote ? <p className="ev-limited-note">{meeting.coverageNote}</p> : null}
+        {meeting.coverageNote ? (
+          <p className="ev-limited-note">{meeting.coverageNote}</p>
+        ) : null}
 
         <div className="ev-layout">
           <aside aria-label="Meeting status" className="ev-rail">
@@ -244,7 +249,7 @@ function MeetingView({
             </Section>
 
             <Section id="sources" title="Sources and update history">
-              <DocumentList documents={meeting.documents} />
+              <DocumentList documents={meeting.documents} grouped={mobile} />
               <VersionHistory versions={meeting.versions} />
               <div className="ev-report-row">
                 <p className="ev-report-lede">

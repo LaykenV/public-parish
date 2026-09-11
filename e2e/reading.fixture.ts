@@ -274,3 +274,115 @@ test('route heading focus stays quiet and follow management is a simple text act
   await expect(heading).toBeFocused()
   expect(await heading.evaluate(el => getComputedStyle(el).outlineStyle)).toBe('none')
 })
+
+test('short mobile chat clamps stale keyboard offsets and keeps long drafts reachable', async ({ page }, info) => {
+  await page.setViewportSize({ width: 320, height: 568 })
+  for (const path of ['/ask?fixture=empty', records[0][1]]) {
+    await page.goto(path)
+    if (!path.startsWith('/ask')) await page.getByRole('button', { name: 'Ask Public Parish', exact: true }).click()
+    const chat = page.locator('.ask-page').filter({ has: page.getByRole('textbox') })
+    await chat.getByRole('textbox').fill('A long draft line\n'.repeat(12))
+    for (const viewport of [{ height: 290, top: 70 }, { height: 568, top: 120 }, { height: 650, top: 120 }]) {
+      await page.evaluate(({ height, top }) => {
+        Object.defineProperties(visualViewport, { height: { configurable: true, value: height }, offsetTop: { configurable: true, value: top } })
+        visualViewport!.dispatchEvent(new Event('resize'))
+      }, viewport)
+      const expectedTop = viewport.height < 568 ? viewport.top : 0
+      const expectedBottom = Math.min(568, viewport.height + expectedTop)
+      await expect.poll(async () => {
+        const box = await chat.locator('.ask-composer').boundingBox()
+        return box!.y >= expectedTop && box!.y + box!.height <= expectedBottom
+      }).toBe(true)
+      const header = await chat.locator('.ask-screen-header').boundingBox()
+      expect(header!.y).toBe(expectedTop)
+      if (viewport.height === 290) await page.screenshot({ path: info.outputPath(path.startsWith('/ask') ? 'ask-short-keyboard.png' : 'issue-short-keyboard.png') })
+    }
+  }
+})
+
+test('standalone Ask source drawers preserve the document lock and release it on exit', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/ask?fixture=thread')
+  const source = page.locator('.ask-thread-region .ev-source').first()
+  await source.scrollIntoViewIfNeeded()
+  const region = page.locator('.ask-thread-region')
+  const position = await region.evaluate(el => el.scrollTop)
+  await source.click()
+  const drawer = page.getByRole('dialog', { name: 'Official source', exact: true })
+  await expect(drawer).toBeVisible()
+  await drawer.getByRole('button', { name: 'Close', exact: true }).click()
+  await expect(source).toBeFocused()
+  expect(await region.evaluate(el => el.scrollTop)).toBe(position)
+  await expect(page.locator('html')).toHaveCSS('overflow', 'hidden')
+  await expect(page.locator('.resident-header')).toHaveCSS('visibility', 'hidden')
+  await page.locator('.ask-screen-back').click()
+  await expect(page.locator('.ask-page')).toHaveCount(0)
+  await expect(page.locator('html')).not.toHaveCSS('overflow', 'hidden')
+})
+
+test('mobile menu anchors Account with the area controls and keeps it reachable on short screens', async ({ page }, info) => {
+  for (const height of [812, 480]) {
+    await page.setViewportSize({ width: 375, height })
+    await page.goto('/following?fixture=active')
+    await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+    const menu = page.getByRole('dialog', { name: 'Menu', exact: true })
+    const account = menu.getByRole('link', { name: 'Account', exact: true })
+    await expect(account).toHaveAttribute('aria-current', 'page')
+    await expect(menu.locator('.resident-menu-bottom')).toContainText('Account')
+    await account.scrollIntoViewIfNeeded()
+    await expect(account).toBeInViewport()
+    if (height === 812) {
+      expect((await account.boundingBox())!.y).toBeGreaterThan(500)
+      await page.screenshot({ path: info.outputPath('menu-account-bottom.png') })
+    }
+    await account.click()
+    await expect(menu).toBeHidden()
+  }
+})
+
+test('mobile follow cards disclose delivery details and keep their issue links', async ({ page }, info) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/following?fixture=active')
+  const card = page.locator('.following-row').first()
+  await expect(card.locator('h3 a')).toHaveAttribute('href', /issues/)
+  await expect(card.locator('.following-row-ledger')).toBeHidden()
+  await expect(card.locator('.following-row-update')).toBeVisible()
+  await card.getByText('Details and delivery', { exact: true }).click()
+  await expect(card.locator('.following-row-ledger')).toBeVisible()
+  await card.getByText('Details and delivery', { exact: true }).click()
+  await page.screenshot({ path: info.outputPath('following-compact.png') })
+})
+
+test('mobile reading uses small citations with touch areas and groups meeting documents', async ({ page }, info) => {
+  await page.setViewportSize({ width: 320, height: 568 })
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  for (const [, path] of records) {
+    await page.goto(path)
+    const source = page.locator('.ev-source').first()
+    await source.scrollIntoViewIfNeeded()
+    const box = await source.boundingBox()
+    expect(box!.height).toBeLessThan(35)
+    const touchArea = await source.evaluate(el => {
+      if (!matchMedia('(pointer: coarse)').matches) return null
+      const style = getComputedStyle(el, '::after')
+      return { width: parseFloat(style.width), height: parseFloat(style.height) }
+    })
+    if (touchArea) {
+      expect(touchArea.width).toBeGreaterThanOrEqual(44)
+      expect(touchArea.height).toBeGreaterThanOrEqual(44)
+    }
+    await source.click()
+    await expect(page.getByRole('dialog', { name: 'Official source', exact: true })).toBeVisible()
+    await page.getByRole('button', { name: 'Close', exact: true }).click()
+  }
+  await page.goto('/meetings/lafayette-city-parish-council-2026-04-21?fixture=preview')
+  await expect(page.locator('.ev-document-group').first()).toBeAttached()
+  await page.locator('.ev-document-groups').scrollIntoViewIfNeeded()
+  await page.screenshot({ path: info.outputPath('meeting-document-groups.png') })
+  await page.goto(records[0][1])
+  const toolbar = page.locator('.ev-record-toolbar')
+  await expect(toolbar.getByRole('link', { name: 'Back to Home', exact: true })).toBeVisible()
+  await expect(toolbar.getByRole('button', { name: 'Follow this issue', exact: true })).toBeVisible()
+  expect(await toolbar.evaluate(el => el.scrollWidth)).toBeLessThanOrEqual(288)
+  await page.screenshot({ path: info.outputPath('issue-compact-header.png') })
+})

@@ -70,7 +70,8 @@ There is no bottom navigation or reserved space for it.
 
 One centered global spinner covers navigation and initial page-data loading.
 Concurrent pending sections share that indicator. Settling or unmounting a
-section releases its loading registration. Do not use skeletons. Existing readable
+section releases its loading registration. Explore includes a visible loading
+message naming the selected parish when present. Do not use skeletons. Existing readable
 content stays available while another section loads. Button submissions and Ask
 answer generation retain their action-specific feedback.
 
@@ -310,3 +311,20 @@ While mobile chat is open, make the reading document transparent without
 removing it. Safari can show document pixels through its keyboard controls beyond
 the visual viewport. Restore the document when returning focus and retain the
 reading position. Standalone Ask hides the surrounding site header and footer.
+
+## September 11 mobile reading refinements
+
+Account sits at the bottom of the mobile menu above area selection, with its
+icon and current-page state. The bottom section scrolls into reach on short
+screens. Preserve the approved menu motion.
+
+Citations use small inline numbered controls across reading pages and chat.
+Coarse pointers retain at least a 44-pixel hit area around each visible control.
+An issue's Back, Follow and Share actions share one compact mobile row above
+the title. Follow cards lead with a linked title and latest change; delivery
+metadata lives in an explicit Details and delivery disclosure. Keep source
+warnings visible without opening that disclosure.
+
+Meeting source lists group documents by their actual types when more than one
+type exists. Do not invent agenda sections or add sticky headings for singleton
+groups. Preserve every document link, citation and retrieval date.

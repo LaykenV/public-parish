@@ -42,9 +42,13 @@ export function BackLink({
 }) {
   const destination = parseResidentReturnTo(returnTo) ?? to
   return (
-    <Link className="ev-back" to={destination}>
+    <Link
+      aria-label={returnTo ? residentReturnLabel(destination) : label}
+      className="ev-back"
+      to={destination}
+    >
       <ArrowLeftIcon aria-hidden="true" />
-      {returnTo ? residentReturnLabel(destination) : label}
+      <span>{returnTo ? residentReturnLabel(destination) : label}</span>
     </Link>
   )
 }
@@ -251,7 +255,28 @@ export function ChangeList({ entries }: { entries: ChangeEntry[] }) {
   )
 }
 
-export function DocumentList({ documents }: { documents: SourceDocument[] }) {
+export function DocumentList({
+  documents,
+  grouped = false,
+}: {
+  documents: SourceDocument[]
+  grouped?: boolean
+}) {
+  if (grouped && new Set(documents.map((document) => document.kind)).size > 1) {
+    const kinds = [...new Set(documents.map((document) => document.kind))]
+    return (
+      <div className="ev-document-groups">
+        {kinds.map((kind) => (
+          <section className="ev-document-group" key={kind}>
+            <h3>{kind}</h3>
+            <DocumentList
+              documents={documents.filter((document) => document.kind === kind)}
+            />
+          </section>
+        ))}
+      </div>
+    )
+  }
   return (
     <ul className="ev-documents">
       {documents.map((document) => (

@@ -1976,3 +1976,5 @@ button.pp-area-row:hover {
 @media (prefers-reduced-motion: reduce) {
   .pp-sheet, .pp-backdrop { transition: none !important; animation: none !important; }
 }
+
+.pp-explore-loading { min-height: 12rem; padding-block: 2rem; color: var(--muted-foreground); font-size: var(--pp-text-small); }

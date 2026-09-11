@@ -5,67 +5,32 @@ The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
-## Full-screen mobile chat, September 11
+## Mobile chat and reading review, September 11
 
-The owner approved a full-screen conversation based on T3 Code screenshots after
-rejecting the keyboard-constrained drawer. Mobile chat now has one Back/title
-bar, an opaque screen and a compact growing composer. Sources retain drawers.
-Standalone Ask shares the layout. The next phone review showed the article
-through Safari keyboard controls. The follow-up hides the reading document while
-chat is open and centers the empty composer, informed by T3 Chat mobile.
-Work remains in PR #205 for dev review.
+PR #205 shipped as `60b43d9` after the owner's phone review. PR #207 refines
+that release with a bottom composer, compact chat header and bounded visual
+viewport. The owner requested review of #207 and selected mobile reading
+refinements before another development preview. Production is not authorized
+for this follow-up.
 
-- [x] Replace mobile chat drawers and preserve drafts and reading position.
-- [x] Verify full-height chat, compact composer and keyboard bounds in both engines.
-- [x] PR #205 merged at `60b43d9`.
-- [ ] Owner tests the native iPhone keyboard again.
+The review retains the chat layout and checks short screens, stale keyboard
+close offsets, source drawers from standalone Ask and restoring the reading
+position. It corrects loading-title styling and keeps hidden site controls out
+of keyboard focus. Public Parish displays complete validated answers rather
+than streaming words. Conversation restoration and keyboard resizing are the
+relevant scroll behavior.
 
-The owner's review of that release found the chat still looked poor and the
-composer still fought the keyboard. The design pass that follows keeps the
-composer at the bottom in every state, adds a centered intro to the empty
-screen, replaces the bordered circular back control with a plain arrow in a
-48-pixel bar, hides the redundant "You asked" label, shrinks inline source tags
-to text size while keeping their 44-pixel touch area, and fixes the send
-control's overflowing spinner. The screen position is clamped inside the layout
-viewport and standalone Ask locks the document behind it.
+The reading pass shrinks visible citations while retaining touch areas, puts
+issue Back/Follow/Share controls in one row, simplifies follow cards with
+expandable delivery details, groups meeting source documents by their known
+types, labels Explore loading and anchors Account above the menu's area controls.
+Home and source drawer layouts remain as approved.
 
-- [x] Rebuild the mobile chat layout with the composer at the bottom.
-- [ ] Owner checks the native iPhone keyboard: no jump on focus, composer above
-      the keyboard, examples reachable while typing, Back and title in view.
-
-## Mobile review corrections, September 11
-
-The owner's iPhone review found that opening the keyboard moved chat drawers
-above the screen and broke standalone Ask. Follow-up work uses visual viewport
-height and offset, compacts the keyboard layout and limits composer growth.
-It also separates the timeline arrow from its touch target, removes the route
-heading's decorative focus outline, and simplifies the Account follow action.
-
-- [x] Reproduce keyboard resize and pan without shrinking the layout viewport.
-- [x] Correct touch arrows, heading focus presentation and the follow action.
-- [ ] Finish final validation, update PR #205 and replace the development preview.
-- [ ] Owner repeats the physical iPhone keyboard check.
-
-## Resident reading and Ask pass, September 10
-
-The owner completed a broad app review and requested consistent reading,
-sources and chat across stories, issues, decisions and meetings. The authorized
-handoff is a reviewed green PR and a development URL for morning inspection.
-Production shipment requires the owner's approval of that preview.
-
-- [x] Keep stories above issues after area selection and remove the mobile 3D model.
-- [x] Add meeting chat, compact sources, shared source drawers and scroll preservation.
-- [x] Repair narrow timelines, remove pill dots and colored notice edges, and simplify Account tab rules.
-- [x] Keep Ask's composer below the conversation with an up-arrow send control.
-- [x] Add shared drawer motion with reduced-motion support.
-- [x] Pass local verification, 685 application tests and 66 Chromium/WebKit journeys.
-- [x] File PR #205 and verify both reviewers' findings.
-- [ ] Finish final-head checks and upload the exact green development artifact.
-- [ ] Deliver the morning report and dev link.
-
-The approved header releases are PR #203 at `0c5b16b` and PR #204 at `0500f63`.
-Both production workflows and independent smoke tests passed. The desktop
-header is 48px with 80 percent top opacity and 72 percent scrolled opacity.
+- [x] Review the chat implementation and run all 34 existing fixture journeys.
+- [x] Implement the selected reading and navigation refinements.
+- [ ] Finish expanded browser checks, application validation and both PR reviews.
+- [ ] Upload the exact green CI frontend to development and inspect it there.
+- [ ] Owner tests the revised interface and native iPhone keyboard on dev.
 
 ## Parallel PR reviews, September 10
 

@@ -2012,3 +2012,13 @@ removing its layout or state. T3 Chat mobile informed the centered empty compose
 messages retain the bottom composer. Regression checks cover document visibility,
 reading focus restoration and keyboard bounds. Native iPhone confirmation remains
 pending; CI and development receipts belong in PR #205.
+
+### September 11, working tree, mobile design review
+
+Reviewed PR #207 and retained its compact header, bottom composer and visual
+viewport bounds. Corrected loading-title CSS and hidden navigation focus in
+standalone Ask. Added short-screen, stale keyboard-close and nested source
+checks. The owner's reading refinements add small mobile citations, one issue
+action row, compact follow cards, grouped meeting source documents, Explore
+loading text and Account at the bottom of the mobile menu. Validation and dev
+upload receipts will be recorded on PR #207. No production release is included.

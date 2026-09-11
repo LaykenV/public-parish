@@ -1420,3 +1420,15 @@
 }
 .following-row > .following-manage:hover { text-decoration: underline; }
 .following-manage::before { display: none; }
+
+@media (max-width: 48rem) {
+  .following-row { gap: 0.65rem; }
+  .following-row-main { order: -1; }
+  .following-row-main h3 a { color: inherit; text-decoration: none; }
+  .following-row-main h3 a:hover { text-decoration: underline; }
+  .following-row-update { margin: 0; color: var(--body-foreground); font-size: var(--pp-text-small); line-height: 1.5; }
+  .following-row-details summary { display: flex; align-items: center; min-height: 2.75rem; gap: 0.5rem; cursor: pointer; color: var(--muted-foreground); font-size: var(--pp-text-small); }
+  .following-row-details summary::after { content: '+'; margin-left: auto; font-size: 1.1rem; }
+  .following-row-details[open] summary::after { content: '−'; }
+  .following-row-details .following-row-ledger { margin-top: 0.5rem; }
+}

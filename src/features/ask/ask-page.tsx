@@ -276,7 +276,7 @@ export function AskPage({
     }
   }, [dismissed, lastTurnId, lastTurnState])
 
-  // A reopened conversation starts at its latest exchange.
+  // A restored conversation starts at its latest exchange.
   const conversationId = conversation?.id ?? null
   useEffect(() => {
     const region = threadRef.current

@@ -24,7 +24,7 @@
 
   .ev-page-with-chat,
   .pp-story-detail {
-    padding-bottom: 6rem;
+    padding-bottom: calc(4.5rem + max(0.75rem, env(safe-area-inset-bottom)));
   }
 }
 
@@ -81,7 +81,7 @@
   width: 100%;
 }
 
-.ask-screen-loading p {
+.ask-screen-loading > [role='status'] {
   margin: 0;
   padding: 1.5rem 1rem;
   color: var(--muted-foreground);
