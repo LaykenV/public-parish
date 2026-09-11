@@ -6,6 +6,7 @@ import { Link } from '@tanstack/react-router'
 import { Button } from '../../components/ui/button'
 import { PageLoading } from '../resident-blueprint/resident-loading'
 import { formatDate } from '../discovery/format'
+import { useMediaQuery } from '../discovery/hooks'
 import { Notice } from '../discovery/notice'
 import { ShareButton } from '../discovery/share'
 import { FollowAction } from '../following/follow-action'
@@ -23,11 +24,7 @@ import {
   UncertainList,
   VersionHistory,
 } from './evidence-blocks'
-import {
-  Claim,
-  EvidenceProvider,
-  SourceControl,
-} from './evidence-surface'
+import { Claim, EvidenceProvider, SourceControl } from './evidence-surface'
 import {
   applyLiveUpdate,
   issueSections,
@@ -170,6 +167,7 @@ function IssueDetail({
   search: EvidenceSearch
   updated: boolean
 }) {
+  const mobile = useMediaQuery('(max-width: 48rem)')
   const { citations, issue } = fixture
   const countedVisit = useRef<string | null>(null)
   const countedOutcome = useRef<string | null>(null)
@@ -195,6 +193,23 @@ function IssueDetail({
   const selected = resolveCitationId(citations, search.source)
   const currentIssueHref = evidenceRouteHref(`/issues/${issue.slug}`, search)
 
+  const actions = (
+    <div className="ev-status-actions">
+      <FollowAction
+        available
+        label="Follow this issue"
+        live={liveFollow}
+        target={{
+          key: issue.slug,
+          kind: 'Issue',
+          title: issue.title,
+          detail: `${issue.place} · ${issue.body}`,
+        }}
+      />
+      <ShareButton path={`/issues/${issue.slug}`} title={issue.title} />
+    </div>
+  )
+
   return (
     <EvidenceProvider
       citations={citations}
@@ -202,9 +217,17 @@ function IssueDetail({
       selected={selected}
     >
       <main className="ev-page ev-page-with-chat" id="resident-main">
-        <MobileAsk key={issue.slug} scopeKey={`issue:${issue.slug}`} returnTo={currentIssueHref} scenario={search.fixture ? 'empty-issue' : undefined} />
+        <MobileAsk
+          key={issue.slug}
+          scopeKey={`issue:${issue.slug}`}
+          returnTo={currentIssueHref}
+          scenario={search.fixture ? 'empty-issue' : undefined}
+        />
 
-        <BackLink label="Back to Home" returnTo={search.returnTo} to="/" />
+        <div className={mobile ? 'ev-record-toolbar' : undefined}>
+          <BackLink label="Back to Home" returnTo={search.returnTo} to="/" />
+          {mobile ? actions : null}
+        </div>
 
         <header className="ev-head">
           <p className="ev-kicker">
@@ -214,7 +237,9 @@ function IssueDetail({
           </p>
           <h1 className="ev-title">{issue.title}</h1>
         </header>
-        {issue.coverageNote ? <p className="ev-limited-note">{issue.coverageNote}</p> : null}
+        {issue.coverageNote ? (
+          <p className="ev-limited-note">{issue.coverageNote}</p>
+        ) : null}
 
         {issue.historical ? (
           <Notice
@@ -296,23 +321,7 @@ function IssueDetail({
                 note={issue.evidence.note}
                 status={issue.evidence.status}
               />
-              <div className="ev-status-actions">
-                <FollowAction
-                  available
-                  label="Follow this issue"
-                  live={liveFollow}
-                  target={{
-                    key: issue.slug,
-                    kind: 'Issue',
-                    title: issue.title,
-                    detail: `${issue.place} · ${issue.body}`,
-                  }}
-                />
-                <ShareButton
-                  path={`/issues/${issue.slug}`}
-                  title={issue.title}
-                />
-              </div>
+              {!mobile ? actions : null}
             </div>
           </aside>
 
@@ -432,7 +441,11 @@ function MarkedDateRow({
   tone: 'deadline' | 'next' | 'outcome'
 }) {
   return (
-    <div className="ev-status-date" data-tone={tone} id={tone === 'outcome' ? 'latest-outcome' : undefined}>
+    <div
+      className="ev-status-date"
+      data-tone={tone}
+      id={tone === 'outcome' ? 'latest-outcome' : undefined}
+    >
       <p className="ev-status-label">{marked.label}</p>
       <p className="ev-status-value">
         <time dateTime={marked.date}>{formatDate(marked.date)}</time>

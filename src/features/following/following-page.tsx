@@ -17,6 +17,7 @@ import { Button } from '../../components/ui/button'
 import { AUTH_RETURN_KEY, useGoogleAuth } from '../auth/google-auth'
 import { areaName } from '../discovery/contracts'
 import { Sheet } from '../discovery/sheet'
+import { useMediaQuery } from '../discovery/hooks'
 import { parseResidentReturnTo } from '../resident-handoff/navigation'
 import type {
   DeliveryFrequency,
@@ -658,6 +659,45 @@ function FollowRow({
   returnTo: string
   target: FollowedTarget
 }) {
+  const mobile = useMediaQuery('(max-width: 48rem)')
+  const ledger = (
+    <dl className="following-row-ledger">
+      <div>
+        <dt>Latest change</dt>
+        <dd>
+          {target.latestChange}
+          {target.href ? (
+            <Link
+              className="following-row-open"
+              search={{
+                fixture: target.evidenceScenario,
+                returnTo,
+              }}
+              to={target.href}
+            >
+              {target.kind === 'Story'
+                ? 'Open story'
+                : target.evidenceScenario === 'update'
+                  ? 'Open changed issue'
+                  : 'Open issue'}
+            </Link>
+          ) : null}
+        </dd>
+      </div>
+      <div>
+        <dt>Next date</dt>
+        <dd>{target.nextDate ?? 'No next date posted'}</dd>
+      </div>
+      <div>
+        <dt>Delivery</dt>
+        <dd>{frequencyLabel(target.frequency)}</dd>
+      </div>
+      <div>
+        <dt>Destination</dt>
+        <dd>{target.destination}</dd>
+      </div>
+    </dl>
+  )
   return (
     <li
       className="following-row"
@@ -675,43 +715,31 @@ function FollowRow({
         </span>
       </div>
       <div className="following-row-main">
-        <h3>{target.title}</h3>
+        <h3>
+          {mobile && target.href ? (
+            <Link
+              to={target.href}
+              search={{ fixture: target.evidenceScenario, returnTo }}
+            >
+              {target.title}
+            </Link>
+          ) : (
+            target.title
+          )}
+        </h3>
         <p>{target.detail}</p>
       </div>
-      <dl className="following-row-ledger">
-        <div>
-          <dt>Latest change</dt>
-          <dd>
-            {target.latestChange}
-            {target.href ? (
-              <Link
-                className="following-row-open"
-                search={{
-                  fixture: target.evidenceScenario,
-                  returnTo,
-                }}
-                to={target.href}
-              >
-                {target.kind === 'Story' ? 'Open story' : target.evidenceScenario === 'update'
-                  ? 'Open changed issue'
-                  : 'Open issue'}
-              </Link>
-            ) : null}
-          </dd>
-        </div>
-        <div>
-          <dt>Next date</dt>
-          <dd>{target.nextDate ?? 'No next date posted'}</dd>
-        </div>
-        <div>
-          <dt>Delivery</dt>
-          <dd>{frequencyLabel(target.frequency)}</dd>
-        </div>
-        <div>
-          <dt>Destination</dt>
-          <dd>{target.destination}</dd>
-        </div>
-      </dl>
+      {mobile ? (
+        <>
+          <p className="following-row-update">{target.latestChange}</p>
+          <details className="following-row-details">
+            <summary>Details and delivery</summary>
+            {ledger}
+          </details>
+        </>
+      ) : (
+        ledger
+      )}
       {target.coverage ? (
         <div className="following-coverage-warning">
           <CircleAlertIcon aria-hidden="true" />

@@ -350,15 +350,7 @@ function MobileNavigation({ pathname }: { pathname: string }) {
               aria-label="Primary navigation"
               className="resident-menu-links"
             >
-              {[
-                ...PRIMARY_NAVIGATION.slice(0, 3),
-                {
-                  href: '/following',
-                  icon: CircleUserRoundIcon,
-                  label: 'Account',
-                },
-                PRIMARY_NAVIGATION[3],
-              ].map((item) => (
+              {PRIMARY_NAVIGATION.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
@@ -376,6 +368,17 @@ function MobileNavigation({ pathname }: { pathname: string }) {
               ))}
             </nav>
             <div className="resident-menu-bottom">
+              <Link
+                className="resident-menu-account"
+                to="/following"
+                onClick={() => setOpen(false)}
+                aria-current={
+                  pathname.startsWith('/following') ? 'page' : undefined
+                }
+              >
+                <CircleUserRoundIcon aria-hidden="true" />
+                Account
+              </Link>
               <div className="resident-menu-area">
                 <p>
                   {area

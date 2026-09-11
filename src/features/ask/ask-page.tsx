@@ -9,6 +9,7 @@ import { resolveCitationId } from '../evidence/contracts'
 import type { CitationMap } from '../evidence/contracts'
 import { EvidenceProvider } from '../evidence/evidence-surface'
 import { useVisualViewport, useOnline, useMediaQuery } from '../discovery/hooks'
+import type { VisualViewportBounds } from '../discovery/hooks'
 import {
   AskRequestError,
   askScopeIdentity,
@@ -25,6 +26,7 @@ import type {
   AskTurnState,
 } from './contracts'
 import { setAskDraftHandoff, takeAskDraftHandoff } from './draft-handoff'
+import { takeRecentAskHandoff } from './recent-handoff'
 import { AskComposer } from './ask-composer'
 import { createLiveAskAdapter } from './live-adapter'
 import { AskThread } from './ask-thread'
@@ -33,7 +35,6 @@ import {
   AskCooldownNotice,
   AskExpiredNotice,
   AskOfflineNotice,
-  AskRecent,
   AskScopeConfirm,
   AskStatusRegion,
   AskUnavailable,
@@ -63,6 +64,7 @@ export function AskPage({
   onRestoreScope,
   onSelectSource,
   source,
+  viewport: screenViewport,
 }: {
   data: AskRouteData
   embedded?: boolean
@@ -70,8 +72,10 @@ export function AskPage({
   onRestoreScope: (scope: AskScope) => Promise<void>
   onSelectSource: (id: string | null) => void
   source?: string
+  viewport?: VisualViewportBounds
 }) {
-  const viewport = useVisualViewport()
+  const pageViewport = useVisualViewport(!embedded)
+  const viewport = screenViewport ?? pageViewport
   const mobile = useMediaQuery('(max-width: 48rem)')
   const convex = useConvex()
   const online = useOnline()
@@ -83,7 +87,6 @@ export function AskPage({
   const [conversation, setConversation] = useState<AskConversationView | null>(
     null,
   )
-  const [recent, setRecent] = useState<AskRecentConversation[]>([])
   const [viewScope, setViewScope] = useState<AskScope>(data.scope)
   const [draft, setDraft] = useState('')
   const [dismissed, setDismissed] = useState<ReadonlySet<string>>(
@@ -97,6 +100,7 @@ export function AskPage({
     scope: AskScope
   } | null>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const threadRef = useRef<HTMLElement>(null)
   const previousConversation = useRef<AskConversationView | null>(null)
   const submitLock = useRef(false)
 
@@ -227,8 +231,7 @@ export function AskPage({
         handleConversation(update.conversation)
       else if (update.kind === 'availability')
         handleAvailability(update.availability)
-      else if (update.kind === 'recent') setRecent(update.recent)
-      else {
+      else if (update.kind === 'expired') {
         previousConversation.current = null
         setConversation(null)
         setExpired(true)
@@ -275,6 +278,36 @@ export function AskPage({
     }
   }, [dismissed, lastTurnId, lastTurnState])
 
+  // A restored conversation starts at its latest exchange.
+  const conversationId = conversation?.id ?? null
+  useEffect(() => {
+    const region = threadRef.current
+    if (!region || !conversationId) return
+    region.scrollTop = region.scrollHeight
+  }, [conversationId])
+
+  // A keyboard shrinks the conversation from below. A reader who was at the
+  // latest answer stays there instead of losing it behind the keyboard.
+  useEffect(() => {
+    const region = threadRef.current
+    if (!region || typeof ResizeObserver === 'undefined') return
+    let nearBottom =
+      region.scrollHeight - region.scrollTop - region.clientHeight < 48
+    const track = () => {
+      nearBottom =
+        region.scrollHeight - region.scrollTop - region.clientHeight < 48
+    }
+    const observer = new ResizeObserver(() => {
+      if (nearBottom) region.scrollTop = region.scrollHeight
+    })
+    region.addEventListener('scroll', track, { passive: true })
+    observer.observe(region)
+    return () => {
+      region.removeEventListener('scroll', track)
+      observer.disconnect()
+    }
+  }, [adapter])
+
   // A paused device returns to Ask once its own retry time has passed.
   useEffect(() => {
     if (availability.kind !== 'cooldown') return
@@ -303,7 +336,6 @@ export function AskPage({
       setExpired(true)
       setDismissed(new Set())
       setDraft('')
-      void adapter.listRecent().then(setRecent)
     }
     const timer = window.setInterval(sweep, EXPIRY_SWEEP_MS)
     return () => window.clearInterval(timer)
@@ -314,9 +346,6 @@ export function AskPage({
       if (!adapter) return
       const view = await adapter.open(handle.localHandle)
       if (!view) {
-        setRecent((current) =>
-          current.filter((item) => item.localHandle !== handle.localHandle),
-        )
         setExpired(true)
         previousConversation.current = null
         setConversation(null)
@@ -333,12 +362,14 @@ export function AskPage({
     [adapter, handleConversation, onRestoreScope],
   )
 
-  const handleOpenRecent = useCallback(
-    (handle: AskRecentConversation) => {
-      void openHandle(handle)
-    },
-    [openHandle],
-  )
+  useEffect(() => {
+    if (!adapter) return
+    const handle = takeRecentAskHandoff()
+    if (!handle) return
+    void openHandle(handle).catch(() => {
+      setStatus('This conversation could not open. Try again from Account.')
+    })
+  }, [adapter, openHandle])
 
   const confirmScopeChange = useCallback(() => {
     const pending = pendingScope
@@ -365,14 +396,10 @@ export function AskPage({
     void onRestoreScope(viewScope)
   }, [onRestoreScope, pendingScope, viewScope])
 
-  const handleClearRecent = useCallback(async () => {
-    if (!adapter) return
-    await adapter.clearRecent()
-    setRecent([])
-  }, [adapter])
-
   const expandComposer = useCallback(() => {
-    window.requestAnimationFrame(() => inputRef.current?.focus())
+    window.requestAnimationFrame(() =>
+      inputRef.current?.focus({ preventScroll: true }),
+    )
   }, [])
 
   const handleSuggestion = useCallback(
@@ -475,17 +502,43 @@ export function AskPage({
       style={kbStyle}
     >
       <AskStatusRegion message={status} />
-      {mobile ? <header className="ask-screen-header">
-        {onBack ? (
-          <button aria-label="Back to reading" className="ask-screen-back" onClick={onBack} type="button"><ArrowLeftIcon aria-hidden="true" /></button>
-        ) : (
-          <Link aria-label={viewScope.kind === 'corpus' ? 'Back to Home' : 'Back to reading'} className="ask-screen-back" to={viewScope.kind === 'corpus' ? '/' : viewScope.returnTo} resetScroll={false}><ArrowLeftIcon aria-hidden="true" /></Link>
-        )}
-        <div className="ask-screen-heading">
-          <h1 className="ask-screen-name">{viewScope.kind === 'corpus' ? 'Ask Public Parish' : viewScope.recordTitle}</h1>
-          <p className="ask-screen-context">{viewScope.kind === 'corpus' ? viewScope.label : 'Ask Public Parish'}</p>
-        </div>
-      </header> : null}
+      {mobile ? (
+        <header className="ask-screen-header">
+          {onBack ? (
+            <button
+              aria-label={
+                viewScope.kind === 'corpus' ? 'Back to Home' : 'Back to reading'
+              }
+              className="ask-screen-back"
+              onClick={onBack}
+              type="button"
+            >
+              <ArrowLeftIcon aria-hidden="true" />
+            </button>
+          ) : (
+            <Link
+              aria-label={
+                viewScope.kind === 'corpus' ? 'Back to Home' : 'Back to reading'
+              }
+              className="ask-screen-back"
+              to={viewScope.kind === 'corpus' ? '/' : viewScope.returnTo}
+              resetScroll={false}
+            >
+              <ArrowLeftIcon aria-hidden="true" />
+            </Link>
+          )}
+          <div className="ask-screen-heading">
+            <h1 className="ask-screen-name">
+              {viewScope.kind === 'corpus'
+                ? 'Ask Public Parish'
+                : viewScope.recordTitle}
+            </h1>
+            <p className="ask-screen-context">
+              {viewScope.kind === 'corpus' ? viewScope.label : 'Ask Public Parish'}
+            </p>
+          </div>
+        </header>
+      ) : null}
 
       {!mobile ? <header className="ask-head">
         <h1 className="ask-title">Ask Public Parish</h1>
@@ -508,7 +561,24 @@ export function AskPage({
 
           <div className="ask-layout">
             <div className="ask-reading">
-              <section aria-label="Conversation" className="ask-thread-region">
+              {mobile && empty ? (
+                <div className="ask-intro">
+                  <p className="ask-intro-title">
+                    {viewScope.kind === 'corpus'
+                      ? 'What do you want to understand?'
+                      : `What do you want to understand about this ${viewScope.kind}?`}
+                  </p>
+                  <p className="ask-intro-text">
+                    Answers come only from published, validated official
+                    evidence.
+                  </p>
+                </div>
+              ) : null}
+              <section
+                aria-label="Conversation"
+                className="ask-thread-region"
+                ref={threadRef}
+              >
                 {expired ? (
                   <AskExpiredNotice
                     onRestart={() => {
@@ -557,14 +627,6 @@ export function AskPage({
                     ))}
                   </ul>
                 </div>
-              ) : null}
-
-              {empty ? (
-                <AskRecent
-                  onClear={() => void handleClearRecent()}
-                  onOpen={handleOpenRecent}
-                  recent={recent}
-                />
               ) : null}
 
               {!expired ? (

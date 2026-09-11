@@ -1,58 +1,44 @@
 # Current work and launch gates
 
-Updated September 10, 2026. This is the only active status and pending-work queue.
+Updated September 11, 2026. This is the only active status and pending-work queue.
 The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
-## Full-screen mobile chat, September 11
+## Mobile chat and reading review, September 11
 
-The owner approved a full-screen conversation based on T3 Code screenshots after
-rejecting the keyboard-constrained drawer. Mobile chat now has one Back/title
-bar, an opaque screen and a compact growing composer. Sources retain drawers.
-Standalone Ask shares the layout. The next phone review showed the article
-through Safari keyboard controls. The follow-up hides the reading document while
-chat is open and centers the empty composer, informed by T3 Chat mobile.
-Work remains in PR #205 for dev review.
+PR #205 shipped as `60b43d9` after the owner's phone review. PR #207 refines
+that release with a bottom composer, compact chat header and bounded visual
+viewport. The owner requested review of #207 and selected mobile reading
+refinements before another development preview. Production is not authorized
+for this follow-up.
 
-- [x] Replace mobile chat drawers and preserve drafts and reading position.
-- [x] Verify full-height chat, compact composer and keyboard bounds in both engines.
-- [ ] Complete final CI/review and refresh the verified development artifact.
-- [ ] Owner tests the native iPhone keyboard again.
+The review retains the chat layout and checks short screens, stale keyboard
+close offsets, source drawers from standalone Ask and restoring the reading
+position. It corrects loading-title styling and keeps hidden site controls out
+of keyboard focus. Public Parish displays complete validated answers rather
+than streaming words. Conversation restoration and keyboard resizing are the
+relevant scroll behavior.
 
-## Mobile review corrections, September 11
+The reading pass shrinks visible citations while retaining touch areas, puts
+issue Back/Follow/Share controls in one row, simplifies follow cards with
+expandable delivery details, groups meeting source documents by their known
+types, labels Explore loading and anchors Account above the menu's area controls.
+Home and source drawer layouts remain as approved.
 
-The owner's iPhone review found that opening the keyboard moved chat drawers
-above the screen and broke standalone Ask. Follow-up work uses visual viewport
-height and offset, compacts the keyboard layout and limits composer growth.
-It also separates the timeline arrow from its touch target, removes the route
-heading's decorative focus outline, and simplifies the Account follow action.
+The owner's phone recording showed the standalone Ask route and the chat-button
+screen diverging under the keyboard: the button screen resized between a pinned
+bar and the composer, while the route's whole page panned and snapped back on
+close. Both now render one chat screen through the same portal, backdrop and
+scroll lock; the route opens it in place of the page and Back plays the shared
+exit motion before navigating. Regrowth after the keyboard closes is eased.
 
-- [x] Reproduce keyboard resize and pan without shrinking the layout viewport.
-- [x] Correct touch arrows, heading focus presentation and the follow action.
-- [ ] Finish final validation, update PR #205 and replace the development preview.
-- [ ] Owner repeats the physical iPhone keyboard check.
-
-## Resident reading and Ask pass, September 10
-
-The owner completed a broad app review and requested consistent reading,
-sources and chat across stories, issues, decisions and meetings. The authorized
-handoff is a reviewed green PR and a development URL for morning inspection.
-Production shipment requires the owner's approval of that preview.
-
-- [x] Keep stories above issues after area selection and remove the mobile 3D model.
-- [x] Add meeting chat, compact sources, shared source drawers and scroll preservation.
-- [x] Repair narrow timelines, remove pill dots and colored notice edges, and simplify Account tab rules.
-- [x] Keep Ask's composer below the conversation with an up-arrow send control.
-- [x] Add shared drawer motion with reduced-motion support.
-- [x] Pass local verification, 685 application tests and 66 Chromium/WebKit journeys.
-- [x] File PR #205 and verify both reviewers' findings.
-- [ ] Finish final-head checks and upload the exact green development artifact.
-- [ ] Deliver the morning report and dev link.
-
-The approved header releases are PR #203 at `0c5b16b` and PR #204 at `0500f63`.
-Both production workflows and independent smoke tests passed. The desktop
-header is 48px with 80 percent top opacity and 72 percent scrolled opacity.
+- [x] Review the chat implementation and run all 34 existing fixture journeys.
+- [x] Route standalone phone Ask through the chat-button screen.
+- [x] Implement the selected reading and navigation refinements.
+- [ ] Finish expanded browser checks, application validation and both PR reviews.
+- [ ] Upload the exact green CI frontend to development and inspect it there.
+- [ ] Owner tests the revised interface and native iPhone keyboard on dev.
 
 ## Parallel PR reviews, September 10
 
@@ -440,3 +426,45 @@ cost; repeated retrieval of its old packet is not a launch prerequisite.
 Keep completed tasks with their release or observation evidence until the next
 checkpoint, then archive the dated record. Do not reopen the original nine
 implementation slices or eight design slices from historical checklists.
+
+## September 11, mobile chat keyboard and history follow-up
+
+The owner's iPhone screenshot showed standalone Ask panning away while its
+recent-history controls remained visible. The floating chat looked correct.
+This follow-up freezes the document position during phone chat and prevents
+programmatic scrolling of the outer panel. Conversation and textarea scrolling
+remain available. Recent device conversations move to Account, including for
+signed-out readers. A memory-only handoff restores each conversation and scope.
+Three bouncing dots replace the answer-wait card; the send spinner stays.
+
+Local verification passed 685 existing tests, typechecks, build and lint with
+15 existing warnings. The new memory-handoff test passed separately. Browser
+checks passed the new Account, menu-to-Ask and three-dot states in Chromium and
+WebKit, plus the existing chat reopen and nested-source checks. The first
+Account fixture run exposed an invalid fixture name, corrected before the
+passing rerun. CI and the updated development upload are pending. Native
+iPhone keyboard acceptance remains pending.
+
+## September 11, keyboard regression after the body-position change
+
+The owner's next iPhone recording showed both chat entry points moving out of
+view when the keyboard opened. The previous browser pass did not certify native
+keyboard behavior. This follow-up removes fixed-body positioning and geometry
+tweens, gives each mobile chat one viewport measurement, uses root client height
+for layout coordinates and accepts fractional and pinched zoom updates. Keyboard
+panning keeps its real offset; closing the keyboard discards stale offsets.
+Recent conversations on Account and the three-dot wait remain.
+
+T3 Code web commit `18f7254` informed the pane layout and supported-browser
+`interactive-widget=resizes-content` meta. Its web app does not contain a
+Safari visual-viewport handler; its native app uses a native keyboard controller.
+
+A bounded WebKit comparison against the deployed build reproduced an 812-pixel
+chat after the visible area shrank to 320 pixels with fractional scale and a
+resized innerHeight. The revised local build measured 320 pixels, followed the
+120-pixel visible offset and hid the privacy note. No chat request was sent.
+The comparison tests geometry inputs, not a native iPhone keyboard. Local
+verification passed 686 tests, typechecks, build and lint with 15 existing
+warnings. Eighteen focused browser checks passed in Chromium and WebKit,
+including zoom, resize, Back, retained drafts and nested source drawers.
+CI, the next dev upload and native iPhone acceptance remain pending.

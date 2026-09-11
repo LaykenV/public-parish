@@ -1,4 +1,3 @@
-import { Spinner } from '../../components/ui/spinner'
 import { AskAnswer } from './ask-answer'
 import { AskTurnFailure } from './ask-states'
 import type { AskTurnView } from './contracts'
@@ -80,21 +79,13 @@ function AskTurn({
   )
 }
 
-/*
-  A stable complete-answer wait. No word streaming, fake search steps, source
-  counts, or model names. The page announces the check through its single
-  status region, so the spinner stays hidden from assistive tech.
-*/
+/* The page's status region announces the wait once. */
 export function AskChecking() {
   return (
     <div aria-busy="true" className="ask-checking">
-      <Spinner aria-hidden="true" />
-      <div>
-        <p className="ask-checking-title">Checking the official record</p>
-        <p className="ask-checking-note">
-          The answer will appear after its sources pass validation.
-        </p>
-      </div>
+      <span aria-hidden="true" className="ask-typing">
+        <span /><span /><span />
+      </span>
     </div>
   )
 }

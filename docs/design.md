@@ -70,7 +70,8 @@ There is no bottom navigation or reserved space for it.
 
 One centered global spinner covers navigation and initial page-data loading.
 Concurrent pending sections share that indicator. Settling or unmounting a
-section releases its loading registration. Do not use skeletons. Existing readable
+section releases its loading registration. Explore includes a visible loading
+message naming the selected parish when present. Do not use skeletons. Existing readable
 content stays available while another section loads. Button submissions and Ask
 answer generation retain their action-specific feedback.
 
@@ -254,8 +255,19 @@ remain pending. Keep their status in `docs/work.md`.
 
 On phone-sized story, issue, decision and meeting pages, a circular purple chat button
 sits at the bottom right. It opens a full-screen conversation with an opaque
-background, one Back/title bar and a compact composer. Back restores the reading
-position and retains drafts and conversation state. Citations open above the conversation and return
+background, one 48-pixel bar and a compact composer. The bar holds a plain back
+arrow, the record title on one line and "Ask Public Parish" beneath it, with a
+hairline below; the conversation scrolls under it. Back restores the reading
+position and retains drafts and conversation state. The screen is sized and
+positioned from the visible viewport so the composer sits directly above the
+keyboard. One viewport measurement drives the screen and its contents. Read the
+layout height from the root element, keep keyboard panning offsets, and discard
+stale offsets once the keyboard closes. Never reject updates because the zoom
+scale differs from one. Keyboard geometry updates without a CSS tween. Every
+phone entry point renders this same screen: the Ask route on a phone opens it
+in place of the page, with the site header and footer hidden behind it, and
+Back plays the same fade-and-slide exit before the previous page returns.
+Citations open above the conversation and return
 focus to their source control. Desktop keeps the existing Ask entry points.
 Decisions retain their existing linked-issue scope, or the published corpus when
 there is no linked issue. Do not imply a new decision-only evidence scope.
@@ -284,18 +296,58 @@ status and a separate decision link. Pills never inherit metadata separator dots
 Notices have a plain border without a colored left edge. Account tabs have one
 baseline and an active underline, without a second rule above the first section.
 
-On mobile, an empty Ask conversation centers its suggestions and composer.
-After the first question, Ask uses one scrollable conversation above a composer
-at the bottom. The send
-control is an up arrow at its lower right with an accessible name. Empty-state
-suggestions appear above the composer and disappear after the first question.
-Drafts and conversations survive leaving and reopening full-screen chat.
-The composer starts as one line and grows with the draft. Standalone mobile Ask
-uses the same compact header and composer.
-Short screens and keyboard resizing keep the composer reachable. Existing
-scope, evidence, retry, expiration and availability rules remain in force.
+On mobile, the composer always rests at the bottom of the chat screen. An empty
+conversation centers a short intro in the free space above it: "What do you
+want to understand?", or the same question naming the story, issue or meeting,
+with the one-line evidence promise beneath. Two example questions sit directly
+above the composer. When the keyboard opens, the intro gives way and the
+examples stay one tap above the field; they disappear after the first
+question. After the first question, Ask uses one scrollable conversation above
+the composer. The send control is an up arrow at its lower right with an
+accessible name; while an answer is being checked, the spinner replaces the
+arrow. The answer wait beneath the question uses three small bouncing dots,
+with a static indicator under reduced motion. Drafts and conversations survive leaving and reopening full-screen chat,
+and a reopened conversation starts at its latest exchange. The composer starts
+as one line and grows with the draft. Standalone mobile Ask uses the same
+compact bar and composer. Short screens and keyboard resizing keep the composer
+reachable, and a conversation that was scrolled to its latest answer stays
+there when the keyboard shrinks the screen. Existing scope, evidence, retry,
+expiration and availability rules remain in force.
 
 While mobile chat is open, make the reading document transparent without
 removing it. Safari can show document pixels through its keyboard controls beyond
 the visual viewport. Restore the document when returning focus and retain the
-reading position. Standalone Ask hides the surrounding site header and footer.
+reading position. Keep the body in its ordinary document position. Base UI owns
+the overflow lock; the outer panel clips overflow while the conversation and
+textarea own scrolling. Standalone Ask hides the surrounding site header and footer.
+
+## September 11 mobile reading refinements
+
+Account sits at the bottom of the mobile menu above area selection, with its
+icon and current-page state. The bottom section scrolls into reach on short
+screens. Preserve the approved menu motion.
+
+Citations use small inline numbered controls across reading pages and chat.
+Coarse pointers retain at least a 44-pixel hit area around each visible control.
+An issue's Back, Follow and Share actions share one compact mobile row above
+the title. Follow cards lead with a linked title and latest change; delivery
+metadata lives in an explicit Details and delivery disclosure. Keep source
+warnings visible without opening that disclosure.
+
+Meeting source lists group documents by their actual types when more than one
+type exists. Do not invent agenda sections or add sticky headings for singleton
+groups. Preserve every document link, citation and retrieval date.
+
+Recent conversations live in the Account page's Conversations section, available
+without sign-in. Keep device-only storage and the 24-hour expiry. Opening a
+conversation restores its evidence scope without putting its private handle in
+the URL. The chat screen has no recent-history list or clearing controls.
+
+The September 11 keyboard follow-up examined T3 Code web commit
+[18f7254](https://github.com/pingdotgg/t3code/tree/18f7254e0adbd7d642f4d78f9b9c8e6cb569af56/apps/web).
+Its thread layout uses bounded flex panes, internal scrolling and a small-viewport
+height on phones. Its viewport meta requests `interactive-widget=resizes-content`.
+Public Parish adopts that supported-browser hint, stable geometry and one owner
+for chat bounds. T3's web code has no visual-viewport keyboard handler to copy;
+its native mobile app uses a native keyboard controller. Public Parish still
+needs visual-viewport sizing on Safari. Native iPhone acceptance is required.
