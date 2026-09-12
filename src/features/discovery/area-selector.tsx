@@ -1,4 +1,9 @@
-import { CheckCircle2Icon, Clock3Icon, SearchIcon } from 'lucide-react'
+import {
+  CheckCircle2Icon,
+  Clock3Icon,
+  MapIcon,
+  SearchIcon,
+} from 'lucide-react'
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 
@@ -7,6 +12,8 @@ import { setArea, useArea } from './area-store'
 import { useCoverageAreas } from './live-areas'
 import { Sheet } from './sheet'
 import { Input } from '../../components/ui/input'
+
+export const LOUISIANA_LABEL = 'All of Louisiana'
 
 type AreaSelectorProps = {
   onOpenChange?: (open: boolean) => void
@@ -52,11 +59,13 @@ function AreaSelectorDialog({
   const places = coverageAreas.filter((place) =>
     place.name.toLowerCase().includes(normalized),
   )
+  const showLouisiana = LOUISIANA_LABEL.toLowerCase().includes(normalized)
+  const louisianaSelected = area === null
 
   return (
     <Sheet
       className="pp-area-sheet"
-      description="Public Parish shows only decision records that pass the publication gate. Area coverage can still be incomplete."
+      description="Louisiana shows statewide stories and every covered parish. A parish focuses Home on its published records; coverage can still be incomplete."
       footer={
         <Link
           className="pp-area-request"
@@ -69,7 +78,7 @@ function AreaSelectorDialog({
       onOpenChange={onOpenChange}
       open={open}
       size="tall"
-      title="Choose a parish or city"
+      title="Choose your area"
       trigger={trigger}
     >
       <div className="pp-area-search">
@@ -85,6 +94,30 @@ function AreaSelectorDialog({
         />
       </div>
       <ul className="pp-area-list">
+        {showLouisiana ? (
+          <li>
+            <button
+              aria-pressed={louisianaSelected}
+              className="pp-area-row"
+              data-status="available"
+              data-selected={louisianaSelected || undefined}
+              onClick={() => {
+                setArea(null)
+                onOpenChange(false)
+              }}
+              type="button"
+            >
+              <span className="pp-area-name">{LOUISIANA_LABEL}</span>
+              <span className="pp-area-status">
+                <MapIcon aria-hidden="true" />
+                {louisianaSelected ? 'Selected' : 'Statewide view'}
+              </span>
+              <span className="pp-area-note">
+                Louisiana stories and issues across every covered parish.
+              </span>
+            </button>
+          </li>
+        ) : null}
         {places.map((place) => {
           const selected = place.slug === area
           if (place.status === 'validating') {
@@ -137,7 +170,7 @@ function AreaSelectorDialog({
             </li>
           )
         })}
-        {places.length === 0 ? (
+        {places.length === 0 && !showLouisiana ? (
           <li className="pp-area-empty">No listed place matches "{query}".</li>
         ) : null}
       </ul>

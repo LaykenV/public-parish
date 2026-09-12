@@ -46,7 +46,7 @@ test('published parish records remain selectable with coverage limitations', asy
       .getByRole('button', { name: 'Lafayette Parish', exact: true })
       .click()
   }
-  const dialog = page.getByRole('dialog', { name: 'Choose a parish or city' })
+  const dialog = page.getByRole('dialog', { name: 'Choose your area' })
   await expect(dialog).toBeVisible()
   const choice = dialog.getByRole('button', { name: /Rapides Parish/ })
   await expect(choice).toBeEnabled()
@@ -79,7 +79,7 @@ test('home keeps Louisiana stories first after selecting an area', async ({
   })
   await page.goto('/')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'See how local government is changing.',
+    "Understand what Louisiana's government is deciding.",
   )
   if ((page.viewportSize()?.width ?? 1280) > 768) {
     await expect(page.locator('.pp-home-relief')).toBeVisible()
@@ -106,9 +106,9 @@ test('home keeps Louisiana stories first after selecting an area', async ({
   ).toBe(true)
 
   await page
-    .getByRole('button', { name: 'Choose a parish or city', exact: true })
+    .getByRole('button', { name: 'Focus on a parish or city', exact: true })
     .click()
-  const dialog = page.getByRole('dialog', { name: 'Choose a parish or city' })
+  const dialog = page.getByRole('dialog', { name: 'Choose your area' })
   await dialog.getByRole('button', { name: /Lafayette Parish/ }).click()
   await expect(dialog).not.toBeVisible()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
@@ -135,6 +135,67 @@ test('home keeps Louisiana stories first after selecting an area', async ({
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Issues in Lafayette Parish',
   )
+
+  await page
+    .getByRole('button', { name: 'Back to all of Louisiana', exact: true })
+    .click()
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    "Understand what Louisiana's government is deciding.",
+  )
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused()
+  await expect(page.locator('.pp-home-hero')).toHaveCount(1)
+  await expect(
+    page.getByRole('heading', { name: 'Issues across covered parishes' }),
+  ).toBeVisible()
+  await expect(page.locator('#stories article')).toHaveCount(3)
+  await page.reload()
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    "Understand what Louisiana's government is deciding.",
+  )
+})
+
+test('the area selector returns to Louisiana from a parish focus', async ({
+  page,
+}) => {
+  await page.addInitScript(() =>
+    localStorage.setItem('public-parish.area.v1', 'rapides-parish'),
+  )
+  await page.goto('/')
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(
+    'Issues in Rapides Parish',
+  )
+  const menu = page.getByRole('button', { name: 'Open menu', exact: true })
+  if ((page.viewportSize()?.width ?? 1280) <= 1024) {
+    await menu.click()
+    await expect(page.getByText('Showing Rapides Parish')).toBeVisible()
+    await page.getByRole('button', { name: 'Change area', exact: true }).click()
+  } else {
+    await page
+      .getByRole('button', { name: 'Rapides Parish', exact: true })
+      .click()
+  }
+  const dialog = page.getByRole('dialog', { name: 'Choose your area' })
+  const louisiana = dialog.getByRole('button', { name: /All of Louisiana/ })
+  await expect(louisiana).toHaveAttribute('aria-pressed', 'false')
+  await expect(
+    dialog.getByRole('button', { name: /Rapides Parish/ }),
+  ).toHaveAttribute('aria-pressed', 'true')
+  await louisiana.click()
+  await expect(dialog).not.toBeVisible()
+  if ((page.viewportSize()?.width ?? 1280) <= 1024) {
+    await page.getByRole('button', { name: 'Close menu', exact: true }).click()
+  } else {
+    await expect(
+      page.getByRole('button', { name: 'Louisiana', exact: true }),
+    ).toBeVisible()
+  }
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    "Understand what Louisiana's government is deciding.",
+  )
+  await expect(
+    page.locator('#current-issues a[href^="/issues/"]').first(),
+  ).toBeVisible()
+  expect(await page.evaluate(() => localStorage.getItem('public-parish.area.v1'))).toBeNull()
 })
 
 test('mobile menu closes with Escape and returns focus to its opener', async ({
@@ -271,7 +332,7 @@ for (const viewport of [
     expect((await menu.boundingBox())?.height).toBe(viewport.height)
     await page.screenshot({ path: testInfo.outputPath('mobile-full-menu.png') })
     await menu.getByRole('button', { name: 'Change area', exact: true }).click()
-    const area = page.getByRole('dialog', { name: 'Choose a parish or city' })
+    const area = page.getByRole('dialog', { name: 'Choose your area' })
     await expect(area).toBeVisible()
     await page.keyboard.press('Escape')
     await expect(area).not.toBeVisible()
