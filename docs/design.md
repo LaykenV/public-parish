@@ -10,24 +10,47 @@ visual baseline until the owner changes it during that pass.
 
 ## Homepage flow
 
-The September 10 owner review keeps stories above issues with or without a selected area.
+The September 12 upgrade makes Louisiana the default Home. A parish, city or
+body is a focus the reader chooses and can leave. Stories stay above local
+issues in both views. [Launch upgrade](launch-upgrade.md) slices U1 through U3
+and U6 implement this table; until they land, the deployed Home follows the
+September 10 behavior with a parish-or-nothing selector.
 
-| Order | No area selected | Area selected |
+| Order | Louisiana (default) | Parish, city or body focus |
 | --- | --- | --- |
-| Introduction | "See how local government is changing" with selector at left and existing 3D Louisiana at right | No hero, begin with Across Louisiana |
-| First content | Across Louisiana, Meta lead with SpaceX and Boyce secondary | Same three stories |
-| Second content | Issues across covered areas | Issues in the selected parish |
-| Records | Latest decision records | Latest decision records for the selected parish |
-| Footer | Brand, site links and compact dated voter information | Same footer |
+| Introduction | Hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right | No hero. Page heading names the focus with a "Back to all of Louisiana" control |
+| First content | Across Louisiana: Meta lead with SpaceX and Boyce secondary | Same three stories |
+| Statewide records | Issues and records from supported statewide bodies, once any exist | Omitted |
+| Ballot | "On the November 3 ballot": statewide amendments, once published | Statewide amendments plus verified propositions for the focused parish |
+| Local content | Issues across covered parishes | Issues in the focus, with body chips under the heading |
+| Records | Latest decision records | Latest decision records for the focus |
+| Footer | Brand, site links and compact dated voter information linking to the ballot page | Same footer |
 
-On mobile, show the hero copy and selector without Louisiana. Mount the 3D visual only above 48rem.
-Use warm limestone material with muted violet highlights on a transparent canvas.
-The owner selected warm limestone from the September 9 color comparison,
-replacing charcoal. Keep the quiet violet pins and existing lighting.
-Remove the entire hero after selection. Remember the chosen
-area on return visits. The selected parish controls Home even when an account
-has other saved areas. Selecting an area filters reading; it does not enroll
-someone in email alerts. Saved areas remain in Following.
+Hero body copy: "See the documents behind each decision and follow what
+happens next." Keep "Free to read and ask questions. No account needed."
+On mobile, show the hero copy and selector without Louisiana. Mount the 3D
+visual only above 48rem. Use warm limestone material with muted violet
+highlights on a transparent canvas. The owner selected warm limestone from the
+September 9 color comparison, replacing charcoal. Keep the quiet violet pins
+and existing lighting. Remove the entire hero when a focus is chosen. Remember
+the chosen focus on return visits; a missing value means Louisiana. The focus
+controls Home even when an account has other saved areas. Choosing a focus
+filters reading; it does not enroll someone in email alerts. Saved areas
+remain in Following.
+
+The selector lists "All of Louisiana" first, then each parish with its
+municipalities and bodies grouped beneath it, and statewide bodies under
+Louisiana once supported. Every body label names its place, for example
+"Baton Rouge Metropolitan Council" and "Lafayette Hearing Examiner". The two
+Lafayette planning commissions stay distinct. Selecting a body sets the parish
+focus and a body chip; the chip is reflected in the URL and clears back to
+the parish.
+
+Home issue selection favors current explanations with a cited consequence, a
+next documented date or a recent outcome. Source-only stubs stay in Explore. A
+limited issue with a supported consequence remains eligible. Each card carries
+one cited sentence saying why it matters, or the next date when no cited
+rationale exists. Never generate card prose at read time.
 
 The stories section uses one large Meta image and two compact secondary entries.
 Desktop places the secondary entries beside Meta. Mobile gives all three stories the same full-width image and headline treatment.
@@ -190,9 +213,12 @@ expired anonymous thread, signed-out and signed-in controls, lost connectivity,
 changed coverage, and email recovery. A paid-service failure must not erase
 previously accepted readable evidence.
 
-Keep small verified voter information with outbound official links. Do not build
-an election guide, candidate comparison, voting recommendation or prediction
-interface during this design pass.
+Keep small verified voter information with outbound official links, linking to
+the ballot page once it exists. Ballot-measure pages use the shared story
+reading, Ask, Follow and Share patterns and quote the official ballot question
+first. They carry the notice that a resident's ballot depends on their precinct
+with a link to the Secretary of State sample ballot. Do not build a candidate
+comparison, voting recommendation, poll display or prediction interface.
 
 ## Owner corrections after story publication
 

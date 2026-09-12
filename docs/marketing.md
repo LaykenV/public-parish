@@ -7,18 +7,27 @@ launch plan. The founder's weekday Varholdt sales block remains protected.
 
 ## Positioning
 
-Lead with a recognizable Louisiana story and the ability to inspect its official
-evidence. Meta is the homepage lead; SpaceX and Boyce are the secondary stories.
-Local issues appear below them and remain a useful reason to return.
+The promise is "Understand Louisiana's government decisions. See the documents
+behind them and follow what happens next." Lead with a recognizable Louisiana
+story and the ability to inspect its official evidence. Meta is the homepage
+lead; SpaceX and Boyce are the secondary stories. The November 3 amendments and
+statewide records follow once published. Local issues appear below them and
+remain a useful reason to return.
 
-The resident invitation is to understand a story, inspect a source, ask a
-question and follow an update. Keep sponsor and backend details in technical
+The resident invitation is to understand a decision, open the document, ask a
+question and follow the update. Each post makes one specific, checkable claim
+with its document rather than announcing the app. Show what the record
+establishes and what remains unresolved; do not frame a post as confirming or
+puncturing an announcement. Keep sponsor and backend details in technical
 posts and the demo where they explain the product. Identify the founder as the
-builder. Do not frame the app as supporting or opposing any project or candidate.
+builder. Do not frame the app as supporting or opposing any project, measure or
+candidate.
 
 Story-led acquisition is a hypothesis. Measure completed product actions rather
 than assuming a familiar headline will go viral. State the exact story-review
 and local-coverage limits, including owner-triggered updates when applicable.
+[Launch upgrade](launch-upgrade.md) slice U7 owns the content drafts for the
+upgraded surfaces.
 
 ## Launch gate
 
@@ -62,14 +71,17 @@ permission, not a claimed algorithmic best time.
 | Moment | Action | Destination and observation |
 | --- | --- | --- |
 | Before launch | Founder QA, private pilot, preview checks, draft assets and group rules | Repair confusing or broken flows |
-| Launch day | Personal Facebook post and required X or LinkedIn demonstration | Meta-led Home or the story most relevant to the post; observe visits and actions |
-| Next day | A small set of permitted community posts | Meta, SpaceX or Boyce direct link matched to the community |
-| Following days | Publish another story explanation or answer a recurring evidence-backed question | Sources, story Ask and follow |
+| September 16 | LPSC business session takes up two procedural U-37882 motions. Do not post a result until an official document records it | Meta story next-action section and Follow |
+| Launch day | Personal Facebook post and required X or LinkedIn demonstration | Louisiana Home or the story most relevant to the post; observe visits and actions |
+| Next day | A small set of permitted community posts | Meta, SpaceX or Boyce direct link matched to the community; the amendments page for statewide groups |
+| Following days | Publish another story explanation, one amendment explained from its Act, or a recurring evidence-backed answer | Sources, Ask and follow |
 | After a substantive update | Show what the new official record changed | Current story version, receipt and update path |
 | Before submission | Share the final short demo and permissioned usage evidence | Public qualifying app and repository |
 
 Boyce can be the personal Rapides-focused post destination while Meta remains
-the homepage lead. Each new post should offer a different useful explanation or
+the homepage lead. The ten November 3 amendments give statewide groups a
+reason to visit that does not depend on a data-center story; seven concern
+property tax. Each new post should offer a different useful explanation or
 update. Do not repeat a launch announcement solely because the first one failed
 to gain attention. Preserve time each day to respond and fix problems.
 
