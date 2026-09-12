@@ -1,4 +1,5 @@
 import { PageLoading } from '../resident-blueprint/resident-loading'
+import { OperationsHeader, OperationsState } from './operations-header'
 import { MonitoringPanel } from './monitoring-panel'
 import {
   BanIcon,
@@ -7,7 +8,6 @@ import {
   Clock3Icon,
   ExternalLinkIcon,
   RefreshCwIcon,
-  ShieldCheckIcon,
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'convex/react'
@@ -140,23 +140,17 @@ function OwnerCoverageOperations() {
 
   return (
     <main className="coverage-ops" id="resident-main">
-      <header className="coverage-ops-head">
-        <div>
-          <p className="coverage-ops-kicker">Private owner operation</p>
-          <h1>Coverage compiler</h1>
-          <p className="coverage-ops-lede">
-            Start with a checked government root. Every redirect, retry, and
-            stop stays in the run record before discovery can spend a provider
-            credit.
-          </p>
-        </div>
-        <div className="coverage-ops-trust">
-          <ShieldCheckIcon aria-hidden="true" />
-          <span>Owner checked</span>
-          <strong>{roots?.length ?? 0} roots</strong>
-        </div>
-      </header>
-
+      <OperationsHeader current="coverage" title="Coverage operations">
+        Manage source checks, inspect coverage runs and review delivery and
+        provider activity.
+      </OperationsHeader>
+      <nav className="operations-sections" aria-label="Coverage sections">
+        <a href="#monitoring-title">Source monitoring</a>
+        <a href="#root-heading">Coverage compiler</a>
+        <a href="#ledger-heading">Run ledger</a>
+        <a href="#operations-delivery">Delivery</a>
+        <a href="#operations-usage">Usage</a>
+      </nav>
       <MonitoringPanel />
       <p aria-live="polite" className="coverage-ops-announcement" role="status">
         {message}
@@ -808,9 +802,7 @@ function ProposalPanel({
             )}
             {sample.state === 'retrieved' && sample.canExtractEvidence ? (
               <Button
-                loading={
-                  pendingKey === `extract:${sample.sampleId}:evidence`
-                }
+                loading={pendingKey === `extract:${sample.sampleId}:evidence`}
                 onClick={() => void onExtract(sample.sampleId, 'evidence')}
                 size="sm"
                 variant="outline"
@@ -823,9 +815,7 @@ function ProposalPanel({
                 loading={
                   pendingKey === `extract:${sample.sampleId}:failure_probe`
                 }
-                onClick={() =>
-                  void onExtract(sample.sampleId, 'failure_probe')
-                }
+                onClick={() => void onExtract(sample.sampleId, 'failure_probe')}
                 size="sm"
                 variant="outline"
               >
@@ -873,33 +863,6 @@ function RunStateIcon({ state }: { state: string }) {
   if (TERMINAL_STATES.has(state) && state !== 'succeeded')
     return <CircleAlertIcon aria-hidden="true" />
   return <Clock3Icon aria-hidden="true" />
-}
-
-function OperationsState({
-  action,
-  detail,
-  error,
-  title,
-}: {
-  action?: React.ReactNode
-  detail: string
-  error?: string | null
-  title: string
-}) {
-  return (
-    <main className="coverage-ops coverage-ops-centered" id="resident-main">
-      <ShieldCheckIcon aria-hidden="true" />
-      <p className="coverage-ops-kicker">Private owner operation</p>
-      <h1>{title}</h1>
-      <p>{detail}</p>
-      {error ? (
-        <p className="coverage-ops-error" role="alert">
-          {error}
-        </p>
-      ) : null}
-      {action}
-    </main>
-  )
 }
 
 function formatTimestamp(value: number): string {

@@ -5,6 +5,24 @@ The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## Owner operations design, September 12 UTC
+
+The owner approved the public desktop and mobile UI and requested the same
+patterns for the private coverage and story screens. The working branch
+`fix/owner-operations-ui` adds shared owner navigation, monitoring and activity
+panels, mobile-safe controls, selected bundle/build states and consistent
+sign-in gates. Story actions retain the shared primary and destructive variants.
+
+Local verification passed 686 tests, both typechecks, build and lint with 15
+existing warnings. Twelve synthetic owner browser checks passed in Chromium
+and WebKit at 320, 375, 768 and 1280 pixels. Before and after screenshots were
+inspected. No live owner mutation or provider request was needed for these checks.
+
+- [x] Match owner screens to the approved resident patterns.
+- [x] Check responsive layouts, access gates, selected review state and action feedback.
+- [ ] File the PR and finish CI and both review jobs.
+- [ ] Owner reviews and authorizes any production merge.
+
 ## App-wide loading, September 11
 
 The loading fix hides page content and the footer until pending page sections
