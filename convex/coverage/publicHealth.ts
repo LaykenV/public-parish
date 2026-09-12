@@ -21,7 +21,7 @@ export const regions = query({
       const nextExpectedArtifact = next ? `${next.sourceKind} expected by ${new Date(next.expectedBy!).toISOString().slice(0, 10)}, based on observed cadence. This is an estimate.` : 'The official sources have not established the next artifact date.'
       const last = policy?.lastCompletedAt ?? registry?.lastHealthyAt
       const limitation = state === 'Supported'
-        ? `Coverage includes ${registry?.sourceKinds.join(', ') || 'the approved source types'} for this body. ${policy?.enabled && env.SOURCE_MONITORING_ENABLED === 'true' ? 'Scheduled checks are enabled.' : 'An owner currently starts source updates.'} Other bodies and source types are not implied.`
+        ? `Coverage includes ${registry?.sourceKinds.join(', ') || 'the approved source types'} for this body. ${policy?.enabled && env.SOURCE_MONITORING_ENABLED === 'true' ? 'Scheduled checks depend on available processing capacity. Use the last successful check to assess freshness.' : 'An owner currently starts source updates.'} Other bodies and source types are not implied.`
         : state === 'Degraded' ? 'Current decisions may be missing after an incomplete source check. Previously accepted evidence remains available with its dates.'
         : state === 'Paused' ? 'Source monitoring is paused. Previously accepted evidence remains available with its dates.'
         : 'This body has not completed the publication and coverage checks. A reachable source page alone does not establish support.'

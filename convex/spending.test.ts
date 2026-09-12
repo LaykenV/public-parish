@@ -18,6 +18,21 @@ async function fixture() {
   return { t, owner: t.withIdentity({ subject: userId }) }
 }
 
+test('only the owner can inspect the guard and separate allowance balances', async () => {
+  const { t, owner } = await fixture()
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', 'true')
+  await expect(t.query(api.ai.spendingLedger.overview, {})).rejects.toThrow()
+  const otherId = await t.run(ctx => ctx.db.insert('users', { email: 'reader@example.test', googleAccountId: 'reader', emailVerified: true, lastSignedInAt: 1, createdAt: 1, updatedAt: 1 }))
+  await expect(t.withIdentity({ subject: otherId }).query(api.ai.spendingLedger.overview, {})).rejects.toThrow()
+  await owner.mutation(api.ai.spendingLedger.configure, { scope: 'sources', allowanceUsd: 1, expiresAt: Date.now() + 60_000, enabled: true })
+  await t.mutation(internal.ai.spendingLedger.reserve, { scope: 'sources', micros: 800_000 })
+  const overview = await owner.query(api.ai.spendingLedger.overview, {})
+  expect(overview.guardEnabled).toBe(true)
+  expect(overview.allowances).toMatchObject([{ scope: 'sources', allowanceUsd: 1, chargedUsd: 0.8 }])
+  vi.stubEnv('AI_SPENDING_GUARD_ENABLED', 'false')
+  expect((await owner.query(api.ai.spendingLedger.overview, {})).guardEnabled).toBe(false)
+})
+
 test('only the owner funds allowances and missing or expired allowances deny calls', async () => {
   const { t, owner } = await fixture()
   const config = { scope: 'sources' as const, allowanceUsd: 1, expiresAt: Date.now() + 60_000, enabled: true }

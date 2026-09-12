@@ -1,9 +1,44 @@
 import { v } from 'convex/values'
-import { internalMutation, mutation, query } from '../_generated/server'
+import { env, internalMutation, mutation, query } from '../_generated/server'
 import { requireOwner } from '../auth/authorization'
 import { spendingScope } from './spending'
 
 const MICROS_PER_DOLLAR = 1_000_000
+
+const allowanceView = v.object({
+  scope: spendingScope,
+  allowanceUsd: v.number(),
+  chargedUsd: v.number(),
+  enabled: v.boolean(),
+  expiresAt: v.number(),
+})
+
+// Return dates and amounts, not clock-derived status. The owner screen refreshes
+// its clock so an open page notices expiry even when no database record changes.
+export const overview = query({
+  args: {},
+  returns: v.object({
+    guardEnabled: v.boolean(),
+    allowances: v.array(allowanceView),
+  }),
+  handler: async (ctx) => {
+    await requireOwner(ctx)
+    const rows = await ctx.db
+      .query('aiSpendingAllowances')
+      .withIndex('by_scope')
+      .take(2)
+    return {
+      guardEnabled: env.AI_SPENDING_GUARD_ENABLED === 'true',
+      allowances: rows.map((row) => ({
+        scope: row.scope,
+        allowanceUsd: row.allowanceMicros / MICROS_PER_DOLLAR,
+        chargedUsd: row.chargedMicros / MICROS_PER_DOLLAR,
+        enabled: row.enabled,
+        expiresAt: row.expiresAt,
+      })),
+    }
+  },
+})
 
 // This is a prepaid estimated-cost ledger, not the provider's invoice. Missing
 // usage keeps the whole reservation charged. Allowances never renew themselves.
@@ -60,4 +95,3 @@ export const settle = internalMutation({
     return null
   },
 })
-
