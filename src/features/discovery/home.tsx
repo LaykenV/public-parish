@@ -1,4 +1,4 @@
-import { ArrowUpRightIcon, SearchIcon } from 'lucide-react'
+import { ArrowLeftIcon, ArrowUpRightIcon, SearchIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 
@@ -11,7 +11,7 @@ import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery
 import { FeaturedStories } from '../stories/story-page'
 import { LouisianaRelief } from '../landing/louisiana-relief'
 import { AreaSelector } from './area-selector'
-import { useArea } from './area-store'
+import { setArea, useArea } from './area-store'
 import { areaName, getActiveDiscoveryFixture } from './contracts'
 import type {
   AreaSlug,
@@ -52,13 +52,10 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
 
   useEffect(() => {
     if (pageLoading) return
-    const collapsed = previousArea.current === null && area !== null
-    if (!collapsed) {
-      previousArea.current = area
-      return
-    }
-    // The hero's selector opener disappears on first selection. Give keyboard
-    // users a stable destination after its dialog unmounts.
+    if (previousArea.current === area) return
+    // Choosing a parish removes the hero and its opener; returning to Louisiana
+    // removes the back control. Either way the page heading changes, so give
+    // keyboard users a stable destination after the dialog unmounts.
     const frame = window.requestAnimationFrame(() => {
       if (document.querySelector('[role="dialog"]')) return
       previousArea.current = area
@@ -101,16 +98,17 @@ function FirstVisitHero() {
       data-relief-interaction
     >
       <div className="pp-home-hero-copy">
-        <h1 id="home-title">See how local government is changing.</h1>
+        <h1 id="home-title" tabIndex={-1}>
+          Understand what Louisiana's government is deciding.
+        </h1>
         <p>
-          Understand the decisions shaping your community, with the official
-          evidence behind them.
+          See the documents behind each decision and follow what happens next.
         </p>
         <div className="pp-home-hero-actions">
           <AreaSelector
             trigger={(props) => (
               <Button {...props} size="touch">
-                <SearchIcon aria-hidden="true" /> Choose a parish or city
+                <SearchIcon aria-hidden="true" /> Focus on a parish or city
               </Button>
             )}
           />
@@ -235,12 +233,13 @@ function IssuesSection({
   const [recovered, setRecovered] = useState(false)
   const showFailure = scenario === 'section-failure' && !recovered
   const Heading = watching.length ? 'h1' : 'h2'
+  const focused = watching.length === 1 && scenario !== 'signed-in'
   const title =
     watching.length === 1
       ? `Issues in ${areaName(watching[0])}`
       : watching.length > 1
         ? 'Issues in your saved areas'
-        : 'Issues across covered areas'
+        : 'Issues across covered parishes'
 
   return (
     <section
@@ -256,6 +255,17 @@ function IssuesSection({
           >
             {title}
           </Heading>
+          {focused ? (
+            <Button
+              className="pp-home-statewide"
+              onClick={() => setArea(null)}
+              size="touch"
+              variant="ghost"
+            >
+              <ArrowLeftIcon aria-hidden="true" />
+              Back to all of Louisiana
+            </Button>
+          ) : null}
         </div>
         <Button
           className="pp-section-link"

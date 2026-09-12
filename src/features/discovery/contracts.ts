@@ -192,6 +192,11 @@ export const SORT_OPTIONS = [
   { label: 'Oldest first', value: 'oldest' },
 ] as const
 
+// A missing stored area means the statewide Louisiana view, not an unfinished setup.
+export function focusName(slug: AreaSlug | null): string {
+  return slug ? areaName(slug) : 'Louisiana'
+}
+
 export function areaName(slug: AreaSlug): string {
   switch (slug) {
     case 'lafayette-parish':
