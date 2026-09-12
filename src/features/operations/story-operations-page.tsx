@@ -445,6 +445,8 @@ function ReviewCandidate({
   const [correction, setCorrection] = useState(
     build.draft ? JSON.stringify(build.draft, null, 2) : '',
   )
+  const [mediaCaption, setMediaCaption] = useState(build.media?.caption ?? '')
+  const [mediaAlt, setMediaAlt] = useState(build.media?.alt ?? '')
   const [checked, setChecked] = useState(false)
   const [reason, setReason] = useState('')
   const [message, setMessage] = useState('')
@@ -523,6 +525,26 @@ function ReviewCandidate({
               onChange={(event) => setCorrection(event.target.value)}
             />
           </label>
+          {build.media ? (
+            <>
+              <label>
+                Corrected image caption
+                <textarea
+                  value={mediaCaption}
+                  maxLength={600}
+                  onChange={(event) => setMediaCaption(event.target.value)}
+                />
+              </label>
+              <label>
+                Corrected image alt text
+                <textarea
+                  value={mediaAlt}
+                  maxLength={600}
+                  onChange={(event) => setMediaAlt(event.target.value)}
+                />
+              </label>
+            </>
+          ) : null}
           <Button
             disabled={pending || !identity || !build.draftHash}
             onClick={() =>
@@ -532,6 +554,12 @@ function ReviewCandidate({
                   parentDraftHash: build.draftHash!,
                   expectedGeneration: identity!.generation,
                   draft: JSON.parse(correction),
+                  ...(mediaCaption !== build.media?.caption && build.media
+                    ? { mediaCaption }
+                    : {}),
+                  ...(mediaAlt !== build.media?.alt && build.media
+                    ? { mediaAlt }
+                    : {}),
                 })
                 onSelect(id)
                 return 'Corrected candidate prepared for independent review.'

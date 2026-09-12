@@ -176,7 +176,17 @@ export function useQuery(ref: FunctionReference<'query'>, args: unknown) {
     ]
   if (name === 'stories/operations:preview')
     return {
-      build,
+      build: new URLSearchParams(location.search).has('media')
+        ? {
+            ...build,
+            media: {
+              caption: 'Synthetic rendering.',
+              alt: 'Buildings and retention ponds.',
+              credit: 'Fixture',
+              license: 'Fixture',
+            },
+          }
+        : build,
       previous: { payload: { ...draft, limitations: [] } },
       imageUrl: null,
     }
@@ -224,8 +234,12 @@ export function usePaginatedQuery(ref: FunctionReference<'query'>) {
     loadMore: () => {},
   }
 }
-export function useMutation() {
-  return async () => {
+export function useMutation(ref: FunctionReference<'mutation'>) {
+  return async (args: unknown) => {
+    document.documentElement.dataset.lastMutation = JSON.stringify({
+      name: getFunctionName(ref),
+      args,
+    })
     await new Promise((resolve) => setTimeout(resolve, 250))
     throw new Error('Synthetic operation refused. No backend request was sent.')
   }

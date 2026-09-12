@@ -1,5 +1,32 @@
 import { expect, test } from '@playwright/test'
 
+test('an image description correction sends only the changed text for review', async ({
+  page,
+}) => {
+  await page.goto('/operations/stories?media')
+  await page.getByRole('button', { name: /applied digital boyce/ }).click()
+  await page.getByRole('button', { name: /reviewed/ }).click()
+  await page.getByText('Correct this draft', { exact: true }).click()
+  await page
+    .getByRole('textbox', { name: 'Corrected image alt text' })
+    .fill('Buildings and ponds.')
+  await page
+    .getByRole('button', { name: 'Prepare corrected draft for review' })
+    .click()
+  await expect(
+    page.getByText('Synthetic operation refused. No backend request was sent.'),
+  ).toBeVisible()
+  const recorded = await page.evaluate(() =>
+    JSON.parse(document.documentElement.dataset.lastMutation!),
+  )
+  expect(recorded.name).toBe('stories/corrections:prepare')
+  expect(recorded.args.mediaAlt).toBe('Buildings and ponds.')
+  expect(recorded.args.mediaCaption).toBeUndefined()
+  expect(recorded.args.draft.title.text).toBe(
+    'Illustrative project, never publish',
+  )
+})
+
 for (const width of [320, 375, 768, 1280]) {
   test(`owner screens fit at ${width}px and preserve review controls`, async ({
     page,

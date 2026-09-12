@@ -11,7 +11,7 @@ import { approvedOwnerMedia } from './ownerMedia'
 
 export const prepare = mutation({
   args: { parentBuildId: v.id('storyBuilds'), parentDraftHash: v.string(), expectedGeneration: v.number(), draft: storyDraft, replacementImageId: v.optional(v.id('_storage')), currentImageVersionId: v.optional(v.id('storyVersions')), mediaCaption: v.optional(v.string()),
-    notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
+    mediaAlt: v.optional(v.string()), notificationIntent: v.optional(v.union(v.literal('baseline'), v.literal('update'))) },
   returns: v.id('storyBuilds'),
   handler: async (ctx, args) => {
     const owner = await requireOwner(ctx)
@@ -42,11 +42,16 @@ export const prepare = mutation({
     } else if (args.replacementImageId) {
       if (draftHash !== parent.draftHash) throw new Error('An image-only revision must retain the exact accepted draft')
       media = approvedOwnerMedia(story.storyKey, args.replacementImageId, await ctx.db.system.get('_storage', args.replacementImageId))
-    } else if (draftHash === parent.draftHash && args.mediaCaption === undefined) throw new Error('The corrected draft must change')
+    } else if (draftHash === parent.draftHash && args.mediaCaption === undefined && args.mediaAlt === undefined) throw new Error('The corrected draft must change')
     if (args.mediaCaption !== undefined) {
       if (!media || !args.mediaCaption.trim() || args.mediaCaption.length > 600) throw new Error('Caption correction requires an image and 1 to 600 characters')
-      if (args.mediaCaption.trim() === media.caption && draftHash === parent.draftHash) throw new Error('The corrected caption must change')
+      if (args.mediaCaption.trim() === media.caption && draftHash === parent.draftHash && (args.mediaAlt === undefined || args.mediaAlt.trim() === media.alt)) throw new Error('The corrected caption must change')
       media = { ...media, caption: args.mediaCaption.trim() }
+    }
+    if (args.mediaAlt !== undefined) {
+      if (!media || !args.mediaAlt.trim() || args.mediaAlt.length > 600) throw new Error('Alt text correction requires an image and 1 to 600 characters')
+      if (args.mediaAlt.trim() === media.alt && draftHash === parent.draftHash && media.caption === parent.media?.caption) throw new Error('The corrected alt text must change')
+      media = { ...media, alt: args.mediaAlt.trim() }
     }
     const inputHash = await hashStoryValue({ contract: 'story-owner-correction-v1', parentBuildId: parent._id, parentDraftHash: parent.draftHash,
       draftHash, evidenceHash: await evidenceHash(parent.spans), expectedGeneration: args.expectedGeneration, notificationIntent: args.notificationIntent,
