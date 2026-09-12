@@ -1,4 +1,5 @@
 import { OperationsHeader, OperationsState } from './operations-header'
+import { SpendingPanel } from './spending-panel'
 import { PageLoading } from '../resident-blueprint/resident-loading'
 import { useRef, useState } from 'react'
 import { useAction, useMutation, useQuery } from 'convex/react'
@@ -103,6 +104,7 @@ function OwnerStories() {
         Review sources, compare drafts and approve an exact version. Publishing
         a story does not expand parish coverage.
       </OperationsHeader>
+      <SpendingPanel />
       <div className="story-intake-grid">
         <section>
           <h2>Stage a source manifest</h2>

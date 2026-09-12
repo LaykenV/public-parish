@@ -10,6 +10,11 @@ for (const width of [320, 375, 768, 1280]) {
       page.getByRole('heading', { name: 'Coverage operations', exact: true }),
     ).toBeVisible()
     await expect(
+      page.getByText('Blocked. Allowance is exhausted.'),
+    ).toBeVisible()
+    await expect(page.getByText('$0.0000 remaining.')).toBeVisible()
+    await expect(page.getByText('$4.7500 remaining.')).toBeVisible()
+    await expect(
       page.getByRole('link', { name: 'Coverage', exact: true }),
     ).toHaveAttribute('aria-current', 'page')
     expect(

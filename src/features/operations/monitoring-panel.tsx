@@ -3,6 +3,7 @@ import { useMutation, usePaginatedQuery, useQuery } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import { PageLoading } from '../resident-blueprint/resident-loading'
 import { Button } from '../../components/ui/button'
+import { SpendingPanel } from './spending-panel'
 
 export function MonitoringPanel() {
   const overview = useQuery(api.operations.dashboard.monitoring, {})
@@ -58,6 +59,7 @@ export function MonitoringPanel() {
   }
   return (
     <div className="operations-monitoring">
+      <SpendingPanel />
       <section className="operations-panel" aria-labelledby="monitoring-title">
         <h2 id="monitoring-title">Source monitoring</h2>
         <p>
@@ -79,7 +81,7 @@ export function MonitoringPanel() {
               <h3>{source.bodyName}</h3>
               <p>
                 {source.policy?.enabled
-                  ? 'Monitoring enabled'
+                  ? 'Monitoring configured. Paid work depends on the source allowance.'
                   : 'Monitoring paused'}
                 {source.pendingTarget ? '. Decisions remain pending.' : ''}
                 {source.failedTarget ? '. A decision needs attention.' : ''}

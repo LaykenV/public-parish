@@ -68,6 +68,26 @@ export function useGoogleAuth() {
 export function useQuery(ref: FunctionReference<'query'>, args: unknown) {
   if (args === 'skip') return undefined
   const name = getFunctionName(ref)
+  if (name === 'ai/spendingLedger:overview')
+    return {
+      guardEnabled: true,
+      allowances: [
+        {
+          scope: 'sources',
+          allowanceUsd: 4,
+          chargedUsd: 4.4,
+          enabled: true,
+          expiresAt: Date.now() + 86_400_000,
+        },
+        {
+          scope: 'ask',
+          allowanceUsd: 5,
+          chargedUsd: 0.25,
+          enabled: true,
+          expiresAt: Date.now() + 86_400_000,
+        },
+      ],
+    }
   if (name === 'auth:currentUser')
     return {
       isOwner: new URLSearchParams(location.search).get('auth') !== 'non-owner',
