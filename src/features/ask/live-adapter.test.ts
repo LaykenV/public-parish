@@ -88,7 +88,12 @@ test('shows the first question immediately and completes two cited turns', async
   )
 })
 
-test.each(['[citation-1] [citation-2]', '(citation-1, citation-2)'])('hides validated evidence markers %s in answer prose', async markers => {
+test.each([
+  ['[citation-1] [citation-2]', ''],
+  ['(citation-1, citation-2)', ''],
+  ['Act 874: citation-1. Another record: citation-2.', ' Act 874: cited source. Another record: cited source.'],
+  ['Unknown [citation-3] and citation-1-extra.', ' Unknown [citation-3] and citation-1-extra.'],
+])('handles validated evidence markers %s in answer prose', async (markers, visible) => {
   const mutation = vi
     .fn()
     .mockResolvedValueOnce({ expiresAt: 2_000_000_000_000 })
@@ -127,7 +132,7 @@ test.each(['[citation-1] [citation-2]', '(citation-1, citation-2)'])('hides vali
   expect(latestConversation(updates)?.turns[0]?.answer).toMatchObject({
     kind: 'supported',
     lead: {
-      text: 'Decision [CO-066-2026] approved the drainage agreement.',
+      text: `Decision [CO-066-2026] approved the drainage agreement.${visible}`,
       citationIds: ['citation-1', 'citation-2'],
     },
   })
