@@ -2,7 +2,10 @@ import { ArrowUpRightIcon, SearchIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 
-import { PageLoading } from '../resident-blueprint/resident-loading'
+import {
+  PageLoading,
+  usePageLoading,
+} from '../resident-blueprint/resident-loading'
 import { Button } from '../../components/ui/button'
 import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
 import { FeaturedStories } from '../stories/story-page'
@@ -34,6 +37,7 @@ const HOME_SECTION_LIMIT = 6
 
 export function HomePage({ scenario }: { scenario?: HomeScenario }) {
   const area = useArea()
+  const pageLoading = usePageLoading()
   const previousArea = useRef(area)
   const mainRef = useRef<HTMLElement>(null)
   const activeScenario = getActiveDiscoveryFixture(scenario)
@@ -47,19 +51,23 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
   const resetKey = `${area ?? 'all'}:${scenario ?? 'live'}`
 
   useEffect(() => {
+    if (pageLoading) return
     const collapsed = previousArea.current === null && area !== null
-    previousArea.current = area
-    if (!collapsed) return
+    if (!collapsed) {
+      previousArea.current = area
+      return
+    }
     // The hero's selector opener disappears on first selection. Give keyboard
     // users a stable destination after its dialog unmounts.
     const frame = window.requestAnimationFrame(() => {
       if (document.querySelector('[role="dialog"]')) return
+      previousArea.current = area
       mainRef.current
         ?.querySelector<HTMLElement>('h1')
         ?.focus({ preventScroll: true })
     })
     return () => window.cancelAnimationFrame(frame)
-  }, [area])
+  }, [area, pageLoading])
 
   return (
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>

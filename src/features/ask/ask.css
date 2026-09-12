@@ -1047,7 +1047,8 @@
 
   /* Standalone Ask leaves the shell in the document only as the route's
      landmark; the chat screen is the whole display. */
-  .resident-blueprint:has(> .ask-screen-anchor) > :not(.ask-screen-anchor) {
+  .resident-blueprint:has(.ask-screen-anchor) > :not(.resident-loading-content),
+  .resident-loading-content:has(> .ask-screen-anchor) > :not(.ask-screen-anchor) {
     opacity: 0;
     visibility: hidden;
   }

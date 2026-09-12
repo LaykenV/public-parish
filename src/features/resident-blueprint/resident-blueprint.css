@@ -18,9 +18,17 @@
   pointer-events: none;
 }
 
-.route-loading-region svg {
-  width: 2rem;
-  height: 2rem;
+.resident-loading-content {
+  display: contents;
+}
+
+.resident-loading-content[hidden] {
+  display: none;
+}
+
+.route-loading-indicator {
+  display: grid;
+  place-items: center;
   padding: 0.75rem;
   border: 1px solid var(--border);
   border-radius: 50%;
@@ -28,6 +36,11 @@
   background: var(--card);
   box-shadow: var(--pp-shadow-control);
   box-sizing: content-box;
+}
+
+.route-loading-indicator svg {
+  width: 2rem;
+  height: 2rem;
 }
 
 .resident-blueprint {

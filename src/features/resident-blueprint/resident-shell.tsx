@@ -1,4 +1,5 @@
 import { Dialog } from '@base-ui/react/dialog'
+import { ResidentLoadingContent, usePageLoading } from './resident-loading'
 import { VoterFooter } from './voter-footer'
 import {
   CircleUserRoundIcon,
@@ -85,11 +86,12 @@ export function ResidentRouteAccessibility() {
       pathname: state.location.pathname,
     }),
   })
+  const pageLoading = usePageLoading()
   const previousPath = useRef<string | null>(null)
   const [announcement, setAnnouncement] = useState('')
 
   useEffect(() => {
-    if (isLoading) return
+    if (isLoading || pageLoading) return
 
     const updateDocumentTitle = () => {
       const heading = document.querySelector<HTMLElement>('#resident-main h1')
@@ -105,10 +107,10 @@ export function ResidentRouteAccessibility() {
     })
 
     return () => observer.disconnect()
-  }, [isLoading, pathname])
+  }, [isLoading, pageLoading, pathname])
 
   useEffect(() => {
-    if (isLoading) return
+    if (isLoading || pageLoading) return
 
     const fallbackLabel = residentRouteLabel(pathname)
     let innerFrame = 0
@@ -144,7 +146,7 @@ export function ResidentRouteAccessibility() {
       window.cancelAnimationFrame(frame)
       window.cancelAnimationFrame(innerFrame)
     }
-  }, [isLoading, pathname])
+  }, [isLoading, pageLoading, pathname])
 
   return (
     <p
@@ -182,6 +184,7 @@ export function ResidentShell({ children }: { children: ReactNode }) {
   const keyboardOpen = useKeyboardOpen()
   const overlayOpen = useOverlayOpen()
   const online = useOnline()
+  const pageLoading = usePageLoading()
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -254,42 +257,45 @@ export function ResidentShell({ children }: { children: ReactNode }) {
           </div>
           <MobileNavigation pathname={pathname} />
         </div>
+        {online ? null : (
+          <div className="pp-offline-bar" role="status">
+            {pageLoading
+              ? 'You are offline. Reconnect to load this page.'
+              : 'You are offline. Showing the information already loaded.'}
+          </div>
+        )}
       </header>
 
-      {online ? null : (
-        <div className="pp-offline-bar" role="status">
-          You are offline. Showing the information already loaded.
-        </div>
-      )}
+      <ResidentLoadingContent>
+        {children}
 
-      {children}
-
-      <footer className="resident-footer">
-        <div className="resident-footer-inner">
-          <Link
-            className="resident-brand"
-            to="/"
-            aria-label="Public Parish home"
-          >
-            <img src="/brand-mark.svg" alt="" width="32" height="32" />
-            <span>Public Parish</span>
-          </Link>
-          <nav aria-label="About Public Parish">
-            <Link to="/how-it-works">How it works</Link>
-            <Link to="/coverage">Coverage</Link>
-            <Link to="/privacy">Privacy</Link>
-            <a
-              href="https://github.com/LaykenV/public-parish"
-              rel="noreferrer"
-              target="_blank"
+        <footer className="resident-footer">
+          <div className="resident-footer-inner">
+            <Link
+              className="resident-brand"
+              to="/"
+              aria-label="Public Parish home"
             >
-              Source code
-            </a>
-          </nav>
-          <VoterFooter />
-          <p>Official evidence is public. Resident activity stays private.</p>
-        </div>
-      </footer>
+              <img src="/brand-mark.svg" alt="" width="32" height="32" />
+              <span>Public Parish</span>
+            </Link>
+            <nav aria-label="About Public Parish">
+              <Link to="/how-it-works">How it works</Link>
+              <Link to="/coverage">Coverage</Link>
+              <Link to="/privacy">Privacy</Link>
+              <a
+                href="https://github.com/LaykenV/public-parish"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Source code
+              </a>
+            </nav>
+            <VoterFooter />
+            <p>Official evidence is public. Resident activity stays private.</p>
+          </div>
+        </footer>
+      </ResidentLoadingContent>
     </div>
   )
 }
@@ -462,7 +468,7 @@ export function ResidentStandalone({ children }: { children: ReactNode }) {
           <span>Public Parish</span>
         </Link>
       </header>
-      {children}
+      <ResidentLoadingContent>{children}</ResidentLoadingContent>
     </div>
   )
 }

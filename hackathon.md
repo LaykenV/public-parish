@@ -2062,3 +2062,13 @@ verification passed 686 tests, typechecks, build and lint with 15 existing
 warnings. Eighteen focused browser checks passed in Chromium and WebKit,
 including zoom, resize, Back, retained drafts and nested source drawers.
 CI, the next dev upload and native iPhone acceptance remain pending.
+
+### 2026-09-11 - working tree, app-wide loading
+The loading fix hides page content and the footer while page data loads. Only
+the header and one centered spinner remain visible. The container and shadow stay
+still while the icon rotates. The original checkout passed local validation and
+eight browser checks. The PR applies the fix to current production code, with CI
+validation pending. Review and browser CI led to fixes for offline status, parish
+selection focus and hash-link scrolling. A local build and 18 targeted Chromium
+and WebKit checks passed after those fixes. Source-query scroll preservation and
+the Ask shell selector then passed all 56 local presentation checks. No deployment yet.
