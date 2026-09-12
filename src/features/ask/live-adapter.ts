@@ -447,6 +447,15 @@ function projectAnswer(
 
 function residentAnswerText(answer: string, citationIds: readonly string[]) {
   const allowed = new Set(citationIds)
+  // Some answers use bare evidence IDs as part of a sentence. Keep a readable
+  // reference there while the existing Source controls retain the exact IDs.
+  const bareIds = [...allowed]
+    .sort((a, b) => b.length - a.length)
+    .map((id) => id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  const bareReference = new RegExp(
+    `(?<![\\w:/-])(?:${bareIds.join('|')})(?![\\w:/-])`,
+    'g',
+  )
   const text = answer
     .replace(/[ \t]*(?:\[([^\]\r\n]+)\]|\(([^)\r\n]+)\))/g, (reference, bracketed: string | undefined, parenthesized: string | undefined) => {
       const ids = (bracketed ?? parenthesized ?? '')
@@ -457,6 +466,7 @@ function residentAnswerText(answer: string, citationIds: readonly string[]) {
         ? ''
         : reference
     })
+    .replace(bareReference, 'cited source')
     .replace(/[ \t]+([,.;:!?])/g, '$1')
     .replace(/[ \t]{2,}/g, ' ')
     .replace(/[ \t]+\n/g, '\n')
