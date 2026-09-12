@@ -257,10 +257,17 @@ function pickText(value: unknown): string | undefined {
   return text.length > 0 ? text : undefined
 }
 
-export function parseHomeSearch(search: Record<string, unknown>): {
+export type HomeSearch = {
+  body?: string
   fixture?: HomeScenario
-} {
-  return { fixture: pick(search.fixture, HOME_SCENARIOS) }
+}
+
+// Home shares the Explore `body` contract: a public body label, or nothing.
+export function parseHomeSearch(search: Record<string, unknown>): HomeSearch {
+  return {
+    body: pick(search.body, [...BODY_OPTIONS, ...LEGACY_BODY_OPTIONS]),
+    fixture: pick(search.fixture, HOME_SCENARIOS),
+  }
 }
 
 export function parseExploreSearch(

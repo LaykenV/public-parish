@@ -13,6 +13,7 @@ import { LouisianaRelief } from '../landing/louisiana-relief'
 import { AreaSelector } from './area-selector'
 import { setArea, useArea } from './area-store'
 import { areaName, getActiveDiscoveryFixture } from './contracts'
+import { useCoverageBodies } from './live-areas'
 import type {
   AreaSlug,
   HomeScenario,
@@ -35,7 +36,13 @@ import './home.css'
 
 const HOME_SECTION_LIMIT = 6
 
-export function HomePage({ scenario }: { scenario?: HomeScenario }) {
+export function HomePage({
+  body,
+  scenario,
+}: {
+  body?: string
+  scenario?: HomeScenario
+}) {
   const area = useArea()
   const pageLoading = usePageLoading()
   const previousArea = useRef(area)
@@ -48,7 +55,9 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
       ? ['lafayette-parish', 'east-baton-rouge-parish']
       : []
   const selected = watching.length > 0
-  const resetKey = `${area ?? 'all'}:${scenario ?? 'live'}`
+  // A body focus only narrows a single focused parish.
+  const bodyFocus = area && body ? body : undefined
+  const resetKey = `${area ?? 'all'}:${bodyFocus ?? 'all'}:${scenario ?? 'live'}`
 
   useEffect(() => {
     if (pageLoading) return
@@ -73,6 +82,7 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
           <LocalIssues
+            body={bodyFocus}
             fixturesEnabled={fixturesEnabled}
             scenario={activeScenario}
             watching={watching}
@@ -81,6 +91,7 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
       </div>
       <ResidentSectionBoundary label="Decision records" resetKey={resetKey}>
         <LocalDecisionRecords
+          body={bodyFocus}
           fixturesEnabled={fixturesEnabled}
           watching={watching}
         />
@@ -128,15 +139,17 @@ function FirstVisitHero() {
 }
 
 function LocalIssues({
+  body,
   watching,
   scenario,
   fixturesEnabled,
 }: {
+  body?: string
   watching: AreaSlug[]
   scenario?: HomeScenario
   fixturesEnabled: boolean
 }) {
-  const publishedIssues = usePublishedIssues(!fixturesEnabled, watching)
+  const publishedIssues = usePublishedIssues(!fixturesEnabled, watching, body)
   const [refreshed, setRefreshed] = useState(false)
   const [refreshAnnouncement, announceRefresh] = useRepeatedAnnouncement(
     'Home updated from the official record.',
@@ -165,6 +178,7 @@ function LocalIssues({
         />
       ) : null}
       <IssuesSection
+        body={body}
         issues={issues}
         loading={!fixturesEnabled && publishedIssues === undefined}
         scenario={scenario}
@@ -196,13 +210,19 @@ function LocalIssues({
 }
 
 function LocalDecisionRecords({
+  body,
   watching,
   fixturesEnabled,
 }: {
+  body?: string
   watching: AreaSlug[]
   fixturesEnabled: boolean
 }) {
-  const publishedDecisions = usePublishedDecisions(!fixturesEnabled, watching)
+  const publishedDecisions = usePublishedDecisions(
+    !fixturesEnabled,
+    watching,
+    body,
+  )
   const rows = fixturesEnabled
     ? filterFixtureRows(
         EXPLORE_ROW_FIXTURES.filter((row) => row.kind === 'Decision record'),
@@ -220,11 +240,13 @@ function LocalDecisionRecords({
 }
 
 function IssuesSection({
+  body,
   issues,
   loading,
   scenario,
   watching,
 }: {
+  body?: string
   issues: IssueCardData[]
   loading: boolean
   scenario?: HomeScenario
@@ -277,6 +299,7 @@ function IssuesSection({
           <ArrowUpRightIcon aria-hidden="true" />
         </Button>
       </div>
+      {focused ? <BodyChips active={body} area={watching[0]} /> : null}
       <p className="pp-section-copy">
         Follow an issue through the decisions that shape it.
       </p>
@@ -290,14 +313,61 @@ function IssuesSection({
       ) : issues.length > 0 ? (
         <HomeIssueCards issues={issues.slice(0, HOME_SECTION_LIMIT)} />
       ) : (
-        <EmptyIssues watching={watching} />
+        <EmptyIssues body={body} watching={watching} />
       )}
     </section>
   )
 }
 
-function EmptyIssues({ watching }: { watching: AreaSlug[] }) {
-  const place = watching.length === 1 ? ` for ${areaName(watching[0])}` : ''
+// One chip per body with published records in the focused parish. The active
+// chip lives in the URL so a reload and a shared link keep the focus.
+function BodyChips({ active, area }: { active?: string; area: AreaSlug }) {
+  const bodies = useCoverageBodies().filter(
+    (body) => body.placeSlug === area && body.published,
+  )
+  if (bodies.length === 0) return null
+  return (
+    <nav aria-label="Government bodies" className="pp-body-chips">
+      <ul>
+        <li>
+          <Link
+            aria-current={active ? undefined : 'true'}
+            resetScroll={false}
+            search={{}}
+            to="/"
+          >
+            All bodies
+          </Link>
+        </li>
+        {bodies.map((body) => (
+          <li key={body.slug}>
+            <Link
+              aria-current={active === body.label ? 'true' : undefined}
+              resetScroll={false}
+              search={{ body: body.label }}
+              to="/"
+            >
+              {body.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+function EmptyIssues({
+  body,
+  watching,
+}: {
+  body?: string
+  watching: AreaSlug[]
+}) {
+  const place = body
+    ? ` for the ${body}`
+    : watching.length === 1
+      ? ` for ${areaName(watching[0])}`
+      : ''
   return (
     <div className="pp-empty">
       <p className="pp-empty-title">

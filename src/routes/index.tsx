@@ -10,11 +10,11 @@ export const Route = createFileRoute('/')({
 })
 
 function ResidentHome() {
-  const { fixture } = Route.useSearch()
+  const { body, fixture } = Route.useSearch()
 
   return (
     <ResidentShell>
-      <HomePage scenario={fixture} />
+      <HomePage body={body} scenario={fixture} />
     </ResidentShell>
   )
 }

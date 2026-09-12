@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
-import { getActiveDiscoveryFixture, parseExploreSearch } from './contracts'
+import {
+  getActiveDiscoveryFixture,
+  parseExploreSearch,
+  parseHomeSearch,
+} from './contracts'
 import {
   compareExploreDates,
   getExploreEntries,
@@ -68,6 +72,18 @@ describe('resident interface Slice 2 discovery contracts', () => {
     ]) {
       expect(parseExploreSearch({ body })).toEqual({ body })
     }
+  })
+
+  it('keeps a Home body focus only when it is a public body label', () => {
+    expect(parseHomeSearch({ body: 'Pineville City Council' })).toEqual({
+      body: 'Pineville City Council',
+    })
+    expect(parseHomeSearch({ body: 'Metropolitan Council' })).toEqual({
+      body: 'Metropolitan Council',
+    })
+    expect(parseHomeSearch({ body: 'Invented board', fixture: 'update' })).toEqual({
+      fixture: 'update',
+    })
   })
 
   it('shows the forced no-results state before the default browse view', () => {

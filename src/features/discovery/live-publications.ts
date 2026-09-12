@@ -17,17 +17,25 @@ export type PublishedIssue = FunctionReturnType<
   typeof api.resident.evidence.listPublishedIssues
 >[number]
 
-export function usePublishedDecisions(enabled: boolean, areas?: AreaSlug[]) {
+export function usePublishedDecisions(
+  enabled: boolean,
+  areas?: AreaSlug[],
+  body?: string,
+) {
   return useQuery(
     api.resident.discovery.listPublishedDecisions,
-    enabled ? { areas } : 'skip',
+    enabled ? { areas, body } : 'skip',
   )
 }
 
-export function usePublishedIssues(enabled: boolean, areas?: AreaSlug[]) {
+export function usePublishedIssues(
+  enabled: boolean,
+  areas?: AreaSlug[],
+  body?: string,
+) {
   return useQuery(
     api.resident.evidence.listPublishedIssues,
-    enabled ? { areas } : 'skip',
+    enabled ? { areas, body } : 'skip',
   )
 }
 
