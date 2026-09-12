@@ -352,3 +352,17 @@ Public Parish adopts that supported-browser hint, stable geometry and one owner
 for chat bounds. T3's web code has no visual-viewport keyboard handler to copy;
 its native mobile app uses a native keyboard controller. Public Parish still
 needs visual-viewport sizing on Safari. Native iPhone acceptance is required.
+
+## Owner operations
+
+Coverage and Stories share owner navigation styled like the Account tabs.
+Use the resident page title, Inter text, purple actions and white panels.
+Coverage separates source monitoring, incidents, delivery and provider usage;
+section links reach the compiler and run ledger. Wide provider tables scroll
+within a labeled keyboard-accessible region on phones.
+
+Story intake shows selected bundles and build receipts in lavender with a
+written pressed state for assistive technology. Compare exact drafts side by
+side on desktop and stack them on phones. Keep hashes and JSON in Geist Mono.
+Use the shared Button variants so publication stays purple and withdrawal
+retains its destructive styling. All publication and owner-access checks remain.

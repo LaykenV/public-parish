@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-11T03:06:22Z
+- **Last updated:** 2026-09-12T00:51:30Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2072,3 +2072,11 @@ validation pending. Review and browser CI led to fixes for offline status, paris
 selection focus and hash-link scrolling. A local build and 18 targeted Chromium
 and WebKit checks passed after those fixes. Source-query scroll preservation and
 the Ask shell selector then passed all 56 local presentation checks. No deployment yet.
+
+### 2026-09-12 - working tree
+
+Matched private coverage and story operations to the approved resident UI.
+Shared navigation, readable panels and selected bundles replace the ungrouped
+controls. Publication and withdrawal retain their distinct Button variants.
+Local verification passed 686 tests; 12 synthetic Chromium/WebKit owner checks
+passed across phone, tablet and desktop widths. PR review remains pending.

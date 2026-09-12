@@ -46,6 +46,10 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'development-certification')
         run: npx playwright test --config playwright.fixtures.config.ts
 
+      - name: Check owner operations with synthetic data
+        if: contains(github.event.pull_request.labels.*.name, 'development-certification')
+        run: npx playwright test --config playwright.owner.config.ts
+
       - name: Preserve parish feed screenshots
         if: always() && contains(github.event.pull_request.labels.*.name, 'development-certification')
         uses: actions/upload-artifact@v4
