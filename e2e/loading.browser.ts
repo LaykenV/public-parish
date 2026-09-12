@@ -54,11 +54,8 @@ test('leaving a pending page releases loading for a static page', async ({
     'true',
   )
   // Exercise client-side navigation while the previous page is still pending.
-  await page.evaluate(async () => {
-    const link = document.querySelector<HTMLAnchorElement>(
-      '.resident-footer a[href="/privacy"]',
-    )!
-    link.click()
+  await page.locator('.resident-footer a[href="/privacy"]').evaluate((link) => {
+    ;(link as HTMLAnchorElement).click()
   })
   await expect(page).toHaveURL(/\/privacy$/)
   await expect(page.locator('.route-loading-region')).toHaveAttribute(
