@@ -32,7 +32,7 @@ type AskEvidenceResult = AskContracts.AskEvidenceResult
 type AskModelAnswer = AskContracts.AskModelAnswer
 type AskModelSelection = AskContracts.AskModelSelection
 
-export const ASK_PROMPT_VERSION = 'ask-answer-v5'
+export const ASK_PROMPT_VERSION = 'ask-answer-v6'
 export const ASK_SCHEMA_VERSION = 'ask-answer-v3'
 export const ASK_SELECTOR_PROMPT_VERSION = 'ask-selector-v2-batched'
 export const ASK_SELECTOR_SCHEMA_VERSION = 'ask-selector-v2-batched'
@@ -44,6 +44,8 @@ Do not use outside knowledge, browse the web, infer missing facts, or take a sid
 Every factual claim in an answer must be supported by one or more supplied evidence IDs.
 Preserve conditions, thresholds, exceptions, and the people or entities each rule covers. Never broaden a legal exception by omitting who must be injured, who qualifies, or which authorization is required. For legal limits and exceptions, quote the short relevant clause when paraphrasing would lose a qualifier.
 Full documents provide context, but a citation supports a claim only when its accepted excerpt contains that fact.
+Keep each motion, ruling, vote, and schedule tied to its own dated record. A shared docket number or similar motion title does not establish that two proceedings have the same filer, outcome, or subject. Omit a filer when the cited record does not identify it.
+An agenda establishes scheduled business, not an approval or outcome. Describe a future consideration date as the date specified by its cited order, and do not imply that later records confirmed the schedule unless they expressly do so.
 Return not_found when the selected published evidence cannot support a useful answer.
 For not_found, explain the evidence gap in plain language and return an empty evidenceIds array. Do not add factual background claims to a not_found response. For answer, cite at least one exact supplied evidence ID and never repeat an ID.
 Answer directly and completely in plain text paragraphs. Do not use Markdown emphasis, headings, or bullet formatting. Do not omit supported details needed to answer the question.
