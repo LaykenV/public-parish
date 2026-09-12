@@ -15,6 +15,7 @@ import {
 } from '../extraction/contractV1'
 import { sourceKindUnion } from '../pipeline/state'
 import { residentMeetingKey } from './meetingKey'
+import { parseHomeDay, rankHomeIssues } from './homeRank'
 
 const acceptedMode = v.union(v.literal('full'), v.literal('limited'))
 const nullableLifecycle = v.union(lifecycleStates, v.null())
@@ -117,10 +118,13 @@ const issueResult = v.object({
     v.object({
       factor: importanceFactorNames,
       level: importanceLevels,
+      points: v.number(),
       rationale: v.string(),
       citationIds: v.array(v.string()),
     }),
   ),
+  importanceScore: v.number(),
+  acceptedAt: v.number(),
   publicActions: v.array(publicAction),
   citations: v.array(citation),
   versions: v.array(version),
@@ -145,6 +149,17 @@ const issueSummaryResult = v.object({
   evidenceCheckedAt: v.number(),
   latestMeetingAt: v.union(v.string(), v.null()),
   decisionCount: v.number(),
+  // One cited consequence rationale from the accepted version, or null.
+  whyItMatters: v.union(
+    v.null(),
+    v.object({
+      factor: importanceFactorNames,
+      text: v.string(),
+      citationIds: v.array(v.string()),
+    }),
+  ),
+  acceptedAt: v.number(),
+  coverageStatus: v.string(),
 })
 
 const meetingResult = v.object({
@@ -441,8 +456,17 @@ export const getPublishedIssue = query({
   },
 })
 
+// Home considers the most recently updated accepted timelines, then orders
+// them by cited importance and documented currency. See ./homeRank.ts.
+const HOME_ISSUE_POOL = 40
+const HOME_ISSUE_LIMIT = 20
+
 export const listPublishedIssues = query({
-  args: { areas: v.optional(v.array(areaSlug)) },
+  args: {
+    areas: v.optional(v.array(areaSlug)),
+    // The client's calendar day, so the query stays cacheable.
+    today: v.optional(v.string()),
+  },
   returns: v.array(issueSummaryResult),
   handler: async (ctx, args) => {
     const bodyIds = await selectedBodyIds(ctx, args.areas)
@@ -450,23 +474,31 @@ export const listPublishedIssues = query({
       (['full', 'limited'] as const).flatMap(mode => bodyIds === null
         ? [ctx.db.query('issues')
             .withIndex('by_current_mode_and_updated_at', q => q.eq('currentMode', mode))
-            .order('desc').take(20)]
+            .order('desc').take(HOME_ISSUE_POOL)]
         : bodyIds.map(bodyId => ctx.db.query('issues')
             .withIndex('by_government_body_and_current_mode_and_updated_at', q =>
               q.eq('governmentBodyId', bodyId).eq('currentMode', mode))
-            .order('desc').take(20))),
+            .order('desc').take(HOME_ISSUE_POOL))),
     )
     const issues = groups.flat()
       .sort((left, right) => right.updatedAt - left.updatedAt)
-      .slice(0, 20)
+      .slice(0, HOME_ISSUE_POOL)
 
     const projected = await Promise.all(
       issues.map((issue) => projectPublishedIssue(ctx, issue)),
     )
 
-    return projected
+    const summaries = projected
       .filter((issue): issue is typeof issueResult.type => issue !== null)
       .map((issue) => ({
+        importanceScore: issue.importanceScore,
+        nextAt: issue.nextKnownAction?.at ?? null,
+        hasSupportedFactor: issue.factors.some(
+          (factor) => factor.citationIds.length > 0,
+        ),
+        whyItMatters: whyItMatters(issue.factors),
+        acceptedAt: issue.acceptedAt,
+        coverageStatus: issue.coverageStatus ?? 'candidate',
         revision: issue.revision,
         slug: issue.slug,
         placeName: issue.placeName,
@@ -489,8 +521,23 @@ export const listPublishedIssues = query({
             .pop() ?? null,
         decisionCount: issue.links.length,
       }))
+
+    return rankHomeIssues(summaries, parseHomeDay(args.today))
+      .slice(0, HOME_ISSUE_LIMIT)
+      .map(({ importanceScore: _score, nextAt: _next, hasSupportedFactor: _has, ...summary }) => summary)
   },
 })
+
+// The strongest supported consequence that still cites current evidence.
+// Ties keep the index order by factor name, so the choice is stable across reads.
+function whyItMatters(
+  factors: (typeof issueResult.type)['factors'],
+): (typeof issueSummaryResult.type)['whyItMatters'] {
+  const cited = factors.filter((factor) => factor.citationIds.length > 0)
+  if (cited.length === 0) return null
+  const best = cited.reduce((top, factor) => (factor.points > top.points ? factor : top))
+  return { factor: best.factor, text: best.rationale, citationIds: best.citationIds }
+}
 
 async function projectPublishedIssue(
   ctx: QueryCtx,
@@ -629,9 +676,12 @@ async function projectPublishedIssue(
     factors: factors.map((factor) => ({
       factor: factor.factor,
       level: factor.level,
+      points: factor.points,
       rationale: factor.rationale,
       citationIds: factor.citationIds.filter((id) => citationIds.has(id)),
     })),
+    importanceScore: current.payload.importance.score,
+    acceptedAt: current.createdAt,
     publicActions,
     citations,
     versions: versions

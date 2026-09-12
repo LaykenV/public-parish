@@ -20,6 +20,7 @@ const citation = {
 }
 
 const publishedIssue: PublishedIssue = {
+  acceptedAt: 1_788_000_000_000,
   bodyName: 'Rapides Parish Police Jury',
   changes: [],
   citations: [citation, { ...citation, id: 'citation-undated' }],
@@ -31,6 +32,7 @@ const publishedIssue: PublishedIssue = {
     title: ['citation-dated'],
   },
   factors: [],
+  importanceScore: 0,
   lifecycleState: 'decided',
   links: [
     {

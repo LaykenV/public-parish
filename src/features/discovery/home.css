@@ -109,6 +109,10 @@
 }
 
 .pp-home .pp-card-why {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
   font-size: var(--pp-text-reading);
   line-height: 1.6;
 }

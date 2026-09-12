@@ -27,8 +27,29 @@ export function usePublishedDecisions(enabled: boolean, areas?: AreaSlug[]) {
 export function usePublishedIssues(enabled: boolean, areas?: AreaSlug[]) {
   return useQuery(
     api.resident.evidence.listPublishedIssues,
-    enabled ? { areas } : 'skip',
+    enabled ? { areas, today: localDay() } : 'skip',
   )
+}
+
+/** The reader's calendar day; the backend uses it to rank upcoming dates. */
+export function localDay(now: Date = new Date()): string {
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+  return `${now.getFullYear()}-${month}-${day}`
+}
+
+export function issueEvidenceNote(issue: {
+  decisionCount: number
+  coverageStatus: string
+}): string {
+  const records = `Built from ${issue.decisionCount} linked official decision ${issue.decisionCount === 1 ? 'record' : 'records'}.`
+  if (issue.coverageStatus === 'paused') {
+    return `${records} Source checks for this body are paused.`
+  }
+  if (issue.coverageStatus === 'degraded') {
+    return `${records} Some source checks for this body are incomplete.`
+  }
+  return records
 }
 
 export function toIssueCard(issue: PublishedIssue): IssueCardData | null {
@@ -39,7 +60,7 @@ export function toIssueCard(issue: PublishedIssue): IssueCardData | null {
     body: issue.bodyName,
     evidence: {
       checked: new Date(issue.evidenceCheckedAt).toISOString(),
-      note: `Built from ${issue.decisionCount} linked official decision ${issue.decisionCount === 1 ? 'record' : 'records'}.`,
+      note: issueEvidenceNote(issue),
       status:
         issue.mode === 'full' ? 'Evidence available' : 'Limited information',
     },
@@ -57,7 +78,9 @@ export function toIssueCard(issue: PublishedIssue): IssueCardData | null {
     state: toIssueLifecycleState(issue.lifecycleState),
     title: issue.title,
     topics: issue.topics,
-    whyMatter: issue.summary,
+    // The strongest cited consequence; the cited summary stands in when no
+    // consequence factor is supported.
+    whyMatter: issue.whyItMatters?.text ?? issue.summary,
   }
 }
 

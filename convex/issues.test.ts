@@ -1448,8 +1448,71 @@ test('selected parish issues survive newer issue rows in another parish', async 
       createdAt: Date.now() + n + 1000, updatedAt: Date.now() + n + 1000,
     })
   })
-  expect(await t.query(api.resident.evidence.listPublishedIssues, {})).toEqual([])
+  expect(await t.query(api.resident.evidence.listPublishedIssues, {})).toEqual(original)
   expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['lafayette-parish'] })).toEqual(original)
   expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['rapides-parish'] })).toEqual([])
   expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['lafayette-parish', 'lafayette-parish'] })).toEqual(original)
+})
+
+test('Home leads with the strongest cited consequence and keeps its citations', async () => {
+  const t = await initTest()
+  const seeded = await seedIssueInput(t)
+  const candidate = issueCandidate(seeded)
+  stubIssueFetch([
+    { model: TERRA_MODEL, content: candidate },
+    { model: LUNA_MODEL, content: issueReview(candidate) },
+  ])
+  const started = await startAndDrain(t, seeded.recordIds)
+  const evidence = await t.query(internal.operations.issues.readIssueBuildEvidence, { runId: started.runId })
+
+  const [home] = await t.query(api.resident.evidence.listPublishedIssues, { today: '2026-09-12' })
+  expect(home).toMatchObject({
+    slug: evidence.issue?.slug,
+    acceptedAt: evidence.issueVersion?.createdAt,
+    coverageStatus: 'validating',
+    whyItMatters: {
+      factor: 'public_assets',
+      text: 'The decisions transfer two surplus public pickup trucks.',
+    },
+  })
+  expect(home.whyItMatters?.citationIds.length).toBeGreaterThan(0)
+  const published = await t.query(api.resident.evidence.getPublishedIssue, { slug: home.slug })
+  const publishedIds = new Set(published?.citations.map((citation) => citation.id))
+  for (const id of home.whyItMatters?.citationIds ?? []) expect(publishedIds.has(id)).toBe(true)
+  expect(published?.factors.find((factor) => factor.factor === 'public_assets')).toMatchObject({
+    points: 5,
+  })
+  expect(published?.importanceScore).toBe(5)
+})
+
+test('an issue whose consequence no longer cites current evidence stays off Home but remains published', async () => {
+  const t = await initTest()
+  const seeded = await seedIssueInput(t)
+  const candidate = issueCandidate(seeded)
+  stubIssueFetch([
+    { model: TERRA_MODEL, content: candidate },
+    { model: LUNA_MODEL, content: issueReview(candidate) },
+  ])
+  const started = await startAndDrain(t, seeded.recordIds)
+  const evidence = await t.query(internal.operations.issues.readIssueBuildEvidence, { runId: started.runId })
+  const slug = evidence.issue?.slug as string
+  expect(await t.query(api.resident.evidence.listPublishedIssues, {})).toHaveLength(1)
+
+  // The consequence factor ends up citing a superseded publication version.
+  await t.run(async (ctx) => {
+    const citations = await ctx.db.query('citations').take(100)
+    const retired = citations.find(
+      (citation) => !seeded.currentVersionIds.includes(citation.publicationVersionId),
+    )
+    expect(retired).toBeDefined()
+    for (const assessment of evidence.assessments) {
+      await ctx.db.patch(assessment._id, { citationIds: [retired!._id] })
+    }
+  })
+
+  const published = await t.query(api.resident.evidence.getPublishedIssue, { slug })
+  expect(published).toMatchObject({ mode: 'full', nextKnownAction: null })
+  expect(published?.factors.every((factor) => factor.citationIds.length === 0)).toBe(true)
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { today: '2026-09-12' })).toEqual([])
+  expect(await t.query(api.resident.evidence.listPublishedIssues, {})).toEqual([])
 })
