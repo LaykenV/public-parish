@@ -36,11 +36,12 @@ export function ResidentLoadingProvider({ children }: { children: ReactNode }) {
     setPending((count) => count + 1)
     return () => setPending((count) => count - 1)
   }, [])
+  // Same-page URL changes open sources and jump to sections. Their data
+  // loading is registered separately, without collapsing the reading document.
   const navigating = useRouterState({
     select: (state) =>
       state.isLoading &&
-      (state.location.pathname !== state.resolvedLocation?.pathname ||
-        state.location.searchStr !== state.resolvedLocation.searchStr),
+      state.location.pathname !== state.resolvedLocation?.pathname,
   })
   const loading = initializing || navigating || pending > 0
 

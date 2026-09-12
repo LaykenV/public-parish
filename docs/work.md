@@ -14,7 +14,9 @@ build, lint and eight Chromium/WebKit loading checks. The PR rebases this change
 onto the current production code. Review and browser CI found an offline-notice issue and focus/anchor regressions.
 The fixes keep connection status in the header, defer parish focus until ready,
 and leave hash-only navigation visible. A local build and 18 targeted browser
-checks passed on the combined version. Full CI is pending.
+checks passed on the combined version. A later presentation run caught source-query
+scroll resets and a direct-child Ask selector. Both are fixed, and all 56 local
+presentation checks passed. Full CI is pending.
 
 ## Mobile chat and reading review, September 11
 

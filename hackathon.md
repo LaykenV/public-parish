@@ -2070,4 +2070,5 @@ still while the icon rotates. The original checkout passed local validation and
 eight browser checks. The PR applies the fix to current production code, with CI
 validation pending. Review and browser CI led to fixes for offline status, parish
 selection focus and hash-link scrolling. A local build and 18 targeted Chromium
-and WebKit checks passed after those fixes. No deployment yet.
+and WebKit checks passed after those fixes. Source-query scroll preservation and
+the Ask shell selector then passed all 56 local presentation checks. No deployment yet.
