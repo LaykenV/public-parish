@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-12T00:51:30Z
+- **Last updated:** 2026-09-12T12:55:46Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2080,3 +2080,16 @@ Shared navigation, readable panels and selected bundles replace the ungrouped
 controls. Publication and withdrawal retain their distinct Button variants.
 Local verification passed 686 tests; 12 synthetic Chromium/WebKit owner checks
 passed across phone, tablet and desktop widths. PR review remains pending.
+
+### 2026-09-12 - 5b9d7f3
+
+Released separate owner spending balances, readable Ask citations and reviewed
+image-text corrections through PRs 210, 211 and 212. Published the independently
+reviewed Meta update with the September agenda and its evidence limits. An open
+story page updated without a reload. The controlled production email test proved
+verification, update delivery, inbound reply, a delivered cited answer and per-follow
+unsubscribe. The owner confirmed native-phone keyboard and source-return behavior.
+PR 213 repaired a dated-evidence attribution found during live Ask testing. Its
+production workflow, independent smoke and exact question rerun passed. All source
+monitoring remains paused. The release receipt records costs and remaining launch
+gates. Convex actions and review records preserve the existing evidence pipeline.

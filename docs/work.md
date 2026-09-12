@@ -1,75 +1,48 @@
 # Current work and launch gates
 
-Updated September 11, 2026. This is the only active status and pending-work queue.
+Updated September 12, 2026. This is the only active status and pending-work queue.
 The approved order is stories, then design and QA, then launch and outreach.
 [Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
-## Owner operations design, September 12 UTC
+## September 12 launch checkpoint
 
-The owner approved the public desktop and mobile UI and requested the same
-patterns for the private coverage and story screens. The working branch
-`fix/owner-operations-ui` adds shared owner navigation, monitoring and activity
-panels, mobile-safe controls, selected bundle/build states and consistent
-sign-in gates. Story actions retain the shared primary and destructive variants.
+The owner authorized the prepared releases and the corrected Meta publication.
+The [release receipt](launch-release-2026-09-12.md) records exact production
+workflows, independent smoke checks and the controlled email test. The
+[overnight audit](launch-readiness-2026-09-12.md) explains the operations pages,
+regional evidence, pending queues and the minimum spending plan.
 
-Local verification passed 686 tests, both typechecks, build and lint with 15
-existing warnings. Twelve synthetic owner browser checks passed in Chromium
-and WebKit at 320, 375, 768 and 1280 pixels. Before and after screenshots were
-inspected. No live owner mutation or provider request was needed for these checks.
+The three launch regions have 920 accepted decisions and 116 accepted issues.
+All 12 named bodies pass the Supported agenda/minutes gate. That does not mean
+complete archives. The 170 pending decision targets and other recovery queues
+are deferred unless a specific launch claim needs them. Use the nine selected
+local examples in the overnight audit instead of processing the backlog.
 
-- [x] Match owner screens to the approved resident patterns.
-- [x] Check responsive layouts, access gates, selected review state and action feedback.
-- [ ] File the PR and finish CI and both review jobs.
-- [ ] Owner reviews and authorizes any production merge.
+Meta version 4 is published with the September 16 LPSC agenda and corrected,
+reviewed image text. SpaceX version 3 and Boyce version 2 remain published.
+All three are LIMITED where evidence is missing. Publishing Meta did not add
+supported parishes or activate monitoring.
 
-## App-wide loading, September 11
+All 12 source policies are paused, no source run is active, and source AI
+spending is disabled. Public Ask has a separate finite allowance through the
+end of September 25 Central. Keep OpenAI through judging. Review the Meta
+agenda after September 16; authorize only a named gap and bounded work before
+any future processing.
 
-The loading fix hides page content and the footer until pending page sections
-settle. Only the header and spinner remain visible. The spinner container stays
-still. Local validation on the original checkout passed 686 tests, both typechecks,
-build, lint and eight Chromium/WebKit loading checks. The PR rebases this change
-onto the current production code. Review and browser CI found an offline-notice issue and focus/anchor regressions.
-The fixes keep connection status in the header, defer parish focus until ready,
-and leave hash-only navigation visible. A local build and 18 targeted browser
-checks passed on the combined version. A later presentation run caught source-query
-scroll resets and a direct-child Ask selector. Both are fixed, and all 56 local
-presentation checks passed. Full CI is pending.
+- [x] Release owner spending balances, readable Ask citations and reviewed image-text corrections.
+- [x] Publish the supported Meta update and verify it appears on an open live page.
+- [x] Confirm real verification-code receipt, follow activation and material-update email delivery.
+- [x] Open the update email's private follow-management link.
+- [x] Release the Ask proceeding-attribution correction and pass the triggering live question without the unsupported filer.
+- [x] Receive the controlled inbound email reply, verify its delivered grounded response, and confirm per-follow unsubscribe after reload.
+- [x] Owner confirmed the native-phone composer stays reachable and source close preserves reading position.
+- [ ] Complete the private resident pilot, final demo, social previews and submission gates below.
 
-## Mobile chat and reading review, September 11
-
-PR #205 shipped as `60b43d9` after the owner's phone review. PR #207 refines
-that release with a bottom composer, compact chat header and bounded visual
-viewport. The owner requested review of #207 and selected mobile reading
-refinements before another development preview. Production is not authorized
-for this follow-up.
-
-The review retains the chat layout and checks short screens, stale keyboard
-close offsets, source drawers from standalone Ask and restoring the reading
-position. It corrects loading-title styling and keeps hidden site controls out
-of keyboard focus. Public Parish displays complete validated answers rather
-than streaming words. Conversation restoration and keyboard resizing are the
-relevant scroll behavior.
-
-The reading pass shrinks visible citations while retaining touch areas, puts
-issue Back/Follow/Share controls in one row, simplifies follow cards with
-expandable delivery details, groups meeting source documents by their known
-types, labels Explore loading and anchors Account above the menu's area controls.
-Home and source drawer layouts remain as approved.
-
-The owner's phone recording showed the standalone Ask route and the chat-button
-screen diverging under the keyboard: the button screen resized between a pinned
-bar and the composer, while the route's whole page panned and snapped back on
-close. Both now render one chat screen through the same portal, backdrop and
-scroll lock; the route opens it in place of the page and Back plays the shared
-exit motion before navigating. Regrowth after the keyboard closes is eased.
-
-- [x] Review the chat implementation and run all 34 existing fixture journeys.
-- [x] Route standalone phone Ask through the chat-button screen.
-- [x] Implement the selected reading and navigation refinements.
-- [ ] Finish expanded browser checks, application validation and both PR reviews.
-- [ ] Upload the exact green CI frontend to development and inspect it there.
-- [ ] Owner tests the revised interface and native iPhone keyboard on dev.
+The earlier owner operations, loading and mobile reading work shipped in PRs
+209, 208 and 207. Their old branch and pending-release notes are superseded by
+this checkpoint. The owner has now confirmed the native-phone keyboard and
+reading-position check.
 
 ## Parallel PR reviews, September 10
 
@@ -128,7 +101,7 @@ Initial PR CI passed; the latest-head recheck and physical-phone keyboard behavi
 remain pending. The story browser
 regressions now cover the mobile drawer and draft retention.
 
-## Current checkpoint
+## September 8 checkpoint
 
 Production is ready for the global design and founder QA pass. The September 8
 continuation published the targeted Youngsville records and stronger Meta and
@@ -318,8 +291,8 @@ future repairs bounded to one concern per PR.
 | S3 | Published story routes, evidence view, all-three homepage composition, related records, search and social share HTML | S1, S2 | Development passed on all three routes, Home, images, search and share HTML |
 | S4 | Story-scoped anonymous Ask and private thread authorization using accepted story evidence | S1, S3 | Development passed, two supported and one unsupported question per story |
 | S5 | Google and verified-email story follows, material-update alerts, roundup integration, grounded replies, management and unsubscribe | S1, S3, S4 | Development passed with actual isolated provider callbacks, receipt, reply, management and unsubscribe proof |
-| S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Initial development bundles passed; Meta v5, SpaceX v3 and unchanged Boyce evidence are now published LIMITED in production |
-| S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Development gate passed; exact owner-approved production publication and bounded smoke passed. Production email is assigned to founder QA. |
+| S6 | Accepted Meta, SpaceX, and Boyce source bundles and published versions, with images and current limits | S1 through S5 | Initial development bundles passed; current published versions are Meta 4, SpaceX 3 and Boyce 2, all LIMITED in production |
+| S7 | Story-loop release certification on all three stories, exact production release and independent smoke after authorized deployment | S1 through S6 | Development gate passed; exact owner-approved production publication and bounded smoke passed. The September 12 controlled Meta production email loop passed. |
 
 Meta remains the lead on the delivered homepage. Future research is limited to
 named gaps in these three stories. No fourth story is required. CCS is deferred;
@@ -330,8 +303,7 @@ The full development evidence is recorded in
 production application is `7ababad`; its exact workflow and independent smoke
 passed. All eleven source snapshots and three images passed target checks.
 No new body or parish was certified and no broad monitoring was activated.
-The acceptance checks below describe the completed development gate; production
-email verification is assigned to the owner's QA pass.
+The acceptance checks below describe the completed development gate; the September 12 checkpoint records the controlled production email proof.
 
 ### Story acceptance
 
