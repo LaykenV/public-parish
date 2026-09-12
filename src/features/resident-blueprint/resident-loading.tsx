@@ -40,7 +40,7 @@ export function ResidentLoadingProvider({ children }: { children: ReactNode }) {
     select: (state) =>
       state.isLoading &&
       (state.location.pathname !== state.resolvedLocation?.pathname ||
-        state.location.searchStr !== state.resolvedLocation?.searchStr),
+        state.location.searchStr !== state.resolvedLocation.searchStr),
   })
   const loading = initializing || navigating || pending > 0
 
