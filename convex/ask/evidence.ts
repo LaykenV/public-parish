@@ -18,6 +18,7 @@ import {
 } from './contracts'
 import { authorizeThreadRead } from './threads'
 import { storyAskCatalog } from '../stories/askEvidence'
+import { publicBodyLabel } from '../coverage/labels'
 import type { StoryCatalog } from '../stories/askEvidence'
 
 const MAX_SCOPE_RECORDS = 75
@@ -306,7 +307,7 @@ async function loadAcceptedEvidenceSource(
       recordKey: record.recordKey,
       fieldPath: citation.fieldPath,
       documentTitle: publication.payload.title,
-      bodyName: body.name,
+      bodyName: publicBodyLabel(body),
       sourceKind: publication.payload.source.sourceKind,
       officialUrl: citation.officialUrl,
       excerpt: citation.excerpt,

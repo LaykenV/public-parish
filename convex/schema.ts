@@ -609,7 +609,11 @@ export default defineSchema({
 
   governmentBodies: defineTable({
     jurisdictionId: v.id('jurisdictions'),
+    // Identity label compared against manifests and certification artifacts.
     name: v.string(),
+    // Place-qualified public label; falls back to `name` when unset.
+    displayName: v.optional(v.string()),
+    municipality: v.optional(v.object({ slug: v.string(), name: v.string() })),
     slug: v.string(),
     bodyType: v.union(
       v.literal('city_council'),

@@ -94,7 +94,7 @@ export const COVERAGE_REGION_FIXTURES: CoverageRegion[] = [
     bodies: [
       {
         id: 'ebr-metropolitan-council',
-        name: 'Metropolitan Council',
+        name: 'Baton Rouge Metropolitan Council',
         state: 'Validating sources',
         sourceKinds: ['Agendas', 'Minutes', 'Document versions'],
         nextExpectedArtifact: 'A revised-packet replay',

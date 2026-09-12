@@ -56,6 +56,10 @@ describe('resident interface Slice 2 discovery contracts', () => {
     for (const body of [
       'Pineville City Council',
       'Youngsville City Council',
+      'Lafayette Hearing Examiner',
+      'Lafayette City Zoning Commission',
+      'Baton Rouge Metropolitan Council',
+      'East Baton Rouge Planning and Zoning Commission',
       'Hearing Examiner',
       'City Zoning Commission',
       'Metropolitan Council',

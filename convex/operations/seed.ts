@@ -3,6 +3,7 @@ import { v } from 'convex/values'
 import type { Id } from '../_generated/dataModel'
 import type { MutationCtx } from '../_generated/server'
 import { internalMutation } from '../_generated/server'
+import { PUBLIC_BODY_LABELS, publicBodyFields } from '../coverage/labels'
 
 const LAUNCH_REGISTRIES = [
   {
@@ -102,6 +103,7 @@ async function seedRegistry(
     (await ctx.db.insert('governmentBodies', {
       jurisdictionId,
       name: config.body.name,
+      ...publicBodyFields(config.body.slug),
       slug: config.body.slug,
       bodyType: config.body.bodyType,
       officialUrl: config.body.officialUrl,
@@ -150,18 +152,44 @@ async function seedRegistry(
   return { jurisdictionId, bodyId, registryId }
 }
 
+// Public labels apply to every body the map knows, whatever its coverage
+// status. Identity `name` is never touched here.
+async function seedPublicBodyLabels(ctx: MutationCtx): Promise<number> {
+  let patched = 0
+  for (const slug of Object.keys(PUBLIC_BODY_LABELS)) {
+    const body = await ctx.db
+      .query('governmentBodies')
+      .withIndex('by_slug', (q) => q.eq('slug', slug))
+      .unique()
+    if (!body) continue
+    const fields = publicBodyFields(slug)
+    if (
+      body.displayName === fields.displayName &&
+      body.municipality?.slug === fields.municipality?.slug &&
+      body.municipality?.name === fields.municipality?.name
+    ) {
+      continue
+    }
+    await ctx.db.patch(body._id, fields)
+    patched += 1
+  }
+  return patched
+}
+
 export const seedLaunchCoverage = internalMutation({
   args: {},
   returns: v.object({
     jurisdictionId: v.id('jurisdictions'),
     bodyId: v.id('governmentBodies'),
     registryId: v.id('sourceRegistries'),
+    labeledBodies: v.number(),
   }),
   handler: async (ctx) => {
     const lafayette = await seedRegistry(ctx, LAUNCH_REGISTRIES[0])
     for (const config of LAUNCH_REGISTRIES.slice(1)) {
       await seedRegistry(ctx, config)
     }
-    return lafayette
+    const labeledBodies = await seedPublicBodyLabels(ctx)
+    return { ...lafayette, labeledBodies }
   },
 })
