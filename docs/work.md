@@ -12,13 +12,15 @@ QA, then launch and outreach.
 The owner adopted the [launch upgrade plan](launch-upgrade.md) after two agent
 reviews. It sharpens the existing resident workflow instead of adding datasets.
 Slice contracts, acceptance and spend proposals live there; status lives here.
-No slice has started. No allowance has been configured for U4, U5 or U6.
+U1 through U3 are implemented in PRs #216 through #219. Their release checks
+and exact production receipts live in those PRs. U4 through U7 have not started;
+no allowance has been configured for U4, U5 or U6.
 
 | Slice | Outcome | State | Evidence |
 | --- | --- | --- | --- |
-| U1 | Louisiana-first Home with parish focus and return | Not started | |
-| U2 | Place-qualified body labels; parish, city, body selector; body focus on Home and Explore | Not started | |
-| U3 | Consequence-first Home issues with a cited one-line reason | Not started | |
+| U1 | Louisiana-first Home with parish focus and return | Implemented | [PR #216](https://github.com/LaykenV/public-parish/pull/216) |
+| U2 | Place-qualified body labels; parish, city, body selector; body focus on Home and Explore | Implemented | [Labels #217](https://github.com/LaykenV/public-parish/pull/217), [focus #218](https://github.com/LaykenV/public-parish/pull/218) |
+| U3 | Consequence-first Home issues with a cited one-line reason | Implemented | [PR #219](https://github.com/LaykenV/public-parish/pull/219) |
 | U4 | September 16 LPSC agenda-to-outcome on Meta, follower delivery and demo capture | Not started; session is September 16, 9 a.m. Central | Meta v4 cites the revised agenda |
 | U5 | Louisiana Public Service Commission through the ten gates as a statewide body | Not started | `louisiana` jurisdiction exists as candidate; LPSC hosts registered for story sources |
 | U6 | Ten November 3 constitutional amendments with Ask and follows; verified parish propositions | Not started | SOS amendment list published with ten measures |
@@ -36,6 +38,15 @@ No slice has started. No allowance has been configured for U4, U5 or U6.
       is not labeled supported before ten passes in production.
 - [ ] U6 publishes measures only from the SOS document, enrolled Acts and fiscal
       notes, with no recommendation or candidate content.
+
+The review corrected four release defects. Search retains stored body identity
+names and displays the public label without requiring a backfill. Shared Home
+links derive their parish from the selected body or city and clear filters when
+returning to Louisiana. Monitoring notices read policy state separately from
+coverage certification. Written dates use UTC calendar days, matching ISO dates.
+City rows are selectable and filter both issues and records. The combined
+application suite passed 718 tests before the final browser and filter fixes;
+latest-head CI and production receipts are linked from the PRs above.
 
 The previous P2 findings, design pass and pilot remain below. Their order moves
 after the slices, not off the list.

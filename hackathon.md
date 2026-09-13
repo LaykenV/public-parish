@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-12T12:55:46Z
+- **Last updated:** 2026-09-13T00:47:04Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2093,3 +2093,11 @@ PR 213 repaired a dated-evidence attribution found during live Ask testing. Its
 production workflow, independent smoke and exact question rerun passed. All source
 monitoring remains paused. The release receipt records costs and remaining launch
 gates. Convex actions and review records preserve the existing evidence pipeline.
+
+### 2026-09-13 - launch upgrade review repairs
+U1 through U3 now include public body labels, selectable cities, shareable Home
+focus and cited issue ranking. Review repairs preserve existing search filters,
+separate paused monitoring from coverage status and normalize calendar dates.
+The combined code passed 718 application tests. Final browser checks and release
+receipts are tracked in PRs #216 through #219. No civic evidence was republished
+and no monitoring policy or paid allowance was changed by this work.
