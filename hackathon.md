@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-13T15:04:30Z
+- **Last updated:** 2026-09-13T15:19:15Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2119,3 +2119,11 @@ draft body choices and Apply filters. Existing Convex queries now show local
 result spinners after initial loading. Local checks passed 719 tests, both
 typechecks, build, lint and 50 browser checks across Chromium and WebKit.
 Inspected desktop and 320px screenshots. These changes are not deployed.
+
+### 2026-09-13 - 323986f, Home controls development preview
+
+Opened PR #221. CI passed 719 application tests and 152 browser checks; GLM and
+Muse reported no key issues. Uploaded the exact CI build to development and
+passed six independent hosted checks. All 70 HTML, JavaScript and CSS files
+matched. Screenshot review caught a desktop focus-ring spacing issue, corrected
+in the follow-up. Its replacement preview is pending. Production is unchanged.

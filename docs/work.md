@@ -21,7 +21,16 @@ Local validation passed 719 application tests, both typechecks, build and lint
 with 15 existing warnings. All 44 Home browser checks and six initial-loading
 checks passed across Chromium and WebKit after updating the old chip assertions.
 Inspected desktop stories with loaded images, 320px parish and drawer layouts,
-and section loading. No commit, PR or deployment has been made for this refinement.
+and section loading.
+
+[PR #221](https://github.com/LaykenV/public-parish/pull/221) opened at `323986f`.
+CI `34764692736` passed 719 application tests and 152 browser checks. GLM and Muse
+reported no key issues. Development upload `b38ec75f-a464-41f6-9f14-c302d682c1cb`
+used exact CI artifact `10320420943`. Six independent hosted checks passed and
+all 70 HTML, JavaScript and CSS files matched. Screenshot review then found the
+desktop select's focus outline touching the copy below it. The follow-up adds a
+12px gap; its CI and replacement development upload remain pending. Production
+has not changed.
 
 ## September 13 Home UX correction
 
