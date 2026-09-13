@@ -205,6 +205,120 @@ test('projects accepted decision citations and bounded meeting evidence', async 
   expect(meeting?.citations.length).toBeGreaterThan(0)
 })
 
+test('residents read the place-qualified body label while the identity name stays', async () => {
+  const t = convexTest(schema, modules)
+  const seeded = await t.run(async (ctx) => {
+    const jurisdictionId = await ctx.db.insert('jurisdictions', {
+      name: 'East Baton Rouge Parish',
+      slug: 'east-baton-rouge-parish',
+      type: 'parish',
+      state: 'LA',
+      publicStatus: 'validating',
+    })
+    const governmentBodyId = await ctx.db.insert('governmentBodies', {
+      jurisdictionId,
+      name: 'Metropolitan Council',
+      slug: 'ebr-metropolitan-council',
+      bodyType: 'parish_council',
+      publicStatus: 'validating',
+    })
+    const registryId = await ctx.db.insert('sourceRegistries', {
+      governmentBodyId,
+      officialDomains: ['brla.gov'],
+      seedUrls: ['https://www.brla.gov/AgendaCenter'],
+      sourceKinds: ['agenda'],
+      expectedCadence: { kind: 'meeting_cycle' },
+      discoveryMode: 'dynamic',
+      status: 'validating',
+    })
+    return await seedPublication({
+      ctx,
+      registryId,
+      governmentBodyId,
+      sourceRecordId: 'EBR-LABEL-2026',
+      mode: 'full',
+      updatedAt: 50,
+    })
+  })
+
+  const decisions = await t.query(api.resident.discovery.listPublishedDecisions, {})
+  expect(decisions[0]?.bodyName).toBe('Baton Rouge Metropolitan Council')
+  const decision = await t.query(api.resident.evidence.getPublishedDecision, {
+    recordKey: seeded.recordKey,
+  })
+  expect(decision?.bodyName).toBe('Baton Rouge Metropolitan Council')
+
+  await t.mutation(internal.resident.search.backfill, {
+    kind: 'decision',
+    paginationOpts: { numItems: 10, cursor: null },
+  })
+  // Existing search rows predate public labels. The release must display and
+  // filter them correctly without requiring an owner backfill first.
+  await t.run(async (ctx) => {
+    const rows = await ctx.db.query('publishedSearchEntries').take(10)
+    expect(rows.every((row) => row.bodyName === 'Metropolitan Council')).toBe(true)
+    for (const row of rows) {
+      if (row.kind === 'body') await ctx.db.patch(row._id, {
+        title: 'Metropolitan Council', href: '/explore?body=Metropolitan%20Council',
+      })
+    }
+  })
+  for (const q of [undefined, 'EBR-LABEL-2026']) {
+  for (const body of ['Metropolitan Council', 'Baton Rouge Metropolitan Council']) {
+    const results = await t.query(api.resident.search.search, {
+      body, q,
+      paginationOpts: { numItems: 10, cursor: null },
+    })
+    expect(results.page.map((row) => row.kind).sort()).toEqual(q ? ['decision'] : ['body', 'decision'])
+    expect(results.page.every((row) => row.bodyName === 'Baton Rouge Metropolitan Council')).toBe(true)
+    if (!q) expect(results.page.find((row) => row.kind === 'body')?.href).toBe(
+      '/explore?body=Baton%20Rouge%20Metropolitan%20Council',
+    )
+  }
+
+  }
+  const areas = ['east-baton-rouge-parish' as const]
+  for (const body of ['Metropolitan Council', 'Baton Rouge Metropolitan Council']) {
+    expect(
+      await t.query(api.resident.discovery.listPublishedDecisions, { areas, body }),
+    ).toHaveLength(1)
+  }
+  expect(
+    await t.query(api.resident.discovery.listPublishedDecisions, {
+      areas,
+      body: 'Pineville City Council',
+    }),
+  ).toHaveLength(0)
+  expect(
+    await t.query(api.resident.evidence.listPublishedIssues, {
+      areas,
+      body: 'Pineville City Council',
+    }),
+  ).toHaveLength(0)
+
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { areas, city: 'baton-rouge' })).toHaveLength(1)
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { areas, city: 'pineville' })).toHaveLength(0)
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { areas, city: 'pineville' })).toHaveLength(0)
+
+  expect(await t.query(api.resident.discovery.listCoverageBodies, {})).toEqual([
+    {
+      slug: 'ebr-metropolitan-council',
+      label: 'Baton Rouge Metropolitan Council',
+      placeSlug: 'east-baton-rouge-parish',
+      municipality: { slug: 'baton-rouge', name: 'Baton Rouge' },
+      published: true,
+    },
+  ])
+
+  await t.run(async (ctx) => {
+    const body = await ctx.db
+      .query('governmentBodies')
+      .withIndex('by_slug', (q) => q.eq('slug', 'ebr-metropolitan-council'))
+      .unique()
+    expect(body?.name).toBe('Metropolitan Council')
+  })
+})
+
 test('selected parish decisions survive a newer publication flood elsewhere', async () => {
   const t = convexTest(schema, modules)
   await t.run(async ctx => {

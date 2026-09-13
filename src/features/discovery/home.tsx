@@ -1,6 +1,6 @@
-import { ArrowUpRightIcon, SearchIcon } from 'lucide-react'
+import { ArrowLeftIcon, ArrowUpRightIcon, SearchIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 
 import {
   PageLoading,
@@ -11,10 +11,18 @@ import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery
 import { FeaturedStories } from '../stories/story-page'
 import { LouisianaRelief } from '../landing/louisiana-relief'
 import { AreaSelector } from './area-selector'
-import { useArea } from './area-store'
-import { areaName, getActiveDiscoveryFixture } from './contracts'
+import { setArea, useArea } from './area-store'
+import {
+  areaName,
+  getActiveDiscoveryFixture,
+  homeFocusArea,
+  HOME_CITIES,
+} from './contracts'
+import { useCoverageBodies } from './live-areas'
 import type {
   AreaSlug,
+  HomeSearch,
+  HomeCity,
   HomeScenario,
   IssueCardData,
   ResultRowData,
@@ -35,10 +43,25 @@ import './home.css'
 
 const HOME_SECTION_LIMIT = 6
 
-export function HomePage({ scenario }: { scenario?: HomeScenario }) {
-  const area = useArea()
+export function HomePage({
+  area: urlArea,
+  city,
+  body,
+  scenario,
+}: {
+  area?: HomeSearch['area']
+  city?: HomeCity
+  body?: string
+  scenario?: HomeScenario
+}) {
+  const storedArea = useArea()
+  const area = homeFocusArea({ area: urlArea, body, city }, storedArea)
+  useEffect(() => {
+    if (storedArea !== area) setArea(area)
+  }, [area, storedArea])
   const pageLoading = usePageLoading()
-  const previousArea = useRef(area)
+  const focusKey = `${area ?? 'louisiana'}:${body ?? city ?? ''}`
+  const previousFocus = useRef(focusKey)
   const mainRef = useRef<HTMLElement>(null)
   const activeScenario = getActiveDiscoveryFixture(scenario)
   const fixturesEnabled = activeScenario !== undefined
@@ -48,26 +71,25 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
       ? ['lafayette-parish', 'east-baton-rouge-parish']
       : []
   const selected = watching.length > 0
-  const resetKey = `${area ?? 'all'}:${scenario ?? 'live'}`
+  // A body focus only narrows a single focused parish.
+  const bodyFocus = area && body ? body : undefined
+  const resetKey = `${area ?? 'all'}:${bodyFocus ?? city ?? 'all'}:${scenario ?? 'live'}`
 
   useEffect(() => {
     if (pageLoading) return
-    const collapsed = previousArea.current === null && area !== null
-    if (!collapsed) {
-      previousArea.current = area
-      return
-    }
-    // The hero's selector opener disappears on first selection. Give keyboard
-    // users a stable destination after its dialog unmounts.
+    if (previousFocus.current === focusKey) return
+    // Choosing a parish removes the hero and its opener; returning to Louisiana
+    // removes the back control. Either way the page heading changes, so give
+    // keyboard users a stable destination after the dialog unmounts.
     const frame = window.requestAnimationFrame(() => {
       if (document.querySelector('[role="dialog"]')) return
-      previousArea.current = area
+      previousFocus.current = focusKey
       mainRef.current
         ?.querySelector<HTMLElement>('h1')
         ?.focus({ preventScroll: true })
     })
     return () => window.cancelAnimationFrame(frame)
-  }, [area, pageLoading])
+  }, [focusKey, pageLoading])
 
   return (
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>
@@ -76,6 +98,8 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
           <LocalIssues
+            city={bodyFocus ? undefined : city}
+            body={bodyFocus}
             fixturesEnabled={fixturesEnabled}
             scenario={activeScenario}
             watching={watching}
@@ -84,6 +108,8 @@ export function HomePage({ scenario }: { scenario?: HomeScenario }) {
       </div>
       <ResidentSectionBoundary label="Decision records" resetKey={resetKey}>
         <LocalDecisionRecords
+          city={bodyFocus ? undefined : city}
+          body={bodyFocus}
           fixturesEnabled={fixturesEnabled}
           watching={watching}
         />
@@ -101,16 +127,17 @@ function FirstVisitHero() {
       data-relief-interaction
     >
       <div className="pp-home-hero-copy">
-        <h1 id="home-title">See how local government is changing.</h1>
+        <h1 id="home-title" tabIndex={-1}>
+          Understand what Louisiana's government is deciding.
+        </h1>
         <p>
-          Understand the decisions shaping your community, with the official
-          evidence behind them.
+          See the documents behind each decision and follow what happens next.
         </p>
         <div className="pp-home-hero-actions">
           <AreaSelector
             trigger={(props) => (
               <Button {...props} size="touch">
-                <SearchIcon aria-hidden="true" /> Choose a parish or city
+                <SearchIcon aria-hidden="true" /> Focus on a parish or city
               </Button>
             )}
           />
@@ -130,15 +157,24 @@ function FirstVisitHero() {
 }
 
 function LocalIssues({
+  city,
+  body,
   watching,
   scenario,
   fixturesEnabled,
 }: {
+  city?: HomeCity
+  body?: string
   watching: AreaSlug[]
   scenario?: HomeScenario
   fixturesEnabled: boolean
 }) {
-  const publishedIssues = usePublishedIssues(!fixturesEnabled, watching)
+  const publishedIssues = usePublishedIssues(
+    !fixturesEnabled,
+    watching,
+    body,
+    city,
+  )
   const [refreshed, setRefreshed] = useState(false)
   const [refreshAnnouncement, announceRefresh] = useRepeatedAnnouncement(
     'Home updated from the official record.',
@@ -167,6 +203,8 @@ function LocalIssues({
         />
       ) : null}
       <IssuesSection
+        city={city}
+        body={body}
         issues={issues}
         loading={!fixturesEnabled && publishedIssues === undefined}
         scenario={scenario}
@@ -198,13 +236,22 @@ function LocalIssues({
 }
 
 function LocalDecisionRecords({
+  city,
+  body,
   watching,
   fixturesEnabled,
 }: {
+  city?: HomeCity
+  body?: string
   watching: AreaSlug[]
   fixturesEnabled: boolean
 }) {
-  const publishedDecisions = usePublishedDecisions(!fixturesEnabled, watching)
+  const publishedDecisions = usePublishedDecisions(
+    !fixturesEnabled,
+    watching,
+    body,
+    city,
+  )
   const rows = fixturesEnabled
     ? filterFixtureRows(
         EXPLORE_ROW_FIXTURES.filter((row) => row.kind === 'Decision record'),
@@ -222,25 +269,34 @@ function LocalDecisionRecords({
 }
 
 function IssuesSection({
+  city,
+  body,
   issues,
   loading,
   scenario,
   watching,
 }: {
+  city?: HomeCity
+  body?: string
   issues: IssueCardData[]
   loading: boolean
   scenario?: HomeScenario
   watching: AreaSlug[]
 }) {
+  const navigate = useNavigate()
   const [recovered, setRecovered] = useState(false)
   const showFailure = scenario === 'section-failure' && !recovered
   const Heading = watching.length ? 'h1' : 'h2'
-  const title =
-    watching.length === 1
-      ? `Issues in ${areaName(watching[0])}`
-      : watching.length > 1
-        ? 'Issues in your saved areas'
-        : 'Issues across covered areas'
+  const focused = watching.length === 1 && scenario !== 'signed-in'
+  const title = body
+    ? `Issues from ${body}`
+    : city
+      ? `Issues in ${HOME_CITIES[city].name}`
+      : watching.length === 1
+        ? `Issues in ${areaName(watching[0])}`
+        : watching.length > 1
+          ? 'Issues in your saved areas'
+          : 'Issues across covered parishes'
 
   return (
     <section
@@ -256,6 +312,20 @@ function IssuesSection({
           >
             {title}
           </Heading>
+          {focused ? (
+            <Button
+              className="pp-home-statewide"
+              onClick={() => {
+                setArea(null)
+                void navigate({ to: '/', search: { area: 'louisiana' } })
+              }}
+              size="touch"
+              variant="ghost"
+            >
+              <ArrowLeftIcon aria-hidden="true" />
+              Back to all of Louisiana
+            </Button>
+          ) : null}
         </div>
         <Button
           className="pp-section-link"
@@ -267,6 +337,9 @@ function IssuesSection({
           <ArrowUpRightIcon aria-hidden="true" />
         </Button>
       </div>
+      {focused ? (
+        <BodyChips active={body} city={city} area={watching[0]} />
+      ) : null}
       <p className="pp-section-copy">
         Follow an issue through the decisions that shape it.
       </p>
@@ -280,14 +353,85 @@ function IssuesSection({
       ) : issues.length > 0 ? (
         <HomeIssueCards issues={issues.slice(0, HOME_SECTION_LIMIT)} />
       ) : (
-        <EmptyIssues watching={watching} />
+        <EmptyIssues city={city} body={body} watching={watching} />
       )}
     </section>
   )
 }
 
-function EmptyIssues({ watching }: { watching: AreaSlug[] }) {
-  const place = watching.length === 1 ? ` for ${areaName(watching[0])}` : ''
+// One chip per body with published records in the focused parish. The active
+// chip lives in the URL so a reload and a shared link keep the focus.
+function BodyChips({
+  active,
+  area,
+  city,
+}: {
+  active?: string
+  area: AreaSlug
+  city?: HomeCity
+}) {
+  const bodies = useCoverageBodies().filter(
+    (body) => body.placeSlug === area && body.published,
+  )
+  if (bodies.length === 0) return null
+  return (
+    <nav aria-label="Government bodies" className="pp-body-chips">
+      <ul>
+        <li>
+          <Link
+            aria-current={active || city ? undefined : 'true'}
+            resetScroll={false}
+            search={{ area }}
+            to="/"
+          >
+            All bodies
+          </Link>
+        </li>
+        {city ? (
+          <li>
+            <Link
+              aria-current="true"
+              resetScroll={false}
+              to="/"
+              search={{ area, city }}
+            >
+              {HOME_CITIES[city].name} bodies
+            </Link>
+          </li>
+        ) : null}
+        {bodies.map((body) => (
+          <li key={body.slug}>
+            <Link
+              aria-current={active === body.label ? 'true' : undefined}
+              resetScroll={false}
+              search={{ area, body: body.label }}
+              to="/"
+            >
+              {body.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+function EmptyIssues({
+  city,
+  body,
+  watching,
+}: {
+  city?: HomeCity
+  body?: string
+  watching: AreaSlug[]
+}) {
+  const place = body
+    ? ` for the ${body}`
+    : city
+      ? ` for ${HOME_CITIES[city].name}`
+      : watching.length === 1
+        ? ` for ${areaName(watching[0])}`
+        : ''
   return (
     <div className="pp-empty">
       <p className="pp-empty-title">
