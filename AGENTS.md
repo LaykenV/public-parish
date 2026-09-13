@@ -2,9 +2,10 @@
 
 Read `PLAN.md`, `docs/work.md`, `docs/architecture.md`, `docs/sources.md`,
 `docs/design.md`, and `docs/operations.md` before changing product behavior or
-scope. Read `docs/marketing.md` for distribution and `docs/submission.md` for
-hackathon artifacts. `docs/work.md` is the only active status and pending-work
-queue. `docs/archive/` preserves history, not current instructions.
+scope. Read `docs/launch-upgrade.md` before taking an upgrade slice. Read
+`docs/marketing.md` for distribution and `docs/submission.md` for hackathon
+artifacts. `docs/work.md` is the only active status and pending-work queue.
+`docs/archive/` preserves history, not current instructions.
 
 ## Product Contract
 
@@ -62,9 +63,22 @@ queue. `docs/archive/` preserves history, not current instructions.
 The approved launch adds three homepage stories: Meta in Richland Parish as the
 lead, SpaceX in Vermilion Parish and the Boyce data center as secondary stories.
 All three and story-scoped Ask, follows, updates, replies, sharing, source review
-and images must pass before the full design and QA campaign. Use the restored hero and stories before issues until an area is selected.
-After selection, remove the hero and keep stories before local issues. Do not add a fourth story or
-replace this set without an owner decision.
+and images must pass before the full design and QA campaign. Louisiana is the
+default Home: hero, stories and statewide records, then issues across covered
+parishes. A parish, city or body is a focus the reader can choose and leave.
+After a focus is chosen, remove the hero, keep stories before local issues and
+show a return to all of Louisiana. Do not add a fourth story or replace this
+set without an owner decision.
+
+The September 12 launch upgrade in `docs/launch-upgrade.md` adds Louisiana-first
+Home, place-qualified body labels with a parish, city, body selector,
+consequence-first issue selection, the September 16 LPSC outcome work on Meta,
+bounded Louisiana Public Service Commission coverage, and sourced November 3
+ballot-measure explanations. Ballot measures quote the official ballot wording
+and the Act and never recommend a vote. Candidates, campaign finance, polls,
+statistics profiles, spending dashboards and money aggregates stay out. A body
+becomes supported only through the same ten coverage gates; `governmentBodies.name`
+is an identity value, so public labels use a separate display field.
 
 The owner permits additional targeted hackathon spending under
 `docs/operations.md`. The old catch-up maximum is not the remaining project

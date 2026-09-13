@@ -19,6 +19,10 @@ Eligible spending produces a concrete launch result:
 - Bounded story, Ask, follow, reply, sharing and release verification.
 - Public Ask and selected source maintenance during launch and judging.
 - A necessary submission or source-change demonstration using real evidence.
+- The named tranches in [launch upgrade](launch-upgrade.md) slices U4, U5 and
+  U6: the September 16 LPSC outcome, the bounded LPSC coverage compile and the
+  November 3 measure drafts. The plan proposes amounts; the owner configures
+  each allowance through the spending guard before a run.
 
 Before a paid batch, name the deliverable, source and date scope, existing stored
 inputs, expected provider use, a finite allowance and the stop condition. Include

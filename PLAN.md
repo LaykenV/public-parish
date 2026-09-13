@@ -1,8 +1,9 @@
 # Business and product plan
 
-Owner decisions updated September 8, 2026. Current delivery status and all
+Owner decisions updated September 12, 2026. Current delivery status and all
 unfinished work live in [the work plan](docs/work.md). Technical contracts live
-in [architecture](docs/architecture.md).
+in [architecture](docs/architecture.md). The pre-launch upgrade slices live in
+[the launch upgrade plan](docs/launch-upgrade.md).
 
 ## Purpose
 
@@ -17,15 +18,23 @@ record, legal notice, or an agency's answer.
 
 ## Audience and positioning
 
-Introduce Public Parish with the Louisiana hero and an optional area selector.
-Show recognizable Louisiana stories before issues when no area is selected.
-After selection, remove the hero and keep stories before local issues. Reading and Ask require no account. Google sign-in supports saved
+Louisiana is the default Home. Introduce Public Parish with the Louisiana hero,
+the three stories and statewide records, then issues across covered parishes.
+A parish or city is a focus the reader can choose and leave; choosing one
+removes the hero, keeps stories above local issues, and offers a return to all
+of Louisiana. Reading and Ask require no account. Google sign-in supports saved
 interests and managed follows. Verified email subscriptions are a separate
 account-free delivery path.
 
-The working product promise is "Understand Louisiana's consequential stories,
-with the official evidence." This is proposed positioning for the coming design
-pass. The story feature is deployed; [Work](docs/work.md) records its proof and limits.
+The product promise is "Understand Louisiana's government decisions. See the
+documents behind them and follow what happens next." The story feature is
+deployed; [Work](docs/work.md) records its proof and limits.
+
+Public Parish is not a civic data aggregator. It sharpens one workflow:
+understand a consequential decision, open the document behind it, ask a
+grounded question, follow what happens next, and receive the sourced update.
+Statistics profiles, spending dashboards, candidate profiles, campaign finance
+and polls were considered on September 12 and are not in this launch.
 
 Stories-first is an adoption hypothesis. Measure whether visitors inspect
 sources, ask useful questions, follow, and return. Interest in a familiar project
@@ -58,12 +67,30 @@ and East Baton Rouge defined in [sources](docs/sources.md). A story may span
 several agencies or places. Its publication does not certify continuous coverage
 of those agencies or add their parishes to the local selector.
 
+### Approved launch upgrade
+
+The September 12 upgrade adds, in slices defined in
+[the launch upgrade plan](docs/launch-upgrade.md):
+
+- Louisiana-first Home with a parish, city and body focus and correct
+  place-qualified body labels.
+- Consequence-first selection of local issues with a cited one-line reason.
+- The September 16 LPSC agenda-to-outcome experience on the Meta story.
+- The Louisiana Public Service Commission as a statewide body, supported only
+  after the same ten coverage gates.
+- Sourced explanations of the ten November 3 constitutional amendments, and
+  verified parish propositions where documented, with Ask and follows and
+  without recommendations or candidate content.
+
+The featured story set stays at three. The upgrade does not add a fourth story.
+
 ## Delivery order
 
 1. Finish story functionality and publish the three accepted launch stories.
-2. Complete global design changes, then page-by-page desktop and mobile design
-   and functional QA. Fix blocking findings.
-3. Launch publicly, conduct outreach, publish content, observe residents, and
+2. Complete the launch upgrade slices, including the September 16 outcome work.
+3. Complete global design changes, then page-by-page desktop and mobile design
+   and functional QA over the upgraded surfaces. Fix blocking findings.
+4. Launch publicly, conduct outreach, publish content, observe residents, and
    make bounded fixes. Record the demo and submit with the owner's authorization.
 
 Functional verification during implementation is still required. The full
@@ -125,14 +152,19 @@ real work. [Marketing](docs/marketing.md) owns distribution and measurement;
 
 ## Deferred scope
 
-Do not add a fourth launch story, broad CCS coverage, candidate comparisons,
-election predictions, a ballot database, maps, public discussion, testimony
-writing, public-records request automation, procurement tools, video
+Do not add a fourth launch story, broad CCS coverage, candidate profiles or
+comparisons, campaign finance, polls, endorsements, election predictions, a
+candidate database, population or economic statistics profiles, budget or
+spending dashboards, a money aggregate over decisions, maps, public discussion,
+testimony writing, public-records request automation, procurement tools, video
 transcription, a government staff portal, FAQ aggregation, a public corrections
 workflow, public-triggered compilation, live public compiler progress, or
 cross-device chat history for this launch.
 
-Keep the small dated voter-information strip with official outbound links.
+Sourced ballot-measure explanations are in scope under the launch upgrade.
+They quote the official ballot wording and the Act, never recommend a vote, and
+never describe campaigns. Keep the small dated voter-information strip with
+official outbound links; it links to the ballot page once that page exists.
 Keep private source-problem reports and public coverage requests. Reports and
 requests do not launch paid source work.
 
@@ -166,3 +198,14 @@ On September 10 the owner requested a shared reading experience across stories,
 issues, decisions and meetings. Stories stay above local issues with an area
 selected. The 3D Louisiana is desktop-only. Sources open in drawers without
 moving the reading position, and chat keeps its composer below the conversation.
+
+On September 12 the owner reviewed five proposals to make the launch more
+compelling: a statewide default with parish focus, a parish-city-body selector
+with corrected labels, spending data, statistics, and midterm candidate data.
+Two agent reviews agreed on the direction recorded above. The owner adopted
+Louisiana-first Home, selector and label work, consequence-first issue
+selection, the September 16 LPSC outcome experience, bounded LPSC coverage and
+ballot-measure explanations. The owner cut spending data, statistics, candidate
+and poll data and a proposed money aggregate. The stance is to show what the
+documents establish and what remains unresolved, not to confirm or puncture an
+announcement. [The launch upgrade plan](docs/launch-upgrade.md) owns the slices.
