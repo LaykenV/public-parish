@@ -9,18 +9,21 @@ const SLUGS: readonly AreaSlug[] = [
   'rapides-parish',
 ]
 
-function readStoredArea(): AreaSlug | null {
+type AreaSelection = AreaSlug | 'louisiana' | null
+
+function readStoredArea(): AreaSelection {
   try {
     const value = window.localStorage.getItem(STORAGE_KEY)
-    return value && (SLUGS as readonly string[]).includes(value)
-      ? (value as AreaSlug)
+    return value === 'louisiana' ||
+      (value && (SLUGS as readonly string[]).includes(value))
+      ? (value as Exclude<AreaSelection, null>)
       : null
   } catch {
     return null
   }
 }
 
-let currentArea: AreaSlug | null = readStoredArea()
+let currentSelection = readStoredArea()
 const listeners = new Set<() => void>()
 
 function emit() {
@@ -28,17 +31,13 @@ function emit() {
 }
 
 export function getArea(): AreaSlug | null {
-  return currentArea
+  return currentSelection === 'louisiana' ? null : currentSelection
 }
 
 export function setArea(slug: AreaSlug | null) {
-  currentArea = slug
+  currentSelection = slug ?? 'louisiana'
   try {
-    if (slug) {
-      window.localStorage.setItem(STORAGE_KEY, slug)
-    } else {
-      window.localStorage.removeItem(STORAGE_KEY)
-    }
+    window.localStorage.setItem(STORAGE_KEY, currentSelection)
   } catch {
     // Storage can be unavailable in private modes. The session keeps the area.
   }
@@ -54,4 +53,13 @@ function subscribe(listener: () => void) {
 
 export function useArea(): AreaSlug | null {
   return useSyncExternalStore(subscribe, getArea, () => null)
+}
+
+// An explicit Louisiana choice dismisses onboarding just like a parish choice.
+export function useHasSelectedArea(): boolean {
+  return useSyncExternalStore(
+    subscribe,
+    () => currentSelection !== null,
+    () => false,
+  )
 }

@@ -10,16 +10,16 @@ visual baseline until the owner changes it during that pass.
 
 ## Homepage flow
 
-The September 12 upgrade makes Louisiana the default Home. A parish, city or
-body is a focus the reader chooses and can leave. Stories stay above local
-issues in both views. [Launch upgrade](launch-upgrade.md) slices U1 through U3
-and U6 implement this table; until they land, the deployed Home follows the
-September 10 behavior with a parish-or-nothing selector.
+The September 13 owner correction keeps Louisiana as the default Home. The
+hero introduces the app only before the visitor makes an area selection.
+Statewide stories appear only in the Louisiana view. Parish Home begins with
+local issues and body filters. [Launch upgrade](launch-upgrade.md) records the
+slice contracts; [Work](work.md) records release status.
 
 | Order | Louisiana (default) | Parish, city or body focus |
 | --- | --- | --- |
-| Introduction | Hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right | No hero. Page heading names the focus with a "Back to all of Louisiana" control |
-| First content | Across Louisiana: Meta lead with SpaceX and Boyce secondary | Same three stories |
+| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. Page heading names the focus with a "Back to all of Louisiana" control |
+| First content | Across Louisiana: Meta lead with SpaceX and Boyce secondary | Local issues and body filters. Featured stories are omitted |
 | Statewide records | Issues and records from supported statewide bodies, once any exist | Omitted |
 | Ballot | "On the November 3 ballot": statewide amendments, once published | Statewide amendments plus verified propositions for the focused parish |
 | Local content | Issues across covered parishes | Issues in the focus, with body chips under the heading |
@@ -32,19 +32,19 @@ On mobile, show the hero copy and selector without Louisiana. Mount the 3D
 visual only above 48rem. Use warm limestone material with muted violet
 highlights on a transparent canvas. The owner selected warm limestone from the
 September 9 color comparison, replacing charcoal. Keep the quiet violet pins
-and existing lighting. Remove the entire hero when a focus is chosen. Remember
-the chosen focus on return visits; a missing value means Louisiana. The focus
+and existing lighting. Remove the entire hero after any explicit area selection.
+Store an explicit Louisiana choice so returning statewide never restores the
+hero. A missing or invalid stored value starts the Louisiana introduction. The focus
 controls Home even when an account has other saved areas. Choosing a focus
 filters reading; it does not enroll someone in email alerts. Saved areas
 remain in Following.
 
-The selector lists "All of Louisiana" first, then each parish with its
-municipalities and bodies grouped beneath it, and statewide bodies under
-Louisiana once supported. Every body label names its place, for example
-"Baton Rouge Metropolitan Council" and "Lafayette Hearing Examiner". The two
-Lafayette planning commissions stay distinct. Selecting a body sets the parish
-focus and a body chip; the chip is reflected in the URL and clears back to
-the parish.
+The selector lists "All of Louisiana" first, then parishes. It does not list
+cities or bodies. Home body chips filter issues and decision records within the
+selected parish. Every body label names its place, for example "Baton Rouge
+Metropolitan Council" and "Lafayette Hearing Examiner". The two Lafayette
+planning commissions stay distinct. Body focus stays in the URL and clears back
+to the parish. Existing shared city and body links remain valid.
 
 Home issue selection favors current explanations with a cited consequence, a
 next documented date or a recent outcome. Source-only stubs stay in Explore. A

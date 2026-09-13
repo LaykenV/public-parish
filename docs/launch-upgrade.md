@@ -1,7 +1,7 @@
 # Launch upgrade plan
 
-Owner decision of September 12, 2026. This document owns the scope and slice
-contracts for the pre-launch upgrade. [Work](work.md) owns slice status and the
+Owner decision of September 12, 2026, amended September 13 after live UX review.
+This document owns the scope and slice contracts for the pre-launch upgrade. [Work](work.md) owns slice status and the
 pending queue. [PLAN](../PLAN.md) records the positioning decision. Each slice
 below is written so that one agent can take it without further context; every
 slice still follows [AGENTS.md](../AGENTS.md), the evidence policy in
@@ -59,7 +59,7 @@ target, and the product never frames a story as puncturing or confirming hype.
 | Slice | Outcome | Depends on | Parallel with | Paid work |
 | --- | --- | --- | --- | --- |
 | U1 | Louisiana is the default Home; a parish is a focus a reader can leave | None | U2, U3, U5, U6 backend | None |
-| U2 | Correct public body labels and a parish, city, body selector with a body focus on Home and Explore | None | U1, U3 | None |
+| U2 | Correct public body labels, parish selection, and body filters on Home and Explore | None | U1, U3 | None |
 | U3 | Home shows consequential, current local issues with a one-line reason to care | None | U1, U2 | None |
 | U4 | September 16 LPSC agenda-to-outcome experience on the Meta story | Meta v4 (published) | Everything | Small, named |
 | U5 | Louisiana Public Service Commission as a statewide covered body | U1 for placement | U2, U3, U6 | Yes, bounded |
@@ -79,8 +79,9 @@ The founder pass covers the new surfaces after the slices land.
 
 A first visit shows Louisiana: the hero, the three stories, statewide records
 once U5 or U6 publish them, then issues and records across covered parishes.
-Choosing a parish or city focuses Home on that place and removes the hero.
-A visible control returns to all of Louisiana. The choice persists on return.
+Choosing a parish focuses Home on its local issues and removes the hero and
+featured stories. A visible control returns to Louisiana and restores the stories.
+The hero stays dismissed after any saved choice, including Louisiana.
 
 ### Scope
 
@@ -88,14 +89,14 @@ A visible control returns to all of Louisiana. The choice persists on return.
   stored area is a parish slug or the literal Louisiana value; a missing value
   means Louisiana. Do not treat "no area" as a gate anywhere.
 - `src/features/discovery/area-selector.tsx`: an "All of Louisiana" row at the
-  top of the list, selected when active. Title becomes "Choose Louisiana or a
-  parish". The coverage request link stays in the footer.
+  top of the list, selected when active. Title remains "Choose your area".
+  The coverage request link stays in the footer.
 - `src/features/discovery/home.tsx` and `home.css`: hero shows on the Louisiana
-  view with the new promise as the heading. Parish view has no hero; its page
-  heading names the focus with a "Back to all of Louisiana" control beside it,
-  then the three stories, then local issues, then records. Keep stories above
-  local issues in both views. Reserve statewide-records and ballot slots below
-  the stories that render nothing until U5 or U6 supply content.
+  view only before a saved selection, with the new promise as the heading.
+  Parish view has no hero; its page heading names the focus with a "Back to all of Louisiana" control beside it,
+  then local issues and records. Stories appear only in the Louisiana view.
+  Returning to Louisiana restores stories while the hero stays dismissed.
+  Reserve statewide-records and ballot slots below the stories that render nothing until U5 or U6 supply content.
 - Header and mobile menu area control reads "Louisiana" or the parish name.
 - Hero copy: heading "Understand what Louisiana's government is deciding."
   Body "See the documents behind each decision and follow what happens next."
@@ -112,9 +113,9 @@ change to story publication or Ask.
 
 - First visit at 320, 375, 768 and 1280 pixels shows hero, three stories,
   issues across covered areas and records. No dialog blocks the page.
-- Selecting Lafayette removes the hero, shows stories then Lafayette issues
-  and records, and offers a return to Louisiana. Returning restores the hero
-  and statewide view without a reload. The choice survives reload.
+- Selecting Lafayette removes the hero and stories, shows Lafayette issues
+  and records, and offers a return to Louisiana. Returning restores stories
+  without the hero. The choice and hero dismissal survive reload.
 - Keyboard focus lands on a stable heading after each switch, matching the
   existing collapse behavior. Reduced motion is respected.
 - Existing browser journeys for area change, menu focus return and native issue
@@ -126,12 +127,12 @@ change to story publication or Ask.
 Update the Homepage flow table in [design](design.md#homepage-flow) if the
 implementation departs from the contract written there.
 
-## U2. Body labels and parish, city, body selection
+## U2. Body labels, parish selection and Home body filters
 
 ### Outcome
 
-Every public body label names its place. Residents can move from Louisiana to
-a parish, to a city, to one body, and Home and Explore focus on that body.
+Every public body label names its place. Residents choose Louisiana or a parish
+in the area selector, then filter by body on Home. Explore keeps its body filter.
 
 ### Facts
 
@@ -157,9 +158,8 @@ launch list is in [sources](sources.md#local-coverage-contract).
   Zoning Commission", "Lafayette Hearing Examiner", "Lafayette City Zoning
   Commission". Keep the two separate Lafayette planning commissions distinct.
   Never use a generic planning commission label.
-- Selector: group rows as parish, then municipality where a body belongs to a
-  city, then bodies. Parish and city rows set the area. Body rows set the area
-  and a body focus. Statewide bodies from U5 appear under Louisiana.
+- Selector: list Louisiana and parishes only. Parish rows set the area and
+  clear any city or body focus. Body choices belong in Home's filter chips.
 - Home body focus: chips under the local issues heading list the selected
   parish's bodies; one chip active filters issues and records to that body.
   Reuse the existing `body` search parameter contract from Explore and the
@@ -174,8 +174,9 @@ New bodies, coverage promotion, follow enrollment changes beyond titles.
 
 - Public pages, search, share HTML, Following and email previews show the
   place-qualified labels; identity checks and existing tests still pass.
-- Selector navigation from Louisiana to Rapides to Pineville to Pineville City
-  Council works with keyboard and touch at 320 pixels without overflow.
+- Choose Rapides in the area selector, then Pineville City Council on Home.
+  Keyboard and touch work at 320 pixels without overflow. The selector contains
+  no city or body choices; existing shared focus links still resolve.
 - A body chip on Home filters both issues and records and is reflected in the
   URL; reload preserves it; clearing returns to the parish view.
 - The Pineville Explore link regression from QA-002 remains green.

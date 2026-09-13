@@ -11,7 +11,7 @@ import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery
 import { FeaturedStories } from '../stories/story-page'
 import { LouisianaRelief } from '../landing/louisiana-relief'
 import { AreaSelector } from './area-selector'
-import { setArea, useArea } from './area-store'
+import { setArea, useArea, useHasSelectedArea } from './area-store'
 import {
   areaName,
   getActiveDiscoveryFixture,
@@ -56,12 +56,13 @@ export function HomePage({
   scenario?: HomeScenario
 }) {
   const storedArea = useArea()
+  const hasSelectedArea = useHasSelectedArea()
   const area = homeFocusArea({ area: urlArea, body, city }, storedArea)
   useEffect(() => {
     if (storedArea !== area) setArea(area)
   }, [area, storedArea])
   const pageLoading = usePageLoading()
-  const focusKey = `${area ?? 'louisiana'}:${body ?? city ?? ''}`
+  const focusKey = `${area ?? 'louisiana'}:${body ?? city ?? ''}:${hasSelectedArea}`
   const previousFocus = useRef(focusKey)
   const mainRef = useRef<HTMLElement>(null)
   const activeScenario = getActiveDiscoveryFixture(scenario)
@@ -72,6 +73,8 @@ export function HomePage({
       ? ['lafayette-parish', 'east-baton-rouge-parish']
       : []
   const selected = watching.length > 0
+  const showHero = !selected && !hasSelectedArea
+  const showStories = !selected && !fixturesEnabled
   // A body focus only narrows a single focused parish.
   const bodyFocus = area && body ? homeBodyLabel(body) : undefined
   const resetKey = `${area ?? 'all'}:${bodyFocus ?? city ?? 'all'}:${scenario ?? 'live'}`
@@ -94,11 +97,12 @@ export function HomePage({
 
   return (
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>
-      {!selected ? <FirstVisitHero /> : null}
-      {!fixturesEnabled ? <FeaturedStories /> : null}
+      {showHero ? <FirstVisitHero /> : null}
+      {showStories ? <FeaturedStories mainHeading={!showHero} /> : null}
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
           <LocalIssues
+            pageHeading={!showHero && !showStories}
             city={bodyFocus ? undefined : city}
             body={bodyFocus}
             fixturesEnabled={fixturesEnabled}
@@ -138,7 +142,7 @@ function FirstVisitHero() {
           <AreaSelector
             trigger={(props) => (
               <Button {...props} size="touch">
-                <SearchIcon aria-hidden="true" /> Focus on a parish or city
+                <SearchIcon aria-hidden="true" /> Focus on a parish
               </Button>
             )}
           />
@@ -158,12 +162,14 @@ function FirstVisitHero() {
 }
 
 function LocalIssues({
+  pageHeading,
   city,
   body,
   watching,
   scenario,
   fixturesEnabled,
 }: {
+  pageHeading: boolean
   city?: HomeCity
   body?: string
   watching: AreaSlug[]
@@ -204,6 +210,7 @@ function LocalIssues({
         />
       ) : null}
       <IssuesSection
+        pageHeading={pageHeading}
         city={city}
         body={body}
         issues={issues}
@@ -270,6 +277,7 @@ function LocalDecisionRecords({
 }
 
 function IssuesSection({
+  pageHeading,
   city,
   body,
   issues,
@@ -277,6 +285,7 @@ function IssuesSection({
   scenario,
   watching,
 }: {
+  pageHeading: boolean
   city?: HomeCity
   body?: string
   issues: IssueCardData[]
@@ -287,7 +296,7 @@ function IssuesSection({
   const navigate = useNavigate()
   const [recovered, setRecovered] = useState(false)
   const showFailure = scenario === 'section-failure' && !recovered
-  const Heading = watching.length ? 'h1' : 'h2'
+  const Heading = pageHeading ? 'h1' : 'h2'
   const focused = watching.length === 1 && scenario !== 'signed-in'
   const title = body
     ? `Issues from ${body}`
@@ -309,7 +318,7 @@ function IssuesSection({
         <div>
           <Heading
             id="current-issues-title"
-            tabIndex={watching.length ? -1 : undefined}
+            tabIndex={pageHeading ? -1 : undefined}
           >
             {title}
           </Heading>

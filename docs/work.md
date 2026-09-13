@@ -1,11 +1,21 @@
 # Current work and launch gates
 
-Updated September 12, 2026. This is the only active status and pending-work queue.
+Updated September 13, 2026. This is the only active status and pending-work queue.
 The approved order is stories, then the launch upgrade slices, then design and
 QA, then launch and outreach.
 [Business scope](../PLAN.md), [launch upgrade](launch-upgrade.md),
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
+
+## September 13 Home UX correction
+
+The owner tested U1 through U3 and changed the Home contract. The follow-up
+implementation hides featured stories in parish views, limits the area selector
+to Louisiana and parishes, and remembers an explicit Louisiana choice so the
+hero only introduces visitors without a saved selection. Body filters remain on
+Home. Existing shared body and city URLs remain valid. Local validation passed
+719 tests, both typechecks, build, lint and 38 Home browser checks. PR checks and
+review are pending; production keeps the previous behavior until this merges.
 
 ## Launch upgrade slices, September 12 decision
 

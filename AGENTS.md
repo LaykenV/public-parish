@@ -64,14 +64,14 @@ The approved launch adds three homepage stories: Meta in Richland Parish as the
 lead, SpaceX in Vermilion Parish and the Boyce data center as secondary stories.
 All three and story-scoped Ask, follows, updates, replies, sharing, source review
 and images must pass before the full design and QA campaign. Louisiana is the
-default Home: hero, stories and statewide records, then issues across covered
-parishes. A parish, city or body is a focus the reader can choose and leave.
-After a focus is chosen, remove the hero, keep stories before local issues and
-show a return to all of Louisiana. Do not add a fourth story or replace this
-set without an owner decision.
+default Home. Show the hero only before any saved area selection. Returning to
+Louisiana restores statewide stories without restoring the hero. Featured
+stories appear only in the Louisiana view. Parish Home begins with local issues
+and body filters. The area selector lists Louisiana and parishes only. Do not
+add a fourth story or replace this set without an owner decision.
 
 The September 12 launch upgrade in `docs/launch-upgrade.md` adds Louisiana-first
-Home, place-qualified body labels with a parish, city, body selector,
+Home, place-qualified body labels with parish selection and Home body filters,
 consequence-first issue selection, the September 16 LPSC outcome work on Meta,
 bounded Louisiana Public Service Commission coverage, and sourced November 3
 ballot-measure explanations. Ballot measures quote the official ballot wording
