@@ -99,3 +99,13 @@ export function resolvePublicBodyFilter(value: string): string {
   }
   return value
 }
+
+/** Search stores identity names so existing rows need no label migration. */
+export function resolveIdentityBodyFilter(value: string): string {
+  for (const manifest of listRootManifests()) {
+    if (value === manifest.bodyName || value === PUBLIC_BODY_LABELS[manifest.bodyKey]?.displayName) {
+      return manifest.bodyName
+    }
+  }
+  return value
+}

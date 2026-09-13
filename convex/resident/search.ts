@@ -4,7 +4,7 @@ import { v } from 'convex/values'
 import type { Id } from '../_generated/dataModel'
 import type { MutationCtx } from '../_generated/server'
 import { internalMutation, query } from '../_generated/server'
-import { publicBodyLabel, resolvePublicBodyFilter } from '../coverage/labels'
+import { publicBodyLabel, resolvePublicBodyFilter, resolveIdentityBodyFilter } from '../coverage/labels'
 import { publicSearchEntry } from './searchContracts'
 import type { searchEntry } from './searchContracts'
 
@@ -29,9 +29,9 @@ export async function indexDecision(ctx: MutationCtx, recordId: Id<'decisionReco
   const citations = await ctx.db.query('citations').withIndex('by_publication_and_field_path', q => q.eq('publicationVersionId', version._id)).take(101)
   if (citations.length > 100) throw new Error('search_citation_capacity')
   const date = payload.kind === 'full' ? payload.meetingAt : null
-  // Residents read and filter by the public label; the identity name stays searchable.
+  // Keep the stored filter identity stable across public label changes.
   const label = publicBodyLabel(body)
-  const base = { revision: version._id, bodyName: label, placeName: place.name, placeSlug: place.slug, mode: payload.kind, lifecycle: payload.kind === 'full' ? lifecycle[payload.lifecycleState] ?? 'Status not stated' : 'Status not stated', topics: [], date, dateAt: date ? Date.parse(date) : 0, checkedAt: payload.source.retrievedAt }
+  const base = { revision: version._id, bodyName: body.name, placeName: place.name, placeSlug: place.slug, mode: payload.kind, lifecycle: payload.kind === 'full' ? lifecycle[payload.lifecycleState] ?? 'Status not stated' : 'Status not stated', topics: [], date, dateAt: date ? Date.parse(date) : 0, checkedAt: payload.source.retrievedAt }
   const summary = payload.kind === 'full' ? payload.plainLanguageSummary : ''
   await upsert(ctx, { ...base, key: record.recordKey, kind: 'decision', href: `/decisions/${encodeURIComponent(record.recordKey)}`, title: payload.title, summary, searchText: [record.sourceRecordId, payload.title, summary, label, body.name, place.name, ...citations.map(c => c.excerpt)].join('\n') })
   if (record.currentMeetingKey && date) await upsert(ctx, { ...base, key: `meeting:${record.currentMeetingKey}`, kind: 'meeting', href: `/meetings/${encodeURIComponent(record.currentMeetingKey)}`, title: `${label}, ${date.slice(0, 10)}`, summary: 'Published decisions from this meeting.', searchText: `${label} ${body.name} ${place.name} ${date}` })
@@ -47,7 +47,7 @@ export async function indexIssue(ctx: MutationCtx, issueId: Id<'issues'>) {
   const payload = version.payload
   const date = payload.nextKnownAction?.at ?? null
   const label = publicBodyLabel(body)
-  await upsert(ctx, { key: `issue:${issue.slug}`, revision: version._id, kind: 'issue', href: `/issues/${encodeURIComponent(issue.slug)}`, title: payload.title, summary: payload.summary, bodyName: label, placeName: place.name, placeSlug: place.slug, mode: payload.kind, lifecycle: lifecycle[payload.lifecycleState ?? 'unknown'] ?? 'Status not stated', topics: payload.topics, date, dateAt: date ? Date.parse(date) : 0, checkedAt: version.createdAt, searchText: [payload.title, payload.summary, label, body.name, place.name, ...payload.topics].join('\n') })
+  await upsert(ctx, { key: `issue:${issue.slug}`, revision: version._id, kind: 'issue', href: `/issues/${encodeURIComponent(issue.slug)}`, title: payload.title, summary: payload.summary, bodyName: body.name, placeName: place.name, placeSlug: place.slug, mode: payload.kind, lifecycle: lifecycle[payload.lifecycleState ?? 'unknown'] ?? 'Status not stated', topics: payload.topics, date, dateAt: date ? Date.parse(date) : 0, checkedAt: version.createdAt, searchText: [payload.title, payload.summary, label, body.name, place.name, ...payload.topics].join('\n') })
   await advanceCorpusRevision(ctx)
 }
 export const search = query({
@@ -56,7 +56,7 @@ export const search = query({
   handler: async (ctx, args) => {
     if ((args.q?.length ?? 0) > 300 || args.paginationOpts.numItems > 50) throw new Error('Search request exceeds its bounds.')
     const needle = args.q?.trim()
-    const bodyFilter = args.body ? resolvePublicBodyFilter(args.body) : undefined
+    const bodyFilter = args.body ? resolveIdentityBodyFilter(args.body) : undefined
     const now = Date.now()
     const day = 86_400_000
     const lowerDate = args.date === 'next-30' ? now : args.date === 'past-30' ? now - 30 * day : args.date === 'past-year' ? now - 365 * day : undefined
@@ -113,7 +113,16 @@ export const search = query({
       if (args.date === 'past-30' && !(row.dateAt >= now - 30 * day && row.dateAt <= now)) return false
       if (args.date === 'past-year' && !(row.dateAt >= now - 365 * day && row.dateAt <= now)) return false
       return true
-    }).map(({ _id, _creationTime, searchText: _searchText, ...entry }) => entry) }
+    }).map(({ _id, _creationTime, searchText: _searchText, ...entry }) => {
+      const label = resolvePublicBodyFilter(entry.bodyName)
+      return {
+        ...entry,
+        bodyName: label,
+        title: entry.kind === 'body' ? label : entry.kind === 'meeting' && entry.title.startsWith(entry.bodyName)
+          ? label + entry.title.slice(entry.bodyName.length) : entry.title,
+        href: entry.kind === 'body' ? `/explore?body=${encodeURIComponent(label)}` : entry.href,
+      }
+    }) }
   },
 })
 export const backfill = internalMutation({

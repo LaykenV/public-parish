@@ -252,18 +252,31 @@ test('residents read the place-qualified body label while the identity name stay
     kind: 'decision',
     paginationOpts: { numItems: 10, cursor: null },
   })
+  // Existing search rows predate public labels. The release must display and
+  // filter them correctly without requiring an owner backfill first.
+  await t.run(async (ctx) => {
+    const rows = await ctx.db.query('publishedSearchEntries').take(10)
+    expect(rows.every((row) => row.bodyName === 'Metropolitan Council')).toBe(true)
+    for (const row of rows) {
+      if (row.kind === 'body') await ctx.db.patch(row._id, {
+        title: 'Metropolitan Council', href: '/explore?body=Metropolitan%20Council',
+      })
+    }
+  })
+  for (const q of [undefined, 'EBR-LABEL-2026']) {
   for (const body of ['Metropolitan Council', 'Baton Rouge Metropolitan Council']) {
     const results = await t.query(api.resident.search.search, {
-      body,
+      body, q,
       paginationOpts: { numItems: 10, cursor: null },
     })
-    expect(results.page.map((row) => row.kind).sort()).toEqual(['body', 'decision'])
+    expect(results.page.map((row) => row.kind).sort()).toEqual(q ? ['decision'] : ['body', 'decision'])
     expect(results.page.every((row) => row.bodyName === 'Baton Rouge Metropolitan Council')).toBe(true)
-    expect(results.page.find((row) => row.kind === 'body')?.href).toBe(
+    if (!q) expect(results.page.find((row) => row.kind === 'body')?.href).toBe(
       '/explore?body=Baton%20Rouge%20Metropolitan%20Council',
     )
   }
 
+  }
   const areas = ['east-baton-rouge-parish' as const]
   for (const body of ['Metropolitan Council', 'Baton Rouge Metropolitan Council']) {
     expect(
