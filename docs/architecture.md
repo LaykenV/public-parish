@@ -117,6 +117,13 @@ relationships below explain how to extend it without changing evidence identity.
 Meeting views derive from accepted decision evidence and meeting keys. Do not
 assume a standalone meetings table because an old plan proposed one.
 
+`governmentBodies.name` is an identity value compared against manifest
+`bodyName` in story intake and evidence checks and recorded in certification
+artifacts. Planned: an optional `displayName` and municipality reference carry
+public labels and selector grouping; identity fields do not change. The
+`louisiana` jurisdiction has type `state` and exists as a candidate; statewide
+bodies attach to it and follow the same status lifecycle as a parish.
+
 Public queries return only accepted resident projections. Internal pipeline
 functions never become client-callable to simplify an importer. Owner operations
 require authenticated owner authorization. Never trust a caller-supplied user ID
@@ -417,12 +424,30 @@ A Stories navigation link
 may target the homepage story section for the three-story launch; a separate
 editorial index is unnecessary. Existing issue and decision URLs remain stable.
 
-Home displays the hero and all three accepted launch stories before issues
-when no area is selected. After selection, it collapses the hero and places local
-issues before the stories. It queries stories separately from the local feed.
-Choosing a location does not filter them out. Owner-selected placement is
-independent of importance scores. [Design](design.md) owns composition and
-responsive behavior.
+Home displays the hero and all three accepted launch stories before issues on
+the Louisiana view. A parish, city or body focus collapses the hero and keeps
+the stories above local issues; a missing stored focus means Louisiana. Home
+queries stories separately from the local feed. Choosing a focus does not
+filter them out. Owner-selected placement is independent of importance scores.
+Planned under [launch upgrade](launch-upgrade.md) U3: Home issue selection
+orders bounded results deterministically by cited importance, next documented
+date or recent outcome, and accepted-version recency, and excludes issues with
+neither a supported consequence factor nor a next date; Explore still lists
+them. Card copy comes only from cited rationale on the accepted version.
+[Design](design.md) owns composition and responsive behavior.
+
+### Planned ballot-measure model
+
+Ballot measures reuse the story pipeline. The story registry becomes a
+code-owned map with a `kind` of `story` or `ballot_measure`, a stable key,
+placement and, for measures, election date, scope (statewide or parish slug),
+measure number and the ballot-wording citation. `storyKey` validators widen to
+the registry keys; the three launch stories keep their keys and Home placement,
+and featured stories remain three. Measures use the existing import, draft,
+review, immutable version, Ask scope, `story` follow target, update event and
+share metadata paths. The Secretary of State is registered in code as an
+official publisher. Routes are `/ballot` and `/ballot/$measureSlug`. Nothing
+here is deployed until slice U6 lands.
 
 Paginated search includes typed story results with valid version references.
 Corpus Ask includes published story evidence through the same accepted-evidence

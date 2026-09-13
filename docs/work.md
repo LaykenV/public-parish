@@ -1,9 +1,44 @@
 # Current work and launch gates
 
 Updated September 12, 2026. This is the only active status and pending-work queue.
-The approved order is stories, then design and QA, then launch and outreach.
-[Business scope](../PLAN.md), [architecture](architecture.md), [design](design.md),
+The approved order is stories, then the launch upgrade slices, then design and
+QA, then launch and outreach.
+[Business scope](../PLAN.md), [launch upgrade](launch-upgrade.md),
+[architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
+
+## Launch upgrade slices, September 12 decision
+
+The owner adopted the [launch upgrade plan](launch-upgrade.md) after two agent
+reviews. It sharpens the existing resident workflow instead of adding datasets.
+Slice contracts, acceptance and spend proposals live there; status lives here.
+No slice has started. No allowance has been configured for U4, U5 or U6.
+
+| Slice | Outcome | State | Evidence |
+| --- | --- | --- | --- |
+| U1 | Louisiana-first Home with parish focus and return | Not started | |
+| U2 | Place-qualified body labels; parish, city, body selector; body focus on Home and Explore | Not started | |
+| U3 | Consequence-first Home issues with a cited one-line reason | Not started | |
+| U4 | September 16 LPSC agenda-to-outcome on Meta, follower delivery and demo capture | Not started; session is September 16, 9 a.m. Central | Meta v4 cites the revised agenda |
+| U5 | Louisiana Public Service Commission through the ten gates as a statewide body | Not started | `louisiana` jurisdiction exists as candidate; LPSC hosts registered for story sources |
+| U6 | Ten November 3 constitutional amendments with Ask and follows; verified parish propositions | Not started | SOS amendment list published with ten measures |
+| U7 | Launch content, demo sequence and previews for the new surfaces | Not started | |
+
+- [ ] Owner confirms all ten amendments or names a subset, and decides whether
+      parish propositions ship with launch or after it.
+- [ ] Owner configures finite allowances for U4, U5 and U6 through the spending
+      guard before any paid run. The plan proposes amounts; nothing is set.
+- [ ] U1, U2 and U3 land as separate PRs with browser journeys, then the founder
+      QA pass covers the Louisiana view, parish focus, selector and ballot pages.
+- [ ] U4 records either a reviewed Meta version 5 with the official outcome
+      document or a written statement that no document appeared by September 19.
+- [ ] U5 records the gate evaluation for the current registry generation; LPSC
+      is not labeled supported before ten passes in production.
+- [ ] U6 publishes measures only from the SOS document, enrolled Acts and fiscal
+      notes, with no recommendation or candidate content.
+
+The previous P2 findings, design pass and pilot remain below. Their order moves
+after the slices, not off the list.
 
 ## September 12 launch checkpoint
 
@@ -405,17 +440,21 @@ not evidence of completion or permission to skip a gate.
 | Window | Focus | Exit |
 | --- | --- | --- |
 | September 7 through 11 | Stories, source dossiers, targeted processing, and functional release proof | Three stories and the full story loop accepted |
-| September 12 through 15 | Global design, page-by-page desktop and mobile QA, private pilot | Launch gate passed; major design and feature freeze |
-| September 16 through 20 | Public launch, outreach, content, resident feedback, small fixes | Useful live product and permissioned usage evidence |
+| September 13 through 15 | Upgrade slices U1, U2, U3; U5 development compile; U6 manifests and drafts; U4 pre-session check | Louisiana-first Home reviewed locally; LPSC gates evaluated in development; measure drafts reviewed |
+| September 16 through 17 | U4 session watch and publication; U5 production compile; U6 publication | Outcome published or honestly undocumented; LPSC status known; amendments live |
+| September 17 through 19 | Global design and page-by-page QA over the upgraded surfaces, private pilot, U7 drafts and previews | Launch gate passed; major design and feature freeze |
+| September 18 through 20 | Public launch, outreach, content, resident feedback, small fixes | Useful live product and permissioned usage evidence |
 | September 20 through 21 | Demo and submission artifacts alongside launch support | Submit by September 21 with authorization |
 | September 22 | Contingency | Deadline noon Pacific, 2 p.m. Central |
 | Through September 25 | Keep public app and operating allowances usable for judging | Monitor errors and source freshness |
 
-If stories slip, protect their acceptance and the QA gate. Cut a rich editor,
-extra visual variants, archive depth, broad automation, and nonessential scope
-first. Do not start the full redesign early, drop a named story, or count a
-broken flow as complete to preserve a calendar target. Escalate the schedule
-tradeoff while there is time to reserve several days for outreach.
+If time compresses, protect U1, U2, U3 and U4 first, then the statewide
+amendments in U6, then U5. Parish propositions are the first cut. Cut a rich
+editor, extra visual variants, archive depth, broad automation, and nonessential
+scope before any slice. Do not drop a named story, label a body supported or a
+measure current, or count a broken flow as complete to preserve a calendar
+target. Escalate the schedule tradeoff while there is time to reserve several
+days for outreach.
 
 ## Backlog triage
 
