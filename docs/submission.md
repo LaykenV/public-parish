@@ -27,19 +27,22 @@ both independently. The apex redirects and does not replace the qualifying host.
 
 Target approximately 2 minutes 45 seconds, leaving time below the limit. Use
 actual product interaction and legible captions. The owner may choose the best
-accepted source-change sequence, but the opening shows Meta as the homepage lead
-with SpaceX and Boyce visible as secondary stories.
+accepted source-change sequence, but the opening shows the Louisiana Home with
+Meta as the lead and SpaceX and Boyce visible as secondary stories. If the
+[launch upgrade](launch-upgrade.md) publishes the September 16 outcome and the
+amendments, use them where the table names them; otherwise use the existing
+accepted evidence and keep the same sequence.
 
 | Time | Product proof |
 | --- | --- |
-| 0:00 through 0:15 | State the resident problem and show the three-story Home |
+| 0:00 through 0:15 | State the resident problem and show the Louisiana Home |
 | 0:15 through 0:40 | Open the lead story, show its current explanation and limits |
 | 0:40 through 1:05 | Open a precise citation and the official source |
 | 1:05 through 1:30 | Ask a real question and inspect the cited answer |
 | 1:30 through 1:50 | Follow the story through an optional account or verified email |
-| 1:50 through 2:20 | Show an accepted material update, realtime page change and sourced email |
-| 2:20 through 2:35 | Show a grounded reply and the transition to local issues |
-| 2:35 through 2:45 | Name the actual integrations and public access |
+| 1:50 through 2:15 | Show an accepted material update, ideally the September 16 outcome, with the realtime page change and sourced email |
+| 2:15 through 2:30 | Show a grounded reply, then the ballot page or a parish focus with its local issues |
+| 2:30 through 2:45 | Name the actual integrations and public access |
 
 Use two real official source versions if meeting timing is unsuitable. Label a
 controlled replay explicitly. Do not describe a replay as a new government event
