@@ -4,14 +4,21 @@ import type { IssueCardData } from './contracts'
 import { useMediaQuery } from './hooks'
 import { IssueCard } from './issue-card'
 
-export function HomeIssueCards({ issues }: { issues: IssueCardData[] }) {
+export function HomeIssueCards({
+  issues,
+  horizontal = true,
+}: {
+  issues: IssueCardData[]
+  horizontal?: boolean
+}) {
   const mobile = useMediaQuery('(max-width: 47.999rem)')
+  const swipe = mobile && horizontal
   const trackRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
 
   useEffect(() => {
     const track = trackRef.current
-    if (!track || !mobile) return
+    if (!track || !swipe) return
     const cards = Array.from(track.children) as HTMLElement[]
     let frame = 0
     const measure = () => {
@@ -39,18 +46,18 @@ export function HomeIssueCards({ issues }: { issues: IssueCardData[] }) {
       track.removeEventListener('scroll', schedule)
       cancelAnimationFrame(frame)
     }
-  }, [mobile, issues])
+  }, [swipe, issues])
 
   return (
     <>
       <div
-        className="pp-card-grid"
+        className={`pp-card-grid ${horizontal ? 'pp-issues-horizontal' : 'pp-issues-vertical'}`}
         ref={trackRef}
         role="region"
         aria-label="Issue timelines"
-        tabIndex={mobile ? 0 : undefined}
+        tabIndex={swipe ? 0 : undefined}
         onFocusCapture={(event) => {
-          if (!mobile) return
+          if (!swipe) return
           const track = trackRef.current
           const first = track?.firstElementChild as HTMLElement | null
           const card = (event.target as HTMLElement).closest<HTMLElement>(
@@ -67,7 +74,7 @@ export function HomeIssueCards({ issues }: { issues: IssueCardData[] }) {
           <IssueCard issue={issue} key={issue.slug} />
         ))}
       </div>
-      {mobile && issues.length > 1 ? (
+      {swipe && issues.length > 1 ? (
         <div className="pp-issue-index">
           <div className="pp-issue-index-dots" aria-hidden="true">
             {issues.map((issue, index) => (

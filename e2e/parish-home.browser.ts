@@ -131,7 +131,7 @@ test('Home hides stories in a parish and never repeats the hero after selection'
   )
 
   await page
-    .getByRole('button', { name: 'Back to all of Louisiana', exact: true })
+    .getByRole('button', { name: 'View Statewide Stories', exact: true })
     .click()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Across Louisiana',
@@ -218,7 +218,7 @@ test('the area selector returns to Louisiana from a parish focus', async ({
   ).toBe('louisiana')
 })
 
-test('a body chip narrows Home to one body and survives a reload', async ({
+test('a body filter narrows Home to one body and survives a reload', async ({
   page,
 }) => {
   await page.addInitScript(() =>
@@ -228,25 +228,21 @@ test('a body chip narrows Home to one body and survives a reload', async ({
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Issues in Lafayette Parish',
   )
-  const chips = page.getByRole('navigation', { name: 'Government bodies' })
-  await expect(chips.getByRole('link', { name: 'All bodies' })).toHaveAttribute(
-    'aria-current',
-    'page',
-  )
-  const chip = chips.getByRole('link', { name: 'Lafayette City Council' })
-  await chip.click()
+  const mobile = (page.viewportSize()?.width ?? 1280) < 768
+  const choose = async (label: string) => {
+    await page
+      .getByRole('button', {
+        name: mobile ? /^Filters/ : /^Filter government bodies/,
+      })
+      .click()
+    const drawer = page.getByRole('dialog', { name: 'Filter local issues' })
+    await drawer.getByRole('button', { name: 'Reset', exact: true }).click()
+    if (label !== 'All bodies')
+      await drawer.getByRole('checkbox', { name: label, exact: true }).check()
+    await drawer.getByRole('button', { name: 'Apply filters' }).click()
+  }
+  await choose('Lafayette City Council')
   await expect(page).toHaveURL(/body=Lafayette(\+|%20)City(\+|%20)Council/)
-  await expect(chip).toHaveAttribute('aria-current', 'page')
-  expect(
-    await chip.evaluate((node) => getComputedStyle(node).backgroundColor),
-  ).not.toBe(
-    await chips
-      .getByRole('link', { name: 'All bodies' })
-      .evaluate((node) => getComputedStyle(node).backgroundColor),
-  )
-  await expect(
-    chips.getByRole('link', { name: 'All bodies' }),
-  ).not.toHaveAttribute('aria-current')
   const cards = page.locator('#current-issues article')
   await expect(cards.first()).toBeVisible()
   for (const card of await cards.all()) {
@@ -258,15 +254,23 @@ test('a body chip narrows Home to one body and survives a reload', async ({
     await expect(row).toContainText('Lafayette City Council')
   }
   await page.reload()
-  await expect(
-    page
-      .getByRole('navigation', { name: 'Government bodies' })
-      .getByRole('link', { name: 'Lafayette City Council' }),
-  ).toHaveAttribute('aria-current', 'page')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Issues from Lafayette City Council',
+  )
   await page
-    .getByRole('navigation', { name: 'Government bodies' })
-    .getByRole('link', { name: 'All bodies' })
+    .getByRole('button', {
+      name: mobile ? /^Filters/ : /^Filter government bodies/,
+    })
     .click()
+  const drawer = page.getByRole('dialog', { name: 'Filter local issues' })
+  await expect(
+    drawer.getByRole('checkbox', {
+      name: 'Lafayette City Council',
+      exact: true,
+    }),
+  ).toBeChecked()
+  await page.keyboard.press('Escape')
+  await choose('All bodies')
   await expect(page).not.toHaveURL(/body=/)
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Issues in Lafayette Parish',
@@ -310,11 +314,13 @@ test('the area selector lists parishes and body filtering stays on Home', async 
     'Issues in Rapides Parish',
   )
   await expect(page.locator('#stories')).toHaveCount(0)
-  const body = page
-    .getByRole('navigation', { name: 'Government bodies' })
-    .getByRole('link', { name: 'Pineville City Council' })
-  await body.click()
-  await expect(body).toHaveAttribute('aria-current', 'page')
+  await page.getByRole('button', { name: 'Filters', exact: true }).click()
+  const filters = page.getByRole('dialog', { name: 'Filter local issues' })
+  await filters
+    .getByRole('checkbox', { name: 'Pineville City Council' })
+    .check()
+  await filters.getByRole('button', { name: 'Apply filters' }).click()
+  await expect(filters).not.toBeVisible()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Issues from Pineville City Council',
   )
@@ -359,7 +365,7 @@ for (const width of [320, 375]) {
   }, testInfo) => {
     await page.setViewportSize({ width, height: 812 })
     await page.addInitScript(() =>
-      localStorage.setItem('public-parish.area.v1', 'lafayette-parish'),
+      localStorage.setItem('public-parish.area.v1', 'louisiana'),
     )
     await page.goto('/')
     const track = page.getByRole('region', { name: 'Issue timelines' })
@@ -505,7 +511,7 @@ for (const stored of [null, 'lafayette-parish']) {
       page.locator('#current-issues .pp-card-place').first(),
     ).toContainText('Pineville City Council')
     await page
-      .getByRole('button', { name: 'Back to all of Louisiana', exact: true })
+      .getByRole('button', { name: 'View Statewide Stories', exact: true })
       .click()
     await expect(page).not.toHaveURL(/body=/)
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
@@ -540,7 +546,10 @@ test('existing city links still filter Home at 320 pixels', async ({
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Issues in Pineville',
   )
-  await page.getByRole('link', { name: 'All bodies', exact: true }).click()
+  await page.getByRole('button', { name: /Filters/ }).click()
+  const filters = page.getByRole('dialog', { name: 'Filter local issues' })
+  await filters.getByRole('button', { name: 'Reset', exact: true }).click()
+  await filters.getByRole('button', { name: 'Apply filters' }).click()
   await expect(page).not.toHaveURL(/city=/)
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Issues in Rapides Parish',
@@ -601,7 +610,7 @@ test('area choice dismisses the hero for the session when saving fails', async (
   await expect(page.locator('.pp-home-hero')).toHaveCount(0)
   await expect(page.locator('#stories')).toHaveCount(0)
   await page
-    .getByRole('button', { name: 'Back to all of Louisiana', exact: true })
+    .getByRole('button', { name: 'View Statewide Stories', exact: true })
     .click()
   await expect(page.locator('.pp-home-hero')).toHaveCount(0)
   await expect(page.locator('#stories article')).toHaveCount(3)

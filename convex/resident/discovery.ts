@@ -121,10 +121,10 @@ export const listCoverageBodies = query({
 })
 
 export const listPublishedDecisions = query({
-  args: { areas: v.optional(v.array(areaSlug)), body: v.optional(v.string()), city: v.optional(v.string()) },
+  args: { areas: v.optional(v.array(areaSlug)), body: v.optional(v.string()), bodies: v.optional(v.array(v.string())), city: v.optional(v.string()) },
   returns: v.array(residentDecision),
   handler: async (ctx, args): Promise<ResidentDecision[]> => {
-    const bodyIds = await selectedBodyIds(ctx, args.areas, args.body, args.city)
+    const bodyIds = await selectedBodyIds(ctx, args.areas, args.body, args.city, args.bodies)
     const groups = await Promise.all(
       (['full', 'limited'] as const).flatMap(mode => bodyIds === null
         ? [ctx.db.query('decisionRecords')

@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-13T14:24:37Z
+- **Last updated:** 2026-09-13T18:10:54Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2110,3 +2110,83 @@ Home. An explicit saved choice keeps the introduction dismissed when returning
 to Louisiana. Existing shared body and city links still work. Local checks passed
 719 tests, typechecks, build and lint. The 38 Home browser checks passed across
 Chromium and WebKit, including failed area-save recovery. PR review is pending.
+
+### 2026-09-13 - working tree, Home story grid and filters
+
+Gave statewide stories equal desktop cards in two columns and moved the parish
+return action above the issues. Added a floating mobile area or filter button,
+draft body choices and Apply filters. Existing Convex queries now show local
+result spinners after initial loading. Local checks passed 719 tests, both
+typechecks, build, lint and 50 browser checks across Chromium and WebKit.
+Inspected desktop and 320px screenshots. These changes are not deployed.
+
+### 2026-09-13 - 323986f, Home controls development preview
+
+Opened PR #221. CI passed 719 application tests and 152 browser checks; GLM and
+Muse reported no key issues. Uploaded the exact CI build to development and
+passed six independent hosted checks. All 70 HTML, JavaScript and CSS files
+matched. Screenshot review caught a desktop focus-ring spacing issue, corrected
+in the follow-up. Its replacement preview is pending. Production is unchanged.
+
+### 2026-09-13 - 5067366, Home controls ready for owner testing
+
+PR #221 is green with clean GLM and Muse reviews. CI passed 719 application tests
+and 152 browser checks. Uploaded exact CI artifact 10320840979 to development;
+six independent hosted Chromium/WebKit checks passed and 70 code files matched
+byte for byte. Inspected the final desktop spacing and 320px drawer screenshots.
+Development is ready for owner testing. The PR remains open; production is unchanged.
+
+### 2026-09-13 - working tree, parish reading and multiple filters
+
+Parish issue cards now stack vertically on phones. Statewide keeps the swipe
+row, and the mobile statewide action sits beside Search issues. Both filter
+dialogs accept several bodies through bounded Convex queries and shareable URLs.
+Local checks passed 721 tests, typechecks, build, lint and 46 Home browser checks.
+Development query support is synced. The replacement frontend and CI are pending.
+
+### 2026-09-13 - 4d77edf, parish follow-up ready on development
+
+PR #221 passed 721 application tests and 154 browser checks with clean GLM and
+Muse reviews. Synced development query support and uploaded exact CI artifact
+10320232798. Eight hosted checks, a desktop combined-filter check and all 70 code
+file hashes passed. Inspected hosted 320px and 375px layouts. The owner can test
+the changes on development. The PR stays open and production is unchanged.
+
+### 2026-09-13 - working tree, parish controls inside the issues header
+
+Mobile now groups two stacked navigation links beside a regular Filters button.
+Desktop removes the duplicate area control and keeps navigation inside the card,
+with the active-selection dropdown beside the heading. Typechecks, build, lint
+and all 48 Home browser checks passed. Inspected phone, tablet and desktop
+screenshots. The replacement PR build and development frontend are pending.
+
+### 2026-09-13 - 6fc18d0, inline parish controls ready on development
+
+PR #221 passed 721 application tests and 156 browser checks with clean reviews.
+Uploaded exact CI artifact 10322023029 to development. Ten hosted browser checks
+and a desktop combined-filter check passed; all 70 code files matched. Inspected
+the hosted mobile and desktop layouts. The PR remains open for owner testing.
+Production is unchanged.
+
+### 2026-09-13 - working tree, simpler mobile parish navigation
+
+Removed the mobile navigation box and divider after owner screenshot review.
+The description now follows the heading; plain stacked links sit beside an
+outlined Filters button. Build and ten Home browser checks passed. Inspected
+Lafayette at three phone widths. The approved desktop screenshot is unchanged.
+Replacement CI and development preview are pending.
+
+### 2026-09-13 - 3716d64, mobile refinement ready on development
+
+PR #221 passed 721 application tests and 156 browser checks on retry, with clean
+reviews. The first run hit an intermittent Explore focus failure reproduced in
+the previous build. Uploaded exact artifact 10322447358 to development; ten
+hosted Home checks and all 70 code-file comparisons passed. Inspected Lafayette
+at three phone widths. The PR remains open. Production is unchanged.
+
+### 2026-09-13 - working tree, final Home navigation removal
+
+Removed Search issues from Home at the owner's request. Mobile now has one
+row with View Statewide Stories and Filters. Build and ten Home browser checks
+passed. The owner authorized merging and shipping once the PR is green.
+Final CI, production deployment and independent smoke checks are pending.

@@ -357,6 +357,32 @@ test('selected parish decisions survive a newer publication flood elsewhere', as
   expect(selected).toEqual(local)
 })
 
+test('multiple body filters return their union without duplicates or other parishes', async () => {
+  const t = convexTest(schema, modules)
+  await t.run(async ctx => {
+    for (const [area, names] of [
+      ['rapides-parish', ['Pineville City Council', 'Alexandria City Council', 'Rapides Parish Police Jury']],
+      ['lafayette-parish', ['Lafayette City Council']],
+    ] as const) {
+      const jurisdictionId = await ctx.db.insert('jurisdictions', { name: area, slug: area, type: 'parish', state: 'LA', publicStatus: 'supported' })
+      for (const [index, name] of names.entries()) {
+        const governmentBodyId = await ctx.db.insert('governmentBodies', { jurisdictionId, name, slug: name.toLowerCase().replaceAll(' ', '-'), bodyType: 'city_council', publicStatus: 'supported' })
+        const registryId = await ctx.db.insert('sourceRegistries', { governmentBodyId, officialDomains: ['example.gov'], seedUrls: [], sourceKinds: ['agenda'], expectedCadence: { kind: 'meeting_cycle' }, discoveryMode: 'dynamic', status: 'supported' })
+        await seedPublication({ ctx, registryId, governmentBodyId, sourceRecordId: name, mode: 'full', updatedAt: index })
+        await seedPublication({ ctx, registryId, governmentBodyId, sourceRecordId: `${name}-withheld`, mode: 'withheld', updatedAt: 100 })
+      }
+    }
+  })
+  const areas = ['rapides-parish' as const]
+  const bodies = ['Pineville City Council', 'Alexandria City Council', 'Pineville City Council', 'Lafayette City Council']
+  const result = await t.query(api.resident.discovery.listPublishedDecisions, { areas, bodies })
+  expect(result.map(row => row.bodyName)).toEqual(['Alexandria City Council', 'Pineville City Council'])
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { areas, bodies: ['Unknown body'] })).toEqual([])
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { areas, bodies: [] })).toHaveLength(3)
+  await expect(t.query(api.resident.discovery.listPublishedDecisions, { bodies: Array(26).fill('Pineville City Council') })).rejects.toThrow('Body focus exceeds its bounds.')
+  await expect(t.query(api.resident.evidence.listPublishedIssues, { bodies: ['x'.repeat(121)] })).rejects.toThrow('Body focus exceeds its bounds.')
+})
+
 test.each(['degraded', 'paused', 'validating'] as const)('published history remains selectable while coverage is %s', async status => {
   const t = convexTest(schema, modules)
   const recordId = await t.run(async ctx => {

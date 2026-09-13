@@ -7,6 +7,91 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 13 Home story grid and filter controls
+
+The owner requested removal of Search issues and authorized merging and shipping
+once green. Home now keeps only View Statewide Stories beside the mobile Filters
+button. Build and all ten Home browser checks passed. Inspected the final
+mobile and desktop controls. Final PR validation is pending, followed by the
+authorized production merge, deployment and independent smoke checks.
+
+The owner approved desktop and rejected the mobile navigation box in `6fc18d0`.
+The mobile follow-up removes the box and divider, uses an outlined Filters
+button and places the description under the heading. Build and ten Home browser
+checks passed. Lafayette screenshots at 430px, 390px and 320px were inspected.
+The desktop screenshot is byte-identical to the approved version. Head `3716d64` passed CI `34772035606` attempt 2 with 721 application tests and
+156 browser checks. Both reviews are clean. Development upload
+`31c1e896-d1c9-4d51-b4d1-2f9cd917db7f` uses exact artifact `10322447358`. Ten
+independent hosted Home checks passed and all 70 code files matched. Inspected
+Lafayette at three phone widths. The preview is ready; production is unchanged.
+This final receipt is recorded locally after the tested commit and in the PR.
+
+Separate follow-up: Explore's WebKit filter-close check intermittently loses
+focus after changing the body. CI attempt 1 at `3716d64` failed this check while
+all Home checks passed. The same test failed twice in three runs against the
+approved `6fc18d0` artifact, and four times in five against the current local
+build. No Explore or shared dialog code changed in PR #221. The same-head CI
+retry passed. Investigate the focus timing in a separate change.
+
+The latest owner refinement moves parish filters into the issues header. Mobile
+stacks Search issues and View Statewide Stories in a divided white group beside
+a regular Filters button. Desktop removes the duplicate Change area control,
+keeps both navigation links in the issues card and places the selection summary
+dropdown inline with the heading. Typechecks, build and lint passed with the
+15 existing warnings. All 48 Home browser checks passed on the finished build.
+Inspected 320px, 375px, tablet and desktop screenshots. Head `6fc18d0` passed
+CI `34770704225` with 721 application tests and 156 browser checks. Both reviews
+are clean. Development upload `d5e6f8da-191a-48ba-bc91-ed67ef4a6f6e` uses exact
+artifact `10322023029`. Ten independent hosted checks passed; all 70 code files
+matched. The updated preview is ready for owner testing. The PR remains open
+and production is unchanged. This final receipt is recorded locally after the
+tested commit and in the PR comment.
+
+The owner requested vertical parish issues, multiple body selections and the
+mobile statewide action beside Search issues after testing `5067366`. The follow-up
+is implemented locally. Development query support is synced. Local validation
+passed 721 tests, both typechecks, build and lint with 15 existing warnings.
+All 46 Home browser checks passed across Chromium and WebKit. The final 320px
+layout check passed again after waiting for both result sections to settle.
+Head `4d77edf` passed CI `34766698331` with 721 application tests and 154 browser
+checks. GLM and Muse reported no key issues. Development upload
+`46c7b550-89af-4a3b-8d59-c7e2d075c2cd` uses exact artifact `10320232798`. Eight
+independent hosted checks and the desktop combined-filter check passed. All 70
+HTML, JavaScript and CSS files matched. Inspected hosted 320px and 375px layouts.
+The updated development preview is ready for testing; production is unchanged.
+This final receipt is recorded locally after the tested commit and in the PR.
+
+Local work on `design/home-controls`, based on `27b79d8`, gives all three
+statewide stories full-sized cards in a two-column desktop grid. Parish Home
+keeps View Statewide Stories inside the issues card. Mobile stacks it beneath
+Search issues beside the filter button. Desktop has a selection dropdown beside
+the issue heading. Statewide keeps the floating mobile area selector. Both use draft checkboxes, Reset, Apply filters and Change area.
+Several selected bodies include results from any selection. Parish issues stack
+vertically on phones; statewide issues retain the swipe row. Filter requests keep the page visible and show
+loading within the issue and decision result sections. URLs retain body and city
+focus, and closing the drawer discards unapplied choices.
+
+Local validation passed 719 application tests, both typechecks, build and lint
+with 15 existing warnings. All 44 Home browser checks and six initial-loading
+checks passed across Chromium and WebKit after updating the old chip assertions.
+Inspected desktop stories with loaded images, 320px parish and drawer layouts,
+and section loading.
+
+[PR #221](https://github.com/LaykenV/public-parish/pull/221) opened at `323986f`.
+CI `34764692736` passed 719 application tests and 152 browser checks. GLM and Muse
+reported no key issues. Development upload `b38ec75f-a464-41f6-9f14-c302d682c1cb`
+used exact CI artifact `10320420943`. Six independent hosted checks passed and
+all 70 HTML, JavaScript and CSS files matched. Screenshot review then found the
+desktop select's focus outline touching the copy below it. The follow-up adds a
+12px spacing. Previous head `5067366` passed CI `34765244359`, including all
+719 application tests and 152 browser checks, and both reviews are clean.
+Development upload `8bfde61c-bdd2-4c4d-bf59-dfbfc2cb1de9` used exact artifact
+`10320840979`. Six hosted Chromium/WebKit checks passed; all 70 HTML, JavaScript
+and CSS files matched the artifact. Final screenshots confirm the spacing fix.
+The owner can test https://woozy-wren-227.convex.site. PR #221 remains open and
+production has not changed. This final receipt was recorded locally after the
+tested commit; the PR comment carries the same handoff evidence.
+
 ## September 13 Home UX correction
 
 The owner tested U1 through U3 and changed the Home contract. The follow-up

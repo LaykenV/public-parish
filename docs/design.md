@@ -18,11 +18,11 @@ slice contracts; [Work](work.md) records release status.
 
 | Order | Louisiana (default) | Parish, city or body focus |
 | --- | --- | --- |
-| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. Page heading names the focus with a "Back to all of Louisiana" control |
+| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. The issues card contains the navigation links and body filters. On phones, the links stack beside Filters |
 | First content | Across Louisiana: Meta lead with SpaceX and Boyce secondary | Local issues and body filters. Featured stories are omitted |
 | Statewide records | Issues and records from supported statewide bodies, once any exist | Omitted |
 | Ballot | "On the November 3 ballot": statewide amendments, once published | Statewide amendments plus verified propositions for the focused parish |
-| Local content | Issues across covered parishes | Issues in the focus, with body chips under the heading |
+| Local content | Issues across covered parishes | Issues in the focus, with a desktop body dialog and mobile filter drawer |
 | Records | Latest decision records | Latest decision records for the focus |
 | Footer | Brand, site links and compact dated voter information linking to the ballot page | Same footer |
 
@@ -40,11 +40,29 @@ filters reading; it does not enroll someone in email alerts. Saved areas
 remain in Following.
 
 The selector lists "All of Louisiana" first, then parishes. It does not list
-cities or bodies. Home body chips filter issues and decision records within the
+cities or bodies. Home body controls filter issues and decision records within the
 selected parish. Every body label names its place, for example "Baton Rouge
 Metropolitan Council" and "Lafayette Hearing Examiner". The two Lafayette
 planning commissions stay distinct. Body focus stays in the URL and clears back
 to the parish. Existing shared city and body links remain valid.
+
+On phones, a floating Choose area button opens area selection in statewide view.
+In parish view, the description sits directly under the heading. View Statewide
+Stories is a plain link beneath it, with an outlined Filters button to its right.
+Home omits Search issues; Explore remains in the main navigation. Keep this
+navigation unboxed; the owner rejected the white group and filled filter button.
+The filter drawer has a parish summary, Change area, checkboxes for government bodies, Reset and Apply filters.
+Choose several bodies to include issues and records from any selected body.
+Leave all unchecked to include every body in the parish. Closing without applying
+discards the draft. Desktop opens the same choices in a dialog. Its dropdown
+sits inline with the issue heading and shows All Government bodies, the selected
+body name, or the number of selected Government bodies. View Statewide Stories
+stays inside the issues card. The header handles desktop
+area changes without a duplicate button above the card.
+Filter changes preserve the page, scroll position and control focus. After the
+initial page load, pending issue and decision queries show a spinner inside their
+own result sections. Single-body, multiple-body and city filters remain shareable
+in the URL.
 
 Home issue selection favors current explanations with a cited consequence, a
 next documented date or a recent outcome. Source-only stubs stay in Explore. A
@@ -52,8 +70,10 @@ limited issue with a supported consequence remains eligible. Each card carries
 one cited sentence saying why it matters, or the next date when no cited
 rationale exists. Never generate card prose at read time.
 
-The stories section uses one large Meta image and two compact secondary entries.
-Desktop places the secondary entries beside Meta. Mobile gives all three stories the same full-width image and headline treatment.
+The September 13 owner refinement gives every featured story a full-sized card.
+Desktop uses two equal columns, with Meta first and the third story on the next
+row. All images retain a 16:9 crop. Mobile retains its stacked image and headline
+treatment.
 Keep accepted titles and summaries, precise geography, reviewed-through dates,
 and limitations. All three stories remain discoverable without a carousel,
 account or completed location setup. Image subtext remains omitted as requested.
@@ -61,10 +81,12 @@ account or completed location setup. Image subtext remains omitted as requested.
 Issue cards emphasize title, consequence and next documented date or latest
 outcome. Keep evidence limitations readable and actions distinct. Use a soft lavender off-white page, white cards and a near-white desktop issues
 section. On phones, remove the outer section panel and nested padding. Give each
-issue nearly the full viewport width with a peek of the next card. Native touch
-swiping snaps to cards without arrow buttons. Cards share one height across the row, sized to fit the longest issue.
-A noninteractive dot index sits below the row. Announce the current issue count
-only to screen readers. Keep vertical page scrolling and keyboard access to every card. Decision
+statewide issue nearly the full viewport width with a peek of the next card.
+Native touch swiping snaps to cards without arrow buttons. Statewide cards share
+one height across the row, sized to fit the longest issue. A noninteractive dot
+index sits below the row. Announce the current issue count only to screen readers.
+When a parish is selected, stack mobile issue cards vertically at their natural
+heights with no swipe row or dot index. Keep keyboard access to every card. Decision
 records use a white list with larger titles, a separate meeting-date column on
 desktop, and neutral lifecycle badges. Move the date above the title on phones.
 Keep source limitations visible and each full row clickable. Stories, issues and records have separate
