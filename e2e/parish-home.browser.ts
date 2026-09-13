@@ -211,12 +211,13 @@ test('a body chip narrows Home to one body and survives a reload', async ({
   const chips = page.getByRole('navigation', { name: 'Government bodies' })
   await expect(chips.getByRole('link', { name: 'All bodies' })).toHaveAttribute(
     'aria-current',
-    'true',
+    'page',
   )
   const chip = chips.getByRole('link', { name: 'Lafayette City Council' })
   await chip.click()
   await expect(page).toHaveURL(/body=Lafayette(\+|%20)City(\+|%20)Council/)
-  await expect(chip).toHaveAttribute('aria-current', 'true')
+  await expect(chip).toHaveAttribute('aria-current', 'page')
+  await expect(chips.getByRole('link', { name: 'All bodies' })).not.toHaveAttribute('aria-current')
   const cards = page.locator('#current-issues article')
   await expect(cards.first()).toBeVisible()
   for (const card of await cards.all()) {
@@ -232,7 +233,7 @@ test('a body chip narrows Home to one body and survives a reload', async ({
     page
       .getByRole('navigation', { name: 'Government bodies' })
       .getByRole('link', { name: 'Lafayette City Council' }),
-  ).toHaveAttribute('aria-current', 'true')
+  ).toHaveAttribute('aria-current', 'page')
   await page
     .getByRole('navigation', { name: 'Government bodies' })
     .getByRole('link', { name: 'All bodies' })
@@ -269,7 +270,7 @@ test('the area selector moves from Louisiana to a parish, a city and one body', 
     page
       .getByRole('navigation', { name: 'Government bodies' })
       .getByRole('link', { name: 'Pineville City Council' }),
-  ).toHaveAttribute('aria-current', 'true')
+  ).toHaveAttribute('aria-current', 'page')
   expect(await page.evaluate(() => localStorage.getItem('public-parish.area.v1'))).toBe(
     'rapides-parish',
   )
