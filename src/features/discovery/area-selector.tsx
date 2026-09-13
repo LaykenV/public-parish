@@ -1,23 +1,12 @@
-import {
-  CheckCircle2Icon,
-  ChevronDownIcon,
-  Clock3Icon,
-  MapIcon,
-  SearchIcon,
-} from 'lucide-react'
+import { CheckCircle2Icon, Clock3Icon, MapIcon, SearchIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 
 import { useRecordAreaSelection } from '../analytics/product-analytics'
 import { setArea, useArea } from './area-store'
-import { homeFocusArea, homeBodyLabel, parseHomeSearch } from './contracts'
-import type { AreaRecord, AreaSlug, HomeCity } from './contracts'
-import {
-  groupBodiesByPlace,
-  useCoverageAreas,
-  useCoverageBodies,
-} from './live-areas'
-import type { CoverageBody } from './live-areas'
+import { homeFocusArea, parseHomeSearch } from './contracts'
+import type { AreaSlug } from './contracts'
+import { useCoverageAreas } from './live-areas'
 import { Sheet } from './sheet'
 import { Input } from '../../components/ui/input'
 
@@ -64,47 +53,21 @@ function AreaSelectorDialog({
   trigger: AreaSelectorProps['trigger']
 }) {
   const [query, setQuery] = useState('')
-  const [expanded, setExpanded] = useState<AreaSlug | null>(null)
   const storedArea = useArea()
   const navigate = useNavigate()
   const location = useRouterState({ select: (state) => state.location })
   const homeSearch =
     location.pathname === '/' ? parseHomeSearch(location.search) : {}
   const area = homeFocusArea(homeSearch, storedArea)
-  const currentBody = homeSearch.body
-    ? homeBodyLabel(homeSearch.body)
-    : undefined
-  const currentCity = homeSearch.city
   const recordAreaSelection = useRecordAreaSelection()
   const coverageAreas = useCoverageAreas()
-  const coverageBodies = useCoverageBodies()
   const normalized = query.trim().toLowerCase()
-  const searching = normalized.length > 0
   const showLouisiana = matches(LOUISIANA_LABEL, normalized)
   const louisianaSelected = area === null
 
-  const places = coverageAreas.flatMap((place) => {
-    const bodies = coverageBodies.filter(
-      (body) => body.placeSlug === place.slug,
-    )
-    const visibleBodies = searching
-      ? bodies.filter(
-          (body) =>
-            matches(body.label, normalized) ||
-            (body.municipality
-              ? matches(body.municipality.name, normalized)
-              : false),
-        )
-      : bodies
-    if (
-      searching &&
-      !matches(place.name, normalized) &&
-      visibleBodies.length === 0
-    ) {
-      return []
-    }
-    return [{ place, bodies, visibleBodies }]
-  })
+  const places = coverageAreas.filter((place) =>
+    matches(place.name, normalized),
+  )
 
   // Choosing a parish or Louisiana drops any body focus carried in the Home URL.
   const focusPlace = (slug: AreaSlug | null) => {
@@ -114,29 +77,10 @@ function AreaSelectorDialog({
     onOpenChange(false)
   }
 
-  const focusBody = (body: CoverageBody) => {
-    if (area !== body.placeSlug) {
-      setArea(body.placeSlug)
-      recordAreaSelection(body.placeSlug)
-    }
-    void navigate({
-      to: '/',
-      search: { area: body.placeSlug, body: body.label },
-    })
-    onOpenChange(false)
-  }
-
-  const focusCity = (place: AreaSlug, city: HomeCity) => {
-    if (area !== place) recordAreaSelection(place)
-    setArea(place)
-    void navigate({ to: '/', search: { area: place, city } })
-    onOpenChange(false)
-  }
-
   return (
     <Sheet
       className="pp-area-sheet"
-      description="Louisiana shows statewide stories and every covered parish. A parish, or one of its bodies, focuses Home on published records; coverage can still be incomplete."
+      description="Louisiana shows statewide stories and every covered parish. Choose a parish for local issues and records. Filter by government body on Home."
       footer={
         <Link
           className="pp-area-request"
@@ -156,10 +100,10 @@ function AreaSelectorDialog({
         <SearchIcon aria-hidden="true" />
         <Input
           unstyled
-          aria-label="Search places and bodies"
+          aria-label="Search parishes"
           autoComplete="off"
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search parishes, cities and bodies"
+          placeholder="Search parishes"
           type="search"
           value={query}
         />
@@ -186,8 +130,8 @@ function AreaSelectorDialog({
             </button>
           </li>
         ) : null}
-        {places.map(({ place, bodies, visibleBodies }) => {
-          const selected = place.slug === area && !currentBody && !currentCity
+        {places.map((place) => {
+          const selected = place.slug === area
           if (place.status === 'validating') {
             return (
               <li key={place.slug}>
@@ -208,8 +152,6 @@ function AreaSelectorDialog({
               </li>
             )
           }
-          const bodiesOpen = searching || expanded === place.slug
-          const listId = `pp-area-bodies-${place.slug}`
           return (
             <li key={place.slug}>
               <button
@@ -218,8 +160,7 @@ function AreaSelectorDialog({
                 data-status={place.status}
                 data-selected={selected || undefined}
                 onClick={() => {
-                  if (!selected && area !== place.slug)
-                    recordAreaSelection(place.slug)
+                  if (!selected) recordAreaSelection(place.slug)
                   focusPlace(place.slug)
                 }}
                 type="button"
@@ -237,41 +178,6 @@ function AreaSelectorDialog({
                   <span className="pp-area-note">{place.note}</span>
                 ) : null}
               </button>
-              {bodies.length > 0 ? (
-                <>
-                  {searching ? null : (
-                    <button
-                      aria-controls={listId}
-                      aria-expanded={bodiesOpen}
-                      className="pp-area-toggle"
-                      data-open={bodiesOpen || undefined}
-                      onClick={() =>
-                        setExpanded(bodiesOpen ? null : place.slug)
-                      }
-                      type="button"
-                    >
-                      <ChevronDownIcon aria-hidden="true" />
-                      {bodiesOpen ? 'Hide' : 'Show'} {bodies.length}{' '}
-                      {bodies.length === 1 ? 'body' : 'bodies'} in {place.name}
-                    </button>
-                  )}
-                  {bodiesOpen ? (
-                    <BodyRows
-                      city={
-                        area === place.slug && !currentBody
-                          ? currentCity
-                          : undefined
-                      }
-                      onCity={focusCity}
-                      active={area === place.slug ? currentBody : undefined}
-                      bodies={visibleBodies}
-                      id={listId}
-                      onFocus={focusBody}
-                      place={place}
-                    />
-                  ) : null}
-                </>
-              ) : null}
             </li>
           )
         })}
@@ -280,92 +186,5 @@ function AreaSelectorDialog({
         ) : null}
       </ul>
     </Sheet>
-  )
-}
-
-function BodyRows({
-  city,
-  onCity,
-  active,
-  bodies,
-  id,
-  onFocus,
-  place,
-}: {
-  city?: HomeCity
-  onCity: (place: AreaSlug, city: HomeCity) => void
-  active?: string
-  bodies: CoverageBody[]
-  id: string
-  onFocus: (body: CoverageBody) => void
-  place: AreaRecord
-}) {
-  const groups = groupBodiesByPlace(bodies)
-  if (groups.length === 0) return null
-  return (
-    <ul
-      aria-label={`Bodies in ${place.name}`}
-      className="pp-area-bodies"
-      id={id}
-    >
-      {groups.map((group) => (
-        <li key={group.key}>
-          {group.key === 'parish' ? (
-            <p className="pp-area-group">{group.name}</p>
-          ) : (
-            <button
-              type="button"
-              className="pp-area-row pp-area-city"
-              aria-pressed={city === group.key}
-              disabled={!group.bodies.some((body) => body.published)}
-              onClick={() => onCity(place.slug, group.key as HomeCity)}
-            >
-              <span className="pp-area-name">{group.name}</span>
-              <span className="pp-area-note">All city bodies</span>
-            </button>
-          )}
-          <ul>
-            {group.bodies.map((body) => {
-              const selected = active === body.label
-              if (!body.published) {
-                return (
-                  <li key={body.slug}>
-                    <div
-                      aria-disabled="true"
-                      className="pp-area-row pp-area-body"
-                      data-status="validating"
-                    >
-                      <span className="pp-area-name">{body.label}</span>
-                      <span className="pp-area-status">
-                        <Clock3Icon aria-hidden="true" />
-                        No records yet
-                      </span>
-                    </div>
-                  </li>
-                )
-              }
-              return (
-                <li key={body.slug}>
-                  <button
-                    aria-pressed={selected}
-                    className="pp-area-row pp-area-body"
-                    data-selected={selected || undefined}
-                    data-status="available"
-                    onClick={() => onFocus(body)}
-                    type="button"
-                  >
-                    <span className="pp-area-name">{body.label}</span>
-                    <span className="pp-area-status">
-                      <CheckCircle2Icon aria-hidden="true" />
-                      {selected ? 'Selected' : 'Records available'}
-                    </span>
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-        </li>
-      ))}
-    </ul>
   )
 }

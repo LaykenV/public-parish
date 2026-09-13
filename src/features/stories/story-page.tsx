@@ -47,18 +47,23 @@ function StoryImage({
   )
 }
 
-export function FeaturedStories() {
+export function FeaturedStories({
+  mainHeading = false,
+}: {
+  mainHeading?: boolean
+}) {
   return (
     <ResidentSectionBoundary
       label="Featured stories"
       resetKey="featured-stories"
     >
-      <FeaturedStoriesContent />
+      <FeaturedStoriesContent mainHeading={mainHeading} />
     </ResidentSectionBoundary>
   )
 }
 
-function FeaturedStoriesContent() {
+function FeaturedStoriesContent({ mainHeading }: { mainHeading: boolean }) {
+  const Heading = mainHeading ? 'h1' : 'h2'
   const stories = useFeaturedStories()
   return (
     <section
@@ -67,7 +72,9 @@ function FeaturedStoriesContent() {
       aria-labelledby="stories-title"
     >
       <header className="pp-stories-intro">
-        <h2 id="stories-title">Across Louisiana</h2>
+        <Heading id="stories-title" tabIndex={mainHeading ? -1 : undefined}>
+          Across Louisiana
+        </Heading>
         <p>The projects making news, explained through official records.</p>
       </header>
       {stories === undefined ? (

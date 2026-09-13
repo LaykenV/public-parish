@@ -5,7 +5,7 @@
 .pp-stories-intro {
   margin-bottom: 1.5rem;
 }
-.pp-stories-intro h2 {
+.pp-stories-intro :is(h1, h2) {
   margin: 0;
   font-size: var(--pp-text-section);
   font-weight: 650;

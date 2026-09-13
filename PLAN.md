@@ -1,6 +1,6 @@
 # Business and product plan
 
-Owner decisions updated September 12, 2026. Current delivery status and all
+Owner decisions updated September 13, 2026. Current delivery status and all
 unfinished work live in [the work plan](docs/work.md). Technical contracts live
 in [architecture](docs/architecture.md). The pre-launch upgrade slices live in
 [the launch upgrade plan](docs/launch-upgrade.md).
@@ -20,10 +20,10 @@ record, legal notice, or an agency's answer.
 
 Louisiana is the default Home. Introduce Public Parish with the Louisiana hero,
 the three stories and statewide records, then issues across covered parishes.
-A parish or city is a focus the reader can choose and leave; choosing one
-removes the hero, keeps stories above local issues, and offers a return to all
-of Louisiana. Reading and Ask require no account. Google sign-in supports saved
-interests and managed follows. Verified email subscriptions are a separate
+The area selector offers Louisiana and parishes. Parish Home hides the stories
+and begins with local issues and body filters. Any saved selection dismisses
+the hero, including when the reader returns to Louisiana. Reading and Ask
+require no account. Google sign-in supports saved interests and managed follows. Verified email subscriptions are a separate
 account-free delivery path.
 
 The product promise is "Understand Louisiana's government decisions. See the
@@ -72,7 +72,7 @@ of those agencies or add their parishes to the local selector.
 The September 12 upgrade adds, in slices defined in
 [the launch upgrade plan](docs/launch-upgrade.md):
 
-- Louisiana-first Home with a parish, city and body focus and correct
+- Louisiana-first Home with parish selection, Home body filters and correct
   place-qualified body labels.
 - Consequence-first selection of local issues with a cited one-line reason.
 - The September 16 LPSC agenda-to-outcome experience on the Meta story.

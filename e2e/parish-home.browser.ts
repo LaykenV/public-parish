@@ -67,9 +67,9 @@ test('published parish records remain selectable with coverage limitations', asy
   ).toBeVisible()
 })
 
-test('home keeps Louisiana stories first after selecting an area', async ({
+test('Home hides stories in a parish and never repeats the hero after selection', async ({
   page,
-}) => {
+}, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.addInitScript(() => {
     if (!sessionStorage.getItem('home-qa-initialized')) {
@@ -106,7 +106,7 @@ test('home keeps Louisiana stories first after selecting an area', async ({
   ).toBe(true)
 
   await page
-    .getByRole('button', { name: 'Focus on a parish or city', exact: true })
+    .getByRole('button', { name: 'Focus on a parish', exact: true })
     .click()
   const dialog = page.getByRole('dialog', { name: 'Choose your area' })
   await dialog.getByRole('button', { name: /^Lafayette Parish/ }).click()
@@ -117,17 +117,11 @@ test('home keeps Louisiana stories first after selecting an area', async ({
   await expect(page.getByRole('heading', { level: 1 })).toBeFocused()
   await expect(page.locator('.pp-home-hero')).toHaveCount(0)
   await expect(page.locator('.pp-home-relief')).toHaveCount(0)
-  await expect(page.locator('#stories article')).toHaveCount(3)
-  expect(
-    await page
-      .locator('#current-issues')
-      .evaluate((issues) =>
-        Boolean(
-          issues.compareDocumentPosition(document.querySelector('#stories')!) &
-          Node.DOCUMENT_POSITION_PRECEDING,
-        ),
-      ),
-  ).toBe(true)
+  await expect(page.locator('#stories')).toHaveCount(0)
+  await page.screenshot({
+    path: testInfo.outputPath('parish-without-stories.png'),
+    fullPage: true,
+  })
   await expect(
     page.locator('#current-issues a[href^="/issues/"]').first(),
   ).toBeVisible()
@@ -140,18 +134,42 @@ test('home keeps Louisiana stories first after selecting an area', async ({
     .getByRole('button', { name: 'Back to all of Louisiana', exact: true })
     .click()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    "Understand what Louisiana's government is deciding.",
+    'Across Louisiana',
   )
   await expect(page.getByRole('heading', { level: 1 })).toBeFocused()
-  await expect(page.locator('.pp-home-hero')).toHaveCount(1)
+  await expect(page.locator('.pp-home-hero')).toHaveCount(0)
   await expect(
     page.getByRole('heading', { name: 'Issues across covered parishes' }),
   ).toBeVisible()
   await expect(page.locator('#stories article')).toHaveCount(3)
+  expect(
+    await page.evaluate(() => localStorage.getItem('public-parish.area.v1')),
+  ).toBe('louisiana')
   await page.reload()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    "Understand what Louisiana's government is deciding.",
+    'Across Louisiana',
   )
+  await expect(page.locator('.pp-home-hero')).toHaveCount(0)
+  await page.goto('/')
+  await expect(page.locator('.pp-home-hero')).toHaveCount(0)
+  await expect(page.locator('#stories article')).toHaveCount(3)
+  for (const image of await page.locator('#stories img').all()) {
+    await image.scrollIntoViewIfNeeded()
+    await expect
+      .poll(() =>
+        image.evaluate(
+          (node) =>
+            (node as HTMLImageElement).complete &&
+            (node as HTMLImageElement).naturalWidth > 0,
+        ),
+      )
+      .toBe(true)
+  }
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await page.screenshot({
+    path: testInfo.outputPath('returning-louisiana-without-hero.png'),
+    fullPage: true,
+  })
 })
 
 test('the area selector returns to Louisiana from a parish focus', async ({
@@ -190,12 +208,14 @@ test('the area selector returns to Louisiana from a parish focus', async ({
     ).toBeVisible()
   }
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    "Understand what Louisiana's government is deciding.",
+    'Across Louisiana',
   )
   await expect(
     page.locator('#current-issues a[href^="/issues/"]').first(),
   ).toBeVisible()
-  expect(await page.evaluate(() => localStorage.getItem('public-parish.area.v1'))).toBeNull()
+  expect(
+    await page.evaluate(() => localStorage.getItem('public-parish.area.v1')),
+  ).toBe('louisiana')
 })
 
 test('a body chip narrows Home to one body and survives a reload', async ({
@@ -217,10 +237,16 @@ test('a body chip narrows Home to one body and survives a reload', async ({
   await chip.click()
   await expect(page).toHaveURL(/body=Lafayette(\+|%20)City(\+|%20)Council/)
   await expect(chip).toHaveAttribute('aria-current', 'page')
-  expect(await chip.evaluate((node) => getComputedStyle(node).backgroundColor)).not.toBe(
-    await chips.getByRole('link', { name: 'All bodies' }).evaluate((node) => getComputedStyle(node).backgroundColor),
+  expect(
+    await chip.evaluate((node) => getComputedStyle(node).backgroundColor),
+  ).not.toBe(
+    await chips
+      .getByRole('link', { name: 'All bodies' })
+      .evaluate((node) => getComputedStyle(node).backgroundColor),
   )
-  await expect(chips.getByRole('link', { name: 'All bodies' })).not.toHaveAttribute('aria-current')
+  await expect(
+    chips.getByRole('link', { name: 'All bodies' }),
+  ).not.toHaveAttribute('aria-current')
   const cards = page.locator('#current-issues article')
   await expect(cards.first()).toBeVisible()
   for (const card of await cards.all()) {
@@ -247,36 +273,57 @@ test('a body chip narrows Home to one body and survives a reload', async ({
   )
 })
 
-test('the area selector moves from Louisiana to a parish, a city and one body', async ({
+test('the area selector lists parishes and body filtering stays on Home', async ({
   page,
-}) => {
+}, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 640 })
   await page.goto('/')
   await page
-    .getByRole('button', { name: 'Focus on a parish or city', exact: true })
+    .getByRole('button', { name: 'Focus on a parish', exact: true })
     .click()
   const dialog = page.getByRole('dialog', { name: 'Choose your area' })
-  await dialog
-    .getByRole('button', { name: /Show \d+ bod(y|ies) in Rapides Parish/ })
-    .click()
-  const bodies = dialog.getByRole('list', { name: 'Bodies in Rapides Parish' })
-  await expect(bodies.getByText('Pineville', { exact: true })).toBeVisible()
-  expect(
-    await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
-  ).toBe(true)
-  await bodies.getByRole('button', { name: /Pineville City Council/ }).click()
+  await expect(
+    dialog.getByRole('button', { name: /^Rapides Parish/ }),
+  ).toBeEnabled()
+  await expect(dialog.locator('.pp-area-list button')).toHaveCount(4)
+  await expect(
+    dialog.getByRole('button', {
+      name: /City Council|Show .* bodies|All city bodies/,
+    }),
+  ).toHaveCount(0)
+  const search = dialog.getByRole('searchbox', { name: 'Search parishes' })
+  await search.fill('Pineville')
+  await expect(
+    dialog.getByText('No listed place matches "Pineville".'),
+  ).toBeVisible()
+  await search.fill('Rapides')
+  await expect(dialog.locator('.pp-area-list button')).toHaveCount(1)
+  await search.fill('')
+  await page.screenshot({
+    path: testInfo.outputPath('parish-only-selector.png'),
+    fullPage: true,
+  })
+  await dialog.getByRole('button', { name: /^Rapides Parish/ }).focus()
+  await page.keyboard.press('Enter')
   await expect(dialog).not.toBeVisible()
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Issues in Rapides Parish',
+  )
+  await expect(page.locator('#stories')).toHaveCount(0)
+  const body = page
+    .getByRole('navigation', { name: 'Government bodies' })
+    .getByRole('link', { name: 'Pineville City Council' })
+  await body.click()
+  await expect(body).toHaveAttribute('aria-current', 'page')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Issues from Pineville City Council',
   )
-  await expect(page).toHaveURL(/body=Pineville(\+|%20)City(\+|%20)Council/)
-  await expect(
-    page
-      .getByRole('navigation', { name: 'Government bodies' })
-      .getByRole('link', { name: 'Pineville City Council' }),
-  ).toHaveAttribute('aria-current', 'page')
-  expect(await page.evaluate(() => localStorage.getItem('public-parish.area.v1'))).toBe(
-    'rapides-parish',
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
+    320,
   )
+  expect(
+    await page.evaluate(() => localStorage.getItem('public-parish.area.v1')),
+  ).toBe('rapides-parish')
 })
 
 test('mobile menu closes with Escape and returns focus to its opener', async ({
@@ -442,39 +489,120 @@ for (const viewport of [
 }
 
 for (const stored of [null, 'lafayette-parish']) {
-  test(`shared Pineville body focus overrides saved area ${stored}`, async ({ page }) => {
+  test(`shared Pineville body focus overrides saved area ${stored}`, async ({
+    page,
+  }) => {
     await page.addInitScript((area) => {
       if (area) localStorage.setItem('public-parish.area.v1', area)
       else localStorage.removeItem('public-parish.area.v1')
     }, stored)
     await page.goto('/?body=Pineville%20City%20Council')
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Issues from Pineville City Council')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      'Issues from Pineville City Council',
+    )
     await expect(page.locator('.pp-home-hero')).toHaveCount(0)
-    await expect(page.locator('#current-issues .pp-card-place').first()).toContainText('Pineville City Council')
-    await page.getByRole('button', { name: 'Back to all of Louisiana', exact: true }).click()
+    await expect(
+      page.locator('#current-issues .pp-card-place').first(),
+    ).toContainText('Pineville City Council')
+    await page
+      .getByRole('button', { name: 'Back to all of Louisiana', exact: true })
+      .click()
     await expect(page).not.toHaveURL(/body=/)
-    await expect(page.getByRole('heading', { level: 1 })).toContainText("Understand what Louisiana")
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      'Across Louisiana',
+    )
+    await expect(page.locator('.pp-home-hero')).toHaveCount(0)
   })
 }
 
-test('city selection filters Home and survives a shared URL at 320 pixels', async ({ page }, testInfo) => {
+test('existing city links still filter Home at 320 pixels', async ({
+  page,
+}, testInfo) => {
   await page.setViewportSize({ width: 320, height: 640 })
-  await page.goto('/?area=louisiana')
-  await page.getByRole('button', { name: 'Focus on a parish or city', exact: true }).click()
-  const dialog = page.getByRole('dialog', { name: 'Choose your area' })
-  await dialog.getByRole('button', { name: /Show .* bodies in Rapides Parish/ }).click()
-  const city = dialog.getByRole('button', { name: 'Pineville All city bodies', exact: true })
-  await city.focus()
-  await page.keyboard.press('Enter')
+  await page.goto('/?city=pineville')
+  await expect(page.locator('#stories')).toHaveCount(0)
   await expect(page).toHaveURL(/city=pineville/)
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Issues in Pineville')
-  await expect(page.locator('#current-issues .pp-card-place').first()).toContainText('Pineville City Council')
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320)
-  await page.screenshot({ path: testInfo.outputPath('pineville-city-focus.png'), fullPage: true })
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Issues in Pineville',
+  )
+  await expect(
+    page.locator('#current-issues .pp-card-place').first(),
+  ).toContainText('Pineville City Council')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
+    320,
+  )
+  await page.screenshot({
+    path: testInfo.outputPath('pineville-city-focus.png'),
+    fullPage: true,
+  })
   await page.evaluate(() => localStorage.removeItem('public-parish.area.v1'))
   await page.reload()
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Issues in Pineville')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Issues in Pineville',
+  )
   await page.getByRole('link', { name: 'All bodies', exact: true }).click()
   await expect(page).not.toHaveURL(/city=/)
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Issues in Rapides Parish')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Issues in Rapides Parish',
+  )
+})
+
+for (const stored of [null, 'invalid-area', 'louisiana']) {
+  test(`hero introduction respects stored choice ${stored}`, async ({
+    page,
+  }) => {
+    if (stored)
+      await page.addInitScript(
+        (value) => localStorage.setItem('public-parish.area.v1', value),
+        stored,
+      )
+    await page.goto('/')
+    await expect(page.locator('.pp-home-hero')).toHaveCount(
+      stored === 'louisiana' ? 0 : 1,
+    )
+    await expect(page.locator('#stories article')).toHaveCount(3)
+    if (stored !== 'louisiana') {
+      await page
+        .getByRole('button', { name: 'Focus on a parish', exact: true })
+        .click()
+      await page
+        .getByRole('dialog', { name: 'Choose your area' })
+        .getByRole('button', { name: /All of Louisiana/ })
+        .click()
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+        'Across Louisiana',
+      )
+      await expect(page.getByRole('heading', { level: 1 })).toBeFocused()
+      await expect(page.locator('.pp-home-hero')).toHaveCount(0)
+    }
+  })
+}
+
+test('area choice dismisses the hero for the session when saving fails', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const save = Storage.prototype.setItem
+    Storage.prototype.setItem = function (key, value) {
+      if (key === 'public-parish.area.v1')
+        throw new DOMException('Storage full', 'QuotaExceededError')
+      save.call(this, key, value)
+    }
+  })
+  await page.goto('/')
+  await expect(page.locator('.pp-home-hero')).toHaveCount(1)
+  await page
+    .getByRole('button', { name: 'Focus on a parish', exact: true })
+    .click()
+  await page
+    .getByRole('dialog', { name: 'Choose your area' })
+    .getByRole('button', { name: /^Rapides Parish/ })
+    .click()
+  await expect(page.locator('.pp-home-hero')).toHaveCount(0)
+  await expect(page.locator('#stories')).toHaveCount(0)
+  await page
+    .getByRole('button', { name: 'Back to all of Louisiana', exact: true })
+    .click()
+  await expect(page.locator('.pp-home-hero')).toHaveCount(0)
+  await expect(page.locator('#stories article')).toHaveCount(3)
 })

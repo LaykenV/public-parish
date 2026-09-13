@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-13T00:47:04Z
+- **Last updated:** 2026-09-13T14:24:37Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2101,3 +2101,12 @@ separate paused monitoring from coverage status and normalize calendar dates.
 The combined code passed 718 application tests. Final browser checks and release
 receipts are tracked in PRs #216 through #219. No civic evidence was republished
 and no monitoring policy or paid allowance was changed by this work.
+
+### 2026-09-13 - working tree, Home area UX correction
+
+Changed Home after the owner's live review. Featured stories now appear only
+statewide. The selector lists Louisiana and parishes; body filters remain on
+Home. An explicit saved choice keeps the introduction dismissed when returning
+to Louisiana. Existing shared body and city links still work. Local checks passed
+719 tests, typechecks, build and lint. The 38 Home browser checks passed across
+Chromium and WebKit, including failed area-save recovery. PR review is pending.
