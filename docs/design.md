@@ -47,17 +47,17 @@ planning commissions stay distinct. Body focus stays in the URL and clears back
 to the parish. Existing shared city and body links remain valid.
 
 On phones, a floating Choose area button opens area selection in statewide view.
-In parish view, the description sits directly under the heading. Search issues
-and View Statewide Stories are plain stacked links beneath it, with small arrows
-next to the text. An outlined Filters button sits to their right. Keep this
+In parish view, the description sits directly under the heading. View Statewide
+Stories is a plain link beneath it, with an outlined Filters button to its right.
+Home omits Search issues; Explore remains in the main navigation. Keep this
 navigation unboxed; the owner rejected the white group and filled filter button.
 The filter drawer has a parish summary, Change area, checkboxes for government bodies, Reset and Apply filters.
 Choose several bodies to include issues and records from any selected body.
 Leave all unchecked to include every body in the parish. Closing without applying
 discards the draft. Desktop opens the same choices in a dialog. Its dropdown
 sits inline with the issue heading and shows All Government bodies, the selected
-body name, or the number of selected Government bodies. Search issues and
-View Statewide Stories stay inside the issues card. The header handles desktop
+body name, or the number of selected Government bodies. View Statewide Stories
+stays inside the issues card. The header handles desktop
 area changes without a duplicate button above the card.
 Filter changes preserve the page, scroll position and control focus. After the
 initial page load, pending issue and decision queries show a spinner inside their

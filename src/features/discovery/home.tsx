@@ -340,18 +340,11 @@ function IssuesSection({
         >
           {title}
         </Heading>
-        <div className="pp-home-issue-actions">
-          <Button
-            className="pp-section-link"
-            render={<Link to="/explore" search={{ type: 'issue' }} />}
-            size="touch"
-            variant="ghost"
-          >
-            Search issues
-            <ArrowUpRightIcon aria-hidden="true" />
-          </Button>
-          {focused ? <StatewideStoriesButton /> : null}
-        </div>
+        {focused ? (
+          <div className="pp-home-issue-actions">
+            <StatewideStoriesButton />
+          </div>
+        ) : null}
         {focused ? (
           <HomeBodyFilter
             key={watching[0]}

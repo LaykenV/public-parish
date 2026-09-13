@@ -167,22 +167,19 @@ test('parish issues stack vertically and multiple filters survive reload', async
   expect(second.y).toBeGreaterThanOrEqual(first.y + first.height)
   expect(second.x).toBe(first.x)
   await expect(page.locator('.pp-issue-index')).toHaveCount(0)
-  const search = (await page
-    .getByRole('link', { name: 'Search issues' })
-    .boundingBox())!
+  await expect(
+    page.getByRole('link', { name: 'Search issues', exact: true }),
+  ).toHaveCount(0)
   const statewide = (await page
     .getByRole('button', { name: 'View Statewide Stories' })
     .boundingBox())!
-  expect(statewide.y).toBeGreaterThanOrEqual(search.y + search.height)
-  expect(statewide.x).toBe(search.x)
   const filter = (await page
     .getByRole('button', { name: /^Filters/ })
     .boundingBox())!
-  expect(filter.x).toBeGreaterThanOrEqual(search.x + search.width)
-  expect(filter.y).toBeGreaterThanOrEqual(search.y)
-  expect(filter.y + filter.height).toBeLessThanOrEqual(
-    statewide.y + statewide.height,
-  )
+  expect(filter.x).toBeGreaterThanOrEqual(statewide.x + statewide.width)
+  expect(
+    Math.abs(filter.y + filter.height / 2 - statewide.y - statewide.height / 2),
+  ).toBeLessThan(2)
   await expect(page.locator('.pp-home-floating')).toHaveCount(0)
   await page.getByRole('button', { name: /^Filters/ }).click()
   const drawer = page.getByRole('dialog', { name: 'Filter local issues' })
@@ -231,16 +228,15 @@ test('parish issues stack vertically and multiple filters survive reload', async
     page.locator('#decision-records .pp-home-results'),
   ).toHaveAttribute('aria-busy', 'false')
   await page.setViewportSize({ width: 320, height: 812 })
-  const narrowSearch = (await page
-    .getByRole('link', { name: 'Search issues' })
-    .boundingBox())!
   const narrowStatewide = (await page
     .getByRole('button', { name: 'View Statewide Stories' })
     .boundingBox())!
-  expect(narrowStatewide.y).toBeGreaterThanOrEqual(
-    narrowSearch.y + narrowSearch.height,
+  const narrowFilter = (await page
+    .getByRole('button', { name: /^Filters/ })
+    .boundingBox())!
+  expect(narrowFilter.x).toBeGreaterThanOrEqual(
+    narrowStatewide.x + narrowStatewide.width,
   )
-  expect(narrowStatewide.x).toBe(narrowSearch.x)
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
     320,
   )
@@ -258,6 +254,9 @@ test('desktop issues contain navigation and an inline selection summary', async 
 }, testInfo) => {
   await page.setViewportSize({ width: 1280, height: 900 })
   await page.goto('/?area=rapides-parish')
+  await expect(
+    page.getByRole('link', { name: 'Search issues', exact: true }),
+  ).toHaveCount(0)
   const section = page.locator('#current-issues')
   const filter = section.getByRole('button', {
     name: /^Filter government bodies/,

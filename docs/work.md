@@ -9,12 +9,29 @@ QA, then launch and outreach.
 
 ## September 13 Home story grid and filter controls
 
+The owner requested removal of Search issues and authorized merging and shipping
+once green. Home now keeps only View Statewide Stories beside the mobile Filters
+button. Build and all ten Home browser checks passed. Inspected the final
+mobile and desktop controls. Final PR validation is pending, followed by the
+authorized production merge, deployment and independent smoke checks.
+
 The owner approved desktop and rejected the mobile navigation box in `6fc18d0`.
 The mobile follow-up removes the box and divider, uses an outlined Filters
 button and places the description under the heading. Build and ten Home browser
 checks passed. Lafayette screenshots at 430px, 390px and 320px were inspected.
-The desktop screenshot is byte-identical to the approved version. Replacement
-CI and development preview are pending.
+The desktop screenshot is byte-identical to the approved version. Head `3716d64` passed CI `34772035606` attempt 2 with 721 application tests and
+156 browser checks. Both reviews are clean. Development upload
+`31c1e896-d1c9-4d51-b4d1-2f9cd917db7f` uses exact artifact `10322447358`. Ten
+independent hosted Home checks passed and all 70 code files matched. Inspected
+Lafayette at three phone widths. The preview is ready; production is unchanged.
+This final receipt is recorded locally after the tested commit and in the PR.
+
+Separate follow-up: Explore's WebKit filter-close check intermittently loses
+focus after changing the body. CI attempt 1 at `3716d64` failed this check while
+all Home checks passed. The same test failed twice in three runs against the
+approved `6fc18d0` artifact, and four times in five against the current local
+build. No Explore or shared dialog code changed in PR #221. The same-head CI
+retry passed. Investigate the focus timing in a separate change.
 
 The latest owner refinement moves parish filters into the issues header. Mobile
 stacks Search issues and View Statewide Stories in a divided white group beside

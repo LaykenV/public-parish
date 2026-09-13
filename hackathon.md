@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-13T17:35:05Z
+- **Last updated:** 2026-09-13T18:10:54Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2175,3 +2175,18 @@ The description now follows the heading; plain stacked links sit beside an
 outlined Filters button. Build and ten Home browser checks passed. Inspected
 Lafayette at three phone widths. The approved desktop screenshot is unchanged.
 Replacement CI and development preview are pending.
+
+### 2026-09-13 - 3716d64, mobile refinement ready on development
+
+PR #221 passed 721 application tests and 156 browser checks on retry, with clean
+reviews. The first run hit an intermittent Explore focus failure reproduced in
+the previous build. Uploaded exact artifact 10322447358 to development; ten
+hosted Home checks and all 70 code-file comparisons passed. Inspected Lafayette
+at three phone widths. The PR remains open. Production is unchanged.
+
+### 2026-09-13 - working tree, final Home navigation removal
+
+Removed Search issues from Home at the owner's request. Mobile now has one
+row with View Statewide Stories and Filters. Build and ten Home browser checks
+passed. The owner authorized merging and shipping once the PR is green.
+Final CI, production deployment and independent smoke checks are pending.
