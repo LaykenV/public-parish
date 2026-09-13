@@ -139,25 +139,47 @@ export const DATE_OPTIONS = [
   { label: 'Past year', value: 'past-year' },
 ] as const
 
-export const BODY_OPTIONS = [
-  'Lafayette City Council',
-  'Lafayette City Planning Commission',
-  'Lafayette Parish Planning Commission',
-  'City Zoning Commission',
-  'Lafayette Board of Zoning Adjustment',
-  'Hearing Examiner',
-  'Youngsville City Council',
-  'Alexandria City Council',
-  'Pineville City Council',
-  'Rapides Parish Police Jury',
-  'Metropolitan Council',
-  'Planning and Zoning Commission',
+// Public body labels, grouped by place. They mirror `convex/coverage/labels.ts`.
+export const BODY_GROUPS = [
+  {
+    place: 'Lafayette Parish',
+    bodies: [
+      'Lafayette City Council',
+      'Lafayette City Planning Commission',
+      'Lafayette Parish Planning Commission',
+      'Lafayette City Zoning Commission',
+      'Lafayette Board of Zoning Adjustment',
+      'Lafayette Hearing Examiner',
+      'Youngsville City Council',
+    ],
+  },
+  {
+    place: 'Rapides Parish',
+    bodies: [
+      'Rapides Parish Police Jury',
+      'Alexandria City Council',
+      'Pineville City Council',
+    ],
+  },
+  {
+    place: 'East Baton Rouge Parish',
+    bodies: [
+      'Baton Rouge Metropolitan Council',
+      'East Baton Rouge Planning and Zoning Commission',
+    ],
+  },
 ] as const
 
-// Keep older public links and development fixtures readable.
+export const BODY_OPTIONS = BODY_GROUPS.flatMap((group) => group.bodies)
+
+// Keep older public links and development fixtures readable. The backend maps
+// identity names to their public labels.
 export const LEGACY_BODY_OPTIONS = [
   'Lafayette City-Parish Council',
-  'Baton Rouge Metropolitan Council',
+  'City Zoning Commission',
+  'Hearing Examiner',
+  'Metropolitan Council',
+  'Planning and Zoning Commission',
 ] as const
 
 export const LIFECYCLE_OPTIONS = [

@@ -10,6 +10,7 @@ import { TOPIC_SLUGS } from './contracts'
 import type { TopicSlug } from './contracts'
 import type { FollowTargetKind } from './enrollmentContracts'
 import { currentVersionEvidence } from '../stories/evidence'
+import { publicBodyLabel } from '../coverage/labels'
 
 type TargetCtx = Pick<QueryCtx | MutationCtx, 'db'>
 
@@ -101,7 +102,7 @@ export async function resolveFollowTarget(
       targetKind,
       targetKey,
       title: version.payload.title,
-      detail: body?.name ?? 'Published issue',
+      detail: body ? publicBodyLabel(body) : 'Published issue',
     }
   }
 
@@ -115,7 +116,7 @@ export async function resolveFollowTarget(
     return {
       targetKind,
       targetKey,
-      title: body.name,
+      title: publicBodyLabel(body),
       detail: jurisdiction?.name ?? 'Local government body',
     }
   }

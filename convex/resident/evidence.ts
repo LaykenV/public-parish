@@ -1,5 +1,6 @@
 import { areaSlug } from '../follows/contracts'
 import { selectedBodyIds } from './areas'
+import { publicBodyLabel } from '../coverage/labels'
 import { loadTimelineMembers } from '../issues/membership'
 import { paginationOptsValidator } from 'convex/server'
 import { v } from 'convex/values'
@@ -263,7 +264,7 @@ async function projectDecision(
     sourceRecordId: record.sourceRecordId,
     placeName: place.name,
     placeSlug: place.slug,
-    bodyName: body.name,
+    bodyName: publicBodyLabel(body),
     coverageStatus: body.publicStatus,
     mode: publication.mode,
     title: payload.title,
@@ -601,7 +602,7 @@ async function projectPublishedIssue(
     slug: issue.slug,
     placeName: place.name,
     placeSlug: place.slug,
-    bodyName: body.name,
+    bodyName: publicBodyLabel(body),
     coverageStatus: body.publicStatus,
     mode: current.mode,
     title: current.payload.title,

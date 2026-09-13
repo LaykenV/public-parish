@@ -6,6 +6,7 @@ import { lifecycleStates } from '../extraction/contractV1'
 import { AREA_SLUGS, areaSlug } from '../follows/contracts'
 import { sourceKindUnion } from '../pipeline/state'
 import { selectedBodyIds } from './areas'
+import { publicBodyLabel } from '../coverage/labels'
 
 const acceptedMode = v.union(v.literal('full'), v.literal('limited'))
 
@@ -122,7 +123,7 @@ export const listPublishedDecisions = query({
         sourceRecordId: record.sourceRecordId,
         placeName: jurisdiction.name,
         placeSlug: jurisdiction.slug,
-        bodyName: version.payload.bodyName,
+        bodyName: publicBodyLabel(body),
         mode: version.payload.kind,
         title: version.payload.title,
         summary:

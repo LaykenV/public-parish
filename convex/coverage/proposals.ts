@@ -13,6 +13,7 @@ import {
 } from './goldSet'
 import { classifyHost } from './rootGate'
 import { resolveRootManifest } from './roots'
+import { publicBodyFields } from './labels'
 
 const MAX_PROPOSAL_SEEDS = 20
 
@@ -205,6 +206,7 @@ async function ensureBody(
   return await ctx.db.insert('governmentBodies', {
     jurisdictionId,
     name: manifest.bodyName,
+    ...publicBodyFields(manifest.bodyKey),
     slug: manifest.bodyKey,
     bodyType: bodyTypeFor(manifest.bodyKey),
     officialUrl: manifest.approvedRootUrl,

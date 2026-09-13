@@ -6,8 +6,8 @@ import { useNavigate } from '@tanstack/react-router'
 import { Button } from '../../components/ui/button'
 import { AreaSelector } from './area-selector'
 import {
+  BODY_GROUPS,
   DATE_OPTIONS,
-  BODY_OPTIONS,
   LEGACY_BODY_OPTIONS,
   LIFECYCLE_OPTIONS,
   PLACE_OPTIONS,
@@ -133,8 +133,12 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
           onChange={(event) => patch({ body: event.target.value || undefined })}
         >
           <option value="">All bodies</option>
-          {BODY_OPTIONS.map((body) => (
-            <option key={body} value={body}>{body}</option>
+          {BODY_GROUPS.map((group) => (
+            <optgroup key={group.place} label={group.place}>
+              {group.bodies.map((body) => (
+                <option key={body} value={body}>{body}</option>
+              ))}
+            </optgroup>
           ))}
           {LEGACY_BODY_OPTIONS.filter((body) => fixturesEnabled || body === search.body).map((body) => (
             <option key={body} value={body}>{body}</option>

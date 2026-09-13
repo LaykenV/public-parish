@@ -4,6 +4,7 @@ import type { Id } from '../_generated/dataModel'
 import { acceptedStorySpans, currentVersionEvidence } from './evidence'
 import { LAUNCH_STORIES } from './manifest'
 import { normalizeForMatch } from '../extraction/textMatch'
+import { publicBodyLabel } from '../coverage/labels'
 
 type StoryEvidence = { evidence: AskEvidence; snapshotId: Id<'sourceSnapshots'> }
 export type StoryCatalog = { records: AskRecordContext[]; sources: StoryEvidence[] }
@@ -66,7 +67,7 @@ export async function storyAskCatalog(ctx: Pick<QueryCtx, 'db'>, scope: AskScope
       }
       const evidenceId = `story:${version._id}:${span.key}`
       sources.push({ snapshotId: snapshot._id, evidence: { evidenceId, recordKey: story.slug, fieldPath: span.key,
-        documentTitle: snapshot.canonicalUrl.split('/').pop() || 'Official source', bodyName: body.name, sourceKind: 'other',
+        documentTitle: snapshot.canonicalUrl.split('/').pop() || 'Official source', bodyName: publicBodyLabel(body), sourceKind: 'other',
         officialUrl: span.officialUrl, excerpt: span.excerpt, page: span.page, section: span.section, retrievedAt: snapshot.retrievalTime,
         sourceHref: `/stories/${story.slug}#story-source-${spanIndex}` } })
       seen.add(identity)

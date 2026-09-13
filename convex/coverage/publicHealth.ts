@@ -1,6 +1,7 @@
 import { v } from 'convex/values'
 import type { QueryCtx, MutationCtx } from '../_generated/server'
 import { env, query } from '../_generated/server'
+import { PUBLIC_BODY_LABELS } from './labels'
 import { listRootManifests } from './roots'
 
 const bodyView = v.object({ id: v.string(), name: v.string(), state: v.union(v.literal('Supported'), v.literal('Degraded'), v.literal('Paused'), v.literal('Validating sources'), v.literal('Not supported')), sourceKinds: v.array(v.string()), lastSuccessfulCheck: v.optional(v.string()), nextExpectedArtifact: v.optional(v.string()), limitation: v.string(), followAvailable: v.boolean() })
@@ -26,7 +27,7 @@ export const regions = query({
         : state === 'Paused' ? 'Source monitoring is paused. Previously accepted evidence remains available with its dates.'
         : 'This body has not completed the publication and coverage checks. A reachable source page alone does not establish support.'
       const region = regions.get(manifest.jurisdictionSlug) ?? { name: manifest.jurisdictionName, bodies: [] }
-      region.bodies.push({ id: manifest.bodyKey, name: manifest.bodyName, state, sourceKinds: registry?.sourceKinds ?? [], ...(last ? { lastSuccessfulCheck: new Date(last).toISOString() } : {}), nextExpectedArtifact, limitation, followAvailable: state === 'Supported' })
+      region.bodies.push({ id: manifest.bodyKey, name: PUBLIC_BODY_LABELS[manifest.bodyKey]?.displayName ?? manifest.bodyName, state, sourceKinds: registry?.sourceKinds ?? [], ...(last ? { lastSuccessfulCheck: new Date(last).toISOString() } : {}), nextExpectedArtifact, limitation, followAvailable: state === 'Supported' })
       regions.set(manifest.jurisdictionSlug, region)
     }
     return [...regions.values()]
