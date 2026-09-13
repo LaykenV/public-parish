@@ -217,6 +217,9 @@ test('a body chip narrows Home to one body and survives a reload', async ({
   await chip.click()
   await expect(page).toHaveURL(/body=Lafayette(\+|%20)City(\+|%20)Council/)
   await expect(chip).toHaveAttribute('aria-current', 'page')
+  expect(await chip.evaluate((node) => getComputedStyle(node).backgroundColor)).not.toBe(
+    await chips.getByRole('link', { name: 'All bodies' }).evaluate((node) => getComputedStyle(node).backgroundColor),
+  )
   await expect(chips.getByRole('link', { name: 'All bodies' })).not.toHaveAttribute('aria-current')
   const cards = page.locator('#current-issues article')
   await expect(cards.first()).toBeVisible()

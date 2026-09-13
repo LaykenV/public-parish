@@ -333,15 +333,7 @@ export function homeFocusArea(
   stored: AreaSlug | null,
 ): AreaSlug | null {
   if (search.body) {
-    const aliases: Record<string, string> = {
-      'Metropolitan Council': 'Baton Rouge Metropolitan Council',
-      'Planning and Zoning Commission':
-        'East Baton Rouge Planning and Zoning Commission',
-      'City Zoning Commission': 'Lafayette City Zoning Commission',
-      'Hearing Examiner': 'Lafayette Hearing Examiner',
-      'Lafayette City-Parish Council': 'Lafayette City Council',
-    }
-    const label = aliases[search.body] ?? search.body
+    const label = homeBodyLabel(search.body)
     const group = BODY_GROUPS.find((item) =>
       (item.bodies as readonly string[]).includes(label),
     )
@@ -350,4 +342,16 @@ export function homeFocusArea(
   if (search.city) return HOME_CITIES[search.city].area
   if (search.area) return search.area === 'louisiana' ? null : search.area
   return stored
+}
+
+export function homeBodyLabel(body: string): string {
+  const aliases: Record<string, string> = {
+    'Metropolitan Council': 'Baton Rouge Metropolitan Council',
+    'Planning and Zoning Commission':
+      'East Baton Rouge Planning and Zoning Commission',
+    'City Zoning Commission': 'Lafayette City Zoning Commission',
+    'Hearing Examiner': 'Lafayette Hearing Examiner',
+    'Lafayette City-Parish Council': 'Lafayette City Council',
+  }
+  return aliases[body] ?? body
 }

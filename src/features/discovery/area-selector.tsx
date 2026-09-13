@@ -10,7 +10,7 @@ import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 
 import { useRecordAreaSelection } from '../analytics/product-analytics'
 import { setArea, useArea } from './area-store'
-import { homeFocusArea, parseHomeSearch } from './contracts'
+import { homeFocusArea, homeBodyLabel, parseHomeSearch } from './contracts'
 import type { AreaRecord, AreaSlug, HomeCity } from './contracts'
 import {
   groupBodiesByPlace,
@@ -72,6 +72,8 @@ function AreaSelectorDialog({
     location.pathname === '/' ? parseHomeSearch(location.search) : {}
   const area = homeFocusArea(homeSearch, storedArea)
   const currentBody = homeSearch.body
+    ? homeBodyLabel(homeSearch.body)
+    : undefined
   const currentCity = homeSearch.city
   const recordAreaSelection = useRecordAreaSelection()
   const coverageAreas = useCoverageAreas()

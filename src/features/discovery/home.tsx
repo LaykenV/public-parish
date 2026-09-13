@@ -16,6 +16,7 @@ import {
   areaName,
   getActiveDiscoveryFixture,
   homeFocusArea,
+  homeBodyLabel,
   HOME_CITIES,
 } from './contracts'
 import { useCoverageBodies } from './live-areas'
@@ -72,7 +73,7 @@ export function HomePage({
       : []
   const selected = watching.length > 0
   // A body focus only narrows a single focused parish.
-  const bodyFocus = area && body ? body : undefined
+  const bodyFocus = area && body ? homeBodyLabel(body) : undefined
   const resetKey = `${area ?? 'all'}:${bodyFocus ?? city ?? 'all'}:${scenario ?? 'live'}`
 
   useEffect(() => {
