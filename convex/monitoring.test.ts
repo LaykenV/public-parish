@@ -1,3 +1,4 @@
+import { sourceChecksPaused } from './resident/sourceChecks'
 /// <reference types="vite/client" />
 import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import workflowTest from '@convex-dev/workflow/test'
@@ -679,4 +680,17 @@ test.each([undefined, 'false'])('a %s spending guard blocks monitoring even with
   await f.t.run(ctx => ctx.db.patch(f.policyId, { activeRunId: undefined }))
   expect(await f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.checkNow, { policyId: f.policyId })).toBeNull()
   expect(await f.t.run(ctx => ctx.db.query('sourceMonitoringRuns').collect())).toHaveLength(1)
+})
+
+test('resident source status follows the policy and deployment switch without changing coverage', async () => {
+  const f = await monitoringFixture()
+  const paused = () => f.t.run(async (ctx) => sourceChecksPaused(ctx, (await ctx.db.get(f.bodyId))!))
+  expect(await paused()).toBe(false)
+  await f.t.run((ctx) => ctx.db.patch(f.policyId, { enabled: false }))
+  expect(await paused()).toBe(true)
+  expect((await f.t.run((ctx) => ctx.db.get(f.bodyId)))?.publicStatus).toBe('supported')
+  await f.t.run((ctx) => ctx.db.patch(f.policyId, { enabled: true }))
+  expect(await paused()).toBe(false)
+  vi.stubEnv('SOURCE_MONITORING_ENABLED', 'false')
+  expect(await paused()).toBe(true)
 })

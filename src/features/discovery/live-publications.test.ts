@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 
 import type { PublishedDecision, PublishedIssue } from './live-publications'
 import {
+  issueEvidenceNote,
+  localDay,
   toDecisionCard,
   toDecisionRow,
   toIssueCard,
@@ -28,7 +30,10 @@ const fullDecision: PublishedDecision = {
 }
 
 const fullIssue: PublishedIssue = {
+  acceptedAt: 1_788_000_000_000,
   bodyName: 'Rapides Parish Police Jury',
+  sourceChecksPaused: false,
+  coverageStatus: 'supported',
   decisionCount: 2,
   evidenceCheckedAt: 1_788_000_000_000,
   latestMeetingAt: '2026-06-09T00:00:00.000Z',
@@ -42,6 +47,11 @@ const fullIssue: PublishedIssue = {
   summary: 'The police jury set the 2026 property-tax millage levy.',
   title: '2026 millage levy on the Rapides Parish tax roll',
   topics: ['Public money'],
+  whyItMatters: {
+    citationIds: ['citation-1'],
+    factor: 'public_money',
+    text: 'The levy sets the property-tax rate every parcel owner pays this year.',
+  },
 }
 
 describe('live publication discovery adapter', () => {
@@ -106,8 +116,36 @@ describe('live publication discovery adapter', () => {
       },
       place: 'Rapides Parish',
       state: 'Decided',
-      whyMatter: 'The police jury set the 2026 property-tax millage levy.',
+      whyMatter:
+        'The levy sets the property-tax rate every parcel owner pays this year.',
     })
+  })
+
+  it('falls back to the cited summary when no consequence factor is supported', () => {
+    expect(toIssueCard({ ...fullIssue, whyItMatters: null })?.whyMatter).toBe(
+      'The police jury set the 2026 property-tax millage levy.',
+    )
+  })
+
+  it('tells readers when source checks behind an issue are paused or incomplete', () => {
+    expect(
+      issueEvidenceNote({ decisionCount: 1, coverageStatus: 'paused' }),
+    ).toBe(
+      'Built from 1 linked official decision record. Source checks for this body are paused.',
+    )
+    expect(
+      issueEvidenceNote({ decisionCount: 3, coverageStatus: 'degraded' }),
+    ).toBe(
+      'Built from 3 linked official decision records. Some source checks for this body are incomplete.',
+    )
+    expect(
+      issueEvidenceNote({ decisionCount: 3, coverageStatus: 'candidate' }),
+    ).toBe('Built from 3 linked official decision records.')
+  })
+
+  it('sends the reader’s calendar day, not a UTC day, for ranking', () => {
+    expect(localDay(new Date(2026, 8, 12, 23, 30))).toBe('2026-09-12')
+    expect(localDay(new Date(2026, 0, 3, 0, 5))).toBe('2026-01-03')
   })
 
   it('maps issue-specific lifecycle labels into resident language', () => {
@@ -115,4 +153,8 @@ describe('live publication discovery adapter', () => {
     expect(toIssueLifecycleState('complete')).toBe('Completed')
     expect(toIssueLifecycleState('unknown')).toBe('Status not stated')
   })
+})
+
+it('reports paused checks even while coverage remains supported', () => {
+  expect(issueEvidenceNote({ decisionCount: 2, coverageStatus: 'supported', sourceChecksPaused: true })).toContain('Source checks for this body are paused.')
 })
