@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   getActiveDiscoveryFixture,
   homeFocusArea,
+  homeBodyLabel,
   parseExploreSearch,
   parseHomeSearch,
 } from './contracts'
@@ -179,4 +180,9 @@ it('shared Home focus overrides missing or unrelated saved preferences', () => {
     expect(homeFocusArea({ area: 'louisiana' }, stored)).toBeNull()
   }
   expect(homeFocusArea({ body: 'Metropolitan Council' }, null)).toBe('east-baton-rouge-parish')
+})
+
+it('legacy Home focus uses the current public label', () => {
+  expect(homeBodyLabel('Metropolitan Council')).toBe('Baton Rouge Metropolitan Council')
+  expect(homeBodyLabel('Pineville City Council')).toBe('Pineville City Council')
 })

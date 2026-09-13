@@ -1610,7 +1610,7 @@ button.pp-area-row:hover {
   border-color: var(--pp-border-hover);
 }
 
-.pp-body-chips a[aria-current='true'] {
+.pp-body-chips a[aria-current='page'] {
   border-color: var(--primary);
   background: var(--accent);
   box-shadow: 0 0 0 1px var(--primary) inset;
