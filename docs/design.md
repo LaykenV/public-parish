@@ -18,11 +18,11 @@ slice contracts; [Work](work.md) records release status.
 
 | Order | Louisiana (default) | Parish, city or body focus |
 | --- | --- | --- |
-| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. Page heading names the focus with a "Back to all of Louisiana" control |
+| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. A separate view bar above the issues offers "View Statewide Stories" |
 | First content | Across Louisiana: Meta lead with SpaceX and Boyce secondary | Local issues and body filters. Featured stories are omitted |
 | Statewide records | Issues and records from supported statewide bodies, once any exist | Omitted |
 | Ballot | "On the November 3 ballot": statewide amendments, once published | Statewide amendments plus verified propositions for the focused parish |
-| Local content | Issues across covered parishes | Issues in the focus, with body chips under the heading |
+| Local content | Issues across covered parishes | Issues in the focus, with a desktop body selector and mobile filter drawer |
 | Records | Latest decision records | Latest decision records for the focus |
 | Footer | Brand, site links and compact dated voter information linking to the ballot page | Same footer |
 
@@ -40,11 +40,19 @@ filters reading; it does not enroll someone in email alerts. Saved areas
 remain in Following.
 
 The selector lists "All of Louisiana" first, then parishes. It does not list
-cities or bodies. Home body chips filter issues and decision records within the
+cities or bodies. Home body controls filter issues and decision records within the
 selected parish. Every body label names its place, for example "Baton Rouge
 Metropolitan Council" and "Lafayette Hearing Examiner". The two Lafayette
 planning commissions stay distinct. Body focus stays in the URL and clears back
 to the parish. Existing shared city and body links remain valid.
+
+On phones, a labeled floating button at the bottom right opens area selection
+in statewide view and filters in parish view. The filter drawer has a parish
+summary, Change area, radio choices for government bodies, Reset and Apply filters.
+Closing without applying discards the draft. Desktop uses a labeled select.
+Filter changes preserve the page, scroll position and control focus. After the
+initial page load, pending issue and decision queries show a spinner inside their
+own result sections. Body and city filters remain shareable in the URL.
 
 Home issue selection favors current explanations with a cited consequence, a
 next documented date or a recent outcome. Source-only stubs stay in Explore. A
@@ -52,8 +60,10 @@ limited issue with a supported consequence remains eligible. Each card carries
 one cited sentence saying why it matters, or the next date when no cited
 rationale exists. Never generate card prose at read time.
 
-The stories section uses one large Meta image and two compact secondary entries.
-Desktop places the secondary entries beside Meta. Mobile gives all three stories the same full-width image and headline treatment.
+The September 13 owner refinement gives every featured story a full-sized card.
+Desktop uses two equal columns, with Meta first and the third story on the next
+row. All images retain a 16:9 crop. Mobile retains its stacked image and headline
+treatment.
 Keep accepted titles and summaries, precise geography, reviewed-through dates,
 and limitations. All three stories remain discoverable without a carousel,
 account or completed location setup. Image subtext remains omitted as requested.

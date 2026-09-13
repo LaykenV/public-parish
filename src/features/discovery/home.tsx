@@ -1,6 +1,6 @@
-import { ArrowLeftIcon, ArrowUpRightIcon, SearchIcon } from 'lucide-react'
+import { ArrowUpRightIcon, SearchIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 
 import {
   PageLoading,
@@ -19,7 +19,8 @@ import {
   homeBodyLabel,
   HOME_CITIES,
 } from './contracts'
-import { useCoverageBodies } from './live-areas'
+import { HomeControls, HomeBodyFilter } from './home-controls'
+import { Spinner } from '../../components/ui/spinner'
 import type {
   AreaSlug,
   HomeSearch,
@@ -62,7 +63,7 @@ export function HomePage({
     if (storedArea !== area) setArea(area)
   }, [area, storedArea])
   const pageLoading = usePageLoading()
-  const focusKey = `${area ?? 'louisiana'}:${body ?? city ?? ''}:${hasSelectedArea}`
+  const focusKey = `${area ?? 'louisiana'}:${hasSelectedArea}`
   const previousFocus = useRef(focusKey)
   const mainRef = useRef<HTMLElement>(null)
   const activeScenario = getActiveDiscoveryFixture(scenario)
@@ -97,6 +98,7 @@ export function HomePage({
 
   return (
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>
+      <HomeControls area={area} body={bodyFocus} city={city} />
       {showHero ? <FirstVisitHero /> : null}
       {showStories ? <FeaturedStories mainHeading={!showHero} /> : null}
       <div id="local-content">
@@ -293,8 +295,8 @@ function IssuesSection({
   scenario?: HomeScenario
   watching: AreaSlug[]
 }) {
-  const navigate = useNavigate()
   const [recovered, setRecovered] = useState(false)
+  const settled = useHasLoaded(!loading)
   const showFailure = scenario === 'section-failure' && !recovered
   const Heading = pageHeading ? 'h1' : 'h2'
   const focused = watching.length === 1 && scenario !== 'signed-in'
@@ -322,20 +324,6 @@ function IssuesSection({
           >
             {title}
           </Heading>
-          {focused ? (
-            <Button
-              className="pp-home-statewide"
-              onClick={() => {
-                setArea(null)
-                void navigate({ to: '/', search: { area: 'louisiana' } })
-              }}
-              size="touch"
-              variant="ghost"
-            >
-              <ArrowLeftIcon aria-hidden="true" />
-              Back to all of Louisiana
-            </Button>
-          ) : null}
         </div>
         <Button
           className="pp-section-link"
@@ -348,84 +336,26 @@ function IssuesSection({
         </Button>
       </div>
       {focused ? (
-        <BodyChips active={body} city={city} area={watching[0]} />
+        <HomeBodyFilter body={body} city={city} area={watching[0]} />
       ) : null}
       <p className="pp-section-copy">
         Follow an issue through the decisions that shape it.
       </p>
-      {showFailure ? (
-        <SectionFailure
-          label="Issue timelines"
-          onRetry={() => setRecovered(true)}
-        />
-      ) : loading ? (
-        <PageLoading />
-      ) : issues.length > 0 ? (
-        <HomeIssueCards issues={issues.slice(0, HOME_SECTION_LIMIT)} />
-      ) : (
-        <EmptyIssues city={city} body={body} watching={watching} />
-      )}
+      <div className="pp-home-results" aria-busy={loading}>
+        {showFailure ? (
+          <SectionFailure
+            label="Issue timelines"
+            onRetry={() => setRecovered(true)}
+          />
+        ) : loading ? (
+          <HomeResultsLoading settled={settled} label="Updating issues" />
+        ) : issues.length > 0 ? (
+          <HomeIssueCards issues={issues.slice(0, HOME_SECTION_LIMIT)} />
+        ) : (
+          <EmptyIssues city={city} body={body} watching={watching} />
+        )}
+      </div>
     </section>
-  )
-}
-
-// One chip per body with published records in the focused parish. The active
-// chip lives in the URL so a reload and a shared link keep the focus.
-function BodyChips({
-  active,
-  area,
-  city,
-}: {
-  active?: string
-  area: AreaSlug
-  city?: HomeCity
-}) {
-  const bodies = useCoverageBodies().filter(
-    (body) => body.placeSlug === area && body.published,
-  )
-  if (bodies.length === 0) return null
-  return (
-    <nav aria-label="Government bodies" className="pp-body-chips">
-      <ul>
-        <li>
-          <Link
-            aria-current={active || city ? undefined : 'page'}
-            activeOptions={{ exact: true, includeSearch: true, explicitUndefined: true }}
-            resetScroll={false}
-            search={{ area, body: undefined, city: undefined }}
-            to="/"
-          >
-            All bodies
-          </Link>
-        </li>
-        {city ? (
-          <li>
-            <Link
-              aria-current="page"
-              activeOptions={{ exact: true, includeSearch: true, explicitUndefined: true }}
-            resetScroll={false}
-              to="/"
-              search={{ area, city, body: undefined }}
-            >
-              {HOME_CITIES[city].name} bodies
-            </Link>
-          </li>
-        ) : null}
-        {bodies.map((body) => (
-          <li key={body.slug}>
-            <Link
-              aria-current={active === body.label ? 'page' : undefined}
-              activeOptions={{ exact: true, includeSearch: true, explicitUndefined: true }}
-            resetScroll={false}
-              search={{ area, body: body.label, city: undefined }}
-              to="/"
-            >
-              {body.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
   )
 }
 
@@ -472,6 +402,7 @@ function DecisionRecordsSection({
   loading: boolean
   rows: ResultRowData[]
 }) {
+  const settled = useHasLoaded(!loading)
   return (
     <section
       aria-labelledby="decision-records-title"
@@ -496,37 +427,66 @@ function DecisionRecordsSection({
         Read individual actions from agendas, minutes, and other official
         records.
       </p>
-      {loading ? (
-        <PageLoading />
-      ) : rows.length > 0 ? (
-        <div className="pp-row-list">
-          {rows.slice(0, HOME_SECTION_LIMIT).map((row, index) => (
-            <ResultRow
-              key={`${row.href}-${index}`}
-              row={row}
-              layout="decision"
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="pp-empty">
-          <p className="pp-empty-title">
-            No published decision records are available for this area.
-          </p>
-          <p className="pp-empty-text">
-            New records appear after their official evidence passes the
-            publication checks.
-          </p>
-          <Button
-            render={<Link to="/coverage" />}
-            size="touch"
-            variant="outline"
-          >
-            View coverage
-          </Button>
-        </div>
-      )}
+      <div className="pp-home-results" aria-busy={loading}>
+        {loading ? (
+          <HomeResultsLoading
+            settled={settled}
+            label="Updating decision records"
+          />
+        ) : rows.length > 0 ? (
+          <div className="pp-row-list">
+            {rows.slice(0, HOME_SECTION_LIMIT).map((row, index) => (
+              <ResultRow
+                key={`${row.href}-${index}`}
+                row={row}
+                layout="decision"
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="pp-empty">
+            <p className="pp-empty-title">
+              No published decision records are available for this area.
+            </p>
+            <p className="pp-empty-text">
+              New records appear after their official evidence passes the
+              publication checks.
+            </p>
+            <Button
+              render={<Link to="/coverage" />}
+              size="touch"
+              variant="outline"
+            >
+              View coverage
+            </Button>
+          </div>
+        )}
+      </div>
     </section>
+  )
+}
+
+function useHasLoaded(ready: boolean) {
+  const [settled, setSettled] = useState(ready)
+  useEffect(() => {
+    if (ready) setSettled(true)
+  }, [ready])
+  return settled
+}
+
+function HomeResultsLoading({
+  settled,
+  label,
+}: {
+  settled: boolean
+  label: string
+}) {
+  if (!settled) return <PageLoading />
+  return (
+    <div className="pp-home-results-loading" role="status">
+      <Spinner aria-hidden="true" />
+      <span>{label}</span>
+    </div>
   )
 }
 

@@ -7,6 +7,22 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 13 Home story grid and filter controls
+
+Local work on `design/home-controls`, based on `27b79d8`, gives all three
+statewide stories full-sized cards in a two-column desktop grid. Parish Home
+moves "View Statewide Stories" above the issues. Desktop has a body select;
+phones have a floating area or filter button with draft radio choices, Reset,
+Apply filters and Change area. Filter requests keep the page visible and show
+loading within the issue and decision result sections. URLs retain body and city
+focus, and closing the drawer discards unapplied choices.
+
+Local validation passed 719 application tests, both typechecks, build and lint
+with 15 existing warnings. All 44 Home browser checks and six initial-loading
+checks passed across Chromium and WebKit after updating the old chip assertions.
+Inspected desktop stories with loaded images, 320px parish and drawer layouts,
+and section loading. No commit, PR or deployment has been made for this refinement.
+
 ## September 13 Home UX correction
 
 The owner tested U1 through U3 and changed the Home contract. The follow-up

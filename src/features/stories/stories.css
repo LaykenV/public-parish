@@ -142,23 +142,8 @@
 }
 @media (min-width: 64.0625rem) {
   .pp-story-grid {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    gap: 1.75rem 2rem;
-  }
-  .pp-story-card.lead {
-    grid-row: span 2;
-    border-bottom: 0;
-    padding-bottom: 0;
-  }
-  .pp-story-card:not(.lead) {
-    grid-template-columns: minmax(7rem, 0.45fr) minmax(0, 1fr);
-  }
-  .pp-story-card:not(.lead) h3 {
-    font-size: var(--pp-text-card-title);
-  }
-  .pp-story-card:not(.lead) .pp-story-image img,
-  .pp-story-card:not(.lead) .pp-story-image-fallback {
-    aspect-ratio: 1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem 2rem;
   }
 }
 .pp-story-detail {

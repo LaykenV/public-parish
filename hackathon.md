@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-13T14:24:37Z
+- **Last updated:** 2026-09-13T15:04:30Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2110,3 +2110,12 @@ Home. An explicit saved choice keeps the introduction dismissed when returning
 to Louisiana. Existing shared body and city links still work. Local checks passed
 719 tests, typechecks, build and lint. The 38 Home browser checks passed across
 Chromium and WebKit, including failed area-save recovery. PR review is pending.
+
+### 2026-09-13 - working tree, Home story grid and filters
+
+Gave statewide stories equal desktop cards in two columns and moved the parish
+return action above the issues. Added a floating mobile area or filter button,
+draft body choices and Apply filters. Existing Convex queries now show local
+result spinners after initial loading. Local checks passed 719 tests, both
+typechecks, build, lint and 50 browser checks across Chromium and WebKit.
+Inspected desktop and 320px screenshots. These changes are not deployed.
