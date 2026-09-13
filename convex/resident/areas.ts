@@ -7,13 +7,14 @@ import { AREA_SLUGS } from '../follows/contracts'
 // A body focus narrows the selected areas to the bodies carrying that public
 // label; an unknown label yields no bodies rather than every body.
 export async function selectedBodyIds(ctx: QueryCtx, areas?: string[], body?: string, city?: string) {
-  if (!areas?.length) return null
-  if (areas.length > AREA_SLUGS.length) throw new Error('Too many selected areas.')
+  const selectedAreas = areas?.length ? areas : body || city ? AREA_SLUGS : null
+  if (!selectedAreas) return null
+  if (selectedAreas.length > AREA_SLUGS.length) throw new Error('Too many selected areas.')
   if (body !== undefined && body.length > 120) throw new Error('Body focus exceeds its bounds.')
   if (city !== undefined && city.length > 80) throw new Error('City focus exceeds its bounds.')
   const label = body ? resolvePublicBodyFilter(body) : null
   const ids: Id<'governmentBodies'>[] = []
-  for (const slug of new Set(areas)) {
+  for (const slug of new Set(selectedAreas)) {
     const jurisdictions = await ctx.db.query('jurisdictions')
       .withIndex('by_slug', q => q.eq('slug', slug)).take(2)
     if (jurisdictions.length !== 1) continue

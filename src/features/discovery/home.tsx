@@ -379,9 +379,10 @@ function BodyChips({
       <ul>
         <li>
           <Link
-            aria-current={active || city ? undefined : 'true'}
+            aria-current={active || city ? undefined : 'page'}
+            activeOptions={{ exact: true, includeSearch: true, explicitUndefined: true }}
             resetScroll={false}
-            search={{ area }}
+            search={{ area, body: undefined, city: undefined }}
             to="/"
           >
             All bodies
@@ -390,10 +391,11 @@ function BodyChips({
         {city ? (
           <li>
             <Link
-              aria-current="true"
-              resetScroll={false}
+              aria-current="page"
+              activeOptions={{ exact: true, includeSearch: true, explicitUndefined: true }}
+            resetScroll={false}
               to="/"
-              search={{ area, city }}
+              search={{ area, city, body: undefined }}
             >
               {HOME_CITIES[city].name} bodies
             </Link>
@@ -402,9 +404,10 @@ function BodyChips({
         {bodies.map((body) => (
           <li key={body.slug}>
             <Link
-              aria-current={active === body.label ? 'true' : undefined}
-              resetScroll={false}
-              search={{ area, body: body.label }}
+              aria-current={active === body.label ? 'page' : undefined}
+              activeOptions={{ exact: true, includeSearch: true, explicitUndefined: true }}
+            resetScroll={false}
+              search={{ area, body: body.label, city: undefined }}
               to="/"
             >
               {body.label}
