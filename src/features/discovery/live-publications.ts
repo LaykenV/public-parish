@@ -41,9 +41,10 @@ export function localDay(now: Date = new Date()): string {
 export function issueEvidenceNote(issue: {
   decisionCount: number
   coverageStatus: string
+  sourceChecksPaused?: boolean
 }): string {
   const records = `Built from ${issue.decisionCount} linked official decision ${issue.decisionCount === 1 ? 'record' : 'records'}.`
-  if (issue.coverageStatus === 'paused') {
+  if (issue.sourceChecksPaused || issue.coverageStatus === 'paused') {
     return `${records} Source checks for this body are paused.`
   }
   if (issue.coverageStatus === 'degraded') {

@@ -42,8 +42,8 @@ export function documentedDay(value: string | null): number {
   const iso = /^\d{4}-\d{2}-\d{2}/.exec(value)
   if (iso) return Date.parse(iso[0])
   const phrase = /[A-Z][a-z]+\.? \d{1,2},? \d{4}/.exec(value)
-  if (phrase) return Date.parse(phrase[0])
-  return Date.parse(value)
+  if (phrase) return Date.parse(`${phrase[0]} UTC`)
+  return Number.NaN
 }
 
 function currencyPoints(signals: HomeIssueSignals, day: number | null): number {

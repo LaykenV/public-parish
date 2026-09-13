@@ -32,6 +32,7 @@ const fullDecision: PublishedDecision = {
 const fullIssue: PublishedIssue = {
   acceptedAt: 1_788_000_000_000,
   bodyName: 'Rapides Parish Police Jury',
+  sourceChecksPaused: false,
   coverageStatus: 'supported',
   decisionCount: 2,
   evidenceCheckedAt: 1_788_000_000_000,
@@ -152,4 +153,8 @@ describe('live publication discovery adapter', () => {
     expect(toIssueLifecycleState('complete')).toBe('Completed')
     expect(toIssueLifecycleState('unknown')).toBe('Status not stated')
   })
+})
+
+it('reports paused checks even while coverage remains supported', () => {
+  expect(issueEvidenceNote({ decisionCount: 2, coverageStatus: 'supported', sourceChecksPaused: true })).toContain('Source checks for this body are paused.')
 })

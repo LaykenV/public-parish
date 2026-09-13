@@ -15,6 +15,7 @@ import {
 } from '../extraction/contractV1'
 import { sourceKindUnion } from '../pipeline/state'
 import { residentMeetingKey } from './meetingKey'
+import { sourceChecksPaused } from './sourceChecks'
 import { parseHomeDay, rankHomeIssues } from './homeRank'
 
 const acceptedMode = v.union(v.literal('full'), v.literal('limited'))
@@ -123,6 +124,7 @@ const issueResult = v.object({
       citationIds: v.array(v.string()),
     }),
   ),
+  sourceChecksPaused: v.optional(v.boolean()),
   importanceScore: v.number(),
   acceptedAt: v.number(),
   publicActions: v.array(publicAction),
@@ -160,6 +162,7 @@ const issueSummaryResult = v.object({
   ),
   acceptedAt: v.number(),
   coverageStatus: v.string(),
+  sourceChecksPaused: v.boolean(),
 })
 
 const meetingResult = v.object({
@@ -499,6 +502,7 @@ export const listPublishedIssues = query({
         whyItMatters: whyItMatters(issue.factors),
         acceptedAt: issue.acceptedAt,
         coverageStatus: issue.coverageStatus ?? 'candidate',
+        sourceChecksPaused: issue.sourceChecksPaused ?? false,
         revision: issue.revision,
         slug: issue.slug,
         placeName: issue.placeName,
@@ -680,6 +684,7 @@ async function projectPublishedIssue(
       rationale: factor.rationale,
       citationIds: factor.citationIds.filter((id) => citationIds.has(id)),
     })),
+    sourceChecksPaused: await sourceChecksPaused(ctx, body),
     importanceScore: current.payload.importance.score,
     acceptedAt: current.createdAt,
     publicActions,
