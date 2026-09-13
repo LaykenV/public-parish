@@ -300,6 +300,11 @@ test('residents read the place-qualified body label while the identity name stay
   expect(await t.query(api.resident.discovery.listPublishedDecisions, { areas, city: 'pineville' })).toHaveLength(0)
   expect(await t.query(api.resident.evidence.listPublishedIssues, { areas, city: 'pineville' })).toHaveLength(0)
 
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { body: 'Metropolitan Council' })).toHaveLength(1)
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { city: 'baton-rouge' })).toHaveLength(1)
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { body: 'Unknown body' })).toHaveLength(0)
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { city: 'unknown' })).toHaveLength(0)
+
   expect(await t.query(api.resident.discovery.listCoverageBodies, {})).toEqual([
     {
       slug: 'ebr-metropolitan-council',
