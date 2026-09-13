@@ -18,7 +18,7 @@ slice contracts; [Work](work.md) records release status.
 
 | Order | Louisiana (default) | Parish, city or body focus |
 | --- | --- | --- |
-| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. Desktop has a view bar above the issues. On phones, "View Statewide Stories" sits beside "Search issues" |
+| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. The issues card contains the navigation links and body filters. On phones, the links stack beside Filters |
 | First content | Across Louisiana: Meta lead with SpaceX and Boyce secondary | Local issues and body filters. Featured stories are omitted |
 | Statewide records | Issues and records from supported statewide bodies, once any exist | Omitted |
 | Ballot | "On the November 3 ballot": statewide amendments, once published | Statewide amendments plus verified propositions for the focused parish |
@@ -46,12 +46,17 @@ Metropolitan Council" and "Lafayette Hearing Examiner". The two Lafayette
 planning commissions stay distinct. Body focus stays in the URL and clears back
 to the parish. Existing shared city and body links remain valid.
 
-On phones, a labeled floating button at the bottom right opens area selection
-in statewide view and filters in parish view. The filter drawer has a parish
-summary, Change area, checkboxes for government bodies, Reset and Apply filters.
+On phones, a floating Choose area button opens area selection in statewide view.
+In parish view, Search issues and View Statewide Stories stack in a white
+outlined group with a divider. A regular Filters button sits to their right.
+The filter drawer has a parish summary, Change area, checkboxes for government bodies, Reset and Apply filters.
 Choose several bodies to include issues and records from any selected body.
 Leave all unchecked to include every body in the parish. Closing without applying
-discards the draft. Desktop opens the same choices in a dialog.
+discards the draft. Desktop opens the same choices in a dialog. Its dropdown
+sits inline with the issue heading and shows All Government bodies, the selected
+body name, or the number of selected Government bodies. Search issues and
+View Statewide Stories stay inside the issues card. The header handles desktop
+area changes without a duplicate button above the card.
 Filter changes preserve the page, scroll position and control focus. After the
 initial page load, pending issue and decision queries show a spinner inside their
 own result sections. Single-body, multiple-body and city filters remain shareable

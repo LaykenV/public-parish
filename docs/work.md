@@ -9,19 +9,34 @@ QA, then launch and outreach.
 
 ## September 13 Home story grid and filter controls
 
+The latest owner refinement moves parish filters into the issues header. Mobile
+stacks Search issues and View Statewide Stories in a divided white group beside
+a regular Filters button. Desktop removes the duplicate Change area control,
+keeps both navigation links in the issues card and places the selection summary
+dropdown inline with the heading. Typechecks, build and lint passed with the
+15 existing warnings. All 48 Home browser checks passed on the finished build.
+Inspected 320px, 375px, tablet and desktop screenshots. PR validation and the
+replacement development frontend are pending.
+
 The owner requested vertical parish issues, multiple body selections and the
 mobile statewide action beside Search issues after testing `5067366`. The follow-up
 is implemented locally. Development query support is synced. Local validation
 passed 721 tests, both typechecks, build and lint with 15 existing warnings.
 All 46 Home browser checks passed across Chromium and WebKit. The final 320px
 layout check passed again after waiting for both result sections to settle.
-The replacement PR build and development frontend are pending.
+Head `4d77edf` passed CI `34766698331` with 721 application tests and 154 browser
+checks. GLM and Muse reported no key issues. Development upload
+`46c7b550-89af-4a3b-8d59-c7e2d075c2cd` uses exact artifact `10320232798`. Eight
+independent hosted checks and the desktop combined-filter check passed. All 70
+HTML, JavaScript and CSS files matched. Inspected hosted 320px and 375px layouts.
+The updated development preview is ready for testing; production is unchanged.
+This final receipt is recorded locally after the tested commit and in the PR.
 
 Local work on `design/home-controls`, based on `27b79d8`, gives all three
 statewide stories full-sized cards in a two-column desktop grid. Parish Home
-puts "View Statewide Stories" above the issues on desktop and beside Search issues
-on phones. Desktop has a body dialog; phones have a floating area or filter
-button. Both use draft checkboxes, Reset, Apply filters and Change area.
+keeps View Statewide Stories inside the issues card. Mobile stacks it beneath
+Search issues beside the filter button. Desktop has a selection dropdown beside
+the issue heading. Statewide keeps the floating mobile area selector. Both use draft checkboxes, Reset, Apply filters and Change area.
 Several selected bodies include results from any selection. Parish issues stack
 vertically on phones; statewide issues retain the swipe row. Filter requests keep the page visible and show
 loading within the issue and decision result sections. URLs retain body and city

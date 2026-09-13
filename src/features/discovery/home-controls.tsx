@@ -41,54 +41,20 @@ export function StatewideStoriesButton({
 
 export function HomeBodyFilter(props: BodyFilterProps) {
   const mobile = useMediaQuery('(max-width: 47.999rem)')
-  return mobile ? null : <BodyFilters {...props} />
+  return <BodyFilters {...props} mobile={mobile} />
 }
 
-export function HomeControls({
-  area,
-  bodies,
-  city,
-}: Omit<BodyFilterProps, 'area'> & { area: AreaSlug | null }) {
+export function HomeControls({ area }: { area: AreaSlug | null }) {
   const mobile = useMediaQuery('(max-width: 47.999rem)')
+  if (!mobile || area) return null
   return (
-    <>
-      {area ? (
-        <nav className="pp-home-view-controls" aria-label="Home view">
-          <AreaSelector
-            trigger={(props) => (
-              <Button
-                {...props}
-                className="pp-home-change-area"
-                variant="ghost"
-                size="touch"
-              >
-                <MapPinIcon aria-hidden="true" /> Change area
-              </Button>
-            )}
-          />
-          <StatewideStoriesButton />
-        </nav>
-      ) : null}
-      {mobile ? (
-        area ? (
-          <BodyFilters
-            key={area}
-            area={area}
-            bodies={bodies}
-            city={city}
-            mobile
-          />
-        ) : (
-          <AreaSelector
-            trigger={(props) => (
-              <Button {...props} className="pp-home-floating" size="touch">
-                <MapPinIcon aria-hidden="true" /> Choose area
-              </Button>
-            )}
-          />
-        )
-      ) : null}
-    </>
+    <AreaSelector
+      trigger={(props) => (
+        <Button {...props} className="pp-home-floating" size="touch">
+          <MapPinIcon aria-hidden="true" /> Choose area
+        </Button>
+      )}
+    />
   )
 }
 
@@ -116,7 +82,12 @@ function BodyFilters({
   const [draft, setDraft] = useState(current)
   const navigate = useNavigate()
   const triggerId = mobile ? 'home-filter-trigger' : 'home-body-filter-trigger'
-  const summary = current.length ? `${current.length} selected` : 'All bodies'
+  const summary =
+    current.length === 1
+      ? current[0]
+      : current.length
+        ? `${current.length} Government bodies`
+        : 'All Government bodies'
   return (
     <Sheet
       className="pp-home-filter-sheet"
@@ -133,7 +104,7 @@ function BodyFilters({
           <Button
             {...props}
             id={triggerId}
-            className="pp-home-floating"
+            className="pp-home-inline-filter"
             size="touch"
           >
             <SlidersHorizontalIcon aria-hidden="true" /> Filters
@@ -150,7 +121,6 @@ function BodyFilters({
             size="touch"
             aria-label={`Filter government bodies: ${summary}`}
           >
-            <SlidersHorizontalIcon aria-hidden="true" /> Government bodies{' '}
             <span>{summary}</span>
             <ChevronDownIcon aria-hidden="true" />
           </Button>

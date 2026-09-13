@@ -62,7 +62,7 @@ test('body changes keep the page visible while only results load', async ({
   )
 })
 
-test('floating controls select an area, discard drafts and change parishes', async ({
+test('area and inline filter controls discard drafts and change parishes', async ({
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 320, height: 640 })
@@ -173,8 +173,17 @@ test('parish issues stack vertically and multiple filters survive reload', async
   const statewide = (await page
     .getByRole('button', { name: 'View Statewide Stories' })
     .boundingBox())!
-  expect(Math.abs(search.y - statewide.y)).toBeLessThan(2)
-  expect(statewide.x).toBeGreaterThan(search.x)
+  expect(statewide.y).toBeGreaterThanOrEqual(search.y + search.height)
+  expect(statewide.x).toBe(search.x)
+  const filter = (await page
+    .getByRole('button', { name: /^Filters/ })
+    .boundingBox())!
+  expect(filter.x).toBeGreaterThanOrEqual(search.x + search.width)
+  expect(filter.y).toBeGreaterThanOrEqual(search.y)
+  expect(filter.y + filter.height).toBeLessThanOrEqual(
+    statewide.y + statewide.height,
+  )
+  await expect(page.locator('.pp-home-floating')).toHaveCount(0)
   await page.getByRole('button', { name: /^Filters/ }).click()
   const drawer = page.getByRole('dialog', { name: 'Filter local issues' })
   for (const name of ['Pineville City Council', 'Rapides Parish Police Jury'])
@@ -194,6 +203,9 @@ test('parish issues stack vertically and multiple filters survive reload', async
   ).toBe(true)
   for (const name of ['Pineville City Council', 'Rapides Parish Police Jury'])
     expect(places.some((place) => place.includes(name))).toBe(true)
+  await page.screenshot({
+    path: testInfo.outputPath('mobile-selected-controls.png'),
+  })
   await page.reload()
   await page.getByRole('button', { name: /^Filters/ }).click()
   for (const name of ['Pineville City Council', 'Rapides Parish Police Jury'])
@@ -225,15 +237,72 @@ test('parish issues stack vertically and multiple filters survive reload', async
   const narrowStatewide = (await page
     .getByRole('button', { name: 'View Statewide Stories' })
     .boundingBox())!
-  expect(Math.abs(narrowSearch.y - narrowStatewide.y)).toBeLessThan(2)
-  expect(narrowStatewide.x).toBeGreaterThanOrEqual(
-    narrowSearch.x + narrowSearch.width,
+  expect(narrowStatewide.y).toBeGreaterThanOrEqual(
+    narrowSearch.y + narrowSearch.height,
   )
+  expect(narrowStatewide.x).toBe(narrowSearch.x)
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
     320,
   )
   await page.screenshot({
+    path: testInfo.outputPath('mobile-inline-controls.png'),
+  })
+  await page.screenshot({
     path: testInfo.outputPath('parish-vertical.png'),
     fullPage: true,
+  })
+})
+
+test('desktop issues contain navigation and an inline selection summary', async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 1280, height: 900 })
+  await page.goto('/?area=rapides-parish')
+  const section = page.locator('#current-issues')
+  const filter = section.getByRole('button', {
+    name: /^Filter government bodies/,
+  })
+  await expect(filter).toHaveText('All Government bodies')
+  await expect(
+    page.getByRole('button', { name: 'Change area', exact: true }),
+  ).toHaveCount(0)
+  await expect(
+    section.getByRole('button', { name: 'View Statewide Stories' }),
+  ).toBeVisible()
+  const heading = (await section
+    .getByRole('heading', { level: 1 })
+    .boundingBox())!
+  const control = (await filter.boundingBox())!
+  expect(control.height).toBeGreaterThanOrEqual(44)
+  expect(control.x).toBeGreaterThanOrEqual(heading.x + heading.width)
+  expect(
+    Math.abs(control.y + control.height / 2 - heading.y - heading.height / 2),
+  ).toBeLessThan(2)
+  await filter.click()
+  const dialog = page.getByRole('dialog', { name: 'Filter local issues' })
+  await dialog
+    .getByRole('checkbox', { name: 'Pineville City Council', exact: true })
+    .check()
+  await dialog.getByRole('button', { name: 'Apply filters' }).click()
+  await expect(filter).toHaveText('Pineville City Council')
+  await filter.click()
+  await dialog
+    .getByRole('checkbox', { name: 'Rapides Parish Police Jury', exact: true })
+    .check()
+  await dialog.getByRole('button', { name: 'Apply filters' }).click()
+  await expect(filter).toHaveText('2 Government bodies')
+  await expect(section.locator('.pp-home-results')).toHaveAttribute(
+    'aria-busy',
+    'false',
+  )
+  await page.screenshot({
+    path: testInfo.outputPath('desktop-inline-controls.png'),
+  })
+  await page.setViewportSize({ width: 768, height: 1024 })
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
+    768,
+  )
+  await page.screenshot({
+    path: testInfo.outputPath('tablet-inline-controls.png'),
   })
 })

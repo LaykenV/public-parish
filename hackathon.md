@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-13T15:48:21Z
+- **Last updated:** 2026-09-13T17:08:50Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2143,3 +2143,19 @@ row, and the mobile statewide action sits beside Search issues. Both filter
 dialogs accept several bodies through bounded Convex queries and shareable URLs.
 Local checks passed 721 tests, typechecks, build, lint and 46 Home browser checks.
 Development query support is synced. The replacement frontend and CI are pending.
+
+### 2026-09-13 - 4d77edf, parish follow-up ready on development
+
+PR #221 passed 721 application tests and 154 browser checks with clean GLM and
+Muse reviews. Synced development query support and uploaded exact CI artifact
+10320232798. Eight hosted checks, a desktop combined-filter check and all 70 code
+file hashes passed. Inspected hosted 320px and 375px layouts. The owner can test
+the changes on development. The PR stays open and production is unchanged.
+
+### 2026-09-13 - working tree, parish controls inside the issues header
+
+Mobile now groups two stacked navigation links beside a regular Filters button.
+Desktop removes the duplicate area control and keeps navigation inside the card,
+with the active-selection dropdown beside the heading. Typechecks, build, lint
+and all 48 Home browser checks passed. Inspected phone, tablet and desktop
+screenshots. The replacement PR build and development frontend are pending.

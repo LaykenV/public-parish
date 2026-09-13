@@ -106,7 +106,7 @@ export function HomePage({
 
   return (
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>
-      <HomeControls area={area} bodies={selectedBodies} city={cityFocus} />
+      <HomeControls area={area} />
       {showHero ? <FirstVisitHero /> : null}
       {showStories ? <FeaturedStories mainHeading={!showHero} /> : null}
       <div id="local-content">
@@ -332,15 +332,14 @@ function IssuesSection({
       className="pp-section pp-home-issues"
       id="current-issues"
     >
-      <div className="pp-section-head">
-        <div>
-          <Heading
-            id="current-issues-title"
-            tabIndex={pageHeading ? -1 : undefined}
-          >
-            {title}
-          </Heading>
-        </div>
+      <div className={focused ? 'pp-home-issues-header' : 'pp-section-head'}>
+        <Heading
+          className="pp-home-issues-title"
+          id="current-issues-title"
+          tabIndex={pageHeading ? -1 : undefined}
+        >
+          {title}
+        </Heading>
         <div className="pp-home-issue-actions">
           <Button
             className="pp-section-link"
@@ -351,17 +350,27 @@ function IssuesSection({
             Search issues
             <ArrowUpRightIcon aria-hidden="true" />
           </Button>
-          {focused ? (
-            <StatewideStoriesButton className="pp-home-statewide-mobile" />
-          ) : null}
+          {focused ? <StatewideStoriesButton /> : null}
         </div>
+        {focused ? (
+          <HomeBodyFilter
+            key={watching[0]}
+            bodies={bodies ?? []}
+            city={city}
+            area={watching[0]}
+          />
+        ) : null}
+        {focused ? (
+          <p className="pp-section-copy">
+            Follow an issue through the decisions that shape it.
+          </p>
+        ) : null}
       </div>
-      {focused ? (
-        <HomeBodyFilter bodies={bodies ?? []} city={city} area={watching[0]} />
+      {!focused ? (
+        <p className="pp-section-copy">
+          Follow an issue through the decisions that shape it.
+        </p>
       ) : null}
-      <p className="pp-section-copy">
-        Follow an issue through the decisions that shape it.
-      </p>
       <div className="pp-home-results" aria-busy={loading}>
         {showFailure ? (
           <SectionFailure
