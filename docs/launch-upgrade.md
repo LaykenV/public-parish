@@ -306,8 +306,8 @@ PDFs covering many dockets; inventory cost scales with pages.
   kinds are agenda and minutes for business and executive sessions only.
   Docket filings, testimony and rate-case exhibits are out of scope.
 - Jurisdiction: promote `louisiana` through the same status lifecycle as a
-  parish. The selector's Louisiana row lists statewide bodies under it after
-  U2. Coverage page adds a Statewide group.
+  parish. Louisiana selects statewide content; statewide body filters belong
+  on Home. Coverage page adds a Statewide group.
 - Discovery window: sessions from July 1, 2026 forward. Do not backfill the
   archive.
 - Compile in development first with the owner compiler, evaluate the ten
@@ -394,8 +394,9 @@ update events, all of which a measure needs.
   of State." `/ballot/$measureSlug` renders the measure with the shared story
   reading, Ask, Follow and Share patterns. Ordinary URLs serve social
   metadata like stories do.
-- Home: an "On the November 3 ballot" section below the stories in both
-  views, showing statewide amendments and, in a parish view, that parish's
+- Home: an "On the November 3 ballot" section below the stories in the
+  statewide view and in parish views without stories, showing statewide
+  amendments and, in a parish view, that parish's
   verified propositions. The footer voter strip links to `/ballot` and
   updates its checked date.
 - Parish propositions: verify each launch parish against the Secretary of
