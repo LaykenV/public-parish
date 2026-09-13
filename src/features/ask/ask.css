@@ -777,6 +777,22 @@
 .ask-composer:has(.ask-composer-count) { margin-top: 1.75rem; }
 .ask-composer:focus-within { box-shadow: 0 0 0 1px var(--accent); }
 
+@media (min-width: 48.001rem) {
+  .ask-page[data-empty]:not(.ask-page-embedded) .ask-reading {
+    justify-content: safe center;
+    overflow-y: auto;
+  }
+
+  .ask-page[data-empty]:not(.ask-page-embedded) .ask-thread-region {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+
+  .ask-page[data-empty]:not(.ask-page-embedded) .ask-thread-region:empty {
+    display: none;
+  }
+}
+
 /*
   Phone chat screen. One bar, one scrolling conversation, one composer at the
   bottom. Every phone entry point renders the page inside .mobile-chat-screen

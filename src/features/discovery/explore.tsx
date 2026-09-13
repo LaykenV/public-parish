@@ -1,4 +1,4 @@
-import { PageLoading } from '../resident-blueprint/resident-loading'
+import { Spinner } from '../../components/ui/spinner'
 import { SearchIcon, SlidersHorizontalIcon, XIcon } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
@@ -29,13 +29,12 @@ import {
 import { IssueCard } from './issue-card'
 import { SectionFailure, UpdateRow } from './notice'
 import { ResultRow } from './result-row'
-import { useMediaQuery, useRepeatedAnnouncement } from './hooks'
+import { useRepeatedAnnouncement } from './hooks'
 import { toSearchEntry, usePublishedSearch } from './live-search'
 import { Sheet } from './sheet'
 
 export function ExplorePage({ search }: { search: ExploreSearch }) {
   const navigate = useNavigate()
-  const desktop = useMediaQuery('(min-width: 64.0625rem)')
   const activeFixture = getActiveDiscoveryFixture(search.fixture)
   const fixturesEnabled = activeFixture !== undefined
   const liveSearch = usePublishedSearch(!fixturesEnabled, search)
@@ -65,6 +64,7 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
   const patch = (next: Partial<ExploreSearch>) => {
     navigate({
       replace: true,
+      resetScroll: false,
       search: { ...searchRef.current, ...next },
       to: '/explore',
     })
@@ -230,7 +230,7 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
         </div>
         <Button
           aria-expanded={filtersOpen}
-          aria-haspopup={desktop ? undefined : 'dialog'}
+          aria-haspopup="dialog"
           id="explore-more-filters"
           onClick={() => setFiltersOpen((open) => !open)}
           size="touch"
@@ -267,7 +267,7 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
           options={DATE_OPTIONS.map((option) => ({ ...option }))}
           value={search.date ?? ''}
         />
-        {viewMode === 'results' ? (
+        {!fixturesEnabled || viewMode === 'results' ? (
           <FilterPill
             defaultValue="newest"
             label="Sort"
@@ -280,16 +280,12 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
         ) : null}
       </div>
 
-      {desktop && filtersOpen ? (
-        <div className="pp-explore-layout">
-          <aside aria-label="More filters" className="pp-filter-column">
-            {moreFilters}
-          </aside>
-          <div className="pp-explore-results">{results()}</div>
-        </div>
-      ) : (
-        <div className="pp-explore-results">{results()}</div>
-      )}
+      <div
+        aria-busy={!fixturesEnabled && liveSearch.isLoading}
+        className="pp-explore-results"
+      >
+        {results()}
+      </div>
 
       <Sheet
         footer={
@@ -301,7 +297,7 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
           </div>
         }
         onOpenChange={setFiltersOpen}
-        open={filtersOpen && !desktop}
+        open={filtersOpen}
         size="tall"
         title="More filters"
         triggerId="explore-more-filters"
@@ -343,9 +339,11 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
       liveSearch.status === 'LoadingFirstPage'
     ) {
       return (
-        <div className="pp-explore-loading">
-          <PageLoading />
-          <p>Loading {search.place ? `${search.place} records` : 'published records'}…</p>
+        <div className="pp-explore-loading" role="status">
+          <Spinner aria-hidden="true" />
+          <span className="visually-hidden">
+            Loading {search.place ? `${search.place} records` : 'published records'}
+          </span>
         </div>
       )
     }

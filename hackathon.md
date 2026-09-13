@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-13T18:10:54Z
+- **Last updated:** 2026-09-13T23:17:00Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2190,3 +2190,12 @@ Removed Search issues from Home at the owner's request. Mobile now has one
 row with View Statewide Stories and Filters. Build and ten Home browser checks
 passed. The owner authorized merging and shipping once the PR is green.
 Final CI, production deployment and independent smoke checks are pending.
+
+### 2026-09-13 - working tree, resident page controls
+
+Explore now keeps filters visible during paginated-query loading and shows two
+desktop columns with modal filters. Centered the empty desktop Ask composer and
+coverage request column. Fixed the extra inner outline on both composite search
+fields. Local validation passed 721 tests, typechecks, build and lint with the
+15 existing warnings. Passed 26 desktop and mobile browser checks and the desktop
+Ask transition, then inspected screenshots. PR review and dev upload are pending.

@@ -7,6 +7,22 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 13 Explore, Ask and coverage request controls
+
+The owner requested two desktop Explore columns, modal filters, loading confined
+to results, a centered empty desktop Ask composer, a centered coverage request
+form and complete focus borders on composite inputs. The changes are implemented
+on `fix/resident-page-interactions`. Explore preserves scroll and mounted filters
+during query changes. The shared area search and Explore search keep their focus
+border around the whole field. Coverage assurance follows the form.
+
+Local validation passed 721 tests, both typechecks, build and lint with the
+15 existing warnings. All 26 desktop and mobile browser checks passed, plus the
+desktop Ask transition using synthetic chat. These cover delayed queries,
+dropdown anchors, modal bounds and focus, responsive cards and request layout.
+Inspected before and after screenshots. PR reviews and deployment of the exact
+green CI artifact to development are pending. Production is outside this request.
+
 ## September 13 Home story grid and filter controls
 
 The owner requested removal of Search issues and authorized merging and shipping
