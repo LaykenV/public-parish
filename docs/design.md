@@ -18,11 +18,11 @@ slice contracts; [Work](work.md) records release status.
 
 | Order | Louisiana (default) | Parish, city or body focus |
 | --- | --- | --- |
-| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. A separate view bar above the issues offers "View Statewide Stories" |
+| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. Desktop has a view bar above the issues. On phones, "View Statewide Stories" sits beside "Search issues" |
 | First content | Across Louisiana: Meta lead with SpaceX and Boyce secondary | Local issues and body filters. Featured stories are omitted |
 | Statewide records | Issues and records from supported statewide bodies, once any exist | Omitted |
 | Ballot | "On the November 3 ballot": statewide amendments, once published | Statewide amendments plus verified propositions for the focused parish |
-| Local content | Issues across covered parishes | Issues in the focus, with a desktop body selector and mobile filter drawer |
+| Local content | Issues across covered parishes | Issues in the focus, with a desktop body dialog and mobile filter drawer |
 | Records | Latest decision records | Latest decision records for the focus |
 | Footer | Brand, site links and compact dated voter information linking to the ballot page | Same footer |
 
@@ -48,11 +48,14 @@ to the parish. Existing shared city and body links remain valid.
 
 On phones, a labeled floating button at the bottom right opens area selection
 in statewide view and filters in parish view. The filter drawer has a parish
-summary, Change area, radio choices for government bodies, Reset and Apply filters.
-Closing without applying discards the draft. Desktop uses a labeled select.
+summary, Change area, checkboxes for government bodies, Reset and Apply filters.
+Choose several bodies to include issues and records from any selected body.
+Leave all unchecked to include every body in the parish. Closing without applying
+discards the draft. Desktop opens the same choices in a dialog.
 Filter changes preserve the page, scroll position and control focus. After the
 initial page load, pending issue and decision queries show a spinner inside their
-own result sections. Body and city filters remain shareable in the URL.
+own result sections. Single-body, multiple-body and city filters remain shareable
+in the URL.
 
 Home issue selection favors current explanations with a cited consequence, a
 next documented date or a recent outcome. Source-only stubs stay in Explore. A
@@ -71,10 +74,12 @@ account or completed location setup. Image subtext remains omitted as requested.
 Issue cards emphasize title, consequence and next documented date or latest
 outcome. Keep evidence limitations readable and actions distinct. Use a soft lavender off-white page, white cards and a near-white desktop issues
 section. On phones, remove the outer section panel and nested padding. Give each
-issue nearly the full viewport width with a peek of the next card. Native touch
-swiping snaps to cards without arrow buttons. Cards share one height across the row, sized to fit the longest issue.
-A noninteractive dot index sits below the row. Announce the current issue count
-only to screen readers. Keep vertical page scrolling and keyboard access to every card. Decision
+statewide issue nearly the full viewport width with a peek of the next card.
+Native touch swiping snaps to cards without arrow buttons. Statewide cards share
+one height across the row, sized to fit the longest issue. A noninteractive dot
+index sits below the row. Announce the current issue count only to screen readers.
+When a parish is selected, stack mobile issue cards vertically at their natural
+heights with no swipe row or dot index. Keep keyboard access to every card. Decision
 records use a white list with larger titles, a separate meeting-date column on
 desktop, and neutral lifecycle badges. Move the date above the title on phones.
 Keep source limitations visible and each full row clickable. Stories, issues and records have separate

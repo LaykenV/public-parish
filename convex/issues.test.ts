@@ -1452,6 +1452,10 @@ test('selected parish issues survive newer issue rows in another parish', async 
   expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['lafayette-parish'] })).toEqual(original)
   expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['rapides-parish'] })).toEqual([])
   expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['lafayette-parish', 'lafayette-parish'] })).toEqual(original)
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['lafayette-parish'], bodies: [original[0].bodyName, original[0].bodyName, 'Pineville City Council'] })).toEqual(original)
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['lafayette-parish'], bodies: ['Pineville City Council'] })).toEqual([])
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { areas: ['rapides-parish'], bodies: [original[0].bodyName] })).toEqual([])
+
 })
 
 test('Home leads with the strongest cited consequence and keeps its citations', async () => {

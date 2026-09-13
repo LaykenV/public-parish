@@ -16,10 +16,14 @@ import {
   areaName,
   getActiveDiscoveryFixture,
   homeFocusArea,
-  homeBodyLabel,
+  homeBodySelection,
   HOME_CITIES,
 } from './contracts'
-import { HomeControls, HomeBodyFilter } from './home-controls'
+import {
+  HomeControls,
+  HomeBodyFilter,
+  StatewideStoriesButton,
+} from './home-controls'
 import { Spinner } from '../../components/ui/spinner'
 import type {
   AreaSlug,
@@ -49,16 +53,18 @@ export function HomePage({
   area: urlArea,
   city,
   body,
+  bodies,
   scenario,
 }: {
   area?: HomeSearch['area']
   city?: HomeCity
   body?: string
+  bodies?: string[]
   scenario?: HomeScenario
 }) {
   const storedArea = useArea()
   const hasSelectedArea = useHasSelectedArea()
-  const area = homeFocusArea({ area: urlArea, body, city }, storedArea)
+  const area = homeFocusArea({ area: urlArea, body, bodies, city }, storedArea)
   useEffect(() => {
     if (storedArea !== area) setArea(area)
   }, [area, storedArea])
@@ -77,8 +83,10 @@ export function HomePage({
   const showHero = !selected && !hasSelectedArea
   const showStories = !selected && !fixturesEnabled
   // A body focus only narrows a single focused parish.
-  const bodyFocus = area && body ? homeBodyLabel(body) : undefined
-  const resetKey = `${area ?? 'all'}:${bodyFocus ?? city ?? 'all'}:${scenario ?? 'live'}`
+  const selectedBodies = homeBodySelection({ body, bodies }, area)
+  const bodyFocus = selectedBodies.length === 1 ? selectedBodies[0] : undefined
+  const cityFocus = selectedBodies.length ? undefined : city
+  const resetKey = `${area ?? 'all'}:${selectedBodies.join(',') || city || 'all'}:${scenario ?? 'live'}`
 
   useEffect(() => {
     if (pageLoading) return
@@ -98,15 +106,16 @@ export function HomePage({
 
   return (
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>
-      <HomeControls area={area} body={bodyFocus} city={city} />
+      <HomeControls area={area} bodies={selectedBodies} city={cityFocus} />
       {showHero ? <FirstVisitHero /> : null}
       {showStories ? <FeaturedStories mainHeading={!showHero} /> : null}
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
           <LocalIssues
             pageHeading={!showHero && !showStories}
-            city={bodyFocus ? undefined : city}
+            city={cityFocus}
             body={bodyFocus}
+            bodies={selectedBodies}
             fixturesEnabled={fixturesEnabled}
             scenario={activeScenario}
             watching={watching}
@@ -115,8 +124,8 @@ export function HomePage({
       </div>
       <ResidentSectionBoundary label="Decision records" resetKey={resetKey}>
         <LocalDecisionRecords
-          city={bodyFocus ? undefined : city}
-          body={bodyFocus}
+          city={cityFocus}
+          bodies={selectedBodies}
           fixturesEnabled={fixturesEnabled}
           watching={watching}
         />
@@ -167,6 +176,7 @@ function LocalIssues({
   pageHeading,
   city,
   body,
+  bodies,
   watching,
   scenario,
   fixturesEnabled,
@@ -174,6 +184,7 @@ function LocalIssues({
   pageHeading: boolean
   city?: HomeCity
   body?: string
+  bodies?: string[]
   watching: AreaSlug[]
   scenario?: HomeScenario
   fixturesEnabled: boolean
@@ -181,8 +192,9 @@ function LocalIssues({
   const publishedIssues = usePublishedIssues(
     !fixturesEnabled,
     watching,
-    body,
+    undefined,
     city,
+    bodies?.length ? bodies : undefined,
   )
   const [refreshed, setRefreshed] = useState(false)
   const [refreshAnnouncement, announceRefresh] = useRepeatedAnnouncement(
@@ -215,6 +227,7 @@ function LocalIssues({
         pageHeading={pageHeading}
         city={city}
         body={body}
+        bodies={bodies}
         issues={issues}
         loading={!fixturesEnabled && publishedIssues === undefined}
         scenario={scenario}
@@ -247,20 +260,21 @@ function LocalIssues({
 
 function LocalDecisionRecords({
   city,
-  body,
+  bodies,
   watching,
   fixturesEnabled,
 }: {
   city?: HomeCity
-  body?: string
+  bodies?: string[]
   watching: AreaSlug[]
   fixturesEnabled: boolean
 }) {
   const publishedDecisions = usePublishedDecisions(
     !fixturesEnabled,
     watching,
-    body,
+    undefined,
     city,
+    bodies?.length ? bodies : undefined,
   )
   const rows = fixturesEnabled
     ? filterFixtureRows(
@@ -282,6 +296,7 @@ function IssuesSection({
   pageHeading,
   city,
   body,
+  bodies,
   issues,
   loading,
   scenario,
@@ -290,6 +305,7 @@ function IssuesSection({
   pageHeading: boolean
   city?: HomeCity
   body?: string
+  bodies?: string[]
   issues: IssueCardData[]
   loading: boolean
   scenario?: HomeScenario
@@ -325,18 +341,23 @@ function IssuesSection({
             {title}
           </Heading>
         </div>
-        <Button
-          className="pp-section-link"
-          render={<Link to="/explore" search={{ type: 'issue' }} />}
-          size="touch"
-          variant="ghost"
-        >
-          Search issues
-          <ArrowUpRightIcon aria-hidden="true" />
-        </Button>
+        <div className="pp-home-issue-actions">
+          <Button
+            className="pp-section-link"
+            render={<Link to="/explore" search={{ type: 'issue' }} />}
+            size="touch"
+            variant="ghost"
+          >
+            Search issues
+            <ArrowUpRightIcon aria-hidden="true" />
+          </Button>
+          {focused ? (
+            <StatewideStoriesButton className="pp-home-statewide-mobile" />
+          ) : null}
+        </div>
       </div>
       {focused ? (
-        <HomeBodyFilter body={body} city={city} area={watching[0]} />
+        <HomeBodyFilter bodies={bodies ?? []} city={city} area={watching[0]} />
       ) : null}
       <p className="pp-section-copy">
         Follow an issue through the decisions that shape it.
@@ -350,7 +371,10 @@ function IssuesSection({
         ) : loading ? (
           <HomeResultsLoading settled={settled} label="Updating issues" />
         ) : issues.length > 0 ? (
-          <HomeIssueCards issues={issues.slice(0, HOME_SECTION_LIMIT)} />
+          <HomeIssueCards
+            horizontal={!focused}
+            issues={issues.slice(0, HOME_SECTION_LIMIT)}
+          />
         ) : (
           <EmptyIssues city={city} body={body} watching={watching} />
         )}

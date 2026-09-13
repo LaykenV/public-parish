@@ -4,6 +4,7 @@ import {
   getActiveDiscoveryFixture,
   homeFocusArea,
   homeBodyLabel,
+  homeBodySelection,
   parseExploreSearch,
   parseHomeSearch,
 } from './contracts'
@@ -185,4 +186,16 @@ it('shared Home focus overrides missing or unrelated saved preferences', () => {
 it('legacy Home focus uses the current public label', () => {
   expect(homeBodyLabel('Metropolitan Council')).toBe('Baton Rouge Metropolitan Council')
   expect(homeBodyLabel('Pineville City Council')).toBe('Pineville City Council')
+})
+
+
+it('restores bounded, distinct body selections and preserves parish scope', () => {
+  const search = parseHomeSearch({ bodies: ['Metropolitan Council', 'Baton Rouge Metropolitan Council', 'East Baton Rouge Planning and Zoning Commission', 'Invented board', 5] })
+  expect(search.bodies).toEqual(['Baton Rouge Metropolitan Council', 'East Baton Rouge Planning and Zoning Commission'])
+  const area = homeFocusArea(search, 'lafayette-parish')
+  expect(area).toBe('east-baton-rouge-parish')
+  expect(homeBodySelection(search, area)).toEqual(search.bodies)
+  expect(homeBodySelection({ bodies: ['Pineville City Council', 'Lafayette City Council'] }, 'rapides-parish')).toEqual(['Pineville City Council'])
+  expect(parseHomeSearch({ bodies: [] }).bodies).toBeUndefined()
+  expect(parseHomeSearch({ bodies: 'Pineville City Council' }).bodies).toBeUndefined()
 })

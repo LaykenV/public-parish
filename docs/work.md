@@ -9,11 +9,21 @@ QA, then launch and outreach.
 
 ## September 13 Home story grid and filter controls
 
+The owner requested vertical parish issues, multiple body selections and the
+mobile statewide action beside Search issues after testing `5067366`. The follow-up
+is implemented locally. Development query support is synced. Local validation
+passed 721 tests, both typechecks, build and lint with 15 existing warnings.
+All 46 Home browser checks passed across Chromium and WebKit. The final 320px
+layout check passed again after waiting for both result sections to settle.
+The replacement PR build and development frontend are pending.
+
 Local work on `design/home-controls`, based on `27b79d8`, gives all three
 statewide stories full-sized cards in a two-column desktop grid. Parish Home
-moves "View Statewide Stories" above the issues. Desktop has a body select;
-phones have a floating area or filter button with draft radio choices, Reset,
-Apply filters and Change area. Filter requests keep the page visible and show
+puts "View Statewide Stories" above the issues on desktop and beside Search issues
+on phones. Desktop has a body dialog; phones have a floating area or filter
+button. Both use draft checkboxes, Reset, Apply filters and Change area.
+Several selected bodies include results from any selection. Parish issues stack
+vertically on phones; statewide issues retain the swipe row. Filter requests keep the page visible and show
 loading within the issue and decision result sections. URLs retain body and city
 focus, and closing the drawer discards unapplied choices.
 
@@ -29,8 +39,14 @@ reported no key issues. Development upload `b38ec75f-a464-41f6-9f14-c302d682c1cb
 used exact CI artifact `10320420943`. Six independent hosted checks passed and
 all 70 HTML, JavaScript and CSS files matched. Screenshot review then found the
 desktop select's focus outline touching the copy below it. The follow-up adds a
-12px gap; its CI and replacement development upload remain pending. Production
-has not changed.
+12px spacing. Previous head `5067366` passed CI `34765244359`, including all
+719 application tests and 152 browser checks, and both reviews are clean.
+Development upload `8bfde61c-bdd2-4c4d-bf59-dfbfc2cb1de9` used exact artifact
+`10320840979`. Six hosted Chromium/WebKit checks passed; all 70 HTML, JavaScript
+and CSS files matched the artifact. Final screenshots confirm the spacing fix.
+The owner can test https://woozy-wren-227.convex.site. PR #221 remains open and
+production has not changed. This final receipt was recorded locally after the
+tested commit; the PR comment carries the same handoff evidence.
 
 ## September 13 Home UX correction
 

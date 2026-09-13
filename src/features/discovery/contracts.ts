@@ -277,10 +277,11 @@ export type HomeSearch = {
   area?: AreaSlug | 'louisiana'
   city?: HomeCity
   body?: string
+  bodies?: string[]
   fixture?: HomeScenario
 }
 
-// Home shares the Explore `body` contract: a public body label, or nothing.
+// Keep single-body links readable; multi-select uses a bounded list of labels.
 export function parseHomeSearch(search: Record<string, unknown>): HomeSearch {
   return {
     area: pick(search.area, [
@@ -291,8 +292,24 @@ export function parseHomeSearch(search: Record<string, unknown>): HomeSearch {
     ]),
     city: pick(search.city, Object.keys(HOME_CITIES) as HomeCity[]),
     body: pick(search.body, [...BODY_OPTIONS, ...LEGACY_BODY_OPTIONS]),
+    bodies: parseHomeBodies(search.bodies),
     fixture: pick(search.fixture, HOME_SCENARIOS),
   }
+}
+
+function parseHomeBodies(value: unknown): string[] | undefined {
+  if (!Array.isArray(value)) return undefined
+  const labels = [...new Set(value.slice(0, 25)
+    .map((entry) => pick(entry, [...BODY_OPTIONS, ...LEGACY_BODY_OPTIONS]))
+    .filter((entry) => entry !== undefined)
+    .map(homeBodyLabel))]
+  return labels.length ? labels : undefined
+}
+
+export function homeBodySelection(search: Pick<HomeSearch, 'body' | 'bodies'>, area: AreaSlug | null): string[] {
+  const labels = search.bodies ?? (search.body ? [search.body] : [])
+  const allowed: readonly string[] = BODY_GROUPS.find((group) => group.slug === area)?.bodies ?? []
+  return [...new Set(labels.map(homeBodyLabel))].filter((label) => allowed.includes(label))
 }
 
 export function parseExploreSearch(
@@ -332,8 +349,9 @@ export function homeFocusArea(
   search: HomeSearch,
   stored: AreaSlug | null,
 ): AreaSlug | null {
-  if (search.body) {
-    const label = homeBodyLabel(search.body)
+  const firstBody = search.bodies?.[0] ?? search.body
+  if (firstBody) {
+    const label = homeBodyLabel(firstBody)
     const group = BODY_GROUPS.find((item) =>
       (item.bodies as readonly string[]).includes(label),
     )

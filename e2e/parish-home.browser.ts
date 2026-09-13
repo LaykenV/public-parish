@@ -229,16 +229,17 @@ test('a body filter narrows Home to one body and survives a reload', async ({
     'Issues in Lafayette Parish',
   )
   const mobile = (page.viewportSize()?.width ?? 1280) < 768
-  const select = page.getByRole('combobox', { name: 'Government body' })
   const choose = async (label: string) => {
-    if (mobile) {
-      await page.getByRole('button', { name: /Filters/ }).click()
-      const drawer = page.getByRole('dialog', { name: 'Filter local issues' })
-      await drawer.getByRole('radio', { name: label, exact: true }).check()
-      await drawer.getByRole('button', { name: 'Apply filters' }).click()
-    } else {
-      await select.selectOption({ label })
-    }
+    await page
+      .getByRole('button', {
+        name: mobile ? /^Filters/ : /^Filter government bodies/,
+      })
+      .click()
+    const drawer = page.getByRole('dialog', { name: 'Filter local issues' })
+    await drawer.getByRole('button', { name: 'Reset', exact: true }).click()
+    if (label !== 'All bodies')
+      await drawer.getByRole('checkbox', { name: label, exact: true }).check()
+    await drawer.getByRole('button', { name: 'Apply filters' }).click()
   }
   await choose('Lafayette City Council')
   await expect(page).toHaveURL(/body=Lafayette(\+|%20)City(\+|%20)Council/)
@@ -253,15 +254,22 @@ test('a body filter narrows Home to one body and survives a reload', async ({
     await expect(row).toContainText('Lafayette City Council')
   }
   await page.reload()
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Issues from Lafayette City Council')
-  if (mobile) {
-    await page.getByRole('button', { name: /Filters/ }).click()
-    const drawer = page.getByRole('dialog', { name: 'Filter local issues' })
-    await expect(drawer.getByRole('radio', { name: 'Lafayette City Council', exact: true })).toBeChecked()
-    await page.keyboard.press('Escape')
-  } else {
-    await expect(select).toHaveValue('Lafayette City Council')
-  }
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Issues from Lafayette City Council',
+  )
+  await page
+    .getByRole('button', {
+      name: mobile ? /^Filters/ : /^Filter government bodies/,
+    })
+    .click()
+  const drawer = page.getByRole('dialog', { name: 'Filter local issues' })
+  await expect(
+    drawer.getByRole('checkbox', {
+      name: 'Lafayette City Council',
+      exact: true,
+    }),
+  ).toBeChecked()
+  await page.keyboard.press('Escape')
   await choose('All bodies')
   await expect(page).not.toHaveURL(/body=/)
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
@@ -308,7 +316,9 @@ test('the area selector lists parishes and body filtering stays on Home', async 
   await expect(page.locator('#stories')).toHaveCount(0)
   await page.getByRole('button', { name: 'Filters', exact: true }).click()
   const filters = page.getByRole('dialog', { name: 'Filter local issues' })
-  await filters.getByRole('radio', { name: 'Pineville City Council' }).check()
+  await filters
+    .getByRole('checkbox', { name: 'Pineville City Council' })
+    .check()
   await filters.getByRole('button', { name: 'Apply filters' }).click()
   await expect(filters).not.toBeVisible()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
@@ -355,7 +365,7 @@ for (const width of [320, 375]) {
   }, testInfo) => {
     await page.setViewportSize({ width, height: 812 })
     await page.addInitScript(() =>
-      localStorage.setItem('public-parish.area.v1', 'lafayette-parish'),
+      localStorage.setItem('public-parish.area.v1', 'louisiana'),
     )
     await page.goto('/')
     const track = page.getByRole('region', { name: 'Issue timelines' })
@@ -538,7 +548,7 @@ test('existing city links still filter Home at 320 pixels', async ({
   )
   await page.getByRole('button', { name: /Filters/ }).click()
   const filters = page.getByRole('dialog', { name: 'Filter local issues' })
-  await filters.getByRole('radio', { name: 'All bodies', exact: true }).check()
+  await filters.getByRole('button', { name: 'Reset', exact: true }).click()
   await filters.getByRole('button', { name: 'Apply filters' }).click()
   await expect(page).not.toHaveURL(/city=/)
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(

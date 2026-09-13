@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-13T15:19:15Z
+- **Last updated:** 2026-09-13T15:48:21Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2127,3 +2127,19 @@ Muse reported no key issues. Uploaded the exact CI build to development and
 passed six independent hosted checks. All 70 HTML, JavaScript and CSS files
 matched. Screenshot review caught a desktop focus-ring spacing issue, corrected
 in the follow-up. Its replacement preview is pending. Production is unchanged.
+
+### 2026-09-13 - 5067366, Home controls ready for owner testing
+
+PR #221 is green with clean GLM and Muse reviews. CI passed 719 application tests
+and 152 browser checks. Uploaded exact CI artifact 10320840979 to development;
+six independent hosted Chromium/WebKit checks passed and 70 code files matched
+byte for byte. Inspected the final desktop spacing and 320px drawer screenshots.
+Development is ready for owner testing. The PR remains open; production is unchanged.
+
+### 2026-09-13 - working tree, parish reading and multiple filters
+
+Parish issue cards now stack vertically on phones. Statewide keeps the swipe
+row, and the mobile statewide action sits beside Search issues. Both filter
+dialogs accept several bodies through bounded Convex queries and shareable URLs.
+Local checks passed 721 tests, typechecks, build, lint and 46 Home browser checks.
+Development query support is synced. The replacement frontend and CI are pending.

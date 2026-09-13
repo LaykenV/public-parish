@@ -181,7 +181,7 @@
     background: transparent;
   }
 
-  .pp-home .pp-home-issues .pp-card-grid {
+  .pp-home .pp-home-issues .pp-issues-horizontal {
     grid-template-columns: none;
     grid-auto-flow: column;
     grid-auto-columns: calc(100% - 0.75rem);
@@ -402,18 +402,6 @@
   font-weight: 600;
 }
 
-.pp-home-body-filter select {
-  max-width: 100%;
-  min-height: 2.75rem;
-  padding: 0.65rem 2.25rem 0.65rem 0.875rem;
-  border: 1px solid var(--border);
-  border-radius: 0.625rem;
-  background: var(--card);
-  color: var(--foreground);
-  font: inherit;
-}
-
-.pp-home-body-filter select:focus-visible,
 .pp-home-filter-options label:has(input:focus-visible) {
   outline: 2px solid var(--primary);
   outline-offset: 3px;
@@ -532,10 +520,58 @@
     display: none;
   }
   .pp-home-view-controls {
-    justify-content: flex-end;
+    display: none;
   }
   .pp-home .pp-home-statewide {
     padding-inline: 0.5rem;
     font-size: var(--pp-text-caption);
+  }
+}
+
+.pp-home-issue-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pp-home-statewide-mobile {
+  display: none;
+}
+
+.pp-home-body-filter > span {
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+
+@media (max-width: 47.999rem) {
+  .pp-home-issue-actions {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    width: 100%;
+    gap: 0.25rem;
+  }
+  .pp-home-issue-actions .pp-section-link,
+  .pp-home-issue-actions .pp-home-statewide-mobile {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding-inline: 0;
+    font-size: var(--pp-text-caption);
+    white-space: normal;
+  }
+  .pp-home-issue-actions .pp-home-statewide-mobile {
+    justify-self: end;
+  }
+  .pp-home-issue-actions svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+  .pp-home .pp-home-issues .pp-issues-vertical {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+    gap: 1rem;
+  }
+  .pp-home .pp-issues-vertical .pp-card {
+    height: auto;
   }
 }

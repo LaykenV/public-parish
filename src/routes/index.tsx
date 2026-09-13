@@ -10,11 +10,17 @@ export const Route = createFileRoute('/')({
 })
 
 function ResidentHome() {
-  const { area, body, city, fixture } = Route.useSearch()
+  const { area, body, bodies, city, fixture } = Route.useSearch()
 
   return (
     <ResidentShell>
-      <HomePage area={area} city={city} body={body} scenario={fixture} />
+      <HomePage
+        area={area}
+        city={city}
+        body={body}
+        bodies={bodies}
+        scenario={fixture}
+      />
     </ResidentShell>
   )
 }

@@ -468,13 +468,13 @@ const HOME_ISSUE_LIMIT = 20
 export const listPublishedIssues = query({
   args: {
     areas: v.optional(v.array(areaSlug)),
-    body: v.optional(v.string()),
+    body: v.optional(v.string()), bodies: v.optional(v.array(v.string())),
     city: v.optional(v.string()),
     today: v.optional(v.string()),
   },
   returns: v.array(issueSummaryResult),
   handler: async (ctx, args) => {
-    const bodyIds = await selectedBodyIds(ctx, args.areas, args.body, args.city)
+    const bodyIds = await selectedBodyIds(ctx, args.areas, args.body, args.city, args.bodies)
     const groups = await Promise.all(
       (['full', 'limited'] as const).flatMap(mode => bodyIds === null
         ? [ctx.db.query('issues')
