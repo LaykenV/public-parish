@@ -29,6 +29,23 @@ Code-owned approved roots are in `convex/coverage/roots.ts`. The exact current
 certification artifacts are in [launch-bodies.v4.json](coverage-gold-sets/launch-bodies.v4.json).
 Retain older manifest versions for historical run resolution.
 
+Public labels name the body's place: "Baton Rouge Metropolitan Council", "East
+Baton Rouge Planning and Zoning Commission", "Lafayette Hearing Examiner",
+"Lafayette City Zoning Commission". The identity `name` on `governmentBodies`
+and in certification artifacts does not change; a separate display field
+carries the public label. See [launch upgrade](launch-upgrade.md) slice U2.
+
+### Statewide body candidate
+
+The Louisiana Public Service Commission is the approved statewide coverage
+candidate under [launch upgrade](launch-upgrade.md) slice U5. Its scope is
+business and executive session agendas and minutes from July 1, 2026 forward.
+Docket filings, testimony and exhibits are story evidence, not coverage
+sources. The commission becomes Supported only when the current evaluator
+proves all ten gates below on the current registry generation. Until then the
+`louisiana` jurisdiction remains candidate or validating and the public
+coverage page says so. Statewide support does not promote any parish.
+
 ## Official evidence
 
 Use agendas, minutes, ordinances, resolutions, notices, meeting packets, planning
@@ -66,6 +83,27 @@ published claim must still pass the evidence gates. Keep that body candidate or
 validating as appropriate; publishing the story never marks the parish supported,
 adds it to the selector, or starts broad monitoring. Explain the story's reviewed
 scope and next planned review separately from local coverage health.
+
+## Ballot-measure evidence
+
+A ballot-measure explanation uses only official documents: the Secretary of
+State's published ballot wording, the enrolled Act on the Legislature's site,
+and Legislative Fiscal Office notes where they exist. For a parish
+proposition, the calling resolution or ordinance in accepted records or a
+retrieved official document is also required. The Public Affairs Research
+Council guide, news coverage, campaign material and advocacy summaries are
+leads that can identify what to check; they are never citations.
+
+Quote the ballot question verbatim. Attribute what an Act changes to the Act's
+text. State the effective date and the fiscal note's stated effect only from
+those documents. Say what is not established. Never recommend a vote, describe
+supporters or opponents, cite polls, or connect a measure to a candidate.
+Publishing a measure does not certify any parish, body or election office.
+
+The November 3, 2026 list is the
+[Secretary of State's proposed constitutional amendments](https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf),
+ten measures under Acts 39, 273, 271, 414, 606, 274, 607, 277 and 272 of 2026
+and Act 220 of 2025. Parish propositions require separate verification.
 
 ## Source dossier and import contract
 
