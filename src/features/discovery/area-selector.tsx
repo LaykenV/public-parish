@@ -10,8 +10,13 @@ import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 
 import { useRecordAreaSelection } from '../analytics/product-analytics'
 import { setArea, useArea } from './area-store'
-import type { AreaRecord, AreaSlug } from './contracts'
-import { groupBodiesByPlace, useCoverageAreas, useCoverageBodies } from './live-areas'
+import { homeFocusArea, parseHomeSearch } from './contracts'
+import type { AreaRecord, AreaSlug, HomeCity } from './contracts'
+import {
+  groupBodiesByPlace,
+  useCoverageAreas,
+  useCoverageBodies,
+} from './live-areas'
 import type { CoverageBody } from './live-areas'
 import { Sheet } from './sheet'
 import { Input } from '../../components/ui/input'
@@ -60,13 +65,14 @@ function AreaSelectorDialog({
 }) {
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<AreaSlug | null>(null)
-  const area = useArea()
+  const storedArea = useArea()
   const navigate = useNavigate()
   const location = useRouterState({ select: (state) => state.location })
-  const currentBody =
-    location.pathname === '/'
-      ? (location.search as { body?: string }).body
-      : undefined
+  const homeSearch =
+    location.pathname === '/' ? parseHomeSearch(location.search) : {}
+  const area = homeFocusArea(homeSearch, storedArea)
+  const currentBody = homeSearch.body
+  const currentCity = homeSearch.city
   const recordAreaSelection = useRecordAreaSelection()
   const coverageAreas = useCoverageAreas()
   const coverageBodies = useCoverageBodies()
@@ -76,15 +82,23 @@ function AreaSelectorDialog({
   const louisianaSelected = area === null
 
   const places = coverageAreas.flatMap((place) => {
-    const bodies = coverageBodies.filter((body) => body.placeSlug === place.slug)
+    const bodies = coverageBodies.filter(
+      (body) => body.placeSlug === place.slug,
+    )
     const visibleBodies = searching
       ? bodies.filter(
           (body) =>
             matches(body.label, normalized) ||
-            (body.municipality ? matches(body.municipality.name, normalized) : false),
+            (body.municipality
+              ? matches(body.municipality.name, normalized)
+              : false),
         )
       : bodies
-    if (searching && !matches(place.name, normalized) && visibleBodies.length === 0) {
+    if (
+      searching &&
+      !matches(place.name, normalized) &&
+      visibleBodies.length === 0
+    ) {
       return []
     }
     return [{ place, bodies, visibleBodies }]
@@ -93,7 +107,8 @@ function AreaSelectorDialog({
   // Choosing a parish or Louisiana drops any body focus carried in the Home URL.
   const focusPlace = (slug: AreaSlug | null) => {
     setArea(slug)
-    if (currentBody) void navigate({ to: '/', search: {} })
+    if (location.pathname === '/')
+      void navigate({ to: '/', search: { area: slug ?? 'louisiana' } })
     onOpenChange(false)
   }
 
@@ -102,7 +117,17 @@ function AreaSelectorDialog({
       setArea(body.placeSlug)
       recordAreaSelection(body.placeSlug)
     }
-    void navigate({ to: '/', search: { body: body.label } })
+    void navigate({
+      to: '/',
+      search: { area: body.placeSlug, body: body.label },
+    })
+    onOpenChange(false)
+  }
+
+  const focusCity = (place: AreaSlug, city: HomeCity) => {
+    if (area !== place) recordAreaSelection(place)
+    setArea(place)
+    void navigate({ to: '/', search: { area: place, city } })
     onOpenChange(false)
   }
 
@@ -160,7 +185,7 @@ function AreaSelectorDialog({
           </li>
         ) : null}
         {places.map(({ place, bodies, visibleBodies }) => {
-          const selected = place.slug === area && !currentBody
+          const selected = place.slug === area && !currentBody && !currentCity
           if (place.status === 'validating') {
             return (
               <li key={place.slug}>
@@ -191,7 +216,8 @@ function AreaSelectorDialog({
                 data-status={place.status}
                 data-selected={selected || undefined}
                 onClick={() => {
-                  if (!selected && area !== place.slug) recordAreaSelection(place.slug)
+                  if (!selected && area !== place.slug)
+                    recordAreaSelection(place.slug)
                   focusPlace(place.slug)
                 }}
                 type="button"
@@ -229,6 +255,12 @@ function AreaSelectorDialog({
                   )}
                   {bodiesOpen ? (
                     <BodyRows
+                      city={
+                        area === place.slug && !currentBody
+                          ? currentCity
+                          : undefined
+                      }
+                      onCity={focusCity}
                       active={area === place.slug ? currentBody : undefined}
                       bodies={visibleBodies}
                       id={listId}
@@ -250,12 +282,16 @@ function AreaSelectorDialog({
 }
 
 function BodyRows({
+  city,
+  onCity,
   active,
   bodies,
   id,
   onFocus,
   place,
 }: {
+  city?: HomeCity
+  onCity: (place: AreaSlug, city: HomeCity) => void
   active?: string
   bodies: CoverageBody[]
   id: string
@@ -265,10 +301,27 @@ function BodyRows({
   const groups = groupBodiesByPlace(bodies)
   if (groups.length === 0) return null
   return (
-    <ul aria-label={`Bodies in ${place.name}`} className="pp-area-bodies" id={id}>
+    <ul
+      aria-label={`Bodies in ${place.name}`}
+      className="pp-area-bodies"
+      id={id}
+    >
       {groups.map((group) => (
         <li key={group.key}>
-          <p className="pp-area-group">{group.name}</p>
+          {group.key === 'parish' ? (
+            <p className="pp-area-group">{group.name}</p>
+          ) : (
+            <button
+              type="button"
+              className="pp-area-row pp-area-city"
+              aria-pressed={city === group.key}
+              disabled={!group.bodies.some((body) => body.published)}
+              onClick={() => onCity(place.slug, group.key as HomeCity)}
+            >
+              <span className="pp-area-name">{group.name}</span>
+              <span className="pp-area-note">All city bodies</span>
+            </button>
+          )}
           <ul>
             {group.bodies.map((body) => {
               const selected = active === body.label

@@ -443,10 +443,10 @@ export const getPublishedIssue = query({
 })
 
 export const listPublishedIssues = query({
-  args: { areas: v.optional(v.array(areaSlug)), body: v.optional(v.string()) },
+  args: { areas: v.optional(v.array(areaSlug)), body: v.optional(v.string()), city: v.optional(v.string()) },
   returns: v.array(issueSummaryResult),
   handler: async (ctx, args) => {
-    const bodyIds = await selectedBodyIds(ctx, args.areas, args.body)
+    const bodyIds = await selectedBodyIds(ctx, args.areas, args.body, args.city)
     const groups = await Promise.all(
       (['full', 'limited'] as const).flatMap(mode => bodyIds === null
         ? [ctx.db.query('issues')

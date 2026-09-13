@@ -21,10 +21,11 @@ export function usePublishedDecisions(
   enabled: boolean,
   areas?: AreaSlug[],
   body?: string,
+  city?: string,
 ) {
   return useQuery(
     api.resident.discovery.listPublishedDecisions,
-    enabled ? { areas, body } : 'skip',
+    enabled ? { areas, body, city } : 'skip',
   )
 }
 
@@ -32,10 +33,11 @@ export function usePublishedIssues(
   enabled: boolean,
   areas?: AreaSlug[],
   body?: string,
+  city?: string,
 ) {
   return useQuery(
     api.resident.evidence.listPublishedIssues,
-    enabled ? { areas, body } : 'skip',
+    enabled ? { areas, body, city } : 'skip',
   )
 }
 

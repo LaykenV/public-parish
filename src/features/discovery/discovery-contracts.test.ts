@@ -1,3 +1,4 @@
+import { homeFocusArea } from './contracts'
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -169,4 +170,13 @@ describe('resident interface Slice 2 discovery contracts', () => {
 
 it('Explore bounds pasted and URL search text before querying', () => {
   expect(parseExploreSearch({ q: 'x'.repeat(301) }).q).toHaveLength(300)
+})
+
+it('shared Home focus overrides missing or unrelated saved preferences', () => {
+  for (const stored of [null, 'lafayette-parish'] as const) {
+    expect(homeFocusArea({ body: 'Pineville City Council' }, stored)).toBe('rapides-parish')
+    expect(homeFocusArea({ city: 'pineville' }, stored)).toBe('rapides-parish')
+    expect(homeFocusArea({ area: 'louisiana' }, stored)).toBeNull()
+  }
+  expect(homeFocusArea({ body: 'Metropolitan Council' }, null)).toBe('east-baton-rouge-parish')
 })

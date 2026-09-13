@@ -48,7 +48,7 @@ test('published parish records remain selectable with coverage limitations', asy
   }
   const dialog = page.getByRole('dialog', { name: 'Choose your area' })
   await expect(dialog).toBeVisible()
-  const choice = dialog.getByRole('button', { name: /Rapides Parish/ })
+  const choice = dialog.getByRole('button', { name: /^Rapides Parish/ })
   await expect(choice).toBeEnabled()
   await page.screenshot({
     path: testInfo.outputPath('coverage-selector.png'),
@@ -109,7 +109,7 @@ test('home keeps Louisiana stories first after selecting an area', async ({
     .getByRole('button', { name: 'Focus on a parish or city', exact: true })
     .click()
   const dialog = page.getByRole('dialog', { name: 'Choose your area' })
-  await dialog.getByRole('button', { name: /Lafayette Parish/ }).click()
+  await dialog.getByRole('button', { name: /^Lafayette Parish/ }).click()
   await expect(dialog).not.toBeVisible()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Issues in Lafayette Parish',
@@ -178,7 +178,7 @@ test('the area selector returns to Louisiana from a parish focus', async ({
   const louisiana = dialog.getByRole('button', { name: /All of Louisiana/ })
   await expect(louisiana).toHaveAttribute('aria-pressed', 'false')
   await expect(
-    dialog.getByRole('button', { name: /Rapides Parish/ }),
+    dialog.getByRole('button', { name: /^Rapides Parish/ }),
   ).toHaveAttribute('aria-pressed', 'true')
   await louisiana.click()
   await expect(dialog).not.toBeVisible()
@@ -262,7 +262,7 @@ test('the area selector moves from Louisiana to a parish, a city and one body', 
   await bodies.getByRole('button', { name: /Pineville City Council/ }).click()
   await expect(dialog).not.toBeVisible()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Issues in Rapides Parish',
+    'Issues from Pineville City Council',
   )
   await expect(page).toHaveURL(/body=Pineville(\+|%20)City(\+|%20)Council/)
   await expect(
@@ -436,3 +436,41 @@ for (const viewport of [
     ).toBe(viewport.width)
   })
 }
+
+for (const stored of [null, 'lafayette-parish']) {
+  test(`shared Pineville body focus overrides saved area ${stored}`, async ({ page }) => {
+    await page.addInitScript((area) => {
+      if (area) localStorage.setItem('public-parish.area.v1', area)
+      else localStorage.removeItem('public-parish.area.v1')
+    }, stored)
+    await page.goto('/?body=Pineville%20City%20Council')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Issues from Pineville City Council')
+    await expect(page.locator('.pp-home-hero')).toHaveCount(0)
+    await expect(page.locator('#current-issues .pp-card-place').first()).toContainText('Pineville City Council')
+    await page.getByRole('button', { name: 'Back to all of Louisiana', exact: true }).click()
+    await expect(page).not.toHaveURL(/body=/)
+    await expect(page.getByRole('heading', { level: 1 })).toContainText("Understand what Louisiana")
+  })
+}
+
+test('city selection filters Home and survives a shared URL at 320 pixels', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 640 })
+  await page.goto('/?area=louisiana')
+  await page.getByRole('button', { name: 'Focus on a parish or city', exact: true }).click()
+  const dialog = page.getByRole('dialog', { name: 'Choose your area' })
+  await dialog.getByRole('button', { name: /Show .* bodies in Rapides Parish/ }).click()
+  const city = dialog.getByRole('button', { name: 'Pineville All city bodies', exact: true })
+  await city.focus()
+  await page.keyboard.press('Enter')
+  await expect(page).toHaveURL(/city=pineville/)
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Issues in Pineville')
+  await expect(page.locator('#current-issues .pp-card-place').first()).toContainText('Pineville City Council')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320)
+  await page.screenshot({ path: testInfo.outputPath('pineville-city-focus.png'), fullPage: true })
+  await page.evaluate(() => localStorage.removeItem('public-parish.area.v1'))
+  await page.reload()
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Issues in Pineville')
+  await page.getByRole('link', { name: 'All bodies', exact: true }).click()
+  await expect(page).not.toHaveURL(/city=/)
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Issues in Rapides Parish')
+})
