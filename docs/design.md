@@ -47,8 +47,10 @@ planning commissions stay distinct. Body focus stays in the URL and clears back
 to the parish. Existing shared city and body links remain valid.
 
 On phones, a floating Choose area button opens area selection in statewide view.
-In parish view, Search issues and View Statewide Stories stack in a white
-outlined group with a divider. A regular Filters button sits to their right.
+In parish view, the description sits directly under the heading. Search issues
+and View Statewide Stories are plain stacked links beneath it, with small arrows
+next to the text. An outlined Filters button sits to their right. Keep this
+navigation unboxed; the owner rejected the white group and filled filter button.
 The filter drawer has a parish summary, Change area, checkboxes for government bodies, Reset and Apply filters.
 Choose several bodies to include issues and records from any selected body.
 Leave all unchecked to include every body in the parish. Closing without applying

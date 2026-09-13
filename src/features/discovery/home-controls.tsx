@@ -105,6 +105,7 @@ function BodyFilters({
             {...props}
             id={triggerId}
             className="pp-home-inline-filter"
+            variant="outline"
             size="touch"
           >
             <SlidersHorizontalIcon aria-hidden="true" /> Filters

@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-13T17:08:50Z
+- **Last updated:** 2026-09-13T17:35:05Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2159,3 +2159,19 @@ Desktop removes the duplicate area control and keeps navigation inside the card,
 with the active-selection dropdown beside the heading. Typechecks, build, lint
 and all 48 Home browser checks passed. Inspected phone, tablet and desktop
 screenshots. The replacement PR build and development frontend are pending.
+
+### 2026-09-13 - 6fc18d0, inline parish controls ready on development
+
+PR #221 passed 721 application tests and 156 browser checks with clean reviews.
+Uploaded exact CI artifact 10322023029 to development. Ten hosted browser checks
+and a desktop combined-filter check passed; all 70 code files matched. Inspected
+the hosted mobile and desktop layouts. The PR remains open for owner testing.
+Production is unchanged.
+
+### 2026-09-13 - working tree, simpler mobile parish navigation
+
+Removed the mobile navigation box and divider after owner screenshot review.
+The description now follows the heading; plain stacked links sit beside an
+outlined Filters button. Build and ten Home browser checks passed. Inspected
+Lafayette at three phone widths. The approved desktop screenshot is unchanged.
+Replacement CI and development preview are pending.

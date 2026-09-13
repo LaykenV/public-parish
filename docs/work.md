@@ -9,14 +9,26 @@ QA, then launch and outreach.
 
 ## September 13 Home story grid and filter controls
 
+The owner approved desktop and rejected the mobile navigation box in `6fc18d0`.
+The mobile follow-up removes the box and divider, uses an outlined Filters
+button and places the description under the heading. Build and ten Home browser
+checks passed. Lafayette screenshots at 430px, 390px and 320px were inspected.
+The desktop screenshot is byte-identical to the approved version. Replacement
+CI and development preview are pending.
+
 The latest owner refinement moves parish filters into the issues header. Mobile
 stacks Search issues and View Statewide Stories in a divided white group beside
 a regular Filters button. Desktop removes the duplicate Change area control,
 keeps both navigation links in the issues card and places the selection summary
 dropdown inline with the heading. Typechecks, build and lint passed with the
 15 existing warnings. All 48 Home browser checks passed on the finished build.
-Inspected 320px, 375px, tablet and desktop screenshots. PR validation and the
-replacement development frontend are pending.
+Inspected 320px, 375px, tablet and desktop screenshots. Head `6fc18d0` passed
+CI `34770704225` with 721 application tests and 156 browser checks. Both reviews
+are clean. Development upload `d5e6f8da-191a-48ba-bc91-ed67ef4a6f6e` uses exact
+artifact `10322023029`. Ten independent hosted checks passed; all 70 code files
+matched. The updated preview is ready for owner testing. The PR remains open
+and production is unchanged. This final receipt is recorded locally after the
+tested commit and in the PR comment.
 
 The owner requested vertical parish issues, multiple body selections and the
 mobile statewide action beside Search issues after testing `5067366`. The follow-up

@@ -534,34 +534,26 @@
 @media (max-width: 47.999rem) {
   .pp-home-issues-header {
     grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: 'title title' 'links filter' 'copy copy';
-    gap: 1rem 0.75rem;
+    grid-template-areas: 'title title' 'copy copy' 'links filter';
+    gap: 0.375rem 0.75rem;
+    margin-bottom: 1.25rem;
   }
 
   .pp-home-issues-header .pp-home-issue-actions {
     display: grid;
+    justify-items: start;
     gap: 0;
-    padding: 0.25rem;
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    background: var(--card);
   }
 
   .pp-home-issues-header .pp-home-issue-actions > * {
-    justify-content: space-between;
-    gap: 0.5rem;
+    justify-content: start;
+    gap: 0.375rem;
     min-height: 2.75rem;
     height: auto;
-    padding: 0.5rem;
+    padding: 0;
     font-size: var(--pp-text-caption);
     text-align: left;
     white-space: normal;
-  }
-
-  .pp-home-issues-header .pp-home-issue-actions > * + * {
-    border-top: 1px solid var(--border);
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
   }
 
   .pp-home-issue-actions svg {
@@ -575,6 +567,12 @@
     align-self: center;
     gap: 0.375rem;
     padding-inline: 0.75rem;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .pp-home-inline-filter .pp-home-filter-count {
+    background: var(--accent);
   }
 
   .pp-home .pp-home-issues .pp-issues-vertical {
