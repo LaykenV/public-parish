@@ -1,8 +1,8 @@
-import { homeFocusArea } from './contracts'
 import { describe, expect, it } from 'vitest'
 
 import {
   getActiveDiscoveryFixture,
+  homeFocusArea,
   parseExploreSearch,
   parseHomeSearch,
 } from './contracts'
