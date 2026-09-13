@@ -14,7 +14,7 @@ import { Link, useRouterState } from '@tanstack/react-router'
 
 import { AreaSelector } from '../discovery/area-selector'
 import { useArea } from '../discovery/area-store'
-import { areaName } from '../discovery/contracts'
+import { focusName } from '../discovery/contracts'
 import {
   useKeyboardOpen,
   useMediaQuery,
@@ -237,7 +237,7 @@ export function ResidentShell({ children }: { children: ReactNode }) {
                 >
                   <MapPinIcon aria-hidden="true" />
                   <span className="resident-context-label">
-                    {area ? areaName(area) : 'Choose area'}
+                    {focusName(area)}
                   </span>
                 </button>
               )}
@@ -388,8 +388,8 @@ function MobileNavigation({ pathname }: { pathname: string }) {
               <div className="resident-menu-area">
                 <p>
                   {area
-                    ? `Showing ${areaName(area)}`
-                    : 'Choose your local area'}
+                    ? `Showing ${focusName(area)}`
+                    : 'Showing all of Louisiana'}
                 </p>
                 <AreaSelector
                   open={areaOpen}

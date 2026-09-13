@@ -82,6 +82,17 @@
   letter-spacing: -0.035em;
 }
 
+.pp-home .pp-home-statewide {
+  margin-top: 0.35rem;
+  margin-left: -0.75rem;
+  color: var(--primary);
+}
+
+.pp-home .pp-home-statewide svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 .pp-home .pp-section-copy {
   margin-bottom: 1.5rem;
 }

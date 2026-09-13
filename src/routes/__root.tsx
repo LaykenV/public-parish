@@ -22,7 +22,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1, interactive-widget=resizes-content',
       },
       {
-        title: 'Public Parish | See how local government is changing',
+        title: "Public Parish | Understand Louisiana's government decisions",
       },
       {
         name: 'description',
