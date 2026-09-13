@@ -84,7 +84,12 @@ export type ResultRowData = {
   date?: string
   href: string
   id?: string
-  kind: 'Story' | 'Decision record' | 'Meeting' | 'Government body' | 'Routine record'
+  kind:
+    | 'Story'
+    | 'Decision record'
+    | 'Meeting'
+    | 'Government body'
+    | 'Routine record'
   meta?: string
   place?: string
   sourceStatus?: EvidenceStatus
@@ -143,6 +148,7 @@ export const DATE_OPTIONS = [
 export const BODY_GROUPS = [
   {
     place: 'Lafayette Parish',
+    slug: 'lafayette-parish',
     bodies: [
       'Lafayette City Council',
       'Lafayette City Planning Commission',
@@ -155,6 +161,7 @@ export const BODY_GROUPS = [
   },
   {
     place: 'Rapides Parish',
+    slug: 'rapides-parish',
     bodies: [
       'Rapides Parish Police Jury',
       'Alexandria City Council',
@@ -163,6 +170,7 @@ export const BODY_GROUPS = [
   },
   {
     place: 'East Baton Rouge Parish',
+    slug: 'east-baton-rouge-parish',
     bodies: [
       'Baton Rouge Metropolitan Council',
       'East Baton Rouge Planning and Zoning Commission',
@@ -257,10 +265,34 @@ function pickText(value: unknown): string | undefined {
   return text.length > 0 ? text : undefined
 }
 
-export function parseHomeSearch(search: Record<string, unknown>): {
+export const HOME_CITIES = {
+  lafayette: { name: 'Lafayette', area: 'lafayette-parish' },
+  youngsville: { name: 'Youngsville', area: 'lafayette-parish' },
+  alexandria: { name: 'Alexandria', area: 'rapides-parish' },
+  pineville: { name: 'Pineville', area: 'rapides-parish' },
+  'baton-rouge': { name: 'Baton Rouge', area: 'east-baton-rouge-parish' },
+} as const
+export type HomeCity = keyof typeof HOME_CITIES
+export type HomeSearch = {
+  area?: AreaSlug | 'louisiana'
+  city?: HomeCity
+  body?: string
   fixture?: HomeScenario
-} {
-  return { fixture: pick(search.fixture, HOME_SCENARIOS) }
+}
+
+// Home shares the Explore `body` contract: a public body label, or nothing.
+export function parseHomeSearch(search: Record<string, unknown>): HomeSearch {
+  return {
+    area: pick(search.area, [
+      'louisiana',
+      'lafayette-parish',
+      'rapides-parish',
+      'east-baton-rouge-parish',
+    ]),
+    city: pick(search.city, Object.keys(HOME_CITIES) as HomeCity[]),
+    body: pick(search.body, [...BODY_OPTIONS, ...LEGACY_BODY_OPTIONS]),
+    fixture: pick(search.fixture, HOME_SCENARIOS),
+  }
 }
 
 export function parseExploreSearch(
@@ -293,4 +325,33 @@ export function parseExploreSearch(
       ) as unknown as readonly string[],
     ),
   }
+}
+
+// The URL determines shared focus. Stored preferences apply only without one.
+export function homeFocusArea(
+  search: HomeSearch,
+  stored: AreaSlug | null,
+): AreaSlug | null {
+  if (search.body) {
+    const label = homeBodyLabel(search.body)
+    const group = BODY_GROUPS.find((item) =>
+      (item.bodies as readonly string[]).includes(label),
+    )
+    if (group) return group.slug
+  }
+  if (search.city) return HOME_CITIES[search.city].area
+  if (search.area) return search.area === 'louisiana' ? null : search.area
+  return stored
+}
+
+export function homeBodyLabel(body: string): string {
+  const aliases: Record<string, string> = {
+    'Metropolitan Council': 'Baton Rouge Metropolitan Council',
+    'Planning and Zoning Commission':
+      'East Baton Rouge Planning and Zoning Commission',
+    'City Zoning Commission': 'Lafayette City Zoning Commission',
+    'Hearing Examiner': 'Lafayette Hearing Examiner',
+    'Lafayette City-Parish Council': 'Lafayette City Council',
+  }
+  return aliases[body] ?? body
 }

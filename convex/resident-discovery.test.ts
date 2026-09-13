@@ -277,6 +277,43 @@ test('residents read the place-qualified body label while the identity name stay
   }
 
   }
+  const areas = ['east-baton-rouge-parish' as const]
+  for (const body of ['Metropolitan Council', 'Baton Rouge Metropolitan Council']) {
+    expect(
+      await t.query(api.resident.discovery.listPublishedDecisions, { areas, body }),
+    ).toHaveLength(1)
+  }
+  expect(
+    await t.query(api.resident.discovery.listPublishedDecisions, {
+      areas,
+      body: 'Pineville City Council',
+    }),
+  ).toHaveLength(0)
+  expect(
+    await t.query(api.resident.evidence.listPublishedIssues, {
+      areas,
+      body: 'Pineville City Council',
+    }),
+  ).toHaveLength(0)
+
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { areas, city: 'baton-rouge' })).toHaveLength(1)
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { areas, city: 'pineville' })).toHaveLength(0)
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { areas, city: 'pineville' })).toHaveLength(0)
+
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { body: 'Metropolitan Council' })).toHaveLength(1)
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { city: 'baton-rouge' })).toHaveLength(1)
+  expect(await t.query(api.resident.discovery.listPublishedDecisions, { body: 'Unknown body' })).toHaveLength(0)
+  expect(await t.query(api.resident.evidence.listPublishedIssues, { city: 'unknown' })).toHaveLength(0)
+
+  expect(await t.query(api.resident.discovery.listCoverageBodies, {})).toEqual([
+    {
+      slug: 'ebr-metropolitan-council',
+      label: 'Baton Rouge Metropolitan Council',
+      placeSlug: 'east-baton-rouge-parish',
+      municipality: { slug: 'baton-rouge', name: 'Baton Rouge' },
+      published: true,
+    },
+  ])
 
   await t.run(async (ctx) => {
     const body = await ctx.db
