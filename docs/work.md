@@ -775,3 +775,18 @@ verification passed 686 tests, typechecks, build and lint with 15 existing
 warnings. Eighteen focused browser checks passed in Chromium and WebKit,
 including zoom, resize, Back, retained drafts and nested source drawers.
 CI, the next dev upload and native iPhone acceptance remain pending.
+
+## September 14, clickable Louisiana labels selected
+
+The owner selected round-two option A and authorized a PR, review, merge and
+release. Home keeps its current desktop Louisiana size. The three parish labels
+open the existing parish view and remember the selection. The chosen preview
+restores Louisiana below the introduction on phones. Labels have keyboard focus,
+44-pixel phone targets and the same coverage availability as the area picker.
+The SVG fallback keeps the selection controls when WebGPU is unavailable.
+
+The implementation is on `feat/clickable-parish-labels`. Local typechecks, all
+744 tests, the build and lint pass, with 15 existing lint warnings. Ten browser
+checks pass in Chromium and mobile WebKit. The actual 3D render was inspected
+at 1440, 390 and 320 pixels. PR checks, reviews and production release are pending.
+The comparison-page variations are not part of this change.

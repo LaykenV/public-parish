@@ -37,7 +37,8 @@ import type {
   ResultRowData,
 } from './contracts'
 import { EXPLORE_ROW_FIXTURES, PUBLISHED_ISSUE_FIXTURES } from './fixtures'
-import { useRepeatedAnnouncement, useMediaQuery } from './hooks'
+import { useRepeatedAnnouncement } from './hooks'
+import { HomeParishLabels } from './home-parish-labels'
 import { HomeIssueCards } from './home-issue-cards'
 import {
   toDecisionRow,
@@ -148,7 +149,6 @@ export function HomePage({
 }
 
 function FirstVisitHero() {
-  const desktop = useMediaQuery('(min-width: 48.001rem)')
   return (
     <section
       className="pp-home-hero"
@@ -179,7 +179,9 @@ function FirstVisitHero() {
         </p>
       </div>
       <div className="pp-home-relief">
-        {desktop ? <LouisianaRelief /> : null}
+        <LouisianaRelief>
+          <HomeParishLabels />
+        </LouisianaRelief>
       </div>
     </section>
   )
