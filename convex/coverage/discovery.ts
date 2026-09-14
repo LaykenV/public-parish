@@ -1,3 +1,4 @@
+import { coverageGoldSetSamples, coverageGoldSetVersion } from './goldSet'
 import { FirecrawlClient } from '@firecrawl/firecrawl-convex'
 import type {
   FirecrawlDocument,
@@ -167,7 +168,7 @@ export const discoverForRun = internalAction({
     }
     const candidates = collectCoverageCandidates(
       manifest,
-      result.inputs,
+      [...result.inputs, ...(manifest.useCheckedDiscoverySeeds ? [{ source: `checked-gold-set:${coverageGoldSetVersion()}`, links: coverageGoldSetSamples(manifest.bodyKey).map(sample => ({ url: sample.url, title: sample.title })) }] : [])],
       MAX_DISCOVERY_CANDIDATES,
     )
     await ctx.runMutation(internal.coverage.discoveryLedger.persistDiscovery, {
@@ -320,7 +321,7 @@ async function runFirecrawlDiscovery(
     evidence.push(mapped.evidence)
     inputs.push({ source: `map:${rootUrl}`, links: mapped.value.links })
 
-    for (const query of discoveryQueries(manifest.bodyName)) {
+    for (const query of manifest.discoverySince ? [`${manifest.bodyName} business executive session agenda minutes after:${manifest.discoverySince}`] : discoveryQueries(manifest.bodyName)) {
       if (!(await shouldContinue())) return { inputs, evidence, canceled: true }
       const options = {
         sources: ['web'] as Array<'web'>,

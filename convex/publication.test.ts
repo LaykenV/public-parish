@@ -129,7 +129,7 @@ async function seedValidatedCandidate(
       registryId,
       trigger: 'manual_extraction',
       state: 'succeeded',
-      processorVersion: 'v1.21',
+      processorVersion: 'v1.22',
       snapshotId,
       sourceKind: 'agenda',
       targetRecordId: 'CO-029-2026',
@@ -144,9 +144,9 @@ async function seedValidatedCandidate(
       sourceKind: 'agenda',
       targetRecordId: 'CO-029-2026',
       sourceRecordIdProvenance: 'source_printed',
-      promptVersion: 'v1.12',
+      promptVersion: 'v1.16',
       schemaVersion: 'v1',
-      processorVersion: 'v1.21',
+      processorVersion: 'v1.22',
       modelRole: 'MODEL_STRONG',
       modelId: TERRA_MODEL,
       route: 'ai_gateway',
@@ -173,7 +173,7 @@ async function seedValidatedCandidate(
       amounts: [],
       publicActions: [],
       state: 'deterministically_validated',
-      promptVersion: 'v1.12',
+      promptVersion: 'v1.16',
       schemaVersion: 'v1',
       modelRole: 'MODEL_STRONG',
       modelId: TERRA_MODEL,
@@ -315,7 +315,7 @@ async function seedReextractedCandidate(
       registryId: original.registryId,
       trigger: 'manual_extraction',
       state: 'succeeded',
-      processorVersion: 'v1.21',
+      processorVersion: 'v1.22',
       snapshotId: original.snapshotId,
       sourceKind: original.sourceKind,
       targetRecordId: original.targetRecordId,
@@ -334,7 +334,7 @@ async function seedReextractedCandidate(
         original.sourceRecordIdProvenance ?? 'source_printed',
       promptVersion: original.promptVersion,
       schemaVersion: original.schemaVersion,
-      processorVersion: 'v1.21',
+      processorVersion: 'v1.22',
       modelRole: 'MODEL_STRONG',
       modelId: TERRA_MODEL,
       route: 'ai_gateway',
@@ -518,7 +518,7 @@ function buildCo072AgendaReviewPrompt(section: string | null) {
 test('the review prompt treats CO-072 final-adoption placement as scheduled consideration', () => {
   const prompt = buildCo072AgendaReviewPrompt('Final Adoption of Ordinances')
 
-  expect(prompt.promptVersion).toBe('v1.5')
+  expect(prompt.promptVersion).toBe('v1.7')
   expect(prompt.messages[0].content).toContain(
     'an item under Final Adoption of Ordinances is scheduled for final-adoption consideration',
   )
@@ -551,7 +551,7 @@ test('the review prompt does not treat a bare agenda mention as scheduled', () =
   expect(prompt.messages[1].content).toContain('"section":null')
 })
 
-test('review prompt v1.5 creates a new publication idempotency key', async () => {
+test('review prompt v1.7 creates a new publication idempotency key', async () => {
   const t = await initTest()
   const seeded = await seedValidatedCandidate(t, '-review-prompt-version')
   const keyFor = (promptVersion: string) =>
@@ -564,7 +564,7 @@ test('review prompt v1.5 creates a new publication idempotency key', async () =>
       payloadVersion: 'v1',
     })
 
-  expect(await keyFor('v1.5')).not.toBe(await keyFor('v1.4'))
+  expect(await keyFor('v1.7')).not.toBe(await keyFor('v1.4'))
 })
 
 test('a second model review publishes one full immutable version with exact citations', async () => {
@@ -626,7 +626,7 @@ test('a second model review publishes one full immutable version with exact cita
     verdict: 'pass',
     modelRole: 'MODEL_FAST',
     modelId: LUNA_MODEL,
-    promptVersion: 'v1.5',
+    promptVersion: 'v1.7',
     schemaVersion: 'v1',
   })
   expect(evidence.version).toMatchObject({
@@ -1336,9 +1336,9 @@ test('replaying a succeeded extraction repairs a missing publication run', async
     sourceKind: 'agenda',
     targetRecordId: 'CO-029-2026',
     sourceRecordIdProvenance: 'source_printed',
-    promptVersion: 'v1.12',
+    promptVersion: 'v1.16',
     schemaVersion: 'v1',
-    processorVersion: 'v1.21',
+    processorVersion: 'v1.22',
   })
   await t.run(async (ctx) => {
     await ctx.db.patch(seeded.runId, { idempotencyKey })
@@ -1350,7 +1350,7 @@ test('replaying a succeeded extraction repairs a missing publication run', async
       attempt: 1,
       inputSnapshotId: seeded.snapshotId,
       outputExtractionId: seeded.extractionId,
-      promptVersion: 'v1.12',
+      promptVersion: 'v1.16',
       schemaVersion: 'v1',
     })
     await ctx.db.insert('pipelineStages', {

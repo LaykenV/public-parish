@@ -199,3 +199,8 @@ it('restores bounded, distinct body selections and preserves parish scope', () =
   expect(parseHomeSearch({ bodies: [] }).bodies).toBeUndefined()
   expect(parseHomeSearch({ bodies: 'Pineville City Council' }).bodies).toBeUndefined()
 })
+
+
+it('Explore retains the statewide commission filter without adding a parish', () => {
+  expect(parseExploreSearch({ body: 'Louisiana Public Service Commission' })).toEqual({ body: 'Louisiana Public Service Commission' })
+})

@@ -25,6 +25,7 @@ const BATON_ROUGE: BodyMunicipality = {
  * this map only decides what residents read. Every label names its place.
  */
 export const PUBLIC_BODY_LABELS: Partial<Record<string, PublicBodyLabel>> = {
+  'louisiana-public-service-commission': { displayName: 'Louisiana Public Service Commission' },
   'lafayette-city-council': {
     displayName: 'Lafayette City Council',
     municipality: LAFAYETTE,

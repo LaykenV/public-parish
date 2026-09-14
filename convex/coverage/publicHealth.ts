@@ -26,7 +26,7 @@ export const regions = query({
         : state === 'Degraded' ? 'Current decisions may be missing after an incomplete source check. Previously accepted evidence remains available with its dates.'
         : state === 'Paused' ? 'Source monitoring is paused. Previously accepted evidence remains available with its dates.'
         : 'This body has not completed the publication and coverage checks. A reachable source page alone does not establish support.'
-      const region = regions.get(manifest.jurisdictionSlug) ?? { name: manifest.jurisdictionName, bodies: [] }
+      const region = regions.get(manifest.jurisdictionSlug) ?? { name: manifest.jurisdictionSlug === 'louisiana' ? 'Statewide' : manifest.jurisdictionName, bodies: [] }
       region.bodies.push({ id: manifest.bodyKey, name: PUBLIC_BODY_LABELS[manifest.bodyKey]?.displayName ?? manifest.bodyName, state, sourceKinds: registry?.sourceKinds ?? [], ...(last ? { lastSuccessfulCheck: new Date(last).toISOString() } : {}), nextExpectedArtifact, limitation, followAvailable: state === 'Supported' })
       regions.set(manifest.jurisdictionSlug, region)
     }

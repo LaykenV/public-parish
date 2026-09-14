@@ -1,11 +1,19 @@
 # Current work and launch gates
 
-Updated September 13, 2026. This is the only active status and pending-work queue.
+Updated September 14, 2026. This is the only active status and pending-work queue.
 The approved order is stories, then the launch upgrade slices, then design and
 QA, then launch and outreach.
 [Business scope](../PLAN.md), [launch upgrade](launch-upgrade.md),
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
+
+## September 14 statewide commission release
+
+The owner authorized releasing the reviewed development upgrade to production.
+This PR adds LPSC session coverage, the statewide Home section and commission
+filtering. The development compile passed all ten gates with four accepted
+records. Production promotion requires its own bounded compile and ten passes.
+The ballot guide is a separate release. No September 16 outcome is claimed.
 
 ## September 14 UTC mobile area controls, local update
 

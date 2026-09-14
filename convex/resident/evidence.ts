@@ -1,5 +1,5 @@
 import { areaSlug } from '../follows/contracts'
-import { selectedBodyIds } from './areas'
+import { selectedBodyIds, statewideBodyIds } from './areas'
 import { publicBodyLabel } from '../coverage/labels'
 import { loadTimelineMembers } from '../issues/membership'
 import { paginationOptsValidator } from 'convex/server'
@@ -467,6 +467,7 @@ const HOME_ISSUE_LIMIT = 20
 
 export const listPublishedIssues = query({
   args: {
+    statewide: v.optional(v.boolean()),
     areas: v.optional(v.array(areaSlug)),
     body: v.optional(v.string()), bodies: v.optional(v.array(v.string())),
     city: v.optional(v.string()),
@@ -474,7 +475,7 @@ export const listPublishedIssues = query({
   },
   returns: v.array(issueSummaryResult),
   handler: async (ctx, args) => {
-    const bodyIds = await selectedBodyIds(ctx, args.areas, args.body, args.city, args.bodies)
+    const bodyIds = args.statewide ? await statewideBodyIds(ctx) : await selectedBodyIds(ctx, args.areas, args.body, args.city, args.bodies)
     const groups = await Promise.all(
       (['full', 'limited'] as const).flatMap(mode => bodyIds === null
         ? [ctx.db.query('issues')

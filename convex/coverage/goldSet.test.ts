@@ -7,7 +7,7 @@ import {
 } from './goldSet'
 
 test('the checked manifest names exact official artifacts and extraction targets', () => {
-  expect(coverageGoldSetVersion()).toBe('launch-bodies-v4')
+  expect(coverageGoldSetVersion()).toBe('launch-bodies-v5')
   expect(coverageGoldSetSamples('youngsville-city-council')).toHaveLength(4)
   expect(
     coverageGoldSetSamples('lafayette-city-council').map(

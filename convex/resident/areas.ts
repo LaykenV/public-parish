@@ -1,3 +1,4 @@
+import { placeIsSupported } from '../coverage/publicHealth'
 import type { QueryCtx } from '../_generated/server'
 import type { Id } from '../_generated/dataModel'
 import { PUBLIC_BODY_LABELS, publicBodyLabel, resolvePublicBodyFilter } from '../coverage/labels'
@@ -6,7 +7,7 @@ import { AREA_SLUGS } from '../follows/contracts'
 // Resolve a bounded resident area selection before applying publication limits.
 // A body focus narrows the selected areas to the bodies carrying that public
 // label; an unknown label yields no bodies rather than every body.
-export async function selectedBodyIds(ctx: QueryCtx, areas?: string[], body?: string, city?: string, bodies?: string[]) {
+export async function selectedBodyIds(ctx: QueryCtx, areas?: readonly string[], body?: string, city?: string, bodies?: string[]) {
   const selected = bodies ?? (body ? [body] : [])
   if (selected.length > 25 || selected.some(label => label.length > 120)) throw new Error('Body focus exceeds its bounds.')
   const labels = new Set(selected.map(resolvePublicBodyFilter))
@@ -29,4 +30,11 @@ export async function selectedBodyIds(ctx: QueryCtx, areas?: string[], body?: st
     }
   }
   return ids
+}
+
+export async function statewideBodyIds(ctx: QueryCtx) {
+  if (!await placeIsSupported(ctx, 'louisiana')) return []
+  const place = await ctx.db.query('jurisdictions').withIndex('by_slug', q => q.eq('slug', 'louisiana')).unique()
+  if (!place) return []
+  return (await ctx.db.query('governmentBodies').withIndex('by_jurisdiction_and_slug', q => q.eq('jurisdictionId', place._id)).take(25)).filter(body => body.publicStatus === 'supported').map(body => body._id)
 }

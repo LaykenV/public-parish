@@ -80,7 +80,7 @@ export function collectCoverageCandidates(
   for (const input of inputs) {
     for (const link of input.links) {
       const canonicalUrl = canonicalizeCandidateUrl(link.url)
-      if (!canonicalUrl) continue
+      if (!canonicalUrl || !withinDiscoveryScope(manifest, canonicalUrl)) continue
       const hostDisposition = classifyHost(manifest, canonicalUrl)
       if (hostDisposition === 'unapproved') continue
 
@@ -148,4 +148,16 @@ function boundedOptional(value: string | undefined): string | undefined {
   const normalized = value?.replace(/\s+/g, ' ').trim()
   if (!normalized) return undefined
   return normalized.slice(0, 500)
+}
+
+// Explicit date and path bounds keep a new registry out of unrelated archives.
+export function withinDiscoveryScope(manifest: CoverageRootManifest, url: string): boolean {
+  const path = new URL(url).pathname
+  if (manifest.sourcePathPrefixes && !manifest.sourcePathPrefixes.some(prefix => path.startsWith(prefix))) return false
+  if (!manifest.discoverySince) return true
+  const match = path.match(/([A-Za-z]+)[_-](\d{1,2})[_-](\d{4})/)
+  if (!match) return false
+  const month = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'].indexOf(match[1].slice(0, 3).toLowerCase()) + 1
+  const day = `${match[3]}-${String(month).padStart(2, '0')}-${match[2].padStart(2, '0')}`
+  return month > 0 && day >= manifest.discoverySince
 }

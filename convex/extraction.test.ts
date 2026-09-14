@@ -750,7 +750,7 @@ test('gold case: a valid CO-029-2026 extraction validates and records the full e
     ['validate', 'succeeded'],
   ])
   expect(stages[0].attempt).toBe(1)
-  expect(stages[0].promptVersion).toBe('v1.12')
+  expect(stages[0].promptVersion).toBe('v1.16')
   expect(stages[0].schemaVersion).toBe('v1')
 
   const extraction = await extractionByRun(t, start.runId)
@@ -760,9 +760,9 @@ test('gold case: a valid CO-029-2026 extraction validates and records the full e
     modelRole: 'MODEL_STRONG',
     modelId: MODEL_ID,
     route: 'ai_gateway',
-    promptVersion: 'v1.12',
+    promptVersion: 'v1.16',
     schemaVersion: 'v1',
-    processorVersion: 'v1.21',
+    processorVersion: 'v1.22',
   })
   expect(extraction?.responseHash).toBe(
     await sha256HexOfText(goldContent(snapshotId)),
@@ -1143,7 +1143,7 @@ test('an old processor run cannot persist under the new processor label', async 
       targetRecordId: TARGET_RECORD_ID,
       sourceRecordIdProvenance: 'source_printed',
       modelRole: 'MODEL_STRONG',
-      promptVersion: 'v1.12',
+      promptVersion: 'v1.16',
       schemaVersion: 'v1',
       errorClass: 'forced',
       errorDetail: 'must reject mixed processor versions',
@@ -2306,4 +2306,16 @@ test('source-backed partial bold citations retain visible offsets and literal op
   const operatorLocation = locateSourceExcerpt(operators, 'heading** 2**3 remains literal.')!
   expect(normalizeForMatch(operators).slice(operatorLocation.startOffset, operatorLocation.endOffset)).toBe('heading 2**3 remains literal.')
   expect(locateSourceExcerpt(operators, 'heading** 23 remains literal.')).toBeNull()
+})
+
+
+test('encoded apostrophe citations retain exact source offsets and reject changed facts', () => {
+  const source = "Notice of Audit of Magnolia Water Utility Company&#x27;s billing, customer-service, and acquisition practices. Budget not to exceed $137,500."
+  const excerpt = "Notice of Audit of Magnolia Water Utility Company's billing, customer-service, and acquisition practices."
+  const match = locateSourceExcerpt(source, excerpt)!
+  expect(source.slice(match.startOffset, match.endOffset)).toBe(excerpt.replace("'", '&#x27;'))
+  expect(locateSourceExcerpt(source, excerpt.replace('Magnolia', 'Different'))).toBeNull()
+  expect(locateSourceExcerpt(source, excerpt + ' Budget not to exceed $150,000.')).toBeNull()
+  expect(locateSourceExcerpt("Company&amp;#x27;s billing", "Company's billing")).toBeNull()
+  expect(locateSourceExcerpt("A &amp; B&#39;s budget is $5.", "A & B's budget is $5.")).not.toBeNull()
 })
