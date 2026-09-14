@@ -34,6 +34,7 @@
   inset: 0;
   z-index: 3;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   transition: opacity var(--dur-standard) ease;
 }
@@ -41,13 +42,17 @@
 .relief-viewport[data-render-state='ready'] .relief-map-labels,
 .relief-viewport[data-render-state='fallback'] .relief-map-labels {
   opacity: 1;
+  visibility: visible;
 }
 
 .relief-map-label {
   position: absolute;
   display: inline-flex;
   align-items: center;
-  min-height: 1.35rem;
+  min-height: 1.875rem;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
   padding-inline: 0.45rem;
   border: 1px solid color-mix(in srgb, var(--foreground) 16%, transparent);
   border-radius: 0.35rem;
@@ -55,12 +60,30 @@
   background: rgb(255 255 255 / 88%);
   box-shadow: 0 2px 8px rgb(55 35 85 / 9%);
   font-family: var(--font-mono);
-  font-size: 0.58rem;
+  font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   line-height: 1;
   white-space: nowrap;
   backdrop-filter: blur(4px);
+}
+
+/* The label keeps its compact shape with a 44px hit area. */
+.relief-map-label::before {
+  position: absolute;
+  content: '';
+  inset: -7px -3px;
+}
+
+.relief-map-label:enabled:is(:hover, :focus-visible) {
+  color: var(--primary-foreground);
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.relief-map-label:disabled {
+  cursor: not-allowed;
+  color: var(--muted-foreground);
 }
 
 .relief-map-label::after {
@@ -156,11 +179,34 @@
   display: block;
 }
 
-@media (max-width: 40rem) {
+@media (max-width: 47.999rem) {
   .relief-map-label {
-    min-height: 1.2rem;
-    padding-inline: 0.38rem;
-    font-size: 0.52rem;
+    min-height: 2.75rem;
+    padding-inline: 0.4375rem;
+    font-size: 0.5625rem;
+  }
+
+  .relief-map-label::before {
+    inset: 0;
+  }
+
+  .relief-map-label-rapides {
+    top: 24%;
+  }
+
+  .relief-map-label-lafayette {
+    top: 54%;
+    left: 0;
+  }
+
+  .relief-map-label-lafayette::after {
+    width: 2.25rem;
+  }
+
+  .relief-map-label-baton-rouge {
+    top: 41%;
+    right: 0;
+    left: auto;
   }
 }
 

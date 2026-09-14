@@ -27,9 +27,14 @@ slice contracts; [Work](work.md) records release status.
 
 Hero body copy: "See the documents behind each decision and follow what
 happens next." Keep "Free to read and ask questions. No account needed."
-On mobile, show the hero copy and selector without Louisiana. Mount the 3D
-visual only above 48rem. Use warm limestone material with muted violet
-highlights on a transparent canvas. The owner selected warm limestone from the
+The September 14 owner selection makes the three parish labels on Louisiana
+clickable. Keep the current desktop model size and show the full-width visual
+below the introduction on phones, as in the accepted preview. Labels use the
+same coverage availability and saved selection as the area picker. Selecting a
+label opens the parish issues and moves keyboard focus to their heading.
+Labels remain usable with the SVG fallback. Unknown or validating coverage
+keeps a label disabled. This replaces the earlier desktop-only visual rule.
+Use warm limestone material with muted violet highlights on a transparent canvas. The owner selected warm limestone from the
 September 9 color comparison, replacing charcoal. Keep the quiet violet pins
 and existing lighting. Remove the entire hero after any explicit area selection.
 Store an explicit Louisiana choice so returning statewide never restores the

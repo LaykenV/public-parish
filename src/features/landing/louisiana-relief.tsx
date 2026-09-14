@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
 import { effect, frame, init, surface } from 'vgpu'
 import type { Effect, Gpu, Surface } from 'vgpu'
 
@@ -9,7 +10,7 @@ import './louisiana-relief.css'
 
 type RenderState = 'loading' | 'ready' | 'fallback'
 
-export function LouisianaRelief() {
+export function LouisianaRelief({ children }: { children?: ReactNode }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [renderState, setRenderState] = useState<RenderState>('loading')
 
@@ -29,6 +30,7 @@ export function LouisianaRelief() {
     let animationFrame = 0
     let animationTimer = 0
     let visible = true
+    let renderingFailed = false
     let lastFrameAt = performance.now()
     const startedAt = performance.now()
     const reducedMotion = window.matchMedia(
@@ -48,24 +50,38 @@ export function LouisianaRelief() {
     }
 
     const render = (timestamp: number) => {
-      if (!gpu || !canvasSurface || !relief || lifecycle.disposed) return
-      frame(gpu, (currentFrame) => {
-        relief?.set({
-          params: {
-            resolution: canvasSurface?.size ?? [1, 1],
-            yaw: motion.yaw,
-            pitch: motion.pitch,
-            time: motionEnabled ? (timestamp - startedAt) / 1000 : 0,
-            energy: motion.energy,
-          },
+      if (
+        !gpu ||
+        !canvasSurface ||
+        !relief ||
+        lifecycle.disposed ||
+        renderingFailed
+      )
+        return false
+      try {
+        frame(gpu, (currentFrame) => {
+          relief?.set({
+            params: {
+              resolution: canvasSurface?.size ?? [1, 1],
+              yaw: motion.yaw,
+              pitch: motion.pitch,
+              time: motionEnabled ? (timestamp - startedAt) / 1000 : 0,
+              energy: motion.energy,
+            },
+          })
+          if (canvasSurface && relief) currentFrame.pass(canvasSurface, relief)
         })
-        if (canvasSurface && relief) currentFrame.pass(canvasSurface, relief)
-      })
+        return true
+      } catch {
+        renderingFailed = true
+        setRenderState('fallback')
+        return false
+      }
     }
 
     const animate = (timestamp: number) => {
       animationFrame = 0
-      if (lifecycle.disposed || !visible) return
+      if (lifecycle.disposed || !visible || renderingFailed) return
 
       const elapsed = Math.min((timestamp - lastFrameAt) / 1000, 0.1)
       lastFrameAt = timestamp
@@ -87,7 +103,7 @@ export function LouisianaRelief() {
     }
 
     const scheduleAnimation = (immediate = true, delay = 0) => {
-      if (lifecycle.disposed || !visible) return
+      if (lifecycle.disposed || !visible || renderingFailed) return
       if (immediate && animationTimer) {
         window.clearTimeout(animationTimer)
         animationTimer = 0
@@ -160,6 +176,18 @@ export function LouisianaRelief() {
           return
         }
         gpu = nextGpu
+        nextGpu.onError(() => {
+          if (!lifecycle.disposed) {
+            renderingFailed = true
+            setRenderState('fallback')
+          }
+        })
+        void nextGpu.gpu.lost.then(() => {
+          if (!lifecycle.disposed) {
+            renderingFailed = true
+            setRenderState('fallback')
+          }
+        })
         canvasSurface = surface(nextGpu, canvas, {
           dpr: [1, 1.25],
           label: 'Public Parish Louisiana relief',
@@ -178,8 +206,7 @@ export function LouisianaRelief() {
             },
           },
         })
-        render(performance.now())
-        setRenderState('ready')
+        if (render(performance.now())) setRenderState('ready')
         if (motionEnabled) scheduleAnimation(false, 66)
       } catch {
         if (!lifecycle.disposed) setRenderState('fallback')
@@ -207,22 +234,12 @@ export function LouisianaRelief() {
   return (
     <div className="relief-viewport" data-render-state={renderState}>
       <canvas
-        aria-label="Three-dimensional Louisiana relief with static pins marking Lafayette, Rapides, and East Baton Rouge as local coverage regions"
+        aria-label="Three-dimensional Louisiana relief with pins marking Lafayette, Rapides, and East Baton Rouge"
         className="relief-canvas"
         ref={canvasRef}
         role="img"
       />
-      <div aria-hidden="true" className="relief-map-labels">
-        <span className="relief-map-label relief-map-label-rapides">
-          Rapides
-        </span>
-        <span className="relief-map-label relief-map-label-lafayette">
-          Lafayette
-        </span>
-        <span className="relief-map-label relief-map-label-baton-rouge">
-          East Baton Rouge
-        </span>
-      </div>
+      {children}
       <svg aria-hidden="true" className="relief-fallback" viewBox="0 0 260 240">
         <path className="relief-fallback-state" d={LOUISIANA_OUTLINE_PATH} />
         <g className="relief-fallback-pins">

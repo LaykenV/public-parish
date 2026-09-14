@@ -2291,3 +2291,13 @@ compact tile, then authorized shipment. Prepared headers, browser icons,
 correction marks, the footer, How it works introduction and generic share image
 on current main. The artwork and export script are recorded in
 `docs/brand-assets.md`. Release CI, reviews and production verification pending.
+
+### 2026-09-14 - working tree, clickable Louisiana parish labels
+The owner selected the full-size hero with clickable parish labels. Implemented
+selection through the existing Home URL and saved-area flow, with coverage
+availability checks, keyboard focus and a full-width phone visual. The relief
+keeps its SVG fallback after GPU loss. Added coverage-state and browser selection
+checks. Local typechecks, 744 tests, build and lint pass with 15 existing
+warnings. Ten browser checks pass in Chromium and mobile WebKit, with actual
+3D screenshots checked at desktop and phone widths. The authorized PR, reviews
+and production release remain pending.

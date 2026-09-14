@@ -83,12 +83,8 @@ test('Home hides stories in a parish and never repeats the hero after selection'
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     "Understand what Louisiana's government is deciding.",
   )
-  if ((page.viewportSize()?.width ?? 1280) > 768) {
-    await expect(page.locator('.pp-home-relief')).toBeVisible()
-  } else {
-    await expect(page.locator('.pp-home-relief')).not.toBeVisible()
-    await expect(page.locator('.pp-home-relief canvas')).toHaveCount(0)
-  }
+  await expect(page.locator('.pp-home-relief')).toBeVisible()
+  await expect(page.locator('.pp-home-relief canvas')).toHaveCount(1)
   await expect(
     page.locator('#stories a[href^="/stories/"]').first(),
   ).toBeVisible()
