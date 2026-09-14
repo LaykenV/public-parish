@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-14T01:36:00Z
+- **Last updated:** 2026-09-14T02:09:00Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2216,3 +2216,12 @@ Cards keep accepted summaries, relevant dates and evidence status, with approved
 story images below headlines. Body cards open their published records. Local
 validation passed 726 tests and ten desktop and mobile Explore checks. Inspected
 the final card screenshots. PR reviews and the replacement dev upload are pending.
+
+### 2026-09-14 - working tree, parallel PR verification
+
+Prepared a separate frontend build and six browser jobs in the Verify workflow.
+The final gate keeps the certified artifact behind every required check.
+Actionlint, 128 gate combinations, typechecks, 726 tests, build and lint pass.
+All 168 browser cases remain selected. The run passed 166, skipped one and hit
+one synthetic Ask timeout; that case passed a targeted rerun. Lint retains 15
+warnings. GitHub timing is unmeasured, and the change is not committed or pushed.

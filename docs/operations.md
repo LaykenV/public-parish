@@ -203,6 +203,16 @@ One concern per real PR. Review source and diffs, and run local tests, builds,
 typechecks and lint as needed. `npm run verify` runs the full suite. PR CI
 repeats the automated checks.
 
+PR verification builds the frontend while typechecks, application tests and lint
+run in a separate job. With the `development-certification` label, the resident,
+reading/chat and owner browser suites each run desktop Chromium and mobile
+WebKit in separate jobs after the build. Each browser job installs only its
+engine and keeps its own screenshots, videos and failure traces. Tests still
+use one worker per job. The final `verify` check requires every applicable job
+to pass before publishing `development-frontend-<head SHA>` for 14 days. The
+one-day `frontend-build-<head SHA>` artifact is an intermediate build, not a
+certified preview. AI reviews run independently of these jobs.
+
 Only commit, push, open a PR, merge or deploy when authorized for that action.
 Merging or pushing `main` deploys the backend and frontend, including docs-only
 changes. State that consequence before obtaining any needed release approval.

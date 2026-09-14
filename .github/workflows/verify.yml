@@ -8,13 +8,16 @@ concurrency:
   group: verify-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
+env:
+  VITE_CONVEX_URL: https://woozy-wren-227.convex.cloud
+
 jobs:
-  verify:
+  checks:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    env:
-      VITE_CONVEX_URL: https://woozy-wren-227.convex.cloud
+    timeout-minutes: 20
     steps:
       - name: Check out the pull request
         uses: actions/checkout@v4
@@ -31,30 +34,99 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify the application
-        run: npm run verify
+      - name: Check frontend and backend types
+        run: npm run typecheck
 
-      - name: Install browser engines
-        if: contains(github.event.pull_request.labels.*.name, 'development-certification')
-        run: npx playwright install --with-deps chromium webkit
+      - name: Run application tests
+        run: npm run test
 
-      - name: Check desktop and mobile development journeys
-        if: contains(github.event.pull_request.labels.*.name, 'development-certification')
-        run: npx playwright test
+      - name: Lint the application
+        run: npm run lint
 
-      - name: Check reading and chat presentation states
-        if: contains(github.event.pull_request.labels.*.name, 'development-certification')
-        run: npx playwright test --config playwright.fixtures.config.ts
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out the pull request
+        uses: actions/checkout@v4
 
-      - name: Check owner operations with synthetic data
-        if: contains(github.event.pull_request.labels.*.name, 'development-certification')
-        run: npx playwright test --config playwright.owner.config.ts
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
 
-      - name: Preserve parish feed screenshots
-        if: always() && contains(github.event.pull_request.labels.*.name, 'development-certification')
+      - name: Use npm 11.6.2
+        run: npm install --global npm@11.6.2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the development frontend
+        run: npm run build
+
+      - name: Share the frontend with browser jobs
         uses: actions/upload-artifact@v4
         with:
-          name: parish-feed-${{ github.event.pull_request.head.sha }}
+          name: frontend-build-${{ github.event.pull_request.head.sha }}
+          path: dist/client
+          if-no-files-found: error
+          retention-days: 1
+
+  browser:
+    needs: build
+    if: contains(github.event.pull_request.labels.*.name, 'development-certification')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        suite:
+          - name: resident
+            config: playwright.config.ts
+          - name: reading
+            config: playwright.fixtures.config.ts
+          - name: owner
+            config: playwright.owner.config.ts
+        browser:
+          - project: desktop-chromium
+            engine: chromium
+          - project: mobile-webkit
+            engine: webkit
+    name: Browser ${{ matrix.suite.name }} / ${{ matrix.browser.project }}
+    steps:
+      - name: Check out the pull request
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Use npm 11.6.2
+        run: npm install --global npm@11.6.2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download the development frontend
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build-${{ github.event.pull_request.head.sha }}
+          path: dist/client
+
+      - name: Install the browser engine
+        run: npx playwright install --with-deps ${{ matrix.browser.engine }}
+
+      - name: Check browser journeys
+        run: npx playwright test --config ${{ matrix.suite.config }} --project ${{ matrix.browser.project }}
+
+      - name: Preserve browser screenshots and videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: parish-feed-${{ matrix.suite.name }}-${{ matrix.browser.project }}-${{ github.event.pull_request.head.sha }}
           path: |
             test-results/**/*.png
             test-results/**/*.webm
@@ -64,9 +136,37 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: browser-failure-${{ github.event.pull_request.head.sha }}
+          name: browser-failure-${{ matrix.suite.name }}-${{ matrix.browser.project }}-${{ github.event.pull_request.head.sha }}
           path: test-results
           if-no-files-found: ignore
+
+  # Keep one final check and publish the familiar artifact only after all gates pass.
+  verify:
+    needs: [checks, build, browser]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require all applicable checks to pass
+        env:
+          CHECKS_RESULT: ${{ needs.checks.result }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          BROWSER_RESULT: ${{ needs.browser.result }}
+          BROWSER_REQUIRED: ${{ contains(github.event.pull_request.labels.*.name, 'development-certification') }}
+        run: |
+          test "$CHECKS_RESULT" = success
+          test "$BUILD_RESULT" = success
+          if [ "$BROWSER_REQUIRED" = true ]; then
+            test "$BROWSER_RESULT" = success
+          else
+            test "$BROWSER_RESULT" = skipped
+          fi
+
+      - name: Download the verified development frontend
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build-${{ github.event.pull_request.head.sha }}
+          path: dist/client
 
       - name: Preserve the verified development frontend
         uses: actions/upload-artifact@v4
