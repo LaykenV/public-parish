@@ -20,7 +20,7 @@ slice contracts; [Work](work.md) records release status.
 | --- | --- | --- |
 | Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. The issues card contains the navigation links and body filters. On phones, the links stack beside Filters |
 | First content | Across Louisiana: Meta lead, SpaceX and Boyce secondary, plus one utility roundup linking individual commission cases | Local issues and body filters. Featured stories are omitted |
-| Ballot | "On the November 3 ballot": statewide amendments, once published | Statewide amendments plus verified propositions for the focused parish |
+| Ballot | "On the November 3 ballot": all published statewide amendments | Compact preview of two statewide amendments, with a link to the full guide |
 | Local content | Issues across covered parishes | Issues in the focus, with a desktop body dialog and mobile filter drawer |
 | Records | Latest decision records | Latest decision records for the focus |
 | Footer | Brand, site links and compact dated voter information linking to the ballot page | Same footer |
@@ -468,3 +468,28 @@ the shared purple arrow-link style. Avoid repeating the number in the visible
 title; the accessible link name retains the complete accepted title. The main
 Read the ballot guide link uses that same arrow treatment. The full guide keeps
 its existing explanations and source access.
+
+## Elections hub and parish preview
+
+The owner approved Elections in the desktop and mobile navigation on September
+14. It opens `/ballot` and stays highlighted on amendment pages. Clicking it
+from a measure returns to the full guide.
+
+The hub leads with the November 3 election, the date and official voter links.
+The large election heading and actual amendment numbers provide the visual
+hierarchy. Reuse Inter, the existing purple `#6340a3`, lavender `#f7f6fa`, white
+cards, dark text `#242131` and border `#e2ddea`. Keep the introduction beside
+voter tools on desktop and stack them on phones. Each amendment retains its
+accepted summary, review limitations, source access and reading link.
+
+Statewide Home retains all amendment cards. Parish Home keeps local issues
+first and shows the first two amendments in ballot order, with the count and
+Read the ballot guide link. These remain labeled statewide amendments.
+The hub retains the notice about unverified parish propositions.
+
+Official outbound destinations were checked September 14, 2026:
+[voter portal](https://voterportal.sos.la.gov/),
+[registration guidance](https://www.sos.la.gov/elections-voting/voter-registration-faqs)
+and [election dates](https://www.sos.la.gov/elections-voting/election-dates).
+The hub links to the official deadlines rather than copying a new calendar into
+the application. The existing published November 3 date is retained.

@@ -7,6 +7,22 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 14 Elections hub
+
+The owner approved Elections in navigation and a redesigned `/ballot` page.
+The page has a clear election header, official voter tools and numbered amendment
+cards with accepted summaries and reading links. Statewide Home retains all ten
+cards. Parish Home shows two statewide amendments in ballot order and links to
+the full guide. Elections remains highlighted on measure pages and returns to
+the hub when clicked.
+
+Local verification passed 742 tests, both typechecks, build and lint with 15
+existing warnings. Browser checks cover 320px, 768px, 1025px and 1280px in
+Chromium and WebKit. The four initial guide checks matched a footer link as well
+as the new voter link. After correcting the selector, all 34 targeted browser
+cases pass. Inspected desktop and mobile screenshots.
+PR, hosted development and production checks are pending.
+
 ## September 14 Home card design
 
 The owner requested a story image for the utility roundup, stronger homepage
@@ -17,8 +33,10 @@ The [image record](utility-image.md) retains the prompt and asset provenance.
 
 Validation passed 742 application tests, both typechecks, build, lint with 15
 existing warnings and all 30 targeted browser cases in Chromium and WebKit.
-Inspected the roundup and ballot cards at 320px and 1280px. PR and release
-verification are pending.
+Inspected the roundup and ballot cards at 320px and 1280px. PR #229 merged as
+`3da06db`. Both reviews and CI passed. All 77 hosted dev files matched the
+certified artifact. Eight browser checks passed on each of development and
+production, plus the exact production workflow and independent smoke.
 
 ## September 14 statewide reading and utility roundup
 

@@ -4,14 +4,14 @@ for (const width of [320, 1280]) {
   test(`ballot guide lists the ten statewide measures at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/ballot')
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('On the November 3 ballot')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('The November 3 election')
     const measures = page.locator('.pp-ballot-grid li')
     await expect(measures).toHaveCount(10)
     for (let number = 1; number <= 10; number++) {
-      await expect(measures.nth(number - 1).getByRole('link')).toHaveAttribute('href', `/ballot/2026-amendment-${number}`)
+      await expect(measures.nth(number - 1).getByRole('link', { name: `Read Amendment ${number}`, exact: true })).toHaveAttribute('href', `/ballot/2026-amendment-${number}`)
     }
     await expect(page.getByText('No parish propositions have been verified for this guide. This is not a complete sample ballot.')).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Check your sample ballot at the Secretary of State.' })).toHaveAttribute('href', 'https://voterportal.sos.la.gov/')
+    await expect(page.getByRole('link', { name: 'Check registration and sample ballot', exact: true })).toHaveAttribute('href', 'https://voterportal.sos.la.gov/')
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   })
 }
@@ -50,10 +50,13 @@ test('statewide Home keeps three featured stories and parish Home retains the ba
   await expect(page.locator('.pp-story-grid .pp-story-card')).toHaveCount(3)
   await expect(page.getByRole('heading', { name: 'Utility rates and service', exact: true })).toBeVisible()
   await expect(page.locator('.pp-ballot-grid li')).toHaveCount(10)
-  await page.goto('/?area=rapides-parish')
-  await expect(page.locator('.pp-ballot-grid li')).toHaveCount(10)
+  for (const parish of ['rapides-parish', 'lafayette-parish']) {
+  await page.goto(`/?area=${parish}`)
+  await expect(page.locator('.pp-ballot-grid li')).toHaveCount(2)
+  await expect(page.locator('.pp-ballot[data-compact]')).toContainText('Previewing 2 of 10 statewide amendments.')
   await expect(page.locator('.pp-story-grid .pp-story-card')).toHaveCount(0)
   await expect(page.getByRole('heading', { name: 'Utility rates and service', exact: true })).toHaveCount(0)
+  }
 })
 
 
@@ -139,7 +142,45 @@ for (const width of [320, 1280]) {
     await guide.click()
     await expect(page).toHaveURL(/\/ballot$/)
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-      'On the November 3 ballot',
+      'The November 3 election',
     )
+  })
+}
+
+for (const width of [320, 768, 1025, 1280]) {
+  test(`Elections navigation opens the hub and returns from a measure at ${width}px`, async ({ page }, testInfo) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/?area=east-baton-rouge-parish')
+    await expect(page.locator('.pp-ballot[data-compact] .pp-ballot-grid li')).toHaveCount(2)
+    await page.locator('.pp-ballot').evaluate(element => window.scrollTo({top: element.getBoundingClientRect().top + scrollY - 70}))
+    await page.screenshot({path: testInfo.outputPath(`parish-ballot-${width}.png`)})
+    const navigateToElections = async () => {
+      if (width <= 1024) await page.getByRole('button', {name: 'Open menu', exact: true}).click()
+      await page.getByRole('link', {name: 'Elections', exact: true}).filter({visible: true}).click()
+      await expect(page).toHaveURL(/\/ballot$/)
+      await expect(page.getByRole('heading', {level: 1})).toHaveText('The November 3 election')
+    }
+    await navigateToElections()
+    await expect(page.locator('.pp-ballot-grid li')).toHaveCount(10)
+    await expect(page.locator('time[datetime="2026-11-03"]')).toHaveText('November 3, 2026')
+    await expect(page.getByRole('link', {name: 'Election dates and deadlines', exact: true})).toHaveAttribute('href', 'https://www.sos.la.gov/elections-voting/election-dates')
+    await expect(page.getByRole('link', {name: 'How to register or update your registration', exact: true})).toHaveAttribute('href', 'https://www.sos.la.gov/elections-voting/voter-registration-faqs')
+    for (const link of await page.locator('.pp-election-header a').all()) {
+      await expect(link.locator('svg')).toBeVisible()
+      await expect(link).toHaveAttribute('target', '_blank')
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.screenshot({path: testInfo.outputPath(`elections-${width}.png`)})
+    await page.getByRole('link', {name: 'Read Amendment 1', exact: true}).click()
+    await expect(page.getByRole('heading', {level: 1})).toContainText('Amendment 1')
+    if (width <= 1024) await page.getByRole('button', {name: 'Open menu', exact: true}).click()
+    const active = page.getByRole('link', {name: 'Elections', exact: true}).filter({visible: true})
+    await expect(active).toHaveAttribute('aria-current', 'page')
+    await active.click()
+    await expect(page).toHaveURL(/\/ballot$/)
+    await expect(page.getByRole('heading', {level: 1})).toHaveText('The November 3 election')
+    await page.goto('/?area=louisiana')
+    await expect(page.locator('.pp-ballot-grid li')).toHaveCount(10)
+    await expect(page.locator('.pp-ballot[data-compact]')).toHaveCount(0)
   })
 }

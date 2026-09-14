@@ -2,6 +2,7 @@ import { Dialog } from '@base-ui/react/dialog'
 import { ResidentLoadingContent, usePageLoading } from './resident-loading'
 import { VoterFooter } from './voter-footer'
 import {
+  VoteIcon,
   CircleUserRoundIcon,
   HouseIcon,
   MapPinIcon,
@@ -41,12 +42,14 @@ const PRIMARY_NAVIGATION: NavigationItem[] = [
   { href: '/', icon: HouseIcon, label: 'Home' },
   { href: '/explore', icon: SearchIcon, label: 'Explore' },
   { href: '/ask', icon: MessageCircleQuestionIcon, label: 'Ask' },
+  { href: '/ballot', icon: VoteIcon, label: 'Elections' },
   { href: '/coverage', icon: LouisianaIcon, label: 'Coverage' },
 ]
 
 const STATIC_ROUTE_LABELS: Record<string, string> = {
   '/': 'Home',
   '/ask': 'Ask Public Parish',
+  '/ballot': 'Elections',
   '/coverage': 'Coverage',
   '/coverage/request': 'Request coverage',
   '/explore': 'Explore',
@@ -62,6 +65,7 @@ const STATIC_ROUTE_LABELS: Record<string, string> = {
 export function residentRouteLabel(pathname: string): string {
   const staticLabel = STATIC_ROUTE_LABELS[pathname]
   if (staticLabel) return staticLabel
+  if (pathname.startsWith('/ballot/')) return 'Ballot measure'
   if (pathname.startsWith('/decisions/')) return 'Decision record'
   if (pathname.startsWith('/email/manage/')) return 'Manage this follow'
   if (pathname.startsWith('/issues/')) return 'Issue'
@@ -450,7 +454,7 @@ function ResidentNavigationLink({
       data-active={isActive ? '' : undefined}
       to={item.href}
       onClick={(event) => {
-        if (!isActive) return
+        if (pathname !== item.href) return
         event.preventDefault()
         const reduced = window.matchMedia(
           '(prefers-reduced-motion: reduce)',
