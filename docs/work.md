@@ -7,6 +7,19 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 14 Home card design
+
+The owner requested a story image for the utility roundup, stronger homepage
+ballot cards and an arrow link for Read the ballot guide. The local design uses
+an AI-labeled utility illustration, the existing story image and headline styles,
+an expandable case list and numbered ballot cards with direct reading links.
+The [image record](utility-image.md) retains the prompt and asset provenance.
+
+Validation passed 742 application tests, both typechecks, build, lint with 15
+existing warnings and all 30 targeted browser cases in Chromium and WebKit.
+Inspected the roundup and ballot cards at 320px and 1280px. PR and release
+verification are pending.
+
 ## September 14 statewide reading and utility roundup
 
 The owner approved one utility roundup alongside the three featured stories.
@@ -22,7 +35,8 @@ meeting and issue reading while retaining the unknown-place check. Three
 regression checks failed before the fix and now pass. The original U5 release
 smoke missed decision-page navigation. Validation passed 742 application tests, both typechecks, build and lint
 with 15 existing warnings. All 64 targeted browser cases pass after correcting
-the story-image selector and waiting for visible layout. PR #228 is in review.
+the story-image selector and waiting for visible layout. PR #228 merged as
+`03ebec2`; its exact production workflow and independent smoke passed.
 
 ## September 14 production upgrade release
 

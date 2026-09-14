@@ -453,3 +453,18 @@ roundup links directly to each accepted commission decision, with its docket
 and published status. It uses the shared commission follow and Explore filter.
 It replaces the separate statewide decision section. Keep the source records
 and their citations distinct; the roundup is a reading collection.
+
+
+## Home story and ballot card refinement
+
+The September 14 owner refinement gives the utility roundup a 16:9 image,
+headline and summary matching the three story cards. Its generated illustration
+has a visible AI illustration credit. Cases remain available in a native
+expandable list, with the existing commission follow and Explore links below.
+
+Homepage ballot cards lead with the actual amendment number, retain their
+accepted subject titles and review limitations, and offer Read amendment with
+the shared purple arrow-link style. Avoid repeating the number in the visible
+title; the accessible link name retains the complete accepted title. The main
+Read the ballot guide link uses that same arrow treatment. The full guide keeps
+its existing explanations and source access.
