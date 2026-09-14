@@ -114,12 +114,39 @@ The scrolled header uses 72 percent background opacity with 20-pixel blur.
 There is no bottom navigation or reserved space for it.
 
 One centered global spinner covers navigation and initial page-data loading.
+Explore keeps its search and filter controls visible during initial result loading
+and later filter changes. Its spinner stays inside the results section, and URL
+filter changes preserve scroll position and dropdown anchors.
 Concurrent pending sections share that indicator. Settling or unmounting a
 section releases its loading registration. Do not use skeletons. Until all pending
 page sections settle, show only the header and spinner. Hide page content and the
 footer from view and keyboard access. Keep the spinner container still and rotate
 only the icon. Button submissions and Ask
 answer generation retain their action-specific feedback.
+
+## Explore, Ask and coverage request, September 13 correction
+
+Explore uses two equal card columns on desktop and one on phones. More filters
+opens a centered desktop dialog or the shared mobile drawer. The result controls
+remain mounted while filters change. Search fields draw one purple focus border
+around the whole control, including its icon, without an inner input outline.
+
+Without filters or an explicit sort, Explore leads with published stories and
+the existing consequence-ranked issue selection, then continues through the
+paginated search records. Remove duplicate links. Explicit date sorting keeps
+the search order. Cards show their type, headline, accepted summary, place,
+body and available dates. Story headlines precede their approved images. Issue
+cards retain topics, evidence limitations and linked-record context when available.
+Meeting and body cards do not inherit a member decision's lifecycle or evidence
+status. Body cards open that body's published records.
+
+The empty desktop Ask composer and suggestions sit in the middle of the available
+conversation area. The first question moves the composer to the bottom and gives
+the conversation its scrolling area. Keep the existing mobile layout.
+
+Request coverage uses a centered desktop column for the title and form. Place
+the "One gate for every place" note beneath the form and keep field labels
+left-aligned.
 
 ## Follow controls
 

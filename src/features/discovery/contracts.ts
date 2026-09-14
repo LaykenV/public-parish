@@ -79,6 +79,11 @@ export type UpdateEntryData = {
 }
 
 export type ResultRowData = {
+  summary?: string
+  checked?: string
+  reviewedThrough?: string
+  topics?: string[]
+  image?: { url: string; alt: string }
   body?: string
   coverage?: 'Supported' | 'Validating sources'
   date?: string
@@ -208,6 +213,7 @@ export const TYPE_OPTIONS = [
   { label: 'Issues', value: 'issue' },
   { label: 'Decision records', value: 'decision' },
   { label: 'Meetings', value: 'meeting' },
+  { label: 'Government bodies', value: 'body' },
 ] as const
 
 export const PLACE_OPTIONS = [

@@ -590,23 +590,17 @@
     justify-self: end;
   }
 
-  .coverage-request-layout {
-    grid-template-columns: minmax(0, 3fr) minmax(16rem, 2fr);
-    column-gap: 3rem;
+  .coverage-request-page:not(.coverage-request-unavailable) {
+    max-width: 40rem;
   }
 
-  .coverage-request-layout > header,
-  .coverage-request-form,
-  .coverage-verify,
-  .coverage-request-complete {
-    grid-column: 1;
+  .coverage-request-layout > header {
+    text-align: center;
   }
 
-  .coverage-request-assurance {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    position: sticky;
-    top: 6rem;
+  .coverage-request-layout > header h1,
+  .coverage-request-layout > header p {
+    margin-inline: auto;
   }
 
   .method-standard-grid,

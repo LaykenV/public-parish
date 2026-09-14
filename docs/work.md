@@ -7,6 +7,39 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 13 Explore, Ask and coverage request controls
+
+The owner accepted the preview except Explore's sparse cards and date-only
+default order. The follow-up leads unfiltered browsing with published stories
+and consequence-ranked issues, removes duplicate links and retains explicit
+sort order. New cards keep accepted summaries and type-specific metadata, with
+story headlines above approved images. Body cards open their records. All five
+entry types passed desktop and mobile checks. Local validation passed 726 tests,
+typechecks, build and lint with the 15 existing warnings. Ten final desktop and
+mobile checks passed, and screenshots were inspected. Replacement PR checks and
+the dev artifact are pending.
+
+The owner requested two desktop Explore columns, modal filters, loading confined
+to results, a centered empty desktop Ask composer, a centered coverage request
+form and complete focus borders on composite inputs. The changes are implemented
+on `fix/resident-page-interactions`. Explore preserves scroll and mounted filters
+during query changes. The shared area search and Explore search keep their focus
+border around the whole field. Coverage assurance follows the form.
+
+Local validation passed 721 tests, both typechecks, build and lint with the
+15 existing warnings. All 26 desktop and mobile browser checks passed, plus the
+desktop Ask transition using synthetic chat. These cover delayed queries,
+dropdown anchors, modal bounds and focus, responsive cards and request layout.
+Inspected before and after screenshots. PR #222 is green at `97c4010`, with clean
+GLM and Muse reviews. CI `34789189134` passed 721 application tests and 165 browser
+checks, with one desktop-only test skipped on mobile. Synced the matching dev
+backend and uploaded exact artifact `10326759975` as deployment
+`1252ad35-ed0a-4ade-81d1-8e6e32e9f0b5`. Eight independent hosted Chromium and WebKit
+checks passed. Direct Ask checks passed on desktop and mobile, and all 70 hosted
+HTML, JavaScript and CSS files matched the artifact. Ready for owner testing at
+https://woozy-wren-227.convex.site. The PR remains open and production is unchanged.
+This final receipt is recorded locally after the tested commit and in the PR.
+
 ## September 13 Home story grid and filter controls
 
 The owner requested removal of Search issues and authorized merging and shipping

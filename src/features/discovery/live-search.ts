@@ -22,5 +22,14 @@ export function toSearchEntry(row: SearchEntry): ExploreEntry {
     return { kind: 'issue', date: row.date ?? undefined, issue }
   }
   const kind = row.kind === 'story' ? 'Story' : row.kind === 'decision' ? 'Decision record' : row.kind === 'meeting' ? 'Meeting' : 'Government body'
-  return { kind, date: row.date ?? undefined, row: { kind, href: row.href, title: row.title, body: row.bodyName, place: row.placeName, state: row.kind === 'decision' ? state : undefined, date: row.date ?? undefined, sourceStatus: row.kind === 'decision' ? row.mode === 'full' ? 'Evidence available' : 'Limited information' : undefined } }
+  return { kind, date: row.date ?? undefined, row: {
+    kind, href: row.href, title: row.title, summary: row.summary,
+    body: row.kind === 'story' ? undefined : row.bodyName, place: row.placeName,
+    state: row.kind === 'decision' ? state : undefined,
+    date: row.kind === 'story' ? undefined : row.date ?? undefined,
+    reviewedThrough: row.kind === 'story' ? row.date ?? undefined : undefined,
+    checked: row.kind === 'decision' ? new Date(row.checkedAt).toISOString() : undefined,
+    topics: row.topics,
+    sourceStatus: row.kind === 'decision' || row.kind === 'story' ? row.mode === 'full' ? 'Evidence available' : 'Limited information' : undefined,
+  } }
 }
