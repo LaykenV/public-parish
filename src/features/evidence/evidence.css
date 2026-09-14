@@ -1530,8 +1530,6 @@
     border-radius: 0;
     transform: translateX(0);
   }
-  .pp-sheet.ev-sheet[data-modal-kind='dialog'][data-starting-style],
-  .pp-sheet.ev-sheet[data-modal-kind='dialog'][data-ending-style] { transform: translateX(100%); }
 }
 
 .ev-viewer { min-width: 0; overflow-wrap: anywhere; }

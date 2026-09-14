@@ -25,11 +25,10 @@ type SheetProps = {
 const SHEET_DESKTOP_QUERY = '(min-width: 64.0625rem)'
 const SHEET_EXIT_FALLBACK_MS = 420
 
-// Keep focus return in step with the shared drawer transition.
+// Keep focus return in step with the drawer slide or desktop fade.
 export function sheetExitDelay(): number {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ? 0
-    : SHEET_EXIT_FALLBACK_MS
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 0
+  return window.matchMedia(SHEET_DESKTOP_QUERY).matches ? 100 : SHEET_EXIT_FALLBACK_MS
 }
 
 export function shouldRestoreSheetFocus(): boolean {

@@ -517,3 +517,17 @@ the owner's approved concept. `scripts/generate-brand-assets.mjs` exports
 the WebP sizes, browser icons, Apple touch icon and generic share image.
 Story share pages continue to use their accepted story images. The logo is
 brand artwork and does not represent official source evidence.
+
+
+## Desktop reading cleanup, September 14
+
+Desktop dialogs use a 100 ms opacity fade, including area selection, Explore
+filters and source panels. Keep their position fixed through opening and closing,
+and return focus after the fade. Mobile retains its existing drawer motion.
+Reduced motion disables the transitions.
+
+Issue and decision pages open Ask through a button in the desktop status actions.
+Issues group it with Follow and Share. Remove the inline question form on those
+pages and retain the mobile chat button. Decisions keep their linked issue scope
+or the published corpus when no issue is linked, matching the existing evidence
+contract.
