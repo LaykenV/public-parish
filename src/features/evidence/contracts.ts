@@ -124,7 +124,7 @@ export type IssueDetailData = {
   mode: 'full' | 'limited'
   next?: MarkedDate
   place: string
-  placeSlug: AreaSlug
+  placeSlug: AreaSlug | 'louisiana'
   publicActions: PublicActionData[]
   slug: string
   state: LifecycleState
@@ -217,7 +217,7 @@ export type MeetingDetailData = {
   locationCitationId?: string
   locationText: string
   place: string
-  placeSlug: AreaSlug
+  placeSlug: AreaSlug | 'louisiana'
   routine: MeetingDecisionRow[]
   status: string
   timeKnown?: boolean

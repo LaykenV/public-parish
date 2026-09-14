@@ -44,7 +44,7 @@ export function usePublishedMeeting(meetingKey: string) {
 export function toIssueFixture(
   published: PublishedIssue,
 ): IssueDetailFixture | null {
-  const placeSlug = toAreaSlug(published.placeSlug)
+  const placeSlug = toEvidencePlaceSlug(published.placeSlug)
   if (!placeSlug) return null
   const citations = toCitationMap(published.citations, coverageWarning(published.coverageStatus))
   const firstCitation = (ids: string[]) =>
@@ -158,7 +158,7 @@ export function toIssueFixture(
 export function toDecisionFixture(
   published: PublishedDecision,
 ): DecisionDetailFixture | null {
-  if (!toAreaSlug(published.placeSlug)) return null
+  if (!toEvidencePlaceSlug(published.placeSlug)) return null
   const citations = toCitationMap(published.citations, coverageWarning(published.coverageStatus))
   const citationFor = (path: string) =>
     published.citations.find((citation) => citation.fieldPath === path)?.id
@@ -276,7 +276,7 @@ export function toDecisionFixture(
 export function toMeetingFixture(
   published: PublishedMeeting,
 ): { fixture: MeetingDetailFixture; issues: [] } | null {
-  const placeSlug = toAreaSlug(published.placeSlug)
+  const placeSlug = toEvidencePlaceSlug(published.placeSlug)
   if (!placeSlug) return null
   const citations = toCitationMap(published.citations, coverageWarning(published.coverageStatus))
   const documents = toDocuments(published.citations)
@@ -416,11 +416,12 @@ function toVersion(
   }
 }
 
-function toAreaSlug(value: string): AreaSlug | null {
+function toEvidencePlaceSlug(value: string): AreaSlug | 'louisiana' | null {
   if (
     value === 'lafayette-parish' ||
     value === 'east-baton-rouge-parish' ||
-    value === 'rapides-parish'
+    value === 'rapides-parish' ||
+    value === 'louisiana'
   ) {
     return value
   }

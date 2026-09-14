@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-14T05:36:35Z
+- **Last updated:** 2026-09-14T15:40:20Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2249,3 +2249,13 @@ the resident, reading and owner suites, 179 checks pass with one intentional
 skip after the documented reruns. The
 [morning report](docs/upgrade-morning-report.md) records the complete receipts,
 remaining QA and production gates. Work is uncommitted and production is unchanged.
+
+
+### 2026-09-14 - working tree, repair statewide evidence reading
+
+Fixed a frontend place check that rejected published Louisiana decisions,
+meetings and issues. Reused the Home card layout so desktop has two columns
+and phone swipe controls match the cards. Three regression checks reproduced
+the reader failure before the fix. Validation passed 742 application tests,
+both typechecks, build and four browser cases across Chromium and WebKit.
+The original release checks missed statewide detail navigation. Release pending.
