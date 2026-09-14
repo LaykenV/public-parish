@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-14T20:52:27Z
+- **Last updated:** 2026-09-14T22:25:58Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2334,3 +2334,16 @@ and follow a linked issue through the existing controls. Local verification
 passed 744 tests, typechecks, build and lint with 15 existing warnings. Reading
 checks passed 63 browser cases with one intentional skip. Before and after
 screenshots were inspected. PR review and production release are pending.
+
+### 2026-09-14 - 7d2b467, code-freeze corrections
+Released fixes for anonymous Ask write limits, email management-token revocation,
+ballot links and metadata, Google follow failures, next-action copy and unknown-page
+hydration. Local verification passed 754 tests and 140 resident browser cases.
+Production SpaceX version 4 and Boyce version 3 passed fresh source and independent
+reviews through September 14, with September 18 next reviews. Factual text and
+images stay unchanged, with a SpaceX alt-text correction. No update alerts.
+Source spending is disabled again. Review cost was $0.192740 in the app ledger
+and three Firecrawl credits. All five PRs passed both reviews and CI. Combined
+production workflow `34903301247`, independent smoke and 56 live browser checks
+passed.
+See [the correction receipt](docs/code-freeze-2026-09-14.md).
