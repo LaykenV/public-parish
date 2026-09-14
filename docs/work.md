@@ -7,6 +7,18 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## Pelican identity release, September 14
+
+The owner approved the pelican and authorized shipment. The compact SVG uses
+its own dark violet tile in the header and browser tab. The 3D bird appears in
+the footer and How it works introduction. Browser icons and the generic share
+image use the approved identity. Story shares retain their accepted images.
+[Artwork and regeneration](brand-assets.md) records the assets.
+
+The earlier preview passed 686 tests, both typechecks, build, lint and visual
+checks. The release applies only branding changes to current main. Release CI,
+review bots and independent production smoke remain pending.
+
 ## September 14 Elections hub
 
 The owner approved Elections in navigation and a redesigned `/ballot` page.

@@ -704,8 +704,23 @@
 .method-page {
   max-width: 60rem;
 }
-.method-intro > [data-slot='button'] {
-  justify-self: start;
+.method-intro {
+  align-items: center;
+}
+.method-intro [data-slot='button'] {
+  margin-top: 1.5rem;
+}
+.method-pelican {
+  width: 9rem;
+  height: 9rem;
+  object-fit: contain;
+  justify-self: center;
+}
+@media (min-width: 48rem) {
+  .method-pelican {
+    width: 15rem;
+    height: 15rem;
+  }
 }
 .method-technical summary {
   width: auto;

@@ -217,7 +217,7 @@ export function ResidentShell({ children }: { children: ReactNode }) {
             to="/"
             aria-label="Public Parish home"
           >
-            <img src="/brand-mark.svg" alt="" width="32" height="32" />
+            <img src="/brand-mark.svg" alt="" width="40" height="40" />
             <span>Public Parish</span>
           </Link>
 
@@ -276,11 +276,18 @@ export function ResidentShell({ children }: { children: ReactNode }) {
         <footer className="resident-footer">
           <div className="resident-footer-inner">
             <Link
-              className="resident-brand"
+              className="resident-brand resident-footer-brand"
               to="/"
               aria-label="Public Parish home"
             >
-              <img src="/brand-mark.svg" alt="" width="32" height="32" />
+              <img
+                src="/brand/pelican-320.webp"
+                alt=""
+                width="96"
+                height="96"
+                loading="lazy"
+                decoding="async"
+              />
               <span>Public Parish</span>
             </Link>
             <nav aria-label="About Public Parish">
@@ -476,7 +483,7 @@ export function ResidentStandalone({ children }: { children: ReactNode }) {
       </a>
       <header className="resident-standalone-header">
         <Link aria-label="Public Parish home" className="resident-brand" to="/">
-          <img src="/brand-mark.svg" alt="" width="32" height="32" />
+          <img src="/brand-mark.svg" alt="" width="40" height="40" />
           <span>Public Parish</span>
         </Link>
       </header>

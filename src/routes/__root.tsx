@@ -33,12 +33,36 @@ export const Route = createRootRoute({
         name: 'theme-color',
         content: '#F7F6FA',
       },
+      {
+        property: 'og:image',
+        content: 'https://www.publicparish.com/brand/share.png',
+      },
+      {
+        property: 'og:image:alt',
+        content: 'Public Parish, a violet pelican with a folded-paper wing.',
+      },
+      {
+        name: 'twitter:card',
+        content: 'summary_large_image',
+      },
     ],
     links: [
       {
         rel: 'icon',
-        href: '/brand-mark.svg',
+        href: '/favicon-32.png?v=pelican-tile',
+        type: 'image/png',
+        sizes: '32x32',
+      },
+      {
+        rel: 'icon',
+        href: '/brand-mark.svg?v=pelican-tile',
         type: 'image/svg+xml',
+        sizes: 'any',
+      },
+      {
+        rel: 'apple-touch-icon',
+        href: '/apple-touch-icon.png',
+        sizes: '180x180',
       },
       {
         rel: 'preconnect',

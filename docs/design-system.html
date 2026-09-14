@@ -306,22 +306,11 @@
   </head>
   <body>
     <header>
-      <svg
+      <img
         class="site-mark"
-        viewBox="0 0 64 64"
-        role="img"
-        aria-label="Public Parish mark"
-      >
-        <rect x="1" y="1" width="62" height="62" rx="15" fill="#242131" />
-        <path
-          d="M13 48V17h6.5C26 17 30 20.4 30 26s-4 9-10.5 9H13M35 48V17h6.5C48 17 52 20.4 52 26s-4 9-10.5 9H35"
-          fill="none"
-          stroke="#fff"
-          stroke-width="6"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
+        src="../public/brand-mark.svg"
+        alt="Public Parish pelican"
+      />
       <div>
         <h1>Public Parish design system</h1>
         <p class="summary">
@@ -599,26 +588,17 @@
         <h2 id="logo-title">Logo foundation</h2>
         <div class="grid">
           <article class="panel">
-            <svg
+            <img
               class="logo-specimen"
-              viewBox="0 0 64 64"
-              role="img"
-              aria-label="Public Parish double P mark"
-            >
-              <rect x="1" y="1" width="62" height="62" rx="15" fill="#242131" />
-              <path
-                d="M13 48V17h6.5C26 17 30 20.4 30 26s-4 9-10.5 9H13M35 48V17h6.5C48 17 52 20.4 52 26s-4 9-10.5 9H35"
-                fill="none"
-                stroke="#fff"
-                stroke-width="6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+              src="../public/brand/pelican-320.webp"
+              alt="Public Parish pelican"
+            />
             <p>
-              The selected mark is a path-based double P inside a neutral
-              rounded square. It reads at favicon size, avoids government-seal
-              cues, and keeps the product name as live text.
+              The owner selected the violet pelican with a folded-paper wing. A
+              simplified SVG on a dark violet rounded tile serves compact
+              headers and browser icons. The 3D
+              artwork appears in the footer and How it works introduction. Keep
+              the product name as live text.
             </p>
           </article>
           <article class="panel">
@@ -635,14 +615,15 @@
                 contexts.
               </li>
               <li>Do not bake the name into a raster logo image.</li>
-              <li>Do not recolor individual letterforms.</li>
+              <li>Use lavender on the compact tile and violet in the 3D artwork. Keep the limestone wing.</li>
               <li>Do not imply government ownership or endorsement.</li>
             </ul>
           </article>
         </div>
         <p class="status">
-          The logo is selected for the prelaunch system. Revisit it only when a
-          real legibility or ownership problem appears.
+          Owner-selected pelican, September 14, 2026. The 3D master has a
+          transparent background. Use the 320- and 640-pixel WebP exports in the
+          UI and the simplified SVG at small sizes.
         </p>
       </section>
 
@@ -1064,7 +1045,9 @@
         "logo": {
           "status": "selected",
           "path": "public/brand-mark.svg",
-          "background": "rounded neutral tile",
+          "background": "dark violet rounded tile for compact mark; transparent 3D artwork",
+          "artwork": "public/brand/pelican-master.png",
+          "largeUsage": "footer and How it works introduction",
           "headerUsage": "mark and live text link to Home",
           "wordmarkInAsset": false
         },

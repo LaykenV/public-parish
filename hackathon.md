@@ -2284,3 +2284,10 @@ back from a measure. Local verification passed 742 tests, both typechecks, build
 and lint with 15 existing warnings. All 34 targeted browser cases pass after
 correcting a duplicate-link selector. Inspected phone and desktop screenshots.
 Hosted verification and release are pending.
+
+### 2026-09-14 - working tree, approved pelican identity release
+The owner selected the pelican, approved its 3D footer placement and refined
+compact tile, then authorized shipment. Prepared headers, browser icons,
+correction marks, the footer, How it works introduction and generic share image
+on current main. The artwork and export script are recorded in
+`docs/brand-assets.md`. Release CI, reviews and production verification pending.

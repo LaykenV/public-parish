@@ -1,0 +1,42 @@
+# Pelican artwork
+
+The owner selected the pelican concept on September 14, 2026. It replaces the
+PP placeholder. The illustration is brand artwork, not a depiction of a public
+project or evidence for a government claim.
+
+## Files
+
+- `public/brand/pelican-master.png` is the transparent 3D master produced with
+  the built-in image generation tool from the selected concept.
+- `public/brand/pelican-320.webp` and `pelican-640.webp` are UI exports.
+- `public/brand-mark.svg` is a simplified, manually drawn version for headers,
+  correction labels and the scalable favicon. Its dark violet tile, light rim
+  and lavender bird improve separation on white and at small sizes.
+- `public/favicon-32.png`, `favicon.ico` and `apple-touch-icon.png` cover browser
+  tabs and saved Home Screen links.
+- `public/brand/share.png` is the generic 1200 by 630 share card.
+
+Run `node scripts/generate-brand-assets.mjs` to regenerate the raster exports
+from the master and SVG. This uses the installed Playwright Chromium browser
+for resizing and the share layout. It makes no model request.
+
+## Extraction prompt
+
+The built-in image generation tool received the owner-selected presentation
+as its edit reference and this prompt:
+
+> Edit the supplied owner-approved Public Parish pelican logo presentation into
+> one final production asset. Preserve EXACTLY the large 3D pelican's identity,
+> pose, proportions, violet and warm limestone colors, folded-paper wing, bill,
+> eye, feet, sculpted material and existing lighting. Remove ALL text, the small
+> silhouette below, labels, and the broad ground shadow. Keep only the large 3D
+> pelican itself, complete head, bill, wing and feet, with crisp clean alpha
+> edges. Transparent background with actual alpha, not a checkerboard. Center
+> the isolated bird on a square canvas and scale it to fill about 90 percent of
+> canvas height with safe padding. No new symbols, no restyling, no tile behind
+> it, no typography, no added glow. This is faithful extraction of the approved
+> bird, not a redesign.
+
+The UI keeps the name as live text and uses empty alt text for artwork beside
+an existing brand name or page heading. The asset's SVG accessible name is
+Public Parish pelican when viewed on its own.
