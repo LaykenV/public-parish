@@ -18,7 +18,36 @@ const askRequestLimiter = new RateLimiter(components.rateLimiter, {
   askRequestDaily: { kind: 'fixed window', rate: 20, period: DAY },
   askGlobalRequestBurst: { kind: 'fixed window', rate: 60, period: MINUTE },
   askGlobalRequestDaily: { kind: 'fixed window', rate: 1_000, period: DAY },
+  // Separate admission pools keep session churn from blocking existing chats.
+  askSessionBurst: { kind: 'fixed window', rate: 120, period: MINUTE, start: 0 },
+  askSessionDaily: { kind: 'fixed window', rate: 1_000, period: DAY, start: 0 },
+  askThreadBurst: { kind: 'fixed window', rate: 240, period: MINUTE, start: 0 },
+  askThreadDaily: { kind: 'fixed window', rate: 2_000, period: DAY, start: 0 },
+  askQuestionBurst: { kind: 'fixed window', rate: 120, period: MINUTE, start: 0 },
+  askQuestionDaily: { kind: 'fixed window', rate: 2_000, period: DAY, start: 0 },
 })
+
+const writeLimits = {
+  session: ['askSessionBurst', 'askSessionDaily'],
+  thread: ['askThreadBurst', 'askThreadDaily'],
+  question: ['askQuestionBurst', 'askQuestionDaily'],
+} as const
+
+export async function reserveAskWriteCapacity(
+  ctx: MutationCtx,
+  kind: keyof typeof writeLimits,
+) {
+  const now = Date.now()
+  const [burstName, dailyName] = writeLimits[kind]
+  const burst = await askRequestLimiter.limit(ctx, burstName)
+  if (!burst.ok) {
+    throwCooldown('ask_global_request_limited', now, burst.retryAfter)
+  }
+  const daily = await askRequestLimiter.limit(ctx, dailyName)
+  if (!daily.ok) {
+    throwCooldown('ask_global_daily_limited', now, daily.retryAfter)
+  }
+}
 
 type WindowKind = 'short' | 'daily'
 
