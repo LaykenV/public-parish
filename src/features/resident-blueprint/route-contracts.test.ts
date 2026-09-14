@@ -14,6 +14,7 @@ type ResidentRoutePath = Exclude<
 >
 
 const EXPECTED_RESIDENT_ROUTES = [
+  '/$',
   '/for-you',
   '/explore',
   '/ask',
@@ -52,7 +53,7 @@ const issuesRoute = readFileSync(
 
 describe('resident interface Slice 1 contracts', () => {
   it('accounts for every resident route outside the existing home page', () => {
-    expect(EXPECTED_RESIDENT_ROUTES).toHaveLength(18)
+    expect(EXPECTED_RESIDENT_ROUTES).toHaveLength(19)
     expect(routeGraphIsComplete).toBe(true)
   })
 
