@@ -380,10 +380,10 @@ test('mobile reading uses small citations with touch areas and groups meeting do
   await page.locator('.ev-document-groups').scrollIntoViewIfNeeded()
   await page.screenshot({ path: info.outputPath('meeting-document-groups.png') })
   await page.goto(records[0][1])
-  const toolbar = page.locator('.ev-record-toolbar')
-  await expect(toolbar.getByRole('link', { name: 'Back to Home', exact: true })).toBeVisible()
-  await expect(toolbar.getByRole('button', { name: 'Follow this issue', exact: true })).toBeVisible()
-  expect(await toolbar.evaluate(el => el.scrollWidth)).toBeLessThanOrEqual(288)
+  await expect(page.getByRole('link', { name: 'Back to Home', exact: true })).toBeVisible()
+  const actions = page.locator('.pp-story-actions')
+  await expect(actions.getByRole('button', { name: 'Follow this issue', exact: true })).toBeVisible()
+  expect(await actions.evaluate(el => el.scrollWidth)).toBeLessThanOrEqual(288)
   await page.screenshot({ path: info.outputPath('issue-compact-header.png') })
 })
 
@@ -520,3 +520,60 @@ test('pinch zoom keeps viewport updates active without pretending the keyboard o
   await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content', /interactive-widget=resizes-content/)
   await expect(page.locator('meta[name="viewport"]')).not.toHaveAttribute('content', /user-scalable=no|maximum-scale/)
 })
+
+for (const [kind, path, scope, follow] of [
+  ['issue', '/issues/drainage-fee-credit-cap?fixture=preview', 'issue', true],
+  ['decision', '/decisions/CO-022-2026?fixture=preview', 'issue', true],
+  ['standalone decision', '/decisions/disbursement-report-2026-03?fixture=preview', 'corpus', false],
+] as const) {
+  test(`${kind} uses the story reading layout and keeps the right actions`, async ({ page }, info) => {
+    await page.goto(path)
+    const reading = page.locator('.ev-reading')
+    const actions = reading.locator('.pp-story-actions')
+    await expect(reading.locator('h1')).toBeVisible()
+    for (const width of [320, 768, 1280]) {
+      await page.setViewportSize({ width, height: 900 })
+      const ask = actions.getByRole('link', { name: /Ask/ })
+      if (width > 768) {
+        await expect(ask).toBeVisible()
+        const destination = new URL((await ask.getAttribute('href'))!, 'http://localhost')
+        expect(destination.searchParams.get('scope')).toBe(scope)
+        expect(destination.searchParams.get('returnTo')).toContain(path.split('?')[0])
+      } else {
+        await expect(ask).toBeHidden()
+        await expect(page.getByRole('button', { name: 'Ask Public Parish', exact: true })).toBeVisible()
+      }
+      await expect(actions.getByRole('button', { name: 'Follow this issue', exact: true })).toHaveCount(follow ? 1 : 0)
+      await expect(actions.getByRole('button', { name: 'Share', exact: true })).toBeVisible()
+      const bounds = await reading.boundingBox()
+      expect(bounds!.width).toBeLessThanOrEqual(864)
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
+      const title = await reading.locator('h1').boundingBox()
+      const actionBounds = await actions.boundingBox()
+      expect(actionBounds!.y).toBeGreaterThan(title!.y + title!.height)
+      await page.screenshot({ path: info.outputPath(`${kind}-${width}.png`), fullPage: true })
+    }
+    if (follow) {
+      await actions.getByRole('button', { name: 'Follow this issue', exact: true }).click()
+      const dialog = page.getByRole('dialog', { name: 'Get updates about this issue', exact: true })
+      await expect(dialog).toBeVisible()
+      await dialog.getByRole('button', { name: 'Close', exact: true }).click()
+      await expect(actions.getByRole('button', { name: 'Follow this issue', exact: true })).toBeFocused()
+    }
+    await page.evaluate(() => {
+      Object.defineProperty(navigator, 'share', {
+        configurable: true,
+        value: async (data: ShareData) => { document.body.dataset.sharedUrl = data.url },
+      })
+    })
+    await actions.getByRole('button', { name: 'Share', exact: true }).click()
+    const sharePath = kind === 'issue' ? `/share${path.split('?')[0]}` : path.split('?')[0]
+    await expect(page.locator('body')).toHaveAttribute('data-shared-url', `${new URL(page.url()).origin}${sharePath}`)
+    const jump = reading.getByRole('navigation', { name: /In this/ })
+    for (const link of await jump.getByRole('link').all()) {
+      await expect(page.locator((await link.getAttribute('href'))!)).toHaveCount(1)
+    }
+    await jump.getByRole('link', { name: 'Official evidence' }).click()
+    await expect(page.getByRole('heading', { name: 'Sources and update history' })).toBeInViewport()
+  })
+}

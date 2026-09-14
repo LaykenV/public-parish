@@ -7,6 +7,20 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## Issue and decision reading, September 14
+
+The owner approved aligning both pages with stories on phones and desktop, then
+shipping through a reviewed PR. The local change uses a 54rem reading column,
+accepted summaries beneath titles, header actions and section links. Dates and
+evidence status sit below the introduction. Decisions gain Share and the existing
+Follow action when linked to an issue. Mobile retains full-screen chat.
+
+Local validation passed 744 tests, both typechecks, build and lint with the 15
+existing warnings. Reading and chat checks passed 57 browser cases with one
+intentional skip. Six additional Chromium and WebKit cases checked 320px, 768px
+and 1280px layouts, section targets, Ask scopes, Follow and Share. Before and
+after screenshots were inspected. PR review and production release are pending.
+
 ## Desktop reading cleanup, September 14
 
 PR #233 includes the latest issue-sharing and mobile-hero fixes from main.

@@ -140,15 +140,14 @@ describe('resident interface Slice 3 pages', () => {
         order(html, [
           'Lafayette City-Parish Council',
           'Lafayette plans to lower the cap',
-          'Final vote',
-          'Evidence available',
           'Ask about this issue',
           'Follow this issue',
-          'What is happening',
-          'What the public can still do',
-          'Why this may matter',
-          'Decision timeline',
-          'What changed',
+          'Final vote',
+          'Evidence available',
+          'public-actions-title',
+          'why-this-may-matter-title',
+          'timeline-title',
+          'what-changed-title',
           'Sources and update history',
         ]),
       ),
@@ -239,19 +238,21 @@ describe('resident interface Slice 3 pages', () => {
     expect(meeting('not-a-real-meeting')).toContain('Check coverage')
   })
 
-  it('leads a decision record with its issue and keeps the government wording', () => {
+  it('leads a decision with its summary and keeps related records and government wording', () => {
     const html = decision('CO-022-2026')
 
     expect(
       isSorted(
         order(html, [
-          'Part of the issue',
           'Authorize a cooperative endeavor agreement',
+          'id="summary"',
           'CO-022-2026</span>',
-          'What this record does',
-          'Accepted details',
-          'Official item title',
+          'Ask Public Parish',
+          'Follow this issue',
+          'fields-title',
+          'official-title-title',
           'AN ORDINANCE AUTHORIZING THE LAFAYETTE CITY-PARISH PRESIDENT',
+          'Part of the issue',
           'Sources and update history',
         ]),
       ),

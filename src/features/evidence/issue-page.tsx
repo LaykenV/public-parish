@@ -7,7 +7,6 @@ import { MessageCircleIcon } from 'lucide-react'
 import { Button } from '../../components/ui/button'
 import { PageLoading } from '../resident-blueprint/resident-loading'
 import { formatDate } from '../discovery/format'
-import { useMediaQuery } from '../discovery/hooks'
 import { Notice } from '../discovery/notice'
 import { ShareButton } from '../discovery/share'
 import { FollowAction } from '../following/follow-action'
@@ -38,6 +37,8 @@ import type {
 } from './contracts'
 import type { IssuePageData } from './evidence-page.data'
 import { toIssueFixture, usePublishedIssue } from './live-evidence'
+import '../stories/stories.css'
+import './record-reading.css'
 
 export function IssuePage({
   data,
@@ -167,7 +168,6 @@ function IssueDetail({
   search: EvidenceSearch
   updated: boolean
 }) {
-  const mobile = useMediaQuery('(max-width: 48rem)')
   const { citations, issue } = fixture
   const countedVisit = useRef<string | null>(null)
   const countedOutcome = useRef<string | null>(null)
@@ -194,20 +194,22 @@ function IssueDetail({
   const currentIssueHref = evidenceRouteHref(`/issues/${issue.slug}`, search)
 
   const actions = (
-    <div className="ev-status-actions">
-      {!mobile ? (
-        <Button
-          render={
-            <Link
-              to="/ask"
-              search={{ scope: 'issue', issue: issue.slug, returnTo: currentIssueHref }}
-            />
-          }
-          size="touch"
-        >
-          <MessageCircleIcon aria-hidden="true" /> Ask about this issue
-        </Button>
-      ) : null}
+    <div className="pp-story-actions">
+      <Button
+        render={
+          <Link
+            to="/ask"
+            search={{
+              scope: 'issue',
+              issue: issue.slug,
+              returnTo: currentIssueHref,
+            }}
+          />
+        }
+        size="touch"
+      >
+        <MessageCircleIcon aria-hidden="true" /> Ask about this issue
+      </Button>
       <FollowAction
         available
         label="Follow this issue"
@@ -229,7 +231,7 @@ function IssueDetail({
       onSelect={onSelectSource}
       selected={selected}
     >
-      <main className="ev-page ev-page-with-chat" id="resident-main">
+      <main className="ev-page ev-page-with-chat ev-reading" id="resident-main">
         <MobileAsk
           key={issue.slug}
           scopeKey={`issue:${issue.slug}`}
@@ -237,18 +239,25 @@ function IssueDetail({
           scenario={search.fixture ? 'empty-issue' : undefined}
         />
 
-        <div className={mobile ? 'ev-record-toolbar' : undefined}>
-          <BackLink label="Back to Home" returnTo={search.returnTo} to="/" />
-          {mobile ? actions : null}
-        </div>
+        <BackLink label="Back to Home" returnTo={search.returnTo} to="/" />
 
-        <header className="ev-head">
+        <header className="ev-head pp-story-head">
           <p className="ev-kicker">
             <span>{issue.place}</span>
             <span>{issue.body}</span>
             <StateLine state={issue.state} />
           </p>
           <h1 className="ev-title">{issue.title}</h1>
+          {sections.happening ? (
+            <div className="ev-reading-summary" id="what-is-happening">
+              {issue.happening.map((claim, index) => (
+                <Claim citationId={claim.citationId} key={index}>
+                  <p>{claim.text}</p>
+                </Claim>
+              ))}
+            </div>
+          ) : null}
+          {actions}
         </header>
         {issue.coverageNote ? (
           <p className="ev-limited-note">{issue.coverageNote}</p>
@@ -307,132 +316,124 @@ function IssueDetail({
           ) : null}
         </p>
 
-        <div className="ev-layout">
-          <aside aria-label="Issue status" className="ev-rail">
-            <div className="ev-status">
-              <p className="ev-status-row">
-                <span className="ev-status-label">Current state</span>
-                <StateLine state={issue.state} />
-              </p>
-              {issue.next ? (
-                <MarkedDateRow marked={issue.next} tone="next" />
-              ) : null}
-              {issue.deadline ? (
-                <MarkedDateRow marked={issue.deadline} tone="deadline" />
-              ) : null}
-              {issue.latestOutcome ? (
-                <MarkedDateRow marked={issue.latestOutcome} tone="outcome" />
-              ) : null}
-              {!issue.next && !issue.latestOutcome ? (
-                <p className="ev-status-row">
-                  <span className="ev-status-label">Next date</span>
-                  <span className="ev-status-value">No next date posted</span>
-                </p>
-              ) : null}
-              <EvidenceStamp
-                checked={issue.evidence.checked}
-                note={issue.evidence.note}
-                status={issue.evidence.status}
-              />
-              {!mobile ? actions : null}
-            </div>
-          </aside>
+        <aside aria-label="Issue status" className="ev-reading-status">
+          <div className="ev-reading-dates">
+            {issue.next ? (
+              <MarkedDateRow marked={issue.next} tone="next" />
+            ) : null}
+            {issue.deadline ? (
+              <MarkedDateRow marked={issue.deadline} tone="deadline" />
+            ) : null}
+            {issue.latestOutcome ? (
+              <MarkedDateRow marked={issue.latestOutcome} tone="outcome" />
+            ) : null}
+            {!issue.next && !issue.latestOutcome ? (
+              <p className="ev-status-value">No next date posted</p>
+            ) : null}
+          </div>
+          <EvidenceStamp
+            checked={issue.evidence.checked}
+            note={issue.evidence.note}
+            status={issue.evidence.status}
+          />
+        </aside>
 
-          <div className="ev-column">
-            {sections.happening ? (
-              <Section id="what-is-happening" title="What is happening">
-                {issue.happening.map((claim, index) => (
-                  <Claim citationId={claim.citationId} key={index}>
-                    <p>{claim.text}</p>
+        <nav className="pp-story-jump" aria-label="In this issue">
+          {sections.publicActions ? (
+            <a href="#public-actions">Public actions</a>
+          ) : null}
+          {sections.factors ? (
+            <a href="#why-this-may-matter">Why this may matter</a>
+          ) : null}
+          {sections.timeline ? <a href="#timeline">Timeline</a> : null}
+          {sections.changes ? <a href="#what-changed">What changed</a> : null}
+          <a href="#sources">Official evidence</a>
+        </nav>
+
+        <div className="ev-column">
+          {sections.publicActions ? (
+            <Section id="public-actions" title="What the public can still do">
+              <ul className="ev-actions">
+                {issue.publicActions.map((action, index) => (
+                  <Claim
+                    citationId={action.citationId}
+                    key={`${action.label}-${index}`}
+                    tag="li"
+                  >
+                    <p className="ev-action-label">{action.label}</p>
+                    {action.deadline ? (
+                      <p className="ev-action-deadline">
+                        By{' '}
+                        <time dateTime={action.deadline}>
+                          {formatDate(action.deadline)}
+                        </time>
+                        {action.deadlineCitationId ? (
+                          <SourceControl
+                            citationId={action.deadlineCitationId}
+                          />
+                        ) : null}
+                      </p>
+                    ) : null}
+                    <p className="ev-action-text">{action.instructions}</p>
                   </Claim>
                 ))}
-              </Section>
-            ) : null}
+              </ul>
+            </Section>
+          ) : null}
 
-            {sections.publicActions ? (
-              <Section id="public-actions" title="What the public can still do">
-                <ul className="ev-actions">
-                  {issue.publicActions.map((action, index) => (
-                    <Claim
-                      citationId={action.citationId}
-                      key={`${action.label}-${index}`}
-                      tag="li"
-                    >
-                      <p className="ev-action-label">{action.label}</p>
-                      {action.deadline ? (
-                        <p className="ev-action-deadline">
-                          By{' '}
-                          <time dateTime={action.deadline}>
-                            {formatDate(action.deadline)}
-                          </time>
-                          {action.deadlineCitationId ? (
-                            <SourceControl
-                              citationId={action.deadlineCitationId}
-                            />
-                          ) : null}
-                        </p>
-                      ) : null}
-                      <p className="ev-action-text">{action.instructions}</p>
-                    </Claim>
-                  ))}
-                </ul>
-              </Section>
-            ) : null}
+          {sections.factors ? (
+            <Section id="why-this-may-matter" title="Why this may matter">
+              <ul className="ev-factors">
+                {issue.factors.map((factor) => (
+                  <Claim
+                    citationId={factor.citationId}
+                    key={factor.factor}
+                    tag="li"
+                  >
+                    <p className="ev-factor-name">{factor.factor}</p>
+                    <p className="ev-factor-text">{factor.text}</p>
+                  </Claim>
+                ))}
+              </ul>
+            </Section>
+          ) : null}
 
-            {sections.factors ? (
-              <Section id="why-this-may-matter" title="Why this may matter">
-                <ul className="ev-factors">
-                  {issue.factors.map((factor) => (
-                    <Claim
-                      citationId={factor.citationId}
-                      key={factor.factor}
-                      tag="li"
-                    >
-                      <p className="ev-factor-name">{factor.factor}</p>
-                      <p className="ev-factor-text">{factor.text}</p>
-                    </Claim>
-                  ))}
-                </ul>
-              </Section>
-            ) : null}
-
-            {sections.timeline ? (
-              <Section id="timeline" title="Decision timeline">
-                <Timeline
-                  entries={issue.timeline}
+          {sections.timeline ? (
+            <Section id="timeline" title="Decision timeline">
+              <Timeline
+                entries={issue.timeline}
+                fixture={search.fixture}
+                returnTo={currentIssueHref}
+              />
+              {sections.uncertain ? (
+                <UncertainList
                   fixture={search.fixture}
+                  items={issue.uncertain}
                   returnTo={currentIssueHref}
                 />
-                {sections.uncertain ? (
-                  <UncertainList
-                    fixture={search.fixture}
-                    items={issue.uncertain}
-                    returnTo={currentIssueHref}
-                  />
-                ) : null}
-              </Section>
-            ) : null}
-
-            {sections.changes ? (
-              <Section id="what-changed" title="What changed">
-                <ChangeList entries={issue.changes} />
-              </Section>
-            ) : null}
-
-            <Section id="sources" title="Sources and update history">
-              <DocumentList documents={issue.documents} />
-              <VersionHistory versions={issue.versions} />
-              <div className="ev-report-row">
-                <p className="ev-report-lede">
-                  Something here does not match the official record?
-                </p>
-                <ReportProblem
-                  available={Boolean(search.fixture)}
-                  recordUrl={currentIssueHref}
-                />
-              </div>
+              ) : null}
             </Section>
-          </div>
+          ) : null}
+
+          {sections.changes ? (
+            <Section id="what-changed" title="What changed">
+              <ChangeList entries={issue.changes} />
+            </Section>
+          ) : null}
+
+          <Section id="sources" title="Sources and update history">
+            <DocumentList documents={issue.documents} />
+            <VersionHistory versions={issue.versions} />
+            <div className="ev-report-row">
+              <p className="ev-report-lede">
+                Something here does not match the official record?
+              </p>
+              <ReportProblem
+                available={Boolean(search.fixture)}
+                recordUrl={currentIssueHref}
+              />
+            </div>
+          </Section>
         </div>
       </main>
     </EvidenceProvider>

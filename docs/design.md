@@ -531,3 +531,19 @@ Issues group it with Follow and Share. Remove the inline question form on those
 pages and retain the mobile chat button. Decisions keep their linked issue scope
 or the published corpus when no issue is linked, matching the existing evidence
 contract.
+
+
+## Issue and decision reading, September 14
+
+The owner requested the story layout for issues and decisions on phones and
+desktop. Use the same 54rem reading column, headline scale, purple section links
+and header actions. Put the accepted summary directly beneath the title, followed
+by Ask, Follow and Share. Mobile keeps the floating chat button and places Follow
+and Share below the summary. A decision can follow its linked issue; records
+without an issue keep Ask and Share. Preserve the existing Ask scope.
+
+Group dates and evidence status in one plain panel after the introduction. Issue
+timelines use the story's vertical rule and dated entries. Decision details retain
+the official wording, related issue and meeting links, sources and version history.
+Use Inter, the existing purple `#6340A3`, lavender `#F7F6FA`, white `#FFFFFF`,
+heading `#242131`, reading `#494352` and border `#E2DDEA` tokens.
