@@ -100,7 +100,8 @@ export const verifyNotice = mutation({
     await ctx.db.patch(challenge._id, { attempts: challenge.attempts + 1 })
     if (challenge.codeHash !== await hashVerificationCode(`coverage:${args.challengeId}`, args.code)) return { verified: false }
     await ctx.db.patch(challenge._id, { consumedAt: Date.now() })
-    await ctx.db.patch(subscriber._id, { state: 'verified', verifiedAt: subscriber.verifiedAt ?? Date.now(), unsubscribedAt: undefined, updatedAt: Date.now() })
+    await ctx.db.patch(subscriber._id, { state: 'verified', verifiedAt: subscriber.verifiedAt ?? Date.now(), unsubscribedAt: undefined,
+      managementTokenGeneration: subscriber.managementTokenGeneration ?? (subscriber.state === 'unsubscribed' ? 1 : 0), updatedAt: Date.now() })
     if (terminal.noticeState) return { verified: true, ...terminal }
     if (!existing) {
       const subscriptions = await ctx.db.query('coverageNoticeSubscriptions').withIndex('by_subscriber', q => q.eq('subscriberId', subscriber._id)).take(100)

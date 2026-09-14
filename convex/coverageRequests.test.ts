@@ -80,13 +80,18 @@ test('reverification reports a stopped or sent launch without promising another 
   const request = await t.mutation(api.coverage.requests.record, { requesterToken, placeName: 'Unknown place', placeKind: 'unknown' })
   const ids = await t.run(async ctx => {
     const subscriberId = await ctx.db.insert('emailSubscribers', { addressHash: 'stopped-address', encryptedAddress: 'encrypted', encryptionVersion: 1, state: 'unsubscribed', unsubscribedAt: 1, createdAt: 1, updatedAt: 1 })
+    await ctx.db.insert('emailAccessTokens', { subscriberId, kind: 'management', tokenHash: 'old-coverage-management', expiresAt: Date.now() + 60_000, createdAt: 1 })
     const subscriptionId = await ctx.db.insert('coverageNoticeSubscriptions', { subscriberId, placeKey: 'unknown:unknown place', placeName: 'Unknown place', state: 'stopped', outboundId: 'original-outbound', launchedSlug: 'known-place', createdAt: 1, updatedAt: 1 })
     await ctx.db.insert('coverageNoticeChallenges', { requestId: request.requestId, subscriberId, challengeId: 'stopped-challenge', codeHash: await hashVerificationCode('coverage:stopped-challenge', '123456'), expiresAt: Date.now() + 60_000, attempts: 0, createdAt: Date.now() })
-    return { subscriptionId }
+    return { subscriberId, subscriptionId }
   })
   const args = { challengeId: 'stopped-challenge', code: '123456', requesterToken }
   for (let i = 0; i < 2; i++) expect(await t.mutation(api.coverage.requests.verifyNotice, args)).toEqual({ verified: true, noticeState: 'stopped' })
+  await expect(t.query(internal.follows.management.readManagement, {
+    tokenHash: 'old-coverage-management', now: Date.now(),
+  })).resolves.toEqual({ status: 'unavailable' })
   await t.run(async ctx => {
+    expect((await ctx.db.get(ids.subscriberId))?.managementTokenGeneration).toBe(1)
     expect((await ctx.db.get(ids.subscriptionId))?.outboundId).toBe('original-outbound')
     expect(await ctx.db.query('coverageNoticeSubscriptions').collect()).toHaveLength(1)
     await ctx.db.patch(ids.subscriptionId, { state: 'sent' })

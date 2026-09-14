@@ -71,7 +71,11 @@ export const readManagement = internalQuery({
       return { status: 'expired' as const }
     }
     const subscriber = await ctx.db.get('emailSubscribers', token.subscriberId)
-    if (!subscriber || subscriber.state !== 'verified') {
+    if (
+      !subscriber ||
+      subscriber.state !== 'verified' ||
+      !hasCurrentManagementGeneration(token, subscriber)
+    ) {
       return { status: 'unavailable' as const }
     }
     const rows = token.followId
@@ -208,6 +212,7 @@ export const rotateManagementTokenWithHash = internalMutation({
       followId: access.token.followId,
       kind: 'management',
       tokenHash: args.replacementHash,
+      managementTokenGeneration: access.subscriber.managementTokenGeneration ?? 0,
       expiresAt,
       createdAt: now,
     })
@@ -253,22 +258,11 @@ export const unsubscribeEmailWithToken = internalMutation({
     for (const follow of follows) {
       await upsertPreference(ctx, follow._id, 'muted')
     }
-    const managementTokens = await ctx.db
-      .query('emailAccessTokens')
-      .withIndex('by_subscriber_id_and_kind_and_created_at', (index) =>
-        index.eq('subscriberId', subscriber._id).eq('kind', 'management'),
-      )
-      .take(MAX_FOLLOWS_PER_OWNER * 2)
-    for (const managementToken of managementTokens) {
-      if (!managementToken.revokedAt && !managementToken.consumedAt) {
-        await ctx.db.patch('emailAccessTokens', managementToken._id, {
-          revokedAt: now,
-        })
-      }
-    }
     await ctx.db.patch('emailSubscribers', subscriber._id, {
       state: 'unsubscribed',
       unsubscribedAt: now,
+      // Revoke every historical token in one subscriber write.
+      managementTokenGeneration: (subscriber.managementTokenGeneration ?? 0) + 1,
       updatedAt: now,
     })
     await stopSubscriberNotices(ctx, subscriber._id)
@@ -293,10 +287,25 @@ async function requireManagementToken(ctx: MutationCtx, tokenHash: string) {
     throw new Error('This management link is unavailable')
   }
   const subscriber = await ctx.db.get('emailSubscribers', token.subscriberId)
-  if (!subscriber || subscriber.state !== 'verified') {
+  if (
+    !subscriber ||
+    subscriber.state !== 'verified' ||
+    !hasCurrentManagementGeneration(token, subscriber)
+  ) {
     throw new Error('This management link is unavailable')
   }
   return { token, subscriber }
+}
+
+function hasCurrentManagementGeneration(
+  token: Doc<'emailAccessTokens'>,
+  subscriber: Doc<'emailSubscribers'>,
+): boolean {
+  // Existing subscribers and tokens remain usable until their first revocation.
+  return (
+    (token.managementTokenGeneration ?? 0) ===
+    (subscriber.managementTokenGeneration ?? 0)
+  )
 }
 
 async function requireManagementAccess(

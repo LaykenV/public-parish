@@ -409,6 +409,8 @@ export const consumeEmailFollowChallenge = internalMutation({
       state: 'verified',
       verifiedAt: now,
       unsubscribedAt: undefined,
+      managementTokenGeneration: subscriber.managementTokenGeneration ??
+        (subscriber.state === 'unsubscribed' ? 1 : 0),
       updatedAt: now,
     })
 
@@ -737,6 +739,7 @@ async function rotateTokens(
     followId,
     kind: 'management',
     tokenHash: managementTokenHash,
+    managementTokenGeneration: subscriber?.managementTokenGeneration ?? 0,
     expiresAt: now + MANAGEMENT_TOKEN_TTL_MS,
     createdAt: now,
   })
