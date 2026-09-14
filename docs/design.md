@@ -46,7 +46,10 @@ Metropolitan Council" and "Lafayette Hearing Examiner". The two Lafayette
 planning commissions stay distinct. Body focus stays in the URL and clears back
 to the parish. Existing shared city and body links remain valid.
 
-On phones, a floating Choose area button opens area selection in statewide view.
+On phones, Choose area sits beneath the statewide story introduction with the
+same plain-link treatment as View Statewide Stories. It scrolls with the page.
+Choosing an area from the mobile menu closes the picker and menu, then opens
+Home with that selection. Dismissing the picker keeps the menu open.
 In parish view, the description sits directly under the heading. View Statewide
 Stories is a plain link beneath it, with an outlined Filters button to its right.
 Home omits Search issues; Explore remains in the main navigation. Keep this

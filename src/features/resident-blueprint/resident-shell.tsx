@@ -10,7 +10,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { ComponentType, ReactNode, SVGProps } from 'react'
-import { Link, useRouterState } from '@tanstack/react-router'
+import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 
 import { AreaSelector } from '../discovery/area-selector'
 import { useArea } from '../discovery/area-store'
@@ -301,6 +301,7 @@ export function ResidentShell({ children }: { children: ReactNode }) {
 }
 
 function MobileNavigation({ pathname }: { pathname: string }) {
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [areaOpen, setAreaOpen] = useState(false)
   const area = useArea()
@@ -394,6 +395,13 @@ function MobileNavigation({ pathname }: { pathname: string }) {
                 <AreaSelector
                   open={areaOpen}
                   onOpenChange={setAreaOpen}
+                  onSelect={(selection) => {
+                    setOpen(false)
+                    void navigate({
+                      to: '/',
+                      search: { area: selection ?? 'louisiana' },
+                    })
+                  }}
                   trigger={(props) => (
                     <Button
                       {...props}

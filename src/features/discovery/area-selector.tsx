@@ -13,6 +13,7 @@ import { Input } from '../../components/ui/input'
 export const LOUISIANA_LABEL = 'All of Louisiana'
 
 type AreaSelectorProps = {
+  onSelect?: (area: AreaSlug | null) => void
   onOpenChange?: (open: boolean) => void
   open?: boolean
   trigger: (props: React.ComponentProps<'button'>) => React.ReactElement
@@ -21,6 +22,7 @@ type AreaSelectorProps = {
 export function AreaSelector({
   open,
   onOpenChange,
+  onSelect,
   trigger,
 }: AreaSelectorProps) {
   const [internalOpen, setInternalOpen] = useState(false)
@@ -32,6 +34,7 @@ export function AreaSelector({
 
   return (
     <AreaSelectorDialog
+      onSelect={onSelect}
       onOpenChange={setOpen}
       open={isOpen}
       trigger={trigger}
@@ -46,10 +49,12 @@ function matches(value: string, normalized: string) {
 function AreaSelectorDialog({
   open,
   onOpenChange,
+  onSelect,
   trigger,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSelect: AreaSelectorProps['onSelect']
   trigger: AreaSelectorProps['trigger']
 }) {
   const [query, setQuery] = useState('')
@@ -72,9 +77,10 @@ function AreaSelectorDialog({
   // Choosing a parish or Louisiana drops any body focus carried in the Home URL.
   const focusPlace = (slug: AreaSlug | null) => {
     setArea(slug)
-    if (location.pathname === '/')
-      void navigate({ to: '/', search: { area: slug ?? 'louisiana' } })
     onOpenChange(false)
+    if (onSelect) onSelect(slug)
+    else if (location.pathname === '/')
+      void navigate({ to: '/', search: { area: slug ?? 'louisiana' } })
   }
 
   return (

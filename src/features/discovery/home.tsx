@@ -20,7 +20,7 @@ import {
   HOME_CITIES,
 } from './contracts'
 import {
-  HomeControls,
+  ChooseAreaButton,
   HomeBodyFilter,
   StatewideStoriesButton,
 } from './home-controls'
@@ -106,9 +106,13 @@ export function HomePage({
 
   return (
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>
-      <HomeControls area={area} />
       {showHero ? <FirstVisitHero /> : null}
-      {showStories ? <FeaturedStories mainHeading={!showHero} /> : null}
+      {showStories ? (
+        <FeaturedStories
+          mainHeading={!showHero}
+          action={<ChooseAreaButton />}
+        />
+      ) : null}
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
           <LocalIssues

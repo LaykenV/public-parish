@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { PageLoading } from '../resident-blueprint/resident-loading'
 import { useEffect, useId, useState } from 'react'
+import type { ReactNode } from 'react'
 import { Sheet } from '../discovery/sheet'
 import { Link } from '@tanstack/react-router'
 import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
@@ -49,20 +50,28 @@ function StoryImage({
 
 export function FeaturedStories({
   mainHeading = false,
+  action,
 }: {
   mainHeading?: boolean
+  action?: ReactNode
 }) {
   return (
     <ResidentSectionBoundary
       label="Featured stories"
       resetKey="featured-stories"
     >
-      <FeaturedStoriesContent mainHeading={mainHeading} />
+      <FeaturedStoriesContent mainHeading={mainHeading} action={action} />
     </ResidentSectionBoundary>
   )
 }
 
-function FeaturedStoriesContent({ mainHeading }: { mainHeading: boolean }) {
+function FeaturedStoriesContent({
+  mainHeading,
+  action,
+}: {
+  mainHeading: boolean
+  action?: ReactNode
+}) {
   const Heading = mainHeading ? 'h1' : 'h2'
   const stories = useFeaturedStories()
   return (
@@ -76,6 +85,7 @@ function FeaturedStoriesContent({ mainHeading }: { mainHeading: boolean }) {
           Across Louisiana
         </Heading>
         <p>The projects making news, explained through official records.</p>
+        {action}
       </header>
       {stories === undefined ? (
         <PageLoading />

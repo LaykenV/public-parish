@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-14T02:09:00Z
+- **Last updated:** 2026-09-14T03:20:15Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2225,3 +2225,11 @@ Actionlint, 128 gate combinations, typechecks, 726 tests, build and lint pass.
 All 168 browser cases remain selected. The run passed 166, skipped one and hit
 one synthetic Ask timeout; that case passed a targeted rerun. Lint retains 15
 warnings. GitHub timing is unmeasured, and the change is not committed or pushed.
+
+### 2026-09-14 - working tree, mobile area navigation
+
+Choosing an area in the mobile menu now closes both dialogs and opens the
+selected Home. Choose area sits under the statewide story introduction with
+the same plain-link styling as View Statewide Stories. Both typechecks, build,
+targeted lint, 42 unit tests and twelve Home browser checks passed. This
+follow-up is local and has not been committed or deployed.

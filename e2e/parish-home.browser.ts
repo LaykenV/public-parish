@@ -57,7 +57,9 @@ test('published parish records remain selectable with coverage limitations', asy
   await choice.click()
   await expect(dialog).not.toBeVisible()
   if ((page.viewportSize()?.width ?? 1280) <= 1024) {
-    await page.getByRole('button', { name: 'Close menu', exact: true }).click()
+    await expect(
+      page.getByRole('dialog', { name: 'Menu', exact: true }),
+    ).not.toBeVisible()
   }
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'Issues in Rapides Parish',
@@ -201,7 +203,9 @@ test('the area selector returns to Louisiana from a parish focus', async ({
   await louisiana.click()
   await expect(dialog).not.toBeVisible()
   if ((page.viewportSize()?.width ?? 1280) <= 1024) {
-    await page.getByRole('button', { name: 'Close menu', exact: true }).click()
+    await expect(
+      page.getByRole('dialog', { name: 'Menu', exact: true }),
+    ).not.toBeVisible()
   } else {
     await expect(
       page.getByRole('button', { name: 'Louisiana', exact: true }),

@@ -1,5 +1,32 @@
 import { expect, test } from '@playwright/test'
 
+test('mobile menu area selection closes both dialogs and opens the selected Home', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/explore')
+  const menu = page.getByRole('dialog', { name: 'Menu', exact: true })
+  const areas = page.getByRole('dialog', { name: 'Choose your area' })
+  for (const [name, slug, heading] of [
+    ['Lafayette Parish', 'lafayette-parish', 'Issues in Lafayette Parish'],
+    ['Rapides Parish', 'rapides-parish', 'Issues in Rapides Parish'],
+    ['All of Louisiana', 'louisiana', 'Across Louisiana'],
+  ]) {
+    await page.getByRole('button', { name: 'Open menu', exact: true }).click()
+    await menu.getByRole('button', { name: 'Change area', exact: true }).click()
+    await areas.getByRole('button', { name: 'Close', exact: true }).click()
+    await expect(areas).not.toBeVisible()
+    await expect(menu).toBeVisible()
+    await menu.getByRole('button', { name: 'Change area', exact: true }).click()
+    await areas.getByRole('button', { name: new RegExp(`^${name}`) }).click()
+    await expect(areas).not.toBeVisible()
+    await expect(menu).not.toBeVisible()
+    await expect(page).toHaveURL(new RegExp(`/\\?area=${slug}$`))
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(heading)
+    await expect(page.locator('#resident-main')).toBeVisible()
+  }
+})
+
 test('body changes keep the page visible while only results load', async ({
   page,
 }, testInfo) => {
@@ -67,7 +94,18 @@ test('area and inline filter controls discard drafts and change parishes', async
 }, testInfo) => {
   await page.setViewportSize({ width: 320, height: 640 })
   await page.goto('/?area=louisiana')
-  await page.getByRole('button', { name: 'Choose area', exact: true }).click()
+  const chooseArea = page
+    .locator('.pp-stories-intro')
+    .getByRole('button', { name: 'Choose area', exact: true })
+  await expect(chooseArea).toBeVisible()
+  expect(['static', 'relative']).toContain(
+    await chooseArea.evaluate((node) => getComputedStyle(node).position),
+  )
+  await expect(page.locator('.pp-home-floating')).toHaveCount(0)
+  await page.locator('.pp-stories-intro').screenshot({
+    path: testInfo.outputPath('inline-choose-area.png'),
+  })
+  await chooseArea.click()
   const areas = page.getByRole('dialog', { name: 'Choose your area' })
   await areas.getByRole('button', { name: /^Lafayette Parish/ }).click()
   const opener = page.getByRole('button', { name: 'Filters', exact: true })
