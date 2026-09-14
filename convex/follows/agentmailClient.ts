@@ -130,6 +130,7 @@ export const reserveImmediateDelivery = internalMutation({
         subscriberId: subscriber._id,
         kind: 'management',
         tokenHash: await hashAccessToken(token),
+        managementTokenGeneration: subscriber.managementTokenGeneration ?? 0,
         expiresAt: now + MANAGEMENT_TOKEN_TTL_MS,
         createdAt: now,
       })
@@ -586,6 +587,7 @@ async function enqueueWeeklyDelivery(
       subscriberId: subscriber._id,
       kind: 'management',
       tokenHash: await hashAccessToken(token),
+      managementTokenGeneration: subscriber.managementTokenGeneration ?? 0,
       expiresAt: now + MANAGEMENT_TOKEN_TTL_MS,
       createdAt: now,
     })

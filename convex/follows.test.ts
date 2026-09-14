@@ -3,7 +3,7 @@
 import { verifyAgentMailWebhook } from '@agentmail/convex'
 import { convexTest } from 'convex-test'
 import type { TestConvexForDataModelAndIdentity } from 'convex-test'
-import { expect, test } from 'vitest'
+import { expect, test, vi } from 'vitest'
 
 import { api, internal } from './_generated/api'
 import type { DataModel, Id } from './_generated/dataModel'
@@ -675,6 +675,90 @@ test('unsubscribe stops all email follows and a new verification re-enables only
     ['drainage', 'muted'],
     ['housing', 'immediate'],
   ])
+})
+
+test('unsubscribe revokes all historical management tokens after same-millisecond reverification', async () => {
+  const clock = vi.spyOn(Date, 'now').mockReturnValue(Date.UTC(2026, 8, 14, 12))
+  try {
+    const t = convexTest(schema, modules)
+    const subscriberId = await createSubscriber(t, 'historical-token-address')
+    await createChallenge(t, subscriberId, 'historical-initial', 'code-hash')
+    const initial = await consume(t, 'historical-initial', 'code-hash')
+    if (initial.status !== 'verified') throw new Error('Expected a verified follow')
+    const followId = initial.follow.id as Id<'follows'>
+    await t.run(async ctx => {
+      for (let index = 0; index < 112; index++) {
+        await ctx.db.insert('emailAccessTokens', {
+          subscriberId, kind: 'management', tokenHash: `historical-${index}`,
+          expiresAt: Date.now() + 86_400_000, createdAt: Date.now(),
+          ...(index < 100 ? { revokedAt: Date.now() } : {}),
+        })
+      }
+    })
+    const oldAccess = { tokenHash: 'historical-111', now: Date.now() }
+    // Tokens with no generation keep working until the subscriber revokes them.
+    await expect(t.query(internal.follows.management.readManagement, oldAccess))
+      .resolves.toMatchObject({ status: 'valid' })
+    const unsubscribe = { tokenHash: 'unsubscribe-historical-initial' }
+    await t.mutation(internal.follows.management.unsubscribeEmailWithToken, unsubscribe)
+    await t.mutation(internal.follows.management.unsubscribeEmailWithToken, unsubscribe)
+    await expect(t.query(internal.follows.management.readManagement, oldAccess))
+      .resolves.toEqual({ status: 'unavailable' })
+    await createChallenge(t, subscriberId, 'historical-new', 'code-hash')
+    await consume(t, 'historical-new', 'code-hash')
+    await expect(t.query(internal.follows.management.readManagement, oldAccess))
+      .resolves.toEqual({ status: 'unavailable' })
+    await expect(t.mutation(internal.follows.management.updateEmailFollowWithToken, {
+      tokenHash: oldAccess.tokenHash, followId, cadence: 'weekly',
+    })).rejects.toThrow('management link is unavailable')
+    await expect(t.mutation(internal.follows.management.removeEmailFollowWithToken, {
+      tokenHash: oldAccess.tokenHash, followId,
+    })).rejects.toThrow('management link is unavailable')
+    await expect(t.mutation(internal.follows.management.rotateManagementTokenWithHash, {
+      tokenHash: oldAccess.tokenHash, replacementHash: 'stale-replacement',
+    })).rejects.toThrow('management link is unavailable')
+    await expect(t.mutation(internal.follows.management.updateEmailFollowWithToken, {
+      tokenHash: 'management-historical-new', cadence: 'weekly',
+    })).resolves.toEqual({ updated: true })
+    await t.mutation(internal.follows.management.rotateManagementTokenWithHash, {
+      tokenHash: 'management-historical-new', replacementHash: 'current-replacement',
+    })
+    await expect(t.query(internal.follows.management.readManagement, {
+      tokenHash: 'current-replacement', now: Date.now(),
+    })).resolves.toMatchObject({ status: 'valid' })
+    await t.run(async ctx => {
+      expect((await ctx.db.get(subscriberId))?.managementTokenGeneration).toBe(1)
+    })
+  } finally {
+    clock.mockRestore()
+  }
+})
+
+test.each([undefined, 3])('reverification preserves revocation for an unsubscribed subscriber at generation %s', async generation => {
+  const t = convexTest(schema, modules)
+  const subscriberId = await createSubscriber(t, 'previously-unsubscribed-address')
+  await t.run(async ctx => {
+    await ctx.db.patch(subscriberId, {
+      state: 'unsubscribed', unsubscribedAt: 1,
+      managementTokenGeneration: generation,
+    })
+    await ctx.db.insert('emailAccessTokens', {
+      subscriberId, kind: 'management', tokenHash: 'previously-revoked-token',
+      managementTokenGeneration: generation === undefined ? undefined : generation - 1,
+      expiresAt: Date.now() + 86_400_000, createdAt: 1,
+    })
+  })
+  await createChallenge(t, subscriberId, 'legacy-reverification', 'code-hash')
+  await consume(t, 'legacy-reverification', 'code-hash')
+  await expect(t.query(internal.follows.management.readManagement, {
+    tokenHash: 'previously-revoked-token', now: Date.now(),
+  })).resolves.toEqual({ status: 'unavailable' })
+  await expect(t.query(internal.follows.management.readManagement, {
+    tokenHash: 'management-legacy-reverification', now: Date.now(),
+  })).resolves.toMatchObject({ status: 'valid' })
+  await t.run(async ctx => {
+    expect((await ctx.db.get(subscriberId))?.managementTokenGeneration).toBe(generation ?? 1)
+  })
 })
 
 test('application tables keep only encrypted addresses and hashed codes', async () => {

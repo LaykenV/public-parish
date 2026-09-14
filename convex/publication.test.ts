@@ -7,7 +7,7 @@ import { afterEach, expect, test, vi } from 'vitest'
 
 import { internal } from './_generated/api'
 import { agentmail } from './follows/agentmailClient'
-import { encryptAddress } from './follows/secrets'
+import { encryptAddress, hashAccessToken } from './follows/secrets'
 import type { DataModel, Id } from './_generated/dataModel'
 import {
   overrideGatewayTokenMinterForTests,
@@ -887,6 +887,7 @@ test.each(['google', 'email'] as const)('a first accepted publication matches %s
     const subscriberId = await ctx.db.insert('emailSubscribers', {
       addressHash: 'alert-match-email', encryptedAddress: await encryptAddress('alert-match@example.com'),
       encryptionVersion: 1, state: 'verified', createdAt: 1, updatedAt: 1,
+      managementTokenGeneration: 2,
     })
     const owner = ownerKind === 'google'
       ? { ownerKind, ownerKey: `google:${userId}`, userId }
@@ -1014,11 +1015,13 @@ test.each(['google', 'email'] as const)('a first accepted publication matches %s
     await ctx.db.patch(preference._id, { cadence: 'weekly' })
   })
 
+  // Workflow draining advances fake time before the test restores real time.
+  const matchWindowEnd = Math.max(...result.matches.map(match => match.matchedAt)) + 60_000
   const roundupWindowId = await t.run(async (ctx) => {
     return await ctx.db.insert('roundupWindows', {
       windowKey: '2026-09-07',
       startsAt: 0,
-      endsAt: Date.now() + 60_000,
+      endsAt: matchWindowEnd,
       state: 'collecting',
       entryCount: 0,
       deliveryCount: 0,
@@ -1098,6 +1101,12 @@ test.each(['google', 'email'] as const)('a first accepted publication matches %s
     expect(message.text).toContain('Manage alerts:')
     if (ownerKind === 'email') {
       expect(message.text).toMatch(/Stop all email notices: https:\/\/public-parish-test\.convex\.site\/coverage\/unsubscribe\/[A-Za-z0-9_-]{32,100}/)
+      const managementUrl = message.text?.match(/Manage alerts: (\S+)/)?.[1]
+      if (!managementUrl) throw new Error('Missing management link')
+      const token = new URL(managementUrl).pathname.split('/').pop()!
+      await expect(t.query(internal.follows.management.readManagement, {
+        tokenHash: await hashAccessToken(token), now: Date.now(),
+      })).resolves.toMatchObject({ status: 'valid' })
     } else {
       expect(message.text).not.toContain('Stop all email notices:')
     }
@@ -1106,8 +1115,8 @@ test.each(['google', 'email'] as const)('a first accepted publication matches %s
   const emptyWindowId = await t.run(async (ctx) => {
     return await ctx.db.insert('roundupWindows', {
       windowKey: '2026-09-14',
-      startsAt: Date.now() + 120_000,
-      endsAt: Date.now() + 180_000,
+      startsAt: matchWindowEnd + 60_000,
+      endsAt: matchWindowEnd + 120_000,
       state: 'collecting',
       entryCount: 0,
       deliveryCount: 0,
