@@ -17,7 +17,6 @@
 }
 
 @media (max-width: 48rem) {
-  .ev-page-with-chat .ev-desktop-ask,
   .ev-page-with-chat #ask,
   .pp-story-actions > [data-slot='button']:first-child {
     display: none;

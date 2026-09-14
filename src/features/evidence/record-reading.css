@@ -1,0 +1,160 @@
+/* Issues and decisions share the story reading column and action placement. */
+.ev-page.ev-reading {
+  width: min(100% - 2rem, 54rem);
+  padding-top: 1.5rem;
+}
+
+.ev-reading .ev-back {
+  gap: 0.5rem;
+  color: var(--primary);
+}
+
+.ev-reading .ev-head {
+  margin-top: 1.5rem;
+}
+
+.ev-reading .ev-kicker {
+  color: var(--primary);
+  font-weight: 650;
+}
+
+.ev-reading .ev-title {
+  max-width: none;
+}
+
+.ev-reading-summary {
+  font-size: var(--pp-text-subhead);
+  line-height: 1.75;
+}
+
+.ev-reading .ev-record-line {
+  margin-top: 1rem;
+  color: var(--muted-foreground);
+}
+
+.ev-reading .ev-record-key {
+  color: inherit;
+  font-size: var(--pp-text-small);
+  font-weight: 500;
+}
+
+.ev-reading-status {
+  margin-top: 1.5rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+
+.ev-reading-dates {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 1rem 1.5rem;
+}
+
+.ev-reading-status .ev-status-date {
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 0;
+  border: 0;
+}
+
+.ev-reading-status .ev-status-label {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.ev-reading-status .ev-status-value {
+  grid-column: 1 / -1;
+  line-height: 1.5;
+}
+
+.ev-reading-status .ev-source {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+}
+
+.ev-reading-status .ev-stamp {
+  margin-top: 1rem;
+}
+
+.ev-reading > .pp-story-jump {
+  margin-top: 2rem;
+}
+
+.ev-reading .ev-section {
+  max-width: none;
+  margin-block: 2.5rem;
+  padding: 0;
+  border: 0;
+  scroll-margin-top: 2rem;
+}
+
+.ev-reading .ev-section-title {
+  margin-bottom: 1rem;
+  font-size: var(--pp-text-section);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+}
+
+.ev-reading .ev-section > *,
+.ev-reading .ev-section .ev-claim {
+  max-width: none;
+}
+
+.ev-reading :is(p, li, dd) {
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.ev-reading #public-actions {
+  padding: clamp(1rem, 3vw, 1.75rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+}
+
+.ev-reading .ev-parent {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.ev-reading .ev-parent a {
+  color: var(--primary);
+}
+
+.ev-reading .ev-timeline > .ev-claim {
+  margin: 0 0 0 0.35rem;
+  padding: 0 0 1.75rem 1.5rem;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+}
+
+.ev-reading .ev-timeline > .ev-claim::before {
+  position: absolute;
+  top: 0.5rem;
+  left: -0.3rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--primary);
+  content: '';
+}
+
+.ev-reading .ev-timeline > .ev-claim:last-child {
+  padding-bottom: 0;
+}
+
+@media (min-width: 48rem) {
+  .ev-page.ev-reading {
+    width: min(100% - 3rem, 54rem);
+  }
+}
+
+@media (max-width: 30rem) {
+  .ev-reading-summary {
+    font-size: var(--pp-text-body);
+  }
+}
