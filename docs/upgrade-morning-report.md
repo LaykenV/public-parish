@@ -1,5 +1,8 @@
 # Monday morning report, September 14
 
+This report records the overnight development session before the owner
+authorized production deployment. Current release status is in `docs/work.md`.
+
 U5 and the ten statewide U6 amendments are implemented and populated in development.
 U4's pre-session work is ready. Its outcome must wait for an official record
 after the September 16 LPSC session. Your Tuesday launch is September 15, so it

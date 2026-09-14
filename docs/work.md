@@ -9,8 +9,8 @@ QA, then launch and outreach.
 
 ## September 14 production upgrade release
 
-The owner authorized production deployment. PR #226 releases statewide commission
-coverage. This separate ballot release adds all ten November 3 amendments.
+The owner authorized production deployment. PR #226 merged statewide commission
+coverage as `33d18fe`. Its exact production workflow and data checks are pending. This separate ballot release adds all ten November 3 amendments.
 Production data must pass the bounded work order in
 `docs/upgrade-production-work-order.md`, including fresh independent ballot
 reviews, before the release is complete. U4 still awaits an official outcome.
