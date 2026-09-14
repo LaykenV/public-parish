@@ -6,6 +6,7 @@ export function VoterFooter() {
       <p className="resident-voter-date">
         Next statewide election <strong>Nov 3, 2026</strong>
       </p>
+      <p><a href="/ballot">Read the constitutional amendments</a></p>
       <p className="resident-voter-text">
         <a
           href="https://voterportal.sos.la.gov"
@@ -17,7 +18,7 @@ export function VoterFooter() {
         </a>
       </p>
       <p className="resident-voter-note">
-        Louisiana Secretary of State calendar. Date checked Sep 4, 2026.
+        Louisiana Secretary of State. Date checked Sep 13, 2026.
       </p>
     </aside>
   )

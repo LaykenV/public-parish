@@ -1,3 +1,4 @@
+import { storyPath } from '../stories/registry'
 import { api, components } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
 import { env, httpAction } from '../_generated/server'
@@ -26,13 +27,13 @@ export const shareStory = httpAction(async (ctx, request) => {
   const path = new URL(request.url).pathname
   const legacy = path.startsWith('/share/stories/')
   let slug: string
-  try { slug = decodeURIComponent(path.slice((legacy ? '/share/stories/' : '/stories/').length)) } catch { return unavailable(404) }
+  try { slug = decodeURIComponent(path.slice((legacy ? '/share/stories/' : path.startsWith('/ballot/') ? '/ballot/' : '/stories/').length)) } catch { return unavailable(404) }
   if (!/^[a-z0-9][a-z0-9-]{0,119}$/.test(slug)) return unavailable(404)
   const result = await ctx.runQuery(api.stories.resident.get, { slug })
   if (!result.story) return unavailable(result.state === 'withdrawn' ? 410 : result.state === 'needs_review' ? 503 : 404)
   const base = env.CONVEX_SITE_URL.replace(/\/$/, '')
-  const canonicalUrl = `${base}/stories/${slug}`
-  if (legacy) return new Response(null, { status: 302, headers: { Location: canonicalUrl, 'Cache-Control': 'no-store' } })
+  const canonicalUrl = `${base}${storyPath(slug)}`
+  if (legacy || path !== storyPath(slug)) return new Response(null, { status: 302, headers: { Location: canonicalUrl, 'Cache-Control': 'no-store' } })
   const story = result.story
   const asset = await ctx.runQuery(components.staticHosting.lib.resolveAssetForHttp, { path: '/index.html', spaFallback: false })
   if (!asset) return unavailable(503)

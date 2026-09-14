@@ -1,0 +1,270 @@
+{
+  "contractVersion": "2.0.0",
+  "bundleVersion": 3,
+  "bundleKey": "2026-amendment-7-overnight",
+  "supersedesBundleSha256": "02c8079f16a3a5da878a5efa4cd69e8c70c4d1a94c2eed48fbee141dd568e8ee",
+  "purpose": "research",
+  "story": {
+    "storyKey": "2026-amendment-7",
+    "slug": "2026-amendment-7",
+    "placement": "ballot",
+    "rank": 107,
+    "geography": [
+      {
+        "placeName": "Statewide",
+        "parish": "Louisiana",
+        "state": "Louisiana",
+        "precisionNotes": "Constitutional amendment submitted statewide; individual sample ballots include other contests."
+      }
+    ],
+    "topics": []
+  },
+  "sources": [
+    {
+      "sourceKey": "sos-ballot",
+      "bodyKey": "louisiana-secretary-of-state",
+      "bodyName": "Louisiana Secretary of State",
+      "title": "November 3, 2026 proposed constitutional amendments",
+      "url": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "finalUrl": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "cc60d4aac717bb761819109191482625168d78333abf27d69a95f9a8e68d954e",
+        "bytes": 129088,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+        "bytes": 8227,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:12:08.879000+00:00",
+        "providerReference": "js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "act",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Enrolled Act 607 of 2026",
+      "url": "https://legis.la.gov/legis/ViewDocument.aspx?d=1480189",
+      "finalUrl": "https://legis.la.gov/legis/ViewDocument.aspx?d=1480189",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js78y9yqm9v82t69f7fxb3t2818edbrv",
+        "sha256": "585b235c0e24795ca21f8be93697257c344aea39cc279f3b7967f862bb7e1462",
+        "bytes": 62071,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js78y9yqm9v82t69f7fxb3t2818edbrv",
+        "sha256": "8be1b5ecbe684fd0275c5677918667a943ef710ccb5168fe4b6367d887cfd7c2",
+        "bytes": 7699,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:16:03.255000+00:00",
+        "providerReference": "js78y9yqm9v82t69f7fxb3t2818edbrv",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "fiscal-note",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Fiscal Note - SB228 Enrolled",
+      "url": "https://www.legis.la.gov/legis/ViewDocument.aspx?d=1479498",
+      "finalUrl": "https://www.legis.la.gov/legis/ViewDocument.aspx?d=1479498",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js774xdkwr6zqazjhwz0em6ccs8ed5ce",
+        "sha256": "9cca384fca0dfba5d472f3358cefba8ebd2696318459736e6d324a5dc24ae253",
+        "bytes": 195801,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js774xdkwr6zqazjhwz0em6ccs8ed5ce",
+        "sha256": "5dc1c5a07f27a8325b73505f9ba64017e135323a760fac2a5bd7b31e23642741",
+        "bytes": 3233,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:20:06.747000+00:00",
+        "providerReference": "js774xdkwr6zqazjhwz0em6ccs8ed5ce",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "Public funds for hazardous drinking-water service lines",
+    "proposedSummary": "Explain the exact ballot question, proposed constitutional change, eligibility and limits from the enrolled Act.",
+    "claims": [
+      {
+        "claimKey": "ballot-question",
+        "text": "Do you support an amendment to allow for the use of public funds by a political subdivision for the purpose of identifying, inventorying, removing or replacing drinking water utility service lines made of or affected by materials as specified or prescribed by the Lead and Copper Rule Improvements of the United States Environmental Protection Agency, promulgated October 30, 2024, or subsequent promulgation, on property owned by utility customers? (Amends Article VII, Section 14)",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 5551,
+            "end": 6041,
+            "excerpt": "Do you support an amendment to allow for the use of public funds by a political subdivision for the purpose of identifying,* *inventorying, removing or replacing drinking water utility service lines made of or affected by materials as specified or* *prescribed by the Lead and Copper Rule Improvements of the United States Environmental Protection Agency,* *promulgated October 30, 2024, or subsequent promulgation, on property owned by utility customers? (Amends Article VII,* *Section 14)",
+            "page": null,
+            "section": "ballot-question"
+          }
+        ]
+      },
+      {
+        "claimKey": "measure-identity",
+        "text": "Proposed Amendment No. 7\n\n<u>Act 607 (2026 Regular Session)</u>- Proposing to amend Article VII, Section 14(B) of the Constitution of Louisiana, relative to water utility service lines; to provide for the use of public funds to remove or replace drinking water utility service lines located on property owned by utility customers; to provide relative to identifying, inventorying water utility service lines made of or affected by certain hazardous materials; to specify an election for submission of the proposition to electors and provide a ballot proposition.\n\n*Do you support an amendment to allow for the use of public funds by a political subdivision for the purpose of identifying,* *inventorying, removing or replacing drinking water utility service lines made of or affected by materials as specified or* *prescribed by the Lead and Copper Rule Improvements of the United States Environmental Protection Agency,* *promulgated October 30, 2024, or subsequent promulgation, on property owned by utility customers? (Amends Article VII,* *Section 14)",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 4986,
+            "end": 6041,
+            "excerpt": "Proposed Amendment No. 7\n\n<u>Act 607 (2026 Regular Session)</u>- Proposing to amend Article VII, Section 14(B) of the Constitution of Louisiana, relative to water utility service lines; to provide for the use of public funds to remove or replace drinking water utility service lines located on property owned by utility customers; to provide relative to identifying, inventorying water utility service lines made of or affected by certain hazardous materials; to specify an election for submission of the proposition to electors and provide a ballot proposition.\n\n*Do you support an amendment to allow for the use of public funds by a political subdivision for the purpose of identifying,* *inventorying, removing or replacing drinking water utility service lines made of or affected by materials as specified or* *prescribed by the Lead and Copper Rule Improvements of the United States Environmental Protection Agency,* *promulgated October 30, 2024, or subsequent promulgation, on property owned by utility customers? (Amends Article VII,* *Section 14)",
+            "page": null,
+            "section": "measure-identity"
+          }
+        ]
+      },
+      {
+        "claimKey": "election",
+        "text": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 0,
+            "end": 333,
+            "excerpt": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+            "page": null,
+            "section": "election"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-1",
+        "text": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n\n2026 Regular Session\n\n# ACT No. 607\n\nSENATE BILL NO. 228\n\nBY SENATOR  DUPLESSIS  AND  REPRESENTATIVES  BOYD,  BRASS,  BRAUD,\nBRYANT,  CHASSION,  FISHER,  FREEMAN,  GREEN,  JACKSON,\nTRAVIS JOHNSON, JORDAN, KNOX, LAFLEUR, MANDIE\nLANDRY, TERRY LANDRY, LARVADAIN, LYONS, MARCELLE,\nMENA, MILLER, MOORE, NEWELL, THOMPSON, WALTERS AND\nYOUNG\n\n## A JOINT RESOLUTION\n\nProposing to amend Article VII, Section 14(B) of the Constitution of Louisiana, relative to\nwater utility service lines; to provide for the use of public funds to remove or replace\ndrinking water utility service lines located on property owned by utility customers;\nto provide relative to identifying, inventorying water utility service lines made of or\naffected by certain hazardous materials; to specify an election for submission of the\nproposition to electors and provide a ballot proposition.\n\nSection 1. Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state, for\ntheir approval or rejection in the manner provided by law, a proposal to amend Article VII,\nSection 14(B) of the Constitution of Louisiana, to read as follows:\n\n§14. Donation, Loan, or Pledge of Public Credit\n\nSection 14.(A)\n\n(B) Authorized Uses. Nothing in this  Section shall prevent (1) the use of\npublic funds for programs of social welfare for the aid and support of the needy; (2)\ncontributions of public funds to pension and insurance programs for the benefit of\npublic employees; (3) the pledge of public funds, credit, property, or things of value\nfor public purposes with  respect to  the issuance of bonds  or other evidences of\n\nPage 1 of 4\nCoding: Words which are struck through are deletions from existing law;\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n\nindebtedness  to  meet  public  obligations  as  provided  by law;  (4)  the  return  of\nproperty, including mineral rights, to a former owner from whom the property had\npreviously been expropriated, or purchased under threat of expropriation, when the\nlegislature by law declares that the public and necessary purpose which originally\nsupported the expropriation has ceased to exist and orders the return of the property\nto the former owner under such terms and conditions as specified by the legislature;\n(5) acquisition of stock by any institution of higher education in exchange for any\nintellectual property; (6) the donation of abandoned or blighted housing property by\nthe governing authority of a municipality or a parish to a nonprofit organization\nwhich is recognized by the  Internal  Revenue  Service as a  501(c)(3) or  501(c)(4)\nnonprofit organization and which agrees to renovate and maintain such propertyuntil\nconveyance  of  the  property by such  organization;  (7)  the  deduction  of  any tax,\ninterest, penalty, or other charges forming the basis of tax liens on blighted property\nso that they may be subordinated and waived in favor of any purchaser who is not\na member of the immediate family of the blighted property owner or which is not\nany entity in  which  the  owner  has  a substantial  economic  interest,  but  only in\nconnection with a property renovation plan approved by an administrative hearing\nofficer  appointed  by the  parish  or  municipal  government  where  the  property is\nlocated; (8) the deduction of past due taxes, interest, and penalties in favor of",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "8be1b5ecbe684fd0275c5677918667a943ef710ccb5168fe4b6367d887cfd7c2",
+            "start": 0,
+            "end": 3500,
+            "excerpt": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n\n2026 Regular Session\n\n# ACT No. 607\n\nSENATE BILL NO. 228\n\nBY SENATOR  DUPLESSIS  AND  REPRESENTATIVES  BOYD,  BRASS,  BRAUD,\nBRYANT,  CHASSION,  FISHER,  FREEMAN,  GREEN,  JACKSON,\nTRAVIS JOHNSON, JORDAN, KNOX, LAFLEUR, MANDIE\nLANDRY, TERRY LANDRY, LARVADAIN, LYONS, MARCELLE,\nMENA, MILLER, MOORE, NEWELL, THOMPSON, WALTERS AND\nYOUNG\n\n## A JOINT RESOLUTION\n\nProposing to amend Article VII, Section 14(B) of the Constitution of Louisiana, relative to\nwater utility service lines; to provide for the use of public funds to remove or replace\ndrinking water utility service lines located on property owned by utility customers;\nto provide relative to identifying, inventorying water utility service lines made of or\naffected by certain hazardous materials; to specify an election for submission of the\nproposition to electors and provide a ballot proposition.\n\nSection 1. Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state, for\ntheir approval or rejection in the manner provided by law, a proposal to amend Article VII,\nSection 14(B) of the Constitution of Louisiana, to read as follows:\n\n§14. Donation, Loan, or Pledge of Public Credit\n\nSection 14.(A)\n\n(B) Authorized Uses. Nothing in this  Section shall prevent (1) the use of\npublic funds for programs of social welfare for the aid and support of the needy; (2)\ncontributions of public funds to pension and insurance programs for the benefit of\npublic employees; (3) the pledge of public funds, credit, property, or things of value\nfor public purposes with  respect to  the issuance of bonds  or other evidences of\n\nPage 1 of 4\nCoding: Words which are struck through are deletions from existing law;\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n\nindebtedness  to  meet  public  obligations  as  provided  by law;  (4)  the  return  of\nproperty, including mineral rights, to a former owner from whom the property had\npreviously been expropriated, or purchased under threat of expropriation, when the\nlegislature by law declares that the public and necessary purpose which originally\nsupported the expropriation has ceased to exist and orders the return of the property\nto the former owner under such terms and conditions as specified by the legislature;\n(5) acquisition of stock by any institution of higher education in exchange for any\nintellectual property; (6) the donation of abandoned or blighted housing property by\nthe governing authority of a municipality or a parish to a nonprofit organization\nwhich is recognized by the  Internal  Revenue  Service as a  501(c)(3) or  501(c)(4)\nnonprofit organization and which agrees to renovate and maintain such propertyuntil\nconveyance  of  the  property by such  organization;  (7)  the  deduction  of  any tax,\ninterest, penalty, or other charges forming the basis of tax liens on blighted property\nso that they may be subordinated and waived in favor of any purchaser who is not\na member of the immediate family of the blighted property owner or which is not\nany entity in  which  the  owner  has  a substantial  economic  interest,  but  only in\nconnection with a property renovation plan approved by an administrative hearing\nofficer  appointed  by the  parish  or  municipal  government  where  the  property is\nlocated; (8) the deduction of past due taxes, interest, and penalties in favor of",
+            "page": null,
+            "section": "act-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-2",
+        "text": " an\nowner of a blighted property, but only when the owner sells the property at less than\nthe appraised value to facilitate the blighted property renovation plan approved by\nthe parish or municipal government and only after the renovation is completed such\ndeduction being canceled, null and void, and to no effect in the event ownership of\nthe property in the future reverts back to the owner or any member of his immediate\nfamily; (9) the donation by the state of asphalt which has been removed from state\nroads and highways to the governing authority of the parish or municipality where\nthe asphalt was removed, or if not needed by such governing authority, then to any\nother parish or municipal governing authority, but only pursuant to a cooperative\nendeavor agreement between the state and the governing authority receiving the\ndonated  property;  (10)  the  investment  in  stocks  of  a  portion  of  the  Rockefeller\n\nPage 2 of 4\nCoding: Words which are struck through are deletions from existing law;\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n\nWildlife  Refuge  Trust and  Protection  Fund,  created under the provisions of  R.S.\n56:797,  and  the Russell  Sage  or  Marsh  Island  Refuge  Fund,  created  under  the\nprovisions of  R.S.  56:798,  such portion not to exceed thirty-five percent of each\nfund;  (11)  the investment in stocks of a portion of the state-funded permanently\nendowed funds of a public or private college or university, not to exceed thirty-five\npercent of the public funds endowed; (12) the investment in equities of a portion of\nthe Medicaid Trust Fund for the Elderly created under the provisions of R.S. 46:2691\net seq., such portion not to exceed thirty-five percent of the fund; (13) the investment\nof public funds to capitalize a state infrastructure bank and the loan,  pledge,  or\nguarantee of public funds by a state infrastructure bank solely for transportation\nprojects;  (14)  pursuant to a written agreement,  the donation of the use of public\nequipment and personnel by a political subdivision upon request to another political\nsubdivision  for  an  activity or  function  the  requesting political  subdivision  is\nauthorized to exercise; or (15) a political subdivision from waiving charges for water\nif  the  charges  are  the  result  of  water lost due  to  damage  to  the  water  delivery\ninfrastructure and that damage is not the result of any act or failure to act by the\ncustomer being charged for the water**; or (16) the use of public funds by a political**\n**subdivision for the purpose of identifying, inventorying, removing or replacing**\n**drinking water utility service lines made of or affected by materials as specified**\n**or prescribed by the Lead and Copper Rule Improvements of the United States**\n**Environmental Protection  Agency,  promulgated October  30,  2024,  or**\n**subsequent promulgation, on property owned by utility customers**.\n\nSection 2. Be it further resolved that this proposed amendment shall be submitted to\nthe electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\nSection 3. Be it further resolved that on the official ballot to be used at said election\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\nPage 3 of 4\nCoding: Words which are struck through are deletions from e",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "8be1b5ecbe684fd0275c5677918667a943ef710ccb5168fe4b6367d887cfd7c2",
+            "start": 3500,
+            "end": 7000,
+            "excerpt": " an\nowner of a blighted property, but only when the owner sells the property at less than\nthe appraised value to facilitate the blighted property renovation plan approved by\nthe parish or municipal government and only after the renovation is completed such\ndeduction being canceled, null and void, and to no effect in the event ownership of\nthe property in the future reverts back to the owner or any member of his immediate\nfamily; (9) the donation by the state of asphalt which has been removed from state\nroads and highways to the governing authority of the parish or municipality where\nthe asphalt was removed, or if not needed by such governing authority, then to any\nother parish or municipal governing authority, but only pursuant to a cooperative\nendeavor agreement between the state and the governing authority receiving the\ndonated  property;  (10)  the  investment  in  stocks  of  a  portion  of  the  Rockefeller\n\nPage 2 of 4\nCoding: Words which are struck through are deletions from existing law;\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n\nWildlife  Refuge  Trust and  Protection  Fund,  created under the provisions of  R.S.\n56:797,  and  the Russell  Sage  or  Marsh  Island  Refuge  Fund,  created  under  the\nprovisions of  R.S.  56:798,  such portion not to exceed thirty-five percent of each\nfund;  (11)  the investment in stocks of a portion of the state-funded permanently\nendowed funds of a public or private college or university, not to exceed thirty-five\npercent of the public funds endowed; (12) the investment in equities of a portion of\nthe Medicaid Trust Fund for the Elderly created under the provisions of R.S. 46:2691\net seq., such portion not to exceed thirty-five percent of the fund; (13) the investment\nof public funds to capitalize a state infrastructure bank and the loan,  pledge,  or\nguarantee of public funds by a state infrastructure bank solely for transportation\nprojects;  (14)  pursuant to a written agreement,  the donation of the use of public\nequipment and personnel by a political subdivision upon request to another political\nsubdivision  for  an  activity or  function  the  requesting political  subdivision  is\nauthorized to exercise; or (15) a political subdivision from waiving charges for water\nif  the  charges  are  the  result  of  water lost due  to  damage  to  the  water  delivery\ninfrastructure and that damage is not the result of any act or failure to act by the\ncustomer being charged for the water**; or (16) the use of public funds by a political**\n**subdivision for the purpose of identifying, inventorying, removing or replacing**\n**drinking water utility service lines made of or affected by materials as specified**\n**or prescribed by the Lead and Copper Rule Improvements of the United States**\n**Environmental Protection  Agency,  promulgated October  30,  2024,  or**\n**subsequent promulgation, on property owned by utility customers**.\n\nSection 2. Be it further resolved that this proposed amendment shall be submitted to\nthe electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\nSection 3. Be it further resolved that on the official ballot to be used at said election\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\nPage 3 of 4\nCoding: Words which are struck through are deletions from e",
+            "page": null,
+            "section": "act-text-2"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-3",
+        "text": "xisting law;\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n\nDo you support an amendment to allow for the use of public funds by a\npolitical subdivision for the purpose of identifying, inventorying, removing\nor  replacing drinking water  utility service  lines  made  of or  affected  by\nmaterials  as  specified  or  prescribed  by the  Lead  and  Copper  Rule\nImprovements  of  the  United  States  Environmental  Protection  Agency,\npromulgated  October  30,  2024,  or subsequent promulgation,  on property\nowned by utility customers?\n\n(Amends Article VII, Section 14)\n\nPRESIDENT OF THE SENATE\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPage 4 of 4\nCoding: Words which are struck through are deletions from existing law;",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "8be1b5ecbe684fd0275c5677918667a943ef710ccb5168fe4b6367d887cfd7c2",
+            "start": 7000,
+            "end": 7698,
+            "excerpt": "xisting law;\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n\nDo you support an amendment to allow for the use of public funds by a\npolitical subdivision for the purpose of identifying, inventorying, removing\nor  replacing drinking water  utility service  lines  made  of or  affected  by\nmaterials  as  specified  or  prescribed  by the  Lead  and  Copper  Rule\nImprovements  of  the  United  States  Environmental  Protection  Agency,\npromulgated  October  30,  2024,  or subsequent promulgation,  on property\nowned by utility customers?\n\n(Amends Article VII, Section 14)\n\nPRESIDENT OF THE SENATE\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPage 4 of 4\nCoding: Words which are struck through are deletions from existing law;",
+            "page": null,
+            "section": "act-text-3"
+          }
+        ]
+      },
+      {
+        "claimKey": "fiscal-note-text-1",
+        "text": "# LEGISLATIVE FISCAL OFFICE Fiscal Note\n\nFiscal Note On: **SB 228** SLS 26RS 459\n\nBill Text Version: **ENROLLED**\n\nOpp. Chamb. Action:\n\nProposed Amd.:\n\n| June 1, 2026 Date: | 9:30 AM | Author: DUPLESSIS |\n| --- | --- | --- |\n| Statewide Dept./Agy.: |  |  |\n| The use of public funds to replace utility infrastructure Subject: |  | Analyst: Richie Anderson |\n\nLOCAL FINANCE\n\nEN SEE FISC NOTE LF EX Page 1 of 1\nConstitutional amendment to allow for the use of public funds to replace drinking water utility service lines located on\nprivate property. (2/3 - CA13s1(A))\n\nProposed constitutional amendment provides for the use of public funds by a political subdivision for the purpose of\nidentifying, inventorying, removing, or replacing drinking water utility service lines made of or affected by hazardous\nmaterials as specified by the Lead and Copper Rule Improvements of the U.S. Environmental Protection Agency.\n\nTo be submitted to the electors at the statewide election to be held on November 3, 2026.\n\n| EXPENDITURES | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 2030-31 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | SEE BELOW | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | SEE BELOW | SEE BELOW | SEE BELOW | SEE BELOW | SEE BELOW |  |\n\n| REVENUES | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 2030-31 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Annual Total | $0 | $0 | $0 | $0 | $0 | $0 |\n\n## EXPENDITURE EXPLANATION\n\nProposed constitutional amendment may increase local fund expenditures for political subdivisions. The proposed\nconstitutional amendment provides for the use of public funds by a political subdivision for the purpose of remedying\ndrinking water utility service lines on private property for lines that are made of or affected by hazardous materials. To the\nextent that political subdivisions use public funds to remedy drinking water utility service lines, a corresponding increase in\nexpenditures will occur.\n\nIn certain circumstances, the Secretary of State may incur minimal ballot processing costs associated with this measure. As\na regular practice, the department budgets for up to 10 constitutional amendments and statewide propositions for the fall\nstatewide elections. To the extent the ballot includes more than 10 constitutional amendments and statewide propositions,\nthe Secretary of State may require additional SGF resources for the 11/03/26 statewide election. Any expenditure impact\nwould be realized in FY 27.\n\n## REVENUE EXPLANATION\n\nThere is no anticipated direct material effect on governmental revenues as a result of this measure.\n\n| Senate |  |  | Dual Referral Rules |  |\n| --- | --- | --- | --- | --- |\n|  |  |  | 13.5.1 &gt;= $100,000 Annual Fiscal Cost {S &amp; H} |  |\n| 13.5.2 &gt;= $500,000 Annual Tax or Fee |  |  |  |  |\n|  |  |  | Change {S &amp; H} |  |",
+        "supports": [
+          {
+            "sourceKey": "fiscal-note",
+            "normalizedSha256": "5dc1c5a07f27a8325b73505f9ba64017e135323a760fac2a5bd7b31e23642741",
+            "start": 0,
+            "end": 3233,
+            "excerpt": "# LEGISLATIVE FISCAL OFFICE Fiscal Note\n\nFiscal Note On: **SB 228** SLS 26RS 459\n\nBill Text Version: **ENROLLED**\n\nOpp. Chamb. Action:\n\nProposed Amd.:\n\n| June 1, 2026 Date: | 9:30 AM | Author: DUPLESSIS |\n| --- | --- | --- |\n| Statewide Dept./Agy.: |  |  |\n| The use of public funds to replace utility infrastructure Subject: |  | Analyst: Richie Anderson |\n\nLOCAL FINANCE\n\nEN SEE FISC NOTE LF EX Page 1 of 1\nConstitutional amendment to allow for the use of public funds to replace drinking water utility service lines located on\nprivate property. (2/3 - CA13s1(A))\n\nProposed constitutional amendment provides for the use of public funds by a political subdivision for the purpose of\nidentifying, inventorying, removing, or replacing drinking water utility service lines made of or affected by hazardous\nmaterials as specified by the Lead and Copper Rule Improvements of the U.S. Environmental Protection Agency.\n\nTo be submitted to the electors at the statewide election to be held on November 3, 2026.\n\n| EXPENDITURES | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 2030-31 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | SEE BELOW | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | SEE BELOW | SEE BELOW | SEE BELOW | SEE BELOW | SEE BELOW |  |\n\n| REVENUES | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 2030-31 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Annual Total | $0 | $0 | $0 | $0 | $0 | $0 |\n\n## EXPENDITURE EXPLANATION\n\nProposed constitutional amendment may increase local fund expenditures for political subdivisions. The proposed\nconstitutional amendment provides for the use of public funds by a political subdivision for the purpose of remedying\ndrinking water utility service lines on private property for lines that are made of or affected by hazardous materials. To the\nextent that political subdivisions use public funds to remedy drinking water utility service lines, a corresponding increase in\nexpenditures will occur.\n\nIn certain circumstances, the Secretary of State may incur minimal ballot processing costs associated with this measure. As\na regular practice, the department budgets for up to 10 constitutional amendments and statewide propositions for the fall\nstatewide elections. To the extent the ballot includes more than 10 constitutional amendments and statewide propositions,\nthe Secretary of State may require additional SGF resources for the 11/03/26 statewide election. Any expenditure impact\nwould be realized in FY 27.\n\n## REVENUE EXPLANATION\n\nThere is no anticipated direct material effect on governmental revenues as a result of this measure.\n\n| Senate |  |  | Dual Referral Rules |  |\n| --- | --- | --- | --- | --- |\n|  |  |  | 13.5.1 &gt;= $100,000 Annual Fiscal Cost {S &amp; H} |  |\n| 13.5.2 &gt;= $500,000 Annual Tax or Fee |  |  |  |  |\n|  |  |  | Change {S &amp; H} |  |",
+            "page": null,
+            "section": "fiscal-note-text-1"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [],
+    "knownUnknowns": [
+      "These sources do not establish an individual household's tax or financial outcome."
+    ],
+    "nextActionClaimKeys": [
+      "election"
+    ],
+    "reviewedThrough": "2026-09-14",
+    "nextReviewAt": "2026-09-17",
+    "reviewResponsibility": "Public Parish owner",
+    "supportedQuestions": [
+      {
+        "question": "What would this amendment change?",
+        "claimKeys": [
+          "ballot-question",
+          "measure-identity",
+          "election",
+          "act-text-1",
+          "act-text-2",
+          "act-text-3",
+          "fiscal-note-text-1"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Should I vote for this amendment?",
+        "reason": "Public Parish explains official evidence without voting recommendations."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

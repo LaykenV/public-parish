@@ -1,0 +1,188 @@
+{
+  "contractVersion": "2.0.0",
+  "bundleVersion": 3,
+  "bundleKey": "2026-amendment-4-overnight",
+  "supersedesBundleSha256": "70d9a2c65958e3eb7651318ad54d64e01252649f85ff0729b54ab198afcbb4d4",
+  "purpose": "research",
+  "story": {
+    "storyKey": "2026-amendment-4",
+    "slug": "2026-amendment-4",
+    "placement": "ballot",
+    "rank": 104,
+    "geography": [
+      {
+        "placeName": "Statewide",
+        "parish": "Louisiana",
+        "state": "Louisiana",
+        "precisionNotes": "Constitutional amendment submitted statewide; individual sample ballots include other contests."
+      }
+    ],
+    "topics": []
+  },
+  "sources": [
+    {
+      "sourceKey": "sos-ballot",
+      "bodyKey": "louisiana-secretary-of-state",
+      "bodyName": "Louisiana Secretary of State",
+      "title": "November 3, 2026 proposed constitutional amendments",
+      "url": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "finalUrl": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "cc60d4aac717bb761819109191482625168d78333abf27d69a95f9a8e68d954e",
+        "bytes": 129088,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+        "bytes": 8227,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:12:08.879000+00:00",
+        "providerReference": "js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "act",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Enrolled Act 414 of 2026",
+      "url": "https://legis.la.gov/legis/ViewDocument.aspx?d=1479667",
+      "finalUrl": "https://legis.la.gov/legis/ViewDocument.aspx?d=1479667",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js700nfhpvnfrr7p6y3y1mggw18edckw",
+        "sha256": "f5c395efddc03dc4ee4f65cd51dc335b63e421e6a6ff0471d6dd2173141ee696",
+        "bytes": 42403,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js700nfhpvnfrr7p6y3y1mggw18edckw",
+        "sha256": "4516f69d88d38d18b0df8cbc8205b544a8b7bb02bf5b9f32e32d970a6507be1e",
+        "bytes": 1897,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:13:34.439000+00:00",
+        "providerReference": "js700nfhpvnfrr7p6y3y1mggw18edckw",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "Lifetime limits on election as governor",
+    "proposedSummary": "Explain the exact ballot question, proposed constitutional change, eligibility and limits from the enrolled Act.",
+    "claims": [
+      {
+        "claimKey": "ballot-question",
+        "text": "Do you support an amendment to prohibit a person who has served more than one and one-half terms as governor from being elected as governor for any future term? (Amends Article IV, Section 3(B))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 2934,
+            "end": 3130,
+            "excerpt": "Do you support an amendment to prohibit a person who has served more than one and one-half terms as governor from* *being elected as governor for any future term? (Amends Article IV, Section 3(B))",
+            "page": null,
+            "section": "ballot-question"
+          }
+        ]
+      },
+      {
+        "claimKey": "measure-identity",
+        "text": "Proposed Amendment No. 4\n\n<u>Act 414 (2026 Regular Session)</u>- Proposing to amend Article IV, Section 3(B) of the Constitution of Louisiana, to provide for the term limit for the office of the governor; to provide for a lifetime term limit; to provide that the limit is not limited to service in successive terms; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to prohibit a person who has served more than one and one-half terms as governor from* *being elected as governor for any future term? (Amends Article IV, Section 3(B))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 2511,
+            "end": 3130,
+            "excerpt": "Proposed Amendment No. 4\n\n<u>Act 414 (2026 Regular Session)</u>- Proposing to amend Article IV, Section 3(B) of the Constitution of Louisiana, to provide for the term limit for the office of the governor; to provide for a lifetime term limit; to provide that the limit is not limited to service in successive terms; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to prohibit a person who has served more than one and one-half terms as governor from* *being elected as governor for any future term? (Amends Article IV, Section 3(B))",
+            "page": null,
+            "section": "measure-identity"
+          }
+        ]
+      },
+      {
+        "claimKey": "election",
+        "text": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 0,
+            "end": 333,
+            "excerpt": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+            "page": null,
+            "section": "election"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-1",
+        "text": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n\n2026 Regular Session\n\n## ACT No. 414 2026 Regular Session\n\n# ACT No. 414\n\nHOUSE BILL NO. 225\n\n# BY REPRESENTATIVES BAYHAM AND MANDIE LANDRY\n\n## A JOINT RESOLUTION\n\nProposing to amend Article IV, Section 3(B) of the Constitution of Louisiana, to provide for\nthe term limit for the office of the governor; to provide for a lifetime term limit; to\nprovide that the limit is not limited to service in successive terms; to provide for\nsubmission of the proposed amendment to the electors; and to provide for related\nmatters.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana, for their approval or rejection in the manner provided by law,  a proposal to\namend Article IV, Section 3(B) of the Constitution of Louisiana, to read as follows:\n\n## §3. Election; Term\n\nSection 3.\n\n(B)  Limitation on Governor.  A person who has served as governor for more\nthan one and one-half terms in two consecutive terms shall not be elected governor\nfor the succeeding term.\n\nSection 2.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\nSection 3.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\n---\n\nDo you support an amendment to prohibit a person who has served more than\none and one-half terms as governor from being elected as governor for any\nfuture term? (Amends Article IV, Section 3(B))\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "4516f69d88d38d18b0df8cbc8205b544a8b7bb02bf5b9f32e32d970a6507be1e",
+            "start": 0,
+            "end": 1896,
+            "excerpt": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n\n2026 Regular Session\n\n## ACT No. 414 2026 Regular Session\n\n# ACT No. 414\n\nHOUSE BILL NO. 225\n\n# BY REPRESENTATIVES BAYHAM AND MANDIE LANDRY\n\n## A JOINT RESOLUTION\n\nProposing to amend Article IV, Section 3(B) of the Constitution of Louisiana, to provide for\nthe term limit for the office of the governor; to provide for a lifetime term limit; to\nprovide that the limit is not limited to service in successive terms; to provide for\nsubmission of the proposed amendment to the electors; and to provide for related\nmatters.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana, for their approval or rejection in the manner provided by law,  a proposal to\namend Article IV, Section 3(B) of the Constitution of Louisiana, to read as follows:\n\n## §3. Election; Term\n\nSection 3.\n\n(B)  Limitation on Governor.  A person who has served as governor for more\nthan one and one-half terms in two consecutive terms shall not be elected governor\nfor the succeeding term.\n\nSection 2.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\nSection 3.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\n---\n\nDo you support an amendment to prohibit a person who has served more than\none and one-half terms as governor from being elected as governor for any\nfuture term? (Amends Article IV, Section 3(B))\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+            "page": null,
+            "section": "act-text-1"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [],
+    "knownUnknowns": [
+      "No official fiscal note has yet been retained for this explanation. The accepted sources do not establish an individual household's tax or financial outcome."
+    ],
+    "nextActionClaimKeys": [
+      "election"
+    ],
+    "reviewedThrough": "2026-09-14",
+    "nextReviewAt": "2026-09-17",
+    "reviewResponsibility": "Public Parish owner",
+    "supportedQuestions": [
+      {
+        "question": "What would this amendment change?",
+        "claimKeys": [
+          "ballot-question",
+          "measure-identity",
+          "election",
+          "act-text-1"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Should I vote for this amendment?",
+        "reason": "Public Parish explains official evidence without voting recommendations."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

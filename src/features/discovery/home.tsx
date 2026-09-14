@@ -1,5 +1,6 @@
 import { AREA_SLUGS } from '../../../convex/follows/contracts'
 import { StatewideSection } from './statewide-section'
+import { BallotSection } from '../stories/ballot-page'
 import { ArrowUpRightIcon, SearchIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
@@ -115,7 +116,7 @@ export function HomePage({
           action={<ChooseAreaButton />}
         />
       ) : null}
-      {!fixturesEnabled && showStories ? <StatewideSection /> : null}
+      {!fixturesEnabled && showStories ? <><StatewideSection /><BallotSection home /></> : null}
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
           <LocalIssues
@@ -129,6 +130,7 @@ export function HomePage({
           />
         </ResidentSectionBoundary>
       </div>
+      {!fixturesEnabled && !showStories ? <BallotSection home /> : null}
       <ResidentSectionBoundary label="Decision records" resetKey={resetKey}>
         <LocalDecisionRecords
           city={cityFocus}

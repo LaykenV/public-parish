@@ -1,0 +1,252 @@
+{
+  "contractVersion": "2.0.0",
+  "bundleVersion": 2,
+  "bundleKey": "2026-amendment-3-overnight",
+  "supersedesBundleSha256": "548bb271a5bceafb8f1f8de71787f3043556a61ae0b3587f2304b0874f3db96f",
+  "purpose": "research",
+  "story": {
+    "storyKey": "2026-amendment-3",
+    "slug": "2026-amendment-3",
+    "placement": "ballot",
+    "rank": 103,
+    "geography": [
+      {
+        "placeName": "Statewide",
+        "parish": "Louisiana",
+        "state": "Louisiana",
+        "precisionNotes": "Constitutional amendment submitted statewide; individual sample ballots include other contests."
+      }
+    ],
+    "topics": []
+  },
+  "sources": [
+    {
+      "sourceKey": "sos-ballot",
+      "bodyKey": "louisiana-secretary-of-state",
+      "bodyName": "Louisiana Secretary of State",
+      "title": "November 3, 2026 proposed constitutional amendments",
+      "url": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "finalUrl": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "cc60d4aac717bb761819109191482625168d78333abf27d69a95f9a8e68d954e",
+        "bytes": 129088,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+        "bytes": 8227,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:12:08.879000+00:00",
+        "providerReference": "js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "act",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Enrolled Act 271 of 2026",
+      "url": "https://legis.la.gov/legis/ViewDocument.aspx?d=1475809",
+      "finalUrl": "https://legis.la.gov/legis/ViewDocument.aspx?d=1475809",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js79cq00r18rvb0zg755vx9q1n8ecnqp",
+        "sha256": "a01b9a55fb20255d194281907cd6f430a955ec047c1d3bdb026f8b2b2707a458",
+        "bytes": 42195,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js79cq00r18rvb0zg755vx9q1n8ecnqp",
+        "sha256": "2071ec4bf405329927b0030b250ee69150da46ed0346b4dbb504721ccdc4eb43",
+        "bytes": 1740,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:13:29.973000+00:00",
+        "providerReference": "js79cq00r18rvb0zg755vx9q1n8ecnqp",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "fiscal-note",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Fiscal Note - HB51 Enrolled",
+      "url": "https://www.legis.la.gov/legis/ViewDocument.aspx?d=1473181",
+      "finalUrl": "https://www.legis.la.gov/legis/ViewDocument.aspx?d=1473181",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "https://www.legis.la.gov/legis/ViewDocument.aspx?d=1473181",
+        "sha256": "f12d9b91d456cf2fab0ecba2d2a8fd19eb75821b5decd7d39932ad193fe0116b",
+        "bytes": 197627,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "research:fiscal",
+        "sha256": "84dfc0c8a68670839ebd6393110dbd1e3247c00d8d3adad45bacf5b410aa2c84",
+        "bytes": 6043,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "manual_file",
+        "retrievedAt": "2026-09-14T04:13:29.973000+00:00",
+        "providerReference": null,
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Research download. Awaiting Firecrawl retention.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "Post-conviction bail for aggravated offenses against children",
+    "proposedSummary": "Explain the exact ballot question, proposed constitutional change, eligibility and limits from the enrolled Act.",
+    "claims": [
+      {
+        "claimKey": "ballot-question",
+        "text": "Do you support an amendment to prohibit a defendant from being released on any post-conviction bail if the defendant is convicted of an aggravated offense against a minor child? (Adds Article I, Section 18(C))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 2293,
+            "end": 2504,
+            "excerpt": "Do you support an amendment to prohibit a defendant from being released on any post-conviction bail if the defendant is* *convicted of an aggravated offense against a minor child? (Adds Article I, Section 18(C))",
+            "page": null,
+            "section": "ballot-question"
+          }
+        ]
+      },
+      {
+        "claimKey": "measure-identity",
+        "text": "Proposed Amendment No. 3\n\n<u>Act 271 (2026 Regular Session)</u>- Proposing to add Article I, Section 18(C) of the Constitution of Louisiana, relative to the right to bail; to prohibit bail for offenders who have been convicted of certain offenses; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to prohibit a defendant from being released on any post-conviction bail if the defendant is* *convicted of an aggravated offense against a minor child? (Adds Article I, Section 18(C))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 1938,
+            "end": 2504,
+            "excerpt": "Proposed Amendment No. 3\n\n<u>Act 271 (2026 Regular Session)</u>- Proposing to add Article I, Section 18(C) of the Constitution of Louisiana, relative to the right to bail; to prohibit bail for offenders who have been convicted of certain offenses; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to prohibit a defendant from being released on any post-conviction bail if the defendant is* *convicted of an aggravated offense against a minor child? (Adds Article I, Section 18(C))",
+            "page": null,
+            "section": "measure-identity"
+          }
+        ]
+      },
+      {
+        "claimKey": "election",
+        "text": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 0,
+            "end": 333,
+            "excerpt": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+            "page": null,
+            "section": "election"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-1",
+        "text": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n\n## ACT No. 271 2026 Regular Session\n\n## A JOINT RESOLUTION\n\nProposing to add Article I, Section 18(C) of the Constitution of Louisiana, relative to the\nright  to  bail;  to  prohibit  bail for  offenders  who  have  been  convicted  of  certain\noffenses; to provide for submission of the proposed amendment to the electors; and\nto provide for related matters.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana, for their approval or rejection in the manner provided by law, a proposal to add\nArticle I, Section 18(C) of the Constitution of Louisiana, to read as follows:\n\n§18.  Right to Bail\n\nSection 18.\n\n(C)  However, after conviction, a person shall not be bailable if the offense\nis an aggravated offense as defined by R.S. 15:541 that is committed against a victim\nwho is a minor.\n\nSection 2.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\nSection 3.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\n---\n\nDo you support an amendment to prohibit a defendant from being released\non any post-conviction bail if the defendant is convicted of an aggravated\noffense against a minor child?  (Adds Article I, Section 18(C))\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "2071ec4bf405329927b0030b250ee69150da46ed0346b4dbb504721ccdc4eb43",
+            "start": 0,
+            "end": 1739,
+            "excerpt": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n\n## ACT No. 271 2026 Regular Session\n\n## A JOINT RESOLUTION\n\nProposing to add Article I, Section 18(C) of the Constitution of Louisiana, relative to the\nright  to  bail;  to  prohibit  bail for  offenders  who  have  been  convicted  of  certain\noffenses; to provide for submission of the proposed amendment to the electors; and\nto provide for related matters.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana, for their approval or rejection in the manner provided by law, a proposal to add\nArticle I, Section 18(C) of the Constitution of Louisiana, to read as follows:\n\n§18.  Right to Bail\n\nSection 18.\n\n(C)  However, after conviction, a person shall not be bailable if the offense\nis an aggravated offense as defined by R.S. 15:541 that is committed against a victim\nwho is a minor.\n\nSection 2.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\nSection 3.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\n---\n\nDo you support an amendment to prohibit a defendant from being released\non any post-conviction bail if the defendant is convicted of an aggravated\noffense against a minor child?  (Adds Article I, Section 18(C))\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+            "page": null,
+            "section": "act-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "fiscal-note-text-1",
+        "text": "                                           LEGISLATIVE FISCAL OFFICE\n                                                             Fiscal Note\n                                                                                           Fiscal Note On:    HB   51       HLS    26RS   447\n                                                                                         Bill Text Version: ENROLLED\n                                                                                     Opp. Chamb. Action:\n                                                                                          Proposed Amd.:\n                                                                                            Sub. Bill For.:\n      Date: May 17, 2026         5:22 PM                                                                 Author: VILLIO\nDept./Agy.: Clerks and Secretary of State\n    Subject: Restriction of Post-Conviction Bail for Certain Offenders                                   Analyst: Daniel Druilhet\n\nBAIL                                              EN SEE FISC NOTE LF EX                                                          Page 1 of 1\n(Constitutional Amendment) Restricts post-conviction bail for certain offenders\n\nCurrent law provides that excessive bail shall not be required; provides that after conviction and before sentencing, a person\nshall be bailable if the maximum sentence which may be imposed is imprisonment for five years or less; provides that the\njudge may grant bail if the maximum sentence which may be imposed is imprisonment exceeding five years; provides that\nafter sentencing and until final judgment, a person shall be bailable if the sentence actually imposed is five years or less;\nprovides that the judge may grant bail if the sentence actually imposed exceeds imprisonment for five years. Proposed law\nis a constitutional amendment that provides that after conviction, a person shall not be bailable if the offense is an\naggravated offense under R.S. 15:541 committed against a victim who is a minor; it is to be submitted to voters at a\nstatewide election to be held on 11/03/26.\n\n\n\nEXPENDITURES             2026-27              2027-28              2028-29               2029-30               2030-31       5 -YEAR TOTAL\n\nState Gen. Fd.         SEE BELOW                    $0                    $0                      $0                 $0                     $0\n\nAgy. Self-Gen.                 $0                   $0                    $0                      $0                 $0                     $0\n\nDed./Other                     $0                   $0                    $0                      $0                 $0                     $0\n\nFederal Funds                  $0                   $0                    $0                      $0                 $0                     $0\n\nLocal Funds            SEE BELOW           SEE BELOW             SEE BELOW            SEE BELOW               SEE BELOW\n\nAnnual Total\n\nREVENUES                2026-27              2027-28               2028-29              2029-30                2030-31       5 -YEAR TOTAL\n\nState Gen. Fd.                 $0                   $0                    $0                      $0                 $0                     $0\n\nAgy. Self-Gen.                 $0                   $0                    $0                      $0                 $0                     $0\n\nDed./Other                     $0                   $0                    $0              ",
+        "supports": [
+          {
+            "sourceKey": "fiscal-note",
+            "normalizedSha256": "84dfc0c8a68670839ebd6393110dbd1e3247c00d8d3adad45bacf5b410aa2c84",
+            "start": 0,
+            "end": 3500,
+            "excerpt": "                                           LEGISLATIVE FISCAL OFFICE\n                                                             Fiscal Note\n                                                                                           Fiscal Note On:    HB   51       HLS    26RS   447\n                                                                                         Bill Text Version: ENROLLED\n                                                                                     Opp. Chamb. Action:\n                                                                                          Proposed Amd.:\n                                                                                            Sub. Bill For.:\n      Date: May 17, 2026         5:22 PM                                                                 Author: VILLIO\nDept./Agy.: Clerks and Secretary of State\n    Subject: Restriction of Post-Conviction Bail for Certain Offenders                                   Analyst: Daniel Druilhet\n\nBAIL                                              EN SEE FISC NOTE LF EX                                                          Page 1 of 1\n(Constitutional Amendment) Restricts post-conviction bail for certain offenders\n\nCurrent law provides that excessive bail shall not be required; provides that after conviction and before sentencing, a person\nshall be bailable if the maximum sentence which may be imposed is imprisonment for five years or less; provides that the\njudge may grant bail if the maximum sentence which may be imposed is imprisonment exceeding five years; provides that\nafter sentencing and until final judgment, a person shall be bailable if the sentence actually imposed is five years or less;\nprovides that the judge may grant bail if the sentence actually imposed exceeds imprisonment for five years. Proposed law\nis a constitutional amendment that provides that after conviction, a person shall not be bailable if the offense is an\naggravated offense under R.S. 15:541 committed against a victim who is a minor; it is to be submitted to voters at a\nstatewide election to be held on 11/03/26.\n\n\n\nEXPENDITURES             2026-27              2027-28              2028-29               2029-30               2030-31       5 -YEAR TOTAL\n\nState Gen. Fd.         SEE BELOW                    $0                    $0                      $0                 $0                     $0\n\nAgy. Self-Gen.                 $0                   $0                    $0                      $0                 $0                     $0\n\nDed./Other                     $0                   $0                    $0                      $0                 $0                     $0\n\nFederal Funds                  $0                   $0                    $0                      $0                 $0                     $0\n\nLocal Funds            SEE BELOW           SEE BELOW             SEE BELOW            SEE BELOW               SEE BELOW\n\nAnnual Total\n\nREVENUES                2026-27              2027-28               2028-29              2029-30                2030-31       5 -YEAR TOTAL\n\nState Gen. Fd.                 $0                   $0                    $0                      $0                 $0                     $0\n\nAgy. Self-Gen.                 $0                   $0                    $0                      $0                 $0                     $0\n\nDed./Other                     $0                   $0                    $0              ",
+            "page": null,
+            "section": "fiscal-note-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "fiscal-note-text-2",
+        "text": "        $0                 $0                     $0\n\nFederal Funds                  $0                   $0                    $0                      $0                 $0                     $0\n\nLocal Funds                    $0                   $0                    $0                      $0                 $0                     $0\n\nAnnual Total                   $0                   $0                    $0                      $0                 $0                     $0\nEXPENDITURE EXPLANATION\nLocal Sheriffs\nProposed law may result in an indeterminable increase in Local Funds expenditures for local governing authorities, to the\nextent that bail is not allowed for aggravated offenses committed against victims who are minors after conviction. Proposed\nlaw has the effect of eliminating the possibility for offenders charged with aggravated offenses against minors to receive bail,\nwhich will result in those offenders who are convicted being held in the custody of Local Sheriffs in parish jails prior to their\ntransfer to either state facilities or being housed as a state offender in a local jail. The exact fiscal impact is indeterminable,\nbecause it is unknown the number of instances in which offenders will be convicted of aggravated offenses against minors,\nnor how long they will be held in the custody of Local Sheriffs before being transferred.\nSecretary of State\nIn certain circumstances, the Secretary of State may incur minimal ballot processing costs associated with this measure. As\na regular practice, the department budgets for up to 10 constitutional amendments and statewide propositions for the fall\nstatewide elections. To the extent the ballot includes more than 10 constitutional amendments and statewide propositions,\nthe Secretary of State may require additional SGF resources for the 11/03/26 statewide election. Any expenditure impact\nwould be realized in FY 27.\n\nREVENUE EXPLANATION\nThere is no anticipated direct material effect on governmental revenues as a result of this measure.\n\n\n\n\nSenate           Dual Referral Rules                House\n    13.5.1 >= $100,000 Annual Fiscal Cost {S & H}        6.8(F)(1) >= $100,000 SGF Fiscal Cost {H & S}\n                                                                                                           Patrice Thomas\n    13.5.2 >= $500,000 Annual Tax or Fee                 6.8(G) >= $500,000 Tax or Fee Increase\n              Change {S & H}                                       or a Net Fee Decrease {S}               Deputy Fiscal Officer\n\f",
+        "supports": [
+          {
+            "sourceKey": "fiscal-note",
+            "normalizedSha256": "84dfc0c8a68670839ebd6393110dbd1e3247c00d8d3adad45bacf5b410aa2c84",
+            "start": 3500,
+            "end": 6043,
+            "excerpt": "        $0                 $0                     $0\n\nFederal Funds                  $0                   $0                    $0                      $0                 $0                     $0\n\nLocal Funds                    $0                   $0                    $0                      $0                 $0                     $0\n\nAnnual Total                   $0                   $0                    $0                      $0                 $0                     $0\nEXPENDITURE EXPLANATION\nLocal Sheriffs\nProposed law may result in an indeterminable increase in Local Funds expenditures for local governing authorities, to the\nextent that bail is not allowed for aggravated offenses committed against victims who are minors after conviction. Proposed\nlaw has the effect of eliminating the possibility for offenders charged with aggravated offenses against minors to receive bail,\nwhich will result in those offenders who are convicted being held in the custody of Local Sheriffs in parish jails prior to their\ntransfer to either state facilities or being housed as a state offender in a local jail. The exact fiscal impact is indeterminable,\nbecause it is unknown the number of instances in which offenders will be convicted of aggravated offenses against minors,\nnor how long they will be held in the custody of Local Sheriffs before being transferred.\nSecretary of State\nIn certain circumstances, the Secretary of State may incur minimal ballot processing costs associated with this measure. As\na regular practice, the department budgets for up to 10 constitutional amendments and statewide propositions for the fall\nstatewide elections. To the extent the ballot includes more than 10 constitutional amendments and statewide propositions,\nthe Secretary of State may require additional SGF resources for the 11/03/26 statewide election. Any expenditure impact\nwould be realized in FY 27.\n\nREVENUE EXPLANATION\nThere is no anticipated direct material effect on governmental revenues as a result of this measure.\n\n\n\n\nSenate           Dual Referral Rules                House\n    13.5.1 >= $100,000 Annual Fiscal Cost {S & H}        6.8(F)(1) >= $100,000 SGF Fiscal Cost {H & S}\n                                                                                                           Patrice Thomas\n    13.5.2 >= $500,000 Annual Tax or Fee                 6.8(G) >= $500,000 Tax or Fee Increase\n              Change {S & H}                                       or a Net Fee Decrease {S}               Deputy Fiscal Officer\n\f",
+            "page": null,
+            "section": "fiscal-note-text-2"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [],
+    "knownUnknowns": [
+      "These sources do not establish an individual household's tax or financial outcome."
+    ],
+    "nextActionClaimKeys": [
+      "election"
+    ],
+    "reviewedThrough": "2026-09-14",
+    "nextReviewAt": "2026-09-17",
+    "reviewResponsibility": "Public Parish owner",
+    "supportedQuestions": [
+      {
+        "question": "What would this amendment change?",
+        "claimKeys": [
+          "ballot-question",
+          "measure-identity",
+          "election",
+          "act-text-1"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Should I vote for this amendment?",
+        "reason": "Public Parish explains official evidence without voting recommendations."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

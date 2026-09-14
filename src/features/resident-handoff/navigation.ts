@@ -3,6 +3,8 @@ import type { EvidenceScenario } from '../evidence/contracts'
 const RESIDENT_ROUTES = [
   '/',
   '/ask',
+  '/ballot',
+  '/ballot/',
   '/coverage',
   '/coverage/request',
   '/decisions/',

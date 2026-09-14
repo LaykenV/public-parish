@@ -1,0 +1,188 @@
+{
+  "contractVersion": "2.0.0",
+  "bundleVersion": 1,
+  "bundleKey": "2026-amendment-10-overnight",
+  "supersedesBundleSha256": null,
+  "purpose": "research",
+  "story": {
+    "storyKey": "2026-amendment-10",
+    "slug": "2026-amendment-10",
+    "placement": "ballot",
+    "rank": 110,
+    "geography": [
+      {
+        "placeName": "Statewide",
+        "parish": "Louisiana",
+        "state": "Louisiana",
+        "precisionNotes": "Constitutional amendment submitted statewide; individual sample ballots include other contests."
+      }
+    ],
+    "topics": []
+  },
+  "sources": [
+    {
+      "sourceKey": "sos-ballot",
+      "bodyKey": "louisiana-secretary-of-state",
+      "bodyName": "Louisiana Secretary of State",
+      "title": "November 3, 2026 proposed constitutional amendments",
+      "url": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "finalUrl": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+        "sha256": "cc60d4aac717bb761819109191482625168d78333abf27d69a95f9a8e68d954e",
+        "bytes": 129088,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "research:sos",
+        "sha256": "d6fc04ce56d88e5969ab7589423abc96c4efc2665cee908610ea7da00909fbbc",
+        "bytes": 8194,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "manual_file",
+        "retrievedAt": "2026-09-14T04:11:24.295394+00:00",
+        "providerReference": null,
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Research download of complete official PDF. Must retrieve through Firecrawl and rebind exact spans before publication.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "act",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Enrolled Act 272 of 2026",
+      "url": "https://legis.la.gov/legis/ViewDocument.aspx?d=1475810",
+      "finalUrl": "https://legis.la.gov/legis/ViewDocument.aspx?d=1475810",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "https://legis.la.gov/legis/ViewDocument.aspx?d=1475810",
+        "sha256": "9caa8d173946366a11ee5bb6dd8f2cec8c0719b9e83d28a04f6c732168c8a138",
+        "bytes": 44369,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "research:act-10",
+        "sha256": "64506288ef121380cef6659d577b0b92ee71e7257b9b5d195041ac51b78fbc56",
+        "bytes": 3975,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "manual_file",
+        "retrievedAt": "2026-09-14T04:11:24.295394+00:00",
+        "providerReference": null,
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Research download of complete official PDF. Must retrieve through Firecrawl and rebind exact spans before publication.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "Property tax exemptions for rehabilitated blighted property",
+    "proposedSummary": "Explain the exact ballot question, proposed constitutional change, eligibility and limits from the enrolled Act.",
+    "claims": [
+      {
+        "claimKey": "ballot-question",
+        "text": "Do you support an amendment to allow property tax exemptions for blighted or derelict properties that have been\nrehabilitated, and to require the legislature to enact laws providing for administration of these exemptions? (Effective\nJanuary 1, 2027) (Adds Article VII, Section 21(P))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "d6fc04ce56d88e5969ab7589423abc96c4efc2665cee908610ea7da00909fbbc",
+            "start": 7907,
+            "end": 8190,
+            "excerpt": "Do you support an amendment to allow property tax exemptions for blighted or derelict properties that have been\nrehabilitated, and to require the legislature to enact laws providing for administration of these exemptions? (Effective\nJanuary 1, 2027) (Adds Article VII, Section 21(P))",
+            "page": null,
+            "section": "ballot-question"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-1",
+        "text": "                                                                                     ENROLLED\n\n     2026 Regular Session\n                                                                    ACT No. 272\n     HOUSE BILL NO. 214\n\n     BY REPRESENTATIVES CHANCE HENRY AND CHASSION AND SENATORS\n          BARROW, BOUDREAUX, JACKSON-ANDREWS, JENKINS, AND PRICE\n\n\n\n\n 1                                     A JOINT RESOLUTION\n\n 2   Proposing to add Article VII, Section 21(P) of the Constitution of Louisiana, relative to ad\n\n 3          valorem taxes; to authorize the exemption of certain property from ad valorem taxes\n\n 4          subject to conditions provided in law; to require the legislature to enact laws relative\n\n 5          to implementation of the exemption; to provide for applicability; to provide for an\n\n 6          effective date; to provide for submission of the proposed amendment to the electors;\n\n 7          and to provide for related matters.\n\n 8          Section 1. Be it resolved by the Legislature of Louisiana, two-thirds of the members\n\n 9   elected to each house concurring, that there shall be submitted to the electors of the state of\n\n10   Louisiana, for their approval or rejection in the manner provided by law, a proposal to add\n\n11   Article VII, Section 21(P) of the Constitution of Louisiana, to read as follows:\n\n12          §21. Other Property Exemptions\n\n13                  Section 21. In addition to the homestead exemption provided for in Section\n\n14          20 of this Article, the following property and no other shall be exempt from ad\n\n15          valorem taxation:\n\n16                                         *       *         *\n\n17                  (P) There shall be an optional ad valorem tax exemption for blighted or\n\n18          derelict property that has been rehabilitated. The legislature shall enact laws\n\n19          defining blighted property, derelict property, and any other terms as may be\n\n20          necessary for implementing the exemption provided for in this Paragraph. The\n\n21          legislature shall establish in law the term of the exemption and the conditions,\n\n22          requirements, and procedures necessary for a political subdivision to administer the\n\n23          exemption.\n\n\n\n\n                                               Page 1 of 2\n\n     CODING: Words in struck through type are deletions from existing law; words underscored\n     are additions.\n\f     HB NO. 214                                                                       ENROLLED\n\n 1           Section 2. Be it further resolved that the provisions of the amendment contained in\n\n 2   this Joint Resolution shall become effective on January 1, 2027, and apply to tax years\n\n 3   beginning on or after January 1, 2027.\n\n 4           Section 3. Be it further resolved that this proposed amendment shall be submitted\n\n 5   to the electors of the state of Louisiana at the statewide election to be held on November 3,\n\n 6   2026.\n\n 7           Section 4. Be it further resolved that on the official ballot to be used at the election,\n\n 8   there shall be printed a proposition, upon which the electors of the state shall be permitted\n\n 9   to vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\n\n10   follows:\n\n11                   Do you support an amendment to allow property tax exemptions for blighted\n\n12                   or derelict properties that have been rehabilitated, and to require the\n\n13                   l",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "64506288ef121380cef6659d577b0b92ee71e7257b9b5d195041ac51b78fbc56",
+            "start": 0,
+            "end": 3500,
+            "excerpt": "                                                                                     ENROLLED\n\n     2026 Regular Session\n                                                                    ACT No. 272\n     HOUSE BILL NO. 214\n\n     BY REPRESENTATIVES CHANCE HENRY AND CHASSION AND SENATORS\n          BARROW, BOUDREAUX, JACKSON-ANDREWS, JENKINS, AND PRICE\n\n\n\n\n 1                                     A JOINT RESOLUTION\n\n 2   Proposing to add Article VII, Section 21(P) of the Constitution of Louisiana, relative to ad\n\n 3          valorem taxes; to authorize the exemption of certain property from ad valorem taxes\n\n 4          subject to conditions provided in law; to require the legislature to enact laws relative\n\n 5          to implementation of the exemption; to provide for applicability; to provide for an\n\n 6          effective date; to provide for submission of the proposed amendment to the electors;\n\n 7          and to provide for related matters.\n\n 8          Section 1. Be it resolved by the Legislature of Louisiana, two-thirds of the members\n\n 9   elected to each house concurring, that there shall be submitted to the electors of the state of\n\n10   Louisiana, for their approval or rejection in the manner provided by law, a proposal to add\n\n11   Article VII, Section 21(P) of the Constitution of Louisiana, to read as follows:\n\n12          §21. Other Property Exemptions\n\n13                  Section 21. In addition to the homestead exemption provided for in Section\n\n14          20 of this Article, the following property and no other shall be exempt from ad\n\n15          valorem taxation:\n\n16                                         *       *         *\n\n17                  (P) There shall be an optional ad valorem tax exemption for blighted or\n\n18          derelict property that has been rehabilitated. The legislature shall enact laws\n\n19          defining blighted property, derelict property, and any other terms as may be\n\n20          necessary for implementing the exemption provided for in this Paragraph. The\n\n21          legislature shall establish in law the term of the exemption and the conditions,\n\n22          requirements, and procedures necessary for a political subdivision to administer the\n\n23          exemption.\n\n\n\n\n                                               Page 1 of 2\n\n     CODING: Words in struck through type are deletions from existing law; words underscored\n     are additions.\n\f     HB NO. 214                                                                       ENROLLED\n\n 1           Section 2. Be it further resolved that the provisions of the amendment contained in\n\n 2   this Joint Resolution shall become effective on January 1, 2027, and apply to tax years\n\n 3   beginning on or after January 1, 2027.\n\n 4           Section 3. Be it further resolved that this proposed amendment shall be submitted\n\n 5   to the electors of the state of Louisiana at the statewide election to be held on November 3,\n\n 6   2026.\n\n 7           Section 4. Be it further resolved that on the official ballot to be used at the election,\n\n 8   there shall be printed a proposition, upon which the electors of the state shall be permitted\n\n 9   to vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\n\n10   follows:\n\n11                   Do you support an amendment to allow property tax exemptions for blighted\n\n12                   or derelict properties that have been rehabilitated, and to require the\n\n13                   l",
+            "page": null,
+            "section": "act-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-2",
+        "text": "egislature to enact laws providing for administration of these exemptions?\n\n14                   (Effective January 1, 2027) (Adds Article VII, Section 21(P))\n\n\n\n\n                                 SPEAKER OF THE HOUSE OF REPRESENTATIVES\n\n\n\n                                 PRESIDENT OF THE SENATE\n\n\n\n\n                                               Page 2 of 2\n\n     CODING: Words in struck through type are deletions from existing law; words underscored\n     are additions.\n\f",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "64506288ef121380cef6659d577b0b92ee71e7257b9b5d195041ac51b78fbc56",
+            "start": 3500,
+            "end": 3974,
+            "excerpt": "egislature to enact laws providing for administration of these exemptions?\n\n14                   (Effective January 1, 2027) (Adds Article VII, Section 21(P))\n\n\n\n\n                                 SPEAKER OF THE HOUSE OF REPRESENTATIVES\n\n\n\n                                 PRESIDENT OF THE SENATE\n\n\n\n\n                                               Page 2 of 2\n\n     CODING: Words in struck through type are deletions from existing law; words underscored\n     are additions.\n\f",
+            "page": null,
+            "section": "act-text-2"
+          }
+        ]
+      },
+      {
+        "claimKey": "election",
+        "text": "                                  SECRETARY OF STATE\n                                        STATE OF LOUISIANA\n\n                2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n                          November 3, 2026 Election\n    The constitutional amendments that will be on the ballot for the November 3, 2026 election are listed below.\n            Click on the Act number link to read the complete text of the Act on the Legislature’s Website.\n ",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "d6fc04ce56d88e5969ab7589423abc96c4efc2665cee908610ea7da00909fbbc",
+            "start": 0,
+            "end": 443,
+            "excerpt": "                                  SECRETARY OF STATE\n                                        STATE OF LOUISIANA\n\n                2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n                          November 3, 2026 Election\n    The constitutional amendments that will be on the ballot for the November 3, 2026 election are listed below.\n            Click on the Act number link to read the complete text of the Act on the Legislature’s Website.\n ",
+            "page": null,
+            "section": "election"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [],
+    "knownUnknowns": [
+      "No official fiscal note has yet been retained for this explanation. The accepted sources do not establish an individual household's tax or financial outcome."
+    ],
+    "nextActionClaimKeys": [
+      "election"
+    ],
+    "reviewedThrough": "2026-09-14",
+    "nextReviewAt": "2026-09-17",
+    "reviewResponsibility": "Public Parish owner",
+    "supportedQuestions": [
+      {
+        "question": "What would this amendment change?",
+        "claimKeys": [
+          "ballot-question",
+          "act-text-1",
+          "act-text-2",
+          "election"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Should I vote for this amendment?",
+        "reason": "Public Parish explains official evidence without voting recommendations."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

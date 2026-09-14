@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-14T03:20:15Z
+- **Last updated:** 2026-09-14T05:36:35Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2233,3 +2233,19 @@ selected Home. Choose area sits under the statewide story introduction with
 the same plain-link styling as View Statewide Stories. Both typechecks, build,
 targeted lint, 42 unit tests and twelve Home browser checks passed. This
 follow-up is local and has not been committed or deployed.
+
+
+### 2026-09-14 - working tree, statewide decisions and ballot guide in development
+
+Published ten reviewed November 3 amendment explanations in development through
+the existing immutable story pipeline. Exact numbered SOS wording, ten Acts,
+fiscal notes and two targeted supporting documents feed shared Ask and follows.
+The LPSC development compile passed all ten gates and produced four accepted
+records. Preserved the three featured stories and prepared the September 16
+Meta watch without claiming its outcome. Local validation passed 738 tests,
+typechecks, build and lint with 15 existing warnings. Uploaded the tested dev
+build; all 76 hosted code files match and 26 direct browser checks pass. Across
+the resident, reading and owner suites, 179 checks pass with one intentional
+skip after the documented reruns. The
+[morning report](docs/upgrade-morning-report.md) records the complete receipts,
+remaining QA and production gates. Work is uncommitted and production is unchanged.

@@ -28,6 +28,7 @@ http.route({ pathPrefix: '/coverage/unsubscribe/', method: 'POST', handler: unsu
 
 http.route({ pathPrefix: '/share/issues/', method: 'GET', handler: shareIssue })
 
+http.route({ pathPrefix: '/ballot/', method: 'GET', handler: shareStory })
 http.route({ pathPrefix: '/stories/', method: 'GET', handler: shareStory })
 
 http.route({ pathPrefix: '/share/stories/', method: 'GET', handler: shareStory })

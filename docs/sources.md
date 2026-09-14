@@ -112,6 +112,11 @@ The November 3, 2026 list is the
 [Secretary of State's proposed constitutional amendments](https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf),
 ten measures under Acts 39, 273, 271, 414, 606, 274, 607, 277 and 272 of 2026
 and Act 220 of 2025. Parish propositions require separate verification.
+The development manifests retain all ten Acts, seven enrolled fiscal notes, the enrolled actuarial note
+for HB27 and R.S. 15:541 for the definition referenced by Amendment 3.
+The latter two are official Legislature-hosted records. See the
+[development report](upgrade-morning-report.md) for the exact manifest versions
+and the parish research limits.
 
 ## Source dossier and import contract
 
@@ -198,7 +203,7 @@ consist of an unexplained source-only stub.
 ## Evidence assets to preserve
 
 - [Initial gold set](gold-sets/lafayette-city-council.v1.json).
-- [Current coverage gold set](coverage-gold-sets/launch-bodies.v5.json) and prior
+- [Current coverage gold set](coverage-gold-sets/launch-bodies.v4.json) and prior
   versions in the same directory.
 - [Initial production batch](production-batches/launch-data-2026-08-31.v1.json).
 - [Lafayette source recovery](source-spikes/lafayette-planning-recovery-2026-09-06.md),

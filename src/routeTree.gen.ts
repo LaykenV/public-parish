@@ -18,6 +18,8 @@ import { Route as ForYouRouteImport } from './routes/for-you'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as IssuesRouteImport } from './routes/issues_'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as BallotIndexRouteImport } from './routes/ballot.index'
+import { Route as BallotMeasureSlugRouteImport } from './routes/ballot.$measureSlug'
 import { Route as CoverageRequestRouteImport } from './routes/coverage_.request'
 import { Route as DecisionsRecordKeyRouteImport } from './routes/decisions.$recordKey'
 import { Route as FollowingAreasAndTopicsRouteImport } from './routes/following_.areas-and-topics'
@@ -72,6 +74,16 @@ const IssuesRoute = IssuesRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BallotIndexRoute = BallotIndexRouteImport.update({
+  id: '/ballot/',
+  path: '/ballot/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BallotMeasureSlugRoute = BallotMeasureSlugRouteImport.update({
+  id: '/ballot/$measureSlug',
+  path: '/ballot/$measureSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CoverageRequestRoute = CoverageRequestRouteImport.update({
@@ -135,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/how-it-works': typeof HowItWorksRoute
   '/issues': typeof IssuesRoute
   '/privacy': typeof PrivacyRoute
+  '/ballot/$measureSlug': typeof BallotMeasureSlugRoute
   '/coverage/request': typeof CoverageRequestRoute
   '/decisions/$recordKey': typeof DecisionsRecordKeyRoute
   '/following/areas-and-topics': typeof FollowingAreasAndTopicsRoute
@@ -144,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/operations/coverage': typeof OperationsCoverageRoute
   '/operations/stories': typeof OperationsStoriesRoute
   '/stories/$storySlug': typeof StoriesStorySlugRoute
+  '/ballot/': typeof BallotIndexRoute
   '/email/manage/$token': typeof EmailManageTokenRoute
 }
 export interface FileRoutesByTo {
@@ -156,6 +170,7 @@ export interface FileRoutesByTo {
   '/how-it-works': typeof HowItWorksRoute
   '/issues': typeof IssuesRoute
   '/privacy': typeof PrivacyRoute
+  '/ballot/$measureSlug': typeof BallotMeasureSlugRoute
   '/coverage/request': typeof CoverageRequestRoute
   '/decisions/$recordKey': typeof DecisionsRecordKeyRoute
   '/following/areas-and-topics': typeof FollowingAreasAndTopicsRoute
@@ -165,6 +180,7 @@ export interface FileRoutesByTo {
   '/operations/coverage': typeof OperationsCoverageRoute
   '/operations/stories': typeof OperationsStoriesRoute
   '/stories/$storySlug': typeof StoriesStorySlugRoute
+  '/ballot': typeof BallotIndexRoute
   '/email/manage/$token': typeof EmailManageTokenRoute
 }
 export interface FileRoutesById {
@@ -178,6 +194,7 @@ export interface FileRoutesById {
   '/how-it-works': typeof HowItWorksRoute
   '/issues_': typeof IssuesRoute
   '/privacy': typeof PrivacyRoute
+  '/ballot/$measureSlug': typeof BallotMeasureSlugRoute
   '/coverage_/request': typeof CoverageRequestRoute
   '/decisions/$recordKey': typeof DecisionsRecordKeyRoute
   '/following_/areas-and-topics': typeof FollowingAreasAndTopicsRoute
@@ -187,6 +204,7 @@ export interface FileRoutesById {
   '/operations_/coverage': typeof OperationsCoverageRoute
   '/operations_/stories': typeof OperationsStoriesRoute
   '/stories/$storySlug': typeof StoriesStorySlugRoute
+  '/ballot/': typeof BallotIndexRoute
   '/email/manage/$token': typeof EmailManageTokenRoute
 }
 export interface FileRouteTypes {
@@ -201,6 +219,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/issues'
     | '/privacy'
+    | '/ballot/$measureSlug'
     | '/coverage/request'
     | '/decisions/$recordKey'
     | '/following/areas-and-topics'
@@ -210,6 +229,7 @@ export interface FileRouteTypes {
     | '/operations/coverage'
     | '/operations/stories'
     | '/stories/$storySlug'
+    | '/ballot/'
     | '/email/manage/$token'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -222,6 +242,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/issues'
     | '/privacy'
+    | '/ballot/$measureSlug'
     | '/coverage/request'
     | '/decisions/$recordKey'
     | '/following/areas-and-topics'
@@ -231,6 +252,7 @@ export interface FileRouteTypes {
     | '/operations/coverage'
     | '/operations/stories'
     | '/stories/$storySlug'
+    | '/ballot'
     | '/email/manage/$token'
   id:
     | '__root__'
@@ -243,6 +265,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/issues_'
     | '/privacy'
+    | '/ballot/$measureSlug'
     | '/coverage_/request'
     | '/decisions/$recordKey'
     | '/following_/areas-and-topics'
@@ -252,6 +275,7 @@ export interface FileRouteTypes {
     | '/operations_/coverage'
     | '/operations_/stories'
     | '/stories/$storySlug'
+    | '/ballot/'
     | '/email/manage/$token'
   fileRoutesById: FileRoutesById
 }
@@ -265,6 +289,7 @@ export interface RootRouteChildren {
   HowItWorksRoute: typeof HowItWorksRoute
   IssuesRoute: typeof IssuesRoute
   PrivacyRoute: typeof PrivacyRoute
+  BallotMeasureSlugRoute: typeof BallotMeasureSlugRoute
   CoverageRequestRoute: typeof CoverageRequestRoute
   DecisionsRecordKeyRoute: typeof DecisionsRecordKeyRoute
   FollowingAreasAndTopicsRoute: typeof FollowingAreasAndTopicsRoute
@@ -274,6 +299,7 @@ export interface RootRouteChildren {
   OperationsCoverageRoute: typeof OperationsCoverageRoute
   OperationsStoriesRoute: typeof OperationsStoriesRoute
   StoriesStorySlugRoute: typeof StoriesStorySlugRoute
+  BallotIndexRoute: typeof BallotIndexRoute
   EmailManageTokenRoute: typeof EmailManageTokenRoute
 }
 
@@ -340,6 +366,20 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ballot/': {
+      id: '/ballot/'
+      path: '/ballot'
+      fullPath: '/ballot/'
+      preLoaderRoute: typeof BallotIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ballot/$measureSlug': {
+      id: '/ballot/$measureSlug'
+      path: '/ballot/$measureSlug'
+      fullPath: '/ballot/$measureSlug'
+      preLoaderRoute: typeof BallotMeasureSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/coverage_/request': {
@@ -425,6 +465,7 @@ const rootRouteChildren: RootRouteChildren = {
   HowItWorksRoute: HowItWorksRoute,
   IssuesRoute: IssuesRoute,
   PrivacyRoute: PrivacyRoute,
+  BallotMeasureSlugRoute: BallotMeasureSlugRoute,
   CoverageRequestRoute: CoverageRequestRoute,
   DecisionsRecordKeyRoute: DecisionsRecordKeyRoute,
   FollowingAreasAndTopicsRoute: FollowingAreasAndTopicsRoute,
@@ -434,6 +475,7 @@ const rootRouteChildren: RootRouteChildren = {
   OperationsCoverageRoute: OperationsCoverageRoute,
   OperationsStoriesRoute: OperationsStoriesRoute,
   StoriesStorySlugRoute: StoriesStorySlugRoute,
+  BallotIndexRoute: BallotIndexRoute,
   EmailManageTokenRoute: EmailManageTokenRoute,
 }
 export const routeTree = rootRouteImport

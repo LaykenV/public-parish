@@ -1,0 +1,188 @@
+{
+  "contractVersion": "2.0.0",
+  "bundleVersion": 3,
+  "bundleKey": "2026-amendment-8-overnight",
+  "supersedesBundleSha256": "9884f767f05e34a4f9cbaed47280c844f1ffcf49c0d0ca3af832c1434741f9ac",
+  "purpose": "research",
+  "story": {
+    "storyKey": "2026-amendment-8",
+    "slug": "2026-amendment-8",
+    "placement": "ballot",
+    "rank": 108,
+    "geography": [
+      {
+        "placeName": "Statewide",
+        "parish": "Louisiana",
+        "state": "Louisiana",
+        "precisionNotes": "Constitutional amendment submitted statewide; individual sample ballots include other contests."
+      }
+    ],
+    "topics": []
+  },
+  "sources": [
+    {
+      "sourceKey": "sos-ballot",
+      "bodyKey": "louisiana-secretary-of-state",
+      "bodyName": "Louisiana Secretary of State",
+      "title": "November 3, 2026 proposed constitutional amendments",
+      "url": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "finalUrl": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "cc60d4aac717bb761819109191482625168d78333abf27d69a95f9a8e68d954e",
+        "bytes": 129088,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+        "bytes": 8227,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:12:08.879000+00:00",
+        "providerReference": "js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "act",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Enrolled Act 277 of 2026",
+      "url": "https://legis.la.gov/legis/ViewDocument.aspx?d=1476539",
+      "finalUrl": "https://legis.la.gov/legis/ViewDocument.aspx?d=1476539",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js7c2nzq9az0vrg4na2y00m49x8ec22p",
+        "sha256": "4a4389541ba1542efc5c55cbba6a2d2d4a25da87e06abc73058f783681540d32",
+        "bytes": 43485,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js7c2nzq9az0vrg4na2y00m49x8ec22p",
+        "sha256": "396a05f94cb598d561c1bb416a09c6e9a71077a004e0332e497e9d49d50c1ee3",
+        "bytes": 2193,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:16:21.131000+00:00",
+        "providerReference": "js7c2nzq9az0vrg4na2y00m49x8ec22p",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "Expropriation by foreign adversaries",
+    "proposedSummary": "Explain the exact ballot question, proposed constitutional change, eligibility and limits from the enrolled Act.",
+    "claims": [
+      {
+        "claimKey": "ballot-question",
+        "text": "Do you support an amendment to prohibit expropriation of property by a foreign adversary or an agent of a foreign adversary? (Amends Article I, Section 4(B)(4))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 6385,
+            "end": 6547,
+            "excerpt": "Do you support an amendment to prohibit expropriation of property by a foreign adversary or an agent of a foreign* *adversary? (Amends Article I, Section 4(B)(4))",
+            "page": null,
+            "section": "ballot-question"
+          }
+        ]
+      },
+      {
+        "claimKey": "measure-identity",
+        "text": "Proposed Amendment No. 8\n\n<u>Act 277 (2026 Regular Session)</u>- Proposing to amend Article I, Section 4(B)(4) of the Constitution of Louisiana, relative to the right to property; to prohibit expropriation by foreign adversaries; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to prohibit expropriation of property by a foreign adversary or an agent of a foreign* *adversary? (Amends Article I, Section 4(B)(4))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 6048,
+            "end": 6547,
+            "excerpt": "Proposed Amendment No. 8\n\n<u>Act 277 (2026 Regular Session)</u>- Proposing to amend Article I, Section 4(B)(4) of the Constitution of Louisiana, relative to the right to property; to prohibit expropriation by foreign adversaries; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to prohibit expropriation of property by a foreign adversary or an agent of a foreign* *adversary? (Amends Article I, Section 4(B)(4))",
+            "page": null,
+            "section": "measure-identity"
+          }
+        ]
+      },
+      {
+        "claimKey": "election",
+        "text": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 0,
+            "end": 333,
+            "excerpt": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+            "page": null,
+            "section": "election"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-1",
+        "text": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n\n2026 Regular Session\n\n## ACT No. 277 2026 Regular Session\n\n# ACT No. 277\n\nHOUSE BILL NO. 192\n\nBY REPRESENTATIVE  OWEN  AND  SENATORS  ALLAIN,  BARROW,  BASS,\nCATHEY,  CLOUD,  EDMONDS,  FESI,  HODGES,  JACKSON-ANDREWS,\nMIGUEZ, PRESSLY, SEABAUGH, AND WHEAT\n\n## A JOINT RESOLUTION\n\nProposing to amend Article I, Section 4(B)(4) of the Constitution of Louisiana, relative to\nthe right to property; to prohibit expropriation by foreign adversaries; to provide for\nsubmission of the proposed amendment to the electors; and to provide for related\nmatters.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana,  for their approval or rejection in the manner provided by law, a proposal to\namend Article I, Section 4(B)(4) of the Constitution of Louisiana, to read as follows:\n\n§4.  Right to Property\n\nSection 4.\n\n*          *          *\n\n(B)\n\n(4)  Property shall not be taken or damaged by any private entity authorized\nby law  to expropriate,  except  for  a  public  and  necessary purpose  and  with  just\ncompensation paid to the owner; in such proceedings, whether the purpose is public\nand  necessary shall  be  a  judicial  question. No  private  entity that  is  a  foreign\nadversary or an agent of a foreign adversary, as defined by law, shall take or damage\nproperty.\n\nSection 2.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n\nSection 3.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\nDo you support an amendment to prohibit expropriation of property by a\nforeign adversary or an agent of a foreign adversary?\n\n(Amends Article I, Section 4(B)(4))\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "396a05f94cb598d561c1bb416a09c6e9a71077a004e0332e497e9d49d50c1ee3",
+            "start": 0,
+            "end": 2192,
+            "excerpt": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n\n2026 Regular Session\n\n## ACT No. 277 2026 Regular Session\n\n# ACT No. 277\n\nHOUSE BILL NO. 192\n\nBY REPRESENTATIVE  OWEN  AND  SENATORS  ALLAIN,  BARROW,  BASS,\nCATHEY,  CLOUD,  EDMONDS,  FESI,  HODGES,  JACKSON-ANDREWS,\nMIGUEZ, PRESSLY, SEABAUGH, AND WHEAT\n\n## A JOINT RESOLUTION\n\nProposing to amend Article I, Section 4(B)(4) of the Constitution of Louisiana, relative to\nthe right to property; to prohibit expropriation by foreign adversaries; to provide for\nsubmission of the proposed amendment to the electors; and to provide for related\nmatters.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana,  for their approval or rejection in the manner provided by law, a proposal to\namend Article I, Section 4(B)(4) of the Constitution of Louisiana, to read as follows:\n\n§4.  Right to Property\n\nSection 4.\n\n*          *          *\n\n(B)\n\n(4)  Property shall not be taken or damaged by any private entity authorized\nby law  to expropriate,  except  for  a  public  and  necessary purpose  and  with  just\ncompensation paid to the owner; in such proceedings, whether the purpose is public\nand  necessary shall  be  a  judicial  question. No  private  entity that  is  a  foreign\nadversary or an agent of a foreign adversary, as defined by law, shall take or damage\nproperty.\n\nSection 2.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n\nSection 3.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\nDo you support an amendment to prohibit expropriation of property by a\nforeign adversary or an agent of a foreign adversary?\n\n(Amends Article I, Section 4(B)(4))\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+            "page": null,
+            "section": "act-text-1"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [],
+    "knownUnknowns": [
+      "No official fiscal note has yet been retained for this explanation. The accepted sources do not establish an individual household's tax or financial outcome."
+    ],
+    "nextActionClaimKeys": [
+      "election"
+    ],
+    "reviewedThrough": "2026-09-14",
+    "nextReviewAt": "2026-09-17",
+    "reviewResponsibility": "Public Parish owner",
+    "supportedQuestions": [
+      {
+        "question": "What would this amendment change?",
+        "claimKeys": [
+          "ballot-question",
+          "measure-identity",
+          "election",
+          "act-text-1"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Should I vote for this amendment?",
+        "reason": "Public Parish explains official evidence without voting recommendations."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

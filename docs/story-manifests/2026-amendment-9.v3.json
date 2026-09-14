@@ -1,0 +1,270 @@
+{
+  "contractVersion": "2.0.0",
+  "bundleVersion": 3,
+  "bundleKey": "2026-amendment-9-overnight",
+  "supersedesBundleSha256": "81e379b1042946bb8668868ca473585b68d6ba92129ca94c7c0f4f9c3b36f0c6",
+  "purpose": "research",
+  "story": {
+    "storyKey": "2026-amendment-9",
+    "slug": "2026-amendment-9",
+    "placement": "ballot",
+    "rank": 109,
+    "geography": [
+      {
+        "placeName": "Statewide",
+        "parish": "Louisiana",
+        "state": "Louisiana",
+        "precisionNotes": "Constitutional amendment submitted statewide; individual sample ballots include other contests."
+      }
+    ],
+    "topics": []
+  },
+  "sources": [
+    {
+      "sourceKey": "sos-ballot",
+      "bodyKey": "louisiana-secretary-of-state",
+      "bodyName": "Louisiana Secretary of State",
+      "title": "November 3, 2026 proposed constitutional amendments",
+      "url": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "finalUrl": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "cc60d4aac717bb761819109191482625168d78333abf27d69a95f9a8e68d954e",
+        "bytes": 129088,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+        "bytes": 8227,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:12:08.879000+00:00",
+        "providerReference": "js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "act",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Enrolled Act 220 of 2025",
+      "url": "https://legis.la.gov/legis/ViewDocument.aspx?d=1425422",
+      "finalUrl": "https://legis.la.gov/legis/ViewDocument.aspx?d=1425422",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js73e1p40fyrqr34h0xvv3cr7n8edk15",
+        "sha256": "1d69b81cee2eea94ac52059e3b5680fa9062059a82955036f42cc1bf8fcbc82f",
+        "bytes": 47156,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js73e1p40fyrqr34h0xvv3cr7n8edk15",
+        "sha256": "3a21743cb6c1d0193dd5775d5030fa35a6fbf0068252d3d059745ba3bbd07687",
+        "bytes": 3910,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:16:39.170000+00:00",
+        "providerReference": "js73e1p40fyrqr34h0xvv3cr7n8edk15",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "fiscal-note",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Fiscal Note - HB300 Enrolled",
+      "url": "https://www.legis.la.gov/legis/ViewDocument.aspx?d=1423903",
+      "finalUrl": "https://www.legis.la.gov/legis/ViewDocument.aspx?d=1423903",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js79wskzg6bcbrwdd60hmansjh8ecs68",
+        "sha256": "e61b84d374032ad6d58439ec8364e3816c9d75599ec898aacb0821ea0c3748a3",
+        "bytes": 212892,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js79wskzg6bcbrwdd60hmansjh8ecs68",
+        "sha256": "ac31fe0b81ca8fa5a159751b8d9e73e49c16cf9d28a1ba1224c75d48de127662",
+        "bytes": 5247,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:20:36.544000+00:00",
+        "providerReference": "js79wskzg6bcbrwdd60hmansjh8ecs68",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "Income limit for the special assessment level",
+    "proposedSummary": "Explain the exact ballot question, proposed constitutional change, eligibility and limits from the enrolled Act.",
+    "claims": [
+      {
+        "claimKey": "ballot-question",
+        "text": "Do you support an amendment to increase the maximum amount of income a person may receive and still qualify for the special assessment level for residential property receiving the homestead exemption? (Effective January 1, 2027) (Amends Article VII, Section 18(G)(1)(a)(ii))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 7112,
+            "end": 7390,
+            "excerpt": "Do you support an amendment to increase the maximum amount of income a person may receive and still qualify for the* *special assessment level for residential property receiving the homestead exemption? (Effective January 1, 2027) (Amends* *Article VII, Section 18(G)(1)(a)(ii))",
+            "page": null,
+            "section": "ballot-question"
+          }
+        ]
+      },
+      {
+        "claimKey": "measure-identity",
+        "text": "Proposed Amendment No. 9\n\n<u>Act 220 (2025 Regular Session)</u>- Proposing to amend Article VII, Section 18(G)(1)(a)(ii) of the Constitution of Louisiana, relative to ad valorem taxation; to provide for assessment of property for ad valorem tax purposes; to provide with respect to the special assessment level; to provide with respect to the income limit associated with qualifying for the special assessment level; to provide for an effective date; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to increase the maximum amount of income a person may receive and still qualify for the* *special assessment level for residential property receiving the homestead exemption? (Effective January 1, 2027) (Amends* *Article VII, Section 18(G)(1)(a)(ii))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 6554,
+            "end": 7390,
+            "excerpt": "Proposed Amendment No. 9\n\n<u>Act 220 (2025 Regular Session)</u>- Proposing to amend Article VII, Section 18(G)(1)(a)(ii) of the Constitution of Louisiana, relative to ad valorem taxation; to provide for assessment of property for ad valorem tax purposes; to provide with respect to the special assessment level; to provide with respect to the income limit associated with qualifying for the special assessment level; to provide for an effective date; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to increase the maximum amount of income a person may receive and still qualify for the* *special assessment level for residential property receiving the homestead exemption? (Effective January 1, 2027) (Amends* *Article VII, Section 18(G)(1)(a)(ii))",
+            "page": null,
+            "section": "measure-identity"
+          }
+        ]
+      },
+      {
+        "claimKey": "election",
+        "text": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 0,
+            "end": 333,
+            "excerpt": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+            "page": null,
+            "section": "election"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-1",
+        "text": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n\n## ACT No. 220 2025 Regular Session\n\nHOUSE BILL NO. 300\n\nBY REPRESENTATIVE MACK\n\n## A JOINT RESOLUTION\n\nProposing to amend Article VII, Section 18(G)(1)(a)(ii) of the Constitution of Louisiana,\nrelative to ad valorem taxation; to provide for assessment of property for ad valorem\ntax purposes; to provide with respect to the special assessment level; to provide with\nrespect to the income limit associated with qualifying for the special assessment\nlevel; to provide for an effective date; to provide for submission of the proposed\namendment to the electors; and to provide for related matters.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana,  for their approval or rejection in the manner provided by law,  a proposal to\namend  Article  VII,  Section 18(G)(1)(a)(ii)  of  the  Constitution  of  Louisiana,  to  read as\nfollows:\n\n## §18. Ad Valorem Taxes\n\nSection 18.\n\n(G)  Special Assessment Level.\n\n(1)(a)\n\n(ii)  Any person or persons shall be prohibited from receiving the special\nassessment as provided in this Section if such person's or persons' adjusted gross\nincome, as reported in the federal tax return for the year prior to the application for\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n\nthe special assessment,  exceeds one hundred fifty thousand dollars. For persons\napplying for the special assessment whose filing status is married filing separately,\nthe  adjusted  gross  income  for  purposes of this  Section  shall  be  determined  by\ncombining the adjusted gross income on both federal tax returns. The assessor may\nestablish  an  applicant's  income  eligibility for  the  special  assessment  level  by\nverifying the applicant's federal adjusted gross income as reported on the Louisiana\nincome tax return for the year prior to the application. Beginning for the tax year\n2026 2028 and for each tax year thereafter, the one hundred fifty thousand dollar\nlimit shall be adjusted annually by the  Consumer  Price  Index as reported by the\nUnited States Government. Notwithstanding anyprovision of this constitution to the\ncontrary,  a decrease in the total amount of ad valorem tax collected by a taxing\nauthority as a result of the special assessment level shall be absorbed by the taxing\nauthority and shall not create any additional tax liability for other taxpayers in the\ntaxing district as a result of any subsequent reappraisal and valuation or millage\nadjustment.  Implementation of the special assessment level shall neither trigger nor\nbe cause for a reappraisal of property or an adjustment of millages pursuant to the\nprovisions of Article VII, Section 23(B) of this constitution.\n\nSection 2.  Be it further resolved that the provisions of the amendment contained in\nthis Joint Resolution shall become effective on January 1, 2027, and shall be applicable to\nall tax years beginning on or after January 1, 2027.\n\nSection 3.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\nSection 4.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "3a21743cb6c1d0193dd5775d5030fa35a6fbf0068252d3d059745ba3bbd07687",
+            "start": 0,
+            "end": 3500,
+            "excerpt": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n\n## ACT No. 220 2025 Regular Session\n\nHOUSE BILL NO. 300\n\nBY REPRESENTATIVE MACK\n\n## A JOINT RESOLUTION\n\nProposing to amend Article VII, Section 18(G)(1)(a)(ii) of the Constitution of Louisiana,\nrelative to ad valorem taxation; to provide for assessment of property for ad valorem\ntax purposes; to provide with respect to the special assessment level; to provide with\nrespect to the income limit associated with qualifying for the special assessment\nlevel; to provide for an effective date; to provide for submission of the proposed\namendment to the electors; and to provide for related matters.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana,  for their approval or rejection in the manner provided by law,  a proposal to\namend  Article  VII,  Section 18(G)(1)(a)(ii)  of  the  Constitution  of  Louisiana,  to  read as\nfollows:\n\n## §18. Ad Valorem Taxes\n\nSection 18.\n\n(G)  Special Assessment Level.\n\n(1)(a)\n\n(ii)  Any person or persons shall be prohibited from receiving the special\nassessment as provided in this Section if such person's or persons' adjusted gross\nincome, as reported in the federal tax return for the year prior to the application for\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n\nthe special assessment,  exceeds one hundred fifty thousand dollars. For persons\napplying for the special assessment whose filing status is married filing separately,\nthe  adjusted  gross  income  for  purposes of this  Section  shall  be  determined  by\ncombining the adjusted gross income on both federal tax returns. The assessor may\nestablish  an  applicant's  income  eligibility for  the  special  assessment  level  by\nverifying the applicant's federal adjusted gross income as reported on the Louisiana\nincome tax return for the year prior to the application. Beginning for the tax year\n2026 2028 and for each tax year thereafter, the one hundred fifty thousand dollar\nlimit shall be adjusted annually by the  Consumer  Price  Index as reported by the\nUnited States Government. Notwithstanding anyprovision of this constitution to the\ncontrary,  a decrease in the total amount of ad valorem tax collected by a taxing\nauthority as a result of the special assessment level shall be absorbed by the taxing\nauthority and shall not create any additional tax liability for other taxpayers in the\ntaxing district as a result of any subsequent reappraisal and valuation or millage\nadjustment.  Implementation of the special assessment level shall neither trigger nor\nbe cause for a reappraisal of property or an adjustment of millages pursuant to the\nprovisions of Article VII, Section 23(B) of this constitution.\n\nSection 2.  Be it further resolved that the provisions of the amendment contained in\nthis Joint Resolution shall become effective on January 1, 2027, and shall be applicable to\nall tax years beginning on or after January 1, 2027.\n\nSection 3.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\nSection 4.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of",
+            "page": null,
+            "section": "act-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-2",
+        "text": " Louisiana, which proposition shall read as\nfollows:\n\n---\n\n1\n2\n3\n4\n\nDo you support an amendment to increase the maximum amount of income\na person may receive and still qualify for the special assessment level for\nresidential property receiving the homestead exemption? (Effective January\n1, 2027)  (Amends Article VII, Section 18(G)(1)(a)(ii))\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "3a21743cb6c1d0193dd5775d5030fa35a6fbf0068252d3d059745ba3bbd07687",
+            "start": 3500,
+            "end": 3909,
+            "excerpt": " Louisiana, which proposition shall read as\nfollows:\n\n---\n\n1\n2\n3\n4\n\nDo you support an amendment to increase the maximum amount of income\na person may receive and still qualify for the special assessment level for\nresidential property receiving the homestead exemption? (Effective January\n1, 2027)  (Amends Article VII, Section 18(G)(1)(a)(ii))\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+            "page": null,
+            "section": "act-text-2"
+          }
+        ]
+      },
+      {
+        "claimKey": "fiscal-note-text-1",
+        "text": "# LEGISLATIVE FISCAL OFFICE Fiscal Note\n\nFiscal Note On: **HB 300** HLS 25RS 79\nBill Text Version: **ENROLLED**\nOpp. Chamb. Action:\n\nProposed Amd.:\n\nSub. Bill For.:\n\n| June 10, 2025 Date: | 9:13 AM | Author: MACK |\n| --- | --- | --- |\n| Dept./Agy.: Local Government/LA Tax Commission |  |  |\n| Removes the AVT special assessment income cap Subject: |  | Analyst: Deborah Vivien |\n\nPage 1 of 1\n(Constitutional Amendment) Eliminates the income eligibility requirement associated with qualifying for the special\n\nassessment level\n<u>Present constitution</u> authorizes the assessed value of property receiving the homestead exemption and owned/occupied by\ncertain taxpayers to be frozen at the assessment in place when certain eligibility criteria is attained and verified, including\nfederal adjusted gross income below $100,000 annually, adjusted for inflation beginning in Tax Year 2026. Eligibility is\nlimited to those 65+, veterans with a service-related disability of 50% or more, members (spouses) of armed forces or\nnational guard killed in action, missing in action or prisoner of war, and the permanently and totally disabled.\n<u>Proposed constitutional amendment</u> retains current law regarding eligibility criteria for the special assessment freeze but\nraises the income limit (federal adjusted gross income) from $100,000 to $150,000 and delays the inflation adjustment from\nTax Year 2026 to Tax Year 2028. <u>Proposed amendment</u> prohibits a tax burden transfer from reassessments or millage\nadjustment due to any loss of local revenue from this bill.\n\nEffective with Tax Year 2027 upon voter approval at the statewide election to be held on November 3, 2026.\n\n| EXPENDITURES | 2025-26 | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Annual Total | $0 | $0 | $0 | $0 | $0 | $0 |\n\n| REVENUES | 2025-26 | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | $0 | $0 | DECREASE | DECREASE | DECREASE | $0 |\n| Annual Total | $0 | $0 |  |  |  | $0 |\n\n## EXPENDITURE EXPLANATION\n\nThere is no anticipated direct material effect on governmental expenditures as a result of this measure. It is expected by\nLFO, though not verified by response, that removing the income limit for the AVT special assessment will require local tax\nsystem adjustments that are closely related to the existing special assessment with minimal resources required. The\nDepartment of State may incur minimal ballot processing costs associated with this measure. Any expenditure impact would\nbe realized in FY 26.\n\n## REVENUE EXPLANATION\n\nThe bill increases the eligibility pool for the special assessment to include all properties receiving the homestead exemption\nowned and occupied by those who qualify under the stated criteria (65+, veterans with a service-related disability of 50% or\nmore, members (spouses) of armed forces or national guard killed in action, missing in action or prisoner of war, and the\npermanently and totally disabled) and with federal adjusted g",
+        "supports": [
+          {
+            "sourceKey": "fiscal-note",
+            "normalizedSha256": "ac31fe0b81ca8fa5a159751b8d9e73e49c16cf9d28a1ba1224c75d48de127662",
+            "start": 0,
+            "end": 3500,
+            "excerpt": "# LEGISLATIVE FISCAL OFFICE Fiscal Note\n\nFiscal Note On: **HB 300** HLS 25RS 79\nBill Text Version: **ENROLLED**\nOpp. Chamb. Action:\n\nProposed Amd.:\n\nSub. Bill For.:\n\n| June 10, 2025 Date: | 9:13 AM | Author: MACK |\n| --- | --- | --- |\n| Dept./Agy.: Local Government/LA Tax Commission |  |  |\n| Removes the AVT special assessment income cap Subject: |  | Analyst: Deborah Vivien |\n\nPage 1 of 1\n(Constitutional Amendment) Eliminates the income eligibility requirement associated with qualifying for the special\n\nassessment level\n<u>Present constitution</u> authorizes the assessed value of property receiving the homestead exemption and owned/occupied by\ncertain taxpayers to be frozen at the assessment in place when certain eligibility criteria is attained and verified, including\nfederal adjusted gross income below $100,000 annually, adjusted for inflation beginning in Tax Year 2026. Eligibility is\nlimited to those 65+, veterans with a service-related disability of 50% or more, members (spouses) of armed forces or\nnational guard killed in action, missing in action or prisoner of war, and the permanently and totally disabled.\n<u>Proposed constitutional amendment</u> retains current law regarding eligibility criteria for the special assessment freeze but\nraises the income limit (federal adjusted gross income) from $100,000 to $150,000 and delays the inflation adjustment from\nTax Year 2026 to Tax Year 2028. <u>Proposed amendment</u> prohibits a tax burden transfer from reassessments or millage\nadjustment due to any loss of local revenue from this bill.\n\nEffective with Tax Year 2027 upon voter approval at the statewide election to be held on November 3, 2026.\n\n| EXPENDITURES | 2025-26 | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Annual Total | $0 | $0 | $0 | $0 | $0 | $0 |\n\n| REVENUES | 2025-26 | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | $0 | $0 | DECREASE | DECREASE | DECREASE | $0 |\n| Annual Total | $0 | $0 |  |  |  | $0 |\n\n## EXPENDITURE EXPLANATION\n\nThere is no anticipated direct material effect on governmental expenditures as a result of this measure. It is expected by\nLFO, though not verified by response, that removing the income limit for the AVT special assessment will require local tax\nsystem adjustments that are closely related to the existing special assessment with minimal resources required. The\nDepartment of State may incur minimal ballot processing costs associated with this measure. Any expenditure impact would\nbe realized in FY 26.\n\n## REVENUE EXPLANATION\n\nThe bill increases the eligibility pool for the special assessment to include all properties receiving the homestead exemption\nowned and occupied by those who qualify under the stated criteria (65+, veterans with a service-related disability of 50% or\nmore, members (spouses) of armed forces or national guard killed in action, missing in action or prisoner of war, and the\npermanently and totally disabled) and with federal adjusted g",
+            "page": null,
+            "section": "fiscal-note-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "fiscal-note-text-2",
+        "text": "ross income less than $150,000 per year, growing by inflation\nbeginning in tax year 2028. The current law income limit is $100,000 growing by inflation beginning with tax year 2026. As\nincome data related to property ownership is not readily available, the magnitude of the repeal of the income requirement\ncannot be determined. However, the bill can only serve to decrease ad valorem tax revenue collections as a significant\nnumber of properties immediately become eligible for the special assessment on Tax Year 2027 bills and will forgo any\nincreases in assessed value in the future. Local revenue will decrease for any entity funded by a millage or fee that is\ncharged against a special assessment property as the bill prohibits a millage adjustment to accommodate the lower\nassessments in the bill (although this assessment freeze will presumably be automatically rolled into quadrennial\nreassessment year adjustments).\n\nThe 2024 Tax Commission Annual Report identifies 422,344 properties currently receiving these special assessments\nstatewide. Tax Year 2024 was a quadrennial reassessment year so the next major impact from the bill would be expected\nwith Tax Year 2028 payments, which is also the date that the inflation adjustment to the income limit will begin.\n\nA significant change in local property tax collections could impact the local effort included in the MFP calculation, which in\nturn could impact SGF, depending on the local taxing structure.\n\nSenate Dual Referral Rules\n13.5.1 >= $100,000 Annual Fiscal Cost {S & H}\n**x** 13.5.2 >= $500,000 Annual Tax or Fee\n                Change {S & H}\n\n6.8(G) >= $500,000 Tax or Fee Increase\n                or a Net Fee Decrease {S}\n\n**Alan M. Boxberger**\n**Legislative Fiscal Officer**",
+        "supports": [
+          {
+            "sourceKey": "fiscal-note",
+            "normalizedSha256": "ac31fe0b81ca8fa5a159751b8d9e73e49c16cf9d28a1ba1224c75d48de127662",
+            "start": 3500,
+            "end": 5247,
+            "excerpt": "ross income less than $150,000 per year, growing by inflation\nbeginning in tax year 2028. The current law income limit is $100,000 growing by inflation beginning with tax year 2026. As\nincome data related to property ownership is not readily available, the magnitude of the repeal of the income requirement\ncannot be determined. However, the bill can only serve to decrease ad valorem tax revenue collections as a significant\nnumber of properties immediately become eligible for the special assessment on Tax Year 2027 bills and will forgo any\nincreases in assessed value in the future. Local revenue will decrease for any entity funded by a millage or fee that is\ncharged against a special assessment property as the bill prohibits a millage adjustment to accommodate the lower\nassessments in the bill (although this assessment freeze will presumably be automatically rolled into quadrennial\nreassessment year adjustments).\n\nThe 2024 Tax Commission Annual Report identifies 422,344 properties currently receiving these special assessments\nstatewide. Tax Year 2024 was a quadrennial reassessment year so the next major impact from the bill would be expected\nwith Tax Year 2028 payments, which is also the date that the inflation adjustment to the income limit will begin.\n\nA significant change in local property tax collections could impact the local effort included in the MFP calculation, which in\nturn could impact SGF, depending on the local taxing structure.\n\nSenate Dual Referral Rules\n13.5.1 >= $100,000 Annual Fiscal Cost {S & H}\n**x** 13.5.2 >= $500,000 Annual Tax or Fee\n                Change {S & H}\n\n6.8(G) >= $500,000 Tax or Fee Increase\n                or a Net Fee Decrease {S}\n\n**Alan M. Boxberger**\n**Legislative Fiscal Officer**",
+            "page": null,
+            "section": "fiscal-note-text-2"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [],
+    "knownUnknowns": [
+      "These sources do not establish an individual household's tax or financial outcome."
+    ],
+    "nextActionClaimKeys": [
+      "election"
+    ],
+    "reviewedThrough": "2026-09-14",
+    "nextReviewAt": "2026-09-17",
+    "reviewResponsibility": "Public Parish owner",
+    "supportedQuestions": [
+      {
+        "question": "What would this amendment change?",
+        "claimKeys": [
+          "ballot-question",
+          "measure-identity",
+          "election",
+          "act-text-1",
+          "act-text-2",
+          "fiscal-note-text-1",
+          "fiscal-note-text-2"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Should I vote for this amendment?",
+        "reason": "Public Parish explains official evidence without voting recommendations."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

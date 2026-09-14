@@ -1,0 +1,270 @@
+{
+  "contractVersion": "2.0.0",
+  "bundleVersion": 3,
+  "bundleKey": "2026-amendment-2-overnight",
+  "supersedesBundleSha256": "5f28e256b05a72b20c27d075303bf95746221ed86c671d4d7c985a13329bbbd4",
+  "purpose": "research",
+  "story": {
+    "storyKey": "2026-amendment-2",
+    "slug": "2026-amendment-2",
+    "placement": "ballot",
+    "rank": 102,
+    "geography": [
+      {
+        "placeName": "Statewide",
+        "parish": "Louisiana",
+        "state": "Louisiana",
+        "precisionNotes": "Constitutional amendment submitted statewide; individual sample ballots include other contests."
+      }
+    ],
+    "topics": []
+  },
+  "sources": [
+    {
+      "sourceKey": "sos-ballot",
+      "bodyKey": "louisiana-secretary-of-state",
+      "bodyName": "Louisiana Secretary of State",
+      "title": "November 3, 2026 proposed constitutional amendments",
+      "url": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "finalUrl": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "cc60d4aac717bb761819109191482625168d78333abf27d69a95f9a8e68d954e",
+        "bytes": 129088,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+        "bytes": 8227,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:12:08.879000+00:00",
+        "providerReference": "js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "act",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Enrolled Act 273 of 2026",
+      "url": "https://legis.la.gov/legis/ViewDocument.aspx?d=1475811",
+      "finalUrl": "https://legis.la.gov/legis/ViewDocument.aspx?d=1475811",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js7f6ht91ntr77fkfvafzjjf898edqnm",
+        "sha256": "8e40718c40cbd2b8457df11694c41a48020d93de12c2b34c07e616835bfb4fdb",
+        "bytes": 46666,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js7f6ht91ntr77fkfvafzjjf898edqnm",
+        "sha256": "eb8486a7893b16f9738c479182bfbd59564aa0f21df156a1a506d39311b58ab9",
+        "bytes": 3779,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:13:25.627000+00:00",
+        "providerReference": "js7f6ht91ntr77fkfvafzjjf898edqnm",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "fiscal-note",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Fiscal Note - HB521 Enrolled",
+      "url": "https://www.legis.la.gov/legis/ViewDocument.aspx?d=1471612",
+      "finalUrl": "https://www.legis.la.gov/legis/ViewDocument.aspx?d=1471612",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js70vgt68nxb9jjm3d536tmtkx8edz45",
+        "sha256": "fe647e6711c40733a2ab6b1b812fe58f6e42b996ae7aac2a27561e0300c75595",
+        "bytes": 229485,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js70vgt68nxb9jjm3d536tmtkx8edz45",
+        "sha256": "e078f6b03a12bdfb1de7fbfadd2746eae212938a12b75d3097a7beadc2aa856d",
+        "bytes": 5083,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:18:39.025000+00:00",
+        "providerReference": "js70vgt68nxb9jjm3d536tmtkx8edz45",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "Preserving local authority to adjust millage rates",
+    "proposedSummary": "Explain the exact ballot question, proposed constitutional change, eligibility and limits from the enrolled Act.",
+    "claims": [
+      {
+        "claimKey": "ballot-question",
+        "text": "Do you support an amendment to allow a local taxing authority to continue to levy a lower millage rate without losing its ability to adjust to the maximum authorized millage rate from a prior year's reassessment? (Effective January 1, 2027) (Amends Article VII, Section 23(C))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 1651,
+            "end": 1931,
+            "excerpt": "Do you support an amendment to allow a local taxing authority to continue to levy a lower millage rate without losing its* *ability to adjust to the maximum authorized millage rate from a prior year's reassessment? (Effective January 1, 2027)* *(Amends Article VII, Section 23(C))",
+            "page": null,
+            "section": "ballot-question"
+          }
+        ]
+      },
+      {
+        "claimKey": "measure-identity",
+        "text": "Proposed Amendment No. 2\n\n<u>Act 273 (2026 Regular Session)</u>- Proposing to amend Article VII, Section 23(C) of the Constitution of Louisiana, relative to ad valorem property tax millage rate adjustments; to provide for maximum authorized millage rates; to provide for applicability; to provide for an effective date; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to allow a local taxing authority to continue to levy a lower millage rate without losing its* *ability to adjust to the maximum authorized millage rate from a prior year's reassessment? (Effective January 1, 2027)* *(Amends Article VII, Section 23(C))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 1224,
+            "end": 1931,
+            "excerpt": "Proposed Amendment No. 2\n\n<u>Act 273 (2026 Regular Session)</u>- Proposing to amend Article VII, Section 23(C) of the Constitution of Louisiana, relative to ad valorem property tax millage rate adjustments; to provide for maximum authorized millage rates; to provide for applicability; to provide for an effective date; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to allow a local taxing authority to continue to levy a lower millage rate without losing its* *ability to adjust to the maximum authorized millage rate from a prior year's reassessment? (Effective January 1, 2027)* *(Amends Article VII, Section 23(C))",
+            "page": null,
+            "section": "measure-identity"
+          }
+        ]
+      },
+      {
+        "claimKey": "election",
+        "text": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 0,
+            "end": 333,
+            "excerpt": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+            "page": null,
+            "section": "election"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-1",
+        "text": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n\n2026 Regular Session\n\n## ACT No. 273 2026 Regular Session\n\n# ACT No. 273\n\nHOUSE BILL NO. 521\n\nBY REPRESENTATIVES  WILDER,  AMEDEE,  BAMBURG,  BAYHAM,  BERAULT,\nBILLINGS,  BOUDREAUX,  BOURRIAQUE,  BRASS,  CARVER,  CHASSION,\nCHENEVERT, COATES, COX, CREWS, DESHOTEL, DEWITT, DICKERSON,\nEDMONSTON, EGAN, FIRMENT, FONTENOT, FREIBERG, GALLE, HEBERT,\nHORTON,  KNOX,  LACOMBE,  JACOB LANDRY,  MARTINEZ,  MELERINE,\nOWEN, SCHAMERHORN, TAYLOR, TURNER, WILEY, AND WRIGHT\n\n## A JOINT RESOLUTION\n\nProposing to amend Article VII, Section 23(C) of the Constitution of Louisiana, relative to\nad  valorem  property tax millage  rate  adjustments;  to  provide  for  maximum\nauthorized millage rates; to provide for applicability; to provide for an effective date;\nto provide for submission of the proposed amendment to the electors; and to provide\nfor related matters.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana,  for their approval or rejection in the manner provided by law, a proposal to\namend Article VII, Section 23(C) of the Constitution of Louisiana, to read as follows:\n\n§23. Adjustment of Ad Valorem Tax Millages\n\nSection 23.\n\n(C)  Increases Permitted.  Nothing herein shall prohibit a taxing authority\nfrom  collecting,  in  the  year  in  which  Sections  18  and  20  of  this  Article  are\nimplemented or in any subsequent year, a larger dollar amount of ad valorem taxes\nby (1) levying additional or increased millages as provided by law or (2) placing\nadditional property on the tax rolls.  Increases in the millage rate in excess of the\nrates established as provided by Paragraph (B) above of this Section but not in excess\nof the prior year's maximum authorized millage rate approved by this constitution\nand approved by the taxing authority until the authorized millage rate expires may\nbe levied by a two-thirds vote of the total membership of a taxing authority without\nfurther voter approval but only after a public hearing held in accordance with the\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n\nopen meetings  law;  however,  in  addition  to  any other requirements of the open\nmeetings law, public notice of the time, place, and subject matter of such hearing\nshall be published on two separate days no less than thirty days before the public\nhearing.  Such public notice shall be published in the official journal of the taxing\nauthority, and another newspaper with a larger circulation within the taxing authority\nthan the official journal of the taxing authority, if there is one.\n\nSection 2. Be it further resolved that the provisions of the amendment contained in\nthis Joint Resolution shall become effective January 1, 2027, and shall be applicable to all\ntaxable years beginning on or after January 1, 2027.\n\nSection 3.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\nSection 4.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\nDo you support an amendment to allow a local taxing authority to continue\nto  le",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "eb8486a7893b16f9738c479182bfbd59564aa0f21df156a1a506d39311b58ab9",
+            "start": 0,
+            "end": 3500,
+            "excerpt": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n\n2026 Regular Session\n\n## ACT No. 273 2026 Regular Session\n\n# ACT No. 273\n\nHOUSE BILL NO. 521\n\nBY REPRESENTATIVES  WILDER,  AMEDEE,  BAMBURG,  BAYHAM,  BERAULT,\nBILLINGS,  BOUDREAUX,  BOURRIAQUE,  BRASS,  CARVER,  CHASSION,\nCHENEVERT, COATES, COX, CREWS, DESHOTEL, DEWITT, DICKERSON,\nEDMONSTON, EGAN, FIRMENT, FONTENOT, FREIBERG, GALLE, HEBERT,\nHORTON,  KNOX,  LACOMBE,  JACOB LANDRY,  MARTINEZ,  MELERINE,\nOWEN, SCHAMERHORN, TAYLOR, TURNER, WILEY, AND WRIGHT\n\n## A JOINT RESOLUTION\n\nProposing to amend Article VII, Section 23(C) of the Constitution of Louisiana, relative to\nad  valorem  property tax millage  rate  adjustments;  to  provide  for  maximum\nauthorized millage rates; to provide for applicability; to provide for an effective date;\nto provide for submission of the proposed amendment to the electors; and to provide\nfor related matters.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana,  for their approval or rejection in the manner provided by law, a proposal to\namend Article VII, Section 23(C) of the Constitution of Louisiana, to read as follows:\n\n§23. Adjustment of Ad Valorem Tax Millages\n\nSection 23.\n\n(C)  Increases Permitted.  Nothing herein shall prohibit a taxing authority\nfrom  collecting,  in  the  year  in  which  Sections  18  and  20  of  this  Article  are\nimplemented or in any subsequent year, a larger dollar amount of ad valorem taxes\nby (1) levying additional or increased millages as provided by law or (2) placing\nadditional property on the tax rolls.  Increases in the millage rate in excess of the\nrates established as provided by Paragraph (B) above of this Section but not in excess\nof the prior year's maximum authorized millage rate approved by this constitution\nand approved by the taxing authority until the authorized millage rate expires may\nbe levied by a two-thirds vote of the total membership of a taxing authority without\nfurther voter approval but only after a public hearing held in accordance with the\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n\nopen meetings  law;  however,  in  addition  to  any other requirements of the open\nmeetings law, public notice of the time, place, and subject matter of such hearing\nshall be published on two separate days no less than thirty days before the public\nhearing.  Such public notice shall be published in the official journal of the taxing\nauthority, and another newspaper with a larger circulation within the taxing authority\nthan the official journal of the taxing authority, if there is one.\n\nSection 2. Be it further resolved that the provisions of the amendment contained in\nthis Joint Resolution shall become effective January 1, 2027, and shall be applicable to all\ntaxable years beginning on or after January 1, 2027.\n\nSection 3.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\nSection 4.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\nDo you support an amendment to allow a local taxing authority to continue\nto  le",
+            "page": null,
+            "section": "act-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-2",
+        "text": "vy a  lower  millage  rate  without  losing its  ability to  adjust to the\nmaximum  authorized  millage  rate  from  a  prior  year's  reassessment?\n(Effective January 1, 2027) (Amends Article VII, Section 23(C))\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "eb8486a7893b16f9738c479182bfbd59564aa0f21df156a1a506d39311b58ab9",
+            "start": 3500,
+            "end": 3778,
+            "excerpt": "vy a  lower  millage  rate  without  losing its  ability to  adjust to the\nmaximum  authorized  millage  rate  from  a  prior  year's  reassessment?\n(Effective January 1, 2027) (Amends Article VII, Section 23(C))\n\nSPEAKER OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+            "page": null,
+            "section": "act-text-2"
+          }
+        ]
+      },
+      {
+        "claimKey": "fiscal-note-text-1",
+        "text": "# LEGISLATIVE FISCAL OFFICE Fiscal Note\n\nFiscal Note On: **HB 521** HLS 26RS 255\n\nBill Text Version: **ENROLLED**\n\nOpp. Chamb. Action:\n\nProposed Amd.:\n\nSub. Bill For.:\n\n| May 12, 2026 Date: | 1:40 PM | Author: WILDER |\n| --- | --- | --- |\n| Dept./Agy.: Ad Valorem Taxing Authorities |  |  |\n| Ad Valorem Tax Millage Adjustment Limits Subject: |  | Analyst: Garrett Ordner |\n\n## TAX/AD VALOREM TAX (Constitutional Amendment) Authorizes a taxing authority to adjust a millage rate to the maximum authorized rate from a\n\nprior year's reassessment\n<u>Present constitution</u> requires an automatic adjustment in ad valorem millage rates upon reappraisal and valuation of property\n(reassessment) to ensure tax revenue collected in the year after reassessment is equal to the amount of tax revenue collected in the year\nprior to reassessment. <u>Present constitution</u> authorizes an increase in a millage rate up to the maximum authorized rate from the prior\nyear's reassessment by a 2/3 vote of the total membership of the taxing authority without further voter approval. Further, <u>present</u>\n<u>constitution</u> provides that, if a taxing authority does not increase its millage rate up to the maximum authorized rate from the prior year's\nreassessment before the next reassessment, the taxing authority permanently loses the ability to increase its millage rate to the maximum\nauthorized rate from the prior year's reassessment in the future. <u>Proposed constitutional amendment</u> allows a taxing authority to continue\nto levy a lower millage rate without subsequently losing its ability to adjust to the maximum authorized millage rate from a prior year's\nreassessment.\n\nTo be submitted to the electors at the statewide election to be held on November 3, 2026.\n\n| EXPENDITURES | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 2030-31 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | SEE BELOW | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Annual Total |  | $0 | $0 | $0 | $0 | $0 |\n\n| REVENUES | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 2030-31 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | $0 | SEE BELOW | SEE BELOW | SEE BELOW | SEE BELOW | $0 |\n| Annual Total | $0 |  |  |  |  | $0 |\n\n## EXPENDITURE EXPLANATION\n\nThe Secretary of State may incur minimal ballot processing costs associated with this measure. As a regular practice, the\nSecretary of State typically budgets for up to 10 constitutional amendments and statewide propositions for the fall statewide\nelections. To the extent the ballot includes more than 10 constitutional amendments and statewide propositions, the\nSecretary of State may require additional SGF resources for the November 3, 2026, statewide election. Any expenditure\nimpact would be realized in FY 27. There is no other anticipated impact on governmental expenditures.\n\n## REVENUE EXPLANATION\n\nProposed constitutional amendment may result in foregone ad valorem tax revenues by allowing taxing authorities to\ncontinue taxing at a lower millage post-reassessment without losing their ability to adjust the millage to a prior maximum at\na later d",
+        "supports": [
+          {
+            "sourceKey": "fiscal-note",
+            "normalizedSha256": "e078f6b03a12bdfb1de7fbfadd2746eae212938a12b75d3097a7beadc2aa856d",
+            "start": 0,
+            "end": 3500,
+            "excerpt": "# LEGISLATIVE FISCAL OFFICE Fiscal Note\n\nFiscal Note On: **HB 521** HLS 26RS 255\n\nBill Text Version: **ENROLLED**\n\nOpp. Chamb. Action:\n\nProposed Amd.:\n\nSub. Bill For.:\n\n| May 12, 2026 Date: | 1:40 PM | Author: WILDER |\n| --- | --- | --- |\n| Dept./Agy.: Ad Valorem Taxing Authorities |  |  |\n| Ad Valorem Tax Millage Adjustment Limits Subject: |  | Analyst: Garrett Ordner |\n\n## TAX/AD VALOREM TAX (Constitutional Amendment) Authorizes a taxing authority to adjust a millage rate to the maximum authorized rate from a\n\nprior year's reassessment\n<u>Present constitution</u> requires an automatic adjustment in ad valorem millage rates upon reappraisal and valuation of property\n(reassessment) to ensure tax revenue collected in the year after reassessment is equal to the amount of tax revenue collected in the year\nprior to reassessment. <u>Present constitution</u> authorizes an increase in a millage rate up to the maximum authorized rate from the prior\nyear's reassessment by a 2/3 vote of the total membership of the taxing authority without further voter approval. Further, <u>present</u>\n<u>constitution</u> provides that, if a taxing authority does not increase its millage rate up to the maximum authorized rate from the prior year's\nreassessment before the next reassessment, the taxing authority permanently loses the ability to increase its millage rate to the maximum\nauthorized rate from the prior year's reassessment in the future. <u>Proposed constitutional amendment</u> allows a taxing authority to continue\nto levy a lower millage rate without subsequently losing its ability to adjust to the maximum authorized millage rate from a prior year's\nreassessment.\n\nTo be submitted to the electors at the statewide election to be held on November 3, 2026.\n\n| EXPENDITURES | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 2030-31 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | SEE BELOW | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Annual Total |  | $0 | $0 | $0 | $0 | $0 |\n\n| REVENUES | 2026-27 | 2027-28 | 2028-29 | 2029-30 | 2030-31 | 5 -YEAR TOTAL |\n| --- | --- | --- | --- | --- | --- | --- |\n| State Gen. Fd. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Agy. Self-Gen. | $0 | $0 | $0 | $0 | $0 | $0 |\n| Ded./Other | $0 | $0 | $0 | $0 | $0 | $0 |\n| Federal Funds | $0 | $0 | $0 | $0 | $0 | $0 |\n| Local Funds | $0 | SEE BELOW | SEE BELOW | SEE BELOW | SEE BELOW | $0 |\n| Annual Total | $0 |  |  |  |  | $0 |\n\n## EXPENDITURE EXPLANATION\n\nThe Secretary of State may incur minimal ballot processing costs associated with this measure. As a regular practice, the\nSecretary of State typically budgets for up to 10 constitutional amendments and statewide propositions for the fall statewide\nelections. To the extent the ballot includes more than 10 constitutional amendments and statewide propositions, the\nSecretary of State may require additional SGF resources for the November 3, 2026, statewide election. Any expenditure\nimpact would be realized in FY 27. There is no other anticipated impact on governmental expenditures.\n\n## REVENUE EXPLANATION\n\nProposed constitutional amendment may result in foregone ad valorem tax revenues by allowing taxing authorities to\ncontinue taxing at a lower millage post-reassessment without losing their ability to adjust the millage to a prior maximum at\na later d",
+            "page": null,
+            "section": "fiscal-note-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "fiscal-note-text-2",
+        "text": "ate. However, this will depend on the decision of each taxing authority on whether they defer “rolling forward” their\nmillages for longer due to the proposed constitutional amendment; therefore, the extent of any decrease is indeterminable.\n\nCurrently, after a reassessment, millage rates are subsequently adjusted to keep ad valorem tax revenues from increasing\nor decreasing. If the millage is adjusted downward, the local taxing authority can, by a two-thirds vote and after a public\nhearing, elect to increase (”roll forward”) the millage up to the prior year’s maximum. This allows the local taxing authority\nto capture the revenue associated with the increase in the value of the existing tax base. However, if the taxing authority\ndoes not implement this increase before the next reassessment, then it permanently loses the ability to increase rates to\nthat maximum millage.\n\nBy allowing local taxing authorities to retain the ability to return to a prior year’s maximum millage rate even after the\nfollowing reassessment, they may elect to continue using the lower millage rate for longer, as there would no longer be a\n“use it or lose it” incentive to increase the millage before the next reassessment. However, the extent to which local taxing\nauthorities will defer rolling forward their millages because of proposed constitutional amendment is indeterminable.\n\nSenate Dual Referral Rules\n13.5.1 >= $100,000 Annual Fiscal Cost {S & H}\n13.5.2 >= $500,000 Annual Tax or Fee\n                Change {S & H}\n\n**Alan M. Boxberger**\n**Legislative Fiscal Officer**",
+        "supports": [
+          {
+            "sourceKey": "fiscal-note",
+            "normalizedSha256": "e078f6b03a12bdfb1de7fbfadd2746eae212938a12b75d3097a7beadc2aa856d",
+            "start": 3500,
+            "end": 5067,
+            "excerpt": "ate. However, this will depend on the decision of each taxing authority on whether they defer “rolling forward” their\nmillages for longer due to the proposed constitutional amendment; therefore, the extent of any decrease is indeterminable.\n\nCurrently, after a reassessment, millage rates are subsequently adjusted to keep ad valorem tax revenues from increasing\nor decreasing. If the millage is adjusted downward, the local taxing authority can, by a two-thirds vote and after a public\nhearing, elect to increase (”roll forward”) the millage up to the prior year’s maximum. This allows the local taxing authority\nto capture the revenue associated with the increase in the value of the existing tax base. However, if the taxing authority\ndoes not implement this increase before the next reassessment, then it permanently loses the ability to increase rates to\nthat maximum millage.\n\nBy allowing local taxing authorities to retain the ability to return to a prior year’s maximum millage rate even after the\nfollowing reassessment, they may elect to continue using the lower millage rate for longer, as there would no longer be a\n“use it or lose it” incentive to increase the millage before the next reassessment. However, the extent to which local taxing\nauthorities will defer rolling forward their millages because of proposed constitutional amendment is indeterminable.\n\nSenate Dual Referral Rules\n13.5.1 >= $100,000 Annual Fiscal Cost {S & H}\n13.5.2 >= $500,000 Annual Tax or Fee\n                Change {S & H}\n\n**Alan M. Boxberger**\n**Legislative Fiscal Officer**",
+            "page": null,
+            "section": "fiscal-note-text-2"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [],
+    "knownUnknowns": [
+      "These sources do not establish an individual household's tax or financial outcome."
+    ],
+    "nextActionClaimKeys": [
+      "election"
+    ],
+    "reviewedThrough": "2026-09-14",
+    "nextReviewAt": "2026-09-17",
+    "reviewResponsibility": "Public Parish owner",
+    "supportedQuestions": [
+      {
+        "question": "What would this amendment change?",
+        "claimKeys": [
+          "ballot-question",
+          "measure-identity",
+          "election",
+          "act-text-1",
+          "act-text-2",
+          "fiscal-note-text-1",
+          "fiscal-note-text-2"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Should I vote for this amendment?",
+        "reason": "Public Parish explains official evidence without voting recommendations."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

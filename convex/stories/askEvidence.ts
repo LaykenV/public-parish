@@ -2,7 +2,7 @@ import type { QueryCtx } from '../_generated/server'
 import type { AskEvidence, AskRecordContext, AskScope } from '../ask/contracts'
 import type { Id } from '../_generated/dataModel'
 import { acceptedStorySpans, currentVersionEvidence } from './evidence'
-import { LAUNCH_STORIES } from './manifest'
+import { STORY_REGISTRY, storyPath } from './registry'
 import { normalizeForMatch } from '../extraction/textMatch'
 import { publicBodyLabel } from '../coverage/labels'
 
@@ -35,14 +35,14 @@ export async function storyAskCatalog(ctx: Pick<QueryCtx, 'db'>, scope: AskScope
   if (scope.kind !== 'story' && scope.kind !== 'corpus') return { records: [], sources: [] }
   const candidates = scope.kind === 'story'
     ? [await ctx.db.query('stories').withIndex('by_slug', q => q.eq('slug', scope.storySlug)).unique()]
-    : await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(3)
+    : await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(13)
   const records: AskRecordContext[] = []
   const sources: StoryEvidence[] = []
   const seen = new Set<string>()
   const atomicBySnapshot = new Map<Id<'sourceSnapshots'>, Set<string>>()
   for (const story of candidates) {
     if (!story || story.state !== 'active' || !story.currentVersionId) continue
-    const parish = LAUNCH_STORIES[story.storyKey].parish
+    const parish = STORY_REGISTRY[story.storyKey].parish
     const placeSlug = parish.toLowerCase().replaceAll(' ', '-')
     if (scope.kind === 'corpus' && scope.areaKey && scope.areaKey !== placeSlug) continue
     const version = await ctx.db.get(story.currentVersionId)
@@ -69,7 +69,7 @@ export async function storyAskCatalog(ctx: Pick<QueryCtx, 'db'>, scope: AskScope
       sources.push({ snapshotId: snapshot._id, evidence: { evidenceId, recordKey: story.slug, fieldPath: span.key,
         documentTitle: snapshot.canonicalUrl.split('/').pop() || 'Official source', bodyName: publicBodyLabel(body), sourceKind: 'other',
         officialUrl: span.officialUrl, excerpt: span.excerpt, page: span.page, section: span.section, retrievedAt: snapshot.retrievalTime,
-        sourceHref: `/stories/${story.slug}#story-source-${spanIndex}` } })
+        sourceHref: `${storyPath(story.slug)}#story-source-${spanIndex}` } })
       seen.add(identity)
       evidenceIds.push(evidenceId)
     }

@@ -1,3 +1,4 @@
+import { checkBallotDraft } from './ballot'
 import { v } from 'convex/values'
 import { internal } from '../_generated/api'
 import { internalMutation, internalQuery, mutation, query } from '../_generated/server'
@@ -5,7 +6,8 @@ import { requireOwner } from '../auth/authorization'
 import { issueWorkflowManager } from '../pipeline/workflowManager'
 import schema from '../schema'
 import { hashStoryValue, canonicalStoryJson } from './hashing'
-import { parseStoryManifest, LAUNCH_STORIES } from './manifest'
+import { parseStoryManifest } from './manifest'
+import { STORY_REGISTRY } from './registry'
 import { publicationMapping, sourceBinding, storyDraft, storyReview, storyMedia, checkDraft, checkReview, MAX_STORY_BUILD_RETRIES } from './contracts'
 import { evidenceHash, proposedSpans, resolveSources } from './evidence'
 import { retainedDraft, checkRetainedDraft } from './retainedDraft'
@@ -41,7 +43,7 @@ export const begin = internalMutation({
     if (media && media.captionEvidenceKeys.some(key => !spans.some(span => span.key === key))) throw new Error('Image caption cites unknown evidence')
     let story = await ctx.db.query('stories').withIndex('by_story_key', q => q.eq('storyKey', manifest.story.storyKey)).unique()
     if (!story) {
-      const id = await ctx.db.insert('stories', { storyKey: manifest.story.storyKey, slug: manifest.story.slug, rank: LAUNCH_STORIES[manifest.story.storyKey].rank, state: 'unpublished', generation: 0, createdAt: Date.now(), updatedAt: Date.now() })
+      const id = await ctx.db.insert('stories', { storyKey: manifest.story.storyKey, slug: manifest.story.slug, rank: STORY_REGISTRY[manifest.story.storyKey].rank, state: 'unpublished', generation: 0, createdAt: Date.now(), updatedAt: Date.now() })
       story = (await ctx.db.get(id))!
     }
     const mediaIdentity = media ? { ...media, storageId: undefined } : null
@@ -107,7 +109,9 @@ export const saveDraft = internalMutation({
   handler: async (ctx, args) => {
     const build = await ctx.db.get(args.buildId)
     if (!build || build.inputHash !== args.inputHash) throw new Error('Draft inputs changed')
-    const error = checkDraft(args.draft, build.spans)
+    const imported = await ctx.db.get(build.importId)
+    if (!imported) throw new Error('Import missing')
+    const error = checkDraft(args.draft, build.spans) ?? checkBallotDraft(parseStoryManifest(imported.manifestJson), args.draft, build.spans)
     if (error) throw new Error(error)
     const draftHash = await hashStoryValue(args.draft)
     if (build.draftHash) {

@@ -24,9 +24,10 @@ export const OWNER_MEDIA = {
   },
 } as const
 
-export function approvedOwnerMedia(storyKey: keyof typeof OWNER_MEDIA, storageId: Id<'_storage'>,
+export function approvedOwnerMedia(storyKey: string, storageId: Id<'_storage'>,
   metadata: { sha256: string; size: number; contentType?: string } | null): typeof storyMedia.type {
-  const selected = OWNER_MEDIA[storyKey]
+  const selected = Object.prototype.hasOwnProperty.call(OWNER_MEDIA, storyKey) ? OWNER_MEDIA[storyKey as keyof typeof OWNER_MEDIA] : null
+  if (!selected) throw new Error('No owner-approved image for this entry')
   // The system storage table uses base64; older metadata clients use hex.
   const base64 = btoa(String.fromCharCode(...selected.sha256.match(/../g)!.map(byte => parseInt(byte, 16))))
   if (!metadata || metadata.size !== selected.bytes || metadata.contentType !== 'image/png' ||

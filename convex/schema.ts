@@ -155,10 +155,10 @@ export default defineSchema({
   }).index('by_story_id_and_version', ['storyId', 'version']).index('by_build_id', ['buildId']),
   // Staging is private research. It has no public pointer or publication API.
   storyImports: defineTable({
-    storyKey: v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce')),
+    storyKey,
     bundleKey: v.string(),
     bundleVersion: v.number(),
-    contractVersion: v.literal('1.0.0'),
+    contractVersion: v.union(v.literal('1.0.0'), v.literal('2.0.0')),
     bundleHash: v.string(),
     manifestJson: v.string(),
     state: v.literal('staged'),

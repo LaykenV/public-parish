@@ -436,18 +436,31 @@ neither a supported consequence factor nor a next date; Explore still lists
 them. Card copy comes only from cited rationale on the accepted version.
 [Design](design.md) owns composition and responsive behavior.
 
-### Planned ballot-measure model
+### Ballot measure model
 
-Ballot measures reuse the story pipeline. The story registry becomes a
+Ballot measures reuse the story pipeline. The story registry is a
 code-owned map with a `kind` of `story` or `ballot_measure`, a stable key,
-placement and, for measures, election date, scope (statewide or parish slug),
-measure number and the ballot-wording citation. `storyKey` validators widen to
+placement and, for measures, the election date, statewide scope,
+measure number and the ballot-wording citation. `storyKey` validators accept
 the registry keys; the three launch stories keep their keys and Home placement,
 and featured stories remain three. Measures use the existing import, draft,
 review, immutable version, Ask scope, `story` follow target, update event and
 share metadata paths. The Secretary of State is registered in code as an
-official publisher. Routes are `/ballot` and `/ballot/$measureSlug`. Nothing
-here is deployed until slice U6 lands.
+official publisher. Routes are `/ballot` and `/ballot/$measureSlug`. These
+changes run in development. Production release remains pending in
+[the work queue](work.md).
+
+The frozen v1 import contract remains valid. Contract v2 adds ten code-owned
+measure keys and ballot placement. Historical research bundles can be staged
+in order; publication additionally requires a source span that binds the exact
+question to its numbered SOS section. Draft creation and approval both enforce
+that check. Only the three original story keys require an approved image.
+Measures use text social cards when no image exists.
+
+The statewide Home query requires the same promoted coverage generation as
+body follows. Local Home requests explicitly select the three launch parishes
+before applying result limits. Statewide cards reuse the local issue and
+record adapters without adding Louisiana to the parish selector.
 
 Paginated search includes typed story results with valid version references.
 Corpus Ask includes published story evidence through the same accepted-evidence

@@ -7,13 +7,28 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
-## September 14 statewide commission release
+## September 14 production upgrade release
 
-The owner authorized releasing the reviewed development upgrade to production.
-This PR adds LPSC session coverage, the statewide Home section and commission
-filtering. The development compile passed all ten gates with four accepted
-records. Production promotion requires its own bounded compile and ten passes.
-The ballot guide is a separate release. No September 16 outcome is claimed.
+The owner authorized production deployment. PR #226 releases statewide commission
+coverage. This separate ballot release adds all ten November 3 amendments.
+Production data must pass the bounded work order in
+`docs/upgrade-production-work-order.md`, including fresh independent ballot
+reviews, before the release is complete. U4 still awaits an official outcome.
+
+## September 14 overnight U4, U5 and U6 handoff
+
+The development build and data are ready for founder QA at
+https://woozy-wren-227.convex.site. U5 passed ten gates and has four accepted
+records. U6 has ten reviewed statewide measures. U4 preparation is complete;
+its September 16 outcome remains pending. The [morning report](upgrade-morning-report.md)
+contains the QA route, evidence quality, spending and remaining release gates.
+
+Validation passed 738 application tests, both typechecks, build and lint with
+15 existing warnings. Browser coverage passed 179 cases with one intentional
+skip after the documented reruns. All 76 hosted code files match the local
+build; 26 hosted browser checks passed. Source processing is idle and its
+development allowance is closed. Ask remains available for QA. The work is
+uncommitted on `upgrade/overnight-u4-u6`; production has not changed.
 
 ## September 14 UTC mobile area controls, local update
 
@@ -180,31 +195,42 @@ The owner adopted the [launch upgrade plan](launch-upgrade.md) after two agent
 reviews. It sharpens the existing resident workflow instead of adding datasets.
 Slice contracts, acceptance and spend proposals live there; status lives here.
 U1 through U3 are implemented in PRs #216 through #219. Their release checks
-and exact production receipts live in those PRs. U4 through U7 have not started;
-no allowance has been configured for U4, U5 or U6.
+and exact production receipts live in those PRs. The overnight development work
+completed U5 and the ten statewide U6 measures in dev. U4 preparation is ready;
+its September 16 outcome remains pending. U7 has not started. The
+[morning report](upgrade-morning-report.md) records validation, spending and
+the remaining release work. These changes are uncommitted on
+`upgrade/overnight-u4-u6` in `public-parish-upgrade-data`.
 
 | Slice | Outcome | State | Evidence |
 | --- | --- | --- | --- |
 | U1 | Louisiana-first Home with parish focus and return | Implemented | [PR #216](https://github.com/LaykenV/public-parish/pull/216) |
 | U2 | Place-qualified body labels; parish, city, body selector; body focus on Home and Explore | Implemented | [Labels #217](https://github.com/LaykenV/public-parish/pull/217), [focus #218](https://github.com/LaykenV/public-parish/pull/218) |
 | U3 | Consequence-first Home issues with a cited one-line reason | Implemented | [PR #219](https://github.com/LaykenV/public-parish/pull/219) |
-| U4 | September 16 LPSC agenda-to-outcome on Meta, follower delivery and demo capture | Not started; session is September 16, 9 a.m. Central | Meta v4 cites the revised agenda |
-| U5 | Louisiana Public Service Commission through the ten gates as a statewide body | Not started | `louisiana` jurisdiction exists as candidate; LPSC hosts registered for story sources |
-| U6 | Ten November 3 constitutional amendments with Ask and follows; verified parish propositions | Not started | SOS amendment list published with ten measures |
+| U4 | September 16 LPSC agenda-to-outcome on Meta, follower delivery and demo capture | Dev preparation complete; official outcome pending | Current production prose mirrored in dev; Follow beside next action; [watch procedure](upgrade-u4-watch.md) |
+| U5 | Louisiana Public Service Commission through the ten gates as a statewide body | Ten gates passed and promoted in dev; production pending | Three retained session documents, four accepted records, scoped Home and commission Follow |
+| U6 | Ten November 3 constitutional amendments with Ask and follows; verified parish propositions | Ten reviewed, accepted limited measures in dev; production pending | Exact numbered SOS questions, ten Acts, seven fiscal notes, actuarial note and statutory definition. Parish propositions remain unpublished |
 | U7 | Launch content, demo sequence and previews for the new surfaces | Not started | |
 
-- [ ] Owner confirms all ten amendments or names a subset, and decides whether
-      parish propositions ship with launch or after it.
-- [ ] Owner configures finite allowances for U4, U5 and U6 through the spending
-      guard before any paid run. The plan proposes amounts; nothing is set.
-- [ ] U1, U2 and U3 land as separate PRs with browser journeys, then the founder
-      QA pass covers the Louisiana view, parish focus, selector and ballot pages.
-- [ ] U4 records either a reviewed Meta version 5 with the official outcome
-      document or a written statement that no document appeared by September 19.
-- [ ] U5 records the gate evaluation for the current registry generation; LPSC
-      is not labeled supported before ten passes in production.
-- [ ] U6 publishes measures only from the SOS document, enrolled Acts and fiscal
-      notes, with no recommendation or candidate content.
+- [x] Prepare all ten statewide amendments under the overnight authorization.
+- [x] Configure finite development allowances through the spending guard and record actual use.
+- [x] Prove the LPSC ten-gate compile and four resident records in development.
+- [x] Preserve the three launch stories and the existing supported parish set.
+- [ ] Founder QA covers Louisiana Home, parish focus, all ten measures, sources,
+      scoped Ask, Follow and mobile reading. Use the morning report's test route.
+- [ ] Review and release the uncommitted changes in separate concerns. A merge
+      to main deploys production; this overnight instruction did not authorize it.
+- [ ] U4 records a reviewed Meta outcome from a new official document after
+      September 16, or a written no-document checkpoint by September 19.
+      Tuesday, September 15 launch must use the existing scheduled-action copy.
+- [ ] U5 repeats the bounded compile and ten-gate evaluation in production
+      under an authorized allowance before production support promotion.
+- [ ] U6 transfers the retained sources and publishes reviewed production
+      measures as baselines, then passes direct URL and production smoke checks.
+- [ ] Decide whether verified parish propositions follow the statewide launch.
+      The research leads and specific evidence gaps are in the morning report.
+- [ ] U7, the private resident pilot, actual-platform social previews and the
+      final demo remain launch work. Protect the weekday sales block.
 
 The review corrected four release defects. Search retains stored body identity
 names and displays the public label without requiring a backfill. Shared Home

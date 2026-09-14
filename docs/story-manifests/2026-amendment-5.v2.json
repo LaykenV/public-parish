@@ -1,0 +1,204 @@
+{
+  "contractVersion": "2.0.0",
+  "bundleVersion": 2,
+  "bundleKey": "2026-amendment-5-overnight",
+  "supersedesBundleSha256": "50b781378d6bc5d9902ac63c43a131e8943c85c00b773a9d65cf270a517997d2",
+  "purpose": "research",
+  "story": {
+    "storyKey": "2026-amendment-5",
+    "slug": "2026-amendment-5",
+    "placement": "ballot",
+    "rank": 105,
+    "geography": [
+      {
+        "placeName": "Statewide",
+        "parish": "Louisiana",
+        "state": "Louisiana",
+        "precisionNotes": "Constitutional amendment submitted statewide; individual sample ballots include other contests."
+      }
+    ],
+    "topics": []
+  },
+  "sources": [
+    {
+      "sourceKey": "sos-ballot",
+      "bodyKey": "louisiana-secretary-of-state",
+      "bodyName": "Louisiana Secretary of State",
+      "title": "November 3, 2026 proposed constitutional amendments",
+      "url": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "finalUrl": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "cc60d4aac717bb761819109191482625168d78333abf27d69a95f9a8e68d954e",
+        "bytes": 129088,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "sha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+        "bytes": 8227,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:12:08.879000+00:00",
+        "providerReference": "js74ysycggd4bxk8tpv5yw790d8ec8t1",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "act",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Enrolled Act 606 of 2026",
+      "url": "https://legis.la.gov/legis/ViewDocument.aspx?d=1480365",
+      "finalUrl": "https://legis.la.gov/legis/ViewDocument.aspx?d=1480365",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "snapshot:js7f99mes95r466y6ajs8vpw4x8edaxe",
+        "sha256": "233d005b83a53f50084283789a8f571d542813aee5cdffc31dc54e836d132832",
+        "bytes": 47083,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "snapshot:js7f99mes95r466y6ajs8vpw4x8edaxe",
+        "sha256": "29b5bbf8adf68d99693f61333263666ea2b55b7f05183312b078da855fbc0d93",
+        "bytes": 3557,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-14T04:13:40.345000+00:00",
+        "providerReference": "js7f99mes95r466y6ajs8vpw4x8edaxe",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Full raw PDF and exact Firecrawl text retained by the shared immutable source pipeline.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "Paying state retirement systems' unfunded liabilities",
+    "proposedSummary": "Explain the exact ballot question, proposed constitutional change, eligibility and limits from the enrolled Act.",
+    "claims": [
+      {
+        "claimKey": "ballot-question",
+        "text": "Do you support an amendment to authorize a state retirement system to apply any nonrecurring state monies it receives to any of its unfunded accrued liability rather than requiring application to its oldest unfunded accrued liability? (Amends Article VII, Section 10(D)(2)(b)(iii))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 3593,
+            "end": 3878,
+            "excerpt": "Do you support an amendment to authorize a state retirement system to apply any nonrecurring state monies it receives to* *any of its unfunded accrued liability rather than requiring application to its oldest unfunded accrued liability? (Amends* *Article VII, Section 10(D)(2)(b)(iii))",
+            "page": null,
+            "section": "ballot-question"
+          }
+        ]
+      },
+      {
+        "claimKey": "measure-identity",
+        "text": "Proposed Amendment No. 5\n\n<u>Act 606 (2026 Regular Session)</u>- Proposing to amend Article VII, Section 10(D)(2)(b)(iii) of the Constitution of Louisiana, relative to application of certain state monies to state retirement system unfunded accrued liability; to remove requirement that such monies be applied to the oldest system liabilities first; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to authorize a state retirement system to apply any nonrecurring state monies it receives to* *any of its unfunded accrued liability rather than requiring application to its oldest unfunded accrued liability? (Amends* *Article VII, Section 10(D)(2)(b)(iii))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 3137,
+            "end": 3878,
+            "excerpt": "Proposed Amendment No. 5\n\n<u>Act 606 (2026 Regular Session)</u>- Proposing to amend Article VII, Section 10(D)(2)(b)(iii) of the Constitution of Louisiana, relative to application of certain state monies to state retirement system unfunded accrued liability; to remove requirement that such monies be applied to the oldest system liabilities first; to provide for submission of the proposed amendment to the electors; and to provide for related matters.\n\n*Do you support an amendment to authorize a state retirement system to apply any nonrecurring state monies it receives to* *any of its unfunded accrued liability rather than requiring application to its oldest unfunded accrued liability? (Amends* *Article VII, Section 10(D)(2)(b)(iii))",
+            "page": null,
+            "section": "measure-identity"
+          }
+        ]
+      },
+      {
+        "claimKey": "election",
+        "text": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "c9e04d22169f9ca289a6fb940fbd28889c288d5040c70d19c284a39d27ddfb30",
+            "start": 0,
+            "end": 333,
+            "excerpt": "# SECRETARY OF STATE\n\n## STATE OF LOUISIANA\n\n# 2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n\n## November 3, 2026 Election\n\nThe constitutional amendments that will be on the ballot for the ***November 3, 2026*** election are listed below.\n\n*Click on the Act number link to read the complete text of the Act on the Legislature’s Website.*\n\n",
+            "page": null,
+            "section": "election"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-1",
+        "text": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n\n2026 Regular Session\n\n## ACT No. 606 2026 Regular Session\n\n**ENROLLED**\nACT No. 606\n\nHOUSE BILL NO. 27\n\nBY REPRESENTATIVE MCMAKIN\n\n## A JOINT RESOLUTION\n\nProposing to amend Article VII, Section 10(D)(2)(b)(iii) of the Constitution of Louisiana,\nrelative to application of certain state monies to state retirement system unfunded\naccrued liability; to remove requirement that such monies be applied to the oldest\nsystem liabilities first; to provide for submission of the proposed amendment to the\nelectors; and to provide for related matters.\n\nNotice of intention to introduce this Act has been published\nas provided by Article X, Section 29(C) of the Constitution\nof Louisiana.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana,  for their approval or rejection in the manner provided by law,  a proposal to\namend  Article  VII,  Section  10(D)(2)(b)(iii)  of the  Constitution  of  Louisiana,  to read as\nfollows:\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n\n§10.  Expenditure of State Funds\n\nSection 10.\n\n(D)  Appropriations.\n\n(2) Except as otherwise provided in this constitution, the appropriation or\nallocation of any money designated in the official forecast as nonrecurring shall be\nmade only for the following purposes:\n\n(b)\n\n(iii) For Fiscal Year 2024-2025 and each fiscal year thereafter, the legislature\nshall appropriate no less than twenty-five percent of any money designated in the\nofficial forecast as nonrecurring to the state retirement systems for application to\ntheir unfunded accrued liability.  Money appropriated pursuant to this Item shall be\napplied by the receiving system to its outstanding positive amortization bases in the\norder  in  which  they were created,  from  oldest  to  newest. The  legislature  may\nprovide by law for a formula to distribute the nonrecurring money between those\nstate retirement systems that have unfunded accrued liability.  If the legislature has\nnot  provided  by law  for  a  distribution  formula,  nonrecurring money shall  be\nappropriated pursuant to this Item to each system in the proportion that the system's\ntotal  unfunded  accrued  liability bears  to  the  total  of  all  state  system unfunded\naccrued liability,  using the most recent system valuations adopted by the  Public\nRetirement Systems' Actuarial Committee or its successor.  Any payment to a state\nretirement system made pursuant to the provisions of this Item shall not be used,\ndirectly or indirectly, to fund cost-of-living increases for such system.\n\nSection 2.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n\nSection 3.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\nDo you support an amendment to authorize a state retirement system to apply\nany nonrecurring state monies it receives to any of its unfunded accrued\nliability rather  than  requiring application  to  its  oldest  unfunded  accrued\nliability? (Amends Article VII, Section 10(D)(2)(b)(iii))\n\nSPEAKER ",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "29b5bbf8adf68d99693f61333263666ea2b55b7f05183312b078da855fbc0d93",
+            "start": 0,
+            "end": 3500,
+            "excerpt": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n\n2026 Regular Session\n\n## ACT No. 606 2026 Regular Session\n\n**ENROLLED**\nACT No. 606\n\nHOUSE BILL NO. 27\n\nBY REPRESENTATIVE MCMAKIN\n\n## A JOINT RESOLUTION\n\nProposing to amend Article VII, Section 10(D)(2)(b)(iii) of the Constitution of Louisiana,\nrelative to application of certain state monies to state retirement system unfunded\naccrued liability; to remove requirement that such monies be applied to the oldest\nsystem liabilities first; to provide for submission of the proposed amendment to the\nelectors; and to provide for related matters.\n\nNotice of intention to introduce this Act has been published\nas provided by Article X, Section 29(C) of the Constitution\nof Louisiana.\n\nSection 1.  Be it resolved by the Legislature of Louisiana, two-thirds of the members\nelected to each house concurring, that there shall be submitted to the electors of the state of\nLouisiana,  for their approval or rejection in the manner provided by law,  a proposal to\namend  Article  VII,  Section  10(D)(2)(b)(iii)  of the  Constitution  of  Louisiana,  to read as\nfollows:\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n\n§10.  Expenditure of State Funds\n\nSection 10.\n\n(D)  Appropriations.\n\n(2) Except as otherwise provided in this constitution, the appropriation or\nallocation of any money designated in the official forecast as nonrecurring shall be\nmade only for the following purposes:\n\n(b)\n\n(iii) For Fiscal Year 2024-2025 and each fiscal year thereafter, the legislature\nshall appropriate no less than twenty-five percent of any money designated in the\nofficial forecast as nonrecurring to the state retirement systems for application to\ntheir unfunded accrued liability.  Money appropriated pursuant to this Item shall be\napplied by the receiving system to its outstanding positive amortization bases in the\norder  in  which  they were created,  from  oldest  to  newest. The  legislature  may\nprovide by law for a formula to distribute the nonrecurring money between those\nstate retirement systems that have unfunded accrued liability.  If the legislature has\nnot  provided  by law  for  a  distribution  formula,  nonrecurring money shall  be\nappropriated pursuant to this Item to each system in the proportion that the system's\ntotal  unfunded  accrued  liability bears  to  the  total  of  all  state  system unfunded\naccrued liability,  using the most recent system valuations adopted by the  Public\nRetirement Systems' Actuarial Committee or its successor.  Any payment to a state\nretirement system made pursuant to the provisions of this Item shall not be used,\ndirectly or indirectly, to fund cost-of-living increases for such system.\n\nSection 2.  Be it further resolved that this proposed amendment shall be submitted\nto the electors of the state of Louisiana at the statewide election to be held on November 3,\n2026.\n\n---\n\n1\n2\n3\n4\n5\n6\n7\n8\n\nSection 3.  Be it further resolved that on the official ballot to be used at the election,\nthere shall be printed a proposition, upon which the electors of the state shall be permitted\nto vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\nfollows:\n\nDo you support an amendment to authorize a state retirement system to apply\nany nonrecurring state monies it receives to any of its unfunded accrued\nliability rather  than  requiring application  to  its  oldest  unfunded  accrued\nliability? (Amends Article VII, Section 10(D)(2)(b)(iii))\n\nSPEAKER ",
+            "page": null,
+            "section": "act-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-2",
+        "text": "OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "29b5bbf8adf68d99693f61333263666ea2b55b7f05183312b078da855fbc0d93",
+            "start": 3500,
+            "end": 3556,
+            "excerpt": "OF THE HOUSE OF REPRESENTATIVES\n\nPRESIDENT OF THE SENATE",
+            "page": null,
+            "section": "act-text-2"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [],
+    "knownUnknowns": [
+      "No official fiscal note has yet been retained for this explanation. The accepted sources do not establish an individual household's tax or financial outcome."
+    ],
+    "nextActionClaimKeys": [
+      "election"
+    ],
+    "reviewedThrough": "2026-09-14",
+    "nextReviewAt": "2026-09-17",
+    "reviewResponsibility": "Public Parish owner",
+    "supportedQuestions": [
+      {
+        "question": "What would this amendment change?",
+        "claimKeys": [
+          "ballot-question",
+          "measure-identity",
+          "election",
+          "act-text-1",
+          "act-text-2"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Should I vote for this amendment?",
+        "reason": "Public Parish explains official evidence without voting recommendations."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

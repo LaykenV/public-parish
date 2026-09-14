@@ -1,3 +1,4 @@
+import { registeredStory } from '../../../convex/stories/registry'
 import {
   ArrowLeftIcon,
   CheckIcon,
@@ -287,7 +288,7 @@ function FollowActionContent({
       size="tall"
       title={
         available
-          ? `Get updates about this ${target.kind.toLowerCase()}`
+          ? `Get updates about this ${target.kind === 'Story' && registeredStory(target.key)?.kind === 'ballot_measure' ? 'measure' : target.kind.toLowerCase()}`
           : 'Updates are not available yet'
       }
       trigger={(props) => (

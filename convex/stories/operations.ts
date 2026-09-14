@@ -1,3 +1,5 @@
+import { checkBallotDraft } from './ballot'
+import { STORY_REGISTRY } from './registry'
 import { indexStory } from './search'
 import { recordStoryUpdate } from './updates'
 import { v } from 'convex/values'
@@ -43,7 +45,7 @@ export const approve = mutation({
     }
     if (build.media && !await ctx.db.system.get('_storage', build.media.storageId)) throw new Error('Image storage changed before approval')
     if (await hashStoryValue(build.draft) !== args.draftHash || await hashStoryValue(build.review) !== args.reviewHash) throw new Error('Draft or review hash mismatch')
-    if (checkDraft(build.draft, build.spans) || checkReview(build.review, build.draft, build.media)) throw new Error('Deterministic story review failed')
+    if (checkDraft(build.draft, build.spans) || checkBallotDraft(manifest, build.draft, build.spans) || checkReview(build.review, build.draft, build.media)) throw new Error('Deterministic story review failed')
     for (const reference of build.relatedPublications) {
       const record = await ctx.db.get(reference.recordId)
       const publication = await ctx.db.get(reference.publicationVersionId)
@@ -52,7 +54,7 @@ export const approve = mutation({
     const mode = build.review.verdict === 'fail' ? 'withheld' : build.review.verdict === 'limited' || manifest.research.knownUnknowns.length ? 'limited' : 'full'
     const previous = story.currentVersionId ? await ctx.db.get(story.currentVersionId) : null
     if (previous && (!build.review.changeAssessment || build.review.changeAssessment.previousDraftHash !== previous.draftHash || build.review.changeAssessment.kind === 'baseline')) throw new Error('An exact previous-version change review is required')
-    if (mode !== 'withheld' && !build.media) throw new Error('An approved image is required for launch publication')
+    if (mode !== 'withheld' && STORY_REGISTRY[story.storyKey].kind === 'story' && !build.media) throw new Error('An approved image is required for launch publication')
     const latest = await ctx.db.query('storyVersions').withIndex('by_story_id_and_version', q => q.eq('storyId', story._id)).order('desc').first()
     const versionId = await ctx.db.insert('storyVersions', {
       storyId: story._id, buildId: build._id, version: (latest?.version ?? 0) + 1,

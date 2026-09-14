@@ -1,3 +1,4 @@
+import { registeredStory, storyPath } from '../../../convex/stories/registry'
 import type { ConvexReactClient } from 'convex/react'
 
 import { api } from '../../../convex/_generated/api'
@@ -54,7 +55,7 @@ export class LiveAskAdapter implements AskAdapter {
   async resolveScope(input: AskRouteSearch): Promise<AskScope> {
     if (input.scope === 'story') {
       const result = await this.client.query(api.stories.resident.get, { slug: input.story })
-      return { kind: 'story', storySlug: input.story, label: 'Answering from this story', recordTitle: result.story?.payload.title.text ?? 'Story evidence unavailable', returnTo: input.returnTo ?? `/stories/${input.story}` }
+      return { kind: 'story', storySlug: input.story, label: registeredStory(input.story)?.kind === 'ballot_measure' ? 'Answering from this measure' : 'Answering from this story', recordTitle: result.story?.payload.title.text ?? 'Story evidence unavailable', returnTo: input.returnTo ?? storyPath(input.story) }
     }
     if (input.scope === 'issue') {
       const issue = await this.client.query(

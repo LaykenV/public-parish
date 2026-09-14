@@ -1,7 +1,7 @@
 import { v } from 'convex/values'
 import { env, query } from '../_generated/server'
 import { requireOwner } from '../auth/authorization'
-import { storyDraft, checkDraft } from './contracts'
+import { storyKey as storyKeyValidator, storyDraft, checkDraft } from './contracts'
 import type { StorySpan } from './contracts'
 import { currentVersionEvidence } from './evidence'
 import { hashStoryValue, canonicalStoryJson } from './hashing'
@@ -23,7 +23,7 @@ export async function checkRetainedDraft(value: RetainedDraft, storyKey: string,
 }
 
 export const exportDraft = query({
-  args: { storyKey: v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce')), targetSite: v.string() }, returns: retainedDraft,
+  args: { storyKey: storyKeyValidator, targetSite: v.string() }, returns: retainedDraft,
   handler: async (ctx, args) => {
     await requireOwner(ctx)
     if (transferDeploymentSite(env.CONVEX_CLOUD_URL) !== 'https://woozy-wren-227.convex.site' || !['https://woozy-wren-227.convex.site', 'https://befitting-flamingo-587.convex.site'].includes(args.targetSite)) throw new Error('Choose the reviewed transfer deployment')
