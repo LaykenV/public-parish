@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-14T17:12:32Z
+- **Last updated:** 2026-09-14T20:18:25Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2301,3 +2301,11 @@ checks. Local typechecks, 744 tests, build and lint pass with 15 existing
 warnings. Ten browser checks pass in Chromium and mobile WebKit, with actual
 3D screenshots checked at desktop and phone widths. The authorized PR, reviews
 and production release remain pending.
+
+### 2026-09-14 - working tree, issue sharing domain
+Removed the issue share button's Convex hostname override. Issue shares retain
+the dedicated preview route and use the current site origin, as other shares do.
+The existing Convex HTTP action still supplies published issue metadata.
+Local verification passed 744 tests, typechecks, build and lint with 15 existing
+warnings. Browser checks passed native, clipboard and manual-copy sharing.
+The authorized PR and production release remain pending.
