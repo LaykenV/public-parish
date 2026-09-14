@@ -2,7 +2,11 @@ import { describe, expect, it } from 'vitest'
 
 import type { Id } from '../../../convex/_generated/dataModel'
 import type { PublishedIssue } from './live-evidence'
-import { toIssueFixture } from './live-evidence'
+import {
+  toDecisionFixture,
+  toMeetingFixture,
+  toIssueFixture,
+} from './live-evidence'
 
 const citationId = (value: string) => value as Id<'citations'>
 
@@ -90,9 +94,85 @@ describe('published issue timeline', () => {
 })
 
 it('keeps accepted evidence and citations when current coverage degrades', () => {
-  const fixture = toIssueFixture({ ...publishedIssue, coverageStatus: 'degraded' })
+  const fixture = toIssueFixture({
+    ...publishedIssue,
+    coverageStatus: 'degraded',
+  })
   expect(fixture?.issue.title).toBe(publishedIssue.title)
-  expect(fixture?.issue.coverageNote).toContain('newer decisions may be missing')
-  expect(fixture?.citations['citation-dated']?.excerpt.quote).toBe(citation.excerpt)
+  expect(fixture?.issue.coverageNote).toContain(
+    'newer decisions may be missing',
+  )
+  expect(fixture?.citations['citation-dated']?.excerpt.quote).toBe(
+    citation.excerpt,
+  )
   expect(fixture?.citations['citation-dated']?.warning).toContain('incomplete')
+})
+
+const publishedDecision: Parameters<typeof toDecisionFixture>[0] = {
+  recordKey: 'statewide-record',
+  sourceRecordId: 'U-37969',
+  placeName: 'Louisiana',
+  placeSlug: 'louisiana',
+  bodyName: 'Louisiana Public Service Commission',
+  coverageStatus: 'supported',
+  mode: 'full',
+  title: 'Utility rate application',
+  recordType: 'other',
+  lifecycleState: 'scheduled',
+  summary: 'Discussion of the application.',
+  meetingAt: '2026-09-16T09:00:00-05:00',
+  meetingKey: 'statewide-meeting',
+  affectedPlaces: [],
+  amounts: [],
+  publicActions: [],
+  citations: [citation],
+  versions: [],
+  changes: [],
+  issue: null,
+}
+
+const publishedMeeting: Parameters<typeof toMeetingFixture>[0] = {
+  id: 'statewide-meeting',
+  placeName: 'Louisiana',
+  placeSlug: 'louisiana',
+  bodyName: publishedDecision.bodyName,
+  coverageStatus: 'supported',
+  meetingAt: publishedDecision.meetingAt!,
+  decisions: [publishedDecision],
+  citations: [citation],
+}
+
+it('opens statewide decisions and preserves their source and meeting links', () => {
+  const fixture = toDecisionFixture(publishedDecision)
+  expect(fixture?.decision.title).toBe(publishedDecision.title)
+  expect(fixture?.decision.meeting?.id).toBe(publishedMeeting.id)
+  expect(fixture?.citations[citation.id]?.excerpt.quote).toBe(citation.excerpt)
+})
+
+it('opens statewide meeting records and keeps their individual decisions', () => {
+  const data = toMeetingFixture(publishedMeeting)
+  expect(data?.fixture.meeting.placeSlug).toBe('louisiana')
+  expect(data?.fixture.meeting.decisions[0].recordKey).toBe(
+    publishedDecision.recordKey,
+  )
+})
+
+it('opens accepted statewide issue timelines', () => {
+  const fixture = toIssueFixture({
+    ...publishedIssue,
+    placeSlug: 'louisiana',
+    placeName: 'Louisiana',
+  })
+  expect(fixture?.issue.placeSlug).toBe('louisiana')
+  expect(fixture?.issue.timeline).toHaveLength(2)
+})
+
+it('still rejects unknown places across all evidence readers', () => {
+  expect(
+    toDecisionFixture({ ...publishedDecision, placeSlug: 'unknown' }),
+  ).toBeNull()
+  expect(
+    toMeetingFixture({ ...publishedMeeting, placeSlug: 'unknown' }),
+  ).toBeNull()
+  expect(toIssueFixture({ ...publishedIssue, placeSlug: 'unknown' })).toBeNull()
 })

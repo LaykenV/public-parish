@@ -52,7 +52,9 @@ function StoryImage({
 export function FeaturedStories({
   mainHeading = false,
   action,
+  children,
 }: {
+  children?: ReactNode
   mainHeading?: boolean
   action?: ReactNode
 }) {
@@ -61,7 +63,9 @@ export function FeaturedStories({
       label="Featured stories"
       resetKey="featured-stories"
     >
-      <FeaturedStoriesContent mainHeading={mainHeading} action={action} />
+      <FeaturedStoriesContent mainHeading={mainHeading} action={action}>
+        {children}
+      </FeaturedStoriesContent>
     </ResidentSectionBoundary>
   )
 }
@@ -69,7 +73,9 @@ export function FeaturedStories({
 function FeaturedStoriesContent({
   mainHeading,
   action,
+  children,
 }: {
+  children?: ReactNode
   mainHeading: boolean
   action?: ReactNode
 }) {
@@ -85,7 +91,7 @@ function FeaturedStoriesContent({
         <Heading id="stories-title" tabIndex={mainHeading ? -1 : undefined}>
           Across Louisiana
         </Heading>
-        <p>The projects making news, explained through official records.</p>
+        <p>Projects and utility decisions, explained through official records.</p>
         {action}
       </header>
       {stories === undefined ? (
@@ -135,6 +141,7 @@ function FeaturedStoriesContent({
               </div>
             </article>
           ))}
+          {children}
         </div>
       )}
     </section>

@@ -7,6 +7,23 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 14 statewide reading and utility roundup
+
+The owner approved one utility roundup alongside the three featured stories.
+Home now groups the accepted commission cases into the fourth grid card. Each
+case links to its own evidence and shows its docket and published status.
+The existing commission follow provides utility updates. The separate statewide
+section is removed. This does not add a new editorial story or merge decisions.
+
+The owner found a false Record not found page for statewide decisions. All four
+production decision queries and both meeting queries return accepted records.
+The frontend reader rejected Louisiana. The fix admits Louisiana for decision,
+meeting and issue reading while retaining the unknown-place check. Three
+regression checks failed before the fix and now pass. The original U5 release
+smoke missed decision-page navigation. Validation passed 742 application tests, both typechecks, build and lint
+with 15 existing warnings. All 64 targeted browser cases pass after correcting
+the story-image selector and waiting for visible layout. PR #228 is in review.
+
 ## September 14 production upgrade release
 
 The owner authorized production deployment. PR #226 merged statewide commission

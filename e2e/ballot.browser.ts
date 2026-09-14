@@ -47,13 +47,13 @@ test('measure citation opens the official question and Follow preserves its scop
 
 test('statewide Home keeps three featured stories and parish Home retains the ballot guide', async ({ page }) => {
   await page.goto('/?area=louisiana')
-  await expect(page.locator('.pp-story-grid article')).toHaveCount(3)
-  await expect(page.getByRole('heading', { name: 'Statewide decisions', exact: true })).toBeVisible()
+  await expect(page.locator('.pp-story-grid .pp-story-card')).toHaveCount(3)
+  await expect(page.getByRole('heading', { name: 'Utility rates and service', exact: true })).toBeVisible()
   await expect(page.locator('.pp-ballot-grid li')).toHaveCount(10)
   await page.goto('/?area=rapides-parish')
   await expect(page.locator('.pp-ballot-grid li')).toHaveCount(10)
-  await expect(page.locator('.pp-story-grid article')).toHaveCount(0)
-  await expect(page.getByRole('heading', { name: 'Statewide decisions', exact: true })).toHaveCount(0)
+  await expect(page.locator('.pp-story-grid .pp-story-card')).toHaveCount(0)
+  await expect(page.getByRole('heading', { name: 'Utility rates and service', exact: true })).toHaveCount(0)
 })
 
 

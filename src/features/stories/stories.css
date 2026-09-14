@@ -404,3 +404,87 @@
 .pp-ballot a:hover { text-decoration: underline; text-underline-offset: .15em; }
 .pp-ballot > header a { color: var(--primary); text-decoration: underline; text-underline-offset: .15em; }
 .pp-ballot-grid .pp-story-meta { margin-top: .75rem; }
+
+
+.pp-utility-roundup {
+  min-width: 0;
+  padding: clamp(1.125rem, 2.5vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  align-self: start;
+}
+.pp-utility-roundup h3 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.pp-utility-cases {
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+.pp-utility-cases li {
+  border-bottom: 1px solid var(--border);
+}
+.pp-utility-cases a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.375rem 0.75rem;
+  min-height: var(--pp-control-height);
+  padding-block: 1rem;
+  color: var(--foreground);
+  text-decoration: none;
+}
+.pp-utility-case-meta {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  color: var(--muted-foreground);
+  font-size: var(--pp-text-caption);
+}
+.pp-utility-case-meta > :first-child {
+  color: var(--primary);
+  font-family: var(--font-mono);
+}
+.pp-utility-case-title {
+  font-size: var(--pp-text-small);
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.pp-utility-cases svg {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.25rem;
+  color: var(--primary);
+}
+.pp-utility-cases a:hover .pp-utility-case-title {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.pp-utility-cases a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+.pp-utility-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 1.25rem;
+}
+.pp-utility-actions > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--pp-control-height);
+  color: var(--primary);
+  font-size: var(--pp-text-small);
+  text-underline-offset: 0.2em;
+}
