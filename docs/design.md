@@ -131,6 +131,15 @@ opens a centered desktop dialog or the shared mobile drawer. The result controls
 remain mounted while filters change. Search fields draw one purple focus border
 around the whole control, including its icon, without an inner input outline.
 
+Without filters or an explicit sort, Explore leads with published stories and
+the existing consequence-ranked issue selection, then continues through the
+paginated search records. Remove duplicate links. Explicit date sorting keeps
+the search order. Cards show their type, headline, accepted summary, place,
+body and available dates. Story headlines precede their approved images. Issue
+cards retain topics, evidence limitations and linked-record context when available.
+Meeting and body cards do not inherit a member decision's lifecycle or evidence
+status. Body cards open that body's published records.
+
 The empty desktop Ask composer and suggestions sit in the middle of the available
 conversation area. The first question moves the composer to the bottom and gives
 the conversation its scrolling area. Keep the existing mobile layout.

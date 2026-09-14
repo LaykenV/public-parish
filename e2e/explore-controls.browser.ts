@@ -171,3 +171,60 @@ test('coverage request keeps the form centered with assurance below it', async (
     fullPage: true,
   })
 })
+
+test('Explore leads with explanations and renders the details for each record type', async ({
+  page,
+}, info) => {
+  await page.goto('/explore')
+  const cards = page.locator('.pp-explore-card')
+  await expect(cards.first()).toHaveAttribute('data-kind', 'Story')
+  await expect(page.locator('.pp-result-count')).toContainText(
+    'Stories and consequential issues first',
+  )
+  await expect(cards.first().locator('img')).toBeVisible()
+  await expect(
+    cards.first().locator('.pp-explore-card-summary'),
+  ).not.toBeEmpty()
+  const hrefs = await cards.evaluateAll((nodes) =>
+    nodes.map((node) => node.getAttribute('href')),
+  )
+  expect(new Set(hrefs).size).toBe(hrefs.length)
+  const kinds = await cards.evaluateAll((nodes) =>
+    nodes.map((node) => node.getAttribute('data-kind')),
+  )
+  expect(kinds.indexOf('Issue')).toBeGreaterThan(0)
+  expect(kinds.indexOf('Issue')).toBeLessThan(kinds.indexOf('Decision record'))
+  await page.screenshot({
+    path: info.outputPath('recommended-explore.png'),
+    fullPage: true,
+  })
+  for (const [type, label] of [
+    ['story', 'Story'],
+    ['issue', 'Issue'],
+    ['decision', 'Decision record'],
+    ['meeting', 'Meeting'],
+    ['body', 'Government body'],
+  ]) {
+    await page.goto(`/explore?type=${type}`)
+    await expect(page.locator('.pp-explore-results')).toHaveAttribute(
+      'aria-busy',
+      'false',
+    )
+    await expect(cards.first()).toHaveAttribute('data-kind', label)
+    if (type === 'meeting' || type === 'body') {
+      await expect(cards.first().locator('.pp-explore-card-state')).toHaveCount(
+        0,
+      )
+      await expect(cards.first()).not.toContainText('Evidence available')
+    }
+    await page.screenshot({ path: info.outputPath(`explore-${type}.png`) })
+    if (type === 'body') {
+      await cards.first().click()
+      await expect(page).toHaveURL(/body=/)
+    }
+  }
+  await page.goto('/explore?sort=newest')
+  await expect(page.locator('.pp-result-count')).not.toContainText(
+    'Stories and consequential issues first',
+  )
+})

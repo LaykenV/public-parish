@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-13T23:17:00Z
+- **Last updated:** 2026-09-14T01:36:00Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2199,3 +2199,20 @@ coverage request column. Fixed the extra inner outline on both composite search
 fields. Local validation passed 721 tests, typechecks, build and lint with the
 15 existing warnings. Passed 26 desktop and mobile browser checks and the desktop
 Ask transition, then inspected screenshots. PR review and dev upload are pending.
+
+### 2026-09-13 - 97c4010, resident controls ready on development
+
+PR #222 passed 721 application tests and 165 browser checks with clean GLM and
+Muse reviews. Synced development and uploaded exact CI artifact `10326759975`.
+Eight hosted browser checks and direct desktop and mobile Ask checks passed.
+All 70 hosted code files matched the artifact. The preview is ready for owner
+testing. The PR remains open and production is unchanged.
+
+### 2026-09-14 - working tree, useful Explore cards
+
+After owner review, added a default that leads with published stories and
+consequence-ranked issues, while explicit sorting retains the search order.
+Cards keep accepted summaries, relevant dates and evidence status, with approved
+story images below headlines. Body cards open their published records. Local
+validation passed 726 tests and ten desktop and mobile Explore checks. Inspected
+the final card screenshots. PR reviews and the replacement dev upload are pending.

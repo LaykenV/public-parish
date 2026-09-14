@@ -2,6 +2,8 @@ import { Spinner } from '../../components/ui/spinner'
 import { SearchIcon, SlidersHorizontalIcon, XIcon } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useQuery } from 'convex/react'
+import { api } from '../../../convex/_generated/api'
 
 import { Button } from '../../components/ui/button'
 import { AreaSelector } from './area-selector'
@@ -19,7 +21,10 @@ import {
 } from './contracts'
 import type { ExploreSearch, IssueCardData, ResultRowData } from './contracts'
 import { EXPLORE_ROW_FIXTURES, ISSUE_FIXTURES } from './fixtures'
-import { getExploreEntries, getExploreViewMode } from './explore-model'
+import { getExploreEntries, getExploreViewMode, hasExploreResultsView } from './explore-model'
+import { usePublishedIssues } from './live-publications'
+import { recommendExploreEntries } from './explore-recommendations'
+import { ExploreCard } from './explore-card'
 import {
   FilterGroup,
   FilterPill,
@@ -38,6 +43,10 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
   const activeFixture = getActiveDiscoveryFixture(search.fixture)
   const fixturesEnabled = activeFixture !== undefined
   const liveSearch = usePublishedSearch(!fixturesEnabled, search)
+  const recommended = !hasExploreResultsView(search) && !search.sort
+  const stories = useQuery(api.stories.resident.featured, fixturesEnabled ? 'skip' : {})
+  const usefulIssues = usePublishedIssues(!fixturesEnabled && recommended)
+  const loading = !fixturesEnabled && (liveSearch.status === 'LoadingFirstPage' || (recommended && (!stories || !usefulIssues)))
   const effectiveSearch = useMemo(
     () =>
       activeFixture === search.fixture
@@ -93,10 +102,12 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
   const showUpdateRow = activeFixture === 'update' && !refreshed
 
   const entries = useMemo(
-    () => fixturesEnabled
-      ? getExploreEntries(effectiveSearch, ISSUE_FIXTURES, EXPLORE_ROW_FIXTURES)
-      : liveSearch.results.map(toSearchEntry),
-    [effectiveSearch, fixturesEnabled, liveSearch.results],
+    () => {
+      if (fixturesEnabled) return getExploreEntries(effectiveSearch, ISSUE_FIXTURES, EXPLORE_ROW_FIXTURES)
+      const searchEntries = liveSearch.results.map(toSearchEntry)
+      return recommended ? recommendExploreEntries(searchEntries, stories ?? [], usefulIssues ?? []) : searchEntries
+    },
+    [effectiveSearch, fixturesEnabled, liveSearch.results, recommended, stories, usefulIssues],
   )
 
   const browse = useMemo(() => {
@@ -269,19 +280,19 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
         />
         {!fixturesEnabled || viewMode === 'results' ? (
           <FilterPill
-            defaultValue="newest"
+            defaultValue={recommended ? '' : 'newest'}
             label="Sort"
             onChange={(value) =>
-              patch({ sort: (value || 'newest') as 'newest' | 'oldest' })
+              patch({ sort: value ? value as 'newest' | 'oldest' : undefined })
             }
-            options={SORT_OPTIONS}
-            value={search.sort ?? 'newest'}
+            options={hasExploreResultsView(search) ? SORT_OPTIONS : [{ label: 'Recommended', value: '' }, ...SORT_OPTIONS]}
+            value={search.sort ?? (recommended ? '' : 'newest')}
           />
         ) : null}
       </div>
 
       <div
-        aria-busy={!fixturesEnabled && liveSearch.isLoading}
+        aria-busy={loading || (!fixturesEnabled && liveSearch.isLoading)}
         className="pp-explore-results"
       >
         {results()}
@@ -334,10 +345,7 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
   }
 
   function resultsBody() {
-    if (
-      !fixturesEnabled &&
-      liveSearch.status === 'LoadingFirstPage'
-    ) {
+    if (loading) {
       return (
         <div className="pp-explore-loading" role="status">
           <Spinner aria-hidden="true" />
@@ -390,16 +398,16 @@ export function ExplorePage({ search }: { search: ExploreSearch }) {
     return (
       <>
         <p className="pp-result-count" role="status">
-          {entries.length} {entries.length === 1 ? 'result' : 'results'}{!fixturesEnabled && liveSearch.status !== 'Exhausted' ? ' loaded' : ''}
+          {recommended ? 'Stories and consequential issues first · ' : ''}{entries.length} {entries.length === 1 ? 'result' : 'results'}{!fixturesEnabled && liveSearch.status !== 'Exhausted' ? ' loaded' : ''}
         </p>
         <div className="pp-result-sequence">
-          {entries.map((entry, index) =>
-            entry.kind === 'issue' ? (
-              <IssueCard issue={entry.issue} key={entry.issue.slug} />
-            ) : (
-              <ResultRow key={`${entry.row.href}-${index}`} row={entry.row} />
-            ),
-          )}
+          {entries.map((entry) => (
+            <ExploreCard
+              entry={entry}
+              key={entry.kind === 'issue' ? entry.issue.slug : entry.row.href}
+              image={entry.kind === 'Story' ? stories?.find(story => entry.row.href === `/stories/${story.slug}`)?.media ?? undefined : undefined}
+            />
+          ))}
         </div>
         {!fixturesEnabled && liveSearch.status !== 'Exhausted' ? <Button disabled={liveSearch.status === 'LoadingMore'} onClick={() => liveSearch.loadMore(25)}>{liveSearch.status === 'LoadingMore' ? 'Loading history...' : 'Load more results'}</Button> : null}
       </>
