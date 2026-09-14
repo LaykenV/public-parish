@@ -14,6 +14,7 @@ import { mutation, query } from '../_generated/server'
 import { sha256HexOfText } from '../sources/hashing'
 import { askScope, scopeKey, storedScope } from './contracts'
 import type { AskScope } from './contracts'
+import { reserveAskWriteCapacity } from './limits'
 
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000
 const MAX_THREADS_PER_SESSION = 20
@@ -49,10 +50,10 @@ export const createSession = mutation({
       .order('desc')
       .first()
     if (existing && existing.state === 'active' && existing.expiresAt > now) {
-      await ctx.db.patch(existing._id, { lastSeenAt: now })
       return { expiresAt: existing.expiresAt }
     }
 
+    await reserveAskWriteCapacity(ctx, 'session')
     if (existing?.state === 'active') {
       await detachSession(ctx, existing._id, now)
     }
@@ -94,6 +95,7 @@ export const createThread = mutation({
       )
     }
 
+    await reserveAskWriteCapacity(ctx, 'thread')
     const threadId = await createAgentThread(ctx, components.agent, {
       title: 'Public Parish Ask',
     })
@@ -160,6 +162,7 @@ export const appendQuestion = mutation({
         'This conversation has reached its history limit',
       )
     }
+    await reserveAskWriteCapacity(ctx, 'question')
     const saved = await saveMessage(ctx, components.agent, {
       threadId: args.threadId,
       prompt: question,

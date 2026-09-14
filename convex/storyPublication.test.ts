@@ -3,6 +3,7 @@ import { hashStoryValue } from './stories/hashing'
 import { convexTest } from 'convex-test'
 import workflowTest from '@convex-dev/workflow/test'
 import agentTest from '@convex-dev/agent/test'
+import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import agentmailTest from '@agentmail/convex/test'
 import { afterEach, expect, test, vi } from 'vitest'
 import example from '../docs/story-manifests/import-contract-v1.example.json'
@@ -26,6 +27,7 @@ async function setup() {
   vi.stubEnv('CONVEX_CLOUD_URL', 'https://woozy-wren-227.convex.cloud')
   const t = convexTest(schema, modules)
   agentTest.register(t)
+  rateLimiterTest.register(t)
   const manifest = structuredClone(example) as StoryManifest
   manifest.purpose = 'research'
   const text = 'EXAMPLE FIXTURE. The demonstration agency announced a proposed project.\n'

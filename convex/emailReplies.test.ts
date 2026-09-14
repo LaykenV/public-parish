@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 import agentTest from '@convex-dev/agent/test'
+import rateLimiterTest from '@convex-dev/rate-limiter/test'
 import agentmailTest from '@agentmail/convex/test'
 import type { OutboundId } from '@agentmail/convex'
 import { convexTest } from 'convex-test'
@@ -32,6 +33,7 @@ function initTest(): TestConvex {
   )
   const t = convexTest(schema, modules)
   agentTest.register(t)
+  rateLimiterTest.register(t)
   agentmailTest.register(t)
   return t
 }
