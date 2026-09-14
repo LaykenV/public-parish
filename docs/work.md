@@ -7,6 +7,44 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 14 code-freeze corrections
+
+The [audit](launch-audit-2026-09-14.md) and
+[correction receipt](code-freeze-2026-09-14.md) support moving the main effort to
+launch content and residents. Work is isolated from the older dirty checkout,
+starting at the actual released commit `0c0d24c`.
+
+- [x] Fix anonymous Ask write admission, historical management-token revocation,
+  ballot URLs and metadata, initial Google follow failure feedback and the empty
+  next-action contradiction in production.
+- [x] Fix unknown-page hydration and verify desktop and mobile recovery.
+- [x] Pass 754 application tests, both typechecks, build and lint. Final integrated
+  resident browser checks pass all 140 cases. Independent diff review found no
+  verified regression.
+- [x] Refresh SpaceX and Boyce in production through source checks, independent
+  review and exact-version approval. Both retain factual text and images, with
+  one SpaceX alt-text correction. Reviewed September 14, next review September 18.
+  No update alerts. Post-review production smoke passes.
+- [x] Restore source spending to disabled. Review cost was $0.192740 in the app
+  ledger and three Firecrawl credits. Ask settings remain unchanged.
+- [x] Ship the owner-authorized corrections through PRs #237 through #241. Both
+  reviewers and CI passed. Combined release `7d2b467` passed production workflow
+  `34903301247` and independent smoke. The correction receipt records the exact
+  workflow, review history and validation limits. All 56 fresh production browser
+  checks passed.
+- [ ] Keep the September 16 Meta watch, September 17 amendment review and
+  September 18 SpaceX/Boyce review. Check Ask allowance and failed journeys daily.
+- [ ] Reconcile EBR Planning inventory in the next bounded source update. Official
+  July minutes exist; August minutes are not linked. Its stale expected date
+  remains disclosed, and no future date was invented. This does not block freeze.
+- [ ] Finish source-backed launch assets, actual social previews, resident feedback
+  and the final demo.
+
+Older entries below preserve the state at each work session. Their pending
+release labels do not override the confirmed production base or this active
+freeze queue. The audit distinguishes current verification from the September 12
+production email and phone acceptance receipt.
+
 ## Issue and decision reading, September 14
 
 The owner approved aligning both pages with stories on phones and desktop, then
