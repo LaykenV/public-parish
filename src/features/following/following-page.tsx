@@ -118,7 +118,7 @@ function LiveFollowingPage({
       <FollowingSignedOut
         busy={auth.isSigningIn}
         error={auth.error}
-        onGoogle={auth.signInGoogle}
+        onGoogle={() => void auth.signInGoogle()}
       />
     )
   }

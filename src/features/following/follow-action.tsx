@@ -75,6 +75,7 @@ function FollowActionContent({
   const [savingGoogleFollow, setSavingGoogleFollow] = useState(false)
   const frequencyChanged = useRef(false)
   const googleIntentHandled = useRef(false)
+  const googleAttempt = useRef(0)
   const auth = useGoogleAuth()
   const requestEmailFollow = useAction(
     api.follows.enrollment.requestEmailFollow,
@@ -93,6 +94,7 @@ function FollowActionContent({
   )
 
   const reset = () => {
+    googleAttempt.current += 1
     frequencyChanged.current = false
     setStep('choose')
     setFrequency(notificationSettings?.defaultCadence ?? 'immediate')
@@ -140,6 +142,8 @@ function FollowActionContent({
   )
 
   const startGoogleFollow = async () => {
+    const attempt = ++googleAttempt.current
+    setStep('choose')
     if (!live) {
       setDestination('Google account')
       setStep('success')
@@ -154,8 +158,20 @@ function FollowActionContent({
       target,
       frequency,
     )
-    await auth.signInGoogle(redirectTo)
+    const started = await auth.signInGoogle(redirectTo)
+    if (!started && attempt === googleAttempt.current) {
+      setStep('google-failed')
+    }
   }
+
+  const chooseEmail = () => {
+    googleAttempt.current += 1
+    setStep('email')
+  }
+
+  useEffect(() => () => {
+    googleAttempt.current += 1
+  }, [target.key, target.kind])
 
   const sendCode = async () => {
     if (!/^\S+@\S+\.\S+$/.test(email)) {
@@ -305,7 +321,7 @@ function FollowActionContent({
           {step === 'choose' ? (
             <FollowChoice
               frequency={frequency}
-              onEmail={() => setStep('email')}
+              onEmail={chooseEmail}
               onFrequency={handleFrequencyChange}
               googleBusy={auth.isSigningIn || savingGoogleFollow}
               onGoogle={() => void startGoogleFollow()}
@@ -367,7 +383,7 @@ function FollowActionContent({
           ) : null}
           {step === 'google-failed' ? (
             <ProviderFailure
-              onEmail={() => setStep('email')}
+              onEmail={chooseEmail}
               onRetry={() => void startGoogleFollow()}
             />
           ) : null}
