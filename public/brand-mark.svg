@@ -1,16 +1,29 @@
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 64 64"
-  role="img"
-  aria-label="Public Parish"
->
-  <rect x="1" y="1" width="62" height="62" rx="15" fill="#171717" />
-  <path
-    d="M13 48V17h6.5C26 17 30 20.4 30 26s-4 9-10.5 9H13M35 48V17h6.5C48 17 52 20.4 52 26s-4 9-10.5 9H35"
-    fill="none"
-    stroke="#fff"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    stroke-width="6"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Public Parish pelican">
+  <defs>
+    <linearGradient id="tile" x1="10" y1="3" x2="51" y2="63" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4b365f"/>
+      <stop offset=".5" stop-color="#2e203f"/>
+      <stop offset="1" stop-color="#1e162b"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="8" y1="2" x2="52" y2="62" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ded0ed"/>
+      <stop offset=".45" stop-color="#a48bbd"/>
+      <stop offset="1" stop-color="#5d4678"/>
+    </linearGradient>
+    <linearGradient id="pelican" x1="470" y1="90" x2="800" y2="1200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#dbc9f5"/>
+      <stop offset=".55" stop-color="#b398dc"/>
+      <stop offset="1" stop-color="#9b7dcc"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="62" height="62" rx="15" fill="url(#tile)" stroke="#2e203f" stroke-width="1.5"/>
+  <rect x="2.5" y="2.5" width="59" height="59" rx="13.5" fill="none" stroke="url(#rim)" stroke-width="1"/>
+  <g transform="translate(3.2 4) scale(.044)">
+  <path fill="url(#pelican)" d="M485 214C508 108 606 61 704 78C779 90 816 133 829 201L802 249C775 239 746 218 711 220C650 223 690 295 740 359C804 443 857 534 892 641C947 799 899 942 748 1003L658 1041C650 1096 665 1122 711 1138L850 1174C867 1183 854 1194 827 1194H612C585 1146 568 1111 550 1080C550 1136 567 1166 609 1180L713 1200H484C465 1192 478 1180 503 1169C508 1125 500 1083 473 1041C357 1039 262 1093 143 1148C110 1162 114 1122 137 1075L99 1078C107 1006 158 879 231 783C353 618 505 529 663 542C725 513 688 455 648 405C567 315 477 303 485 214Z"/>
+  <path fill="#b39bdc" d="M807 195L1205 622Q1233 657 1210 678C1196 644 1170 642 1138 640C973 637 882 551 819 427L744 265Z"/>
+  <path fill="#fff7e8" d="M827 199C805 146 777 139 750 143C684 148 632 200 622 258C612 313 643 349 680 388L762 483C729 398 673 338 653 297C629 239 669 207 711 220L1204 631Z"/>
+  <path fill="#fff7e8" d="M100 1065C209 788 440 522 681 567L765 590C658 716 462 858 100 1065Z"/>
+  <path fill="#e4d5c5" d="M765 590L617 838Q607 858 584 853L435 823C563 744 677 666 765 590Z"/>
+  <circle cx="762" cy="189" r="30" fill="#242131"/>
+  </g>
 </svg>

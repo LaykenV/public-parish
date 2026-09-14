@@ -24,10 +24,24 @@ export function HowItWorksPage() {
             resident-readable decisions. Every published fact stays attached to
             the exact official evidence that supports it.
           </p>
+          <Button
+            render={<Link to="/coverage" />}
+            size="touch"
+            variant="outline"
+          >
+            View coverage
+          </Button>
         </div>
-        <Button render={<Link to="/coverage" />} size="touch" variant="outline">
-          View coverage
-        </Button>
+        <img
+          className="method-pelican"
+          src="/brand/pelican-320.webp"
+          srcSet="/brand/pelican-320.webp 320w, /brand/pelican-640.webp 640w"
+          sizes="(min-width: 768px) 240px, 144px"
+          alt=""
+          width="240"
+          height="240"
+          decoding="async"
+        />
       </header>
 
       <section aria-labelledby="method-source-title" className="method-source">

@@ -493,3 +493,21 @@ Official outbound destinations were checked September 14, 2026:
 and [election dates](https://www.sos.la.gov/elections-voting/election-dates).
 The hub links to the official deadlines rather than copying a new calendar into
 the application. The existing published November 3 date is retained.
+
+
+## Pelican identity, September 14 owner selection
+
+Replace the PP placeholder with the violet pelican and folded-paper wing.
+Use `public/brand-mark.svg` for the compact header, standalone pages, correction
+labels and scalable browser icon. The compact mark has a dark violet rounded
+tile, a light rim and a lavender bird with a limestone wing so its outline stays
+visible on white. Keep Public Parish as live text beside it.
+The transparent 3D pelican appears at 96 pixels in the shared footer and at
+240 pixels beside the How it works introduction, reduced to 144 on phones.
+The Home hero retains its existing Louisiana visual and visibility rules.
+
+`public/brand/pelican-master.png` is the clean generated artwork derived from
+the owner's approved concept. `scripts/generate-brand-assets.mjs` exports
+the WebP sizes, browser icons, Apple touch icon and generic share image.
+Story share pages continue to use their accepted story images. The logo is
+brand artwork and does not represent official source evidence.
