@@ -1,3 +1,4 @@
+import { storyPath } from '../stories/registry'
 import { recordConfirmedEvent } from '../analytics/civic'
 import { AgentMail } from '@agentmail/convex'
 import type { AgentMailOptions, OutboundId, OutboundStatus } from '@agentmail/convex'
@@ -706,7 +707,7 @@ async function projectWeeklyEmail(
   for (const entry of entries) {
     if (entry.storyUpdateId) {
       const current = await currentStoryUpdate(ctx, entry.storyUpdateId)
-      if (current) items.push({ place: current.version.geography.join(' · '), title: current.version.payload.title.text, change: 'Approved story update', source: acceptedStorySpans(current.version)[0]?.officialUrl ?? '', href: appUrl(`/stories/${current.story.slug}`) })
+      if (current) items.push({ place: current.version.geography.join(' · '), title: current.version.payload.title.text, change: 'Approved story update', source: acceptedStorySpans(current.version)[0]?.officialUrl ?? '', href: appUrl(storyPath(current.story.slug)) })
       continue
     }
     const change = entry.materialChangeId ? await ctx.db.get(entry.materialChangeId) : null
@@ -792,7 +793,7 @@ async function projectImmediateEmail(
   if (reference.storyUpdateId) {
     const current = await currentStoryUpdate(ctx, reference.storyUpdateId)
     if (!current) return null
-    const lines = ['An approved story has new evidence.', '', current.version.payload.title.text, '', current.version.payload.summary.text, '', 'Official sources', ...new Set(acceptedStorySpans(current.version).map(span => span.officialUrl)), '', `View in Public Parish: ${appUrl(`/stories/${current.story.slug}`)}`]
+    const lines = ['An approved story has new evidence.', '', current.version.payload.title.text, '', current.version.payload.summary.text, '', 'Official sources', ...new Set(acceptedStorySpans(current.version).map(span => span.officialUrl)), '', `View in Public Parish: ${appUrl(storyPath(current.story.slug))}`]
     if (emailRepliesAvailable()) lines.push('Reply with a question about this story. Answers use its current accepted evidence.')
     lines.push(`Manage alerts: ${managementUrl}`)
     if (unsubscribeUrl) lines.push(`Stop all email notices: ${unsubscribeUrl}`)

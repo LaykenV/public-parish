@@ -1,3 +1,4 @@
+import { registeredStory, storyPath } from '../../../convex/stories/registry'
 import { MobileAsk } from '../ask/mobile-ask'
 import {
   ArrowLeftIcon,
@@ -173,6 +174,7 @@ export function StoryPage({ slug }: { slug: string }) {
       </main>
     )
   const story = result.story
+  const measure = registeredStory(story.slug)?.kind === 'ballot_measure'
   const selectedEvidence = selectedSource?.evidence
   const selectSource = (index: number, triggerId: string) => {
     setSelectedSource({ index, evidence: story.evidence[index] })
@@ -184,11 +186,11 @@ export function StoryPage({ slug }: { slug: string }) {
       <MobileAsk
         key={story.slug}
         scopeKey={`story:${story.slug}`}
-        returnTo={`/stories/${story.slug}`}
+        returnTo={storyPath(story.slug)}
       />
 
-      <Link className="pp-story-back" to="/">
-        <ArrowLeftIcon aria-hidden="true" /> All featured stories
+      <Link className="pp-story-back" to={measure ? "/ballot" : "/"}>
+        <ArrowLeftIcon aria-hidden="true" /> {measure ? "All ballot measures" : "All featured stories"}
       </Link>
       <header className="pp-story-head">
         <p className="pp-story-place">{story.geography.join(' · ')}</p>
@@ -211,18 +213,18 @@ export function StoryPage({ slug }: { slug: string }) {
                 search={{
                   scope: 'story',
                   story: story.slug,
-                  returnTo: `/stories/${story.slug}`,
+                  returnTo: storyPath(story.slug),
                 }}
               />
             }
             size="touch"
           >
-            <MessageCircleIcon aria-hidden="true" /> Ask about this story
+            <MessageCircleIcon aria-hidden="true" /> {measure ? "Ask about this measure" : "Ask about this story"}
           </Button>
           <FollowAction
             available
             live
-            label="Follow this story"
+            label={measure ? "Follow this measure" : "Follow this story"}
             target={{
               kind: 'Story',
               key: story.slug,
@@ -231,12 +233,12 @@ export function StoryPage({ slug }: { slug: string }) {
             }}
           />
           <ShareButton
-            path={`/stories/${story.slug}`}
+            path={storyPath(story.slug)}
             title={story.payload.title.text}
           />
         </div>
       </header>
-      <StoryImage key={story.media?.url} media={story.media} />
+      {!measure || story.media ? <StoryImage key={story.media?.url} media={story.media} /> : null}
       <nav className="pp-story-jump" aria-label="In this story">
         <a href="#story-timeline">Timeline</a>
         <a href="#story-next-action">Next action</a>
@@ -288,6 +290,8 @@ export function StoryPage({ slug }: { slug: string }) {
             No next public action or deadline is established by these sources.
           </p>
         )}
+        <FollowAction available live label={measure ? 'Follow this measure' : 'Follow this story'}
+          target={{ kind: 'Story', key: story.slug, title: story.payload.title.text, detail: story.geography.join(' · ') }} />
       </section>
       <section id="story-unknowns" className="pp-story-unknowns">
         <h2>What remains unknown</h2>
@@ -338,7 +342,7 @@ export function StoryPage({ slug }: { slug: string }) {
           </ul>
         </section>
       ) : null}
-      <ReportProblem available recordUrl={`/stories/${story.slug}`} />
+      <ReportProblem available recordUrl={storyPath(story.slug)} />
       <Sheet
         className="ev-sheet"
         open={sourceOpen}

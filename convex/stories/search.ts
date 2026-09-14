@@ -1,4 +1,4 @@
-import { LAUNCH_STORIES } from './manifest'
+import { STORY_REGISTRY, storyPath } from './registry'
 import type { Id } from '../_generated/dataModel'
 import type { MutationCtx } from '../_generated/server'
 import { advanceCorpusRevision } from '../resident/search'
@@ -13,8 +13,8 @@ export async function indexStory(ctx: MutationCtx, storyId: Id<'stories'>) {
   if (!story) {
     if (previous) await ctx.db.delete(previous._id)
   } else {
-    const entry = { key, kind: 'story' as const, revision: story.revision, href: `/stories/${story.slug}`, title: story.payload.title.text, summary: story.payload.summary.text,
-      bodyName: 'Reviewed story', placeName: LAUNCH_STORIES[record.storyKey].parish, placeSlug: LAUNCH_STORIES[record.storyKey].parish.toLowerCase().replaceAll(' ', '-'), mode: story.mode, lifecycle: 'Developing', topics: [], date: story.reviewedThrough,
+    const entry = { key, kind: 'story' as const, revision: story.revision, href: `${storyPath(story.slug)}`, title: story.payload.title.text, summary: story.payload.summary.text,
+      bodyName: STORY_REGISTRY[record.storyKey].kind === 'ballot_measure' ? 'Statewide ballot measure' : 'Reviewed story', placeName: STORY_REGISTRY[record.storyKey].parish, placeSlug: STORY_REGISTRY[record.storyKey].parish.toLowerCase().replaceAll(' ', '-'), mode: story.mode, lifecycle: 'Developing', topics: [], date: story.reviewedThrough,
       dateAt: Date.parse(`${story.reviewedThrough}T00:00:00Z`), checkedAt: Date.parse(`${story.reviewedThrough}T00:00:00Z`),
       searchText: [story.payload.title.text, story.payload.summary.text, ...story.geography, ...story.payload.sections.flatMap(section => section.statements.map(statement => statement.text))].join('\n') }
     if (previous) await ctx.db.replace(previous._id, entry)

@@ -15,7 +15,7 @@ test('the complete example is research and remains blocked from publication', ()
 
 test('rejects forged approvals and unknown contract fields', () => {
   expect(() => parseStoryManifest(JSON.stringify({ ...example, ownerApproved: true }))).toThrow('unknown field')
-  expect(() => parseStoryManifest(changed(b => { b.contractVersion = '2.0.0' }))).toThrow('unsupported value')
+  expect(() => parseStoryManifest(changed(b => { b.contractVersion = '3.0.0' }))).toThrow('unsupported value')
 })
 
 test('rejects wrong geography or promoted homepage placement', () => {

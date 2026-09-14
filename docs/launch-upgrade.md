@@ -359,7 +359,7 @@ transfer to a surviving spouse), 2 (Act 273, millage rate adjustment), 3 (Act
 65 and older), 7 (Act 607, public funds for water service lines), 8 (Act 277,
 expropriation by foreign adversaries), 9 (Act 220 of 2025, income limit for
 the special assessment level) and 10 (Act 272, exemption for rehabilitated
-blighted property). Seven of the ten concern property tax. Quote the ballot
+blighted property). Five of the ten concern property tax. Quote the ballot
 questions from the PDF, not from this summary. The Louisiana Legislature is a
 registered publisher; the Secretary of State is not yet. Legislative Fiscal
 Office notes on legis.la.gov are official documents.

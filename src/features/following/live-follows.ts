@@ -1,3 +1,4 @@
+import { storyPath } from '../../../convex/stories/registry'
 import { useMutation, useQuery } from 'convex/react'
 import { useMemo } from 'react'
 
@@ -64,7 +65,7 @@ export function toFollowedTarget(follow: LiveFollow): FollowedTarget {
     id: follow.id,
     key: follow.targetKey,
     href:
-      follow.targetKind === 'story' ? `/stories/${follow.targetKey}` : follow.targetKind === 'issue' ? `/issues/${follow.targetKey}` : undefined,
+      follow.targetKind === 'story' ? storyPath(follow.targetKey) : follow.targetKind === 'issue' ? `/issues/${follow.targetKey}` : undefined,
     kind: followKinds[follow.targetKind],
     title: follow.title,
     detail: follow.detail,

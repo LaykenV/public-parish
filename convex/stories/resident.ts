@@ -1,3 +1,4 @@
+import { LAUNCH_STORIES, STORY_REGISTRY } from './registry'
 import { v } from 'convex/values'
 import { query } from '../_generated/server'
 import type { QueryCtx, MutationCtx } from '../_generated/server'
@@ -54,9 +55,23 @@ export const get = query({
 export const featured = query({
   args: {}, returns: v.array(publicStory),
   handler: async ctx => {
-    const records = await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(3)
+    const records = await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(13)
     const stories = []
-    for (const record of records) { const story = await resolvePublicStory(ctx, record); if (story) stories.push(story) }
+    for (const record of records) { if (!Object.prototype.hasOwnProperty.call(LAUNCH_STORIES, record.storyKey)) continue; const story = await resolvePublicStory(ctx, record); if (story) stories.push(story) }
     return stories
+  },
+})
+
+export const ballotMeasures = query({
+  args: {}, returns: v.array(publicStory),
+  handler: async ctx => {
+    const records = await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(13)
+    const measures = []
+    for (const record of records) {
+      if (STORY_REGISTRY[record.storyKey].kind !== 'ballot_measure') continue
+      const story = await resolvePublicStory(ctx, record)
+      if (story) measures.push(story)
+    }
+    return measures
   },
 })

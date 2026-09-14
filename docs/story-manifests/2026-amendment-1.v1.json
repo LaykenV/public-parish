@@ -1,0 +1,204 @@
+{
+  "contractVersion": "2.0.0",
+  "bundleVersion": 1,
+  "bundleKey": "2026-amendment-1-overnight",
+  "supersedesBundleSha256": null,
+  "purpose": "research",
+  "story": {
+    "storyKey": "2026-amendment-1",
+    "slug": "2026-amendment-1",
+    "placement": "ballot",
+    "rank": 101,
+    "geography": [
+      {
+        "placeName": "Statewide",
+        "parish": "Louisiana",
+        "state": "Louisiana",
+        "precisionNotes": "Constitutional amendment submitted statewide; individual sample ballots include other contests."
+      }
+    ],
+    "topics": []
+  },
+  "sources": [
+    {
+      "sourceKey": "sos-ballot",
+      "bodyKey": "louisiana-secretary-of-state",
+      "bodyName": "Louisiana Secretary of State",
+      "title": "November 3, 2026 proposed constitutional amendments",
+      "url": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "finalUrl": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+        "sha256": "cc60d4aac717bb761819109191482625168d78333abf27d69a95f9a8e68d954e",
+        "bytes": 129088,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "research:sos",
+        "sha256": "d6fc04ce56d88e5969ab7589423abc96c4efc2665cee908610ea7da00909fbbc",
+        "bytes": 8194,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "manual_file",
+        "retrievedAt": "2026-09-14T04:11:24.295394+00:00",
+        "providerReference": null,
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Research download of complete official PDF. Must retrieve through Firecrawl and rebind exact spans before publication.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "act",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Enrolled Act 39 of 2026",
+      "url": "https://legis.la.gov/legis/ViewDocument.aspx?d=1474006",
+      "finalUrl": "https://legis.la.gov/legis/ViewDocument.aspx?d=1474006",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "https://legis.la.gov/legis/ViewDocument.aspx?d=1474006",
+        "sha256": "40d98f4f65511fbc3a0be311dcf1cd10983db18e9e5131091a116730d6288c9d",
+        "bytes": 58068,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "research:act-1",
+        "sha256": "29012d89850f3b95fec7b98fc73f9a789fab64146c94c313806ad22e34c680e6",
+        "bytes": 8699,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "manual_file",
+        "retrievedAt": "2026-09-14T04:11:24.295394+00:00",
+        "providerReference": null,
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Research download of complete official PDF. Must retrieve through Firecrawl and rebind exact spans before publication.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "Transferring a surviving spouse's disabled-veteran property tax exemption",
+    "proposedSummary": "Explain the exact ballot question, proposed constitutional change, eligibility and limits from the enrolled Act.",
+    "claims": [
+      {
+        "claimKey": "ballot-question",
+        "text": "Do you support an amendment to allow the surviving spouse of a deceased veteran with a service-connected disability,\n who receives the additional property tax exemption, to make a one-time transfer of the additional property tax exemption\n to a subsequent qualifying property? (Effective January 1, 2027) (Amends Article VII, Section 21(K)(1))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "d6fc04ce56d88e5969ab7589423abc96c4efc2665cee908610ea7da00909fbbc",
+            "start": 975,
+            "end": 1318,
+            "excerpt": "Do you support an amendment to allow the surviving spouse of a deceased veteran with a service-connected disability,\n who receives the additional property tax exemption, to make a one-time transfer of the additional property tax exemption\n to a subsequent qualifying property? (Effective January 1, 2027) (Amends Article VII, Section 21(K)(1))",
+            "page": null,
+            "section": "ballot-question"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-1",
+        "text": "     2026 Regular Session                                                             ENROLLED\n                                          ACT No. 39\n     SENATE BILL NO. 180\n\n     BY SENATOR FOIL\n\n\n\n\n 1                                     A JOINT RESOLUTION\n\n 2   Proposing to amend Article VII, Section 21(K)(1) of the Constitution of Louisiana, relative\n\n 3           to ad valorem tax exemptions; to provide relative to the ad valorem tax exemption\n\n 4           for certain disabled veterans and their surviving spouses; to allow for the transfer of\n\n 5           certain exemptions by a surviving spouse; to provide for limitations; to provide for\n\n 6           effectiveness; and to specify an election for submission of the proposition to electors\n\n 7           and provide a ballot proposition.\n\n 8           Section 1. Be it resolved by the Legislature of Louisiana, two-thirds of the members\n\n 9   elected to each house concurring, that there shall be submitted to the electors of the state, for\n\n10   their approval or rejection in the manner provided by law, a proposal to amend Article VII,\n\n11   Section 21(K)(1) of the Constitution of Louisiana, to read as follows:\n\n12           §21. Other Property Exemptions\n\n13                   Section 21. In addition to the homestead exemption provided for in Section\n\n14           20 of this Article, the following property and no other shall be exempt from ad\n\n15           valorem taxation:\n\n16                                          *       *       *\n\n17                   (K)(1)(a) In addition to the homestead exemption authorized pursuant to the\n\n18           provisions of Section 20 of this Article, which applies to the first seven thousand five\n\n19           hundred dollars of the assessed valuation of property, the next two thousand five\n\n20           hundred dollars of the assessed valuation of property receiving the homestead\n\n21           exemption that is owned and occupied by a veteran with a service-connected\n\n\n\n                                          Page 1 of 4\n             Coding: Words which are struck through are deletions from existing law;\n             words in boldface type and underscored are additions.\n\f     SB NO. 180                                                                     ENROLLED\n\n 1         disability rating of fifty percent or more but less than seventy percent by the United\n\n 2         States Department of Veterans Affairs shall be exempt from ad valorem taxation.\n\n 3         The surviving spouse of a deceased veteran with a service-connected disability rating\n\n 4         of fifty percent or more but less than seventy percent by the United States\n\n 5         Department of Veterans Affairs shall be eligible for this exemption if the surviving\n\n 6         spouse occupies and remains the owner of the property, whether or not the\n\n 7         exemption was in effect on the property prior to the death of the veteran. If property\n\n 8         eligible for the exemption provided for in this Subsubparagraph has an assessed\n\n 9         value in excess of ten thousand dollars, ad valorem property taxes shall apply to the\n\n10         assessment in excess of ten thousand dollars.\n\n11                    (b) In addition to the homestead exemption authorized pursuant to the\n\n12         provisions of Section 20 of this Article, which applies to the first seven thousand five\n\n13         hundred dollars of the assessed valuation of property, the next four thousand five\n\n14         ",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "29012d89850f3b95fec7b98fc73f9a789fab64146c94c313806ad22e34c680e6",
+            "start": 0,
+            "end": 3500,
+            "excerpt": "     2026 Regular Session                                                             ENROLLED\n                                          ACT No. 39\n     SENATE BILL NO. 180\n\n     BY SENATOR FOIL\n\n\n\n\n 1                                     A JOINT RESOLUTION\n\n 2   Proposing to amend Article VII, Section 21(K)(1) of the Constitution of Louisiana, relative\n\n 3           to ad valorem tax exemptions; to provide relative to the ad valorem tax exemption\n\n 4           for certain disabled veterans and their surviving spouses; to allow for the transfer of\n\n 5           certain exemptions by a surviving spouse; to provide for limitations; to provide for\n\n 6           effectiveness; and to specify an election for submission of the proposition to electors\n\n 7           and provide a ballot proposition.\n\n 8           Section 1. Be it resolved by the Legislature of Louisiana, two-thirds of the members\n\n 9   elected to each house concurring, that there shall be submitted to the electors of the state, for\n\n10   their approval or rejection in the manner provided by law, a proposal to amend Article VII,\n\n11   Section 21(K)(1) of the Constitution of Louisiana, to read as follows:\n\n12           §21. Other Property Exemptions\n\n13                   Section 21. In addition to the homestead exemption provided for in Section\n\n14           20 of this Article, the following property and no other shall be exempt from ad\n\n15           valorem taxation:\n\n16                                          *       *       *\n\n17                   (K)(1)(a) In addition to the homestead exemption authorized pursuant to the\n\n18           provisions of Section 20 of this Article, which applies to the first seven thousand five\n\n19           hundred dollars of the assessed valuation of property, the next two thousand five\n\n20           hundred dollars of the assessed valuation of property receiving the homestead\n\n21           exemption that is owned and occupied by a veteran with a service-connected\n\n\n\n                                          Page 1 of 4\n             Coding: Words which are struck through are deletions from existing law;\n             words in boldface type and underscored are additions.\n\f     SB NO. 180                                                                     ENROLLED\n\n 1         disability rating of fifty percent or more but less than seventy percent by the United\n\n 2         States Department of Veterans Affairs shall be exempt from ad valorem taxation.\n\n 3         The surviving spouse of a deceased veteran with a service-connected disability rating\n\n 4         of fifty percent or more but less than seventy percent by the United States\n\n 5         Department of Veterans Affairs shall be eligible for this exemption if the surviving\n\n 6         spouse occupies and remains the owner of the property, whether or not the\n\n 7         exemption was in effect on the property prior to the death of the veteran. If property\n\n 8         eligible for the exemption provided for in this Subsubparagraph has an assessed\n\n 9         value in excess of ten thousand dollars, ad valorem property taxes shall apply to the\n\n10         assessment in excess of ten thousand dollars.\n\n11                    (b) In addition to the homestead exemption authorized pursuant to the\n\n12         provisions of Section 20 of this Article, which applies to the first seven thousand five\n\n13         hundred dollars of the assessed valuation of property, the next four thousand five\n\n14         ",
+            "page": null,
+            "section": "act-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-2",
+        "text": "hundred dollars of the assessed valuation of property owned and occupied by a\n\n15         veteran with a service-connected disability rating of seventy percent or more but less\n\n16         than one hundred percent by the United States Department of Veterans Affairs shall\n\n17         be exempt from ad valorem taxation. The surviving spouse of a deceased veteran\n\n18         with a service-connected disability rating of seventy percent or more but less than\n\n19         one hundred percent by the United States Department of Veterans Affairs shall be\n\n20         eligible for this exemption if the surviving spouse occupies and remains the owner\n\n21         of the property, whether or not the exemption was in effect on the property prior to\n\n22         the death of the veteran. If property eligible for the exemption provided for in this\n\n23         Subsubparagraph has an assessed value in excess of twelve thousand dollars, ad\n\n24         valorem property taxes shall apply to the assessment in excess of twelve thousand\n\n25         dollars.\n\n26                    (c) In addition to the homestead exemption authorized pursuant to the\n\n27         provisions of Section 20 of this Article, which applies to the first seven thousand five\n\n28         hundred dollars of the assessed valuation of property, the remaining assessed\n\n29         valuation of property receiving the homestead exemption that is owned and occupied\n\n30         by a veteran with a service-connected disability rating of one hundred percent\n\n\n                                        Page 2 of 4\n           Coding: Words which are struck through are deletions from existing law;\n           words in boldface type and underscored are additions.\n\f     SB NO. 180                                                                       ENROLLED\n\n 1           unemployability or totally disabled by the United States Department of Veterans\n\n 2           Affairs shall be exempt from ad valorem taxation. The surviving spouse of a\n\n 3           deceased veteran with a service-connected disability rating of one hundred percent\n\n 4           unemployability or totally disabled by the United States Department of Veterans\n\n 5           Affairs shall be eligible for this exemption if the surviving spouse occupies and\n\n 6           remains the owner of the property, whether or not the exemption was in effect on the\n\n 7           property prior to the death of the veteran.\n\n 8                   (d) Once a surviving spouse of a deceased veteran with a\n\n 9           service-connected disability is eligible for and has taken the exemption, if the\n\n10           surviving spouse then acquires a different property which qualifies for the\n\n11           homestead exemption, the surviving spouse shall be entitled to a one-time\n\n12           transfer of the exemption to that subsequent homestead, the exemption being\n\n13           limited in value to the amount of the exemption claimed on the prior homestead\n\n14           in the last year for which the exemption was claimed. The assessor may require\n\n15           the submission of certain information concerning the amount of the exemption\n\n16           on the prior homestead for purposes of determining the extent of the exemption\n\n17           available for the subsequent homestead.\n\n18                                          *       *       *\n\n19           Section 2. Be it further resolved that the provisions of this amendment shall become\n\n20   effective January 1, 2",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "29012d89850f3b95fec7b98fc73f9a789fab64146c94c313806ad22e34c680e6",
+            "start": 3500,
+            "end": 7000,
+            "excerpt": "hundred dollars of the assessed valuation of property owned and occupied by a\n\n15         veteran with a service-connected disability rating of seventy percent or more but less\n\n16         than one hundred percent by the United States Department of Veterans Affairs shall\n\n17         be exempt from ad valorem taxation. The surviving spouse of a deceased veteran\n\n18         with a service-connected disability rating of seventy percent or more but less than\n\n19         one hundred percent by the United States Department of Veterans Affairs shall be\n\n20         eligible for this exemption if the surviving spouse occupies and remains the owner\n\n21         of the property, whether or not the exemption was in effect on the property prior to\n\n22         the death of the veteran. If property eligible for the exemption provided for in this\n\n23         Subsubparagraph has an assessed value in excess of twelve thousand dollars, ad\n\n24         valorem property taxes shall apply to the assessment in excess of twelve thousand\n\n25         dollars.\n\n26                    (c) In addition to the homestead exemption authorized pursuant to the\n\n27         provisions of Section 20 of this Article, which applies to the first seven thousand five\n\n28         hundred dollars of the assessed valuation of property, the remaining assessed\n\n29         valuation of property receiving the homestead exemption that is owned and occupied\n\n30         by a veteran with a service-connected disability rating of one hundred percent\n\n\n                                        Page 2 of 4\n           Coding: Words which are struck through are deletions from existing law;\n           words in boldface type and underscored are additions.\n\f     SB NO. 180                                                                       ENROLLED\n\n 1           unemployability or totally disabled by the United States Department of Veterans\n\n 2           Affairs shall be exempt from ad valorem taxation. The surviving spouse of a\n\n 3           deceased veteran with a service-connected disability rating of one hundred percent\n\n 4           unemployability or totally disabled by the United States Department of Veterans\n\n 5           Affairs shall be eligible for this exemption if the surviving spouse occupies and\n\n 6           remains the owner of the property, whether or not the exemption was in effect on the\n\n 7           property prior to the death of the veteran.\n\n 8                   (d) Once a surviving spouse of a deceased veteran with a\n\n 9           service-connected disability is eligible for and has taken the exemption, if the\n\n10           surviving spouse then acquires a different property which qualifies for the\n\n11           homestead exemption, the surviving spouse shall be entitled to a one-time\n\n12           transfer of the exemption to that subsequent homestead, the exemption being\n\n13           limited in value to the amount of the exemption claimed on the prior homestead\n\n14           in the last year for which the exemption was claimed. The assessor may require\n\n15           the submission of certain information concerning the amount of the exemption\n\n16           on the prior homestead for purposes of determining the extent of the exemption\n\n17           available for the subsequent homestead.\n\n18                                          *       *       *\n\n19           Section 2. Be it further resolved that the provisions of this amendment shall become\n\n20   effective January 1, 2",
+            "page": null,
+            "section": "act-text-2"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-3",
+        "text": "027, and shall apply to all taxable years beginning on January 1, 2027.\n\n21           Section 3. Be it further resolved that this proposed amendment shall be submitted to\n\n22   the electors of the state of Louisiana at the statewide election to be held on November 3,\n\n23   2026.\n\n24           Section 4. Be it further resolved that on the official ballot to be used at said election\n\n25   there shall be printed a proposition, upon which the electors of the state shall be permitted\n\n26   to vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\n\n27   follows:\n\n28                   Do you support an amendment to allow the surviving spouse of a deceased\n\n29                   veteran with a service-connected disability, who receives the additional\n\n30                   property tax exemption, to make a one-time transfer of the additional\n\n\n                                          Page 3 of 4\n             Coding: Words which are struck through are deletions from existing law;\n             words in boldface type and underscored are additions.\n\f    SB NO. 180                                                                 ENROLLED\n\n1                property tax exemption to a subsequent qualifying property?\n\n2                (Effective January 1, 2027)\n\n3                (Amends Article VII, Section 21(K)(1))\n\n\n\n\n                                   PRESIDENT OF THE SENATE\n\n\n\n                                   SPEAKER OF THE HOUSE OF REPRESENTATIVES\n\n\n\n\n                                       Page 4 of 4\n          Coding: Words which are struck through are deletions from existing law;\n          words in boldface type and underscored are additions.\n\f",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "29012d89850f3b95fec7b98fc73f9a789fab64146c94c313806ad22e34c680e6",
+            "start": 7000,
+            "end": 8698,
+            "excerpt": "027, and shall apply to all taxable years beginning on January 1, 2027.\n\n21           Section 3. Be it further resolved that this proposed amendment shall be submitted to\n\n22   the electors of the state of Louisiana at the statewide election to be held on November 3,\n\n23   2026.\n\n24           Section 4. Be it further resolved that on the official ballot to be used at said election\n\n25   there shall be printed a proposition, upon which the electors of the state shall be permitted\n\n26   to vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\n\n27   follows:\n\n28                   Do you support an amendment to allow the surviving spouse of a deceased\n\n29                   veteran with a service-connected disability, who receives the additional\n\n30                   property tax exemption, to make a one-time transfer of the additional\n\n\n                                          Page 3 of 4\n             Coding: Words which are struck through are deletions from existing law;\n             words in boldface type and underscored are additions.\n\f    SB NO. 180                                                                 ENROLLED\n\n1                property tax exemption to a subsequent qualifying property?\n\n2                (Effective January 1, 2027)\n\n3                (Amends Article VII, Section 21(K)(1))\n\n\n\n\n                                   PRESIDENT OF THE SENATE\n\n\n\n                                   SPEAKER OF THE HOUSE OF REPRESENTATIVES\n\n\n\n\n                                       Page 4 of 4\n          Coding: Words which are struck through are deletions from existing law;\n          words in boldface type and underscored are additions.\n\f",
+            "page": null,
+            "section": "act-text-3"
+          }
+        ]
+      },
+      {
+        "claimKey": "election",
+        "text": "                                  SECRETARY OF STATE\n                                        STATE OF LOUISIANA\n\n                2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n                          November 3, 2026 Election\n    The constitutional amendments that will be on the ballot for the November 3, 2026 election are listed below.\n            Click on the Act number link to read the complete text of the Act on the Legislature’s Website.\n ",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "d6fc04ce56d88e5969ab7589423abc96c4efc2665cee908610ea7da00909fbbc",
+            "start": 0,
+            "end": 443,
+            "excerpt": "                                  SECRETARY OF STATE\n                                        STATE OF LOUISIANA\n\n                2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n                          November 3, 2026 Election\n    The constitutional amendments that will be on the ballot for the November 3, 2026 election are listed below.\n            Click on the Act number link to read the complete text of the Act on the Legislature’s Website.\n ",
+            "page": null,
+            "section": "election"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [],
+    "knownUnknowns": [
+      "No official fiscal note has yet been retained for this explanation. The accepted sources do not establish an individual household's tax or financial outcome."
+    ],
+    "nextActionClaimKeys": [
+      "election"
+    ],
+    "reviewedThrough": "2026-09-14",
+    "nextReviewAt": "2026-09-17",
+    "reviewResponsibility": "Public Parish owner",
+    "supportedQuestions": [
+      {
+        "question": "What would this amendment change?",
+        "claimKeys": [
+          "ballot-question",
+          "act-text-1",
+          "act-text-2",
+          "act-text-3",
+          "election"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Should I vote for this amendment?",
+        "reason": "Public Parish explains official evidence without voting recommendations."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

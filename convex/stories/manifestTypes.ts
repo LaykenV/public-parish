@@ -1,14 +1,15 @@
-// Contract 1.0.0. Runtime checks live in manifest.ts and the versioned JSON schema.
+import type { StoryKey } from './registry'
+// Contracts 1.0.0 and 2.0.0. Runtime checks live in manifest.ts and the versioned JSON schema.
 export type StoryManifest = {
-  contractVersion: "1.0.0"
+  contractVersion: "1.0.0" | "2.0.0"
   bundleVersion: number
   bundleKey: string
   supersedesBundleSha256: string | null
   purpose: "research" | "fixture"
   story: {
-    storyKey: "meta-richland" | "spacex-pecan-island" | "applied-digital-boyce"
+    storyKey: StoryKey
     slug: string
-    placement: "lead" | "secondary"
+    placement: "lead" | "secondary" | "ballot"
     rank: number
     geography: Array<{
       placeName: string

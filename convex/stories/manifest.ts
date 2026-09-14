@@ -1,13 +1,12 @@
+import { ballotQuestion } from './ballot'
+import schemaV2 from '../../docs/story-manifests/import-contract-v2.json'
+import { STORY_REGISTRY } from './registry'
 import schema from '../../docs/story-manifests/import-contract-v1.json'
 import type { StoryManifest } from './manifestTypes'
 
 export const STORY_CONTRACT_VERSION = '1.0.0'
 export const MAX_MANIFEST_BYTES = 250_000
-export const LAUNCH_STORIES = {
-  'meta-richland': { rank: 0, placement: 'lead', parish: 'Richland Parish' },
-  'spacex-pecan-island': { rank: 1, placement: 'secondary', parish: 'Vermilion Parish' },
-  'applied-digital-boyce': { rank: 2, placement: 'secondary', parish: 'Rapides Parish' },
-} as const
+export { LAUNCH_STORIES } from './registry'
 
 type JsonRule = {
   type?: string | string[]
@@ -94,9 +93,9 @@ function date(value: string | null, precision: string) {
 export function parseStoryManifest(json: string): StoryManifest {
   if (new TextEncoder().encode(json).byteLength > MAX_MANIFEST_BYTES) throw new Error('Manifest exceeds 250000 bytes')
   const value: unknown = JSON.parse(json)
-  checkShape(value, schema, 'manifest')
+  checkShape(value, (value as { contractVersion?: string } | null)?.contractVersion === '2.0.0' ? schemaV2 : schema, 'manifest')
   const manifest = value as StoryManifest
-  const expected = LAUNCH_STORIES[manifest.story.storyKey]
+  const expected = STORY_REGISTRY[manifest.story.storyKey]
   if (manifest.story.slug !== manifest.story.storyKey || manifest.story.rank !== expected.rank ||
     manifest.story.placement !== expected.placement ||
     !manifest.story.geography.some(place => place.parish === expected.parish)) {
@@ -154,6 +153,7 @@ export function parseStoryManifest(json: string): StoryManifest {
   for (const retrieval of manifest.additionalRetrieval) { https(retrieval.url); checkClaims(retrieval.requiredForClaimKeys) }
   date(manifest.research.reviewedThrough, 'day'); date(manifest.research.nextReviewAt, 'day')
   if (manifest.research.nextReviewAt <= manifest.research.reviewedThrough) throw new Error('Next review must follow the reviewed-through date')
+  ballotQuestion(manifest)
   return manifest
 }
 
@@ -165,7 +165,7 @@ export function researchBlockers(manifest: StoryManifest): string[] {
     if (source.retrieval.completeness !== 'complete') blockers.push(`${source.sourceKey}: complete artifact required.`)
     if (source.retrieval.method === 'manual_file' && source.retrieval.failureEvidence.length < 2) blockers.push(`${source.sourceKey}: repeated retrieval failure documentation required.`)
   }
-  if (!manifest.media.length) blockers.push('An approved story image is missing.')
+  if (STORY_REGISTRY[manifest.story.storyKey].kind === 'story' && !manifest.media.length) blockers.push('An approved story image is missing.')
   for (const media of manifest.media) if (media.permission.status === 'unresolved') blockers.push(`${media.mediaKey}: image permission unresolved.`)
   return blockers
 }

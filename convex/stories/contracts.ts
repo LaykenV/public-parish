@@ -1,8 +1,9 @@
+import { BALLOT_HEADINGS } from './ballot'
 import { v } from 'convex/values'
 
 export const MAX_STORY_BUILD_RETRIES = 2
 
-export const storyKey = v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce'))
+export const storyKey = v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce'), v.literal('2026-amendment-1'), v.literal('2026-amendment-2'), v.literal('2026-amendment-3'), v.literal('2026-amendment-4'), v.literal('2026-amendment-5'), v.literal('2026-amendment-6'), v.literal('2026-amendment-7'), v.literal('2026-amendment-8'), v.literal('2026-amendment-9'), v.literal('2026-amendment-10'))
 export const storyMode = v.union(v.literal('full'), v.literal('limited'), v.literal('withheld'))
 export const sourceBinding = v.object({ sourceKey: v.string(), snapshotId: v.id('sourceSnapshots') })
 export const storySpan = v.object({
@@ -47,7 +48,7 @@ export const draftJsonSchema = {
   required: ['title', 'summary', 'sections', 'timeline', 'nextAction', 'limitations'],
   properties: {
     title: statementSchema, summary: statementSchema,
-    sections: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['heading', 'statements'], properties: { heading: { type: 'string', enum: ['What the records establish', 'Government actions', 'Project scope'] }, statements: { type: 'array', items: statementSchema } } } },
+    sections: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['heading', 'statements'], properties: { heading: { type: 'string', enum: ['What the records establish', 'Government actions', 'Project scope', ...BALLOT_HEADINGS] }, statements: { type: 'array', items: statementSchema } } } },
     timeline: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['date', 'statement'], properties: { date: { type: ['string', 'null'] }, statement: statementSchema } } },
     nextAction: { anyOf: [{ type: 'null' }, statementSchema] },
     limitations: { type: 'array', items: { type: 'string' } },
@@ -76,7 +77,7 @@ export function draftStatements(draft: StoryDraft) {
 export function checkDraft(draft: StoryDraft, spans: StorySpan[]): string | null {
   if (draft.timeline.some(event => event.date !== null && !validTimelineDate(event.date))) return 'Invalid timeline date'
   if (draft.title.text.length > 180 || draft.summary.text.length > 1400 || draft.sections.length > 6 || draft.timeline.length > 12 || draft.limitations.length > 12) return 'Story exceeds content bounds'
-  if (draft.sections.some(section => !['What the records establish', 'Government actions', 'Project scope'].includes(section.heading) || section.statements.length > 8)) return 'Invalid section'
+  if (draft.sections.some(section => !['What the records establish', 'Government actions', 'Project scope', ...BALLOT_HEADINGS].includes(section.heading) || section.statements.length > 8)) return 'Invalid section'
   if (draft.limitations.some(text => !text.trim() || text.length > 600)) return 'Invalid limitation'
   const keys = new Set(spans.map(span => span.key))
   const statements = draftStatements(draft)

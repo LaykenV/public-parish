@@ -1,0 +1,204 @@
+{
+  "contractVersion": "2.0.0",
+  "bundleVersion": 1,
+  "bundleKey": "2026-amendment-6-overnight",
+  "supersedesBundleSha256": null,
+  "purpose": "research",
+  "story": {
+    "storyKey": "2026-amendment-6",
+    "slug": "2026-amendment-6",
+    "placement": "ballot",
+    "rank": 106,
+    "geography": [
+      {
+        "placeName": "Statewide",
+        "parish": "Louisiana",
+        "state": "Louisiana",
+        "precisionNotes": "Constitutional amendment submitted statewide; individual sample ballots include other contests."
+      }
+    ],
+    "topics": []
+  },
+  "sources": [
+    {
+      "sourceKey": "sos-ballot",
+      "bodyKey": "louisiana-secretary-of-state",
+      "bodyName": "Louisiana Secretary of State",
+      "title": "November 3, 2026 proposed constitutional amendments",
+      "url": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "finalUrl": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf",
+        "sha256": "cc60d4aac717bb761819109191482625168d78333abf27d69a95f9a8e68d954e",
+        "bytes": 129088,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "research:sos",
+        "sha256": "d6fc04ce56d88e5969ab7589423abc96c4efc2665cee908610ea7da00909fbbc",
+        "bytes": 8194,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "manual_file",
+        "retrievedAt": "2026-09-14T04:11:24.295394+00:00",
+        "providerReference": null,
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Research download of complete official PDF. Must retrieve through Firecrawl and rebind exact spans before publication.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "act",
+      "bodyKey": "louisiana-legislature",
+      "bodyName": "Louisiana Legislature",
+      "title": "Enrolled Act 274 of 2026",
+      "url": "https://legis.la.gov/legis/ViewDocument.aspx?d=1476071",
+      "finalUrl": "https://legis.la.gov/legis/ViewDocument.aspx?d=1476071",
+      "documentType": "other_official_record",
+      "documentDate": null,
+      "datePrecision": "unknown",
+      "rawArtifact": {
+        "uri": "https://legis.la.gov/legis/ViewDocument.aspx?d=1476071",
+        "sha256": "61df6cea863b010309cfc4249671ba887123cb5c3bf3fc3f992a7eb4fc5d5808",
+        "bytes": 49318,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "research:act-6",
+        "sha256": "9aa9261656c8605128756b23679fb9d63787da171ed74d0e23891f55658d8fe8",
+        "bytes": 7274,
+        "contentType": "text/plain"
+      },
+      "retrieval": {
+        "method": "manual_file",
+        "retrievedAt": "2026-09-14T04:11:24.295394+00:00",
+        "providerReference": null,
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Research download of complete official PDF. Must retrieve through Firecrawl and rebind exact spans before publication.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "An additional property tax exemption for qualifying older homeowners",
+    "proposedSummary": "Explain the exact ballot question, proposed constitutional change, eligibility and limits from the enrolled Act.",
+    "claims": [
+      {
+        "claimKey": "ballot-question",
+        "text": "Do you support an amendment to authorize parishes and municipalities to extend an additional property tax exemption for\nproperty subject to the homestead exemption that is owned and occupied by a person who is at least sixty-five years of age\nand who qualifies for the special assessment level? (Effective January 1, 2028) (Adds Article VII, Section 21(P))",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "d6fc04ce56d88e5969ab7589423abc96c4efc2665cee908610ea7da00909fbbc",
+            "start": 4656,
+            "end": 5012,
+            "excerpt": "Do you support an amendment to authorize parishes and municipalities to extend an additional property tax exemption for\nproperty subject to the homestead exemption that is owned and occupied by a person who is at least sixty-five years of age\nand who qualifies for the special assessment level? (Effective January 1, 2028) (Adds Article VII, Section 21(P))",
+            "page": null,
+            "section": "ballot-question"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-1",
+        "text": "                                                                                     ENROLLED\n\n     2026 Regular Session\n                                                                    ACT No. 274\n     HOUSE BILL NO. 514\n\n     BY REPRESENTATIVES FARNUM AND CHASSION\n\n\n\n\n 1                                     A JOINT RESOLUTION\n\n 2   Proposing to add Article VII, Section 21(P) of the Constitution of Louisiana, relative to ad\n\n 3          valorem taxation; to extend an ad valorem tax exemption for property owners who\n\n 4          are sixty-five years of age or older; to provide for the amount of the exemption; to\n\n 5          provide for requirements and limitations; to provide for implementation of the\n\n 6          exemption by parishes and municipalities; to prohibit the reappraisal and valuation\n\n 7          of property for purposes of millage adjustments under certain circumstances; to\n\n 8          provide for applicability; to provide for an effective date; to provide for submission\n\n 9          of the proposed amendment to the electors; and to provide for related matters.\n\n10          Section 1. Be it resolved by the Legislature of Louisiana, two-thirds of the members\n\n11   elected to each house concurring, that there shall be submitted to the electors of the state of\n\n12   Louisiana, for their approval or rejection in the manner provided by law, a proposal to add\n\n13   Article VII, Section 21(P) of the Constitution of Louisiana, to read as follows:\n\n14          §21. Other Property Exemptions\n\n15                  Section 21. In addition to the homestead exemption provided for in Section\n\n16          20 of this Article, the following property and no other shall be exempt from ad\n\n17          valorem taxation:\n\n18                                         *       *         *\n\n19                  (P)(1) In addition to the homestead exemption authorized pursuant to the\n\n20          provisions of Section 20 of this Article, which applies to the first seven thousand five\n\n21          hundred dollars of the assessed valuation of property, an additional exemption shall\n\n22          apply to property receiving the homestead exemption that is owned and occupied by\n\n\n                                               Page 1 of 3\n\n     CODING: Words in struck through type are deletions from existing law; words underscored\n     are additions.\n\f     HB NO. 514                                                                       ENROLLED\n\n 1          a person who is at least sixty-five years of age or older and who qualifies for the\n\n 2          special assessment level pursuant to Article VII, Section 18(G)(1)(a)(i) of this\n\n 3          constitution. The amount of the additional exemption shall be as follows:\n\n 4                  (a) For persons sixty-five years of age but not yet sixty-nine years of age, the\n\n 5          next six thousand dollars of the assessed valuation of the property shall be exempt\n\n 6          from ad valorem taxation.\n\n 7                  (b) For persons sixty-nine years of age but not yet seventy-three years of age,\n\n 8          the next twelve thousand dollars of the assessed valuation of the property shall be\n\n 9          exempt from ad valorem taxation.\n\n10                  (c) For persons seventy-three years of age but not yet seventy-seven years of\n\n11          age, the next eighteen thousand dollars of the assessed valuation of the property shall\n\n12          be exempt from ad valorem taxation.\n\n13                  (",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "9aa9261656c8605128756b23679fb9d63787da171ed74d0e23891f55658d8fe8",
+            "start": 0,
+            "end": 3500,
+            "excerpt": "                                                                                     ENROLLED\n\n     2026 Regular Session\n                                                                    ACT No. 274\n     HOUSE BILL NO. 514\n\n     BY REPRESENTATIVES FARNUM AND CHASSION\n\n\n\n\n 1                                     A JOINT RESOLUTION\n\n 2   Proposing to add Article VII, Section 21(P) of the Constitution of Louisiana, relative to ad\n\n 3          valorem taxation; to extend an ad valorem tax exemption for property owners who\n\n 4          are sixty-five years of age or older; to provide for the amount of the exemption; to\n\n 5          provide for requirements and limitations; to provide for implementation of the\n\n 6          exemption by parishes and municipalities; to prohibit the reappraisal and valuation\n\n 7          of property for purposes of millage adjustments under certain circumstances; to\n\n 8          provide for applicability; to provide for an effective date; to provide for submission\n\n 9          of the proposed amendment to the electors; and to provide for related matters.\n\n10          Section 1. Be it resolved by the Legislature of Louisiana, two-thirds of the members\n\n11   elected to each house concurring, that there shall be submitted to the electors of the state of\n\n12   Louisiana, for their approval or rejection in the manner provided by law, a proposal to add\n\n13   Article VII, Section 21(P) of the Constitution of Louisiana, to read as follows:\n\n14          §21. Other Property Exemptions\n\n15                  Section 21. In addition to the homestead exemption provided for in Section\n\n16          20 of this Article, the following property and no other shall be exempt from ad\n\n17          valorem taxation:\n\n18                                         *       *         *\n\n19                  (P)(1) In addition to the homestead exemption authorized pursuant to the\n\n20          provisions of Section 20 of this Article, which applies to the first seven thousand five\n\n21          hundred dollars of the assessed valuation of property, an additional exemption shall\n\n22          apply to property receiving the homestead exemption that is owned and occupied by\n\n\n                                               Page 1 of 3\n\n     CODING: Words in struck through type are deletions from existing law; words underscored\n     are additions.\n\f     HB NO. 514                                                                       ENROLLED\n\n 1          a person who is at least sixty-five years of age or older and who qualifies for the\n\n 2          special assessment level pursuant to Article VII, Section 18(G)(1)(a)(i) of this\n\n 3          constitution. The amount of the additional exemption shall be as follows:\n\n 4                  (a) For persons sixty-five years of age but not yet sixty-nine years of age, the\n\n 5          next six thousand dollars of the assessed valuation of the property shall be exempt\n\n 6          from ad valorem taxation.\n\n 7                  (b) For persons sixty-nine years of age but not yet seventy-three years of age,\n\n 8          the next twelve thousand dollars of the assessed valuation of the property shall be\n\n 9          exempt from ad valorem taxation.\n\n10                  (c) For persons seventy-three years of age but not yet seventy-seven years of\n\n11          age, the next eighteen thousand dollars of the assessed valuation of the property shall\n\n12          be exempt from ad valorem taxation.\n\n13                  (",
+            "page": null,
+            "section": "act-text-1"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-2",
+        "text": "d) For persons seventy-seven years of age but not yet eighty-one years of\n\n14          age, the next twenty-four thousand dollars of the assessed valuation of the property\n\n15          shall be exempt from ad valorem taxation.\n\n16                  (e) For persons eighty-one years of age and older, the next thirty thousand\n\n17          dollars of the assessed valuation of the property shall be exempt from ad valorem\n\n18          taxation.\n\n19                  (2) The surviving spouse of a property owner claiming the exemption shall\n\n20          be eligible for the exemption provided for in this Paragraph if the surviving spouse\n\n21          occupies and remains the owner of or retains a usufruct on the property and is not\n\n22          more than five years younger than the owner.\n\n23                  (3) The exemption provided in this Paragraph shall be applicable in any\n\n24          parish or municipality in which the exemption has been approved by a majority of\n\n25          the electors of the parish or municipality voting at an election called for that purpose.\n\n26                  (4) Notwithstanding any provision of this constitution to the contrary, any\n\n27          decrease in the total amount of ad valorem tax collected by the taxing authority as\n\n28          a result of the exemption shall be absorbed by the taxing authority and shall not\n\n29          create any additional tax liability for other taxpayers in the taxing district as a result\n\n30          of any subsequent reappraisal and valuation or millage adjustment. Implementation\n\n\n                                              Page 2 of 3\n\n     CODING: Words in struck through type are deletions from existing law; words underscored\n     are additions.\n\f     HB NO. 514                                                                       ENROLLED\n\n 1           of the exemption authorized in this Paragraph shall neither trigger nor be cause for\n\n 2           a reappraisal of property or an adjustment of millages pursuant to the provisions of\n\n 3           Section 23(B) of this Article.\n\n 4                   (5) A trust shall be eligible for the exemption provided for in this Paragraph\n\n 5           as provided by law.\n\n 6           Section 2. Be it further resolved that the provisions of the amendment contained in\n\n 7   this Joint Resolution shall become effective January 1, 2028, and shall be applicable to all\n\n 8   tax years beginning on or after January 1, 2028.\n\n 9           Section 3. Be it further resolved that this proposed amendment shall be submitted\n\n10   to the electors of the state of Louisiana at the statewide election to be held on November 3,\n\n11   2026.\n\n12           Section 4. Be it further resolved that on the official ballot to be used at the election,\n\n13   there shall be printed a proposition, upon which the electors of the state shall be permitted\n\n14   to vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\n\n15   follows:\n\n16                   Do you support an amendment to authorize parishes and municipalities to\n\n17                   extend an additional property tax exemption for property subject to the\n\n18                   homestead exemption that is owned and occupied by a person who is at least\n\n19                   sixty-five years of age and who qualifies for the special assessment level?\n\n20                   (Effective January 1, 2028) (Adds Article VII, Section 21(P))\n\n\n\n\n                                 SPEAK",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "9aa9261656c8605128756b23679fb9d63787da171ed74d0e23891f55658d8fe8",
+            "start": 3500,
+            "end": 7000,
+            "excerpt": "d) For persons seventy-seven years of age but not yet eighty-one years of\n\n14          age, the next twenty-four thousand dollars of the assessed valuation of the property\n\n15          shall be exempt from ad valorem taxation.\n\n16                  (e) For persons eighty-one years of age and older, the next thirty thousand\n\n17          dollars of the assessed valuation of the property shall be exempt from ad valorem\n\n18          taxation.\n\n19                  (2) The surviving spouse of a property owner claiming the exemption shall\n\n20          be eligible for the exemption provided for in this Paragraph if the surviving spouse\n\n21          occupies and remains the owner of or retains a usufruct on the property and is not\n\n22          more than five years younger than the owner.\n\n23                  (3) The exemption provided in this Paragraph shall be applicable in any\n\n24          parish or municipality in which the exemption has been approved by a majority of\n\n25          the electors of the parish or municipality voting at an election called for that purpose.\n\n26                  (4) Notwithstanding any provision of this constitution to the contrary, any\n\n27          decrease in the total amount of ad valorem tax collected by the taxing authority as\n\n28          a result of the exemption shall be absorbed by the taxing authority and shall not\n\n29          create any additional tax liability for other taxpayers in the taxing district as a result\n\n30          of any subsequent reappraisal and valuation or millage adjustment. Implementation\n\n\n                                              Page 2 of 3\n\n     CODING: Words in struck through type are deletions from existing law; words underscored\n     are additions.\n\f     HB NO. 514                                                                       ENROLLED\n\n 1           of the exemption authorized in this Paragraph shall neither trigger nor be cause for\n\n 2           a reappraisal of property or an adjustment of millages pursuant to the provisions of\n\n 3           Section 23(B) of this Article.\n\n 4                   (5) A trust shall be eligible for the exemption provided for in this Paragraph\n\n 5           as provided by law.\n\n 6           Section 2. Be it further resolved that the provisions of the amendment contained in\n\n 7   this Joint Resolution shall become effective January 1, 2028, and shall be applicable to all\n\n 8   tax years beginning on or after January 1, 2028.\n\n 9           Section 3. Be it further resolved that this proposed amendment shall be submitted\n\n10   to the electors of the state of Louisiana at the statewide election to be held on November 3,\n\n11   2026.\n\n12           Section 4. Be it further resolved that on the official ballot to be used at the election,\n\n13   there shall be printed a proposition, upon which the electors of the state shall be permitted\n\n14   to vote YES or NO, to amend the Constitution of Louisiana, which proposition shall read as\n\n15   follows:\n\n16                   Do you support an amendment to authorize parishes and municipalities to\n\n17                   extend an additional property tax exemption for property subject to the\n\n18                   homestead exemption that is owned and occupied by a person who is at least\n\n19                   sixty-five years of age and who qualifies for the special assessment level?\n\n20                   (Effective January 1, 2028) (Adds Article VII, Section 21(P))\n\n\n\n\n                                 SPEAK",
+            "page": null,
+            "section": "act-text-2"
+          }
+        ]
+      },
+      {
+        "claimKey": "act-text-3",
+        "text": "ER OF THE HOUSE OF REPRESENTATIVES\n\n\n\n                                 PRESIDENT OF THE SENATE\n\n\n\n\n                                               Page 3 of 3\n\n     CODING: Words in struck through type are deletions from existing law; words underscored\n     are additions.\n\f",
+        "supports": [
+          {
+            "sourceKey": "act",
+            "normalizedSha256": "9aa9261656c8605128756b23679fb9d63787da171ed74d0e23891f55658d8fe8",
+            "start": 7000,
+            "end": 7273,
+            "excerpt": "ER OF THE HOUSE OF REPRESENTATIVES\n\n\n\n                                 PRESIDENT OF THE SENATE\n\n\n\n\n                                               Page 3 of 3\n\n     CODING: Words in struck through type are deletions from existing law; words underscored\n     are additions.\n\f",
+            "page": null,
+            "section": "act-text-3"
+          }
+        ]
+      },
+      {
+        "claimKey": "election",
+        "text": "                                  SECRETARY OF STATE\n                                        STATE OF LOUISIANA\n\n                2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n                          November 3, 2026 Election\n    The constitutional amendments that will be on the ballot for the November 3, 2026 election are listed below.\n            Click on the Act number link to read the complete text of the Act on the Legislature’s Website.\n ",
+        "supports": [
+          {
+            "sourceKey": "sos-ballot",
+            "normalizedSha256": "d6fc04ce56d88e5969ab7589423abc96c4efc2665cee908610ea7da00909fbbc",
+            "start": 0,
+            "end": 443,
+            "excerpt": "                                  SECRETARY OF STATE\n                                        STATE OF LOUISIANA\n\n                2026 PROPOSED CONSTITUTIONAL AMENDMENTS\n                          November 3, 2026 Election\n    The constitutional amendments that will be on the ballot for the November 3, 2026 election are listed below.\n            Click on the Act number link to read the complete text of the Act on the Legislature’s Website.\n ",
+            "page": null,
+            "section": "election"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "timeline": [],
+    "knownUnknowns": [
+      "No official fiscal note has yet been retained for this explanation. The accepted sources do not establish an individual household's tax or financial outcome."
+    ],
+    "nextActionClaimKeys": [
+      "election"
+    ],
+    "reviewedThrough": "2026-09-14",
+    "nextReviewAt": "2026-09-17",
+    "reviewResponsibility": "Public Parish owner",
+    "supportedQuestions": [
+      {
+        "question": "What would this amendment change?",
+        "claimKeys": [
+          "ballot-question",
+          "act-text-1",
+          "act-text-2",
+          "act-text-3",
+          "election"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Should I vote for this amendment?",
+        "reason": "Public Parish explains official evidence without voting recommendations."
+      }
+    ]
+  },
+  "media": [],
+  "additionalRetrieval": []
+}

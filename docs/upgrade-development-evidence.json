@@ -1,0 +1,235 @@
+{
+  "checkedAt": "2026-09-14T05:36:35Z",
+  "environment": "development",
+  "site": "https://woozy-wren-227.convex.site",
+  "branch": "upgrade/overnight-u4-u6",
+  "baseCommit": "0badfa323ac1a93c2c57fa86b8d4595ec2017807",
+  "committed": false,
+  "productionChanged": false,
+  "featuredStories": [
+    "meta-richland",
+    "spacex-pecan-island",
+    "applied-digital-boyce"
+  ],
+  "measures": [
+    {
+      "slug": "2026-amendment-1",
+      "title": "Amendment 1: A one-time exemption transfer for surviving spouses",
+      "mode": "limited",
+      "manifest": "docs/story-manifests/2026-amendment-1.v3.json",
+      "manifestSha256": "d9cb4a5210181e08bf3ba316c0834917447055a2c581a84321c6b4c1cdfb4f6a",
+      "draftSha256": "878c398a5d5151c1cd6d9e10b968617dafcdc7077e009683201f915495e0bcc0",
+      "reviewSha256": "5c0693fece5fcd87b2c8e621bbb658f3fc6526c3c4da51e9f61ed39f0b006567",
+      "sourceCount": 3
+    },
+    {
+      "slug": "2026-amendment-2",
+      "title": "Amendment 2: Keeping a lower local property-tax rate",
+      "mode": "limited",
+      "manifest": "docs/story-manifests/2026-amendment-2.v3.json",
+      "manifestSha256": "f5e227cab8fb314de033e824e691c2479f53464752c5cb347ce42062b28b5d57",
+      "draftSha256": "63a16cfe0c8c792a32de25973aadc61d13acfe53b50156b61cdbb9696064d2cc",
+      "reviewSha256": "1dd2eb0365c771995e655949a763729f15dd419aa7bd1f230274a5f638147ae9",
+      "sourceCount": 3
+    },
+    {
+      "slug": "2026-amendment-3",
+      "title": "Amendment 3: Post-conviction bail for aggravated offenses against minors",
+      "mode": "limited",
+      "manifest": "docs/story-manifests/2026-amendment-3.v5.json",
+      "manifestSha256": "27403445a98155c66c54aba31d28514b5fe9df0f5e7c44cc2d6aa8d628310b3c",
+      "draftSha256": "408b1e4b44c5e73f2e416f402820ddc502580e8a957887adaf8bf913be1fe434",
+      "reviewSha256": "71cbf1cbe7096ffa88ea468e7b28d79aed534df8ff821febc3dc904ed5d915a8",
+      "sourceCount": 4
+    },
+    {
+      "slug": "2026-amendment-4",
+      "title": "Amendment 4: Lifetime limits on election as governor",
+      "mode": "limited",
+      "manifest": "docs/story-manifests/2026-amendment-4.v3.json",
+      "manifestSha256": "ba58d65263b451ea83b56bd79ca0f4492153de77531a76d7be5b8ec5f4cd94cd",
+      "draftSha256": "77142d6365a96ccf6a5b46c127480b095e345463e5ef28c6a63072d9c687d124",
+      "reviewSha256": "2af1e8158e3765ef4dfc7cb6a873f1a756ed325b6d862b6d1b0a89cf4d4cf33e",
+      "sourceCount": 2
+    },
+    {
+      "slug": "2026-amendment-5",
+      "title": "Amendment 5: How retirement systems apply nonrecurring state money",
+      "mode": "limited",
+      "manifest": "docs/story-manifests/2026-amendment-5.v5.json",
+      "manifestSha256": "0c7b8a3abcf94776de81a34323b53d68f34fb6546732d126017ba79e309e4b36",
+      "draftSha256": "c0876c48d768b0cf8b88e2171a4e2468c291cc8616fb11b6648d491b2c445369",
+      "reviewSha256": "000f57b2141884b78e135c47f353d07d825f5a77fa04d0cf58b6e9a8fe0903fa",
+      "sourceCount": 3
+    },
+    {
+      "slug": "2026-amendment-6",
+      "title": "Amendment 6: An additional exemption for qualifying older homeowners",
+      "mode": "limited",
+      "manifest": "docs/story-manifests/2026-amendment-6.v3.json",
+      "manifestSha256": "190c96963dbe60bb87864b5f7bf106830e572956bb9321a10cacf19e5f9e9ae3",
+      "draftSha256": "5cb84bdeb99a2a9d6894f4543b8da1ea8bc12c06c98acbf9989b968c973d7ce8",
+      "reviewSha256": "d3c9c3ffeb5c92568ce3876d9db0697d8af5bc0cbf29802e1bdf8a17fa58abc6",
+      "sourceCount": 3
+    },
+    {
+      "slug": "2026-amendment-7",
+      "title": "Amendment 7: Public funds for drinking-water service lines",
+      "mode": "limited",
+      "manifest": "docs/story-manifests/2026-amendment-7.v3.json",
+      "manifestSha256": "7643e69670b750d47e304832f1c84f47c4ae787f00d600027ee87fa3757ed921",
+      "draftSha256": "2fa40744d29ff74c551a1d1c95e283afbf00b2c27500a0bd0b673e60ac68b53b",
+      "reviewSha256": "00cc9db7947be3cd09ec2be3090b670a554fc75e796c2347e399d9e8c241b24c",
+      "sourceCount": 3
+    },
+    {
+      "slug": "2026-amendment-8",
+      "title": "Amendment 8: Expropriation by foreign adversaries",
+      "mode": "limited",
+      "manifest": "docs/story-manifests/2026-amendment-8.v3.json",
+      "manifestSha256": "98b98d40ba189683633bf9a2163e190a5a4878367e49015df22c70fd09bad7f5",
+      "draftSha256": "8e4eb1e554173b52da192465e7674a9efcfb0833554b74db7a2e69b22f775789",
+      "reviewSha256": "3fcbeaf45fd6a2519c30bb61c91648ccaf6b9c6976bd319494b28ba56ac1dc8f",
+      "sourceCount": 2
+    },
+    {
+      "slug": "2026-amendment-9",
+      "title": "Amendment 9: A higher income limit for the special assessment level",
+      "mode": "limited",
+      "manifest": "docs/story-manifests/2026-amendment-9.v3.json",
+      "manifestSha256": "d2f65ba160c6ee5712f1f12a95c9d810c4ab7703d099c6ddc9c9ea122fe5d1fd",
+      "draftSha256": "0142aabd0d5160f7188ab292ea9631c53b50bdbcc253ba8d9f9473f968b8bdff",
+      "reviewSha256": "60090e123a75beb96986b6b323e69f1b8528ab020175b045d550697ffed884a2",
+      "sourceCount": 3
+    },
+    {
+      "slug": "2026-amendment-10",
+      "title": "Amendment 10: Tax exemptions for rehabilitated blighted property",
+      "mode": "limited",
+      "manifest": "docs/story-manifests/2026-amendment-10.v3.json",
+      "manifestSha256": "fe5005f04b0b5db87886b1bb72e9a8edb973c50e3f220e51bdc8e5ccae6c7912",
+      "draftSha256": "6f5db013017b9b710f8f05db3d0185dd127c647c598e4c2d4c5ff58e0db60baa",
+      "reviewSha256": "0a50da33c0c665e4659b44439cf75420f2a8a588acd2bd9bd35cd68669995cc5",
+      "sourceCount": 3
+    }
+  ],
+  "lpsc": {
+    "rootVersion": "v2",
+    "goldSetVersion": "launch-bodies-v5",
+    "status": "promoted",
+    "gates": [
+      {
+        "detail": "3 of 3 required representative samples were retrieved.",
+        "evaluatorVersion": "coverage-gates-v4",
+        "gateKey": "representative_samples_retrieved",
+        "gateNumber": 1,
+        "passed": true
+      },
+      {
+        "detail": "Every proposed source matches a checked official host or document path.",
+        "evaluatorVersion": "coverage-gates-v4",
+        "gateKey": "official_domains_only",
+        "gateNumber": 2,
+        "passed": true
+      },
+      {
+        "detail": "2 current and 1 historical artifacts were identified.",
+        "evaluatorVersion": "coverage-gates-v4",
+        "gateKey": "current_and_historical_separated",
+        "gateNumber": 3,
+        "passed": true
+      },
+      {
+        "detail": "2 of 2 accepted publications have complete citations.",
+        "evaluatorVersion": "coverage-gates-v4",
+        "gateKey": "accepted_facts_cited",
+        "gateNumber": 4,
+        "passed": true
+      },
+      {
+        "detail": "0 unsupported material facts remain.",
+        "evaluatorVersion": "coverage-gates-v4",
+        "gateKey": "no_unsupported_material_facts",
+        "gateNumber": 5,
+        "passed": true
+      },
+      {
+        "detail": "1 immutable source revision checks passed.",
+        "evaluatorVersion": "coverage-gates-v4",
+        "gateKey": "revisions_immutable",
+        "gateNumber": 6,
+        "passed": true
+      },
+      {
+        "detail": "A failed or incomplete source produced a limited, withheld, or not-found result.",
+        "evaluatorVersion": "coverage-gates-v4",
+        "gateKey": "failures_limited_or_withheld",
+        "gateNumber": 7,
+        "passed": true
+      },
+      {
+        "detail": "2 source freshness expectations are recorded; 0 are stale.",
+        "evaluatorVersion": "coverage-gates-v4",
+        "gateKey": "freshness_expectation_present",
+        "gateNumber": 8,
+        "passed": true
+      },
+      {
+        "detail": "Agenda and minutes runs for the same record both succeeded within 60 days.",
+        "evaluatorVersion": "coverage-gates-v4",
+        "gateKey": "recent_agenda_and_minutes_runs",
+        "gateNumber": 9,
+        "passed": true
+      },
+      {
+        "detail": "3 of 3 representative source URLs answered from the development backend.",
+        "evaluatorVersion": "coverage-gates-v4",
+        "gateKey": "development_source_urls_reachable",
+        "gateNumber": 10,
+        "passed": true
+      }
+    ]
+  },
+  "baselineNotificationDeliveries": 0,
+  "frontend": {
+    "deploymentId": "e61bed45-46a7-489c-a5df-6322ad95e2fc",
+    "buildOrigin": "local validated working tree",
+    "codeFilesVerified": 76,
+    "assetManifestSha256": "b1bbae081a10356fa3b2304441d6eccd602d1d5849490a892def4b2e2c51fb1e"
+  },
+  "validation": {
+    "applicationTestsPassed": 738,
+    "testFilesPassed": 96,
+    "typechecks": "passed",
+    "build": "passed",
+    "lintErrors": 0,
+    "existingLintWarnings": 15,
+    "residentBrowserCasesPassed": 108,
+    "readingBrowserCasesPassed": 57,
+    "ownerBrowserCasesPassed": 14,
+    "intentionalBrowserSkips": 1,
+    "targetedReruns": "Browser resource errors resolved using disk TMPDIR; one resident loading timeout passed rerun",
+    "hostedBrowserChecksPassed": 26,
+    "retainedSourceSnapshotsVerified": 38,
+    "liveAskChecksCompleted": 10,
+    "productionSmoke": "not run; production release not authorized"
+  },
+  "idleAudit": {
+    "monitoringPolicies": 11,
+    "enabledMonitoringPolicies": 0,
+    "activeMonitoringRuns": 0,
+    "queuedOrRunningPipelineRuns": 0,
+    "sourceAllowanceEnabled": false
+  },
+  "estimatedModelUseUsd": {
+    "sourcesIncrement": 1.536084,
+    "askIncrement": 0.105129,
+    "totalIncrement": 1.641213
+  },
+  "reportedRetrievalCredits": {
+    "u5": 34,
+    "u6": 79,
+    "total": 113,
+    "invoiceTotal": false
+  }
+}

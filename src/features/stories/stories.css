@@ -390,3 +390,17 @@
   background: transparent; color: var(--primary); font: inherit; text-align: left; cursor: pointer;
 }
 .pp-story-source-row:hover { text-decoration: underline; }
+
+.pp-ballot-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; list-style: none; padding: 0; }
+.pp-ballot-grid li { border: 1px solid var(--pp-border, #dedbe5); border-radius: 1rem; padding: 1.25rem; background: #fff; min-width: 0; }
+.pp-ballot-grid :is(h2, h3) { margin-block: .35rem .65rem; font-size: 1.2rem; line-height: 1.4; font-weight: 600; }
+.pp-ballot-grid p { line-height: 1.6; }
+.pp-ballot-notice { padding-bottom: 0; }
+@media (max-width: 48rem) { .pp-ballot-grid { grid-template-columns: 1fr; } }
+
+.pp-ballot > header { margin-bottom: 1.5rem; max-width: 54rem; }
+.pp-ballot > header :is(h1, h2) { margin-bottom: .8rem; font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 650; line-height: 1.2; letter-spacing: -.035em; }
+.pp-ballot > header p { margin-top: .65rem; line-height: 1.6; }
+.pp-ballot a:hover { text-decoration: underline; text-underline-offset: .15em; }
+.pp-ballot > header a { color: var(--primary); text-decoration: underline; text-underline-offset: .15em; }
+.pp-ballot-grid .pp-story-meta { margin-top: .75rem; }
