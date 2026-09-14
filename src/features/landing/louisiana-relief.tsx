@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import { effect, frame, init, surface } from 'vgpu'
 import type { Effect, Gpu, Surface } from 'vgpu'
 
@@ -9,9 +10,39 @@ import './louisiana-relief.css'
 
 type RenderState = 'loading' | 'ready' | 'fallback'
 
-export function LouisianaRelief() {
+export type ReliefFraming = {
+  // Values below one move the camera in; above one pull back.
+  zoom?: number
+  // Screen-space shift of the state, in units of the canvas half-height.
+  offsetX?: number
+  offsetY?: number
+  // Resting tilt in radians. Positive values lean the Gulf coast toward
+  // the viewer for a lower, more oblique view.
+  pitch?: number
+}
+
+const DEFAULT_FRAMING: Required<ReliefFraming> = {
+  zoom: 1,
+  offsetX: 0,
+  offsetY: 0,
+  pitch: -0.03,
+}
+
+export function LouisianaRelief({
+  framing,
+  labels = true,
+}: {
+  framing?: ReliefFraming
+  labels?: boolean
+} = {}) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [renderState, setRenderState] = useState<RenderState>('loading')
+  const {
+    zoom,
+    offsetX,
+    offsetY,
+    pitch: basePitch,
+  } = { ...DEFAULT_FRAMING, ...framing }
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -40,10 +71,10 @@ export function LouisianaRelief() {
     const motionEnabled = !reducedMotion && hasFinePointer
     const motion = {
       yaw: 0,
-      pitch: -0.03,
+      pitch: basePitch,
       energy: 0,
       targetYaw: 0,
-      targetPitch: -0.03,
+      targetPitch: basePitch,
       targetEnergy: 0,
     }
 
@@ -53,10 +84,12 @@ export function LouisianaRelief() {
         relief?.set({
           params: {
             resolution: canvasSurface?.size ?? [1, 1],
+            offset: [offsetX, offsetY],
             yaw: motion.yaw,
             pitch: motion.pitch,
             time: motionEnabled ? (timestamp - startedAt) / 1000 : 0,
             energy: motion.energy,
+            zoom,
           },
         })
         if (canvasSurface && relief) currentFrame.pass(canvasSurface, relief)
@@ -111,14 +144,14 @@ export function LouisianaRelief() {
       const pointerX = (event.clientX - bounds.left) / bounds.width - 0.5
       const pointerY = (event.clientY - bounds.top) / bounds.height - 0.5
       motion.targetYaw = pointerX * 0.16
-      motion.targetPitch = -0.03 + pointerY * 0.09
+      motion.targetPitch = basePitch + pointerY * 0.09
       motion.targetEnergy = 1
       scheduleAnimation()
     }
 
     const handlePointerLeave = () => {
       motion.targetYaw = 0
-      motion.targetPitch = -0.03
+      motion.targetPitch = basePitch
       motion.targetEnergy = 0
       scheduleAnimation()
     }
@@ -171,10 +204,12 @@ export function LouisianaRelief() {
           set: {
             params: {
               resolution: canvasSurface.size,
+              offset: [offsetX, offsetY],
               yaw: motion.yaw,
               pitch: motion.pitch,
               time: 0,
               energy: 0,
+              zoom,
             },
           },
         })
@@ -202,27 +237,39 @@ export function LouisianaRelief() {
       canvasSurface?.dispose()
       gpu?.dispose()
     }
-  }, [])
+  }, [basePitch, offsetX, offsetY, zoom])
+
+  const framingStyle = {
+    '--relief-zoom': zoom,
+    '--relief-offset-x': offsetX,
+    '--relief-offset-y': offsetY,
+  } as CSSProperties
 
   return (
-    <div className="relief-viewport" data-render-state={renderState}>
+    <div
+      className="relief-viewport"
+      data-render-state={renderState}
+      style={framingStyle}
+    >
       <canvas
         aria-label="Three-dimensional Louisiana relief with static pins marking Lafayette, Rapides, and East Baton Rouge as local coverage regions"
         className="relief-canvas"
         ref={canvasRef}
         role="img"
       />
-      <div aria-hidden="true" className="relief-map-labels">
-        <span className="relief-map-label relief-map-label-rapides">
-          Rapides
-        </span>
-        <span className="relief-map-label relief-map-label-lafayette">
-          Lafayette
-        </span>
-        <span className="relief-map-label relief-map-label-baton-rouge">
-          East Baton Rouge
-        </span>
-      </div>
+      {labels ? (
+        <div aria-hidden="true" className="relief-map-labels">
+          <span className="relief-map-label relief-map-label-rapides">
+            Rapides
+          </span>
+          <span className="relief-map-label relief-map-label-lafayette">
+            Lafayette
+          </span>
+          <span className="relief-map-label relief-map-label-baton-rouge">
+            East Baton Rouge
+          </span>
+        </div>
+      ) : null}
       <svg aria-hidden="true" className="relief-fallback" viewBox="0 0 260 240">
         <path className="relief-fallback-state" d={LOUISIANA_OUTLINE_PATH} />
         <g className="relief-fallback-pins">

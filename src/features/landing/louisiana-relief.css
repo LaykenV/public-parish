@@ -7,6 +7,7 @@
   min-height: 0;
   overflow: hidden;
   background: transparent;
+  container-type: size;
 }
 
 .relief-canvas,
@@ -29,9 +30,16 @@
   opacity: 1;
 }
 
+/* The shader scales the state with canvas height, so the label layer keeps a
+   fixed aspect ratio and follows the framing (zoom and offset are in units of
+   the canvas half-height) however wide the viewport grows. */
 .relief-map-labels {
   position: absolute;
-  inset: 0;
+  top: calc(50% + var(--relief-offset-y, 0) * 50cqh);
+  left: calc(50% - var(--relief-offset-x, 0) * 50cqh);
+  height: calc(100cqh / var(--relief-zoom, 1));
+  aspect-ratio: 6 / 5;
+  transform: translate(-50%, -50%);
   z-index: 3;
   opacity: 0;
   pointer-events: none;
@@ -49,10 +57,14 @@
   align-items: center;
   min-height: 1.35rem;
   padding-inline: 0.45rem;
-  border: 1px solid color-mix(in srgb, var(--foreground) 16%, transparent);
+  border: 1px solid
+    var(
+      --relief-label-border,
+      color-mix(in srgb, var(--foreground) 16%, transparent)
+    );
   border-radius: 0.35rem;
-  color: var(--body-foreground);
-  background: rgb(255 255 255 / 88%);
+  color: var(--relief-label-foreground, var(--body-foreground));
+  background: var(--relief-label-background, rgb(255 255 255 / 88%));
   box-shadow: 0 2px 8px rgb(55 35 85 / 9%);
   font-family: var(--font-mono);
   font-size: 0.58rem;
@@ -66,7 +78,10 @@
 .relief-map-label::after {
   position: absolute;
   content: '';
-  background: color-mix(in srgb, var(--foreground) 24%, transparent);
+  background: var(
+    --relief-label-line,
+    color-mix(in srgb, var(--foreground) 24%, transparent)
+  );
 }
 
 .relief-map-label-rapides {

@@ -1,9 +1,13 @@
 struct Params {
   resolution: vec2f,
+  // Framing shifts the state across the canvas in screen units; zoom below
+  // one moves in.
+  offset: vec2f,
   yaw: f32,
   pitch: f32,
   time: f32,
   energy: f32,
+  zoom: f32,
 }
 
 @group(0) @binding(0) var<uniform> params: Params;
@@ -205,6 +209,7 @@ fn launch_pin_head_distance(map_point: vec2f) -> f32 {
   var screen = uv * 2.0 - 1.0;
   screen.y = -screen.y;
   screen.x *= params.resolution.x / max(params.resolution.y, 1.0);
+  screen = screen * params.zoom + params.offset;
   let ray_origin = camera + (right * screen.x + up * screen.y) * 1.43;
   let ray = forward;
 
