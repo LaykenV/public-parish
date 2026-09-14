@@ -7,6 +7,24 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 14 parallel PR verification
+
+Prepared on `codex/parallel-ci`. The frontend build runs alongside typechecks,
+application tests and lint. Six browser jobs cover the existing resident,
+reading/chat and owner suites across Chromium and WebKit. The final `verify`
+check requires all applicable jobs before publishing the certified frontend.
+Browser selection still requires `development-certification`. Workflow lint
+and all 128 final-gate result combinations pass. Test discovery confirms all
+168 browser cases appear exactly once. The owner authorized filing the PR and
+merging when green. GitHub execution and measured timing are pending.
+
+Local validation passed 726 application tests, both typechecks, build and lint
+with 15 existing warnings. The browser run passed 166 cases, skipped one
+desktop-only case on mobile and timed out waiting for one synthetic Ask answer.
+That unchanged case passed its targeted rerun. The operations document still
+has a pre-existing Prettier table-formatting difference; the workflow passes
+formatting and Actionlint.
+
 ## September 13 Explore, Ask and coverage request controls
 
 The owner accepted the preview except Explore's sparse cards and date-only
