@@ -1,6 +1,7 @@
 import { storyPath } from '../stories/registry'
 import { api, components } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
+import type { ActionCtx } from '../_generated/server'
 import { env, httpAction } from '../_generated/server'
 import { escapeHtml } from './html'
 import { matchesIssueEtag } from './issues'
@@ -24,7 +25,8 @@ export function storyAppHtml(shell: string, metadata: string) {
 }
 
 export const shareStory = httpAction(async (ctx, request) => {
-  const path = new URL(request.url).pathname
+  const requestUrl = new URL(request.url)
+  const path = requestUrl.pathname.replace(/\/$/, '')
   const legacy = path.startsWith('/share/stories/')
   let slug: string
   try { slug = decodeURIComponent(path.slice((legacy ? '/share/stories/' : path.startsWith('/ballot/') ? '/ballot/' : '/stories/').length)) } catch { return unavailable(404) }
@@ -33,8 +35,25 @@ export const shareStory = httpAction(async (ctx, request) => {
   if (!result.story) return unavailable(result.state === 'withdrawn' ? 410 : result.state === 'needs_review' ? 503 : 404)
   const base = env.CONVEX_SITE_URL.replace(/\/$/, '')
   const canonicalUrl = `${base}${storyPath(slug)}`
-  if (legacy || path !== storyPath(slug)) return new Response(null, { status: 302, headers: { Location: canonicalUrl, 'Cache-Control': 'no-store' } })
+  if (legacy || requestUrl.pathname !== storyPath(slug)) return new Response(null, { status: 302, headers: { Location: canonicalUrl + requestUrl.search, 'Cache-Control': 'no-store' } })
   const story = result.story
+  const metadata = storyShareHtml({ title: story.payload.title.text, summary: story.payload.summary.text, canonicalUrl, shareUrl: canonicalUrl,
+    imageUrl: story.media?.url ?? null, imageAlt: story.media?.alt ?? '', reviewedThrough: story.reviewedThrough, limited: story.mode === 'limited' })
+  return renderApp(ctx, request, metadata, story.revision)
+})
+
+export const shareBallot = httpAction(async (ctx, request) => {
+  const requestUrl = new URL(request.url)
+  const base = env.CONVEX_SITE_URL.replace(/\/$/, '')
+  const canonicalUrl = `${base}/ballot`
+  if (requestUrl.pathname === '/ballot/') return new Response(null, { status: 302, headers: { Location: canonicalUrl + requestUrl.search, 'Cache-Control': 'no-store' } })
+  const title = 'Louisiana ballot guide, November 3, 2026'
+  const description = 'Read Louisiana constitutional amendment explanations, the official ballot questions and source documents. Check your own sample ballot with the Secretary of State.'
+  const metadata = `<head><title>${title} | Public Parish</title><meta name="description" content="${description}"><link rel="canonical" href="${escapeHtml(canonicalUrl)}"><meta property="og:type" content="website"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${escapeHtml(canonicalUrl)}"><meta property="og:image" content="${escapeHtml(base)}/brand/share.png"><meta property="og:image:alt" content="Public Parish, a violet pelican with a folded-paper wing."><meta name="twitter:card" content="summary_large_image"></head>`
+  return renderApp(ctx, request, metadata, 'ballot-guide-v1')
+})
+
+async function renderApp(ctx: ActionCtx, request: Request, metadata: string, contentRevision: string) {
   const asset = await ctx.runQuery(components.staticHosting.lib.resolveAssetForHttp, { path: '/index.html', spaFallback: false })
   if (!asset) return unavailable(503)
   // Both storage forms are supported by the installed static-hosting component.
@@ -48,14 +67,12 @@ export const shareStory = httpAction(async (ctx, request) => {
     if (!response.ok) return unavailable(503)
     shell = await response.text()
   } else return unavailable(503)
-  const revision = await shellHash(`${story.revision}:${asset.etag ?? shell}`)
+  const revision = await shellHash(`${contentRevision}:${metadata}:${asset.etag ?? shell}`)
   const headers = { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=0, must-revalidate', ETag: `"${revision}"`,
     'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'strict-origin-when-cross-origin' }
   if (matchesIssueEtag(request.headers.get('If-None-Match'), revision)) return new Response(null, { status: 304, headers })
-  const metadata = storyShareHtml({ title: story.payload.title.text, summary: story.payload.summary.text, canonicalUrl, shareUrl: canonicalUrl,
-    imageUrl: story.media?.url ?? null, imageAlt: story.media?.alt ?? '', reviewedThrough: story.reviewedThrough, limited: story.mode === 'limited' })
   return new Response(storyAppHtml(shell, metadata), { headers })
-})
+}
 
 async function shellHash(shell: string) {
   const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(shell))

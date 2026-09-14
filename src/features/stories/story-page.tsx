@@ -294,7 +294,8 @@ export function StoryPage({ slug }: { slug: string }) {
           />
         ) : (
           <p>
-            No next public action or deadline is established by these sources.
+            No separate next action is listed here. Check the timeline above for
+            documented dates.
           </p>
         )}
         <FollowAction available live label={measure ? 'Follow this measure' : 'Follow this story'}
