@@ -2302,6 +2302,14 @@ warnings. Ten browser checks pass in Chromium and mobile WebKit, with actual
 3D screenshots checked at desktop and phone widths. The authorized PR, reviews
 and production release remain pending.
 
+### 2026-09-14 - working tree, restore hidden Louisiana on mobile
+The owner corrected the hero release to keep Louisiana desktop-only. Restored
+the viewport mount gate and aligned the layout breakpoint. Updated selection
+and resize checks for mobile absence and desktop labels. Typechecks, build and
+targeted lint pass. Ten Chromium/WebKit checks pass, including the 768/769-pixel
+boundary and selection through each viewport's controls. Screenshots were
+inspected. PR review and release are pending.
+
 ### 2026-09-14 - working tree, issue sharing domain
 Removed the issue share button's Convex hostname override. Issue shares retain
 the dedicated preview route and use the current site origin, as other shares do.
