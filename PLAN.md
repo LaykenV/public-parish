@@ -19,7 +19,7 @@ record, legal notice, or an agency's answer.
 ## Audience and positioning
 
 Louisiana is the default Home. Introduce Public Parish with the Louisiana hero,
-the three stories and statewide records, then issues across covered parishes.
+the three stories and one statewide utility roundup, then issues across covered parishes.
 The area selector offers Louisiana and parishes. Parish Home hides the stories
 and begins with local issues and body filters. Any saved selection dismisses
 the hero, including when the reader returns to Louisiana. Reading and Ask

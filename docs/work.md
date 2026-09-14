@@ -7,21 +7,20 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
-## September 14 statewide reading repair
+## September 14 statewide reading and utility roundup
 
-The owner found that statewide cards opened a false Record not found page.
-All four production decision queries and both meeting queries return accepted
-records. The frontend reader rejected the Louisiana place slug. The repair
-admits Louisiana for decision, meeting and issue reading while retaining the
-unknown-place check. Home reuses the existing two-column desktop card layout
-and mobile swipe controls, with a description of the commission matters.
+The owner approved one utility roundup alongside the three featured stories.
+Home now groups the accepted commission cases into the fourth grid card. Each
+case links to its own evidence and shows its docket and published status.
+The existing commission follow provides utility updates. The separate statewide
+section is removed. This does not add a new editorial story or merge decisions.
 
-Three regression checks failed before the fix and now pass. Validation passed
-742 application tests, both typechecks, build and lint with 15 existing
-warnings. Release checks are pending. Four Chromium and WebKit browser cases passed at 320px and 1280px;
-each opens every statewide card, its source, available meeting and direct URL. The owner's possible
-fourth utility roundup remains a presentation decision, not a new published
-story. The original U5 smoke checks missed decision-page navigation.
+The owner found a false Record not found page for statewide decisions. All four
+production decision queries and both meeting queries return accepted records.
+The frontend reader rejected Louisiana. The fix admits Louisiana for decision,
+meeting and issue reading while retaining the unknown-place check. Three
+regression checks failed before the fix and now pass. The original U5 release
+smoke missed decision-page navigation. Final validation and release are pending.
 
 ## September 14 production upgrade release
 

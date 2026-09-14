@@ -19,8 +19,7 @@ slice contracts; [Work](work.md) records release status.
 | Order | Louisiana (default) | Parish, city or body focus |
 | --- | --- | --- |
 | Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the selector at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. The issues card contains the navigation links and body filters. On phones, the links stack beside Filters |
-| First content | Across Louisiana: Meta lead with SpaceX and Boyce secondary | Local issues and body filters. Featured stories are omitted |
-| Statewide records | Issues and records from supported statewide bodies, once any exist | Omitted |
+| First content | Across Louisiana: Meta lead, SpaceX and Boyce secondary, plus one utility roundup linking individual commission cases | Local issues and body filters. Featured stories are omitted |
 | Ballot | "On the November 3 ballot": statewide amendments, once published | Statewide amendments plus verified propositions for the focused parish |
 | Local content | Issues across covered parishes | Issues in the focus, with a desktop body dialog and mobile filter drawer |
 | Records | Latest decision records | Latest decision records for the focus |
@@ -444,3 +443,13 @@ written pressed state for assistive technology. Compare exact drafts side by
 side on desktop and stack them on phones. Keep hashes and JSON in Geist Mono.
 Use the shared Button variants so publication stays purple and withdrawal
 retains its destructive styling. All publication and owner-access checks remain.
+
+
+## Statewide utility roundup
+
+The owner approved one utility roundup as the fourth card in Across Louisiana
+on September 14. Preserve the three featured stories and their images. The
+roundup links directly to each accepted commission decision, with its docket
+and published status. It uses the shared commission follow and Explore filter.
+It replaces the separate statewide decision section. Keep the source records
+and their citations distinct; the roundup is a reading collection.

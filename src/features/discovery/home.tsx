@@ -1,5 +1,5 @@
 import { AREA_SLUGS } from '../../../convex/follows/contracts'
-import { StatewideSection } from './statewide-section'
+import { StatewideRoundup } from './statewide-section'
 import { BallotSection } from '../stories/ballot-page'
 import { ArrowUpRightIcon, SearchIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -114,9 +114,13 @@ export function HomePage({
         <FeaturedStories
           mainHeading={!showHero}
           action={<ChooseAreaButton />}
-        />
+        >
+          <ResidentSectionBoundary label="Utility roundup" resetKey="utility-roundup">
+            <StatewideRoundup />
+          </ResidentSectionBoundary>
+        </FeaturedStories>
       ) : null}
-      {!fixturesEnabled && showStories ? <><StatewideSection /><BallotSection home /></> : null}
+      {!fixturesEnabled && showStories ? <BallotSection home /> : null}
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
           <LocalIssues

@@ -1,60 +1,49 @@
 import { expect, test } from '@playwright/test'
 
 for (const width of [320, 1280]) {
-  test(`statewide cards open their evidence and meetings at ${width}px`, async ({
+  test(`utility roundup opens every case and its evidence at ${width}px`, async ({
     page,
   }, testInfo) => {
     test.setTimeout(120_000)
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/?area=louisiana')
-    const section = page.locator(
-      'section[aria-labelledby="statewide-decisions-title"]',
-    )
-    const cards = section.locator('.pp-card')
-    await expect(cards).toHaveCount(4)
-    const records = await cards.evaluateAll((elements) =>
+    const section = page.getByRole('article', {
+      name: 'Utility rates and service',
+    })
+    const cases = section.locator('.pp-utility-cases li')
+    await expect(cases).toHaveCount(4)
+    const records = await cases.evaluateAll((elements) =>
       elements.map((element) => ({
-        title: element.querySelector('.pp-card-title')!.textContent.trim(),
+        title: element
+          .querySelector('.pp-utility-case-title')!
+          .textContent.trim(),
         href: element
-          .querySelector<HTMLAnchorElement>('a[href^="/decisions/"]')!
+          .querySelector<HTMLAnchorElement>('a')!
           .getAttribute('href')!,
       })),
     )
-    const grid = section.getByRole('region', { name: 'Commission decisions' })
-    if (width < 768) {
-      expect(
-        await grid.evaluate(
-          (element) => element.scrollWidth > element.clientWidth,
-        ),
-      ).toBe(true)
-      await expect(
-        section.getByText('Decision 1 of 4', { exact: true }),
-      ).toBeVisible()
-      await grid.evaluate((element) => {
-        element.scrollLeft = element.scrollWidth
-      })
-      await expect(
-        section.getByText('Decision 4 of 4', { exact: true }),
-      ).toBeVisible()
-    } else {
-      const bounds = await cards.evaluateAll((elements) =>
-        elements.map((element) => {
-          const { x, y } = element.getBoundingClientRect()
-          return { x, y }
-        }),
-      )
-      expect(bounds[0].y).toBe(bounds[1].y)
+    await expect(page.locator('.pp-story-grid > article')).toHaveCount(4)
+    await expect(page.locator('.pp-story-grid > .pp-story-card')).toHaveCount(3)
+    await expect(
+      page.getByRole('heading', { name: 'Statewide decisions', exact: true }),
+    ).toHaveCount(0)
+    if (width >= 1025) {
+      const bounds = await page
+        .locator('.pp-story-grid > article')
+        .evaluateAll((elements) =>
+          elements.map((element) => {
+            const { x, y } = element.getBoundingClientRect()
+            return { x, y }
+          }),
+        )
       expect(bounds[2].y).toBe(bounds[3].y)
-      expect(bounds[2].y).toBeGreaterThan(bounds[0].y)
+      expect(bounds[3].x).toBeGreaterThan(bounds[2].x)
     }
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true)
-    await grid.evaluate((element) => {
-      element.scrollLeft = 0
-    })
     await section.evaluate((element) =>
       window.scrollTo({
         top: element.getBoundingClientRect().top + window.scrollY - 100,
@@ -63,6 +52,15 @@ for (const width of [320, 1280]) {
     await page.screenshot({
       path: testInfo.outputPath(`statewide-${width}.png`),
     })
+    await section
+      .getByRole('button', { name: 'Follow utility updates', exact: true })
+      .click()
+    const follow = page.getByRole('dialog', {
+      name: 'Get updates about this government body',
+      exact: true,
+    })
+    await expect(follow).toContainText('Louisiana Public Service Commission')
+    await page.keyboard.press('Escape')
     for (const record of records) {
       await page.goto('/?area=louisiana')
       await section.locator(`a[href="${record.href}"]`).first().click()

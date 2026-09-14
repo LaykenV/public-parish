@@ -2251,11 +2251,11 @@ skip after the documented reruns. The
 remaining QA and production gates. Work is uncommitted and production is unchanged.
 
 
-### 2026-09-14 - working tree, repair statewide evidence reading
+### 2026-09-14 - working tree, statewide reading and utility roundup
 
 Fixed a frontend place check that rejected published Louisiana decisions,
-meetings and issues. Reused the Home card layout so desktop has two columns
-and phone swipe controls match the cards. Three regression checks reproduced
-the reader failure before the fix. Validation passed 742 application tests,
-both typechecks, build and four browser cases across Chromium and WebKit.
-The original release checks missed statewide detail navigation. Release pending.
+meetings and issues. The owner approved one utility roundup alongside the
+three featured stories. It links each accepted case to its evidence and replaces
+the separate statewide card section. Three regression checks reproduced the
+reader failure before the fix. Final validation and release remain pending.
+The original release checks missed statewide detail navigation.

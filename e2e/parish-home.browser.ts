@@ -143,7 +143,7 @@ test('Home hides stories in a parish and never repeats the hero after selection'
   await expect(
     page.getByRole('heading', { name: 'Issues across covered parishes' }),
   ).toBeVisible()
-  await expect(page.locator('#stories article')).toHaveCount(3)
+  await expect(page.locator('#stories .pp-story-card')).toHaveCount(3)
   expect(
     await page.evaluate(() => localStorage.getItem('public-parish.area.v1')),
   ).toBe('louisiana')
@@ -154,7 +154,7 @@ test('Home hides stories in a parish and never repeats the hero after selection'
   await expect(page.locator('.pp-home-hero')).toHaveCount(0)
   await page.goto('/')
   await expect(page.locator('.pp-home-hero')).toHaveCount(0)
-  await expect(page.locator('#stories article')).toHaveCount(3)
+  await expect(page.locator('#stories .pp-story-card')).toHaveCount(3)
   for (const image of await page.locator('#stories img').all()) {
     await image.scrollIntoViewIfNeeded()
     await expect
@@ -573,7 +573,7 @@ for (const stored of [null, 'invalid-area', 'louisiana']) {
     await expect(page.locator('.pp-home-hero')).toHaveCount(
       stored === 'louisiana' ? 0 : 1,
     )
-    await expect(page.locator('#stories article')).toHaveCount(3)
+    await expect(page.locator('#stories .pp-story-card')).toHaveCount(3)
     if (stored !== 'louisiana') {
       await page
         .getByRole('button', { name: 'Focus on a parish', exact: true })
@@ -617,5 +617,5 @@ test('area choice dismisses the hero for the session when saving fails', async (
     .getByRole('button', { name: 'View Statewide Stories', exact: true })
     .click()
   await expect(page.locator('.pp-home-hero')).toHaveCount(0)
-  await expect(page.locator('#stories article')).toHaveCount(3)
+  await expect(page.locator('#stories .pp-story-card')).toHaveCount(3)
 })
