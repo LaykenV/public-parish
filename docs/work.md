@@ -790,3 +790,15 @@ The implementation is on `feat/clickable-parish-labels`. Local typechecks, all
 checks pass in Chromium and mobile WebKit. The actual 3D render was inspected
 at 1440, 390 and 320 pixels. PR checks, reviews and production release are pending.
 The comparison-page variations are not part of this change.
+
+## September 14, issue sharing domain
+
+The owner found that issue sharing replaced the public hostname with the direct
+Convex hostname. The isolated fix uses the current site origin and retains
+`/share/issues/:slug`, which supplies the issue's evidence-backed social preview.
+The existing preview endpoint already serves the public domain and links back
+to the public issue timeline. Native sharing, clipboard copying and manual-copy
+fallback retain their existing behavior. Local verification passed 744 tests,
+both typechecks, build and lint with 15 existing warnings. Browser checks
+reproduced the old domain on production and passed all three sharing paths with
+the local build on the public origin. PR review and release are pending.
