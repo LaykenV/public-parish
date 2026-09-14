@@ -1,5 +1,6 @@
 import { MobileAsk } from '../ask/mobile-ask'
 import { Link } from '@tanstack/react-router'
+import { MessageCircleIcon } from 'lucide-react'
 
 import { Button } from '../../components/ui/button'
 import { PageLoading } from '../resident-blueprint/resident-loading'
@@ -7,7 +8,6 @@ import { formatDate } from '../discovery/format'
 import { Notice } from '../discovery/notice'
 import { evidenceRouteHref } from '../resident-handoff/navigation'
 import {
-  AskBlock,
   BackLink,
   ChangeList,
   DocumentList,
@@ -190,6 +190,22 @@ function DecisionView({
                   ) : null}
                 </div>
               ) : null}
+              <div className="ev-status-actions ev-desktop-ask">
+                <Button
+                  render={
+                    <Link
+                      to="/ask"
+                      search={decision.issue
+                        ? { scope: 'issue', issue: decision.issue.slug, returnTo: currentDecisionHref }
+                        : { scope: 'corpus', returnTo: currentDecisionHref }
+                      }
+                    />
+                  }
+                  size="touch"
+                >
+                  <MessageCircleIcon aria-hidden="true" /> Ask Public Parish
+                </Button>
+              </div>
             </div>
           </aside>
 
@@ -224,21 +240,6 @@ function DecisionView({
               <Claim citationId={decision.officialTitleCitationId}>
                 <p className="ev-official-title">{decision.officialTitle}</p>
               </Claim>
-            </Section>
-
-            <Section id="ask" title="Ask Public Parish">
-              <AskBlock
-                scope={
-                  decision.issue
-                    ? { issueSlug: decision.issue.slug, kind: 'issue' }
-                    : { kind: 'corpus' }
-                }
-                scopeLabel={
-                  decision.issue
-                    ? 'Answering from this issue'
-                    : 'Searching all validated Public Parish evidence'
-                }
-              />
             </Section>
 
             {decision.changes.length > 0 ? (

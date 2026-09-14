@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-14T20:18:25Z
+- **Last updated:** 2026-09-14T20:27:00Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2317,3 +2317,11 @@ The existing Convex HTTP action still supplies published issue metadata.
 Local verification passed 744 tests, typechecks, build and lint with 15 existing
 warnings. Browser checks passed native, clipboard and manual-copy sharing.
 The authorized PR and production release remain pending.
+
+### 2026-09-14 - working tree, desktop reading cleanup
+Desktop dialogs now fade over 100 ms. Issues and decisions open Ask from a
+button beside the status information, with existing evidence scopes and mobile
+chat preserved. Both typechecks, build, lint and 744 tests passed, including
+30 tests rerun after a temporary-file write error. Chromium and WebKit checked
+Ask navigation, dialog motion, keyboard focus and retained mobile drafts.
+Screenshots were inspected. The change is local and has not been deployed.

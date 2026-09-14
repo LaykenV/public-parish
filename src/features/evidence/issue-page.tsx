@@ -2,6 +2,7 @@ import { MobileAsk } from '../ask/mobile-ask'
 import { recordCivicEvent } from '../analytics/product-analytics'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
+import { MessageCircleIcon } from 'lucide-react'
 
 import { Button } from '../../components/ui/button'
 import { PageLoading } from '../resident-blueprint/resident-loading'
@@ -12,7 +13,6 @@ import { ShareButton } from '../discovery/share'
 import { FollowAction } from '../following/follow-action'
 import { evidenceRouteHref } from '../resident-handoff/navigation'
 import {
-  AskBlock,
   BackLink,
   ChangeList,
   DocumentList,
@@ -195,6 +195,19 @@ function IssueDetail({
 
   const actions = (
     <div className="ev-status-actions">
+      {!mobile ? (
+        <Button
+          render={
+            <Link
+              to="/ask"
+              search={{ scope: 'issue', issue: issue.slug, returnTo: currentIssueHref }}
+            />
+          }
+          size="touch"
+        >
+          <MessageCircleIcon aria-hidden="true" /> Ask about this issue
+        </Button>
+      ) : null}
       <FollowAction
         available
         label="Follow this issue"
@@ -382,13 +395,6 @@ function IssueDetail({
                 </ul>
               </Section>
             ) : null}
-
-            <Section id="ask" title="Ask Public Parish">
-              <AskBlock
-                scope={{ issueSlug: issue.slug, kind: 'issue' }}
-                scopeLabel="Answering from this issue"
-              />
-            </Section>
 
             {sections.timeline ? (
               <Section id="timeline" title="Decision timeline">

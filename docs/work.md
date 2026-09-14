@@ -7,6 +7,22 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## Desktop reading cleanup, September 14
+
+PR #233 includes the latest issue-sharing and mobile-hero fixes from main.
+Desktop dialogs use a 100 ms fade with matching focus return. Issue and decision
+pages put Ask in the status actions and remove their inline question forms.
+Mobile keeps its chat button, draft retention and existing motion.
+
+Both typechecks, build and lint passed with 15 existing warnings. The suite
+passed 714 tests before three files hit a temporary-file write error. Those
+three files passed all 30 tests with a separate temporary directory. Chromium
+and WebKit passed desktop issue and decision Ask navigation, linked-issue and
+corpus scopes, area and filter motion, reduced motion, focus return and mobile
+chat draft retention. Screenshots were inspected. The owner authorized the PR, review monitoring,
+merge after green checks and production verification. Release remains pending.
+
+
 ## Pelican identity release, September 14
 
 The owner approved the pelican and authorized shipment. The compact SVG uses
