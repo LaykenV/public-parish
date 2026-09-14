@@ -1,4 +1,4 @@
-import { ArrowUpRightIcon, SearchIcon } from 'lucide-react'
+import { ArrowUpRightIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 
@@ -9,8 +9,6 @@ import {
 import { Button } from '../../components/ui/button'
 import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
 import { FeaturedStories } from '../stories/story-page'
-import { LouisianaRelief } from '../landing/louisiana-relief'
-import { AreaSelector } from './area-selector'
 import { setArea, useArea, useHasSelectedArea } from './area-store'
 import {
   areaName,
@@ -24,9 +22,11 @@ import {
   HomeBodyFilter,
   StatewideStoriesButton,
 } from './home-controls'
+import { FirstVisitHero } from './home-hero'
 import { Spinner } from '../../components/ui/spinner'
 import type {
   AreaSlug,
+  HeroVariant,
   HomeSearch,
   HomeCity,
   HomeScenario,
@@ -34,7 +34,7 @@ import type {
   ResultRowData,
 } from './contracts'
 import { EXPLORE_ROW_FIXTURES, PUBLISHED_ISSUE_FIXTURES } from './fixtures'
-import { useRepeatedAnnouncement, useMediaQuery } from './hooks'
+import { useRepeatedAnnouncement } from './hooks'
 import { HomeIssueCards } from './home-issue-cards'
 import {
   toDecisionRow,
@@ -54,12 +54,14 @@ export function HomePage({
   city,
   body,
   bodies,
+  hero,
   scenario,
 }: {
   area?: HomeSearch['area']
   city?: HomeCity
   body?: string
   bodies?: string[]
+  hero?: HeroVariant
   scenario?: HomeScenario
 }) {
   const storedArea = useArea()
@@ -107,7 +109,7 @@ export function HomePage({
   return (
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>
       <HomeControls area={area} />
-      {showHero ? <FirstVisitHero /> : null}
+      {showHero ? <FirstVisitHero variant={hero} /> : null}
       {showStories ? <FeaturedStories mainHeading={!showHero} /> : null}
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
@@ -131,44 +133,6 @@ export function HomePage({
         />
       </ResidentSectionBoundary>
     </main>
-  )
-}
-
-function FirstVisitHero() {
-  const desktop = useMediaQuery('(min-width: 48.001rem)')
-  return (
-    <section
-      className="pp-home-hero"
-      aria-labelledby="home-title"
-      data-relief-interaction
-    >
-      <div className="pp-home-hero-copy">
-        <h1 id="home-title" tabIndex={-1}>
-          Understand what Louisiana's government is deciding.
-        </h1>
-        <p>
-          See the documents behind each decision and follow what happens next.
-        </p>
-        <div className="pp-home-hero-actions">
-          <AreaSelector
-            trigger={(props) => (
-              <Button {...props} size="touch">
-                <SearchIcon aria-hidden="true" /> Focus on a parish
-              </Button>
-            )}
-          />
-          <a href="#stories">
-            Browse Louisiana stories <ArrowUpRightIcon aria-hidden="true" />
-          </a>
-        </div>
-        <p className="pp-home-access">
-          Free to read and ask questions. No account needed.
-        </p>
-      </div>
-      <div className="pp-home-relief">
-        {desktop ? <LouisianaRelief /> : null}
-      </div>
-    </section>
   )
 }
 

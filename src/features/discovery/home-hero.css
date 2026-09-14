@@ -1,0 +1,326 @@
+/* Hero candidates under owner review. Each candidate scopes its overrides
+   under its own class so the shipped hero in home.css stays untouched. */
+
+.pp-home-hero-copy > h1 {
+  text-wrap: balance;
+}
+
+/* Candidates show the state on phones as a single still frame; the shipped
+   hero mounts it only above 48rem. */
+.pp-hero-plinth .pp-home-relief,
+.pp-hero-horizon .pp-home-relief,
+.pp-hero-record .pp-home-relief {
+  display: block;
+  height: auto;
+}
+
+/* Plinth: a lit object in a dark room. The field is the brand plum, and the
+   only bright things are the type, the limestone and the pins. */
+.pp-home-hero.pp-hero-plinth {
+  --plinth-field: #2a2140;
+  --plinth-glow: #3a2f57;
+  --plinth-foreground: #f6f3fb;
+  --plinth-muted: #c3b9d8;
+  --plinth-quiet: #9d92b6;
+  --relief-label-background: rgb(42 33 64 / 82%);
+  --relief-label-border: rgb(246 243 251 / 22%);
+  --relief-label-foreground: #ece6f6;
+  --relief-label-line: rgb(246 243 251 / 34%);
+  display: block;
+  margin: -1.25rem calc(50% - 50vw) 0;
+  padding: clamp(2.25rem, 5vw, 3.5rem) 1rem 1rem;
+  color: var(--plinth-foreground);
+  background:
+    radial-gradient(
+      70% 55% at 50% 100%,
+      var(--plinth-glow) 0%,
+      transparent 100%
+    ),
+    var(--plinth-field);
+}
+
+.pp-hero-plinth-inner {
+  width: min(100%, 74rem);
+  margin-inline: auto;
+}
+
+.pp-hero-plinth .pp-home-hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 58rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.pp-hero-plinth .pp-home-hero-copy > h1 {
+  max-width: 24ch;
+  font-size: clamp(2.5rem, 6vw, 4.25rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+.pp-hero-plinth .pp-home-hero-copy > p {
+  color: var(--plinth-muted);
+}
+
+.pp-hero-plinth .pp-home-hero-actions {
+  justify-content: center;
+}
+
+.pp-hero-plinth .pp-home-hero-actions > a {
+  color: var(--plinth-foreground);
+}
+
+.pp-hero-plinth .pp-home-hero-action-light {
+  border-color: #fff;
+  color: var(--plinth-field);
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
+}
+
+.pp-hero-plinth .pp-home-hero-action-light:hover,
+.pp-hero-plinth .pp-home-hero-action-light[data-pressed] {
+  background: #ece6f6;
+}
+
+.pp-hero-plinth .pp-home-hero-action-light:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+.pp-hero-plinth .pp-home-hero-copy > .pp-home-access {
+  color: var(--plinth-quiet);
+}
+
+.pp-hero-plinth .pp-home-relief {
+  height: clamp(16rem, 48vw, 24rem);
+  margin-top: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+.pp-hero-plinth .relief-fallback-state {
+  fill: #7d7368;
+  stroke: #a89d8e;
+}
+
+.pp-hero-plinth .relief-fallback-note {
+  color: var(--plinth-quiet);
+}
+
+/* Horizon: the headline runs the full width, then the state is seen low and
+   wide like an atlas plate. The caption names the parishes a reader can
+   focus on; it is the map key, not decoration. */
+.pp-home-hero.pp-hero-horizon {
+  display: block;
+  padding-block: clamp(1.5rem, 3vw, 2.5rem) 0;
+}
+
+.pp-hero-horizon .pp-home-hero-copy > h1 {
+  max-width: 24ch;
+  font-size: clamp(2.75rem, 6.8vw, 5.5rem);
+  font-weight: 650;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.pp-hero-horizon-row {
+  display: grid;
+  gap: 0.25rem 3rem;
+  margin-top: 1.25rem;
+}
+
+.pp-hero-horizon-row > p {
+  max-width: 30rem;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: var(--pp-text-subhead);
+  line-height: 1.6;
+}
+
+.pp-hero-horizon-row .pp-home-hero-actions {
+  margin-top: 1rem;
+}
+
+.pp-hero-horizon-row .pp-home-access {
+  margin: 0.5rem 0 0;
+  color: var(--muted-foreground);
+  font-size: var(--pp-text-caption);
+}
+
+.pp-hero-horizon .pp-home-relief {
+  height: clamp(13rem, 30vw, 22rem);
+  margin-top: 0.5rem;
+}
+
+.pp-hero-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pp-hero-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--pp-control-height);
+}
+
+.pp-hero-legend li::before {
+  content: '';
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #a694c7;
+  box-shadow: 0 0 0 3px #eee8f7;
+}
+
+.pp-hero-legend a {
+  color: var(--foreground);
+  font-size: var(--pp-text-small);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pp-hero-legend a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+.pp-hero-legend a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+
+/* Record: the state mounted on an exhibit card whose caption is the coverage
+   list. The card is the one framed element on the page. */
+.pp-home-hero.pp-hero-record {
+  gap: 1.5rem;
+}
+
+.pp-hero-record .pp-home-hero-copy > h1 {
+  font-size: clamp(2.4rem, 8.5vw, 4.1rem);
+  font-weight: 650;
+  letter-spacing: -0.05em;
+  line-height: 1.02;
+}
+
+.pp-hero-record-card {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--card);
+  box-shadow: var(--pp-shadow-card);
+}
+
+.pp-hero-record .pp-home-relief {
+  height: clamp(14rem, 40vw, 19rem);
+  background: radial-gradient(80% 70% at 50% 55%, #f3eff9 0%, #e8e1f2 100%);
+}
+
+.pp-hero-record-caption {
+  padding: 0.875rem 1.25rem 0.5rem;
+}
+
+.pp-hero-record-caption > p {
+  margin: 0 0 0.375rem;
+  color: var(--muted-foreground);
+  font-size: var(--pp-text-caption);
+  line-height: 1.5;
+}
+
+.pp-hero-record-caption ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pp-hero-record-caption li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: var(--pp-control-height);
+  border-top: 1px solid var(--border);
+}
+
+.pp-hero-record-caption a {
+  color: var(--foreground);
+  font-size: var(--pp-text-small);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pp-hero-record-caption a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+.pp-hero-record-caption a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+
+.pp-hero-record-caption span {
+  color: var(--muted-foreground);
+  font-size: var(--pp-text-small);
+}
+
+@media (min-width: 48rem) {
+  .pp-home-hero.pp-hero-plinth {
+    margin-top: -1.75rem;
+    padding-inline: 1.5rem;
+  }
+
+  .pp-hero-plinth .pp-home-relief {
+    height: clamp(18rem, 26vw, 24rem);
+  }
+
+  .pp-home-hero.pp-hero-record {
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, 27rem);
+    gap: clamp(2rem, 5vw, 5rem);
+    padding-block: 2.5rem 1rem;
+  }
+
+  .pp-hero-record .pp-home-relief {
+    height: clamp(17rem, 22vw, 21rem);
+  }
+}
+
+@media (min-width: 64rem) {
+  .pp-hero-horizon-row {
+    grid-template-columns: minmax(0, 30rem) auto;
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  .pp-hero-horizon-row .pp-home-hero-actions {
+    margin-top: 0;
+  }
+
+  /* The key sits beside the plate, at the coast line, instead of beneath. */
+  .pp-hero-horizon-plate {
+    display: grid;
+    grid-template-columns: minmax(0, 42rem) auto;
+    align-items: end;
+    justify-content: start;
+    gap: 1rem;
+  }
+
+  .pp-hero-horizon-plate .pp-hero-legend {
+    flex-direction: column;
+    align-items: start;
+    gap: 0;
+    margin: 0 0 1rem;
+  }
+}

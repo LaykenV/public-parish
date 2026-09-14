@@ -120,6 +120,16 @@ export type HomeScenario =
 
 export type ExploreScenario = 'no-results' | 'section-failure' | 'update'
 
+// Hero design candidates under owner review. Home keeps the current hero
+// unless a candidate is named in the URL.
+export type HeroVariant = 'plinth' | 'horizon' | 'record'
+
+export const HERO_VARIANTS: readonly HeroVariant[] = [
+  'plinth',
+  'horizon',
+  'record',
+]
+
 export const HOME_SCENARIOS: readonly HomeScenario[] = [
   'no-issues',
   'degraded',
@@ -285,6 +295,7 @@ export type HomeSearch = {
   body?: string
   bodies?: string[]
   fixture?: HomeScenario
+  hero?: HeroVariant
 }
 
 // Keep single-body links readable; multi-select uses a bounded list of labels.
@@ -300,6 +311,7 @@ export function parseHomeSearch(search: Record<string, unknown>): HomeSearch {
     body: pick(search.body, [...BODY_OPTIONS, ...LEGACY_BODY_OPTIONS]),
     bodies: parseHomeBodies(search.bodies),
     fixture: pick(search.fixture, HOME_SCENARIOS),
+    hero: pick(search.hero, HERO_VARIANTS),
   }
 }
 

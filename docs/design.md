@@ -39,6 +39,14 @@ controls Home even when an account has other saved areas. Choosing a focus
 filters reading; it does not enroll someone in email alerts. Saved areas
 remain in Following.
 
+Three hero candidates await an owner choice. The shipped hero stays the
+default; `?hero=plinth`, `?hero=horizon` and `?hero=record` preview the
+others on Home without changing it. Plinth centers the copy on a full-width
+plum field with the lit state below. Horizon runs one wide headline, then the
+state seen low across the land with the covered parishes as a map key.
+Record mounts the state on one exhibit card whose caption is the coverage
+list with body counts. All three show the state on phones as a still frame.
+
 The selector lists "All of Louisiana" first, then parishes. It does not list
 cities or bodies. Home body controls filter issues and decision records within the
 selected parish. Every body label names its place, for example "Baton Rouge
