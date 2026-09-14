@@ -13,6 +13,21 @@ for (const width of [320, 1280]) {
     const cases = section.locator('.pp-utility-cases li')
     await expect(cases).toHaveCount(4)
     await expect(section).toBeVisible()
+    const illustration = section.getByRole('img')
+    await illustration.scrollIntoViewIfNeeded()
+    await expect
+      .poll(() =>
+        illustration.evaluate(
+          (node) => (node as HTMLImageElement).naturalWidth,
+        ),
+      )
+      .toBeGreaterThan(0)
+    const imageBox = await illustration.boundingBox()
+    expect(imageBox!.width / imageBox!.height).toBeCloseTo(16 / 9, 1)
+    await expect(
+      section.getByText('AI illustration', { exact: true }),
+    ).toBeVisible()
+    await expect(section.locator('details')).not.toHaveAttribute('open')
     const records = await cases.evaluateAll((elements) =>
       elements.map((element) => ({
         title: element
@@ -64,6 +79,7 @@ for (const width of [320, 1280]) {
     await page.keyboard.press('Escape')
     for (const record of records) {
       await page.goto('/?area=louisiana')
+      await section.locator('summary').click()
       await section.locator(`a[href="${record.href}"]`).first().click()
       await expect(page.getByRole('heading', { level: 1 })).toHaveText(
         record.title,

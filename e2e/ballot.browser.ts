@@ -65,3 +65,81 @@ test('commission records link preserves the statewide body filter', async ({ pag
   await expect(cards.first()).toBeVisible()
   for (const card of await cards.all()) await expect(card).toContainText('Louisiana Public Service Commission')
 })
+
+
+for (const width of [320, 1280]) {
+  test(`Home ballot cards have numbered reading links at ${width}px`, async ({
+    page,
+  }, testInfo) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/?area=louisiana')
+    const ballot = page.locator('.pp-ballot[data-home]')
+    const cards = ballot.locator('.pp-ballot-grid li')
+    await expect(cards).toHaveCount(10)
+    await expect(cards.first()).toBeVisible()
+    for (let number = 1; number <= 10; number++) {
+      const card = cards.nth(number - 1)
+      await expect(card.locator('.pp-ballot-number')).toHaveText(String(number))
+      const link = card.getByRole('link', {
+        name: `Read Amendment ${number}`,
+        exact: true,
+      })
+      await expect(link).toHaveAttribute(
+        'href',
+        `/ballot/2026-amendment-${number}`,
+      )
+      await expect(link.locator('svg')).toBeVisible()
+      await expect(card).toContainText('Reviewed through')
+    }
+    const boxes = await cards.evaluateAll((elements) =>
+      elements.map((element) => {
+        const { x, y } = element.getBoundingClientRect()
+        return { x, y }
+      }),
+    )
+    if (width < 768) expect(boxes[1].y).toBeGreaterThan(boxes[0].y)
+    else {
+      expect(boxes[1].y).toBe(boxes[0].y)
+      expect(boxes[1].x).toBeGreaterThan(boxes[0].x)
+    }
+    const guide = ballot.getByRole('link', {
+      name: 'Read the ballot guide',
+      exact: true,
+    })
+    await expect(guide.locator('svg')).toBeVisible()
+    expect(
+      await guide.evaluate((element) => getComputedStyle(element).color),
+    ).toBe(
+      await page
+        .locator('.pp-story-read')
+        .first()
+        .evaluate((element) => getComputedStyle(element).color),
+    )
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true)
+    await ballot.evaluate((element) =>
+      window.scrollTo({
+        top: element.getBoundingClientRect().top + window.scrollY - 90,
+      }),
+    )
+    await page.screenshot({
+      path: testInfo.outputPath(`ballot-home-${width}.png`),
+    })
+    await cards
+      .last()
+      .getByRole('link', { name: 'Read Amendment 10', exact: true })
+      .click()
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(
+      'Amendment 10',
+    )
+    await page.goto('/?area=louisiana')
+    await guide.click()
+    await expect(page).toHaveURL(/\/ballot$/)
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      'On the November 3 ballot',
+    )
+  })
+}
