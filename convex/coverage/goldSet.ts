@@ -1,4 +1,4 @@
-import manifest from '../../docs/coverage-gold-sets/launch-bodies.v4.json'
+import manifest from '../../docs/coverage-gold-sets/launch-bodies.v5.json'
 
 import type { SourceKind } from '../pipeline/state'
 

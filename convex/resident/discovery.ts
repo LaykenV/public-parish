@@ -6,7 +6,7 @@ import { query } from '../_generated/server'
 import { lifecycleStates } from '../extraction/contractV1'
 import { AREA_SLUGS, areaSlug } from '../follows/contracts'
 import { sourceKindUnion } from '../pipeline/state'
-import { selectedBodyIds } from './areas'
+import { selectedBodyIds, statewideBodyIds } from './areas'
 import { PUBLIC_BODY_LABELS, publicBodyLabel } from '../coverage/labels'
 
 const acceptedMode = v.union(v.literal('full'), v.literal('limited'))
@@ -121,10 +121,10 @@ export const listCoverageBodies = query({
 })
 
 export const listPublishedDecisions = query({
-  args: { areas: v.optional(v.array(areaSlug)), body: v.optional(v.string()), bodies: v.optional(v.array(v.string())), city: v.optional(v.string()) },
+  args: { statewide: v.optional(v.boolean()), areas: v.optional(v.array(areaSlug)), body: v.optional(v.string()), bodies: v.optional(v.array(v.string())), city: v.optional(v.string()) },
   returns: v.array(residentDecision),
   handler: async (ctx, args): Promise<ResidentDecision[]> => {
-    const bodyIds = await selectedBodyIds(ctx, args.areas, args.body, args.city, args.bodies)
+    const bodyIds = args.statewide ? await statewideBodyIds(ctx) : await selectedBodyIds(ctx, args.areas, args.body, args.city, args.bodies)
     const groups = await Promise.all(
       (['full', 'limited'] as const).flatMap(mode => bodyIds === null
         ? [ctx.db.query('decisionRecords')

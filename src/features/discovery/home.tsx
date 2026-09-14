@@ -1,3 +1,5 @@
+import { AREA_SLUGS } from '../../../convex/follows/contracts'
+import { StatewideSection } from './statewide-section'
 import { ArrowUpRightIcon, SearchIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
@@ -113,6 +115,7 @@ export function HomePage({
           action={<ChooseAreaButton />}
         />
       ) : null}
+      {!fixturesEnabled && showStories ? <StatewideSection /> : null}
       <div id="local-content">
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
           <LocalIssues
@@ -195,7 +198,7 @@ function LocalIssues({
 }) {
   const publishedIssues = usePublishedIssues(
     !fixturesEnabled,
-    watching,
+    watching.length ? watching : [...AREA_SLUGS],
     undefined,
     city,
     bodies?.length ? bodies : undefined,
@@ -275,7 +278,7 @@ function LocalDecisionRecords({
 }) {
   const publishedDecisions = usePublishedDecisions(
     !fixturesEnabled,
-    watching,
+    watching.length ? watching : [...AREA_SLUGS],
     undefined,
     city,
     bodies?.length ? bodies : undefined,
@@ -522,7 +525,7 @@ function HomeResultsLoading({
 
 function filterIssues(issues: IssueCardData[], watching: AreaSlug[]) {
   return issues.filter(
-    (issue) => watching.length === 0 || watching.includes(issue.placeSlug),
+    (issue) => watching.length === 0 || watching.some(slug => slug === issue.placeSlug),
   )
 }
 

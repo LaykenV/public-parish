@@ -42,7 +42,7 @@ export type IssueCardData = {
     label: string
   }
   place: string
-  placeSlug: AreaSlug
+  placeSlug: AreaSlug | 'louisiana'
   href?: string
   primaryActionLabel?: string
   showSecondaryActions?: boolean
@@ -184,6 +184,7 @@ export const BODY_GROUPS = [
 ] as const
 
 export const BODY_OPTIONS = BODY_GROUPS.flatMap((group) => group.bodies)
+export const EXPLORE_BODY_GROUPS = [{ place: 'Statewide', slug: 'louisiana', bodies: ['Louisiana Public Service Commission'] }, ...BODY_GROUPS] as const
 
 // Keep older public links and development fixtures readable. The backend maps
 // identity names to their public labels.
@@ -322,7 +323,7 @@ export function parseExploreSearch(
   search: Record<string, unknown>,
 ): ExploreSearch {
   return {
-    body: pick(search.body, [...BODY_OPTIONS, ...LEGACY_BODY_OPTIONS]),
+    body: pick(search.body, [...EXPLORE_BODY_GROUPS.flatMap(group => group.bodies), ...LEGACY_BODY_OPTIONS]),
     date: pick(
       search.date,
       DATE_OPTIONS.map((option) => option.value).filter(

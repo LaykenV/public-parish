@@ -66,7 +66,7 @@ export function issueEvidenceNote(issue: {
 }
 
 export function toIssueCard(issue: PublishedIssue): IssueCardData | null {
-  const placeSlug = toAreaSlug(issue.placeSlug)
+  const placeSlug = issue.placeSlug === 'louisiana' ? 'louisiana' : toAreaSlug(issue.placeSlug)
   if (!placeSlug) return null
 
   return {
@@ -100,7 +100,7 @@ export function toIssueCard(issue: PublishedIssue): IssueCardData | null {
 export function toDecisionCard(
   decision: PublishedDecision,
 ): IssueCardData | null {
-  const placeSlug = toAreaSlug(decision.placeSlug)
+  const placeSlug = decision.placeSlug === 'louisiana' ? 'louisiana' : toAreaSlug(decision.placeSlug)
   if (!placeSlug) return null
 
   return {

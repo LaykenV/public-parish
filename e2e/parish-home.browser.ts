@@ -376,7 +376,7 @@ for (const width of [320, 375]) {
     const cards = track.locator('article')
     await expect(cards.nth(1)).toBeAttached()
     const count = await cards.count()
-    const index = page.locator('.pp-issue-index').getByRole('status')
+    const index = page.locator('#current-issues .pp-issue-index').getByRole('status')
     await expect(index).toHaveText(`Issue 1 of ${count}`)
     const heights = await cards.evaluateAll((nodes) =>
       nodes.map((node) => node.getBoundingClientRect().height),

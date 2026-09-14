@@ -26,7 +26,7 @@ operating limits. Previously accepted dated evidence remains accessible if a
 source later degrades.
 
 Code-owned approved roots are in `convex/coverage/roots.ts`. The exact current
-certification artifacts are in [launch-bodies.v4.json](coverage-gold-sets/launch-bodies.v4.json).
+certification artifacts are in [launch-bodies.v5.json](coverage-gold-sets/launch-bodies.v5.json).
 Retain older manifest versions for historical run resolution.
 
 Public labels name the body's place: "Baton Rouge Metropolitan Council", "East
@@ -45,6 +45,14 @@ sources. The commission becomes Supported only when the current evaluator
 proves all ten gates below on the current registry generation. Until then the
 `louisiana` jurisdiction remains candidate or validating and the public
 coverage page says so. Statewide support does not promote any parish.
+
+The development compile uses the August 12 agenda and minutes and the revised
+September 16 agenda. The source search returned no candidates, so root v2 can
+include explicitly checked URLs from the gold set. Those seeds still pass
+classification, immutable retrieval and every coverage gate. Only the two
+additional docket IDs in `convex/coverage/checkedRecords.ts` can use the
+bounded supplementary extraction path. They concern Cleco's consultant budget
+and the Magnolia Water audit, within the same retained August minutes.
 
 ## Official evidence
 
@@ -190,7 +198,7 @@ consist of an unexplained source-only stub.
 ## Evidence assets to preserve
 
 - [Initial gold set](gold-sets/lafayette-city-council.v1.json).
-- [Current coverage gold set](coverage-gold-sets/launch-bodies.v4.json) and prior
+- [Current coverage gold set](coverage-gold-sets/launch-bodies.v5.json) and prior
   versions in the same directory.
 - [Initial production batch](production-batches/launch-data-2026-08-31.v1.json).
 - [Lafayette source recovery](source-spikes/lafayette-planning-recovery-2026-09-06.md),

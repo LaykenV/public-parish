@@ -7,9 +7,13 @@ import { IssueCard } from './issue-card'
 export function HomeIssueCards({
   issues,
   horizontal = true,
+  regionLabel = 'Issue timelines',
+  itemLabel = 'Issue',
 }: {
   issues: IssueCardData[]
   horizontal?: boolean
+  regionLabel?: string
+  itemLabel?: string
 }) {
   const mobile = useMediaQuery('(max-width: 47.999rem)')
   const swipe = mobile && horizontal
@@ -54,7 +58,7 @@ export function HomeIssueCards({
         className={`pp-card-grid ${horizontal ? 'pp-issues-horizontal' : 'pp-issues-vertical'}`}
         ref={trackRef}
         role="region"
-        aria-label="Issue timelines"
+        aria-label={regionLabel}
         tabIndex={swipe ? 0 : undefined}
         onFocusCapture={(event) => {
           if (!swipe) return
@@ -85,7 +89,7 @@ export function HomeIssueCards({
             ))}
           </div>
           <p className="visually-hidden" role="status" aria-atomic="true">
-            Issue {Math.min(active + 1, issues.length)} of {issues.length}
+            {itemLabel} {Math.min(active + 1, issues.length)} of {issues.length}
           </p>
         </div>
       ) : null}

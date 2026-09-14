@@ -1,3 +1,4 @@
+import { checkedAdditionalTarget } from './checkedRecords'
 import { v } from 'convex/values'
 
 import { internal } from '../_generated/api'
@@ -143,6 +144,7 @@ export const startEvidenceExtraction = mutation({
   args: {
     sampleId: v.id('coverageRepresentativeSamples'),
     mode: extractionMode,
+    additionalTargetRecordId: v.optional(v.string()),
   },
   returns: v.object({ started: v.boolean() }),
   handler: async (ctx, args) => {
@@ -156,10 +158,12 @@ export const startEvidenceExtraction = mutation({
       source.candidate.canonicalUrl,
       source.sample.sourceKind,
     )
-    const targetRecordId =
+    const additional = checkedAdditionalTarget(source.proposal.bodyKey, expectation, args.additionalTargetRecordId)
+    if (args.additionalTargetRecordId && (!additional || args.mode !== 'evidence')) return { started: false }
+    const targetRecordId = additional?.targetRecordId ?? (
       args.mode === 'evidence'
         ? expectation?.extraction?.targetRecordId
-        : expectation?.negativeTargetRecordId
+        : expectation?.negativeTargetRecordId)
     if (!expectation || !targetRecordId) return { started: false }
     if (args.mode === 'evidence' && source.sample.pipelineRunId) {
       const priorRun = await ctx.db.get(source.sample.pipelineRunId)
@@ -185,7 +189,7 @@ export const startEvidenceExtraction = mutation({
     await ctx.scheduler.runAfter(
       0,
       internal.coverage.validation.extractSampleEvidence,
-      { sampleId: source.sample._id, mode: args.mode },
+      { sampleId: source.sample._id, mode: args.mode, additionalTargetRecordId: args.additionalTargetRecordId },
     )
     return { started: true }
   },
@@ -299,6 +303,7 @@ export const sampleExtractionContext = internalQuery({
   args: {
     sampleId: v.id('coverageRepresentativeSamples'),
     mode: extractionMode,
+    additionalTargetRecordId: v.optional(v.string()),
   },
   returns: v.union(
     v.null(),
@@ -322,6 +327,8 @@ export const sampleExtractionContext = internalQuery({
       source.sample.sourceKind,
     )
     if (!expectation) return null
+    const additional = checkedAdditionalTarget(source.proposal.bodyKey, expectation, args.additionalTargetRecordId)
+    if (args.additionalTargetRecordId && (!additional || args.mode !== 'evidence')) return null
     if (args.mode === 'failure_probe') {
       return expectation.negativeTargetRecordId
         ? {
@@ -335,12 +342,13 @@ export const sampleExtractionContext = internalQuery({
           }
         : null
     }
-    return expectation.extraction
+    const target = additional ?? expectation.extraction
+    return target
       ? {
           registryId: source.proposal.registryId,
           snapshotId: source.sample.snapshotId,
           sourceKind: source.sample.sourceKind,
-          ...expectation.extraction,
+          ...target,
         }
       : null
   },
@@ -350,6 +358,7 @@ export const extractSampleEvidence = internalAction({
   args: {
     sampleId: v.id('coverageRepresentativeSamples'),
     mode: extractionMode,
+    additionalTargetRecordId: v.optional(v.string()),
   },
   returns: v.null(),
   handler: async (ctx, args) => {
@@ -368,7 +377,7 @@ export const extractSampleEvidence = internalAction({
         sourceRecordIdProvenance: context.sourceRecordIdProvenance,
       },
     )
-    if (args.mode === 'evidence') {
+    if (args.mode === 'evidence' && !args.additionalTargetRecordId) {
       await ctx.runMutation(
         internal.coverage.validation.recordSampleExtraction,
         {

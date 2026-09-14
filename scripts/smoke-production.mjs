@@ -6,6 +6,7 @@ const DIRECT_ORIGIN = 'https://befitting-flamingo-587.convex.site'
 const CANONICAL_ORIGIN = 'https://www.publicparish.com'
 const APEX_ORIGIN = 'https://publicparish.com'
 const EXPECTED_COVERAGE = {
+  Statewide: ['louisiana-public-service-commission'],
   'Lafayette Parish': [
     'lafayette-city-council',
     'lafayette-city-planning-commission',
@@ -64,7 +65,7 @@ for (const path of ['/explore', '/ask', '/coverage', '/coverage/request', '/foll
 }
 const client = new ConvexHttpClient('https://befitting-flamingo-587.convex.cloud')
 const health = await client.query(makeFunctionReference('coverage/publicHealth:regions'), {})
-if (health.length !== Object.keys(EXPECTED_COVERAGE).length) throw new Error('Coverage did not return the three launch parishes')
+if (health.length !== Object.keys(EXPECTED_COVERAGE).length) throw new Error('Coverage did not return the launch parishes and statewide group')
 for (const [name, expected] of Object.entries(EXPECTED_COVERAGE)) {
   const regions = health.filter(region => region.name === name)
   const actual = regions[0]?.bodies.map(body => body.id).sort()

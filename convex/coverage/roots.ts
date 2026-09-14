@@ -23,6 +23,9 @@ export type CoverageRootManifest = {
   documentHosts: CoverageDocumentHost[]
   /** When set, the final URL must match exactly after redirects. */
   expectedFinalUrl?: string
+  useCheckedDiscoverySeeds?: boolean
+  discoverySince?: string
+  sourcePathPrefixes?: string[]
   /** Date the owner checked this record against `docs/sources.md`. */
   checkedAt: string
 }
@@ -33,6 +36,15 @@ export type CoverageRootManifest = {
  * every other host.
  */
 const ROOT_MANIFESTS: CoverageRootManifest[] = [
+  {
+    bodyKey: 'louisiana-public-service-commission', version: 'v1',
+    jurisdictionSlug: 'louisiana', jurisdictionName: 'Louisiana',
+    bodyName: 'Louisiana Public Service Commission',
+    approvedRootUrl: 'https://lpsc.louisiana.gov/Agenda',
+    identityEvidenceUrls: ['https://lpsc.louisiana.gov/', 'https://lpsc.louisiana.gov/Agenda'],
+    allowedHosts: ['lpsc.louisiana.gov', 'www.lpsc.louisiana.gov'], allowedSubdomainSuffixes: [], documentHosts: [],
+    discoverySince: '2026-07-01', sourcePathPrefixes: ['/docs/agenda/', '/docs/minutes/'], checkedAt: '2026-09-13',
+  },
   {
     bodyKey: 'lafayette-city-council',
     version: 'v1',
@@ -289,7 +301,9 @@ const COMMISSION_ROOT_MANIFESTS: CoverageRootManifest[] = VERSIONED_ROOT_MANIFES
 // The source agenda prints "City Zoning Commission". Preserve v1 so earlier
 // certifications keep their original identity and immutable registry history.
 const CURRENT_ROOT_MANIFESTS: CoverageRootManifest[] = COMMISSION_ROOT_MANIFESTS.map(
-  manifest => manifest.bodyKey === 'lafayette-city-zoning-commission'
+  manifest => manifest.bodyKey === 'louisiana-public-service-commission'
+    ? { ...manifest, version: 'v2', useCheckedDiscoverySeeds: true }
+    : manifest.bodyKey === 'lafayette-city-zoning-commission'
     ? { ...manifest, version: 'v2', bodyName: 'City Zoning Commission', checkedAt: '2026-09-06' }
     : manifest,
 )

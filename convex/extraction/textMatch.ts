@@ -73,6 +73,16 @@ export function locateSourceExcerpt(
     if (startOffset >= 0) return { startOffset, endOffset: startOffset + encodedAmpersands.length }
   }
 
+  // Match an apostrophe's HTML spelling without decoding the stored source or
+  // changing its offsets. Every other character must still match contiguously.
+  for (const candidate of new Set([normalizedExcerpt, encodedAmpersands])) {
+    if (!candidate.includes("'")) continue
+    const escaped = candidate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const pattern = escaped.replaceAll("'", "(?:'|&#x27;|&#X27;|&#39;|&apos;)")
+    const match = new RegExp(pattern).exec(normalizedSource)
+    if (match) return { startOffset: match.index, endOffset: match.index + match[0].length }
+  }
+
   const literalStart = source.indexOf(excerpt)
   if (literalStart < 0) return null
   // Only remove markers that the complete source proves are balanced bold

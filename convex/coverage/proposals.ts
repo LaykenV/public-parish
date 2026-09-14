@@ -183,7 +183,7 @@ async function ensureJurisdiction(
     (await ctx.db.insert('jurisdictions', {
       name: manifest.jurisdictionName,
       slug: manifest.jurisdictionSlug,
-      type: 'parish',
+      type: manifest.jurisdictionSlug === 'louisiana' ? 'state' : 'parish',
       state: 'LA',
       publicStatus: 'candidate',
     }))
