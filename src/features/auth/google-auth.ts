@@ -40,11 +40,13 @@ export function useGoogleAuth(returnTo?: string) {
       setStartError(null)
       try {
         await signInGoogle({ redirectTo })
+        return true
       } catch {
         setStartError(
           'Google sign-in could not start. Check your connection and try again.',
         )
         setIsSigningIn(false)
+        return false
       }
     },
     [signInGoogle],
@@ -86,9 +88,9 @@ export function useGoogleAuth(returnTo?: string) {
       const handoffUrl = googleSignInHandoffUrl(redirectTo)
       if (handoffUrl) {
         window.location.replace(handoffUrl)
-        return
+        return true
       }
-      await startGoogleSignIn(redirectTo)
+      return await startGoogleSignIn(redirectTo)
     },
     signOut,
   }
