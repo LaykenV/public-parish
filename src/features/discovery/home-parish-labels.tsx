@@ -37,7 +37,9 @@ export function HomeParishLabels() {
             type="button"
             disabled={!selectable}
             aria-label={`Select ${label} Parish`}
-            title={area?.note ?? 'Checking parish coverage.'}
+            title={
+              area?.note ?? (selectable ? undefined : 'Checking parish coverage.')
+            }
             onClick={() => {
               setArea(slug)
               recordAreaSelection(slug)

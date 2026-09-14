@@ -44,6 +44,7 @@ describe('Home parish labels', () => {
       /disabled="" aria-label="Select East Baton Rouge Parish"/,
     )
     expect(html).toContain('Newer decisions may be missing.')
+    expect(html.match(/title="Checking parish coverage\."/g)).toHaveLength(1)
     expect(html).not.toContain('aria-hidden="true"')
   })
 })
