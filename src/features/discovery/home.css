@@ -141,7 +141,7 @@
   margin-right: auto;
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 48.001rem) {
   .pp-home-hero {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     gap: 1.5rem;

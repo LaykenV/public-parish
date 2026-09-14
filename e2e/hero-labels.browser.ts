@@ -5,16 +5,23 @@ for (const [slug, name] of [
   ['lafayette-parish', 'Lafayette Parish'],
   ['east-baton-rouge-parish', 'East Baton Rouge Parish'],
 ]) {
-  test(`Louisiana label opens ${name} and remembers the selection`, async ({
+  test(`Home parish selection opens ${name} and remembers the selection`, async ({
     page,
   }, testInfo) => {
     await page.goto('/?area=louisiana')
     const hero = page.locator('.pp-home-hero')
     await expect(hero).toBeVisible()
-    const choice = hero.getByRole('button', {
-      name: `Select ${name}`,
-      exact: true,
-    })
+    await page.screenshot({ path: testInfo.outputPath('home-hero.png') })
+    const mobile = (page.viewportSize()?.width ?? 1280) <= 768
+    if (mobile) {
+      await expect(page.locator('.pp-home-relief')).toHaveCount(0)
+      await hero.getByRole('button', { name: 'Focus on a parish' }).click()
+    }
+    const choice = mobile
+      ? page
+          .getByRole('dialog', { name: 'Choose your area' })
+          .getByRole('button', { name: new RegExp(`^${name}`) })
+      : hero.getByRole('button', { name: `Select ${name}`, exact: true })
     await expect(choice).toBeEnabled()
     await page.screenshot({
       path: testInfo.outputPath('clickable-parish-labels.png'),
@@ -44,7 +51,7 @@ for (const [slug, name] of [
   })
 }
 
-test('parish labels work with the fallback at narrow and desktop sizes', async ({
+test('Louisiana mounts only above mobile widths and keeps desktop fallback selection', async ({
   page,
 }) => {
   await page.addInitScript(() => {
@@ -55,9 +62,23 @@ test('parish labels work with the fallback at narrow and desktop sizes', async (
   })
   await page.goto('/')
   const relief = page.locator('.relief-viewport')
-  await expect(relief).toHaveAttribute('data-render-state', 'fallback')
-  for (const width of [320, 375, 768, 1440]) {
+  for (const width of [320, 375, 768, 769, 1024, 1440, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 })
+    if (width <= 768) {
+      await expect(page.locator('.pp-home-relief')).toHaveCount(0)
+      await expect(relief).toHaveCount(0)
+      await expect(
+        page.locator('.relief-canvas, .relief-fallback, .relief-map-label'),
+      ).toHaveCount(0)
+      await expect(
+        page.getByRole('button', { name: 'Focus on a parish' }),
+      ).toBeVisible()
+      const hero = (await page.locator('.pp-home-hero').boundingBox())!
+      const copy = (await page.locator('.pp-home-hero-copy').boundingBox())!
+      expect(hero.y + hero.height).toBeCloseTo(copy.y + copy.height, 0)
+      continue
+    }
+    await expect(relief).toHaveAttribute('data-render-state', 'fallback')
     const labels = page
       .getByRole('group', { name: 'Choose a parish on Louisiana' })
       .getByRole('button')
@@ -67,7 +88,6 @@ test('parish labels work with the fallback at narrow and desktop sizes', async (
       const bounds = (await label.boundingBox())!
       expect(bounds.x).toBeGreaterThanOrEqual(0)
       expect(bounds.x + bounds.width).toBeLessThanOrEqual(width)
-      if (width < 768) expect(bounds.height).toBeGreaterThanOrEqual(44)
     }
     if (width === 1440) {
       const model = (await page.locator('.pp-home-relief').boundingBox())!

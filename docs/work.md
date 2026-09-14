@@ -791,6 +791,19 @@ checks pass in Chromium and mobile WebKit. The actual 3D render was inspected
 at 1440, 390 and 320 pixels. PR checks, reviews and production release are pending.
 The comparison-page variations are not part of this change.
 
+## September 14, restore the mobile hero visibility rule
+
+The owner corrected the clickable-label release: Louisiana must stay hidden on
+mobile. The canvas, fallback, labels and wrapper now mount only above 48rem.
+The desktop size and clickable labels remain unchanged. Mobile readers use
+Focus on a parish. Layout and mounting share the same breakpoint, including
+exactly 768 pixels. This supersedes the phone visual described above.
+
+Implementation is isolated on `fix/hide-mobile-louisiana`. Typechecks, build and
+targeted lint pass. Ten Chromium and mobile WebKit checks pass, including
+resize across 768/769 pixels, mobile picker selection and desktop labels.
+Screenshots were inspected. PR checks, reviews and production release are pending.
+
 ## September 14, issue sharing domain
 
 The owner found that issue sharing replaced the public hostname with the direct

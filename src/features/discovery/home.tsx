@@ -37,7 +37,7 @@ import type {
   ResultRowData,
 } from './contracts'
 import { EXPLORE_ROW_FIXTURES, PUBLISHED_ISSUE_FIXTURES } from './fixtures'
-import { useRepeatedAnnouncement } from './hooks'
+import { useMediaQuery, useRepeatedAnnouncement } from './hooks'
 import { HomeParishLabels } from './home-parish-labels'
 import { HomeIssueCards } from './home-issue-cards'
 import {
@@ -149,6 +149,7 @@ export function HomePage({
 }
 
 function FirstVisitHero() {
+  const desktop = useMediaQuery('(min-width: 48.001rem)')
   return (
     <section
       className="pp-home-hero"
@@ -178,11 +179,13 @@ function FirstVisitHero() {
           Free to read and ask questions. No account needed.
         </p>
       </div>
-      <div className="pp-home-relief">
-        <LouisianaRelief>
-          <HomeParishLabels />
-        </LouisianaRelief>
-      </div>
+      {desktop ? (
+        <div className="pp-home-relief">
+          <LouisianaRelief>
+            <HomeParishLabels />
+          </LouisianaRelief>
+        </div>
+      ) : null}
     </section>
   )
 }
