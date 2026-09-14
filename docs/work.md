@@ -20,7 +20,9 @@ production decision queries and both meeting queries return accepted records.
 The frontend reader rejected Louisiana. The fix admits Louisiana for decision,
 meeting and issue reading while retaining the unknown-place check. Three
 regression checks failed before the fix and now pass. The original U5 release
-smoke missed decision-page navigation. Final validation and release are pending.
+smoke missed decision-page navigation. Validation passed 742 application tests, both typechecks, build and lint
+with 15 existing warnings. All 64 targeted browser cases pass after correcting
+the story-image selector and waiting for visible layout. PR #228 is in review.
 
 ## September 14 production upgrade release
 

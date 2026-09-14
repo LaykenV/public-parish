@@ -12,6 +12,7 @@ for (const width of [320, 1280]) {
     })
     const cases = section.locator('.pp-utility-cases li')
     await expect(cases).toHaveCount(4)
+    await expect(section).toBeVisible()
     const records = await cases.evaluateAll((elements) =>
       elements.map((element) => ({
         title: element

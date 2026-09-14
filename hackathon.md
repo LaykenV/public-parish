@@ -2257,5 +2257,7 @@ Fixed a frontend place check that rejected published Louisiana decisions,
 meetings and issues. The owner approved one utility roundup alongside the
 three featured stories. It links each accepted case to its evidence and replaces
 the separate statewide card section. Three regression checks reproduced the
-reader failure before the fix. Final validation and release remain pending.
+reader failure before the fix. Validation passed 742 application tests, both typechecks, build, lint and
+64 targeted browser cases after the documented test corrections. PR #228 is
+in review.
 The original release checks missed statewide detail navigation.

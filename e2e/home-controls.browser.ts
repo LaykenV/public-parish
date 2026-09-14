@@ -152,6 +152,7 @@ test('all featured stories have full images in a two-column desktop grid', async
   await page.goto('/?area=louisiana')
   const cards = page.locator('#stories .pp-story-card')
   await expect(cards).toHaveCount(3)
+  await expect(cards.last()).toBeVisible()
   const boxes = await cards.evaluateAll((nodes) =>
     nodes.map((node) => {
       const card = node.getBoundingClientRect()
