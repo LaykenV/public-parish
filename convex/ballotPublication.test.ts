@@ -1,8 +1,11 @@
 /// <reference types="vite/client" />
 import { convexTest } from 'convex-test'
+import type { TestConvex } from 'convex-test'
+import type { FunctionReference } from 'convex/server'
+import staticHostingTest from '@convex-dev/static-hosting/test'
 import { afterEach, expect, test, vi } from 'vitest'
 import schema from './schema'
-import { api, internal } from './_generated/api'
+import { api, components, internal } from './_generated/api'
 import example from '../docs/story-manifests/import-contract-v1.example.json'
 import type { StoryManifest } from './stories/manifestTypes'
 import type { StoryDraft, StoryReview } from './stories/contracts'
@@ -103,4 +106,69 @@ test('measure email follows reuse verification, management and unsubscribe witho
   expect(await t.query(internal.follows.management.readManagement, { tokenHash: 'measure-management', now: Date.now() })).toMatchObject({ status: 'valid', follows: [{ targetKind: 'story', cadence: 'weekly' }] })
   expect(await t.mutation(internal.follows.management.unsubscribeEmailWithToken, { tokenHash: 'measure-unsubscribe' })).toEqual({ unsubscribed: true })
   expect(await t.run(ctx => ctx.db.query('notificationDeliveries').collect())).toEqual([])
+})
+
+
+const appShell = '<html><head><title>Generic Home</title><meta name="description" content="Generic Home"><meta property="og:image" content="/old-image.png"><script type="module" src="/assets/app.js"></script></head><body><div id="root"></div></body></html>'
+
+async function installShareShell(t: TestConvex<typeof schema>) {
+  staticHostingTest.register(t)
+  await t.run(async ctx => {
+    const storageId = await ctx.storage.store(new Blob([appShell], { type: 'text/html' }))
+    // The component keeps upload mutations out of its app-facing API. Tests
+    // seed its real asset table through the installed internal mutation.
+    const recordAsset = (components.staticHosting.lib as unknown as { recordAsset: FunctionReference<'mutation'> }).recordAsset
+    await ctx.runMutation(recordAsset, { path: '/index.html', storageId, contentType: 'text/html', deploymentId: 'sharing-test' })
+  })
+}
+
+for (const origin of ['https://www.publicparish.com', 'https://befitting-flamingo-587.convex.site']) {
+  test(`ballot HTTP guide metadata and canonical redirects at ${origin}`, async () => {
+    vi.stubEnv('CONVEX_SITE_URL', origin)
+    const t = convexTest(schema, modules)
+    await installShareShell(t)
+    const slash = await t.fetch('/ballot/?source=launch')
+    expect(slash.status).toBe(302)
+    expect(slash.headers.get('Location')).toBe(`${origin}/ballot?source=launch`)
+    expect(slash.headers.get('Cache-Control')).toBe('no-store')
+    const response = await t.fetch('/ballot?source=launch', { headers: { 'User-Agent': 'facebookexternalhit/1.1' } })
+    expect(response.status).toBe(200)
+    const html = await response.text()
+    expect(html).toContain('<title>Louisiana ballot guide, November 3, 2026 | Public Parish</title>')
+    expect(html).toContain('property="og:title" content="Louisiana ballot guide, November 3, 2026"')
+    expect(html).toContain(`rel="canonical" href="${origin}/ballot"`)
+    expect(html).toContain(`property="og:image" content="${origin}/brand/share.png"`)
+    expect(html).toContain('official ballot questions and source documents')
+    expect(html).toContain('/assets/app.js')
+    expect(html).toContain('<div id="root">')
+    expect(html).not.toContain('Generic Home')
+    expect(html).not.toContain('/old-image.png')
+    expect((await t.fetch('/ballot', { headers: { 'If-None-Match': response.headers.get('ETag')! } })).status).toBe(304)
+  })
+}
+
+test('ballot detail redirects preserve publication checks and query strings', async () => {
+  const { t, owner, args, storyId, storageId } = await setupMeasure()
+  vi.stubEnv('CONVEX_SITE_URL', 'https://www.publicparish.com')
+  await installShareShell(t)
+  await owner.mutation(api.stories.operations.approve, args)
+  for (const path of ['/ballot/2026-amendment-1/', '/stories/2026-amendment-1/', '/share/stories/2026-amendment-1/']) {
+    const response = await t.fetch(`${path}?source=launch`)
+    expect(response.status).toBe(302)
+    expect(response.headers.get('Location')).toBe('https://www.publicparish.com/ballot/2026-amendment-1?source=launch')
+  }
+  const accepted = await t.fetch('/ballot/2026-amendment-1')
+  expect(accepted.status).toBe(200)
+  expect(await accepted.text()).toContain('Do you support an amendment to allow a one-time transfer?')
+  for (const path of ['/ballot/missing/', '/ballot/%ZZ/', '/ballot/2026-amendment-1//']) {
+    const missing = await t.fetch(path)
+    expect(missing.status).toBe(404)
+    expect(missing.headers.get('Cache-Control')).toBe('no-store')
+  }
+  await t.run(ctx => ctx.storage.delete(storageId))
+  expect((await t.fetch('/ballot/2026-amendment-1/')).status).toBe(503)
+  await owner.mutation(api.stories.operations.withdraw, { storyId, expectedGeneration: 1, reason: 'Synthetic withdrawal.' })
+  const withdrawn = await t.fetch('/ballot/2026-amendment-1/')
+  expect(withdrawn.status).toBe(410)
+  expect(withdrawn.headers.get('Location')).toBeNull()
 })

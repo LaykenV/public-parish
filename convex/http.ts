@@ -1,4 +1,4 @@
-import { shareStory } from './sharing/stories'
+import { shareBallot, shareStory } from './sharing/stories'
 import { shareIssue } from './sharing/issues'
 import { unsubscribe } from './coverage/unsubscribe'
 import { registerStaticRoutes } from '@convex-dev/static-hosting'
@@ -28,6 +28,8 @@ http.route({ pathPrefix: '/coverage/unsubscribe/', method: 'POST', handler: unsu
 
 http.route({ pathPrefix: '/share/issues/', method: 'GET', handler: shareIssue })
 
+http.route({ path: '/ballot', method: 'GET', handler: shareBallot })
+http.route({ path: '/ballot/', method: 'GET', handler: shareBallot })
 http.route({ pathPrefix: '/ballot/', method: 'GET', handler: shareStory })
 http.route({ pathPrefix: '/stories/', method: 'GET', handler: shareStory })
 

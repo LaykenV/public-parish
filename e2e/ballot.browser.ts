@@ -45,6 +45,16 @@ test('measure citation opens the official question and Follow preserves its scop
   }
 })
 
+test('a measure without a separate next action preserves its documented election date', async ({ page }) => {
+  await page.goto('/ballot/2026-amendment-1')
+  const timeline = page.locator('#story-timeline')
+  await expect(timeline).toContainText('Nov 3, 2026')
+  const nextAction = page.locator('#story-next-action')
+  await expect(nextAction).toContainText('Check the timeline above for documented dates.')
+  await expect(nextAction).not.toContainText('No next public action or deadline is established')
+  await expect(nextAction.getByRole('button', { name: 'Follow this measure', exact: true })).toBeVisible()
+})
+
 test('statewide Home keeps three featured stories and parish Home retains the ballot guide', async ({ page }) => {
   await page.goto('/?area=louisiana')
   await expect(page.locator('.pp-story-grid .pp-story-card')).toHaveCount(3)
