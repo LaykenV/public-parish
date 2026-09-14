@@ -443,17 +443,6 @@
   color: var(--primary);
 }
 
-.pp-home-floating {
-  position: fixed;
-  right: max(1rem, env(safe-area-inset-right));
-  bottom: max(1rem, env(safe-area-inset-bottom));
-  z-index: 40;
-  min-height: 3.5rem;
-  padding-inline: 1.125rem;
-  border-radius: 999px;
-  box-shadow: var(--pp-shadow-control);
-}
-
 .pp-home-filter-count {
   display: grid;
   place-items: center;
@@ -545,7 +534,8 @@
     gap: 0;
   }
 
-  .pp-home-issues-header .pp-home-issue-actions > * {
+  .pp-home-issues-header .pp-home-issue-actions > *,
+  .pp-home-choose-area {
     justify-content: start;
     gap: 0.375rem;
     min-height: 2.75rem;
@@ -554,9 +544,11 @@
     font-size: var(--pp-text-caption);
     text-align: left;
     white-space: normal;
+    color: var(--primary);
   }
 
-  .pp-home-issue-actions svg {
+  .pp-home-issue-actions svg,
+  .pp-home-choose-area svg {
     width: 0.875rem;
     height: 0.875rem;
     flex: none;

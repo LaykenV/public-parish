@@ -1,7 +1,6 @@
 import {
   ArrowUpRightIcon,
   ChevronDownIcon,
-  MapPinIcon,
   SlidersHorizontalIcon,
 } from 'lucide-react'
 import { useState } from 'react'
@@ -44,14 +43,19 @@ export function HomeBodyFilter(props: BodyFilterProps) {
   return <BodyFilters {...props} mobile={mobile} />
 }
 
-export function HomeControls({ area }: { area: AreaSlug | null }) {
+export function ChooseAreaButton() {
   const mobile = useMediaQuery('(max-width: 47.999rem)')
-  if (!mobile || area) return null
+  if (!mobile) return null
   return (
     <AreaSelector
       trigger={(props) => (
-        <Button {...props} className="pp-home-floating" size="touch">
-          <MapPinIcon aria-hidden="true" /> Choose area
+        <Button
+          {...props}
+          className="pp-home-choose-area"
+          size="touch"
+          variant="ghost"
+        >
+          Choose area <ArrowUpRightIcon aria-hidden="true" />
         </Button>
       )}
     />

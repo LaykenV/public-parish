@@ -7,6 +7,19 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 14 UTC mobile area controls, local update
+
+Mobile menu selection closes the area picker and menu, then opens Home with
+the chosen parish or Louisiana. Dismissing the picker keeps the menu open.
+Choose area now sits beneath the statewide story introduction and shares the
+plain-link styling of View Statewide Stories instead of floating over the page.
+
+Both typechecks, build, targeted lint and 42 unit tests passed. All twelve Home
+browser checks passed across Chromium and WebKit after correcting a layout
+assertion to allow the shared button's relative positioning. Changes are local
+in `fix/mobile-area-navigation`; this follow-up has not been committed or deployed.
+
+
 ## September 14 parallel PR verification
 
 Prepared on `codex/parallel-ci`. The frontend build runs alongside typechecks,
