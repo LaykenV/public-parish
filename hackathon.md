@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-14T16:28:48Z
+- **Last updated:** 2026-09-14T17:12:32Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2271,4 +2271,16 @@ Homepage ballot cards now lead with amendment numbers and share the purple
 arrow links. Validation passed 742 application tests, typechecks, build, lint
 with 15 existing warnings and all 30 targeted browser cases. Inspected desktop
 and mobile screenshots. [Image provenance](docs/utility-image.md) records the
-built-in generator prompt and web asset. Release pending.
+built-in generator prompt and web asset. PR #229 released as `3da06db`, with
+the exact production workflow, independent smoke and eight hosted browser checks
+passing on each of development and production.
+
+### 2026-09-14 - working tree, Elections hub
+
+Added Elections navigation and an election hub with official voter links and
+numbered, sourced amendment summaries. Statewide Home retains all ten cards;
+parish Home shows two and links to the full guide. Fixed section navigation
+back from a measure. Local verification passed 742 tests, both typechecks, build
+and lint with 15 existing warnings. All 34 targeted browser cases pass after
+correcting a duplicate-link selector. Inspected phone and desktop screenshots.
+Hosted verification and release are pending.

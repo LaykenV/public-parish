@@ -134,7 +134,7 @@ export function HomePage({
           />
         </ResidentSectionBoundary>
       </div>
-      {!fixturesEnabled && !showStories ? <BallotSection home /> : null}
+      {!fixturesEnabled && !showStories ? <BallotSection home compact /> : null}
       <ResidentSectionBoundary label="Decision records" resetKey={resetKey}>
         <LocalDecisionRecords
           city={cityFocus}
