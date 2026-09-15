@@ -44,8 +44,6 @@ export function HomeBodyFilter(props: BodyFilterProps) {
 }
 
 export function ChooseAreaButton() {
-  const mobile = useMediaQuery('(max-width: 47.999rem)')
-  if (!mobile) return null
   return (
     <AreaSelector
       trigger={(props) => (
@@ -55,7 +53,7 @@ export function ChooseAreaButton() {
           size="touch"
           variant="ghost"
         >
-          Choose area <ArrowUpRightIcon aria-hidden="true" />
+          Choose a parish <ArrowUpRightIcon aria-hidden="true" />
         </Button>
       )}
     />

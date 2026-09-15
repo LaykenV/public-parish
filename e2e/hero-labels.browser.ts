@@ -15,7 +15,7 @@ for (const [slug, name] of [
     const mobile = (page.viewportSize()?.width ?? 1280) <= 768
     if (mobile) {
       await expect(page.locator('.pp-home-relief')).toHaveCount(0)
-      await hero.getByRole('button', { name: 'Focus on a parish' }).click()
+      await page.getByRole('button', { name: 'Choose a parish' }).click()
     }
     const choice = mobile
       ? page
@@ -71,7 +71,7 @@ test('Louisiana mounts only above mobile widths and keeps desktop fallback selec
         page.locator('.relief-canvas, .relief-fallback, .relief-map-label'),
       ).toHaveCount(0)
       await expect(
-        page.getByRole('button', { name: 'Focus on a parish' }),
+        page.getByRole('button', { name: 'Choose a parish' }),
       ).toBeVisible()
       const hero = (await page.locator('.pp-home-hero').boundingBox())!
       const copy = (await page.locator('.pp-home-hero-copy').boundingBox())!

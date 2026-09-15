@@ -1193,3 +1193,19 @@ fallback retain their existing behavior. Local verification passed 744 tests,
 both typechecks, build and lint with 15 existing warnings. Browser checks
 reproduced the old domain on production and passed all three sharing paths with
 the local build on the public origin. PR review and release are pending.
+
+
+## September 15, stories before parish setup
+
+The owner requested a stories-first entry flow and authorized PR review and
+production shipment. The hero now links to Across Louisiana. Choose a parish
+sits below statewide content beside "What's happening near you?". The header
+selector, desktop parish labels and View Statewide Stories return path remain.
+Mobile hero text and spacing are more compact. A first area selection releases
+the picker before moving keyboard focus to the new page heading.
+
+Implementation is isolated on `fix/stories-before-parish`. All 778 application
+tests, both typechecks, build and lint pass with 15 existing warnings. All 58
+focused Chromium and WebKit checks pass. Inspected desktop and phone screenshots;
+the stories heading moved 93 pixels higher at 390 pixels wide. PR review and
+the authorized production release remain pending.
