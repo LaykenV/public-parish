@@ -1520,3 +1520,77 @@ test('an issue whose consequence no longer cites current evidence stays off Home
   expect(await t.query(api.resident.evidence.listPublishedIssues, { today: '2026-09-12' })).toEqual([])
   expect(await t.query(api.resident.evidence.listPublishedIssues, {})).toEqual([])
 })
+
+
+test('Home selects older consequences beyond forty newer issues and repairs legacy scores', async () => {
+  const t = await initTest()
+  const seeded = await seedIssueInput(t)
+  const candidate = issueCandidate(seeded)
+  stubIssueFetch([
+    { model: TERRA_MODEL, content: candidate },
+    { model: LUNA_MODEL, content: issueReview(candidate) },
+  ])
+  await startAndDrain(t, seeded.recordIds)
+  const original = (await t.query(api.resident.evidence.listPublishedIssues, {}))[0]
+  const before = await t.run(async ctx => {
+    const issue = (await ctx.db.query('issues').withIndex('by_slug', q => q.eq('slug', original.slug)).unique())!
+    const version = (await ctx.db.get(issue.currentVersionId!))!
+    expect(issue.currentImportanceScore).toBe(version.payload!.importance.score)
+    const links = await ctx.db.query('issueDecisionLinks').withIndex('by_issue_version', q => q.eq('issueVersionId', version._id)).take(10)
+    const factors = await ctx.db.query('importanceAssessments').withIndex('by_issue_version_and_factor', q => q.eq('issueVersionId', version._id)).take(8)
+    for (let n = 0; n < 121; n++) {
+      const mode = n % 2 === 0 ? 'full' : 'limited'
+      const issueId = await ctx.db.insert('issues', {
+        issueKey: `routine-${n}`, slug: `routine-${n}`, governmentBodyId: issue.governmentBodyId,
+        currentMode: mode, currentImportanceScore: 1,
+        createdAt: issue.createdAt + n + 1000, updatedAt: issue.updatedAt + n + 1000,
+      })
+      const { _id, _creationTime, ...versionFields } = version
+      const versionId = await ctx.db.insert('issueVersions', {
+        ...versionFields, issueId, mode,
+        payload: { ...version.payload!, kind: mode, importance: { ...version.payload!.importance, score: 1 } },
+      })
+      await ctx.db.patch(issueId, { currentVersionId: versionId })
+      for (const link of links) {
+        const { _id: _linkId, _creationTime: _linkCreated, ...fields } = link
+        await ctx.db.insert('issueDecisionLinks', { ...fields, issueId, issueVersionId: versionId })
+      }
+      for (const factor of factors) {
+        const { _id: _factorId, _creationTime: _factorCreated, ...fields } = factor
+        await ctx.db.insert('importanceAssessments', { ...fields, issueId, issueVersionId: versionId })
+      }
+    }
+    return issue
+  })
+  expect((await t.query(api.resident.evidence.listPublishedIssues, {}))[0].slug).toBe(original.slug)
+
+  // Equal-score candidates must use accepted-version dates at the cutoff,
+  // even when their issue metadata was updated more recently.
+  await t.run(async ctx => {
+    for (const issue of await ctx.db.query('issues').take(150)) {
+      if (issue._id === before._id) continue
+      const accepted = (await ctx.db.get(issue.currentVersionId!))!
+      await ctx.db.patch(issue._id, { currentImportanceScore: before.currentImportanceScore!, currentAcceptedAt: 0 })
+      await ctx.db.patch(accepted._id, {
+        createdAt: 0,
+        payload: { ...accepted.payload!, importance: { ...accepted.payload!.importance, score: before.currentImportanceScore! } },
+      })
+    }
+  })
+  expect((await t.query(api.resident.evidence.listPublishedIssues, {}))[0].slug).toBe(original.slug)
+
+  // Migration copies scores from current accepted versions and leaves dates and
+  // versions intact. Repeating it is a no-op, including for withheld candidates.
+  await t.run(async ctx => {
+    for (const issue of await ctx.db.query('issues').take(150)) {
+      await ctx.db.patch(issue._id, { currentImportanceScore: undefined })
+    }
+  })
+  const repair = await t.mutation(internal.resident.evidence.backfillImportanceScores, {})
+  expect(repair).toEqual({ updated: 100, done: false })
+  expect(await t.mutation(internal.resident.evidence.backfillImportanceScores, {})).toEqual({ updated: 22, done: true })
+  expect(await t.mutation(internal.resident.evidence.backfillImportanceScores, {})).toEqual({ updated: 0, done: true })
+  const after = await t.run(ctx => ctx.db.get(before._id))
+  expect(after).toEqual(before)
+  expect((await t.query(api.resident.evidence.listPublishedIssues, {}))[0].slug).toBe(original.slug)
+})

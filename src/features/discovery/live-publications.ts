@@ -43,7 +43,7 @@ export function usePublishedIssues(
   )
 }
 
-/** The reader's calendar day; the backend uses it to rank upcoming dates. */
+/** Calendar day passed by discovery clients, retained for API compatibility. */
 export function localDay(now: Date = new Date()): string {
   const month = String(now.getMonth() + 1).padStart(2, '0')
   const day = String(now.getDate()).padStart(2, '0')

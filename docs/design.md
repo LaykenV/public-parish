@@ -464,8 +464,9 @@ and their citations distinct; the roundup is a reading collection.
 ## Home story and ballot card refinement
 
 The September 14 owner refinement gives the utility roundup a 16:9 image,
-headline and summary matching the three story cards. Its generated illustration
-has a visible AI illustration credit. Cases remain available in a native
+headline and summary matching the three story cards. The September 15 owner
+correction removes the visible illustration credit and retains descriptive alt
+text. Cases remain available in a native
 expandable list, with the existing commission follow and Explore links below.
 
 Homepage ballot cards lead with the actual amendment number, retain their
@@ -574,3 +575,11 @@ a stage or implies a percentage. After twenty seconds, explain that larger
 searches take longer. Use a subtle purple text shimmer for the active label,
 with static text for reduced motion and forced colors. Announce stage changes
 without announcing every timer tick. No model output or internal tool names.
+
+
+## Follow and Explore controls, September 15
+
+Use the shared primary purple button for Follow on stories, amendments, issues,
+linked decisions, utility updates and body coverage. Clicking a selected Explore
+filter option clears it. Selecting another option replaces the selection.
+Keyboard activation follows the same rule. Sort resets to its default value.

@@ -17,7 +17,7 @@ import {
 import { sourceKindUnion } from '../pipeline/state'
 import { residentMeetingKey } from './meetingKey'
 import { sourceChecksPaused } from './sourceChecks'
-import { parseHomeDay, rankHomeIssues } from './homeRank'
+import { compareHomeIssues, rankHomeIssues } from './homeRank'
 
 const acceptedMode = v.union(v.literal('full'), v.literal('limited'))
 const nullableLifecycle = v.union(lifecycleStates, v.null())
@@ -460,8 +460,8 @@ export const getPublishedIssue = query({
   },
 })
 
-// Home considers the most recently updated accepted timelines, then orders
-// them by cited importance and documented currency. See ./homeRank.ts.
+// The index and final list use consequence, accepted-version date and slug.
+// Evidence hydration still validates every result in the bounded pool.
 const HOME_ISSUE_POOL = 40
 const HOME_ISSUE_LIMIT = 20
 
@@ -471,6 +471,7 @@ export const listPublishedIssues = query({
     areas: v.optional(v.array(areaSlug)),
     body: v.optional(v.string()), bodies: v.optional(v.array(v.string())),
     city: v.optional(v.string()),
+    // Older deployed clients send this; dates no longer add ranking bonuses.
     today: v.optional(v.string()),
   },
   returns: v.array(issueSummaryResult),
@@ -479,15 +480,18 @@ export const listPublishedIssues = query({
     const groups = await Promise.all(
       (['full', 'limited'] as const).flatMap(mode => bodyIds === null
         ? [ctx.db.query('issues')
-            .withIndex('by_current_mode_and_updated_at', q => q.eq('currentMode', mode))
+            .withIndex('by_mode_and_importance', q => q.eq('currentMode', mode))
             .order('desc').take(HOME_ISSUE_POOL)]
         : bodyIds.map(bodyId => ctx.db.query('issues')
-            .withIndex('by_government_body_and_current_mode_and_updated_at', q =>
+            .withIndex('by_body_mode_and_importance', q =>
               q.eq('governmentBodyId', bodyId).eq('currentMode', mode))
             .order('desc').take(HOME_ISSUE_POOL))),
     )
     const issues = groups.flat()
-      .sort((left, right) => right.updatedAt - left.updatedAt)
+      .sort((left, right) => compareHomeIssues(
+        { importanceScore: left.currentImportanceScore ?? -1, acceptedAt: left.currentAcceptedAt ?? 0, slug: left.slug },
+        { importanceScore: right.currentImportanceScore ?? -1, acceptedAt: right.currentAcceptedAt ?? 0, slug: right.slug },
+      ))
       .slice(0, HOME_ISSUE_POOL)
 
     const projected = await Promise.all(
@@ -529,7 +533,7 @@ export const listPublishedIssues = query({
         decisionCount: issue.links.length,
       }))
 
-    return rankHomeIssues(summaries, parseHomeDay(args.today))
+    return rankHomeIssues(summaries)
       .slice(0, HOME_ISSUE_LIMIT)
       .map(({ importanceScore: _score, nextAt: _next, hasSupportedFactor: _has, ...summary }) => summary)
   },
@@ -745,5 +749,38 @@ export const backfillCurrentMeetingKeys = internalMutation({
       isDone: page.isDone,
       updated,
     }
+  },
+})
+
+// A release repair copies existing accepted scores. It never creates a version,
+// changes evidence, advances update dates or schedules resident notifications.
+export const backfillImportanceScores = internalMutation({
+  args: {},
+  returns: v.object({ updated: v.number(), done: v.boolean() }),
+  handler: async (ctx) => {
+    let updated = 0
+    for (const mode of ['full', 'limited'] as const) {
+      const issues = await ctx.db.query('issues')
+        .withIndex('by_mode_and_importance', q =>
+          q.eq('currentMode', mode).eq('currentImportanceScore', undefined))
+        .take(50)
+      for (const issue of issues) {
+        const accepted = issue.currentVersionId
+          ? await ctx.db.get(issue.currentVersionId)
+          : null
+        const valid = accepted?.issueId === issue._id &&
+          accepted.mode === mode && accepted.payload?.kind === mode
+        await ctx.db.patch(issue._id, {
+          currentImportanceScore: valid ? accepted.payload!.importance.score : -1,
+          currentAcceptedAt: valid ? accepted.createdAt : 0,
+        })
+        updated += 1
+      }
+    }
+    const remaining = await Promise.all((['full', 'limited'] as const).map(mode =>
+      ctx.db.query('issues').withIndex('by_mode_and_importance', q =>
+        q.eq('currentMode', mode).eq('currentImportanceScore', undefined)).first(),
+    ))
+    return { updated, done: remaining.every(issue => issue === null) }
   },
 })

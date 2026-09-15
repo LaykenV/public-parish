@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-15T13:52:00Z
+- **Last updated:** 2026-09-15T15:12:27Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2432,3 +2432,24 @@ Scoped and unsupported questions passed. All 780 tests, typechecks, build and
 lint passed with 15 existing warnings. Production remains unchanged; the
 smaller development corpus does not establish production latency. Details and
 release work are in [docs/work.md](docs/work.md).
+
+
+### 2026-09-15 - working tree
+
+Removed the utilities illustration caption, made shared Follow buttons primary
+and let Explore dropdown selections toggle off by click or keyboard. All 780
+tests, both typechecks, build and lint passed with 15 existing warnings. Browser
+checks covered filtering, utilities and Follow on current reading pages; an old
+issue URL in the existing Follow test was unavailable. Reviewed statewide ranking
+without changing it. Local changes only. Details are in [docs/work.md](docs/work.md).
+
+
+### 2026-09-15 - working tree, consequence-first Home
+
+Changed Home issue selection to use indexed accepted consequence scores.
+Accepted-version recency breaks ties and cannot push a routine item above a
+higher score. Review caught a candidate-cutoff tie mismatch; the index and final
+list now share the same ordering, with a regression beyond forty equal scores.
+The release repair copies existing scores in bounded transactions without
+new evidence versions or alerts. Added ranking and repair regressions.
+The owner authorized PR review and production shipment; release checks are pending.

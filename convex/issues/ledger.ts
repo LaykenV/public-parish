@@ -1112,6 +1112,8 @@ export const publishIssueBuild = internalMutation({
       await ctx.db.patch(issue._id, {
         currentVersionId: issueVersionId,
         currentMode: ranked.mode,
+        currentImportanceScore: ranked.importance.score,
+        currentAcceptedAt: now,
         updatedAt: now,
       })
       await indexIssue(ctx, issue._id)

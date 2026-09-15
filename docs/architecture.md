@@ -243,8 +243,16 @@ clicks and partisan interest do not increase that score.
 ## Resident queries, search, and Ask
 
 Home queries select the requested bodies before applying their bounds. Current
-limits return up to 50 decisions and 20 issue timelines. Explore uses a paginated
-published projection. Hydration rejects stale references. Public pages must not
+limits return up to 50 decisions and 20 issue timelines. Issue selection reads
+the 40 highest accepted consequence scores through the mode and body indexes.
+Equal scores use accepted-version recency and descending slug in both the
+indexes and the final list. A recent meeting cannot outrank a higher consequence score.
+The publication transaction copies the accepted score and version date to the
+issue record. The release workflow fills missing scores in batches of at most 100 issues,
+with a 100-batch ceiling, before smoke testing. This repair preserves accepted
+versions, update dates and notifications. Evidence hydration still rejects
+stale or invalid candidates; this bounded feed is not an archive ranking.
+Explore uses a paginated published projection. Hydration rejects stale references. Public pages must not
 call these bounded results complete archive totals.
 
 Current Ask scopes are issue, meeting and corpus. Anonymous access lasts 24 hours
@@ -456,11 +464,10 @@ the Louisiana view. A parish, city or body focus collapses the hero and keeps
 the stories above local issues; a missing stored focus means Louisiana. Home
 queries stories separately from the local feed. Choosing a focus does not
 filter them out. Owner-selected placement is independent of importance scores.
-Planned under [launch upgrade](launch-upgrade.md) U3: Home issue selection
-orders bounded results deterministically by cited importance, next documented
-date or recent outcome, and accepted-version recency, and excludes issues with
-neither a supported consequence factor nor a next date; Explore still lists
-them. Card copy comes only from cited rationale on the accepted version.
+Home issue selection orders bounded results by accepted consequence score,
+accepted-version recency and descending slug. Index selection uses the same
+order. Issues with neither a supported consequence factor nor a next date stay
+in Explore. Card copy comes only from cited rationale on the accepted version.
 [Design](design.md) owns composition and responsive behavior.
 
 ### Ballot measure model
