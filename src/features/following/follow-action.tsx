@@ -308,7 +308,7 @@ function FollowActionContent({
           : 'Updates are not available yet'
       }
       trigger={(props) => (
-        <Button {...props} className={className} size="touch" variant="outline">
+        <Button {...props} className={className} size="touch">
           {label}
         </Button>
       )}
