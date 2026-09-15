@@ -55,7 +55,9 @@ export function useVisualViewport(enabled = true): VisualViewportBounds {
     if (!viewport) return
     const update = () => {
       const layoutHeight = document.documentElement.clientHeight
-      const height = Math.min(viewport.height, layoutHeight)
+      // Browser bars can expose more screen than the root layout measurement.
+      // Keep the stale-height guard without clipping that newly visible area.
+      const height = Math.min(viewport.height, Math.max(layoutHeight, window.innerHeight))
       // Pinching reduces CSS-pixel height without a keyboard. Normalize only
       // the occlusion check; keep the actual CSS pixels for panel geometry.
       const keyboardOpen = layoutHeight - viewport.height * viewport.scale > 100
