@@ -1239,10 +1239,14 @@ export default defineSchema({
     detail: v.string(),
   }).index('by_review', ['reviewId']),
 
-  publicCorpusState: defineTable({ key: v.literal('published'), revision: v.number() }).index('by_key', ['key']),
+  publicCorpusState: defineTable({ key: v.literal('published'), revision: v.number(), askIndexReady: v.optional(v.boolean()) }).index('by_key', ['key']),
   publishedSearchEntries: defineTable(searchEntry)
     .index('by_key', ['key'])
     .index('by_date', ['dateAt'])
+    .index('by_kind_and_date', ['kind', 'dateAt'])
+    .index('by_kind_and_published_at', ['kind', 'publishedAt'])
+    .index('by_kind_and_place_slug_and_published_at', ['kind', 'placeSlug', 'publishedAt'])
+    .index('by_kind_and_place_slug_and_date', ['kind', 'placeSlug', 'dateAt'])
     .searchIndex('search_text', { searchField: 'searchText', filterFields: ['kind', 'placeName', 'bodyName', 'mode', 'lifecycle'] }),
 
   decisionRecords: defineTable({
@@ -1624,6 +1628,7 @@ export default defineSchema({
 
   askAnswerReceipts: defineTable({
     progressPhase: v.optional(answerProgressPhase),
+    selectorVersion: v.optional(v.string()),
     corpusRevision: v.optional(v.number()),
     selectorCursor: v.optional(v.union(v.string(), v.null())),
     selectorEvidenceIds: v.optional(v.array(v.string())),

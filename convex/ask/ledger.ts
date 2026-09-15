@@ -429,14 +429,14 @@ function askError(code: string, message: string) {
 export type AskAnswerReceiptId = Id<'askAnswerReceipts'>
 
 export const beginCatalogScan = internalMutation({
-  args: { receiptId: v.id('askAnswerReceipts'), answerAttempt: v.number() },
+  args: { receiptId: v.id('askAnswerReceipts'), answerAttempt: v.number(), selectorVersion: v.optional(v.string()) },
   returns: v.object({ revision: v.number(), cursor: v.union(v.string(), v.null()), complete: v.boolean(), evidenceIds: v.array(v.string()) }),
   handler: async (ctx, args) => {
     const receipt = await ctx.db.get(args.receiptId)
     if (!receipt || receipt.state !== 'running' || receipt.attempt !== args.answerAttempt) throw askError('answer_state_mismatch', 'Answer attempt is not running')
     const revision = (await ctx.db.query('publicCorpusState').withIndex('by_key', q => q.eq('key', 'published')).unique())?.revision ?? 0
-    if (receipt.corpusRevision === revision) return { revision, cursor: receipt.selectorCursor ?? null, complete: receipt.selectorComplete ?? false, evidenceIds: receipt.selectorEvidenceIds ?? [] }
-    await ctx.db.patch(receipt._id, { corpusRevision: revision, selectorCursor: null, selectorEvidenceIds: [], selectorComplete: false, selectorBatches: 0 })
+    if (receipt.corpusRevision === revision && receipt.selectorVersion === args.selectorVersion) return { revision, cursor: receipt.selectorCursor ?? null, complete: receipt.selectorComplete ?? false, evidenceIds: receipt.selectorEvidenceIds ?? [] }
+    await ctx.db.patch(receipt._id, { corpusRevision: revision, selectorVersion: args.selectorVersion, selectorCursor: null, selectorEvidenceIds: [], selectorComplete: false, selectorBatches: 0 })
     return { revision, cursor: null, complete: false, evidenceIds: [] }
   },
 })

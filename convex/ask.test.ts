@@ -326,8 +326,8 @@ test.each(['focused', 'broad'] as const)('answers %s selections with retrieved c
   expect(selectorPrompt).toContain('"versions"')
   expect(selectorPrompt).toContain('Every accepted evidence excerpt in this batch')
   expect(selectorPrompt).toContain('Library board roof contract')
-  expect(selectorPrompt).not.toContain('Full normalized official documents')
-  expect(answerPrompt).toContain('Full normalized official documents')
+  expect(selectorPrompt).not.toContain('Verified official document context')
+  expect(answerPrompt).toContain('Verified official document context')
   expect(answerPrompt).not.toContain('Library board roof contract')
   expect(answerPrompt).toContain(
     'Full official source document: The council approved the Audubon Boulevard drainage agreement.',
@@ -379,11 +379,11 @@ test.each(['focused', 'broad'] as const)('answers %s selections with retrieved c
         totalTokens: 15,
       }),
       expect.objectContaining({
-        promptVersion: 'ask-selector-v3-dated-targets',
+        promptVersion: 'ask-selector-v8-catalog-formats',
         schemaVersion: 'ask-selector-v2-batched',
       }),
       expect.objectContaining({
-        promptVersion: 'ask-answer-v8-dated',
+        promptVersion: 'ask-answer-v10-calendar-scope',
         schemaVersion: 'ask-answer-v3',
       }),
     ]),
@@ -456,11 +456,11 @@ test('invalid selector targets fall back to the complete accepted scope', async 
   expect(attempts).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
-        promptVersion: 'ask-selector-v3-dated-targets',
+        promptVersion: 'ask-selector-v8-catalog-formats',
         status: 'selection_invalid',
       }),
       expect.objectContaining({
-        promptVersion: 'ask-answer-v8-dated',
+        promptVersion: 'ask-answer-v10-calendar-scope',
         status: 'success',
       }),
     ]),
@@ -637,7 +637,7 @@ test('records unknown provider usage without preempting later answers', async ()
     answerAttempt: claim.attempt,
     route: 'ai_gateway',
     modelId: 'openai/gpt-5.6-luna',
-    promptVersion: 'ask-answer-v8-dated',
+    promptVersion: 'ask-answer-v10-calendar-scope',
     schemaVersion: 'ask-answer-v3',
     attempt: 1,
     status: 'failed',
@@ -831,7 +831,7 @@ test('fences a stale answer after its lease is retried', async () => {
       answerAttempt: first.attempt,
       route: 'ai_gateway',
       modelId: 'openai/gpt-5.6-luna',
-      promptVersion: 'ask-answer-v8-dated',
+      promptVersion: 'ask-answer-v10-calendar-scope',
       schemaVersion: 'ask-answer-v3',
       attempt: 1,
       status: 'success',
@@ -1339,7 +1339,9 @@ test('a thousand-record corpus searches old history and selects evidence across 
   overrideAskGatewayForTests(async (_ctx, args) => {
     if (args.stage === 'selector') {
       selectorCalls++
-      const targets = [seeded.recordKey, lastKey].filter(id => args.prompt.includes(`"recordKey":"${id}"`)).map(id => ({ kind: 'decision', id }))
+      const line = args.prompt.split('\n').find(value => value.startsWith('Indexed published records and shared text: '))!
+      const catalog = JSON.parse(line.slice('Indexed published records and shared text: '.length)) as { records: Array<{ recordKey: string; title: string }> }
+      const targets = catalog.records.filter(record => record.title.includes('Audubon') || record.title === 'Historic drainage decision 997').map(record => ({ kind: 'decision', id: record.recordKey }))
       return gatewayResult({ retrievalMode: targets.length ? 'focused' : 'not_found', targets })
     }
     expect(args.prompt).toContain(seeded.recordKey)
@@ -1349,10 +1351,11 @@ test('a thousand-record corpus searches old history and selects evidence across 
   })
   const answer = await t.action(api.ask.answer.answerQuestion, { token, threadId: thread.threadId, questionMessageId: question.messageId })
   expect(answer.kind).toBe('answer')
-  expect(selectorCalls).toBeGreaterThan(30)
+  expect(selectorCalls).toBeGreaterThan(1)
+  expect(selectorCalls).toBeLessThanOrEqual(12)
   const receipt = await t.run(ctx => ctx.db.query('askAnswerReceipts').first())
   expect(receipt?.selectorComplete).toBe(true)
-  expect(receipt?.selectorBatches).toBeGreaterThan(30)
+  expect(receipt?.selectorBatches).toBe(selectorCalls)
 }, 120_000)
 
 test('shared story evidence deduplication respects atomic normalization, scope and current publication', async () => {
@@ -1390,4 +1393,59 @@ test.each(['selector', 'answer'])('preserves a spending pause during %s without 
   expect(stages).toEqual(stage === 'selector' ? ['selector'] : ['selector', 'answer'])
   expect(await t.run(ctx => ctx.db.query('askAnswerReceipts').collect())).toMatchObject([{ state: 'failed', errorClass: 'ai_spending_limit' }])
   expect(await t.run(ctx => ctx.db.query('askModelAttempts').collect())).toHaveLength(stage === 'selector' ? 0 : 1)
+})
+
+test('indexed retrieval requires a complete backfill and rejects stale or cross-session evidence', async () => {
+  const t = initTest()
+  const seeded = await seedEvidence(t)
+  const token = 'indexed-owner-00000000000000000000000000000000'
+  const other = 'indexed-other-00000000000000000000000000000000'
+  await t.mutation(api.ask.threads.createSession, { token })
+  await t.mutation(api.ask.threads.createSession, { token: other })
+  const thread = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'corpus', areaKey: 'lafayette-parish' } })
+  expect(await t.query(internal.ask.search.retrievePage, { token, threadId: thread.threadId, cursor: null, revision: 0 })).toBeNull()
+  let cursor: string | null = null
+  let done = false
+  while (!done) {
+    const page: { isDone: boolean; continueCursor: string } = await t.mutation(internal.resident.search.backfill, { kind: 'decision', paginationOpts: { cursor, numItems: 25 } })
+    done = page.isDone; cursor = page.continueCursor
+  }
+  const revision = await t.run(async ctx => (await ctx.db.query('publicCorpusState').first())!.revision)
+  const page = await t.query(internal.ask.search.retrievePage, { token, threadId: thread.threadId, cursor: null, revision })
+  expect(page?.catalog.records.some(record => record.recordKey === seeded.recordKey)).toBe(true)
+  expect(JSON.stringify(page)).not.toContain('superseded drainage wording')
+  await expect(t.query(internal.ask.search.retrievePage, { token: other, threadId: thread.threadId, cursor: null, revision })).rejects.toThrow('Thread is unavailable')
+  await expect(t.query(internal.ask.evidence.selectedTargetEvidence, { token: other, threadId: thread.threadId, revision, recordKeys: [seeded.recordKey], storySlugs: [] })).rejects.toThrow('Thread is unavailable')
+  await t.run(ctx => ctx.db.insert('jurisdictions', { name: 'Rapides Parish', slug: 'rapides-parish', type: 'parish', state: 'LA', publicStatus: 'validating' }))
+  const otherArea = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'corpus', areaKey: 'rapides-parish' } })
+  expect((await t.query(internal.ask.search.retrievePage, { token, threadId: otherArea.threadId, cursor: null, revision }))?.catalog.records).toEqual([])
+  await expect(t.query(internal.ask.evidence.selectedTargetEvidence, { token, threadId: otherArea.threadId, revision, recordKeys: [seeded.recordKey], storySlugs: [] })).rejects.toThrow('Selected evidence changed')
+  await t.run(async ctx => {
+    const record = await ctx.db.query('decisionRecords').withIndex('by_record_key', q => q.eq('recordKey', seeded.recordKey)).unique()
+    await ctx.db.patch(record!._id, { currentPublishedVersionId: undefined })
+  })
+  expect((await t.query(internal.ask.search.retrievePage, { token, threadId: thread.threadId, cursor: null, revision }))?.catalog.records.some(record => record.recordKey === seeded.recordKey)).toBe(false)
+})
+
+test('date retrieval visits undated evidence after the indexed range', async () => {
+  const t = initTest()
+  const seeded = await seedEvidence(t)
+  await t.run(async ctx => {
+    const record = await ctx.db.query('decisionRecords').withIndex('by_record_key', q => q.eq('recordKey', seeded.otherRecordKey)).unique()
+    const publication = await ctx.db.get(record!.currentPublishedVersionId!)
+    if (publication?.payload?.kind !== 'full') throw new Error('Fixture missing full publication')
+    await ctx.db.patch(publication._id, { payload: { ...publication.payload, meetingAt: null } })
+  })
+  await t.mutation(internal.resident.search.backfill, { kind: 'decision', paginationOpts: { cursor: null, numItems: 25 } })
+  const revision = await t.run(async ctx => (await ctx.db.query('publicCorpusState').first())!.revision)
+  const token = 'dated-query-00000000000000000000000000000000000'
+  await t.mutation(api.ask.threads.createSession, { token })
+  const thread = await t.mutation(api.ask.threads.createThread, { token, scope: { kind: 'corpus' } })
+  const window = { field: 'meetingDate' as const, from: Date.parse('2025-01-01T00:00:00Z'), to: Date.parse('2025-02-01T00:00:00Z'), fromDate: '2025-01-01', toDate: '2025-01-31' }
+  const dated = await t.query(internal.ask.search.retrievePage, { token, threadId: thread.threadId, cursor: null, revision, window })
+  expect(dated?.catalog.records).toEqual([])
+  expect(dated?.isDone).toBe(false)
+  const undated = await t.query(internal.ask.search.retrievePage, { token, threadId: thread.threadId, cursor: dated!.cursor, revision, window })
+  expect(undated?.catalog.records.map(record => record.recordKey)).toEqual([seeded.otherRecordKey])
+  expect(undated?.isDone).toBe(true)
 })
