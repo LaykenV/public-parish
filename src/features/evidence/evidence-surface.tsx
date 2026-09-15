@@ -1,5 +1,6 @@
 import { recordCivicEvent } from '../analytics/product-analytics'
-import { ExternalLinkIcon, TriangleAlertIcon } from 'lucide-react'
+import { TriangleAlertIcon } from 'lucide-react'
+import { SourceActions } from './source-actions'
 import {
   createContext,
   useCallback,
@@ -20,7 +21,6 @@ import {
 } from '../discovery/sheet'
 import {
   citationSummary,
-  documentHost,
   evidenceSheetSize,
 } from './evidence-model'
 import type { CitationData, CitationMap } from './contracts'
@@ -227,6 +227,12 @@ function EvidenceSheet() {
       size={renderedCitation ? evidenceSheetSize(renderedCitation) : 'medium'}
       title="Official source"
       triggerId={triggerId}
+      footer={renderedCitation ? (
+        <SourceActions
+          officialUrl={renderedCitation.officialUrl}
+          onOfficialOpen={() => recordCivicEvent('official_source_opened')}
+        />
+      ) : undefined}
     >
       {renderedCitation ? <EvidenceBody citation={renderedCitation} /> : null}
     </Sheet>
@@ -269,19 +275,6 @@ function EvidenceBody({ citation }: { citation: CitationData }) {
         lighter words are the sentences around it in the same document.
       </p>
 
-      <a
-        className="ev-viewer-open"
-        href={citation.officialUrl}
-        onClick={() => recordCivicEvent('official_source_opened')}
-        rel="noreferrer"
-        target="_blank"
-      >
-        <ExternalLinkIcon aria-hidden="true" />
-        <span>Open official document</span>
-        <span className="ev-viewer-host">
-          {documentHost(citation.officialUrl)}
-        </span>
-      </a>
     </div>
   )
 }

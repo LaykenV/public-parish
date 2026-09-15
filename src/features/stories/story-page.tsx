@@ -11,7 +11,7 @@ import type { ReactNode } from 'react'
 import { Sheet } from '../discovery/sheet'
 import { Link } from '@tanstack/react-router'
 import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
-import { StoryOfficialSourceLink } from './story-source-link'
+import { SourceActions } from '../evidence/source-actions'
 import { formatDate } from '../discovery/format'
 import { Button } from '../../components/ui/button'
 import { ShareButton } from '../discovery/share'
@@ -358,6 +358,9 @@ export function StoryPage({ slug }: { slug: string }) {
         title="Official source"
         size="tall"
         triggerId={sourceTrigger}
+        footer={selectedEvidence ? (
+          <SourceActions officialUrl={selectedEvidence.officialUrl} snapshotUrl={selectedEvidence.snapshotUrl ?? null} />
+        ) : undefined}
       >
         {selectedEvidence ? (
           <div className="ev-viewer">
@@ -371,20 +374,6 @@ export function StoryPage({ slug }: { slug: string }) {
             <blockquote className="ev-quote">
               {selectedEvidence.excerpt}
             </blockquote>
-            <StoryOfficialSourceLink url={selectedEvidence.officialUrl} />
-            {selectedEvidence.snapshotUrl ? (
-              <p>
-                <a
-                  href={selectedEvidence.snapshotUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Inspect the saved source artifact
-                </a>
-              </p>
-            ) : (
-              <p>Saved artifact is unavailable.</p>
-            )}
           </div>
         ) : null}
       </Sheet>

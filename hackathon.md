@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-15T01:18:19Z
+- **Last updated:** 2026-09-15T02:12:42Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2356,3 +2356,18 @@ Before and after screenshots were inspected. No backend changes or deployment.
 The expanded suite passed 34 cases, including all ten amendments and every
 source in each story and amendment evidence list. Native iPhone confirmation
 remains pending.
+
+### 2026-09-15 - 34aa8bd, citation drawer release
+PR #244 shipped the viewport sizing fix after both reviewers and CI passed.
+Production workflow `34918385898`, independent smoke and all 26 live
+Chromium/WebKit story and amendment citation checks passed. The live amendment
+screenshot matched the inspected local screenshot. Native phone confirmation
+remains pending.
+
+### 2026-09-15 - working tree, citation source actions
+Added persistent source buttons to citation drawers. The official website has
+a primary button with its hostname; stories and amendments have a separate
+saved-copy button. Excerpts scroll above the actions. Local verification passed
+754 tests, typechecks, build, lint and 96 browser cases, one on a loading-timeout
+retry. Phone and desktop screenshots were inspected. This UI change is local
+and has not been committed or deployed.

@@ -43,6 +43,14 @@ for (const [kind, path, selector] of pages) {
       return Math.round(box!.y + box!.height)
     }).toBe(844)
     await expect(drawer.getByRole('button', { name: 'Close', exact: true })).toBeInViewport()
+    const actions = drawer.locator('.pp-sheet-footer')
+    for (const link of await actions.getByRole('link').all()) {
+      await expect(link).toBeInViewport()
+    }
+    const actionPosition = await actions.boundingBox()
+    await drawer.locator('.pp-sheet-body').evaluate(element => { element.scrollTop = element.scrollHeight })
+    expect((await actions.boundingBox())!.y).toBe(actionPosition!.y)
+    await drawer.locator('.pp-sheet-body').evaluate(element => { element.scrollTop = 0 })
     await page.screenshot({ path: info.outputPath(`${kind}-source-expanded.png`) })
 
     // Follow both directions while the same citation stays open.
@@ -55,6 +63,9 @@ for (const [kind, path, selector] of pages) {
         const box = await drawer.boundingBox()
         return Math.round(box!.y + box!.height)
       }).toBe(height)
+      for (const action of await actions.getByRole('link').all()) {
+        await expect(action).toBeInViewport()
+      }
       const link = drawer.getByRole('link').last()
       await link.scrollIntoViewIfNeeded()
       const linkBounds = await link.boundingBox()

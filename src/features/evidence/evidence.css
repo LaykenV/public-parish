@@ -1273,38 +1273,84 @@
   line-height: 1.5;
 }
 
-.ev-viewer-open {
+/* Source actions stay outside the scrolling excerpt. */
+.ev-sheet .pp-sheet-body {
+  min-height: 0;
+}
+
+.ev-source-actions {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 0.5rem;
+}
+
+.ev-source-action {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 0.6rem;
-  align-items: center;
+  min-width: 0;
   min-height: var(--pp-control-height);
-  margin-top: 1rem;
-  padding: 0.5rem 0.85rem;
-  border: 1px solid var(--pp-border-control);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  color: var(--foreground);
   font-size: var(--pp-text-small);
   font-weight: 600;
+  line-height: 1.4;
   text-decoration: none;
 }
 
-.ev-viewer-open:hover {
-  border-color: var(--pp-border-strong);
-  background: var(--accent);
+.ev-source-action svg {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
-.ev-viewer-open svg {
-  flex: none;
+.ev-source-action > svg:last-child {
   width: 1rem;
   height: 1rem;
 }
 
-.ev-viewer-host {
-  color: var(--muted-foreground);
-  font-family: var(--font-sans);
+.ev-source-action-text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  gap: 0.15rem;
+  overflow-wrap: anywhere;
+}
+
+.ev-source-action-primary {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.ev-source-action-primary:hover {
+  border-color: var(--primary-hover);
+  background: var(--primary-hover);
+}
+
+.ev-source-action-host {
+  color: color-mix(in srgb, var(--primary-foreground) 85%, transparent);
   font-size: var(--pp-text-caption);
   font-weight: 400;
+}
+
+.ev-source-action-saved {
+  color: var(--primary);
+  background: var(--card);
+}
+
+.ev-source-action-saved:hover {
+  border-color: var(--primary);
+  background: var(--accent);
+}
+
+.ev-source-unavailable {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: var(--pp-text-caption);
+  line-height: 1.5;
 }
 
 /* Sheet heights for the evidence and report flows */
