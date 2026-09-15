@@ -24,6 +24,8 @@ shimmering status line and its active icon, driven by the existing backend stage
   and the restored dots with their status icon. All five affected checks pass locally.
 - [x] Retain the neutral status for an unfamiliar backend progress stage, with
   a regression test. This preserves the prior fallback for older browser tabs.
+- [x] Clear a saved-chat failure message when a new conversation arrives.
+  The recovery regression passes in Chromium and WebKit.
 - [ ] Complete the owner-authorized PR review, production merge and smoke checks.
   No backend changes; release verification is pending.
 

@@ -195,7 +195,10 @@ export function AskPage({
     // A conversation on the page is not an expired one. Without this the
     // notice outlives the thread that replaced it, and its restart action
     // would then clear the conversation the resident just started.
-    if (next) setExpired(false)
+    if (next) {
+      setExpired(false)
+      setRestoreError('')
+    }
     const previous = previousConversation.current
     previousConversation.current = next
     if (!next || !previous || previous.id !== next.id) return

@@ -67,6 +67,10 @@ for (const outcome of ['loaded', 'expired', 'failed'] as const) {
       await expect(page.getByRole('textbox')).toBeVisible()
     } else if (outcome === 'failed') {
       await expect(page.getByRole('alert')).toContainText('This conversation could not open')
+      await page.getByRole('textbox').fill('Who received the truck?')
+      await page.getByRole('button', { name: 'Send question', exact: true }).click()
+      await expect(page.locator('.ask-answer')).toBeVisible()
+      await expect(page.getByRole('alert')).toHaveCount(0)
     } else {
       await expect(page.locator('.ask-notice')).toContainText('expired')
     }
