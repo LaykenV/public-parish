@@ -107,10 +107,27 @@ test('Home hides stories in a parish and never repeats the hero after selection'
       ),
   ).toBe(true)
 
-  await expect(
-    page.locator('.pp-home-hero-copy a, .pp-home-hero-copy button'),
-  ).toHaveCount(0)
+  const exploreStories = page
+    .locator('.pp-home-hero-actions')
+    .getByRole('link', { name: 'Explore Louisiana stories', exact: true })
+  await expect(page.locator('.pp-home-hero-actions button')).toHaveCount(0)
   await expect(page.locator('#stories .pp-home-choose-area')).toHaveCount(0)
+  await exploreStories.focus()
+  await page.keyboard.press('Enter')
+  await expect(page).toHaveURL(/#stories$/)
+  await expect
+    .poll(() =>
+      page
+        .locator('#stories')
+        .evaluate((node) => node.getBoundingClientRect().top),
+    )
+    .toBeLessThan(150)
+  expect(
+    await page
+      .locator('#stories')
+      .evaluate((node) => node.getBoundingClientRect().top),
+  ).toBeGreaterThanOrEqual(48)
+  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
   expect(
     await page.evaluate(() => localStorage.getItem('public-parish.area.v1')),
   ).toBeNull()
@@ -125,7 +142,7 @@ test('Home hides stories in a parish and never repeats the hero after selection'
     ),
   ).toBe(true)
   await page.screenshot({
-    path: testInfo.outputPath('stories-before-parish.png'),
+    path: testInfo.outputPath('explore-stories-before-parish.png'),
   })
   await page
     .getByRole('button', { name: 'Choose a parish', exact: true })

@@ -18,7 +18,7 @@ slice contracts; [Work](work.md) records release status.
 
 | Order | Louisiana (default) | Parish, city or body focus |
 | --- | --- | --- |
-| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with the introduction at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. The issues card contains the navigation links and body filters. On phones, the links stack beside Filters |
+| Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with Explore Louisiana stories at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. The issues card contains the navigation links and body filters. On phones, the links stack beside Filters |
 | First content | Across Louisiana: Meta lead, SpaceX and Boyce secondary, plus one utility roundup linking individual commission cases | Local issues and body filters. Featured stories are omitted |
 | Ballot | "On the November 3 ballot": all published statewide amendments | Compact preview of two statewide amendments, with a link to the full guide |
 | Local content | Issues across covered parishes | Issues in the focus, with a desktop body dialog and mobile filter drawer |
@@ -30,7 +30,7 @@ happens next." Keep "Free to read and ask questions. No account needed."
 The September 14 owner selection makes the three parish labels on Louisiana
 clickable on desktop. The owner correction keeps Louisiana hidden at 48rem
 and below. Do not mount the canvas, fallback, labels or their wrapper on mobile.
-Keep the hero copy, with no empty visual space. Labels use the
+Keep the hero copy and stories button, with no empty visual space. Labels use the
 same coverage availability and saved selection as the area picker. Selecting a
 label opens the parish issues and moves keyboard focus to their heading.
 Labels remain usable with the SVG fallback. Unknown or validating coverage
@@ -51,8 +51,8 @@ Metropolitan Council" and "Lafayette Hearing Examiner". The two Lafayette
 planning commissions stay distinct. Body focus stays in the URL and clears back
 to the parish. Existing shared city and body links remain valid.
 
-The September 15 owner follow-up removes the hero's scroll button. Across
-Louisiana follows the introduction directly, so it needs no separate action.
+The September 15 owner correction makes Explore Louisiana stories the hero's
+primary button. It scrolls to Across Louisiana without saving an area choice.
 Place "What's happening near you?" and Choose a parish after the statewide
 stories, utility roundup and ballot preview, immediately before local issues.
 Show this prompt on desktop and phones. The story introduction has no area

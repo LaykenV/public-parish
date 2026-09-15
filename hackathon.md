@@ -2511,3 +2511,12 @@ The introduction leads directly into the stories. Parish setup stays below
 statewide content. Adjusted the existing browser journey and design contract.
 Build, targeted lint and 12 Chromium/WebKit checks passed. Inspected phone and
 desktop screenshots. PR checks and the follow-up release are pending.
+
+
+### 2026-09-15 - working tree, restore the purple story button
+
+Restored the purple Explore Louisiana stories button and its previous spacing
+after owner feedback. The primary-color headline experiment was never deployed.
+The parish prompt stays below statewide content. Build, targeted lint and eight
+Chromium/WebKit checks passed. Inspected phone and desktop screenshots. PR review
+and release are pending.
