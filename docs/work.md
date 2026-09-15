@@ -13,12 +13,12 @@ The owner authorized implementing the ranking recommendation and shipping all
 four corrections. The UI changes are separate PRs #249, #250 and #251.
 The ranking change preserves accepted evidence scores, indexes them on current
 issues and reads the highest-scoring 40 candidates before evidence hydration.
-Dates break equal-score ties within that pool. Recent routine work cannot
-outrank a higher-scoring consequence. The highest 20 valid issues remain the
+Accepted-version dates break equal-score ties in both the index and final list.
+Recent routine work cannot outrank a higher-scoring consequence. The highest 20 valid issues remain the
 query result and Home shows its existing six-card subset.
 
-The publication transaction maintains the indexed score. The production workflow
-repairs missing scores with at most 100 issues per transaction and 100 batches.
+The publication transaction maintains the indexed score and accepted date.
+The production workflow repairs missing scores with at most 100 issues per transaction and 100 batches.
 It copies current accepted scores without changing versions, update dates or
 notifications. Stale version references receive a noncompetitive marker and
 still fail public evidence hydration. No source retrieval or AI spending.
@@ -27,7 +27,13 @@ still fail public evidence hydration. No source retrieval or AI spending.
   beyond forty newer low-scoring issues. Verify bounded, repeatable repair.
 - [x] Pass all 783 tests, both typechecks and build. Fix four unused test bindings
   and one shadowed local name found by lint, then rerun lint.
-- [ ] File the ranking PR and resolve both reviews.
+- [x] File ranking PR #252. A verified review finding exposed different tie
+  ordering at the candidate cutoff. Both stages now use the accepted-version
+  date and descending slug, with an equal-score regression beyond forty rows.
+- [x] Pass all 775 tests, both typechecks, build and lint with the 15 existing
+  warnings after the tie correction. The lower test count removes tests of the
+  deleted date-bonus calculation.
+- [ ] Finish the corrected-head CI and reviews.
 - [ ] Follow each authorized production deployment and run independent smoke.
 
 ## September 15 Follow, Explore and statewide ranking review

@@ -17,7 +17,7 @@ import {
 import { sourceKindUnion } from '../pipeline/state'
 import { residentMeetingKey } from './meetingKey'
 import { sourceChecksPaused } from './sourceChecks'
-import { parseHomeDay, rankHomeIssues } from './homeRank'
+import { compareHomeIssues, rankHomeIssues } from './homeRank'
 
 const acceptedMode = v.union(v.literal('full'), v.literal('limited'))
 const nullableLifecycle = v.union(lifecycleStates, v.null())
@@ -460,8 +460,8 @@ export const getPublishedIssue = query({
   },
 })
 
-// Read the highest consequence scores first. Dates break ties within this
-// bounded candidate pool; evidence hydration still validates every result.
+// The index and final list use consequence, accepted-version date and slug.
+// Evidence hydration still validates every result in the bounded pool.
 const HOME_ISSUE_POOL = 40
 const HOME_ISSUE_LIMIT = 20
 
@@ -471,6 +471,7 @@ export const listPublishedIssues = query({
     areas: v.optional(v.array(areaSlug)),
     body: v.optional(v.string()), bodies: v.optional(v.array(v.string())),
     city: v.optional(v.string()),
+    // Older deployed clients send this; dates no longer add ranking bonuses.
     today: v.optional(v.string()),
   },
   returns: v.array(issueSummaryResult),
@@ -487,9 +488,10 @@ export const listPublishedIssues = query({
             .order('desc').take(HOME_ISSUE_POOL))),
     )
     const issues = groups.flat()
-      .sort((left, right) =>
-        (right.currentImportanceScore ?? 0) - (left.currentImportanceScore ?? 0) ||
-        right.updatedAt - left.updatedAt)
+      .sort((left, right) => compareHomeIssues(
+        { importanceScore: left.currentImportanceScore ?? -1, acceptedAt: left.currentAcceptedAt ?? 0, slug: left.slug },
+        { importanceScore: right.currentImportanceScore ?? -1, acceptedAt: right.currentAcceptedAt ?? 0, slug: right.slug },
+      ))
       .slice(0, HOME_ISSUE_POOL)
 
     const projected = await Promise.all(
@@ -531,7 +533,7 @@ export const listPublishedIssues = query({
         decisionCount: issue.links.length,
       }))
 
-    return rankHomeIssues(summaries, parseHomeDay(args.today))
+    return rankHomeIssues(summaries)
       .slice(0, HOME_ISSUE_LIMIT)
       .map(({ importanceScore: _score, nextAt: _next, hasSupportedFactor: _has, ...summary }) => summary)
   },
@@ -770,6 +772,7 @@ export const backfillImportanceScores = internalMutation({
           accepted.mode === mode && accepted.payload?.kind === mode
         await ctx.db.patch(issue._id, {
           currentImportanceScore: valid ? accepted.payload!.importance.score : -1,
+          currentAcceptedAt: valid ? accepted.createdAt : 0,
         })
         updated += 1
       }

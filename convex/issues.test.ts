@@ -1564,6 +1564,21 @@ test('Home selects older consequences beyond forty newer issues and repairs lega
   })
   expect((await t.query(api.resident.evidence.listPublishedIssues, {}))[0].slug).toBe(original.slug)
 
+  // Equal-score candidates must use accepted-version dates at the cutoff,
+  // even when their issue metadata was updated more recently.
+  await t.run(async ctx => {
+    for (const issue of await ctx.db.query('issues').take(150)) {
+      if (issue._id === before._id) continue
+      const accepted = (await ctx.db.get(issue.currentVersionId!))!
+      await ctx.db.patch(issue._id, { currentImportanceScore: before.currentImportanceScore!, currentAcceptedAt: 0 })
+      await ctx.db.patch(accepted._id, {
+        createdAt: 0,
+        payload: { ...accepted.payload!, importance: { ...accepted.payload!.importance, score: before.currentImportanceScore! } },
+      })
+    }
+  })
+  expect((await t.query(api.resident.evidence.listPublishedIssues, {}))[0].slug).toBe(original.slug)
+
   // Migration copies scores from current accepted versions and leaves dates and
   // versions intact. Repeating it is a no-op, including for withheld candidates.
   await t.run(async ctx => {

@@ -1113,6 +1113,7 @@ export const publishIssueBuild = internalMutation({
         currentVersionId: issueVersionId,
         currentMode: ranked.mode,
         currentImportanceScore: ranked.importance.score,
+        currentAcceptedAt: now,
         updatedAt: now,
       })
       await indexIssue(ctx, issue._id)

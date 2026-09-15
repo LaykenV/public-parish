@@ -2447,7 +2447,9 @@ without changing it. Local changes only. Details are in [docs/work.md](docs/work
 ### 2026-09-15 - working tree, consequence-first Home
 
 Changed Home issue selection to use indexed accepted consequence scores.
-Recency breaks ties and cannot push a routine item above a higher score.
+Accepted-version recency breaks ties and cannot push a routine item above a
+higher score. Review caught a candidate-cutoff tie mismatch; the index and final
+list now share the same ordering, with a regression beyond forty equal scores.
 The release repair copies existing scores in bounded transactions without
 new evidence versions or alerts. Added ranking and repair regressions.
 The owner authorized PR review and production shipment; release checks are pending.
