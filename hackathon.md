@@ -2473,3 +2473,12 @@ status line, its active icon and three bouncing dots. Existing Convex progress
 still chooses the stage. Passed 41 Ask tests, both typechecks, build, targeted
 lint and 17 Chromium/WebKit browser checks. Inspected desktop and phone screenshots.
 The owner authorized PR review and production shipment. Release checks are pending.
+
+### 2026-09-15 - working tree, full-screen Ask correction
+
+The owner rejected the sidebar released in PR #254. Removed the visible desktop
+heading and introduction so chat fills the screen below navigation. Slowed the
+status shimmer to four seconds. All 778 tests, both typechecks, build and lint
+passed with 15 existing warnings. Nine Chromium and WebKit checks passed with
+one desktop-only skip. Inspected the desktop conversation screenshot. PR review
+and the authorized production release are pending.

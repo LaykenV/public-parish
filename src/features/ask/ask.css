@@ -793,7 +793,7 @@
   }
 }
 
-/* Desktop context sits beside the full-height conversation. */
+/* Keep the conversation loading indicator centered in the available space. */
 .ask-loading {
   display: grid;
   flex: 1;
@@ -809,30 +809,13 @@
 
 @media (min-width: 48.001rem) {
   .ask-page:not(.ask-page-embedded) {
-    display: grid;
-    grid-template-columns: minmax(12rem, 16rem) minmax(0, 48rem);
-    gap: clamp(1.5rem, 4vw, 4rem);
-    width: min(100% - 3rem, 68rem);
-  }
-
-  .ask-page:not(.ask-page-embedded) .ask-head {
-    min-height: 0;
-    margin: 0;
-    overflow-y: auto;
+    width: calc(100% - 3rem);
+    padding-top: 0.75rem;
   }
 
   .ask-page:not(.ask-page-embedded) .ask-layout {
     min-width: 0;
     margin-top: 0;
-  }
-
-  .ask-head .ask-scope,
-  .ask-head .ask-scope-line {
-    margin-top: 1.25rem;
-  }
-
-  .ask-head .ask-title {
-    font-size: clamp(1.7rem, 2.5vw, 2.25rem);
   }
 }
 
@@ -1128,7 +1111,7 @@
   background-size: 250% 100%;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: ask-progress-shimmer 2s linear infinite;
+  animation: ask-progress-shimmer 4s linear infinite;
 }
 .ask-progress-dots {
   display: flex;

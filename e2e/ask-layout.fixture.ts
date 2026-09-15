@@ -11,10 +11,13 @@ test('desktop composer starts centered and docks after the first question', asyn
   const composer = page.locator('.ask-composer')
   await expect(composer).toBeVisible()
   const reading = (await page.locator('.ask-reading').boundingBox())!
-  const heading = (await page.locator('.ask-head').boundingBox())!
-  expect(reading.x).toBeGreaterThan(heading.x + heading.width)
-  expect(Math.abs(reading.y - heading.y)).toBeLessThan(2)
-  expect(reading.height).toBeGreaterThan(650)
+  await expect(page.locator('.ask-head')).toHaveCount(0)
+  await expect(page.locator('.ask-lede')).toHaveCount(0)
+  const viewport = page.viewportSize()!
+  expect(reading.x).toBeLessThanOrEqual(24)
+  expect(reading.width).toBeGreaterThanOrEqual(viewport.width - 48)
+  expect(reading.y).toBeLessThanOrEqual(60)
+  expect(reading.height).toBeGreaterThanOrEqual(viewport.height - 72)
   const before = (await composer.boundingBox())!
   expect(before.y).toBeGreaterThan(reading.y + reading.height * 0.3)
   expect(before.y + before.height).toBeLessThan(
@@ -85,6 +88,7 @@ test('answer wait has one shimmering status above three bouncing dots', async ({
   await expect(progress.locator('.ask-progress-status svg')).toHaveCount(1)
   await expect(progress.locator('.ask-progress-dots span')).toHaveCount(3)
   await expect(progress.locator('.ask-progress-label')).toHaveCSS('animation-name', 'ask-progress-shimmer')
+  await expect(progress.locator('.ask-progress-label')).toHaveCSS('animation-duration', '4s')
   await expect(progress.locator('.ask-progress-dots span').first()).toHaveCSS('animation-name', 'ask-dot-bounce')
   const status = (await progress.locator('.ask-progress-status').boundingBox())!
   const dots = (await progress.locator('.ask-progress-dots').boundingBox())!
