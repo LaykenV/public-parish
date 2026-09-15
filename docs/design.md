@@ -567,11 +567,13 @@ missing or fails. Group the name and email in a white account card. Use an
 outlined purple Sign out button with an icon, pending state and retryable error.
 On narrow phones, put the button beneath the account identity.
 
-Ask shows one status line with the active step's icon above three bouncing dots.
+Ask shows one status line with the active step's icon below the latest question.
+Align it with the answer text and keep it just above the composer. Do not show
+typing dots.
 Use a four-second text shimmer like the [shadcn utility](https://ui.shadcn.com/docs/utils/shimmer).
 The backend alone chooses the active step. Do not show a timer, checklist or
-progress card. Reduced motion stops the shimmer and bounce; forced colors keep
-the status readable. Announce the status text, with decorative icons and dots
+progress card. Reduced motion stops the shimmer; forced colors keep
+the status readable. Announce the status text, with the decorative icon
 hidden from assistive technology.
 
 
@@ -585,11 +587,13 @@ Keyboard activation follows the same rule. Sort resets to its default value.
 
 ## Ask layout and saved conversations, September 15
 
-On desktop, the conversation fills the screen beneath navigation with 24-pixel
-side margins and its composer at the bottom. Remove the visible page title,
-introduction and corpus label. Retain a screen-reader heading and the context
-bar when answering about a specific record. Phones retain the compact Back and
-title bar. This supersedes the sidebar layout rejected by the owner.
+On desktop, center the conversation in the original 48rem reading column and
+use the available height beneath navigation. Keep the visible title,
+introduction and corpus label removed. Short conversations sit at the bottom
+of the reading area, just above the composer. Longer conversations scroll in
+chronological order. Retain the screen-reader heading and context bar for a
+specific record. Phones retain the compact Back and title bar. This supersedes
+the full-width layout rejected by the owner.
 Show a centered spinner while an Account conversation opens. Do not show the
 empty composer or suggestions until restoration finishes. An expired thread
 shows the expiry notice; a failed request shows a visible recovery message.

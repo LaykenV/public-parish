@@ -14,8 +14,8 @@ test('desktop composer starts centered and docks after the first question', asyn
   await expect(page.locator('.ask-head')).toHaveCount(0)
   await expect(page.locator('.ask-lede')).toHaveCount(0)
   const viewport = page.viewportSize()!
-  expect(reading.x).toBeLessThanOrEqual(24)
-  expect(reading.width).toBeGreaterThanOrEqual(viewport.width - 48)
+  expect(reading.width).toBe(768)
+  expect(reading.x).toBe((viewport.width - reading.width) / 2)
   expect(reading.y).toBeLessThanOrEqual(60)
   expect(reading.height).toBeGreaterThanOrEqual(viewport.height - 72)
   const before = (await composer.boundingBox())!
@@ -80,21 +80,56 @@ for (const outcome of ['loaded', 'expired', 'failed'] as const) {
   })
 }
 
-test('answer wait has one shimmering status above three bouncing dots', async ({ page }, info) => {
+test('answer wait places one shimmering status below the question near the composer', async ({ page }, info) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto('/ask?fixture=checking')
   const progress = page.getByRole('region', { name: 'Answer progress' })
   await expect(progress).toBeVisible()
   await expect(progress.locator('.ask-progress-status svg')).toHaveCount(1)
-  await expect(progress.locator('.ask-progress-dots span')).toHaveCount(3)
+  await expect(progress.locator('.ask-progress-dots')).toHaveCount(0)
   await expect(progress.locator('.ask-progress-label')).toHaveCSS('animation-name', 'ask-progress-shimmer')
   await expect(progress.locator('.ask-progress-label')).toHaveCSS('animation-duration', '4s')
-  await expect(progress.locator('.ask-progress-dots span').first()).toHaveCSS('animation-name', 'ask-dot-bounce')
   const status = (await progress.locator('.ask-progress-status').boundingBox())!
-  const dots = (await progress.locator('.ask-progress-dots').boundingBox())!
-  expect(dots.y).toBeGreaterThanOrEqual(status.y + status.height)
+  const question = (await page.locator('.ask-turn-question').last().boundingBox())!
+  const composer = (await page.locator('.ask-composer').boundingBox())!
+  const reading = (await page.locator('.ask-reading').boundingBox())!
+  expect(status.x).toBe(reading.x)
+  expect(status.y - question.y - question.height).toBeGreaterThanOrEqual(12)
+  expect(status.y - question.y - question.height).toBeLessThanOrEqual(24)
+  expect(composer.y - status.y - status.height).toBeGreaterThan(0)
+  expect(composer.y - status.y - status.height).toBeLessThanOrEqual(40)
   await page.screenshot({ path: info.outputPath('ask-status.png') })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await expect(progress.locator('.ask-progress-label')).toHaveCSS('animation-name', 'none')
-  await expect(progress.locator('.ask-progress-dots span').first()).toHaveCSS('animation-name', 'none')
+})
+
+
+test('short conversations sit above the composer and longer history stays scrollable', async ({ page }, info) => {
+  await page.goto('/ask?fixture=not-found')
+  const region = page.locator('.ask-thread-region')
+  const thread = page.locator('.ask-thread')
+  const composer = page.locator('.ask-composer')
+  await expect(thread).toBeVisible()
+  const shortThread = (await thread.boundingBox())!
+  const area = (await region.boundingBox())!
+  const input = (await composer.boundingBox())!
+  expect(shortThread.y).toBeGreaterThan(area.y + 40)
+  expect(input.y - shortThread.y - shortThread.height).toBeGreaterThanOrEqual(0)
+  expect(input.y - shortThread.y - shortThread.height).toBeLessThanOrEqual(32)
+  await page.screenshot({ path: info.outputPath('ask-bottom-aligned.png') })
+
+  await page.goto('/ask?fixture=thread')
+  await expect(page.locator('.ask-turn')).toHaveCount(2)
+  // A short viewport forces overflow on desktop as well as phones.
+  await page.setViewportSize({ width: page.viewportSize()!.width, height: 500 })
+  await expect.poll(() => region.evaluate(el => el.scrollHeight > el.clientHeight)).toBe(true)
+  await region.evaluate(el => { el.scrollTop = 0 })
+  await expect.poll(async () => {
+    const top = (await region.boundingBox())!.y
+    return (await page.locator('.ask-turn-question').first().boundingBox())!.y - top
+  }).toBeGreaterThanOrEqual(0)
+  await region.evaluate(el => { el.scrollTop = el.scrollHeight })
+  const lastTurn = (await page.locator('.ask-turn').last().boundingBox())!
+  const dock = (await composer.boundingBox())!
+  expect(lastTurn.y + lastTurn.height).toBeLessThanOrEqual(dock.y)
 })

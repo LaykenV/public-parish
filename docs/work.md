@@ -7,6 +7,20 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 15 centered Ask conversation
+
+The owner clarified that Ask should keep its original centered width while
+using the available vertical space. On `fix/ask-centered-conversation`, restore
+the 48rem column, anchor short threads above the composer and remove typing
+dots. The active icon and four-second shimmer remain beneath the latest question.
+The visible desktop title and introduction remain removed.
+
+- [x] Pass all 778 tests, both typechecks, build and lint with 15 existing warnings.
+- [x] Pass 19 Chromium and WebKit checks, with one desktop-only skip. Cover short
+  and overflowing conversations, status placement, saved chats, source drawers
+  and phone keyboards. Inspect desktop and phone screenshots.
+- [ ] Complete the authorized PR review, production merge and smoke checks.
+
 ## September 15 Ask full-screen correction
 
 The owner rejected the desktop sidebar shipped in PR #254. The correction on
