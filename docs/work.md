@@ -7,6 +7,29 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 14 mobile citation drawer correction
+
+The owner's iPhone screenshot showed a gap below the source drawer. A local
+WebKit reproduction left the same 37-pixel gap when the visible viewport was
+taller than the root layout measurement. The shared viewport calculation now
+accepts the taller window measurement while retaining its stale-height guard.
+Medium and full evidence drawers use that same height, so full drawers also
+shrink within a reduced viewport instead of extending below it.
+
+Local verification passed 754 tests, both typechecks, build and lint with 15
+existing warnings. All 72 Chromium and WebKit reading and citation checks passed.
+The expanded suite passed all 34 cases across all ten amendments, all three
+featured stories, issues, decisions, meetings and Ask. It checks 360-pixel
+viewport heights and every story and amendment source at 320 by 568 pixels,
+including scrolling to source links and restoring focus and reading position.
+Before and after screenshots were inspected. Work is isolated on
+`fix/mobile-citation-drawers`, based on released `2e89429`.
+
+- [x] Correct the shared viewport and evidence drawer sizes.
+- [x] Check citation bounds, source scrolling, focus and reading restoration.
+- [ ] Release the fix and confirm it on the owner's iPhone. Browser tests
+  simulate viewport changes; they do not operate native Safari toolbars.
+
 ## September 14 code-freeze corrections
 
 The [audit](launch-audit-2026-09-14.md) and

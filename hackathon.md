@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-14T22:25:58Z
+- **Last updated:** 2026-09-15T01:18:19Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2347,3 +2347,12 @@ and three Firecrawl credits. All five PRs passed both reviews and CI. Combined
 production workflow `34903301247`, independent smoke and 56 live browser checks
 passed.
 See [the correction receipt](docs/code-freeze-2026-09-14.md).
+
+### 2026-09-15 - working tree, mobile citation drawers
+Reproduced the owner's bottom gap in WebKit and corrected the shared viewport
+calculation and evidence drawer heights. Local verification passed 754 tests,
+both typechecks, build, lint and 72 Chromium/WebKit reading and citation checks.
+Before and after screenshots were inspected. No backend changes or deployment.
+The expanded suite passed 34 cases, including all ten amendments and every
+source in each story and amendment evidence list. Native iPhone confirmation
+remains pending.

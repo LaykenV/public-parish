@@ -1310,13 +1310,13 @@
 /* Sheet heights for the evidence and report flows */
 
 .pp-sheet.ev-sheet[data-size='medium'] {
-  max-height: min(27rem, 72dvh);
+  max-height: min(27rem, var(--sheet-viewport-height, 100dvh) * 0.72);
 }
 
 .pp-sheet.ev-sheet[data-size='full'],
 .pp-sheet.ev-report-sheet[data-size='full'] {
-  max-height: calc(100dvh - 2rem);
-  height: calc(100dvh - 2rem);
+  max-height: calc(var(--sheet-viewport-height, 100dvh) - 2rem);
+  height: calc(var(--sheet-viewport-height, 100dvh) - 2rem);
 }
 
 @media (min-width: 48rem) {
