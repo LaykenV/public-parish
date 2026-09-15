@@ -7,6 +7,43 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 15 local issue readability audit
+
+The owner requested a review after a reader found formal titles and repeated
+"Why this may matter" explanations. The [five-issue audit](readability-audit-2026-09-15.md)
+compares current public copy with accepted citations and provides manually
+prepared replacement drafts. Pafford EMS is the likely reader example; the exact
+URL remains unconfirmed. Its latest dated action receives a report, while two
+importance explanations repeat the broader contract scope.
+
+Local work is isolated in `public-parish-readability`, based on released
+`f46a933`. Extraction and issue prompts now ask for recognizable subjects,
+familiar wording and distinct supported context. The reviewer preserves evidence
+and procedural-stage requirements. Prompt versions changed, and existing tests
+now use the new extraction version. No accepted text, scores or UI changed.
+
+- [x] Inspect five public issue details and their accepted excerpts. Verify the
+  live EMS page at desktop and phone widths and inspect both screenshots.
+- [x] Prepare five source-backed review drafts and identify missing context.
+- [x] Update extraction, issue drafting and issue review prompts locally.
+- [x] Pass 775 tests, both typechecks, build, lint and diff review. Lint retains
+  15 existing warnings. The first suite exposed two fixtures pinned to the old
+  prompt version; updating those restored replay and evidence-chain checks.
+  The initial build lacked the public Convex URL. Build and lint passed after
+  supplying that URL in the local build environment.
+- [ ] Evaluate new generated drafts on these five saved input sets in development
+  before claiming a model-quality improvement. Existing publications need fresh
+  review before replacement. No source batch or publication is authorized here.
+- [ ] Resolve the Lena-Flatwoods stage mismatch in a bounded evidence correction.
+  The issue says decided; the linked minutes record says scheduled. The supported
+  action permits seeking bids, not a construction award or work start.
+- [ ] During the next bounded library-tax source update, capture the official
+  September 23 hearing line missing from the currently accepted excerpt.
+
+The Rapides PDF host returned HTTP 403, so the three Rapides comparisons use
+retained public citation excerpts. The full EMS report was not inspected.
+No paid model calls, ingestion, backend sync, publication or release occurred.
+
 ## September 15 consequence-first Home release
 
 The owner authorized implementing the ranking recommendation and shipping all

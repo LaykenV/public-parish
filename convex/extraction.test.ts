@@ -750,7 +750,7 @@ test('gold case: a valid CO-029-2026 extraction validates and records the full e
     ['validate', 'succeeded'],
   ])
   expect(stages[0].attempt).toBe(1)
-  expect(stages[0].promptVersion).toBe('v1.16')
+  expect(stages[0].promptVersion).toBe('v1.17')
   expect(stages[0].schemaVersion).toBe('v1')
 
   const extraction = await extractionByRun(t, start.runId)
@@ -760,7 +760,7 @@ test('gold case: a valid CO-029-2026 extraction validates and records the full e
     modelRole: 'MODEL_STRONG',
     modelId: MODEL_ID,
     route: 'ai_gateway',
-    promptVersion: 'v1.16',
+    promptVersion: 'v1.17',
     schemaVersion: 'v1',
     processorVersion: 'v1.22',
   })
@@ -1143,7 +1143,7 @@ test('an old processor run cannot persist under the new processor label', async 
       targetRecordId: TARGET_RECORD_ID,
       sourceRecordIdProvenance: 'source_printed',
       modelRole: 'MODEL_STRONG',
-      promptVersion: 'v1.16',
+      promptVersion: 'v1.17',
       schemaVersion: 'v1',
       errorClass: 'forced',
       errorDetail: 'must reject mixed processor versions',
