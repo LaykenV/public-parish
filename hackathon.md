@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-15T18:30:18Z
+- **Last updated:** 2026-09-15T20:36:36Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2463,3 +2463,13 @@ plain wording and separate context for report updates and broader contracts.
 All 775 tests, both typechecks, build and lint passed with 15 existing warnings.
 The [audit](docs/readability-audit-2026-09-15.md) records evidence gaps and browser
 inspection. No model-quality evaluation, accepted-content change or release yet.
+
+
+### 2026-09-15 - working tree, Ask layout and loading
+
+Moved desktop Ask context beside the conversation and added a spinner while
+saved conversations open. Replaced the answer progress card with one shimmering
+status line, its active icon and three bouncing dots. Existing Convex progress
+still chooses the stage. Passed 41 Ask tests, both typechecks, build, targeted
+lint and 17 Chromium/WebKit browser checks. Inspected desktop and phone screenshots.
+The owner authorized PR review and production shipment. Release checks are pending.

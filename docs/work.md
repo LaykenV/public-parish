@@ -7,6 +7,25 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 15 Ask layout and loading corrections
+
+The owner requested more vertical conversation space, a spinner while opening
+an Account conversation, and a simpler answer wait. Local changes on
+`fix/ask-layout-loading`, based on `94f2916`, move desktop context into a side
+column. Saved conversations show a spinner until they load or reach a visible
+expiry or failure state. Answer generation shows three bouncing dots below one
+shimmering status line and its active icon, driven by the existing backend stage.
+
+- [x] Pass 41 Ask tests, both typechecks, production build and targeted lint.
+- [x] Pass 17 browser checks in Chromium and WebKit, with one desktop-only case
+  skipped on mobile. Cover delayed history, expiry, failure, composer placement,
+  reduced motion and existing mobile chat/source journeys. Inspect screenshots.
+- [ ] Complete the owner-authorized PR review, production merge and smoke checks.
+  No backend changes; release verification is pending.
+
+The first unit run hit the system temporary-directory quota before tests ran.
+Using a task-owned temporary directory fixed the test setup.
+
 ## September 15 local issue readability audit
 
 The owner requested a review after a reader found formal titles and repeated
