@@ -567,14 +567,12 @@ missing or fails. Group the name and email in a white account card. Use an
 outlined purple Sign out button with an icon, pending state and retryable error.
 On narrow phones, put the button beneath the account identity.
 
-Ask replaces the bouncing dots with a source-checking activity panel. Show the
-backend stage, elapsed time and a compact list of steps. The stages are finding
-relevant records, reading official sources, writing the answer and checking
-citations. Advance steps only from backend progress. Elapsed time never advances
-a stage or implies a percentage. After twenty seconds, explain that larger
-searches take longer. Use a subtle purple text shimmer for the active label,
-with static text for reduced motion and forced colors. Announce stage changes
-without announcing every timer tick. No model output or internal tool names.
+Ask shows one status line with the active step's icon above three bouncing dots.
+Use a two-second text shimmer like the [shadcn utility](https://ui.shadcn.com/docs/utils/shimmer).
+The backend alone chooses the active step. Do not show a timer, checklist or
+progress card. Reduced motion stops the shimmer and bounce; forced colors keep
+the status readable. Announce the status text, with decorative icons and dots
+hidden from assistive technology.
 
 
 ## Follow and Explore controls, September 15
@@ -583,3 +581,13 @@ Use the shared primary purple button for Follow on stories, amendments, issues,
 linked decisions, utility updates and body coverage. Clicking a selected Explore
 filter option clears it. Selecting another option replaces the selection.
 Keyboard activation follows the same rule. Sort resets to its default value.
+
+
+## Ask layout and saved conversations, September 15
+
+On desktop, put the Ask heading, introduction and evidence scope in a left
+column. The conversation uses the available height beneath navigation, with its
+composer at the bottom. Phones retain the compact Back and title bar.
+Show a centered spinner while an Account conversation opens. Do not show the
+empty composer or suggestions until restoration finishes. An expired thread
+shows the expiry notice; a failed request shows a visible recovery message.

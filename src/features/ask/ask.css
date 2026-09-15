@@ -793,6 +793,49 @@
   }
 }
 
+/* Desktop context sits beside the full-height conversation. */
+.ask-loading {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  place-content: center;
+  color: var(--primary);
+}
+
+.ask-loading > svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+@media (min-width: 48.001rem) {
+  .ask-page:not(.ask-page-embedded) {
+    display: grid;
+    grid-template-columns: minmax(12rem, 16rem) minmax(0, 48rem);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    width: min(100% - 3rem, 68rem);
+  }
+
+  .ask-page:not(.ask-page-embedded) .ask-head {
+    min-height: 0;
+    margin: 0;
+    overflow-y: auto;
+  }
+
+  .ask-page:not(.ask-page-embedded) .ask-layout {
+    min-width: 0;
+    margin-top: 0;
+  }
+
+  .ask-head .ask-scope,
+  .ask-head .ask-scope-line {
+    margin-top: 1.25rem;
+  }
+
+  .ask-head .ask-title {
+    font-size: clamp(1.7rem, 2.5vw, 2.25rem);
+  }
+}
+
 /*
   Phone chat screen. One bar, one scrolling conversation, one composer at the
   bottom. Every phone entry point renders the page inside .mobile-chat-screen
@@ -1070,34 +1113,52 @@
   }
 }
 
-.ask-progress {
-  max-width: 32rem;
-  padding: 1rem 1.1rem;
-  border: 1px solid #e6dfef;
-  border-radius: 1rem;
-  background: #fdfcfe;
-}
-.ask-progress-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
-.ask-progress-label {
+.ask-progress-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin: 0;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #6340a3;
-  background: linear-gradient(100deg, #6340a3 20%, #8060ae 45%, #6340a3 70%);
+  color: var(--primary);
+  font-size: var(--pp-text-small);
+  font-weight: 500;
+}
+.ask-progress-status svg { width: 1rem; height: 1rem; flex: none; }
+.ask-progress-label {
+  background: linear-gradient(110deg, currentColor 35%, var(--background) 50%, currentColor 65%);
   background-size: 250% 100%;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: ask-progress-shimmer 3s linear infinite;
+  animation: ask-progress-shimmer 2s linear infinite;
 }
-.ask-progress-time { flex: none; color: var(--muted-foreground); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
-.ask-progress-detail { margin: 0.45rem 0 1rem; color: var(--muted-foreground); font-size: 0.8125rem; line-height: 1.5; }
-.ask-progress-steps { display: grid; gap: 0.65rem; list-style: none; padding: 0; margin: 0; }
-.ask-progress-steps li { display: flex; gap: 0.65rem; align-items: center; color: #6b6575; font-size: 0.8125rem; }
-.ask-progress-steps svg { width: 15px; height: 15px; flex: none; }
-.ask-progress-steps [data-state='active'] { color: #6340a3; font-weight: 600; }
-.ask-progress-steps [data-state='done'] { color: #494352; }
-.ask-progress-steps [data-state='done'] svg { color: #6340a3; }
-.ask-progress-patience { margin: 1rem 0 0; border-top: 1px solid #e6dfef; padding-top: 0.8rem; color: var(--muted-foreground); font-size: 0.8125rem; line-height: 1.5; }
-@keyframes ask-progress-shimmer { to { background-position: -250% 0; } }
-@media (prefers-reduced-motion: reduce) { .ask-progress-label { animation: none; background: none; -webkit-text-fill-color: currentColor; } }
-@media (forced-colors: active) { .ask-progress-label { background: none; -webkit-text-fill-color: currentColor; } }
+.ask-progress-dots {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  height: 2rem;
+  margin-top: 0.5rem;
+  color: var(--primary);
+}
+.ask-progress-dots span {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: currentColor;
+  animation: ask-dot-bounce 1.2s ease-in-out infinite;
+}
+.ask-progress-dots span:nth-child(2) { animation-delay: 0.15s; }
+.ask-progress-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes ask-progress-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -150% 0; }
+}
+@keyframes ask-dot-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-0.3rem); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ask-progress-label { animation: none; background: none; -webkit-text-fill-color: currentColor; }
+  .ask-progress-dots span { animation: none; }
+}
+@media (forced-colors: active) {
+  .ask-progress-label { background: none; -webkit-text-fill-color: currentColor; }
+}

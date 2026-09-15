@@ -1,33 +1,36 @@
 import { renderToStaticMarkup } from 'react-dom/server'
-import { afterEach, expect, test, vi } from 'vitest'
+import { expect, test } from 'vitest'
 import { AskChecking } from './ask-progress'
 
-afterEach(() => vi.restoreAllMocks())
-
-test('elapsed time never advances the reported backend stage', () => {
-  vi.spyOn(Date, 'now').mockReturnValue(121_000)
+test.each([
+  ['searching', 'Finding relevant records', 'search'],
+  ['reading', 'Reading official sources', 'file-search'],
+  ['writing', 'Writing your answer', 'pen-line'],
+  ['checking', 'Checking citations', 'shield-check'],
+] as const)('shows only the reported %s stage and its icon', (phase, label, icon) => {
   const html = renderToStaticMarkup(
-    <AskChecking progress={{ phase: 'searching', startedAt: 1000 }} />,
+    <AskChecking progress={{ phase, startedAt: 1000 }} />,
   )
-  expect(html).toContain('2:00')
-  expect(html).toContain('Larger searches take longer')
-  expect(html).not.toContain('data-state="done"')
-  expect(html).toContain('role="status">Finding relevant records')
+  expect(html).toContain(label)
+  expect(html).toContain(`lucide-${icon}`)
+  expect(html.match(/role="status"/g)).toHaveLength(1)
+  expect(html).not.toContain('<ol')
+  expect(html).not.toContain('ask-progress-time')
 })
 
-test('only stages preceding the reported phase are complete', () => {
-  const html = renderToStaticMarkup(
-    <AskChecking progress={{ phase: 'writing', startedAt: Date.now() }} />,
-  )
-  expect(html.match(/data-state="done"/g)).toHaveLength(2)
-  expect(html.match(/data-state="active"/g)).toHaveLength(1)
-  expect(html.match(/data-state="waiting"/g)).toHaveLength(1)
-  expect(html).toContain('role="status">Writing your answer')
-})
-
-test('no backend update leaves every stage unconfirmed', () => {
+test('no backend update uses a neutral status without claiming a stage', () => {
   const html = renderToStaticMarkup(<AskChecking />)
   expect(html).toContain('Checking the published record')
-  expect(html).not.toContain('data-state="done"')
-  expect(html).not.toContain('data-state="active"')
+  expect(html).not.toContain('Finding relevant records')
+  expect(html).toContain('class="ask-progress-dots" aria-hidden="true"')
+})
+
+
+test('an unfamiliar backend stage retains a neutral loading status', () => {
+  const html = renderToStaticMarkup(
+    // @ts-expect-error A newer backend can introduce a stage before this tab reloads.
+    <AskChecking progress={{ phase: 'preparing', startedAt: 1000 }} />,
+  )
+  expect(html).toContain('Checking the published record')
+  expect(html).toContain('ask-progress-dots')
 })

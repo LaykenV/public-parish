@@ -4,7 +4,7 @@ import { ArrowLeftIcon } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 
-import { PageLoading } from '../resident-blueprint/resident-loading'
+import { Spinner } from '../../components/ui/spinner'
 import { resolveCitationId } from '../evidence/contracts'
 import type { CitationMap } from '../evidence/contracts'
 import { EvidenceProvider } from '../evidence/evidence-surface'
@@ -93,6 +93,9 @@ export function AskPage({
     () => new Set(),
   )
   const [expired, setExpired] = useState(false)
+  const [restoring, setRestoring] = useState(true)
+  const [restoreError, setRestoreError] = useState('')
+  const handoffChecked = useRef(false)
   const [submitting, setSubmitting] = useState(false)
   const [status, setStatus] = useState('')
   const [pendingScope, setPendingScope] = useState<{
@@ -192,7 +195,10 @@ export function AskPage({
     // A conversation on the page is not an expired one. Without this the
     // notice outlives the thread that replaced it, and its restart action
     // would then clear the conversation the resident just started.
-    if (next) setExpired(false)
+    if (next) {
+      setExpired(false)
+      setRestoreError('')
+    }
     const previous = previousConversation.current
     previousConversation.current = next
     if (!next || !previous || previous.id !== next.id) return
@@ -249,7 +255,13 @@ export function AskPage({
   const captcha = availability.kind === 'captcha'
   const offline = !online || availability.kind === 'offline'
   const composerDisabled =
-    submitting || checking || blockingRetry || cooldown || captcha || offline
+    restoring ||
+    submitting ||
+    checking ||
+    blockingRetry ||
+    cooldown ||
+    captcha ||
+    offline
   const canSubmit =
     !composerDisabled &&
     draft.trim().length > 0 &&
@@ -284,7 +296,7 @@ export function AskPage({
     const region = threadRef.current
     if (!region || !conversationId) return
     region.scrollTop = region.scrollHeight
-  }, [conversationId])
+  }, [conversationId, restoring])
 
   // A keyboard shrinks the conversation from below. A reader who was at the
   // latest answer stays there instead of losing it behind the keyboard.
@@ -306,7 +318,7 @@ export function AskPage({
       region.removeEventListener('scroll', track)
       observer.disconnect()
     }
-  }, [adapter])
+  }, [adapter, restoring])
 
   // A paused device returns to Ask once its own retry time has passed.
   useEffect(() => {
@@ -363,12 +375,21 @@ export function AskPage({
   )
 
   useEffect(() => {
-    if (!adapter) return
+    // Keep the wait active through scope navigation and its callback changes.
+    if (!adapter || handoffChecked.current) return
+    handoffChecked.current = true
     const handle = takeRecentAskHandoff()
-    if (!handle) return
-    void openHandle(handle).catch(() => {
-      setStatus('This conversation could not open. Try again from Account.')
-    })
+    if (!handle) {
+      setRestoring(false)
+      return
+    }
+    void openHandle(handle)
+      .catch(() => {
+        setRestoreError(
+          'This conversation could not open. Try again from Account.',
+        )
+      })
+      .finally(() => setRestoring(false))
   }, [adapter, openHandle])
 
   const confirmScopeChange = useCallback(() => {
@@ -540,25 +561,29 @@ export function AskPage({
         </header>
       ) : null}
 
-      {!mobile ? <header className="ask-head">
-        <h1 className="ask-title">Ask Public Parish</h1>
-        <p className="ask-lede">
-          Answers come only from published, validated official evidence.
-        </p>
-      </header> : null}
+      {!mobile ? (
+        <header className="ask-head">
+          <h1 className="ask-title">Ask Public Parish</h1>
+          <p className="ask-lede">
+            Answers come only from published, validated official evidence.
+          </p>
+          <AskScopeBar scope={viewScope} />
+        </header>
+      ) : null}
 
       {data.availability.kind === 'unavailable' && !data.scenario ? (
         <AskUnavailable />
-      ) : !adapter ? (
-        <PageLoading />
+      ) : !adapter || restoring ? (
+        <div className="ask-loading" role="status" aria-busy="true">
+          <Spinner aria-hidden="true" />
+          <span className="visually-hidden">Loading conversation</span>
+        </div>
       ) : (
         <EvidenceProvider
           citations={citations}
           onSelect={onSelectSource}
           selected={selected}
         >
-          <AskScopeBar scope={viewScope} />
-
           <div className="ask-layout">
             <div className="ask-reading">
               {mobile && empty ? (
@@ -579,6 +604,9 @@ export function AskPage({
                 className="ask-thread-region"
                 ref={threadRef}
               >
+                {restoreError ? (
+                  <p role="alert" className="ask-notice">{restoreError}</p>
+                ) : null}
                 {expired ? (
                   <AskExpiredNotice
                     onRestart={() => {
