@@ -445,16 +445,16 @@ test('menu Ask keeps the outer screen fixed with saved device history and a pann
   await expect(page.locator('body')).not.toHaveCSS('position', 'fixed')
 })
 
-test('answer wait uses three dots and keeps the send spinner', async ({ page }, info) => {
+test('answer wait uses one shimmering status and keeps the send spinner', async ({ page }, info) => {
   await page.goto('/ask?fixture=checking')
-  await expect(page.locator('.ask-progress-dots > span')).toHaveCount(3)
+  await expect(page.locator('.ask-progress-dots')).toHaveCount(0)
   await expect(page.locator('.ask-progress-status svg')).toHaveCount(1)
   await expect(page.locator('.ask-checking')).not.toContainText('The answer will appear')
   await expect(page.locator('.ask-send')).toHaveAttribute('data-loading')
-  await expect(page.locator('.ask-progress-dots > span').first()).toHaveCSS('animation-name', 'none')
+  await expect(page.locator('.ask-progress-label')).toHaveCSS('animation-name', 'none')
   await page.emulateMedia({ reducedMotion: 'no-preference' })
-  await expect(page.locator('.ask-progress-dots > span').first()).toHaveCSS('animation-name', 'ask-dot-bounce')
-  await page.screenshot({ path: info.outputPath('answer-wait-dots.png') })
+  await expect(page.locator('.ask-progress-label')).toHaveCSS('animation-name', 'ask-progress-shimmer')
+  await page.screenshot({ path: info.outputPath('answer-wait-status.png') })
 })
 
 for (const [kind, path] of [['ask', '/ask?fixture=empty-corpus'], records[0]] as const) {

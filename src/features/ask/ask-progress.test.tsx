@@ -22,7 +22,7 @@ test('no backend update uses a neutral status without claiming a stage', () => {
   const html = renderToStaticMarkup(<AskChecking />)
   expect(html).toContain('Checking the published record')
   expect(html).not.toContain('Finding relevant records')
-  expect(html).toContain('class="ask-progress-dots" aria-hidden="true"')
+  expect(html).not.toContain('ask-progress-dots')
 })
 
 
@@ -32,5 +32,5 @@ test('an unfamiliar backend stage retains a neutral loading status', () => {
     <AskChecking progress={{ phase: 'preparing', startedAt: 1000 }} />,
   )
   expect(html).toContain('Checking the published record')
-  expect(html).toContain('ask-progress-dots')
+  expect(html).toContain('ask-progress-label')
 })

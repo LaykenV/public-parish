@@ -2482,3 +2482,13 @@ status shimmer to four seconds. All 778 tests, both typechecks, build and lint
 passed with 15 existing warnings. Nine Chromium and WebKit checks passed with
 one desktop-only skip. Inspected the desktop conversation screenshot. PR review
 and the authorized production release are pending.
+
+
+### 2026-09-15 - working tree, centered Ask conversation
+
+The owner clarified the Ask layout after PR #255. Restored the centered 48rem
+column, moved short conversations above the composer and removed typing dots.
+The active status keeps its four-second shimmer. All 778 tests, both typechecks,
+build and lint passed with 15 existing warnings. Nineteen Chromium and WebKit
+checks passed, with one desktop-only skip. Inspected desktop and phone screenshots.
+PR review and the authorized release are pending.

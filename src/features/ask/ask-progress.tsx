@@ -26,11 +26,6 @@ export function AskChecking({ progress }: { progress?: AnswerProgress }) {
         <Icon aria-hidden="true" />
         <span className="ask-progress-label">{active.label}</span>
       </p>
-      <div className="ask-progress-dots" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-      </div>
     </section>
   )
 }
