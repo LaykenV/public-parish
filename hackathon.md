@@ -2502,3 +2502,12 @@ selection and focus transitions in browser checks. No backend changes.
 All 778 tests, both typechecks, build and lint pass with 15 existing warnings.
 All 58 focused Chromium/WebKit checks pass; phone and desktop screenshots were
 inspected. PR review and the authorized production release remain pending.
+
+
+### 2026-09-15 - working tree, remove the hero scroll button
+
+Removed the redundant story-scroll button after the owner's review of PR #257.
+The introduction leads directly into the stories. Parish setup stays below
+statewide content. Adjusted the existing browser journey and design contract.
+Build, targeted lint and 12 Chromium/WebKit checks passed. Inspected phone and
+desktop screenshots. PR checks and the follow-up release are pending.

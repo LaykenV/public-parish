@@ -1209,3 +1209,13 @@ tests, both typechecks, build and lint pass with 15 existing warnings. All 58
 focused Chromium and WebKit checks pass. Inspected desktop and phone screenshots;
 the stories heading moved 93 pixels higher at 390 pixels wide. PR review and
 the authorized production release remain pending.
+
+
+## September 15, remove the redundant hero button
+
+The owner removed the scroll button introduced in PR #257 because the stories
+already follow the hero. The introduction now leads directly into Across
+Louisiana. Removed the button's layout rules and adjusted the existing browser
+journey. Parish setup remains below statewide content. Build, targeted lint and
+12 Chromium/WebKit checks passed. Inspected 320-, 390- and 1440-pixel layouts.
+PR checks and the follow-up release are pending.
