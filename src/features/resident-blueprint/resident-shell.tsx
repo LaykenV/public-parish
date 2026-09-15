@@ -216,6 +216,21 @@ export function ResidentShell({ children }: { children: ReactNode }) {
             className="resident-brand"
             to="/"
             aria-label="Public Parish home"
+            onClick={(event) => {
+              if (
+                pathname !== '/' ||
+                event.button !== 0 ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey
+              ) return
+              event.preventDefault()
+              const reduced = window.matchMedia(
+                '(prefers-reduced-motion: reduce)',
+              ).matches
+              window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
+            }}
           >
             <img src="/brand-mark.svg" alt="" width="40" height="40" />
             <span>Public Parish</span>
