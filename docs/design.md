@@ -547,3 +547,14 @@ timelines use the story's vertical rule and dated entries. Decision details reta
 the official wording, related issue and meeting links, sources and version history.
 Use Inter, the existing purple `#6340A3`, lavender `#F7F6FA`, white `#FFFFFF`,
 heading `#242131`, reading `#494352` and border `#E2DDEA` tokens.
+
+
+## Citation source actions, September 14
+
+Keep source actions in the sheet footer while the excerpt scrolls. The primary
+purple action says "Open official source" and shows the official hostname.
+Stories and amendments also offer "View saved copy" as a separate outlined
+action. Use the same action styling for record and Ask citations. Keep links
+at least 44 pixels tall and identify new-tab navigation for screen readers.
+Unavailable links keep a written explanation. Preserve exact excerpts, locators
+and the existing distinction between quoted text and surrounding sentences.

@@ -7,6 +7,25 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 14 citation source actions
+
+The local UI now gives citation drawers a persistent action footer. A purple
+"Open official source" button shows the website, and stories and amendments
+have a separate "View saved copy" button. The excerpt scrolls above the actions.
+One shared component covers stories, amendments, records and Ask, with explicit
+unavailable-link states and accessible new-tab labels. Exact excerpts stay intact.
+
+Validation passed 754 tests, both typechecks, build and lint with 15 existing
+warnings. All 96 reading and citation browser cases passed, one after a
+page-loading timeout on an unchanged retry. The source-link tests passed again
+after checking the real saved-copy fallback. An old local smoke configuration
+caused the first lint run to fail; removing it from the scan resolved that.
+Phone, short-screen, record and desktop screenshots were inspected, including
+the owner's Source 12. [PR #245](https://github.com/LaykenV/public-parish/pull/245)
+is open. CI found two resident test selectors that still used the old link
+wording. Updated them to the new source label; all six affected Chromium and
+WebKit cases passed locally. Latest-commit CI, review and release are pending.
+
 ## September 14 mobile citation drawer correction
 
 The owner's iPhone screenshot showed a gap below the source drawer. A local
@@ -27,8 +46,11 @@ Before and after screenshots were inspected. Work is isolated on
 
 - [x] Correct the shared viewport and evidence drawer sizes.
 - [x] Check citation bounds, source scrolling, focus and reading restoration.
-- [ ] Release the fix and confirm it on the owner's iPhone. Browser tests
-  simulate viewport changes; they do not operate native Safari toolbars.
+- [x] Ship the sizing fix through PR #244 as `34aa8bd`. Both reviewers, CI,
+  production workflow `34918385898`, independent smoke and 26 live citation
+  checks passed. See the [release receipt](https://github.com/LaykenV/public-parish/pull/244#issuecomment-5673474815).
+- [ ] Confirm native iPhone toolbar behavior. Browser tests simulate viewport
+  changes; they do not operate native Safari toolbars.
 
 ## September 14 code-freeze corrections
 

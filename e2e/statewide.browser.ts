@@ -94,7 +94,7 @@ for (const width of [320, 1280]) {
       })
       await expect(source).toBeVisible()
       await expect(
-        source.getByRole('link', { name: /original|official document/i }),
+        source.getByRole('link', { name: /Open official source at/ }),
       ).toHaveAttribute('href', /^https:\/\/lpsc\.(louisiana\.gov|la\.gov)\//)
       await page.keyboard.press('Escape')
       await expect(sourceButton).toBeFocused()

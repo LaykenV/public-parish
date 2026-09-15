@@ -10,7 +10,7 @@ test('accepted evidence opens by keyboard and returns focus under reduced motion
   await trigger.press('Enter')
   const source = page.getByRole('dialog', { name: 'Official source', exact: true })
   await expect(source).toBeVisible()
-  await expect(source.getByRole('link', { name: /original|official document/i })).toHaveAttribute('href', /^https:\/\/rppj\.com\//)
+  await expect(source.getByRole('link', { name: /Open official source at/ })).toHaveAttribute('href', /^https:\/\/rppj\.com\//)
   await page.keyboard.press('Escape')
   await expect(source).not.toBeVisible()
   await expect(trigger).toBeFocused()
