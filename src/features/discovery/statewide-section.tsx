@@ -29,9 +29,6 @@ export function StatewideRoundup() {
             alt="Illustration of power lines, a water tower and homes in a Louisiana landscape."
           />
         </Link>
-        <figcaption className="pp-utility-image-credit">
-          AI illustration
-        </figcaption>
       </figure>
       <div className="pp-story-copy">
         <p className="pp-story-place">Statewide utility roundup</p>

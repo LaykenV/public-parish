@@ -420,17 +420,6 @@
   outline-offset: -3px;
   border-radius: var(--radius-lg);
 }
-.pp-utility-image-credit {
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-sm);
-  background: var(--card);
-  color: var(--muted-foreground);
-  font-size: var(--pp-text-caption);
-  line-height: 1.4;
-}
 .pp-utility-details {
   margin-top: 1.25rem;
   border-block: 1px solid var(--border);

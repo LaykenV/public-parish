@@ -26,7 +26,7 @@ for (const width of [320, 1280]) {
     expect(imageBox!.width / imageBox!.height).toBeCloseTo(16 / 9, 1)
     await expect(
       section.getByText('AI illustration', { exact: true }),
-    ).toBeVisible()
+    ).toHaveCount(0)
     await expect(section.locator('details')).not.toHaveAttribute('open')
     const records = await cases.evaluateAll((elements) =>
       elements.map((element) => ({
