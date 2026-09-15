@@ -21,8 +21,10 @@ page-loading timeout on an unchanged retry. The source-link tests passed again
 after checking the real saved-copy fallback. An old local smoke configuration
 caused the first lint run to fail; removing it from the scan resolved that.
 Phone, short-screen, record and desktop screenshots were inspected, including
-the owner's Source 12. Work is on `design/citation-source-actions`. No PR or
-deployment for this UI change.
+the owner's Source 12. [PR #245](https://github.com/LaykenV/public-parish/pull/245)
+is open. CI found two resident test selectors that still used the old link
+wording. Updated them to the new source label; all six affected Chromium and
+WebKit cases passed locally. Latest-commit CI, review and release are pending.
 
 ## September 14 mobile citation drawer correction
 

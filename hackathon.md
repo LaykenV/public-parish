@@ -2369,5 +2369,7 @@ Added persistent source buttons to citation drawers. The official website has
 a primary button with its hostname; stories and amendments have a separate
 saved-copy button. Excerpts scroll above the actions. Local verification passed
 754 tests, typechecks, build, lint and 96 browser cases, one on a loading-timeout
-retry. Phone and desktop screenshots were inspected. This UI change is local
-and has not been committed or deployed.
+retry. Phone and desktop screenshots were inspected. PR #245 opened at
+`e5ca5b7`. CI found two resident test selectors using the former link label;
+updated selectors passed all six affected browser cases locally. Latest-commit
+CI and production release remain pending.
