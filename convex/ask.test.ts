@@ -142,6 +142,32 @@ test('opaque sessions isolate Agent threads and detach expired access', async ()
   ).rejects.toThrow('session is unavailable')
 })
 
+test('answer progress stays private to the owning session and thread', async () => {
+  const t = initTest()
+  await seedEvidence(t)
+  const token = 'progress-owner-session-0000000000000000000000000'
+  const otherToken = 'progress-other-session-0000000000000000000000000'
+  await t.mutation(api.ask.threads.createSession, { token })
+  await t.mutation(api.ask.threads.createSession, { token: otherToken })
+  const scope = { kind: 'corpus' as const, areaKey: 'lafayette-parish' }
+  const thread = await t.mutation(api.ask.threads.createThread, { token, scope })
+  const anotherThread = await t.mutation(api.ask.threads.createThread, { token, scope })
+  const question = await t.mutation(api.ask.threads.appendQuestion, { token, threadId: thread.threadId, question: 'What changed?', idempotencyKey: 'progress-question-00000001' })
+  const args = { token, threadId: thread.threadId, questionMessageId: question.messageId }
+  expect(await t.query(api.ask.threads.getAnswerProgress, args)).toBeNull()
+  const claim = await t.mutation(internal.ask.ledger.claimAnswer, args)
+  if (claim.kind !== 'ready') throw new Error('Expected an admitted answer')
+  for (const phase of ['searching', 'reading', 'writing', 'checking'] as const) {
+    await t.mutation(internal.ask.ledger.setAnswerPhase, { receiptId: claim.receiptId, answerAttempt: claim.attempt, phase })
+    expect(await t.query(api.ask.threads.getAnswerProgress, args)).toEqual({ phase, startedAt: expect.any(Number) })
+  }
+  await expect(t.query(api.ask.threads.getAnswerProgress, { ...args, token: otherToken })).rejects.toThrow('Thread is unavailable')
+  expect(await t.query(api.ask.threads.getAnswerProgress, { ...args, threadId: anotherThread.threadId })).toBeNull()
+  await expect(t.mutation(internal.ask.ledger.setAnswerPhase, { receiptId: claim.receiptId, answerAttempt: claim.attempt + 1, phase: 'writing' })).rejects.toThrow('Answer attempt is not running')
+  await t.mutation(internal.ask.ledger.failAnswer, { receiptId: claim.receiptId, answerAttempt: claim.attempt, errorClass: 'test_failure' })
+  expect(await t.query(api.ask.threads.getAnswerProgress, args)).toBeNull()
+})
+
 test('retrieval supplies every accepted record inside the thread scope', async () => {
   const t = initTest()
   const seeded = await seedEvidence(t)
@@ -239,7 +265,8 @@ test('retrieval supplies every accepted record inside the thread scope', async (
   ).rejects.toThrow('Issue evidence is unavailable')
 })
 
-test('answers follow-ups with retrieved citations and replays the Agent message', async () => {
+test.each(['focused', 'broad'] as const)('answers %s selections with retrieved citations and replays the Agent message', async retrievalMode => {
+  vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-09-15T03:00:00Z'))
   const t = initTest()
   const seeded = await seedEvidence(t)
   const token = 'answer-session-token-000000000000000000000000000000'
@@ -251,7 +278,7 @@ test('answers follow-ups with retrieved citations and replays the Agent message'
   const question = await t.mutation(api.ask.threads.appendQuestion, {
     token,
     threadId: thread.threadId,
-    question: 'What changed about drainage on Audubon Boulevard?',
+    question: 'What decisions changed this week?',
     idempotencyKey: 'answer-question-receipt-0001',
   })
 
@@ -260,10 +287,11 @@ test('answers follow-ups with retrieved citations and replays the Agent message'
   let answerPrompt = ''
   overrideAskGatewayForTests(async (_ctx, args) => {
     calls += 1
+    expect(await t.query(api.ask.threads.getAnswerProgress, { token, threadId: thread.threadId, questionMessageId: args.questionMessageId })).toMatchObject({ phase: args.stage === 'selector' ? 'searching' : 'writing' })
     if (args.stage === 'selector') {
       selectorPrompt = args.prompt
       return gatewayResult({
-        retrievalMode: 'focused',
+        retrievalMode,
         targets: [{ kind: 'decision', id: seeded.recordKey }],
       })
     }
@@ -292,6 +320,8 @@ test('answers follow-ups with retrieved citations and replays the Agent message'
   })
   expect(first.citations).toHaveLength(1)
   expect(first.citations[0].recordKey).toBe(seeded.recordKey)
+  expect(selectorPrompt).toContain('Question date in America/Chicago: 2026-09-14')
+  expect(answerPrompt).toContain(selectorPrompt.split('\n')[0])
   expect(selectorPrompt).toContain('Complete decision catalog for this batch')
   expect(selectorPrompt).toContain('"versions"')
   expect(selectorPrompt).toContain('Every accepted evidence excerpt in this batch')
@@ -330,7 +360,7 @@ test('answers follow-ups with retrieved citations and replays the Agent message'
       questionMessageId: followUp.messageId,
     }),
   ).resolves.toMatchObject({ kind: 'answer', replayed: false })
-  expect(selectorPrompt).toContain('What changed about drainage')
+  expect(selectorPrompt).toContain('What decisions changed this week?')
   expect(answerPrompt).toContain('Who received it?')
   expect(calls).toBe(4)
 
@@ -349,11 +379,11 @@ test('answers follow-ups with retrieved citations and replays the Agent message'
         totalTokens: 15,
       }),
       expect.objectContaining({
-        promptVersion: 'ask-selector-v2-batched',
+        promptVersion: 'ask-selector-v3-dated-targets',
         schemaVersion: 'ask-selector-v2-batched',
       }),
       expect.objectContaining({
-        promptVersion: 'ask-answer-v7-ballot',
+        promptVersion: 'ask-answer-v8-dated',
         schemaVersion: 'ask-answer-v3',
       }),
     ]),
@@ -426,11 +456,11 @@ test('invalid selector targets fall back to the complete accepted scope', async 
   expect(attempts).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
-        promptVersion: 'ask-selector-v2-batched',
+        promptVersion: 'ask-selector-v3-dated-targets',
         status: 'selection_invalid',
       }),
       expect.objectContaining({
-        promptVersion: 'ask-answer-v7-ballot',
+        promptVersion: 'ask-answer-v8-dated',
         status: 'success',
       }),
     ]),
@@ -607,7 +637,7 @@ test('records unknown provider usage without preempting later answers', async ()
     answerAttempt: claim.attempt,
     route: 'ai_gateway',
     modelId: 'openai/gpt-5.6-luna',
-    promptVersion: 'ask-answer-v7-ballot',
+    promptVersion: 'ask-answer-v8-dated',
     schemaVersion: 'ask-answer-v3',
     attempt: 1,
     status: 'failed',
@@ -801,7 +831,7 @@ test('fences a stale answer after its lease is retried', async () => {
       answerAttempt: first.attempt,
       route: 'ai_gateway',
       modelId: 'openai/gpt-5.6-luna',
-      promptVersion: 'ask-answer-v7-ballot',
+      promptVersion: 'ask-answer-v8-dated',
       schemaVersion: 'ask-answer-v3',
       attempt: 1,
       status: 'success',

@@ -1,3 +1,4 @@
+import type { AnswerProgress } from '../../../convex/ask/contracts'
 import type { AreaSlug } from '../discovery/contracts'
 import { areaName } from '../discovery/contracts'
 import type { CitationData, CitationMap } from '../evidence/contracts'
@@ -61,6 +62,7 @@ export type AskTurnView = {
   question: string
   askedAt: string
   state: AskTurnState
+  progress?: AnswerProgress
   answer?: AskSupportedAnswer | AskNotFoundAnswer
 }
 

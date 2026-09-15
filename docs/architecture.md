@@ -253,11 +253,20 @@ out of URLs and public telemetry.
 
 Ask selects accepted evidence, expands chosen issues and meetings to decisions,
 and verifies normalized document hashes before the answer pass. Valid not-found
-selection skips the document-heavy answer. Invalid, broad or empty selections
-expand to the allowed scope rather than silently dropping evidence. Corpus
+selection skips the document-heavy answer. Focused and broad selections both
+retain their validated targets. Invalid selections and broad selections without
+targets expand to the allowed scope rather than silently dropping evidence.
+Selection and answer prompts receive the question date in America/Chicago.
+Relative dates refer to government actions, not source-import timestamps. Corpus
 selection progresses through pages with a revision fence; selected-record and
 byte bounds fail visibly and ask for a narrower scope. Do not answer from only
 the first pages or a hidden fixed top-k.
+
+Ask answer receipts expose their current stage through a session-owned progress
+query. Internal stage writes require the active answer attempt. The client
+subscribes only while awaiting an answer and releases the subscription on success
+or failure. Progress contains a stage and start time, without question text,
+source contents, provider output or another session's records.
 
 Returned evidence IDs must belong to the accepted input and remain valid before
 display. A full source document may provide reading context but cannot authorize

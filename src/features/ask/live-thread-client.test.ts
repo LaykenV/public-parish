@@ -45,3 +45,18 @@ function memoryStorage(): Storage & { entries: () => Array<[string, string]> } {
     setItem: (key, value) => void values.set(key, value),
   }
 }
+
+test.each([false, true])('releases live progress when an answer settles, failure=%s', async fail => {
+  const stop = vi.fn()
+  const onProgress = vi.fn()
+  const progress = { phase: 'reading' as const, startedAt: 123 }
+  const watchQuery = vi.fn((_query: unknown, _args: unknown) => ({ onUpdate: vi.fn(() => stop), localQueryResult: () => progress }))
+  const action = fail ? vi.fn().mockRejectedValue(new Error('provider failure')) : vi.fn().mockResolvedValue({ kind: 'not_found' })
+  const client = new LiveAskThreadClient({ watchQuery, action } as unknown as ConvexReactClient, memoryStorage())
+  const result = client.answer('thread', 'question', false, onProgress)
+  if (fail) await expect(result).rejects.toThrow('provider failure')
+  else await expect(result).resolves.toEqual({ kind: 'not_found' })
+  expect(onProgress).toHaveBeenCalledWith(progress)
+  expect(vi.mocked(watchQuery).mock.calls[0]?.[1]).toMatchObject({ threadId: 'thread', questionMessageId: 'question', token: expect.any(String) })
+  expect(stop).toHaveBeenCalledOnce()
+})

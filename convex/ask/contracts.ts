@@ -177,3 +177,7 @@ export function storedScope(kind: AskScope['kind'], key: string): AskScope {
   if (kind === 'meeting') return { kind, meetingId: key }
   return key === '*' ? { kind } : { kind, areaKey: key }
 }
+
+export const answerProgressPhase = v.union(v.literal('searching'), v.literal('reading'), v.literal('writing'), v.literal('checking'))
+export const answerProgress = v.object({ phase: answerProgressPhase, startedAt: v.number() })
+export type AnswerProgress = typeof answerProgress.type

@@ -7,6 +7,58 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 14 phone Ask and Google sign-in correction
+
+The production diagnosis against release `34aa8bd` found an Ask request that ran
+for 115 seconds before `ask_scope_too_large`. Its sixteen selector attempts all
+recorded `selection_invalid`; fallback retained each batch until selection
+exceeded 1,500 excerpts. The rejected output was not stored, so its exact
+validation reason remains unproved.
+
+A local regression reproduces the broad-selection defect. The prompt asked for
+relevant targets, but validation rejected broad selections containing targets.
+The correction validates and retains those targets. Both model stages receive
+the question date in America/Chicago for relative dates. Invalid selections now
+record the specific validation reason without storing questions or model output.
+Evidence and spending limits remain in force. Broad questions still scan every
+catalog page, so these changes do not establish a production latency bound.
+
+Google callbacks completed in the inspected window, with later unauthenticated
+account queries. This does not prove which session the reported phone used.
+The local correction requests Google's account chooser through the pinned Auth
+v2 OAuth flow. Following waits for the backend profile before loading private
+data, shows the signed-in name and email, and offers sign-in recovery if the
+profile is missing.
+
+The Account card now shows the Google avatar with an initials fallback, name
+and email. Its outlined Sign out button reports pending and retryable error
+states. Ask replaces the bouncing dots with four backend stages, a shimmer
+label, elapsed time and a longer-search note. Stages advance only when the
+server reaches them. Progress queries require the owning session, and stage
+writes require the active answer attempt.
+
+- [x] Reproduce the selector contract defect with the existing weekly suggestion.
+  The old behavior fails the regression by adding an unrelated record.
+- [x] Check Google authorization URL protections and profile ownership locally.
+- [x] Check account loading, missing-profile recovery, identity and sign-out.
+- [x] Check progress ownership, stage updates and subscription cleanup.
+- [x] Inspect account and Ask previews at 320, 375 and 900 pixels in WebKit and
+  Chromium. Check reduced motion, avatar fallback and sign-out pending, error
+  and retry states. These checks use local components, not live Google OAuth.
+- [x] Pass 767 tests, both typechecks, build and lint with 15 existing warnings.
+  Review the changed authorization and evidence paths. The initial build lacked
+  VITE_CONVEX_URL in the isolated checkout; rerunning with the public development
+  URL passed. No cloud sync was required for these local checks.
+- [x] Receive authorization to file, review, merge and test production.
+- [x] Merge account PR #246 as `191b039` after CI and both reviews passed.
+- [ ] Complete Ask PR #247 on the updated main branch, then verify the exact
+  production deployment, weekly question and Google redirect.
+- [ ] Confirm complete Google sign-in on the owner's phone.
+
+Changes are isolated in `public-parish-phone-fixes`. The account release is
+queued for production. Ask PR #247 passed its initial CI and both reviews;
+its rebased commit requires fresh checks. No spending settings or email changed.
+
 ## September 14 citation source actions
 
 The local UI now gives citation drawers a persistent action footer. A purple

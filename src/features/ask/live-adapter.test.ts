@@ -1,3 +1,4 @@
+import type { AnswerProgress } from '../../../convex/ask/contracts'
 import type { ConvexReactClient } from 'convex/react'
 import { beforeEach, expect, test, vi } from 'vitest'
 
@@ -33,8 +34,11 @@ test('shows the first question immediately and completes two cited turns', async
         messageId: 'answer-2',
       }),
     )
+  let serverProgress: AnswerProgress | null = null
+  let notifyProgress: (() => void) | undefined
+  const stopProgress = vi.fn()
   const adapter = new LiveAskAdapter(
-    { mutation, action, query: vi.fn() } as unknown as ConvexReactClient,
+    { watchQuery: vi.fn(() => ({ onUpdate: (notify: () => void) => { notifyProgress = notify; return stopProgress }, localQueryResult: () => serverProgress })), mutation, action, query: vi.fn() } as unknown as ConvexReactClient,
     storage,
   )
   const updates: AskUpdate[] = []
@@ -51,8 +55,13 @@ test('shows the first question immediately and completes two cited turns', async
       state: 'checking',
     })
   })
+  await vi.waitFor(() => expect(notifyProgress).toBeTypeOf('function'))
+  serverProgress = { phase: 'reading', startedAt: Date.now() }
+  notifyProgress?.()
+  expect(latestConversation(updates)?.turns[0].progress).toEqual(serverProgress)
   firstAnswer.resolve(answerResult())
   await first
+  expect(stopProgress).toHaveBeenCalledOnce()
 
   const firstConversation = latestConversation(updates)
   expect(firstConversation?.turns[0]).toMatchObject({
@@ -108,7 +117,8 @@ test.each([
     })
   const adapter = new LiveAskAdapter(
     {
-      mutation,
+      watchQuery: vi.fn(() => ({ onUpdate: vi.fn(() => vi.fn()), localQueryResult: () => null })),
+    mutation,
       action: vi.fn().mockResolvedValue(
         answerResult({
           answer:
@@ -145,7 +155,8 @@ test('rejects an online failure before acceptance and removes the optimistic tur
     .mockRejectedValueOnce(new Error('Convex request failed'))
   const adapter = new LiveAskAdapter(
     {
-      mutation,
+      watchQuery: vi.fn(() => ({ onUpdate: vi.fn(() => vi.fn()), localQueryResult: () => null })),
+    mutation,
       action: vi.fn(),
       query: vi.fn(),
     } as unknown as ConvexReactClient,
@@ -182,7 +193,8 @@ test('tries Ask when the browser flag is offline but requests still work', async
     })
   const adapter = new LiveAskAdapter(
     {
-      mutation,
+      watchQuery: vi.fn(() => ({ onUpdate: vi.fn(() => vi.fn()), localQueryResult: () => null })),
+    mutation,
       action: vi.fn().mockResolvedValue(answerResult()),
       query: vi.fn(),
     } as unknown as ConvexReactClient,
@@ -215,7 +227,8 @@ test('keeps a completed answer when recent-label refresh fails', async () => {
   const query = vi.fn().mockRejectedValue(new Error('Label query failed'))
   const adapter = new LiveAskAdapter(
     {
-      mutation,
+      watchQuery: vi.fn(() => ({ onUpdate: vi.fn(() => vi.fn()), localQueryResult: () => null })),
+    mutation,
       action: vi.fn().mockResolvedValue(answerResult()),
       query,
     } as unknown as ConvexReactClient,
@@ -254,6 +267,7 @@ test('rebuilds a refreshed conversation from Agent history and exact citations',
     })
     .mockResolvedValueOnce({ messageId: 'question-refresh', replayed: false })
   const firstClient = {
+    watchQuery: vi.fn(() => ({ onUpdate: vi.fn(() => vi.fn()), localQueryResult: () => null })),
     mutation,
     action: vi.fn().mockResolvedValue(answerResult()),
     query: vi.fn(),
@@ -316,6 +330,7 @@ test.each([
     })
     .mockResolvedValueOnce({ messageId: 'question-cooldown', replayed: false })
   const client = {
+    watchQuery: vi.fn(() => ({ onUpdate: vi.fn(() => vi.fn()), localQueryResult: () => null })),
     mutation,
     action: vi.fn().mockRejectedValue({
       data: { code, retryAt },
@@ -436,6 +451,7 @@ function memoryStorage(): Storage & { entries: () => Array<[string, string]> } {
 
 test('shows a spending pause without inventing a cooldown deadline', async () => {
   const client = {
+    watchQuery: vi.fn(() => ({ onUpdate: vi.fn(() => vi.fn()), localQueryResult: () => null })),
     mutation: vi.fn()
       .mockResolvedValueOnce({ expiresAt: 2_000_000_000_000 })
       .mockResolvedValueOnce({ threadId: 'agent-thread-allowance', expiresAt: 2_000_000_000_000, scope: { kind: 'corpus', areaKey: 'lafayette-parish' } })

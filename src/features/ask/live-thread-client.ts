@@ -1,3 +1,4 @@
+import type { AnswerProgress } from '../../../convex/ask/contracts'
 import type { ConvexReactClient } from 'convex/react'
 
 import { api } from '../../../convex/_generated/api'
@@ -78,14 +79,25 @@ export class LiveAskThreadClient {
     threadId: string,
     questionMessageId: string,
     touchActivity = true,
+    onProgress?: (progress: AnswerProgress) => void,
   ) {
-    const result = await this.client.action(api.ask.answer.answerQuestion, {
-      token: this.sessionToken(),
-      threadId,
-      questionMessageId,
-    })
-    if (touchActivity) this.touch(threadId)
-    return result
+    const token = this.sessionToken()
+    const watch = onProgress ? this.client.watchQuery(api.ask.threads.getAnswerProgress, { token, threadId, questionMessageId }) : null
+    const receive = () => {
+      try {
+        const progress = watch?.localQueryResult()
+        if (progress) onProgress?.(progress)
+      } catch { /* The answer action reports failures even if progress is unavailable. */ }
+    }
+    const stop = watch?.onUpdate(receive)
+    receive()
+    try {
+      const result = await this.client.action(api.ask.answer.answerQuestion, { token, threadId, questionMessageId })
+      if (touchActivity) this.touch(threadId)
+      return result
+    } finally {
+      stop?.()
+    }
   }
 
   recent(): LiveAskThreadHandle[] {
