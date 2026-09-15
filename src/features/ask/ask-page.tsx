@@ -200,7 +200,7 @@ export function AskPage({
     const added = next.turns[next.turns.length - 1]
     if (next.turns.length > previous.turns.length) {
       if (added.state === 'checking') {
-        setStatus('Checking the official record')
+        setStatus('Question sent.')
       }
     }
     for (const turn of next.turns) {
@@ -414,7 +414,7 @@ export function AskPage({
     if (!adapter || !canSubmit || submitLock.current) return
     submitLock.current = true
     setSubmitting(true)
-    setStatus('Checking the official record')
+    setStatus('Question sent.')
     const question = draft.trim()
     try {
       await adapter.submit({
@@ -453,7 +453,7 @@ export function AskPage({
   const handleRetry = useCallback(
     async (turnId: string) => {
       if (!adapter || !conversation) return
-      setStatus('Checking the official record')
+      setStatus('Question sent.')
       try {
         await adapter.retry({ conversationId: conversation.id, turnId })
       } catch (error) {

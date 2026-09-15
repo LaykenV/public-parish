@@ -1,6 +1,9 @@
+import { AskChecking } from './ask-progress'
 import { AskAnswer } from './ask-answer'
 import { AskTurnFailure } from './ask-states'
 import type { AskTurnView } from './contracts'
+
+export { AskChecking } from './ask-progress'
 
 /*
   One chronological thread. Every turn keeps its question and answer visible;
@@ -60,7 +63,7 @@ function AskTurn({
         <span className="visually-hidden"> {`question ${index + 1}`}</span>
       </h2>
       <p className="ask-turn-question">{turn.question}</p>
-      {turn.state === 'checking' ? <AskChecking /> : null}
+      {turn.state === 'checking' ? <AskChecking progress={turn.progress} /> : null}
       {turn.answer ? (
         <AskAnswer answer={turn.answer} onSuggestion={onSuggestion} />
       ) : null}
@@ -76,16 +79,5 @@ function AskTurn({
         </div>
       ) : null}
     </article>
-  )
-}
-
-/* The page's status region announces the wait once. */
-export function AskChecking() {
-  return (
-    <div aria-busy="true" className="ask-checking">
-      <span aria-hidden="true" className="ask-typing">
-        <span /><span /><span />
-      </span>
-    </div>
   )
 }

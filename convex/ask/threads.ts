@@ -12,7 +12,7 @@ import type { Id } from '../_generated/dataModel'
 import type { MutationCtx, QueryCtx } from '../_generated/server'
 import { mutation, query } from '../_generated/server'
 import { sha256HexOfText } from '../sources/hashing'
-import { askScope, scopeKey, storedScope } from './contracts'
+import { answerProgress, askScope, scopeKey, storedScope } from './contracts'
 import type { AskScope } from './contracts'
 import { reserveAskWriteCapacity } from './limits'
 
@@ -360,3 +360,16 @@ function requireOpaqueToken(token: string) {
 function askError(code: string, message: string) {
   return new ConvexError({ code, message })
 }
+
+export const getAnswerProgress = query({
+  args: { token: v.string(), threadId: v.string(), questionMessageId: v.string() },
+  returns: v.union(answerProgress, v.null()),
+  handler: async (ctx, args) => {
+    const { session } = await authorizeThreadRead(ctx, args.token, args.threadId)
+    const receipt = await ctx.db.query('askAnswerReceipts')
+      .withIndex('by_session_and_question_message_id', q => q.eq('sessionId', session._id).eq('questionMessageId', args.questionMessageId))
+      .unique()
+    if (!receipt || receipt.threadId !== args.threadId || receipt.state !== 'running') return null
+    return { phase: receipt.progressPhase ?? 'searching', startedAt: receipt.startedAt }
+  },
+})

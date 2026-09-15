@@ -558,3 +558,19 @@ action. Use the same action styling for record and Ask citations. Keep links
 at least 44 pixels tall and identify new-tab navigation for screen readers.
 Unavailable links keep a written explanation. Preserve exact excerpts, locators
 and the existing distinction between quoted text and surrounding sentences.
+
+## Account identity and Ask progress, September 14 phone feedback
+
+Following shows the authenticated Google avatar, with initials if the image is
+missing or fails. Group the name and email in a white account card. Use an
+outlined purple Sign out button with an icon, pending state and retryable error.
+On narrow phones, put the button beneath the account identity.
+
+Ask replaces the bouncing dots with a source-checking activity panel. Show the
+backend stage, elapsed time and a compact list of steps. The stages are finding
+relevant records, reading official sources, writing the answer and checking
+citations. Advance steps only from backend progress. Elapsed time never advances
+a stage or implies a percentage. After twenty seconds, explain that larger
+searches take longer. Use a subtle purple text shimmer for the active label,
+with static text for reduced motion and forced colors. Announce stage changes
+without announcing every timer tick. No model output or internal tool names.

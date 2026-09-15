@@ -186,7 +186,9 @@ export class LiveAskAdapter implements AskAdapter {
       accepted = true
       questionMessageId = appended.messageId
       this.replaceTurnId(temporaryId, questionMessageId)
-      const answer = await this.threads.answer(threadId, questionMessageId)
+      const answer = await this.threads.answer(threadId, questionMessageId, true, progress => {
+        this.updateTurn(questionMessageId, turn => turn.state === 'checking' ? { ...turn, progress } : turn)
+      })
       this.completeTurn(questionMessageId, projectAnswer(answer))
       void this.pushRecent().catch(() => undefined)
     } catch (error) {
@@ -206,12 +208,15 @@ export class LiveAskAdapter implements AskAdapter {
     this.updateTurn(input.turnId, (turn) => ({
       ...turn,
       state: 'checking',
+      progress: undefined,
       answer: undefined,
     }))
     try {
       const answer = await this.threads.answer(
         input.conversationId,
         input.turnId,
+        true,
+        progress => { this.updateTurn(input.turnId, turn => turn.state === 'checking' ? { ...turn, progress } : turn) },
       )
       this.completeTurn(input.turnId, projectAnswer(answer))
     } catch (error) {

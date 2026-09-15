@@ -1,3 +1,4 @@
+import { answerProgressPhase } from './ask/contracts'
 import { storyKey, storyMode, sourceBinding, storySpan, storyDraft, storyReview, storyMedia, relatedPublication, publicationMapping } from './stories/contracts'
 import { civicEvent } from './analytics/civicContracts'
 import { searchEntry } from './resident/searchContracts'
@@ -1622,6 +1623,7 @@ export default defineSchema({
     .index('by_thread_id_and_created_at', ['threadId', 'createdAt']),
 
   askAnswerReceipts: defineTable({
+    progressPhase: v.optional(answerProgressPhase),
     corpusRevision: v.optional(v.number()),
     selectorCursor: v.optional(v.union(v.string(), v.null())),
     selectorEvidenceIds: v.optional(v.array(v.string())),

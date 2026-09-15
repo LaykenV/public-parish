@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-15T02:12:42Z
+- **Last updated:** 2026-09-15T12:08:00Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2373,3 +2373,39 @@ retry. Phone and desktop screenshots were inspected. PR #245 opened at
 `e5ca5b7`. CI found two resident test selectors using the former link label;
 updated selectors passed all six affected browser cases locally. Latest-commit
 CI and production release remain pending.
+
+### 2026-09-15 - working tree, phone failure diagnosis
+Recorded an open Ask failure and unresolved Google sign-in report in docs/work.md.
+The Ask selector fallback can exceed its evidence limit after repeated validation
+failures. The selector prompt and validator disagree about broad selections.
+Account pages currently omit the signed-in identity. No product fix, test run,
+commit, or deployment in this diagnostic session.
+
+### 2026-09-15 - working tree, Ask selection and account identity
+Corrected broad Ask selection so valid targets do not expand into unrelated
+records. Model prompts receive the question date in America/Chicago. Added
+Google account selection and the signed-in identity, with backend profile gating
+before private Following queries. The selector regression fails under the old
+behavior. All 761 tests, both typechecks, build and lint passed locally, with
+15 existing lint warnings. No commit or deployment. Live model and phone
+verification remain pending.
+
+### 2026-09-15 - working tree, account avatar and Ask progress
+Added a Google avatar with initials fallback and a styled Sign out button with
+pending and retryable error states. Ask now shows actual backend stages for
+record search, source reading, answer writing and citation checking. An elapsed
+timer and shimmer label explain the wait without inventing completed steps.
+Progress stays private to the chat session. All 767 tests, both typechecks,
+build and lint passed, with 15 existing warnings. Chromium and WebKit previews
+passed phone and desktop layout checks. WebKit checked avatar fallback,
+sign-out pending, failure and retry, and progress updates. Reduced motion
+disables shimmer. No commit or deployment. Live phone acceptance and answer
+latency remain unverified.
+
+### 2026-09-15 - 191b039, account release and Ask review
+Split the authorized release into account PR #246 and Ask PR #247. Both initial
+heads passed CI and independent GLM and Muse reviews with no key issues. Merged
+account PR #246 as `191b039`; its production deployment is pending. Rebased Ask
+onto that merge for fresh checks before its authorized release. Live Google
+redirect and one weekly-question retest remain pending. Spending settings stay
+unchanged.

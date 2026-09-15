@@ -54,10 +54,10 @@ describe('Ask page ship boundaries', () => {
       page.indexOf('const handleDismiss'),
     )
     expect(
-      submit.indexOf("setStatus('Checking the official record')"),
+      submit.indexOf("setStatus('Question sent.')"),
     ).toBeLessThan(submit.indexOf('await adapter.submit'))
     expect(
-      retry.indexOf("setStatus('Checking the official record')"),
+      retry.indexOf("setStatus('Question sent.')"),
     ).toBeLessThan(retry.indexOf('await adapter.retry'))
   })
 

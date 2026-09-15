@@ -7,7 +7,7 @@ import type { Id } from '../_generated/dataModel'
 import { internalMutation } from '../_generated/server'
 import { aiRoutes, estimateCostUsd } from '../ai/types'
 import { sha256HexOfText } from '../sources/hashing'
-import { askModelAnswer, storedScope } from './contracts'
+import { answerProgressPhase, askModelAnswer, storedScope } from './contracts'
 import { storyAskCatalog } from '../stories/askEvidence'
 import {
   ASK_RUN_LEASE_MS,
@@ -143,6 +143,7 @@ export const claimAnswer = internalMutation({
       const attempt = existing.attempt + 1
       await ctx.db.patch(existing._id, {
         state: 'running',
+        progressPhase: 'searching',
         attempt,
         startedAt: now,
         completedAt: undefined,
@@ -161,6 +162,7 @@ export const claimAnswer = internalMutation({
       threadId: args.threadId,
       questionMessageId: args.questionMessageId,
       state: 'running',
+      progressPhase: 'searching',
       attempt: 1,
       startedAt: now,
       reservationState: 'held',
@@ -446,6 +448,19 @@ export const checkpointCatalogScan = internalMutation({
     if (!receipt || receipt.state !== 'running' || receipt.attempt !== args.answerAttempt || receipt.corpusRevision !== revision || args.revision !== revision) throw askError('ask_evidence_changed', 'Published evidence changed. Retry the question.')
     if (args.evidenceIds.length > 1_500) throw askError('ask_scope_too_large', 'Narrow the question to a place, issue or meeting.')
     await ctx.db.patch(receipt._id, { selectorCursor: args.cursor, selectorComplete: args.complete, selectorEvidenceIds: args.evidenceIds, selectorBatches: (receipt.selectorBatches ?? 0) + args.batches })
+    return null
+  },
+})
+
+export const setAnswerPhase = internalMutation({
+  args: { receiptId: v.id('askAnswerReceipts'), answerAttempt: v.number(), phase: answerProgressPhase },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const receipt = await ctx.db.get(args.receiptId)
+    if (!receipt || receipt.state !== 'running' || receipt.attempt !== args.answerAttempt) {
+      throw askError('answer_state_mismatch', 'Answer attempt is not running')
+    }
+    await ctx.db.patch(receipt._id, { progressPhase: args.phase })
     return null
   },
 })
