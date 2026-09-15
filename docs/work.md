@@ -7,6 +7,60 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 15 consequence-first Home release
+
+The owner authorized implementing the ranking recommendation and shipping all
+four corrections. The UI changes are separate PRs #249, #250 and #251.
+The ranking change preserves accepted evidence scores, indexes them on current
+issues and reads the highest-scoring 40 candidates before evidence hydration.
+Dates break equal-score ties within that pool. Recent routine work cannot
+outrank a higher-scoring consequence. The highest 20 valid issues remain the
+query result and Home shows its existing six-card subset.
+
+The publication transaction maintains the indexed score. The production workflow
+repairs missing scores with at most 100 issues per transaction and 100 batches.
+It copies current accepted scores without changing versions, update dates or
+notifications. Stale version references receive a noncompetitive marker and
+still fail public evidence hydration. No source retrieval or AI spending.
+
+- [x] Add regressions for consequence-first order and an older strong issue
+  beyond forty newer low-scoring issues. Verify bounded, repeatable repair.
+- [x] Pass all 783 tests, both typechecks and build. Fix four unused test bindings
+  and one shadowed local name found by lint, then rerun lint.
+- [ ] File the ranking PR and resolve both reviews.
+- [ ] Follow each authorized production deployment and run independent smoke.
+
+## September 15 Follow, Explore and statewide ranking review
+
+Local work on `fix/follow-filters-utilities`, based on released `0496797`, removes
+only the utilities image caption, makes the shared Follow trigger primary and
+lets selected Explore dropdown options clear on click or keyboard activation.
+The illustration and its alt text remain intact. Sort resets to its default.
+
+`npm run verify` passed all 780 tests, both typechecks, build and lint with the
+15 existing warnings. The initial test attempt hit the machine's temporary-file
+write quota before running tests. Using a worktree-local temporary directory
+resolved it. Eighteen browser cases passed in Chromium and WebKit. An older
+Follow test failed in both browsers because its issue URL is absent from the
+production corpus. Separate checks against current published stories,
+amendments, issues and linked decisions passed primary colors, dialog opening
+and focus return in both browsers. Desktop and mobile screenshots were inspected.
+The local frontend read public production queries. No backend sync, publication,
+email, commit or deployment occurred.
+
+The ranking review found that Home takes the newest 40 issue candidates before
+sorting by cited consequence points plus 25 for a future action or 10 for a
+meeting within 60 days. That pool can exclude older important issues. The live
+roof-design issue receives 20 consequence points plus 10 for recency, ahead of
+the ExxonMobil rebate at 26. Featured stories keep their fixed editorial order;
+utility cases use record update time. Ranking code remains unchanged.
+
+- [x] Complete and validate the requested UI corrections locally.
+- [ ] Release the UI corrections when authorized.
+- [ ] Follow up on statewide ranking. Prefer consequence before recency and
+  remove the newest-40 cutoff from candidate selection through a bounded indexed
+  design. Review the rubric for routine contracts before changing accepted scores.
+
 ## September 15 Ask speed work on development
 
 The owner authorized implementation, repeated development testing and release.

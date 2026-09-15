@@ -1532,11 +1532,14 @@ export default defineSchema({
     governmentBodyId: v.id('governmentBodies'),
     currentVersionId: v.optional(v.id('issueVersions')),
     currentMode: v.optional(acceptedPublicationModes),
+    currentImportanceScore: v.optional(v.number()),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
     .index('by_issue_key', ['issueKey'])
     .index('by_slug', ['slug'])
+    .index('by_mode_and_importance', ['currentMode', 'currentImportanceScore', 'updatedAt'])
+    .index('by_body_mode_and_importance', ['governmentBodyId', 'currentMode', 'currentImportanceScore', 'updatedAt'])
     .index('by_current_mode_and_updated_at', ['currentMode', 'updatedAt'])
     .index('by_government_body_and_current_mode_and_updated_at', [
       'governmentBodyId', 'currentMode', 'updatedAt',

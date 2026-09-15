@@ -5,7 +5,7 @@ import {
   compareHomeIssues,
   documentedDay,
   homeEligible,
-  homeRankPoints,
+  homeRecencyPriority,
   parseHomeDay,
   rankHomeIssues,
 } from './homeRank'
@@ -53,48 +53,48 @@ describe('homeEligible', () => {
   })
 })
 
-describe('homeRankPoints', () => {
-  it('adds upcoming points only while the next date is not past', () => {
+describe('homeRecencyPriority', () => {
+  it('prioritizes upcoming dates only while they are not past', () => {
     const upcoming = signals({
       slug: 'a',
       importanceScore: 20,
       nextAt: '2026-09-12',
     })
-    expect(homeRankPoints(upcoming, DAY)).toBe(45)
-    expect(homeRankPoints({ ...upcoming, nextAt: '2026-09-11' }, DAY)).toBe(20)
+    expect(homeRecencyPriority(upcoming, DAY)).toBe(2)
+    expect(homeRecencyPriority({ ...upcoming, nextAt: '2026-09-11' }, DAY)).toBe(0)
   })
 
-  it('adds a smaller bonus for an outcome inside the last sixty days', () => {
+  it('gives recent meetings a lower tie priority than upcoming dates', () => {
     const recent = signals({
       slug: 'a',
       importanceScore: 20,
       latestMeetingAt: '2026-08-01',
     })
-    expect(homeRankPoints(recent, DAY)).toBe(30)
+    expect(homeRecencyPriority(recent, DAY)).toBe(1)
     expect(
-      homeRankPoints({ ...recent, latestMeetingAt: '2026-06-01' }, DAY),
-    ).toBe(20)
+      homeRecencyPriority({ ...recent, latestMeetingAt: '2026-06-01' }, DAY),
+    ).toBe(0)
   })
 
   it('treats every documented date as current when the client sends no day', () => {
     expect(
-      homeRankPoints(signals({ slug: 'a', nextAt: '2020-01-01' }), null),
-    ).toBe(25)
+      homeRecencyPriority(signals({ slug: 'a', nextAt: '2020-01-01' }), null),
+    ).toBe(2)
     expect(
-      homeRankPoints(
+      homeRecencyPriority(
         signals({ slug: 'b', latestMeetingAt: '2020-01-01' }),
         null,
       ),
-    ).toBe(10)
+    ).toBe(1)
   })
 
   it('ignores unparseable dates instead of failing the whole list', () => {
     expect(
-      homeRankPoints(
+      homeRecencyPriority(
         signals({ slug: 'a', importanceScore: 5, nextAt: 'TBD' }),
         DAY,
       ),
-    ).toBe(5)
+    ).toBe(0)
   })
 
   it('reads the day out of source-worded next actions', () => {
@@ -108,16 +108,16 @@ describe('homeRankPoints', () => {
     expect(documentedDay('the next regular meeting')).toBeNaN()
     expect(documentedDay(null)).toBeNaN()
     expect(
-      homeRankPoints(
+      homeRecencyPriority(
         signals({ slug: 'a', nextAt: 'September 29, 2026, at Noon' }),
         DAY,
       ),
-    ).toBe(25)
+    ).toBe(2)
   })
 })
 
 describe('rankHomeIssues', () => {
-  it('orders by points, then newest acceptance, then slug', () => {
+  it('orders by consequence, then date priority, newest acceptance and slug', () => {
     const ranked = rankHomeIssues(
       [
         signals({ slug: 'older-tie', importanceScore: 30, acceptedAt: 1 }),
@@ -139,11 +139,11 @@ describe('rankHomeIssues', () => {
     ).map((issue) => issue.slug)
 
     expect(ranked).toEqual([
-      'upcoming',
       'b-slug',
       'newer-tie',
       'older-tie',
       'recent',
+      'upcoming',
     ])
   })
 
@@ -162,4 +162,24 @@ describe('rankHomeIssues', () => {
         .map((item) => item.slug),
     ).toEqual(['a', 'z'])
   })
+})
+
+
+it('keeps a higher consequence above every recency bonus', () => {
+  const ranked = rankHomeIssues([
+    signals({ slug: 'roof-design', importanceScore: 20, latestMeetingAt: '2026-08-12' }),
+    signals({ slug: 'rebate', importanceScore: 26, nextAt: 'August 26, 2026' }),
+    signals({ slug: 'upcoming-routine', importanceScore: 5, nextAt: '2026-09-16' }),
+  ], DAY)
+  expect(ranked.map(issue => issue.slug)).toEqual(['rebate', 'roof-design', 'upcoming-routine'])
+})
+
+it('uses upcoming and recent dates only to break equal consequence scores', () => {
+  const ranked = rankHomeIssues([
+    signals({ slug: 'undated', importanceScore: 20, acceptedAt: 9000 }),
+    signals({ slug: 'recent', importanceScore: 20, latestMeetingAt: '2026-09-01' }),
+    signals({ slug: 'upcoming', importanceScore: 20, nextAt: '2026-09-16' }),
+  ], DAY)
+  expect(ranked.map(issue => issue.slug)).toEqual(['upcoming', 'recent', 'undated'])
+  expect(homeRecencyPriority(signals({ slug: 'future-meeting', latestMeetingAt: '2026-10-01' }), DAY)).toBe(0)
 })

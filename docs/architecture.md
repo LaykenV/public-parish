@@ -243,7 +243,15 @@ clicks and partisan interest do not increase that score.
 ## Resident queries, search, and Ask
 
 Home queries select the requested bodies before applying their bounds. Current
-limits return up to 50 decisions and 20 issue timelines. Explore uses a paginated
+limits return up to 50 decisions and 20 issue timelines. Issue selection reads
+the 40 highest accepted consequence scores through the mode and body indexes.
+Dates break equal-score ties within that pool, followed by accepted-version
+recency and slug. A recent meeting cannot outrank a higher consequence score.
+The publication transaction copies the accepted score to the issue record.
+The release workflow fills missing scores in batches of at most 100 issues,
+with a 100-batch ceiling, before smoke testing. This repair preserves accepted
+versions, update dates and notifications. Evidence hydration still rejects
+stale or invalid candidates; this bounded feed is not an archive ranking. Explore uses a paginated
 published projection. Hydration rejects stale references. Public pages must not
 call these bounded results complete archive totals.
 

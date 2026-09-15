@@ -45,5 +45,8 @@ jobs:
       - name: Seed production source configuration
         run: npx convex run operations/seed:seedLaunchCoverage '{}'
 
+      - name: Fill the Home consequence index
+        run: node scripts/backfill-home-ranking.mjs
+
       - name: Smoke-test production
         run: npm run smoke:production

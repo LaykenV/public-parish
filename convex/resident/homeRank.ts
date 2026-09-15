@@ -17,8 +17,8 @@ export type HomeIssueSignals = {
 }
 
 export const RECENT_OUTCOME_DAYS = 60
-const UPCOMING_POINTS = 25
-const RECENT_OUTCOME_POINTS = 10
+const UPCOMING_PRIORITY = 2
+const RECENT_OUTCOME_PRIORITY = 1
 const DAY = 86_400_000
 
 /** Reads a client-supplied `YYYY-MM-DD` day; anything else means no clock. */
@@ -46,30 +46,24 @@ export function documentedDay(value: string | null): number {
   return Number.NaN
 }
 
-function currencyPoints(signals: HomeIssueSignals, day: number | null): number {
+export function homeRecencyPriority(signals: HomeIssueSignals, day: number | null): number {
   const next = documentedDay(signals.nextAt)
   if (!Number.isNaN(next) && (day === null || next >= day))
-    return UPCOMING_POINTS
+    return UPCOMING_PRIORITY
   const latest = documentedDay(signals.latestMeetingAt)
   if (
     !Number.isNaN(latest) &&
-    (day === null || latest >= day - RECENT_OUTCOME_DAYS * DAY)
+    (day === null || (latest <= day && latest >= day - RECENT_OUTCOME_DAYS * DAY))
   ) {
-    return RECENT_OUTCOME_POINTS
+    return RECENT_OUTCOME_PRIORITY
   }
   return 0
 }
 
-export function homeRankPoints(
-  signals: HomeIssueSignals,
-  day: number | null,
-): number {
-  return signals.importanceScore + currencyPoints(signals, day)
-}
-
 export function compareHomeIssues(day: number | null) {
   return (left: HomeIssueSignals, right: HomeIssueSignals): number =>
-    homeRankPoints(right, day) - homeRankPoints(left, day) ||
+    right.importanceScore - left.importanceScore ||
+    homeRecencyPriority(right, day) - homeRecencyPriority(left, day) ||
     right.acceptedAt - left.acceptedAt ||
     left.slug.localeCompare(right.slug)
 }
