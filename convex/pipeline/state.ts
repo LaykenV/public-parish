@@ -69,7 +69,7 @@ export const RETRIEVAL_RETRY_DELAY_MS = 15 * 60 * 1000
 
 export const EXTRACTION_PROCESSOR_VERSION = 'v1.22'
 
-export const EXTRACTION_PROMPT_VERSION = 'v1.16'
+export const EXTRACTION_PROMPT_VERSION = 'v1.17'
 
 export const EXTRACTION_SCHEMA_VERSION = 'v1'
 
@@ -89,11 +89,11 @@ export const PUBLICATION_WORKFLOW_NAME = 'reviewAndPublishCandidateV1'
 
 export const ISSUE_BUILD_PROCESSOR_VERSION = 'v1'
 
-export const ISSUE_LINK_PROMPT_VERSION = 'v1.6'
+export const ISSUE_LINK_PROMPT_VERSION = 'v1.7'
 
 export const ISSUE_LINK_SCHEMA_VERSION = 'v1'
 
-export const ISSUE_REVIEW_PROMPT_VERSION = 'v1.1'
+export const ISSUE_REVIEW_PROMPT_VERSION = 'v1.2'
 
 export const ISSUE_REVIEW_SCHEMA_VERSION = 'v1'
 

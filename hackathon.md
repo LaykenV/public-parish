@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-15T15:12:27Z
+- **Last updated:** 2026-09-15T18:30:18Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2453,3 +2453,13 @@ list now share the same ordering, with a regression beyond forty equal scores.
 The release repair copies existing scores in bounded transactions without
 new evidence versions or alerts. Added ranking and repair regressions.
 The owner authorized PR review and production shipment; release checks are pending.
+
+
+### 2026-09-15 - working tree, local issue readability
+
+Audited five published issues against accepted citations and prepared source-backed
+review drafts. Updated extraction and issue prompts to use recognizable subjects,
+plain wording and separate context for report updates and broader contracts.
+All 775 tests, both typechecks, build and lint passed with 15 existing warnings.
+The [audit](docs/readability-audit-2026-09-15.md) records evidence gaps and browser
+inspection. No model-quality evaluation, accepted-content change or release yet.
