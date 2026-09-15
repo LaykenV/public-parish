@@ -379,7 +379,7 @@ test.each(['focused', 'broad'] as const)('answers %s selections with retrieved c
         totalTokens: 15,
       }),
       expect.objectContaining({
-        promptVersion: 'ask-selector-v7-conservative-dates',
+        promptVersion: 'ask-selector-v8-catalog-formats',
         schemaVersion: 'ask-selector-v2-batched',
       }),
       expect.objectContaining({
@@ -456,7 +456,7 @@ test('invalid selector targets fall back to the complete accepted scope', async 
   expect(attempts).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
-        promptVersion: 'ask-selector-v7-conservative-dates',
+        promptVersion: 'ask-selector-v8-catalog-formats',
         status: 'selection_invalid',
       }),
       expect.objectContaining({
