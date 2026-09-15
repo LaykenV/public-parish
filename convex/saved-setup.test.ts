@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 
+import oauthSchema from '@convex-dev/auth/providers/oauth/schema'
 import { convexTest } from 'convex-test'
 import type { TestConvexForDataModelAndIdentity } from 'convex-test'
 import { afterEach, expect, test, vi } from 'vitest'
@@ -29,6 +30,32 @@ test('anonymous callers cannot read or change saved setup', async () => {
     t.mutation(api.follows.savedSetup.saveTopic, { topic: 'public-money' }),
   ).rejects.toThrow('Sign in with Google')
   await expect(t.query(api.auth.currentUser, {})).resolves.toBeNull()
+})
+
+test('Google sign-in requests account selection and preserves OAuth protections', async () => {
+  vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')
+  vi.stubEnv('CLIENT_ID', 'test-google-client')
+  const t = convexTest(schema, modules)
+  vi.resetModules()
+  t.registerComponent('oauthGoogle', oauthSchema, import.meta.glob('../node_modules/@convex-dev/auth/src/oauth/component/**/*.ts'))
+  const result = await t.mutation(api.auth.startSignInGoogle, { redirectTo: 'https://www.publicparish.com/following' })
+  const url = new URL(result.redirect)
+  expect(url.origin).toBe('https://accounts.google.com')
+  expect(url.searchParams.get('prompt')).toBe('select_account')
+  expect(url.searchParams.get('state')).toBe(result.state)
+  expect(url.searchParams.get('code_challenge_method')).toBe('S256')
+  expect(url.searchParams.get('code_challenge')).toBeTruthy()
+  expect(url.searchParams.get('scope')).toBe('openid email profile')
+  await expect(t.mutation(api.auth.startSignInGoogle, { redirectTo: 'https://untrusted.example/following' })).rejects.toThrow('not in allowedRedirectOrigins')
+})
+
+test('account identity only returns the authenticated resident profile', async () => {
+  const t = convexTest(schema, modules)
+  const aliceId = await createGoogleUser(t, 'google-alice', 'alice@example.com')
+  const bobId = await createGoogleUser(t, 'google-bob', 'bob@example.com')
+  await expect(t.query(api.auth.currentUser, {})).resolves.toBeNull()
+  await expect(t.withIdentity({ subject: aliceId }).query(api.auth.currentUser, {})).resolves.toEqual({ email: 'alice@example.com', isOwner: false })
+  await expect(t.withIdentity({ subject: bobId }).query(api.auth.currentUser, {})).resolves.toEqual({ email: 'bob@example.com', isOwner: false })
 })
 
 test('saved setup is idempotent and returned in contract order', async () => {
