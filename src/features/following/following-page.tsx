@@ -1,3 +1,5 @@
+import { AccountIdentity } from './account-identity'
+import type { GoogleAccountProfile } from './account-identity'
 import { PageLoading } from '../resident-blueprint/resident-loading'
 import {
   BellRingIcon,
@@ -12,6 +14,8 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
+import { useQuery } from 'convex/react'
+import { api } from '../../../convex/_generated/api'
 
 import { Button } from '../../components/ui/button'
 import { AUTH_RETURN_KEY, useGoogleAuth } from '../auth/google-auth'
@@ -87,25 +91,28 @@ function LiveFollowingPage({
   view: FollowingView
 }) {
   const auth = useGoogleAuth(returnTo)
-  const setup = useSavedSetup(auth.isAuthenticated)
-  const follows = useGoogleFollows(auth.isAuthenticated)
+  const account = useQuery(api.auth.currentUser, auth.isAuthenticated ? {} : 'skip')
+  const accountReady = auth.isAuthenticated && account != null
+  const setup = useSavedSetup(accountReady)
+  const follows = useGoogleFollows(accountReady)
   const followMutations = useGoogleFollowMutations()
-  const notificationSettings = useNotificationSettings(auth.isAuthenticated)
+  const notificationSettings = useNotificationSettings(accountReady)
   const updateNotificationDefault = useNotificationSettingsMutation()
   const mutations = useSavedSetupMutations()
 
   useEffect(() => {
-    if (!auth.isAuthenticated) return
+    if (!accountReady) return
     const pendingReturn = window.sessionStorage.getItem(AUTH_RETURN_KEY)
     if (!pendingReturn) return
     window.sessionStorage.removeItem(AUTH_RETURN_KEY)
     const safeReturn = parseResidentReturnTo(pendingReturn)
     if (safeReturn) window.location.replace(safeReturn)
-  }, [auth.isAuthenticated])
+  }, [accountReady])
 
   if (
     auth.isLoading ||
-    (auth.isAuthenticated &&
+    (auth.isAuthenticated && account === undefined) ||
+    (accountReady &&
       (setup === undefined ||
         follows === undefined ||
         notificationSettings === undefined))
@@ -113,12 +120,15 @@ function LiveFollowingPage({
     return <FollowingLoading />
   }
 
-  if (!auth.isAuthenticated) {
+  if (!accountReady) {
     return (
       <FollowingSignedOut
         busy={auth.isSigningIn}
-        error={auth.error}
-        onGoogle={() => void auth.signInGoogle()}
+        error={auth.error ?? (auth.isAuthenticated ? 'Your account could not be restored. Sign in with Google again.' : null)}
+        onGoogle={() => void (async () => {
+          if (auth.isAuthenticated) await auth.signOut()
+          await auth.signInGoogle()
+        })()}
       />
     )
   }
@@ -145,6 +155,7 @@ function LiveFollowingPage({
       notificationActions={{ save: updateNotificationDefault }}
       notificationDefault={notificationSettings?.defaultCadence}
       notificationDeliveries={notificationSettings?.deliveries ?? []}
+      account={account}
       onSignOut={auth.signOut}
       topicActions={{
         remove: mutations.removeTopic,
@@ -174,6 +185,7 @@ type TopicActions = {
 }
 
 function FollowingDashboard({
+  account,
   areaActions,
   data,
   followActions,
@@ -184,6 +196,7 @@ function FollowingDashboard({
   topicActions,
   view,
 }: {
+  account?: GoogleAccountProfile
   areaActions?: AreaActions
   data: FollowingPageData
   followActions?: FollowActions
@@ -217,11 +230,7 @@ function FollowingDashboard({
                 ? 'Choose when useful changes reach you. Empty roundups are never sent.'
                 : 'Email delivery will appear here after verified subscriptions ship.'}
         </p>
-        {onSignOut ? (
-          <Button onClick={() => void onSignOut()} size="touch" variant="ghost">
-            Sign out
-          </Button>
-        ) : null}
+        {account ? <AccountIdentity account={account} onSignOut={onSignOut} /> : null}
       </header>
 
       <FollowingNavigation scenario={data.scenario} view={view} />
