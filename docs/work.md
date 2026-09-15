@@ -1219,3 +1219,13 @@ Louisiana. Removed the button's layout rules and adjusted the existing browser
 journey. Parish setup remains below statewide content. Build, targeted lint and
 12 Chromium/WebKit checks passed. Inspected 320-, 390- and 1440-pixel layouts.
 PR checks and the follow-up release are pending.
+
+
+## September 15, restore the purple story button
+
+The owner changed direction after the button removal and primary-color preview.
+Restore the purple Explore Louisiana stories CTA from PR #257, with the plain
+headline and parish prompt below statewide content. The purple-headline branch
+was never deployed. Build, targeted lint and eight Chromium/WebKit checks passed.
+Inspected the restored phone and desktop layouts. The restored Home files match
+PR #257 exactly. PR review and the restoring release are pending.

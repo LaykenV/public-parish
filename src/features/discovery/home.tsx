@@ -166,6 +166,11 @@ function FirstVisitHero() {
         <p>
           See the documents behind each decision and follow what happens next.
         </p>
+        <div className="pp-home-hero-actions">
+          <Button render={<a href="#stories" />} size="touch">
+            Explore Louisiana stories <ArrowUpRightIcon aria-hidden="true" />
+          </Button>
+        </div>
         <p className="pp-home-access">
           Free to read and ask questions. No account needed.
         </p>
