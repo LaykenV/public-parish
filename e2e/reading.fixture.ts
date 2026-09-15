@@ -447,13 +447,13 @@ test('menu Ask keeps the outer screen fixed with saved device history and a pann
 
 test('answer wait uses three dots and keeps the send spinner', async ({ page }, info) => {
   await page.goto('/ask?fixture=checking')
-  await expect(page.locator('.ask-typing > span')).toHaveCount(3)
-  await expect(page.locator('.ask-checking svg')).toHaveCount(0)
+  await expect(page.locator('.ask-progress-dots > span')).toHaveCount(3)
+  await expect(page.locator('.ask-progress-status svg')).toHaveCount(1)
   await expect(page.locator('.ask-checking')).not.toContainText('The answer will appear')
   await expect(page.locator('.ask-send')).toHaveAttribute('data-loading')
-  await expect(page.locator('.ask-typing > span').first()).toHaveCSS('animation-name', 'none')
+  await expect(page.locator('.ask-progress-dots > span').first()).toHaveCSS('animation-name', 'none')
   await page.emulateMedia({ reducedMotion: 'no-preference' })
-  await expect(page.locator('.ask-typing > span').first()).toHaveCSS('animation-name', 'ask-typing')
+  await expect(page.locator('.ask-progress-dots > span').first()).toHaveCSS('animation-name', 'ask-dot-bounce')
   await page.screenshot({ path: info.outputPath('answer-wait-dots.png') })
 })
 

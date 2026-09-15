@@ -20,6 +20,8 @@ shimmering status line and its active icon, driven by the existing backend stage
 - [x] Pass 17 browser checks in Chromium and WebKit, with one desktop-only case
   skipped on mobile. Cover delayed history, expiry, failure, composer placement,
   reduced motion and existing mobile chat/source journeys. Inspect screenshots.
+- [x] Correct older browser assertions to check the visible mobile story title
+  and the restored dots with their status icon. All five affected checks pass locally.
 - [ ] Complete the owner-authorized PR review, production merge and smoke checks.
   No backend changes; release verification is pending.
 
