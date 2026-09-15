@@ -95,14 +95,14 @@ test('area and inline filter controls discard drafts and change parishes', async
   await page.setViewportSize({ width: 320, height: 640 })
   await page.goto('/?area=louisiana')
   const chooseArea = page
-    .locator('#stories .pp-stories-intro')
-    .getByRole('button', { name: 'Choose area', exact: true })
+    .locator('.pp-home-area-prompt')
+    .getByRole('button', { name: 'Choose a parish', exact: true })
   await expect(chooseArea).toBeVisible()
   expect(['static', 'relative']).toContain(
     await chooseArea.evaluate((node) => getComputedStyle(node).position),
   )
   await expect(page.locator('.pp-home-floating')).toHaveCount(0)
-  await page.locator('#stories .pp-stories-intro').screenshot({
+  await page.locator('.pp-home-area-prompt').screenshot({
     path: testInfo.outputPath('inline-choose-area.png'),
   })
   await chooseArea.click()

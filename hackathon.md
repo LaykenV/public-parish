@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-15T20:36:36Z
+- **Last updated:** 2026-09-15T22:04:54Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2492,3 +2492,13 @@ The active status keeps its four-second shimmer. All 778 tests, both typechecks,
 build and lint passed with 15 existing warnings. Nineteen Chromium and WebKit
 checks passed, with one desktop-only skip. Inspected desktop and phone screenshots.
 PR review and the authorized release are pending.
+
+### 2026-09-15 - working tree, stories before parish setup
+
+Changed Home's primary action to Explore Louisiana stories and moved parish
+setup below statewide content. Kept saved parish navigation and the statewide
+return control. Compacted the mobile introduction and covered the story jump,
+selection and focus transitions in browser checks. No backend changes.
+All 778 tests, both typechecks, build and lint pass with 15 existing warnings.
+All 58 focused Chromium/WebKit checks pass; phone and desktop screenshots were
+inspected. PR review and the authorized production release remain pending.

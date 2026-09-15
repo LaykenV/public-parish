@@ -107,8 +107,45 @@ test('Home hides stories in a parish and never repeats the hero after selection'
       ),
   ).toBe(true)
 
+  const exploreStories = page
+    .locator('.pp-home-hero-actions')
+    .getByRole('link', { name: 'Explore Louisiana stories', exact: true })
+  await expect(page.locator('.pp-home-hero-actions button')).toHaveCount(0)
+  await expect(page.locator('#stories .pp-home-choose-area')).toHaveCount(0)
+  await exploreStories.focus()
+  await page.keyboard.press('Enter')
+  await expect(page).toHaveURL(/#stories$/)
+  await expect
+    .poll(() =>
+      page
+        .locator('#stories')
+        .evaluate((node) => node.getBoundingClientRect().top),
+    )
+    .toBeLessThan(150)
+  expect(
+    await page
+      .locator('#stories')
+      .evaluate((node) => node.getBoundingClientRect().top),
+  ).toBeGreaterThanOrEqual(48)
+  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+  expect(
+    await page.evaluate(() => localStorage.getItem('public-parish.area.v1')),
+  ).toBeNull()
+  const prompt = page.locator('.pp-home-area-prompt')
+  await expect(prompt).toContainText("What's happening near you?")
+  expect(
+    await prompt.evaluate((node) =>
+      Boolean(
+        document.querySelector('#stories')!.compareDocumentPosition(node) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      ),
+    ),
+  ).toBe(true)
+  await page.screenshot({
+    path: testInfo.outputPath('explore-stories-before-parish.png'),
+  })
   await page
-    .getByRole('button', { name: 'Focus on a parish', exact: true })
+    .getByRole('button', { name: 'Choose a parish', exact: true })
     .click()
   const dialog = page.getByRole('dialog', { name: 'Choose your area' })
   await dialog.getByRole('button', { name: /^Lafayette Parish/ }).click()
@@ -287,7 +324,7 @@ test('the area selector lists parishes and body filtering stays on Home', async 
   await page.setViewportSize({ width: 320, height: 640 })
   await page.goto('/')
   await page
-    .getByRole('button', { name: 'Focus on a parish', exact: true })
+    .getByRole('button', { name: 'Choose a parish', exact: true })
     .click()
   const dialog = page.getByRole('dialog', { name: 'Choose your area' })
   await expect(
@@ -376,7 +413,9 @@ for (const width of [320, 375]) {
     const cards = track.locator('article')
     await expect(cards.nth(1)).toBeAttached()
     const count = await cards.count()
-    const index = page.locator('#current-issues .pp-issue-index').getByRole('status')
+    const index = page
+      .locator('#current-issues .pp-issue-index')
+      .getByRole('status')
     await expect(index).toHaveText(`Issue 1 of ${count}`)
     const heights = await cards.evaluateAll((nodes) =>
       nodes.map((node) => node.getBoundingClientRect().height),
@@ -576,7 +615,7 @@ for (const stored of [null, 'invalid-area', 'louisiana']) {
     await expect(page.locator('#stories .pp-story-card')).toHaveCount(3)
     if (stored !== 'louisiana') {
       await page
-        .getByRole('button', { name: 'Focus on a parish', exact: true })
+        .getByRole('button', { name: 'Choose a parish', exact: true })
         .click()
       await page
         .getByRole('dialog', { name: 'Choose your area' })
@@ -605,7 +644,7 @@ test('area choice dismisses the hero for the session when saving fails', async (
   await page.goto('/')
   await expect(page.locator('.pp-home-hero')).toHaveCount(1)
   await page
-    .getByRole('button', { name: 'Focus on a parish', exact: true })
+    .getByRole('button', { name: 'Choose a parish', exact: true })
     .click()
   await page
     .getByRole('dialog', { name: 'Choose your area' })

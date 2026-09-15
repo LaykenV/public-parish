@@ -1,7 +1,7 @@
 import { AREA_SLUGS } from '../../../convex/follows/contracts'
 import { StatewideRoundup } from './statewide-section'
 import { BallotSection } from '../stories/ballot-page'
-import { ArrowUpRightIcon, SearchIcon } from 'lucide-react'
+import { ArrowUpRightIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 
@@ -13,7 +13,6 @@ import { Button } from '../../components/ui/button'
 import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
 import { FeaturedStories } from '../stories/story-page'
 import { LouisianaRelief } from '../landing/louisiana-relief'
-import { AreaSelector } from './area-selector'
 import { setArea, useArea, useHasSelectedArea } from './area-store'
 import {
   areaName,
@@ -112,10 +111,7 @@ export function HomePage({
     <main className="pp-page pp-home" id="resident-main" ref={mainRef}>
       {showHero ? <FirstVisitHero /> : null}
       {showStories ? (
-        <FeaturedStories
-          mainHeading={!showHero}
-          action={<ChooseAreaButton />}
-        >
+        <FeaturedStories mainHeading={!showHero}>
           <ResidentSectionBoundary label="Utility roundup" resetKey="utility-roundup">
             <StatewideRoundup />
           </ResidentSectionBoundary>
@@ -123,6 +119,13 @@ export function HomePage({
       ) : null}
       {!fixturesEnabled && showStories ? <BallotSection home /> : null}
       <div id="local-content">
+        {!selected ? (
+          <div className="pp-home-area-prompt">
+            <h2>What's happening near you?</h2>
+            {/* Release the dialog's focus return when onboarding disappears. */}
+            <ChooseAreaButton key={showHero ? 'first-visit' : 'returning'} />
+          </div>
+        ) : null}
         <ResidentSectionBoundary label="Local issues" resetKey={resetKey}>
           <LocalIssues
             pageHeading={!showHero && !showStories}
@@ -164,16 +167,9 @@ function FirstVisitHero() {
           See the documents behind each decision and follow what happens next.
         </p>
         <div className="pp-home-hero-actions">
-          <AreaSelector
-            trigger={(props) => (
-              <Button {...props} size="touch">
-                <SearchIcon aria-hidden="true" /> Focus on a parish
-              </Button>
-            )}
-          />
-          <a href="#stories">
-            Browse Louisiana stories <ArrowUpRightIcon aria-hidden="true" />
-          </a>
+          <Button render={<a href="#stories" />} size="touch">
+            Explore Louisiana stories <ArrowUpRightIcon aria-hidden="true" />
+          </Button>
         </div>
         <p className="pp-home-access">
           Free to read and ask questions. No account needed.
