@@ -7,6 +7,19 @@ QA, then launch and outreach.
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
 
+## September 15 Ask full-screen correction
+
+The owner rejected the desktop sidebar shipped in PR #254. The correction on
+`fix/ask-full-screen` removes the visible title, introduction and corpus label.
+Chat fills the screen beneath navigation with 24-pixel side margins. Scoped
+record context remains available. The status shimmer now takes four seconds.
+
+- [x] Pass all 778 tests, both typechecks, build and lint with 15 existing warnings.
+- [x] Pass nine Chromium and WebKit checks, with one desktop-only skip on mobile.
+  Verify full-screen geometry, saved-chat loading, recovery and reduced motion.
+  Inspect the desktop conversation screenshot.
+- [ ] Complete the authorized PR review, production merge and smoke checks.
+
 ## September 15 Ask layout and loading corrections
 
 The owner requested more vertical conversation space, a spinner while opening

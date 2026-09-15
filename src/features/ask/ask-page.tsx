@@ -562,13 +562,10 @@ export function AskPage({
       ) : null}
 
       {!mobile ? (
-        <header className="ask-head">
-          <h1 className="ask-title">Ask Public Parish</h1>
-          <p className="ask-lede">
-            Answers come only from published, validated official evidence.
-          </p>
+        <>
+          <h1 className="visually-hidden">Ask Public Parish</h1>
           <AskScopeBar scope={viewScope} />
-        </header>
+        </>
       ) : null}
 
       {data.availability.kind === 'unavailable' && !data.scenario ? (
@@ -693,7 +690,7 @@ export function AskPage({
 
 function AskScopeBar({ scope }: { scope: AskScope }) {
   if (scope.kind === 'corpus') {
-    return <p className="ask-scope-line">{scope.label}</p>
+    return null
   }
 
   return (
