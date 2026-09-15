@@ -22,6 +22,8 @@ shimmering status line and its active icon, driven by the existing backend stage
   reduced motion and existing mobile chat/source journeys. Inspect screenshots.
 - [x] Correct older browser assertions to check the visible mobile story title
   and the restored dots with their status icon. All five affected checks pass locally.
+- [x] Retain the neutral status for an unfamiliar backend progress stage, with
+  a regression test. This preserves the prior fallback for older browser tabs.
 - [ ] Complete the owner-authorized PR review, production merge and smoke checks.
   No backend changes; release verification is pending.
 

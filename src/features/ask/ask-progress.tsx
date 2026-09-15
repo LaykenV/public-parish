@@ -14,9 +14,10 @@ const STEPS = {
 } as const
 
 export function AskChecking({ progress }: { progress?: AnswerProgress }) {
-  const active = progress
-    ? STEPS[progress.phase]
-    : { label: 'Checking the published record', icon: SearchIcon }
+  const active = (progress && STEPS[progress.phase]) ?? {
+    label: 'Checking the published record',
+    icon: SearchIcon,
+  }
   const Icon = active.icon
 
   return (
