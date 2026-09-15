@@ -33,7 +33,7 @@ export async function indexDecision(ctx: MutationCtx, recordId: Id<'decisionReco
   const label = publicBodyLabel(body)
   const base = { revision: version._id, bodyName: body.name, placeName: place.name, placeSlug: place.slug, mode: payload.kind, lifecycle: payload.kind === 'full' ? lifecycle[payload.lifecycleState] ?? 'Status not stated' : 'Status not stated', topics: [], date, dateAt: date ? Date.parse(date) : 0, checkedAt: payload.source.retrievedAt }
   const summary = payload.kind === 'full' ? payload.plainLanguageSummary : ''
-  await upsert(ctx, { ...base, key: record.recordKey, kind: 'decision', href: `/decisions/${encodeURIComponent(record.recordKey)}`, title: payload.title, summary, searchText: [record.sourceRecordId, payload.title, summary, label, body.name, place.name, ...citations.map(c => c.excerpt)].join('\n') })
+  await upsert(ctx, { ...base, publishedAt: version.createdAt, key: record.recordKey, kind: 'decision', href: `/decisions/${encodeURIComponent(record.recordKey)}`, title: payload.title, summary, searchText: [record.sourceRecordId, payload.title, summary, label, body.name, place.name, ...citations.map(c => c.excerpt)].join('\n') })
   if (record.currentMeetingKey && date) await upsert(ctx, { ...base, key: `meeting:${record.currentMeetingKey}`, kind: 'meeting', href: `/meetings/${encodeURIComponent(record.currentMeetingKey)}`, title: `${label}, ${date.slice(0, 10)}`, summary: 'Published decisions from this meeting.', searchText: `${label} ${body.name} ${place.name} ${date}` })
   await upsert(ctx, { ...base, date: null, dateAt: 0, key: `body:${body.slug}`, kind: 'body', href: `/explore?body=${encodeURIComponent(label)}`, title: label, summary: 'Browse this body\'s published decisions.', searchText: `${label} ${body.name} ${place.name}` })
   await advanceCorpusRevision(ctx)
@@ -132,6 +132,8 @@ export const backfill = internalMutation({
     if (args.kind === 'decision') {
       const page = await ctx.db.query('decisionRecords').paginate(args.paginationOpts)
       for (const record of page.page) await indexDecision(ctx, record._id)
+      const corpus = await ctx.db.query('publicCorpusState').withIndex('by_key', q => q.eq('key', 'published')).unique()
+      if (corpus) await ctx.db.patch(corpus._id, { askIndexReady: page.isDone, revision: corpus.revision + 1 })
       return { isDone: page.isDone, continueCursor: page.continueCursor, indexed: page.page.length }
     }
     const page = await ctx.db.query('issues').paginate(args.paginationOpts)

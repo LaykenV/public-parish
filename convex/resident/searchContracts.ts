@@ -5,7 +5,7 @@ export const searchEntry = v.object({
   revision: v.string(), href: v.string(), title: v.string(), summary: v.string(),
   bodyName: v.string(), placeName: v.string(), placeSlug: v.string(), mode: v.union(v.literal('full'), v.literal('limited')),
   lifecycle: v.string(), topics: v.array(v.string()), date: v.union(v.string(), v.null()), dateAt: v.number(),
-  checkedAt: v.number(), searchText: v.string(),
+  checkedAt: v.number(), publishedAt: v.optional(v.number()), searchText: v.string(),
 })
 export const publicSearchEntry = searchEntry.omit('searchText')
 export type SearchEntry = typeof publicSearchEntry.type

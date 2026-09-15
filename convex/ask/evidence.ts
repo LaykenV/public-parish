@@ -718,3 +718,23 @@ export const expandCatalogSelection = internalQuery({
     return [...new Set(ids)]
   },
 })
+
+export const selectedTargetEvidence = internalQuery({
+  args: { token: v.string(), threadId: v.string(), revision: v.number(), recordKeys: v.array(v.string()), storySlugs: v.array(v.string()) },
+  returns: v.array(v.string()),
+  handler: async (ctx, args) => {
+    if (args.recordKeys.length > 100 || args.storySlugs.length > 13) throw new ConvexError({ code: 'ask_scope_too_large', message: 'Choose a narrower question.' })
+    const access = await authorizeThreadRead(ctx, args.token, args.threadId)
+    const scope = storedScope(access.mapping.scopeKind, access.mapping.scopeKey)
+    const revision = (await ctx.db.query('publicCorpusState').withIndex('by_key', q => q.eq('key', 'published')).unique())?.revision ?? 0
+    if (revision !== args.revision) throw new ConvexError({ code: 'ask_evidence_changed', message: 'Published evidence changed. Retry the question.' })
+    if (scope.kind !== 'corpus') throw new ConvexError({ code: 'ask_scope_mismatch', message: 'Selected records do not belong to this scope.' })
+    const decisions = await loadDecisions(ctx, [...new Set(args.recordKeys)])
+    if (decisions.length !== new Set(args.recordKeys).size || decisions.some(record => scope.areaKey && record.placeSlug !== scope.areaKey)) throw new ConvexError({ code: 'ask_evidence_changed', message: 'Selected evidence changed. Retry the question.' })
+    const stories = args.storySlugs.length ? await storyAskCatalog(ctx, scope) : { records: [], sources: [] }
+    if (args.storySlugs.some(slug => !stories.records.some(record => record.recordKey === slug))) throw new ConvexError({ code: 'ask_evidence_changed', message: 'Selected evidence changed. Retry the question.' })
+    const ids = [...new Set([...decisions.flatMap(record => record.citations.map(citation => citation.id)), ...stories.sources.filter(source => args.storySlugs.includes(source.evidence.recordKey)).map(source => source.evidence.evidenceId)])]
+    if (ids.length > MAX_SCOPE_EVIDENCE_ITEMS) throw new ConvexError({ code: 'ask_scope_too_large', message: 'Choose a narrower question.' })
+    return ids
+  },
+})

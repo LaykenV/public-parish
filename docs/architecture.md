@@ -192,7 +192,8 @@ facts without acting as current configuration.
 
 Use strict JSON Schema in Chat Completions `response_format`. Generation and
 publication review run with the configured high reasoning effort; short discovery
-classification uses low reasoning. Deterministic code computes importance.
+classification and indexed Ask selection use low reasoning. Ask answers retain
+high reasoning. Deterministic code computes importance.
 Reviewer and extractor must be different models. Do not add a third tier to hide
 a source, contract, or citation defect.
 
@@ -257,10 +258,27 @@ selection skips the document-heavy answer. Focused and broad selections both
 retain their validated targets. Invalid selections and broad selections without
 targets expand to the allowed scope rather than silently dropping evidence.
 Selection and answer prompts receive the question date in America/Chicago.
-Relative dates refer to government actions, not source-import timestamps. Corpus
-selection progresses through pages with a revision fence; selected-record and
-byte bounds fail visibly and ask for a narrower scope. Do not answer from only
-the first pages or a hidden fixed top-k.
+Publication dates are readable local dates, distinct from government action dates.
+Corpus selection uses the published search projection after a complete decision
+backfill certifies it. It visits every applicable page, runs up to four selectors
+concurrently, deduplicates repeated text within each request and translates short
+batch references back to validated record IDs. An uncertified index keeps the
+complete evidence scan. Story, issue and meeting scopes retain that path.
+
+Explicit meeting-calendar and app-publication questions can use separate date
+indexes. Undated records and reviewed stories remain candidates. Ambiguous
+questions such as "What decisions changed this week?" and follow-ups keep the
+complete catalog. Place filters use indexed stable parish identities. Revision
+fences reject evidence changes during selection. Selected-record and byte bounds
+fail visibly and ask for a narrower scope. Do not answer from only the first
+pages or a hidden fixed top-k.
+
+The answer receives exact accepted excerpts and verified source context. Long
+sources keep their header and 2,000 characters around every occurrence of each
+selected excerpt, excluding the repeated body-name field from passage selection.
+Overlapping passages merge. Missing or highly repeated matches retain the full
+source. Complete source bytes and hashes are verified before passage selection.
+Omitted context never establishes that a fact is absent.
 
 Ask answer receipts expose their current stage through a session-owned progress
 query. Internal stage writes require the active answer attempt. The client

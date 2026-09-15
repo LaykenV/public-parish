@@ -1,11 +1,68 @@
 # Current work and launch gates
 
-Updated September 14, 2026. This is the only active status and pending-work queue.
+Updated September 15, 2026. This is the only active status and pending-work queue.
 The approved order is stories, then the launch upgrade slices, then design and
 QA, then launch and outreach.
 [Business scope](../PLAN.md), [launch upgrade](launch-upgrade.md),
 [architecture](architecture.md), [design](design.md),
 [operations](operations.md), and [marketing](marketing.md) define the contracts.
+
+## September 15 Ask speed work on development
+
+The owner authorized implementation, repeated development testing and release.
+Work is on `perf/ask-indexed-retrieval` in the isolated phone-fixes checkout.
+Development `woozy-wren-227` has the backend changes and the already-reviewed
+progress UI. Production remains on `d24dade`.
+
+Corpus Ask now selects from the complete published search projection, with up
+to four parallel batches. Requests deduplicate repeated text, use short target
+references and readable publication dates, and retain exact citations after
+selection. Explicit date and place filters use database indexes. Ambiguous dates,
+undated records and uncertified indexes retain complete retrieval. Answers verify
+full document hashes before selecting surrounding source passages. Selector
+reasoning is low; answer reasoning remains high. See the model-role table in
+[architecture](architecture.md).
+
+Development backfill visited 254 decision records in 11 bounded pages and
+certified 223 current published decisions. A synthetic thousand-record test
+checks selection across distant pages without a hidden result cutoff.
+
+| Live development check | Time | Result |
+| --- | --- | --- |
+| Weekly question, first indexed implementation | 63.1 seconds | Answer with four citations |
+| Low reasoning with raw dates, rejected iteration | 96.5 seconds | Unhelpful not-found answer |
+| Weekly question with readable dates and short references | 32.8 seconds | Correct record updates, six citations |
+| Weekly repeat | 35.8 seconds | Same two records and date distinction, four citations |
+| Magnolia audit in mobile WebKit | 15.8 seconds | Correct $137,500 budget, five citations |
+| Lafayette projector proposal | 9.9 seconds | Funding transfer and introduction status, three citations |
+| Unsupported bicycle-ban question | 10.3 seconds | Not-found, no invented answer or citations |
+
+The weekly prompt was "What decisions changed this week?" The improved runs
+separated September 14 and 15 Public Parish updates from August 12 government
+votes. Selection took about six seconds across three model calls. The first
+improved answer used 34,693 input tokens, versus 58,310 in the first indexed
+iteration. Its model-attempt ledger estimate was $0.027152. These are development
+measurements on a smaller corpus, not a production latency guarantee.
+
+Mobile WebKit displayed all backend stages and had no browser errors or horizontal
+overflow. The final review tightened date routing to simple explicit questions
+and preserved the full search for ambiguous scheduling language. Local tests
+cover that guard and daylight-saving boundaries. The final guard was synced to
+development after the live benchmark batch.
+
+The six-question iteration batch charged $0.143545 to the spending guard within
+a $0.50 ceiling. Total guard charges for this session were $0.202831, including
+the initial experiments. Every reservation settled. Closing the temporary batch
+restored the prior expiry and $0.085585 unspent balance without erasing charges.
+No source retrieval, email or production settings changed.
+
+- [x] Implement and test faster retrieval and verified source passages on dev.
+- [x] Check real mobile progress, supported answers and unsupported claims.
+- [x] Pass all 780 tests in 102 files, both typechecks, build and lint with
+  15 existing warnings. Review session ownership and revision checks.
+- [ ] File and release the authorized performance change. Production will
+  need a complete decision search backfill before the indexed path activates.
+- [ ] Measure the same weekly question on the full production corpus after release.
 
 ## September 14 phone Ask and Google sign-in correction
 
@@ -51,13 +108,20 @@ writes require the active answer attempt.
   URL passed. No cloud sync was required for these local checks.
 - [x] Receive authorization to file, review, merge and test production.
 - [x] Merge account PR #246 as `191b039` after CI and both reviews passed.
-- [ ] Complete Ask PR #247 on the updated main branch, then verify the exact
-  production deployment, weekly question and Google redirect.
+- [x] Merge Ask PR #247 as `d24dade` after final CI and both reviews passed.
+  Production workflow `34967536624` and independent smoke passed. Mobile WebKit
+  completed the weekly question in 169 seconds with nine citations and no
+  browser errors. All four backend stages appeared. Google reached its real
+  sign-in page with the chooser requested.
+- [ ] Reduce broad Ask selection latency and cost. The live test scanned 39
+  batches in about 140 seconds, retained 47 excerpts and used 40 successful
+  AI Gateway calls. The app ledger estimates $0.261008 for this one question.
 - [ ] Confirm complete Google sign-in on the owner's phone.
 
-Changes are isolated in `public-parish-phone-fixes`. The account release is
-queued for production. Ask PR #247 passed its initial CI and both reviews;
-its rebased commit requires fresh checks. No spending settings or email changed.
+Both releases are live. The [Ask release receipt](https://github.com/LaykenV/public-parish/pull/247#issuecomment-5680056362)
+records the production result and remaining latency concern. The account release
+passed its own workflow and independent smoke. No spending settings or email
+changed. Local release notes remain uncommitted after deployment.
 
 ## September 14 citation source actions
 

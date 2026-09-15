@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-15T12:08:00Z
+- **Last updated:** 2026-09-15T13:52:00Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2409,3 +2409,26 @@ account PR #246 as `191b039`; its production deployment is pending. Rebased Ask
 onto that merge for fresh checks before its authorized release. Live Google
 redirect and one weekly-question retest remain pending. Spending settings stay
 unchanged.
+
+### 2026-09-15 - d24dade, phone fixes verified on production
+Account PR #246 and Ask PR #247 passed final CI and both reviewers, then merged
+as `191b039` and `d24dade`. Their exact production workflows and independent
+smoke tests passed. Mobile WebKit reached Google's real sign-in page with
+account selection requested. One weekly Ask question completed in 169 seconds
+with nine citations, every backend stage and no browser errors. The matching
+receipt scanned 39 batches and retained 47 excerpts. All 40 AI Gateway calls
+succeeded without selector-validation errors. The app ledger estimates
+$0.261008 for the test. No recrawl, email or spending-setting change. Broad
+Ask remains slow, with about 140 seconds in selection. Complete Google account
+login and native phone acceptance remain pending.
+
+### 2026-09-15 - Development Ask speed tests
+
+Added complete indexed Ask selection, short record references, readable dates
+and verified source passages on development. The weekly question took 32.8 and
+35.8 seconds after a 63.1-second first indexed attempt. Mobile WebKit returned
+the correct Magnolia audit budget in 15.8 seconds with citations and live stages.
+Scoped and unsupported questions passed. All 780 tests, typechecks, build and
+lint passed with 15 existing warnings. Production remains unchanged; the
+smaller development corpus does not establish production latency. Details and
+release work are in [docs/work.md](docs/work.md).
