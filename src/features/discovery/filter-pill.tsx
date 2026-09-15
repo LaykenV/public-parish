@@ -40,23 +40,21 @@ export function FilterPill({
           sideOffset={6}
         >
           <Menu.Popup className="pp-menu">
-            <Menu.RadioGroup
-              onValueChange={(next) => onChange(String(next))}
-              value={value}
-            >
-              {options.map((option) => (
-                <Menu.RadioItem
-                  className="pp-menu-item"
-                  key={option.value || 'all'}
-                  value={option.value}
-                >
-                  <Menu.RadioItemIndicator className="pp-menu-check">
-                    <CheckIcon aria-hidden="true" />
-                  </Menu.RadioItemIndicator>
-                  {option.label}
-                </Menu.RadioItem>
-              ))}
-            </Menu.RadioGroup>
+            {options.map((option) => (
+              <Menu.CheckboxItem
+                checked={value === option.value}
+                className="pp-menu-item"
+                key={option.value || 'all'}
+                onCheckedChange={(checked) =>
+                  onChange(checked ? option.value : defaultValue)
+                }
+              >
+                <Menu.CheckboxItemIndicator className="pp-menu-check">
+                  <CheckIcon aria-hidden="true" />
+                </Menu.CheckboxItemIndicator>
+                {option.label}
+              </Menu.CheckboxItem>
+            ))}
           </Menu.Popup>
         </Menu.Positioner>
       </Menu.Portal>

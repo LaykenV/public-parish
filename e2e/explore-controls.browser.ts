@@ -40,7 +40,7 @@ test('Explore keeps controls anchored while filter results load', async ({
   const position = await place.boundingBox()
   const scroll = await page.evaluate(() => scrollY)
   await page
-    .getByRole('menuitemradio', { name: 'Rapides Parish', exact: true })
+    .getByRole('menuitemcheckbox', { name: 'Rapides Parish', exact: true })
     .click()
   const selected = page
     .locator('.pp-pill-row')
@@ -58,7 +58,7 @@ test('Explore keeps controls anchored while filter results load', async ({
   const menu = page.getByRole('menu')
   await expect(menu).toBeVisible()
   await expect(
-    menu.getByRole('menuitemradio', { name: 'Rapides Parish', exact: true }),
+    menu.getByRole('menuitemcheckbox', { name: 'Rapides Parish', exact: true }),
   ).toBeChecked()
   expect((await menu.boundingBox())!.y).toBeGreaterThan(position!.y)
   await page.screenshot({
@@ -67,6 +67,25 @@ test('Explore keeps controls anchored while filter results load', async ({
   await page.keyboard.press('Escape')
   await expect(selected).toBeFocused()
   release()
+  await expect(results).toHaveAttribute('aria-busy', 'false')
+
+  await selected.click()
+  await menu
+    .getByRole('menuitemcheckbox', { name: 'Rapides Parish', exact: true })
+    .click()
+  await expect(place).toBeVisible()
+  await expect(page).not.toHaveURL(/place=/)
+  await expect(
+    menu.getByRole('menuitemcheckbox', { name: 'Rapides Parish', exact: true }),
+  ).not.toBeChecked()
+  await expect(results).toHaveAttribute('aria-busy', 'false')
+
+  // Selecting another value still replaces the previous selection.
+  await menu.getByRole('menuitemcheckbox', { name: 'Lafayette Parish', exact: true }).click()
+  await menu.getByRole('menuitemcheckbox', { name: 'Rapides Parish', exact: true }).click()
+  await expect(menu.getByRole('menuitemcheckbox', { name: 'Lafayette Parish', exact: true })).not.toBeChecked()
+  await expect(menu.getByRole('menuitemcheckbox', { name: 'Rapides Parish', exact: true })).toBeChecked()
+  await page.keyboard.press('Escape')
   await expect(results).toHaveAttribute('aria-busy', 'false')
 
   const more = page.getByRole('button', { name: /More filters/ })
@@ -227,4 +246,35 @@ test('Explore leads with explanations and renders the details for each record ty
   await expect(page.locator('.pp-result-count')).not.toContainText(
     'Stories and consequential issues first',
   )
+})
+
+
+test('Explore clears selected topic and date filters with the keyboard', async ({ page }) => {
+  await page.goto('/explore')
+  const menu = page.getByRole('menu')
+  for (const [label, option, key] of [
+    ['Topic', 'Public money', 'topic'],
+    ['Date', 'Past year', 'date'],
+  ]) {
+    const trigger = page.getByRole('button', { name: label, exact: true })
+    await trigger.click()
+    const item = menu.getByRole('menuitemcheckbox', { name: option, exact: true })
+    await item.click()
+    await expect(item).toBeChecked()
+    await expect(page).toHaveURL(new RegExp(`${key}=`))
+    await item.focus()
+    await page.keyboard.press('Space')
+    await expect(item).not.toBeChecked()
+    await expect(page).not.toHaveURL(new RegExp(`${key}=`))
+    await page.keyboard.press('Escape')
+    await expect(trigger).toBeFocused()
+  }
+  await page.getByRole('button', { name: 'Sort', exact: true }).click()
+  const oldest = menu.getByRole('menuitemcheckbox', { name: 'Oldest first', exact: true })
+  await oldest.click()
+  await expect(oldest).toBeChecked()
+  await oldest.click()
+  await expect(oldest).not.toBeChecked()
+  await expect(menu.getByRole('menuitemcheckbox', { name: 'Newest first', exact: true })).toBeChecked()
+  await expect(page).toHaveURL(/sort=newest/)
 })
