@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-16T18:02:23Z
+- **Last updated:** 2026-09-16T21:43:50Z
 
 The owner completed design and QA on September 16, 2026 and considers the app
 ready for launch. The LPSC outcome follow-up and launch posts remain.
@@ -2543,3 +2543,15 @@ merged. The #248 release receipt also proves its production index backfill and
 weekly-answer measurement. Reconciled active docs and archived the old work queue. The LPSC outcome
 follow-up and launch posts remain; demo and submission are separate artifact work.
 No new independent smoke, source outcome, post, pilot or submission is claimed.
+
+### 2026-09-16 - working tree, launch video and post preparation
+
+Prepared a reusable demo script and channel-specific launch drafts in
+[the September 17 plan](docs/launch-plan-2026-09-17.md), using the owner's account
+of looking for reliable sources on the Meta project. Matched four Facebook
+group candidates to their local stories and rechecked the organizer requirements.
+Public Home and story links returned HTTP 200. No recording, post, submission
+or resident usage result is claimed. No app code or deployment changed.
+Added a standalone launch guide with the Meta opening, rehearsal controls,
+copyable posts and saved local notes. Checked its desktop and phone layout and
+browser controls with Chromium. The guide is local preparation, not a release.

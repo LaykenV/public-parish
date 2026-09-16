@@ -27,6 +27,14 @@ outcome, organic resident use or a new device-specific test session.
   outcome if available; otherwise state the evidence limit. Include the
   required sponsor-tagged X or LinkedIn post for the hackathon. Record actual
   public links after posting. This documentation task does not send or publish.
+  The [September 17 launch plan](launch-plan-2026-09-17.md) now has a proposed
+  2:40 reusable demo, the owner's source-finding origin story, channel drafts,
+  four candidate Facebook groups and a four-hour execution schedule. Recording,
+  current group-rule checks, final previews and posting remain pending.
+  The [standalone browser guide](../launch-plan.html) adds a rehearsal view,
+  copy buttons and a local checklist. Chromium checks covered saved progress,
+  rehearsal navigation, notes download, print expansion and desktop/phone layout.
+  This is a local planning file, not a published app change.
 
 ## Founder design and QA sign-off
 
