@@ -52,11 +52,13 @@ planning commissions stay distinct. Body focus stays in the URL and clears back
 to the parish. Existing shared city and body links remain valid.
 
 The September 15 owner correction makes Explore Louisiana stories the hero's
-primary button. It scrolls to Across Louisiana without saving an area choice.
+primary button. Its down arrow scrolls smoothly to Across Louisiana without
+saving an area choice. Respect reduced-motion settings with an instant jump.
 Place "What's happening near you?" and Choose a parish after the statewide
 stories, utility roundup and ballot preview, immediately before local issues.
-Show this prompt on desktop and phones. The story introduction has no area
-picker. Keep the header selector, desktop Louisiana labels and parish view's
+Show this prompt on desktop and phones with Choose a parish as a primary
+purple button. Keep the utility follow and commission-record actions inside
+the expanded cases list. The story introduction has no area picker. Keep the header selector, desktop Louisiana labels and parish view's
 View Statewide Stories control. Compact the mobile hero text and spacing so
 readers reach stories sooner.
 Choosing an area from the mobile menu closes the picker and menu, then opens

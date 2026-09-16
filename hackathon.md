@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-15T22:04:54Z
+- **Last updated:** 2026-09-16T00:06:46Z
 
 Demo video: not recorded yet. The final submission link remains pending.
 
@@ -2520,3 +2520,13 @@ after owner feedback. The primary-color headline experiment was never deployed.
 The parish prompt stays below statewide content. Build, targeted lint and eight
 Chromium/WebKit checks passed. Inspected phone and desktop screenshots. PR review
 and release are pending.
+
+### 2026-09-15 - working tree, clarify homepage actions
+
+Changed the story button to a down arrow with smooth scrolling and an instant
+jump for reduced-motion settings. Utility follow and record actions now appear
+only inside expanded cases. Choose a parish uses the primary purple style on
+phones and desktop. All 778 tests, both typechecks, build and lint pass with 15
+existing warnings. All 78 focused Chromium/WebKit checks passed. Inspected
+before and after screenshots and verified both motion settings in each browser.
+PR review and the authorized production release remain pending.

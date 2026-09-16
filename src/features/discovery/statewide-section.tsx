@@ -78,27 +78,27 @@ export function StatewideRoundup() {
               )
             })}
           </ul>
+          <div className="pp-utility-actions">
+            <FollowAction
+              available
+              live
+              label="Follow utility updates"
+              target={{
+                kind: 'Government body',
+                key: 'louisiana-public-service-commission',
+                title: 'Louisiana Public Service Commission',
+                detail: 'Utility rate cases, service audits and energy rules',
+              }}
+            />
+            <Link
+              className="pp-story-read"
+              to="/explore"
+              search={{ body: 'Louisiana Public Service Commission' }}
+            >
+              View commission records <ArrowUpRightIcon aria-hidden="true" />
+            </Link>
+          </div>
         </details>
-        <div className="pp-utility-actions">
-          <FollowAction
-            available
-            live
-            label="Follow utility updates"
-            target={{
-              kind: 'Government body',
-              key: 'louisiana-public-service-commission',
-              title: 'Louisiana Public Service Commission',
-              detail: 'Utility rate cases, service audits and energy rules',
-            }}
-          />
-          <Link
-            className="pp-story-read"
-            to="/explore"
-            search={{ body: 'Louisiana Public Service Commission' }}
-          >
-            View commission records <ArrowUpRightIcon aria-hidden="true" />
-          </Link>
-        </div>
       </div>
     </article>
   )
