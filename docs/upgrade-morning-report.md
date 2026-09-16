@@ -1,5 +1,10 @@
 # Monday morning report, September 14
 
+Historical receipt. The September 16 owner sign-off closes founder design and
+QA. Later releases supersede the unfinished release tasks in this report.
+[Current work](work.md) owns the remaining LPSC follow-up and launch posts.
+Keep the dated evidence below; do not replay its work orders or allowances.
+
 This report records the overnight development session before the owner
 authorized production deployment. Current release status is in `docs/work.md`.
 

@@ -35,18 +35,19 @@ Baton Rouge Planning and Zoning Commission", "Lafayette Hearing Examiner",
 and in certification artifacts does not change; a separate display field
 carries the public label. See [launch upgrade](launch-upgrade.md) slice U2.
 
-### Statewide body candidate
+### Statewide body coverage
 
-The Louisiana Public Service Commission is the approved statewide coverage
-candidate under [launch upgrade](launch-upgrade.md) slice U5. Its scope is
+Louisiana Public Service Commission coverage shipped in PR #226 under
+[launch upgrade](launch-upgrade.md) slice U5. The September 14 production audit
+returned Supported for the commission and the twelve named parish bodies. Its scope is
 business and executive session agendas and minutes from July 1, 2026 forward.
 Docket filings, testimony and exhibits are story evidence, not coverage
-sources. The commission becomes Supported only when the current evaluator
-proves all ten gates below on the current registry generation. Until then the
-`louisiana` jurisdiction remains candidate or validating and the public
-coverage page says so. Statewide support does not promote any parish.
+sources. Supported still requires all ten gates below on the current registry
+generation. Later degradation must remain visible; a dated pass cannot certify
+today's source health. Statewide support does not promote any parish.
+[Work](work.md) records the dated proof and operating limits.
 
-The development compile uses the August 12 agenda and minutes and the revised
+The bounded compile uses the August 12 agenda and minutes and the revised
 September 16 agenda. The source search returned no candidates, so root v2 can
 include explicitly checked URLs from the gold set. Those seeds still pass
 classification, immutable retrieval and every coverage gate. Only the two
@@ -112,7 +113,9 @@ The November 3, 2026 list is the
 [Secretary of State's proposed constitutional amendments](https://www.sos.la.gov/media/jo2die1s/proposed-constitutional-amendments-2026-nov.pdf),
 ten measures under Acts 39, 273, 271, 414, 606, 274, 607, 277 and 272 of 2026
 and Act 220 of 2025. Parish propositions require separate verification.
-The development manifests retain all ten Acts, seven enrolled fiscal notes, the enrolled actuarial note
+PR #227 shipped all ten statewide measures; the September 14 production audit
+verified their accepted LIMITED versions. The manifests retain all ten Acts,
+seven enrolled fiscal notes, the enrolled actuarial note
 for HB27 and R.S. 15:541 for the definition referenced by Amendment 3.
 The latter two are official Legislature-hosted records. See the
 [development report](upgrade-morning-report.md) for the exact manifest versions
@@ -203,7 +206,7 @@ consist of an unexplained source-only stub.
 ## Evidence assets to preserve
 
 - [Initial gold set](gold-sets/lafayette-city-council.v1.json).
-- [Current coverage gold set](coverage-gold-sets/launch-bodies.v4.json) and prior
+- [Current coverage gold set](coverage-gold-sets/launch-bodies.v5.json) and prior
   versions in the same directory.
 - [Initial production batch](production-batches/launch-data-2026-08-31.v1.json).
 - [Lafayette source recovery](source-spikes/lafayette-planning-recovery-2026-09-06.md),

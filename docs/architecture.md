@@ -27,7 +27,7 @@ Approved official source
   -> resident queries, search, Ask, and sourced notifications
 ```
 
-The development story path adds owner-reviewed composition over accepted evidence
+The deployed story path adds owner-reviewed composition over accepted evidence
 from one or several bodies. It preserves the existing decision and issue path.
 
 ## Stack and code organization
@@ -119,10 +119,12 @@ assume a standalone meetings table because an old plan proposed one.
 
 `governmentBodies.name` is an identity value compared against manifest
 `bodyName` in story intake and evidence checks and recorded in certification
-artifacts. Planned: an optional `displayName` and municipality reference carry
-public labels and selector grouping; identity fields do not change. The
-`louisiana` jurisdiction has type `state` and exists as a candidate; statewide
-bodies attach to it and follow the same status lifecycle as a parish.
+artifacts. Optional `displayName` and `municipality` fields carry public
+labels and place context; identity fields do not change. The area selector
+lists Louisiana and parishes, with body filters on Home. The `louisiana`
+jurisdiction has type `state`; statewide bodies follow the same coverage
+lifecycle as parish bodies. U5 shipped in PR #226. Dated production coverage
+proof is in [Work](work.md#published-evidence-and-operating-limits).
 
 Public queries return only accepted resident projections. Internal pipeline
 functions never become client-callable to simplify an importer. Owner operations
@@ -255,7 +257,8 @@ stale or invalid candidates; this bounded feed is not an archive ranking.
 Explore uses a paginated published projection. Hydration rejects stale references. Public pages must not
 call these bounded results complete archive totals.
 
-Current Ask scopes are issue, meeting and corpus. Anonymous access lasts 24 hours
+Current Ask scopes are story, issue, meeting and corpus. Ballot measures use
+the story scope. Anonymous access lasts 24 hours
 on the same device. The Agent component stores threads and messages; application
 rows bind scope and session ownership before each read or write. Questions stay
 out of URLs and public telemetry.
@@ -308,7 +311,8 @@ verifying an alert address. Management tokens are scoped and expiring;
 unsubscribe applies to the subscriber's address, and re-verification restores
 only the explicitly requested follow.
 
-Existing follow types are issue, topic, government body and place. Resolve owner
+Existing follow types are story, issue, topic, government body and place.
+Ballot measures use the story follow target. Resolve owner
 identity on the backend. Gate body and place subscriptions against their current
 coverage contract. Publication fanout records each matching follow, then dedupes
 immediate delivery by owner and material change. Issue alerts wait for a readable
@@ -376,7 +380,10 @@ Reviewed cosmetic revisions retain a pending material event; a later material
 revision or suppressed historical baseline invalidates the older event. Replies
 recheck accepted citation IDs, inbox, sender, subscription and thread before send.
 These paths have CI coverage and passed the three-story development model and
-controlled email round trips. All three stories are published in production. The owner will verify production email during the founder QA pass.
+controlled email round trips. All three stories are published in production.
+The [September 12 receipt](launch-release-2026-09-12.md#production-email-and-phone-proof)
+records the controlled production email loop. Founder design and QA closed
+on September 16.
 
 The owner supplies a versioned JSON manifest referencing exact approved sources,
 saved artifacts or existing accepted records, proposed grouping, questions and
@@ -459,11 +466,12 @@ A Stories navigation link
 may target the homepage story section for the three-story launch; a separate
 editorial index is unnecessary. Existing issue and decision URLs remain stable.
 
-Home displays the hero and all three accepted launch stories before issues on
-the Louisiana view. A parish, city or body focus collapses the hero and keeps
-the stories above local issues; a missing stored focus means Louisiana. Home
-queries stories separately from the local feed. Choosing a focus does not
-filter them out. Owner-selected placement is independent of importance scores.
+Home displays the three accepted launch stories only in the Louisiana view.
+The hero appears before any saved area selection. Parish Home hides featured
+stories and begins with local issues and body filters. Returning to Louisiana
+restores stories without restoring the hero. A missing stored focus means
+Louisiana. Home queries stories separately from the local feed. Owner-selected
+placement is independent of importance scores.
 Home issue selection orders bounded results by accepted consequence score,
 accepted-version recency and descending slug. Index selection uses the same
 order. Issues with neither a supported consequence factor nor a next date stay
@@ -481,8 +489,8 @@ and featured stories remain three. Measures use the existing import, draft,
 review, immutable version, Ask scope, `story` follow target, update event and
 share metadata paths. The Secretary of State is registered in code as an
 official publisher. Routes are `/ballot` and `/ballot/$measureSlug`. These
-changes run in development. Production release remains pending in
-[the work queue](work.md).
+changes shipped in PR #227. The September 14 audit verified ten active LIMITED
+statewide measures in production. [Work](work.md) records the release evidence.
 
 The frozen v1 import contract remains valid. Contract v2 adds ten code-owned
 measure keys and ballot placement. Historical research bundles can be staged
@@ -522,9 +530,10 @@ source controls and mobile evidence sheets. Probe uncached same-origin
 `/brand-mark.svg` reachability rather than trusting `navigator.onLine` alone.
 Failures must leave evidence and navigation understandable.
 
-Automated checks run in PR CI. Agents do not run local tests, builds, typechecks
-or linters without authorization for the exact command. Static review and
-`git diff --check` are allowed. Test new behavior against meaningful failure
+Run local tests, builds, typechecks and linters as needed under AGENTS.md.
+`npm run verify` runs the full local suite, and PR CI repeats the checks. Review
+the diff and run `git diff --check` as well. Test new behavior against meaningful
+failure
 cases, especially cross-story access, stale citations, import replay, independent
 review, image metadata, withheld content and duplicate mail. Run authorized live
 checks separately and state their limits. [Work](work.md) owns launch acceptance;

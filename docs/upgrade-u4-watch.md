@@ -1,13 +1,18 @@
 # U4 official-outcome watch
 
-Prepared September 14, 2026. This is a procedure, not a scheduled job.
+Updated September 16, 2026. This is a procedure, not a scheduled job.
 The active status remains in [work.md](work.md).
 
-The development Meta story now has the same accepted prose as production.
-Its next action describes two U-37882 procedural motions scheduled for
-September 16 at 9 a.m. Central. Follow appears next to that section.
-No September 16 outcome exists in the accepted evidence. Tuesday launch is
-September 15, before this session. Do not make its outcome a Tuesday gate.
+The owner completed design and QA and is waiting on this follow-up and launch
+posts. The last documented Meta version describes two U-37882 procedural motions
+listed for September 16 at 9 a.m. Central, with Follow beside the next action.
+The September 16 documentation update did not check new LPSC documents or
+accept an outcome. The agenda establishes scheduled items, not what happened.
+
+Record today's actual source check before claiming an outcome or its absence.
+If no qualifying official document is available, record that checkpoint and
+keep the public outcome explicitly undocumented. Continue the bounded watch
+through September 19. The earlier September 15 launch target is superseded.
 
 ## Official pages to check
 
@@ -45,4 +50,5 @@ two September 16 motions.
 
 The named U4 limit remains $2 model use and 10 Firecrawl credits, with one
 retry after diagnosing its cause. Recheck the spending guard before a future
-run because the overnight development tranche expires within 48 hours.
+run. The earlier overnight development tranche is historical and does not
+establish today's available allowance.

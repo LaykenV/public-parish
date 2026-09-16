@@ -1,5 +1,10 @@
 # September 13 overnight development work
 
+Historical receipt. The September 16 owner sign-off closes founder design and
+QA. Later releases supersede the unfinished release tasks in this report.
+[Current work](work.md) owns the remaining LPSC follow-up and launch posts.
+Keep the dated evidence below; do not replay its work orders or allowances.
+
 The owner authorized completing U4, U5 and U6 in development and testing them
 overnight. Work uses `upgrade/overnight-u4-u6`, based on `0badfa3`, in
 `public-parish-upgrade-data`. The starting checkout has unrelated changes.

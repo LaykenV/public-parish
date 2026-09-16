@@ -1,5 +1,10 @@
 # Resident reading and Ask, morning report
 
+Historical receipt. The September 16 owner sign-off closes founder design and
+QA. Later releases supersede the unfinished release tasks in this report.
+[Current work](work.md) owns the remaining LPSC follow-up and launch posts.
+Keep the dated evidence below; do not replay its work orders or allowances.
+
 The September 10 review requested one consistent experience across stories,
 issues, decisions and meetings. This pass keeps the approved Public Parish
 colors and typography and changes the reading, sources and conversation layouts.

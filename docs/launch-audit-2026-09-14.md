@@ -1,5 +1,10 @@
 # Code freeze and launch audit
 
+Historical receipt. The September 16 owner sign-off closes founder design and
+QA. Later releases supersede the unfinished release tasks in this report.
+[Current work](work.md) owns the remaining LPSC follow-up and launch posts.
+Keep the dated evidence below; do not replay its work orders or allowances.
+
 Audited September 14, 2026 against production commit
 `0c0d24c0015abdcf76661e21e7ea5100d1d09500`.
 

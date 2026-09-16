@@ -1,5 +1,10 @@
 # Production story release
 
+Historical receipt. The September 16 owner sign-off closes founder design and
+QA. Later releases supersede the unfinished release tasks in this report.
+[Current work](work.md) owns the remaining LPSC follow-up and launch posts.
+Keep the dated evidence below; do not replay its work orders or allowances.
+
 This is a dated release receipt. Later image and evidence revisions, final costs
 and QA readiness are recorded in the [September 8 morning report](targeted-catchup-2026-09-08.md).
 

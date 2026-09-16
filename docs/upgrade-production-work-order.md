@@ -1,5 +1,10 @@
 # September 14 production upgrade release
 
+Historical receipt. The September 16 owner sign-off closes founder design and
+QA. Later releases supersede the unfinished release tasks in this report.
+[Current work](work.md) owns the remaining LPSC follow-up and launch posts.
+Keep the dated evidence below; do not replay its work orders or allowances.
+
 The owner authorized deploying U4, U5 and U6 to production. The target is
 `befitting-flamingo-587` at https://www.publicparish.com. Release commission
 coverage and the ballot guide in separate reviewed pull requests.

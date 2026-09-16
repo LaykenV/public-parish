@@ -1,5 +1,10 @@
 # Code-freeze corrections and source review
 
+Historical receipt. The September 16 owner sign-off closes founder design and
+QA. Later releases supersede the unfinished release tasks in this report.
+[Current work](work.md) owns the remaining LPSC follow-up and launch posts.
+Keep the dated evidence below; do not replay its work orders or allowances.
+
 September 14, 2026. Prepared against production commit
 `0c0d24c0015abdcf76661e21e7ea5100d1d09500` in a separate worktree. The original
 checkout and its unrelated changes remain intact. The

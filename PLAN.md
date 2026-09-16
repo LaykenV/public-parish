@@ -1,6 +1,6 @@
 # Business and product plan
 
-Owner decisions updated September 13, 2026. Current delivery status and all
+Owner decisions updated September 16, 2026. Current delivery status and all
 unfinished work live in [the work plan](docs/work.md). Technical contracts live
 in [architecture](docs/architecture.md). The pre-launch upgrade slices live in
 [the launch upgrade plan](docs/launch-upgrade.md).
@@ -55,8 +55,8 @@ a research lead, but it does not replace the precise project geography. The
 legacy SpaceX research key and route contain Pecan Island; the accepted evidence
 does not establish that precise site location.
 
-All three stories and the complete story functionality must work before the
-founder's global design and full QA pass begins. Required functionality includes
+All three stories and the complete story functionality passed before the
+founder's global design and full QA pass. The continuing contract includes
 owner-controlled source intake and review, versioned publication, images,
 citations, story-scoped Ask, story follows and sourced updates, email replies,
 sharing, search, and related local records. A collection of static articles does
@@ -84,19 +84,22 @@ The September 12 upgrade adds, in slices defined in
 
 The featured story set stays at three. The upgrade does not add a fourth story.
 
-## Delivery order
+## Delivery stage
 
-1. Finish story functionality and publish the three accepted launch stories.
-2. Complete the launch upgrade slices, including the September 16 outcome work.
-3. Complete global design changes, then page-by-page desktop and mobile design
-   and functional QA over the upgraded surfaces. Fix blocking findings.
-4. Launch publicly, conduct outreach, publish content, observe residents, and
-   make bounded fixes. Record the demo and submit with the owner's authorization.
+The three-story functional gate and launch implementation are complete. The
+owner completed the global design and founder QA pass on September 16 and
+considers the app ready for public launch. The remaining launch work is the
+September 16 LPSC official-outcome follow-up and launch posts. Preserve an
+explicit evidence limit if the official outcome is not yet documented.
 
-Functional verification during implementation is still required. The full
-founder design and QA campaign starts after the story acceptance gate. Broad
-promotion waits for the public launch gate. Preparing source dossiers and draft
-outreach materials does not authorize sending or publishing them.
+A private resident pilot is follow-up work rather than a prerequisite for
+launch. Collect actual feedback during outreach and make bounded fixes. Record
+the final demo and submit the hackathon entry as separate artifact work.
+[Work](docs/work.md) owns the current queue and release receipts.
+
+Functional verification remains required for later changes. Draft outreach and
+this documentation update do not authorize sending, posting or publication of
+an unreviewed government claim.
 
 ## Trust contract
 
@@ -164,7 +167,7 @@ cross-device chat history for this launch.
 Sourced ballot-measure explanations are in scope under the launch upgrade.
 They quote the official ballot wording and the Act, never recommend a vote, and
 never describe campaigns. Keep the small dated voter-information strip with
-official outbound links; it links to the ballot page once that page exists.
+official outbound links; it links to the published ballot page.
 Keep private source-problem reports and public coverage requests. Reports and
 requests do not launch paid source work.
 
@@ -209,3 +212,10 @@ ballot-measure explanations. The owner cut spending data, statistics, candidate
 and poll data and a proposed money aggregate. The stance is to show what the
 documents establish and what remains unresolved, not to confirm or puncture an
 announcement. [The launch upgrade plan](docs/launch-upgrade.md) owns the slices.
+
+On September 16 the owner confirmed that the design and QA pass is complete
+and everything looks good. The owner considers Public Parish ready for launch,
+with the LPSC outcome follow-up and launch posts remaining. This decision
+supersedes the earlier private-pilot prerequisite. Demo recording and hackathon
+submission remain separate deliverables; no organic usage or submission is
+claimed by the sign-off.

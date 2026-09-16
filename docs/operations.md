@@ -55,14 +55,12 @@ weaken citations, or activate all policies to increase a publication count.
 
 ## Allowances and production settings
 
-The September 8 [final source-work receipt](targeted-catchup-2026-09-08.md)
-records the restored $4 production source ceiling with $4.401016 charged, so
-new paid source processing is blocked. The separate $0.50 Ask ceiling had
-$0.376365 remaining, with its existing September 14 UTC expiry. Only the prior
-Metropolitan Council policy was enabled. Other policies remained paused.
-The continuation used $0.600803 in model charges and 86 Firecrawl credits.
-Read current settings before spending. These recorded amounts are not new caps
-for the launch plan and are not proof of today's remaining balances.
+The [September 14 code-freeze receipt](code-freeze-2026-09-14.md) supersedes the
+September 8 allowance snapshot. Its closing state has source policies paused
+and source AI spending disabled. Public Ask has a separate finite allowance
+through the end of September 25 Central. Read current settings and remaining
+balances before spending. Dated receipts are not today's budget, and the
+September 16 launch sign-off changes no settings.
 
 Paid AI and monitoring admissions require `AI_SPENDING_GUARD_ENABLED=true`.
 An absent or disabled guard pauses paid work even if an allowance is funded.
@@ -115,7 +113,9 @@ existing or an outbound provider ID is not a completed round trip. Record the
 development webhook, receipt and grounded reply separately. Do not modify a
 production webhook to make a development check pass. The callback and controlled
 round trips passed the [development gate](story-development-certification.md).
-Production story email verification remains assigned to founder QA.
+The [September 12 production receipt](launch-release-2026-09-12.md#production-email-and-phone-proof)
+records the controlled story email loop. The owner completed founder QA on
+September 16. Verify later material updates under their own work order.
 
 Saved artifact hash differences require a new manifest version with corrected
 exact spans. Preserve the frozen predecessor. Repeating retrieval to force a
@@ -179,7 +179,10 @@ database insertion or copied approval for this path.
 Use an explicitly authorized controlled recipient for verification, update,
 roundup, reply and unsubscribe checks. A provider-accepted message, inbox receipt,
 verified application callback and useful resident outcome are distinct results.
-The owner has assigned production email verification to the founder QA pass. Agents should not repeat production test mail for this follow-up.
+The controlled Meta production email loop passed on September 12, and the
+owner completed the founder QA pass on September 16. These dated receipts do
+not authorize repeated test mail. A new U4 material update has its own delivery
+verification under the named work order.
 
 The story development gate used a dedicated development inbox and callback, with
 only the owner-controlled reports inbox as recipient. Production routing was not

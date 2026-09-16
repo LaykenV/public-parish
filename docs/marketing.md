@@ -1,17 +1,17 @@
 # Marketing and launch
 
-The approved order is complete stories, then design and QA, then public launch,
-outreach and content. [Work](work.md) owns dates, gates and pending tasks. Do not
-use the old checkpoint-posting cadence or 90-minute weekly content cap as the
-launch plan. The founder's weekday Varholdt sales block remains protected.
+The owner completed the design and QA pass on September 16, 2026 and considers
+Public Parish ready for launch. The remaining launch work is the LPSC outcome
+follow-up and launch posts. [Work](work.md) owns current status. The founder's
+weekday Varholdt sales block remains protected.
 
 ## Positioning
 
 The promise is "Understand Louisiana's government decisions. See the documents
 behind them and follow what happens next." Lead with a recognizable Louisiana
 story and the ability to inspect its official evidence. Meta is the homepage
-lead; SpaceX and Boyce are the secondary stories. The November 3 amendments and
-statewide records follow once published. Local issues appear below them and
+lead; SpaceX and Boyce are the secondary stories. The ten November 3 amendments and
+statewide commission records are published. Local issues appear below them and
 remain a useful reason to return.
 
 The resident invitation is to understand a decision, open the document, ask a
@@ -31,14 +31,14 @@ upgraded surfaces.
 
 ## Launch gate
 
-All three stories must pass the functional acceptance gate, then the founder
-must complete the global design and page-by-page QA pass. Fix P0 and P1 findings,
-run a small private resident pilot, inspect real social previews, and confirm
-funded operation through judging before broad promotion.
+The story functionality and founder design and QA gates are complete. The
+September 16 owner decision replaces the earlier private-pilot prerequisite.
+Resident feedback remains useful follow-up work, with no pilot result claimed.
 
-Quiet private feedback after the founder pass does not consume the personal
-Facebook launch announcement. Preparing drafts, recordings and a list of groups
-is useful beforehand; it does not authorize posting or sending outreach.
+Finish the LPSC source follow-up and prepare the launch posts. Inspect each
+post's actual platform preview and final link before publishing. Keep allowance
+and error checks in routine launch operation. Preparing drafts, recordings and
+group lists does not authorize posting or sending outreach.
 
 ## Channel priorities
 
@@ -70,8 +70,8 @@ permission, not a claimed algorithmic best time.
 
 | Moment | Action | Destination and observation |
 | --- | --- | --- |
-| Before launch | Founder QA, private pilot, preview checks, draft assets and group rules | Repair confusing or broken flows |
-| September 16 | LPSC business session takes up two procedural U-37882 motions. Do not post a result until an official document records it | Meta story next-action section and Follow |
+| Before posting | Finish the LPSC follow-up, draft assets, check previews and group rules | Use current accepted evidence and working links |
+| September 16 | Check official records for the two U-37882 procedural motions listed on the agenda. Publish a result only after source review | Meta story next-action section and Follow |
 | Launch day | Personal Facebook post and required X or LinkedIn demonstration | Louisiana Home or the story most relevant to the post; observe visits and actions |
 | Next day | A small set of permitted community posts | Meta, SpaceX or Boyce direct link matched to the community; the amendments page for statewide groups |
 | Following days | Publish another story explanation, one amendment explained from its Act, or a recurring evidence-backed answer | Sources, Ask and follow |
@@ -80,8 +80,8 @@ permission, not a claimed algorithmic best time.
 
 Boyce can be the personal Rapides-focused post destination while Meta remains
 the homepage lead. The ten November 3 amendments give statewide groups a
-reason to visit that does not depend on a data-center story; seven concern
-property tax. Each new post should offer a different useful explanation or
+reason to visit that does not depend on a data-center story. Each new post
+should offer a different useful explanation or
 update. Do not repeat a launch announcement solely because the first one failed
 to gain attention. Preserve time each day to respond and fix problems.
 
@@ -153,4 +153,7 @@ Sharing Debugger confirmed all three development previews and the production
 Meta preview metadata, with a missing `fb:app_id` warning. Native screenshots
 were blank, so image crops are not visually certified. Verify each production
 preview with the final approved image before outreach. The SpaceX and Boyce
-production Facebook checks and production email verification belong to QA.
+production Facebook crop checks were unrecorded at that checkpoint. Inspect
+the final preview for each launch post. The September 12 controlled production
+email receipt and September 16 founder QA sign-off supersede the old blanket
+email and QA blockers.

@@ -1,5 +1,10 @@
 # Morning design report, September 9
 
+Historical receipt. The September 16 owner sign-off closes founder design and
+QA. Later releases supersede the unfinished release tasks in this report.
+[Current work](work.md) owns the remaining LPSC follow-up and launch posts.
+Keep the dated evidence below; do not replay its work orders or allowances.
+
 The rest of the app now follows the approved Home design in the local working
 tree. The work is on `design/resident-app-home-patterns`, based on `f7742d5`.
 Nothing from this pass has been committed, pushed or deployed.

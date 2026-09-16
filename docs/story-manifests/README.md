@@ -56,4 +56,4 @@ evidence, never an independent source for Ask.
 
 Resident routes, story search, Ask and typed notification events are deployed.
 [Work](../work.md) records the verified development loop, production checks and
-remaining founder QA. The research contract alone does not certify those journeys.
+the completed September 16 founder QA gate. The research contract alone does not certify those journeys.

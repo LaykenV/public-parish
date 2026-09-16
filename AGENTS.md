@@ -7,6 +7,15 @@ scope. Read `docs/launch-upgrade.md` before taking an upgrade slice. Read
 artifacts. `docs/work.md` is the only active status and pending-work queue.
 `docs/archive/` preserves history, not current instructions.
 
+## Current launch stage
+
+The owner completed the global design and founder QA pass on September 16, 2026
+and considers the product ready for launch. The remaining launch work is the
+September 16 LPSC outcome follow-up and launch posts. A private pilot is follow-up
+work, not a launch prerequisite. Final demo and hackathon submission remain
+separate artifact tasks. Use `docs/work.md` for receipts and current status.
+Do not restart completed design, QA, PR or coverage work from a dated report.
+
 ## Product Contract
 
 - Public Parish is a free, open-source, nonpartisan Louisiana civic application.
@@ -26,8 +35,8 @@ artifacts. `docs/work.md` is the only active status and pending-work queue.
 
 ## Implementation Contract
 
-- Finish the three-story functionality and evidence gate in `docs/work.md` before
-  the global design and full founder QA pass. Launch and outreach follow QA.
+- The three-story functionality and evidence gate and the founder design and
+  QA gate are complete. Preserve their evidence contracts during launch updates.
 - Preserve the shared evidence pipeline when adding owner-curated stories. Story
   publication must not promote an unsupported body or parish.
 - Use TanStack Start in SPA/static-prerender mode, Convex for the backend and
@@ -42,7 +51,7 @@ artifacts. `docs/work.md` is the only active status and pending-work queue.
 - OpenAI calls run from Convex actions through Convex AI Gateway. Refer to
   models by role and keep the only role-to-model table in
   `docs/architecture.md`. `MODEL_STRONG` runs record extraction, consequence
-  factors, issue linking, and planned story drafting. `MODEL_FAST` runs discovery
+  factors, issue linking, and story drafting. `MODEL_FAST` runs discovery
   classification, independent review, and chat. Code computes importance scores.
   The reviewer never runs on the extraction model. Send strict JSON Schema through the Chat Completions `response_format` field.
   Deterministic validation runs after extraction and review.
@@ -63,7 +72,7 @@ artifacts. `docs/work.md` is the only active status and pending-work queue.
 The approved launch adds three homepage stories: Meta in Richland Parish as the
 lead, SpaceX in Vermilion Parish and the Boyce data center as secondary stories.
 All three and story-scoped Ask, follows, updates, replies, sharing, source review
-and images must pass before the full design and QA campaign. Louisiana is the
+and images passed the functional gate before the completed design and QA pass. Louisiana is the
 default Home. Show the hero only before any saved area selection. Returning to
 Louisiana restores statewide stories without restoring the hero. Featured
 stories appear only in the Louisiana view. Parish Home begins with local issues

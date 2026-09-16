@@ -1,5 +1,10 @@
 # Launch preparation, September 12
 
+Historical receipt. The September 16 owner sign-off closes founder design and
+QA. Later releases supersede the unfinished release tasks in this report.
+[Current work](work.md) owns the remaining LPSC follow-up and launch posts.
+Keep the dated evidence below; do not replay its work orders or allowances.
+
 This is the overnight audit snapshot. The [release receipt](launch-release-2026-09-12.md)
 records the subsequent production fixes, Meta publication and email checks.
 

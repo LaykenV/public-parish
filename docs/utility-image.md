@@ -2,8 +2,9 @@
 
 The owner requested an image for the homepage utility roundup on September 14,
 2026. Generated with the built-in image_gen tool as a generic editorial
-illustration. It depicts no identified utility, project or decision. The card
-labels it AI illustration and keeps official evidence in the linked cases.
+illustration. It depicts no identified utility, project or decision. PR #249
+removed the visible illustration caption at the owner's request. Descriptive
+alt text remains, and the linked cases retain the official evidence.
 
 Workspace asset: `src/assets/utility-roundup.webp`.
 Dimensions: 1672 by 941 pixels. WebP encoding: 352,874 bytes.

@@ -3,8 +3,9 @@ guidance. Read and follow it before any work.
 
 @AGENTS.md
 
-Start from `docs/work.md` for current status and the stories, design/QA, launch
-sequence. Active contracts are indexed in `README.md`. Archived slice plans are
+Start from `docs/work.md` for current launch status. The owner completed design
+and QA on September 16, 2026. The remaining launch work is the LPSC outcome
+follow-up and launch posts. Active contracts are indexed in `README.md`. Archived slice plans are
 historical evidence, not unfinished assignments.
 
 <!-- convex-ai-start -->

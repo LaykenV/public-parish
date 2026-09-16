@@ -1,12 +1,14 @@
 # Design and resident experience
 
 This document owns the agreed information flow and the design-review process.
-The story functionality and evidence gate has passed. The global design and
-founder QA pass is in progress.
+The story functionality and evidence gate has passed. The owner completed the
+global design and founder QA pass on September 16, 2026 and approved the app
+for launch. The page contracts below govern later changes.
 [Work](work.md) owns the phase gate and QA ledger. The September 8 Home redesign shipped through PR 197 at `fbda95b`.
 CI browser checks and bounded production smoke passed for that release. The owner approved the follow-up below, released through PR 198 at `f7742d5`.
 Its 24 CI browser journeys, exact production workflow and independent smoke passed. [Design-system reference](design-system.html) records the existing
-visual baseline until the owner changes it during that pass.
+approved visual baseline. Later dated corrections below supersede earlier
+conflicting descriptions.
 
 ## Homepage flow
 
@@ -206,7 +208,8 @@ The share image should match the approved story version.
 
 ## Global pass
 
-After story acceptance, review the shared system before individual pages:
+The founder completed this pass on September 16. Use the same checks for
+later changes to the shared system:
 
 - Color roles and contrast, typography, reading width, spacing and density.
 - Primary, secondary, quiet and destructive actions; hover, focus, disabled,
@@ -235,11 +238,13 @@ limitations. An approved government action is not a success judgment.
 Shared controls use Coss components on Base UI. The Home pass adds the Coss Popover, Sheet,
 Scroll Area and Input registry components to the existing Button and Badge.
 The design reference records the same palette and layout. Visual, contrast,
-keyboard and responsive QA remain pending until actually inspected.
+keyboard and responsive checks remain part of validating future changes. The
+September 16 owner sign-off closes the launch review gate.
 
 ## Page-by-page pass
 
-Review desktop and mobile for each page before moving on:
+The founder completed the page-by-page pass on September 16. Use this order
+when a later change requires another review:
 
 1. Home and all three story details.
 2. Explore and search filters, pagination and story result types.
@@ -278,8 +283,8 @@ expired anonymous thread, signed-out and signed-in controls, lost connectivity,
 changed coverage, and email recovery. A paid-service failure must not erase
 previously accepted readable evidence.
 
-Keep small verified voter information with outbound official links, linking to
-the ballot page once it exists. Ballot-measure pages use the shared story
+Keep small verified voter information with outbound official links and a link
+to the published ballot page. Ballot-measure pages use the shared story
 reading, Ask, Follow and Share patterns and quote the official ballot question
 first. They carry the notice that a resident's ballot depends on their precinct
 with a link to the Secretary of State sample ballot. Do not build a candidate
@@ -322,8 +327,9 @@ signed-in fixture uses Lafayette and East Baton Rouge as sample saved areas.
 
 The overnight working tree extends the approved Home system to stories, Explore,
 Ask, evidence pages, Following, email management, Coverage, request/report forms,
-Privacy, How it works, recovery and owner tools. This is a local implementation,
-not a released design checkpoint. See the
+Privacy, How it works, recovery and owner tools. This paragraph records the
+September 9 local checkpoint. The subsequent
+releases and September 16 founder sign-off supersede its release status. See the
 [morning inspection report](design-morning-report-2026-09-09.md).
 
 Use the shared page-title size and page spacing tokens. Keep resident metadata
@@ -338,9 +344,9 @@ Coverage definitions expand on demand. Coverage request forms precede supporting
 explanation on phones. Private source reports use the full drawer height.
 Account copy distinguishes saved areas from the Home parish selector.
 
-Manual checks covered native Chrome desktop, narrow phones and selected tablet
-views. CI, authenticated owner views, physical-device and screen-reader checks
-remain pending. Keep their status in `docs/work.md`.
+Manual checks at that checkpoint covered native Chrome desktop, narrow phones
+and selected tablet views. Later acceptance is recorded in `docs/work.md`; this
+historical note does not create an outstanding device or review gate.
 
 
 ## Mobile reading and chat, September 11 owner correction
@@ -397,8 +403,9 @@ examples stay one tap above the field; they disappear after the first
 question. After the first question, Ask uses one scrollable conversation above
 the composer. The send control is an up arrow at its lower right with an
 accessible name; while an answer is being checked, the spinner replaces the
-arrow. The answer wait beneath the question uses three small bouncing dots,
-with a static indicator under reduced motion. Drafts and conversations survive leaving and reopening full-screen chat,
+arrow. The September 15 correction replaces the earlier typing dots with the active
+step icon and one four-second shimmering status line. Reduced motion stops it.
+Drafts and conversations survive leaving and reopening full-screen chat,
 and a reopened conversation starts at its latest exchange. The composer starts
 as one line and grows with the draft. Standalone mobile Ask uses the same
 compact bar and composer. Short screens and keyboard resizing keep the composer
@@ -442,7 +449,9 @@ height on phones. Its viewport meta requests `interactive-widget=resizes-content
 Public Parish adopts that supported-browser hint, stable geometry and one owner
 for chat bounds. T3's web code has no visual-viewport keyboard handler to copy;
 its native mobile app uses a native keyboard controller. Public Parish still
-needs visual-viewport sizing on Safari. Native iPhone acceptance is required.
+needs visual-viewport sizing on Safari. The September 12 production receipt
+records the owner's native-phone acceptance, followed by the completed founder
+QA pass on September 16.
 
 ## Owner operations
 

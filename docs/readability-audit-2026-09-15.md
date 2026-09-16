@@ -1,5 +1,10 @@
 # Local issue readability audit
 
+September 16 status correction. PR #253 released the prompt changes below. The
+owner completed founder design and QA. Generated-draft evaluation and the named
+evidence gaps remain follow-up work in [current work](work.md); this audit is
+not a pending PR or a claim that existing publications were rewritten.
+
 Reviewed September 15, 2026 against released commit `f46a933` and current public
 issue queries. The owner shared reader feedback about formal titles and repeated
 explanations under "Why this may matter." This audit inspects five published

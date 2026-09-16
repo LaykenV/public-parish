@@ -1,9 +1,14 @@
 # Hackathon submission
 
-Official requirements were checked September 7, 2026 against the
+Official requirements were rechecked September 16, 2026 against the
 [Convex All Gas Hackathon page](https://www.convex.dev/hackathons/all-gas).
 Recheck before submission. [Work](work.md) owns the delivery schedule and current
 readiness. The root [hackathon log](../hackathon.md) owns build history.
+
+The owner completed design and QA on September 16 and considers the product
+ready for launch. The remaining launch work is the LPSC outcome follow-up and
+launch posts. This document tracks the separate demo and submission artifacts;
+launch readiness does not mean the entry has been submitted.
 
 ## Event and required artifacts
 
@@ -28,10 +33,11 @@ both independently. The apex redirects and does not replace the qualifying host.
 Target approximately 2 minutes 45 seconds, leaving time below the limit. Use
 actual product interaction and legible captions. The owner may choose the best
 accepted source-change sequence, but the opening shows the Louisiana Home with
-Meta as the lead and SpaceX and Boyce visible as secondary stories. If the
-[launch upgrade](launch-upgrade.md) publishes the September 16 outcome and the
-amendments, use them where the table names them; otherwise use the existing
-accepted evidence and keep the same sequence.
+Meta as the lead and SpaceX and Boyce visible as secondary stories. The ten
+statewide amendments are live. Use the September 16 Meta outcome if the
+[U4 follow-up](upgrade-u4-watch.md) produces accepted official evidence;
+otherwise retain the evidence limit and use a labeled replay of real source
+versions for the update demonstration.
 
 | Time | Product proof |
 | --- | --- |
@@ -60,8 +66,9 @@ public artifacts.
 The repository and live app were public at the September 7 inspection. The
 original local resident loop has prior controlled production evidence.
 Story capabilities have bounded development and production proof in
-[Work](work.md). The founder QA campaign, real usage and submission still require
-separate proof. An installed component or green build is not runtime behavior.
+[Work](work.md). The owner completed founder design and QA on September 16.
+Organic resident use, the final recording and submission require their own
+evidence. An installed component or green build is not runtime behavior.
 
 The organizer evaluates usefulness, Convex depth, actual sponsor work, public
 access, social engagement and the video demonstration. A credible entry shows
@@ -71,19 +78,20 @@ those things. This document does not assign a score or probability of winning.
 
 - [ ] Confirm registration and eligibility against the current organizer rules.
 - [x] Close the three-story functional gate in the work plan.
-- [ ] Complete founder design and QA, fix blockers and record the private pilot.
+- [x] Complete founder design and QA. Owner sign-off received September 16.
+  A private pilot is follow-up work, not a launch prerequisite.
 - [ ] Confirm story freshness and usable public-service allowances through judging.
-- [ ] Recheck signed-out Home, all story links, citations, Ask, local coverage,
-  Google entry on both origins, follows, email management and unsubscribe.
-- [ ] Recheck that the repository is public and the qualifying URL needs no invite.
-- [ ] Update the root build log from actual repository and runtime evidence using
-  the local hackathon skill. Preserve its required fields and historical entries.
+- [ ] After the final outcome update, check its affected source, Ask and delivery
+  paths. The completed founder QA pass covers the existing resident journeys.
+- [x] Update the root build log from repository evidence and the September 16
+  owner sign-off using the local hackathon skill. Refresh after the outcome
+  follow-up, posts and final recording.
 - [ ] Record and inspect the final video, below three minutes, with private data
   removed and readable desktop or mobile interaction.
 - [ ] Publish the required X or LinkedIn post with all four sponsor tags after
   authorization, and record the public link.
-- [ ] Verify the video, repository, social and qualifying-app links from a
-  signed-out browser.
+- [ ] Verify the video, public repository, social and both app-origin links from
+  a signed-out browser. The qualifying URL must work without an invitation.
 - [ ] Prepare the complete vibeapps.dev entry for owner review.
 - [ ] Submit only after authorization and retain the actual confirmation.
 
@@ -93,12 +101,14 @@ in [the archive](archive/README.md).
 
 ## Current release proof and remaining presentation work
 
-The three owner-approved LIMITED stories are published. The September 8
-[source continuation](targeted-catchup-2026-09-08.md) records stronger Meta and
-SpaceX evidence, retained owner-selected renderings, four Youngsville decisions
-and final production checks. PR 190 deployed the handoff report at `864d405`;
-its exact production workflow and independent smoke passed.
+The three LIMITED stories and ten LIMITED statewide amendments are published.
+Statewide commission coverage is deployed. PR #260 is the latest verified
+release, with its successful production workflow and smoke step linked from
+[Work](work.md#released-application). The September 12
+[controlled production email receipt](launch-release-2026-09-12.md#production-email-and-phone-proof)
+records update delivery, a grounded reply and per-follow unsubscribe.
 
-Production story email verification, final Facebook image-crop inspection and
-the founder's global design and QA campaign remain open. Development email
-round trips passed. [Work](work.md) owns the complete pending queue.
+The owner completed the founder design and QA pass on September 16. The final
+video and sponsor-tagged post links still need recording. Inspect final platform
+previews while preparing launch posts. Registration, eligibility and final entry
+confirmation remain submission checks; the QA sign-off does not assert them.

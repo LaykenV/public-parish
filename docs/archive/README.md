@@ -1,7 +1,7 @@
 # Documentation archive
 
-These files preserve plans, decisions and release receipts as they existed before
-the September 7 stories-first reorganization. Their budgets, task lists and
+These files preserve earlier plans, decisions and release receipts, including
+the September 7 reorganization and work sessions through September 15. Their budgets, task lists and
 unfinished integration descriptions are historical. Start with [current work](../work.md)
 and the [documentation index](../../README.md#documentation) for active instructions.
 
@@ -12,6 +12,13 @@ Original prose remains available below, with relative links adjusted for the mov
 The root `hackathon.md` retains its build history. Machine-consumed manifests,
 gold sets, production-batch files, source investigations and design-system HTML
 remain at their original paths.
+
+## Work sessions through September 15
+
+[The archived work log](work-through-2026-09-15.md) preserves the old session
+queue and QA ledger. The September 16 owner sign-off and GitHub reconciliation
+supersede its unchecked launch and release tasks. [Current work](../work.md)
+contains the remaining tasks; do not infer an open PR from historical prose.
 
 ## Before the story launch plan
 

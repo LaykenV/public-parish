@@ -7,10 +7,11 @@ and receive sourced updates.
 Three reviewed Louisiana stories are live: Meta as the lead, with SpaceX in
 Vermilion Parish and the Boyce data center secondary. All three retain explicit
 LIMITED evidence status. Story functionality and targeted source work have passed
-their gate. The approved [launch upgrade](docs/launch-upgrade.md) makes
-Louisiana the default Home, adds place-qualified body selection, bounded
-statewide coverage and sourced November 3 ballot-measure explanations before
-the global design and founder QA pass. Public launch follows QA.
+their gate. Louisiana-first Home, place-qualified body labels, statewide LPSC
+coverage and ten November 3 amendment explanations are deployed. The owner
+completed the design and QA pass on September 16, 2026 and considers the app
+ready for launch. The remaining launch work is the September 16 LPSC outcome
+follow-up and launch posts.
 See [current status and pending work](docs/work.md) for verified coverage,
 operating limits and the remaining launch gates.
 
@@ -24,7 +25,7 @@ operating limits and the remaining launch gates.
 | --- | --- |
 | [Business and product plan](PLAN.md) | Who is this for, what are we building, and why? |
 | [Current work](docs/work.md) | What is done, what is next, and what blocks launch? |
-| [Launch upgrade](docs/launch-upgrade.md) | Which pre-launch slices are approved, and how does an agent take one? |
+| [Launch upgrade](docs/launch-upgrade.md) | What are the upgrade contracts and the remaining LPSC follow-up? |
 | [Architecture](docs/architecture.md) | How do the evidence pipeline and stories work? |
 | [Design](docs/design.md) | How should Home and each resident journey work? |
 | [Sources](docs/sources.md) | What can we publish and which bodies do we cover? |

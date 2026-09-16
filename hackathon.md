@@ -12,8 +12,10 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-16T00:06:46Z
+- **Last updated:** 2026-09-16T18:02:23Z
 
+The owner completed design and QA on September 16, 2026 and considers the app
+ready for launch. The LPSC outcome follow-up and launch posts remain.
 Demo video: not recorded yet. The final submission link remains pending.
 
 ## Log
@@ -2530,3 +2532,14 @@ phones and desktop. All 778 tests, both typechecks, build and lint pass with 15
 existing warnings. All 78 focused Chromium/WebKit checks passed. Inspected
 before and after screenshots and verified both motion settings in each browser.
 PR review and the authorized production release remain pending.
+
+### 2026-09-16 - working tree, launch readiness documentation
+
+Recorded the owner's completed design and QA pass and launch-ready decision.
+GitHub confirms releases through `9f7d2a1`, PR #260, with production workflow
+[35038848675](https://github.com/LaykenV/public-parish/actions/runs/35038848675)
+and its smoke step passing. Ask speed, ranking, readability and layout PRs are
+merged. The #248 release receipt also proves its production index backfill and
+weekly-answer measurement. Reconciled active docs and archived the old work queue. The LPSC outcome
+follow-up and launch posts remain; demo and submission are separate artifact work.
+No new independent smoke, source outcome, post, pilot or submission is claimed.

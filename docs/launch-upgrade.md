@@ -1,17 +1,27 @@
 # Launch upgrade plan
 
-Owner decision of September 12, 2026, amended September 13 after live UX review.
+Owner decision of September 12, 2026, amended September 13 after live UX review
+and September 16 after founder sign-off.
 This document owns the scope and slice contracts for the pre-launch upgrade. [Work](work.md) owns slice status and the
-pending queue. [PLAN](../PLAN.md) records the positioning decision. Each slice
-below is written so that one agent can take it without further context; every
-slice still follows [AGENTS.md](../AGENTS.md), the evidence policy in
+pending queue. [PLAN](../PLAN.md) records the positioning decision. The slice contracts below govern later changes and still follow [AGENTS.md](../AGENTS.md), the evidence policy in
 [sources](sources.md) and the spending policy in [operations](operations.md).
+
+## September 16 disposition
+
+U1, U2, U3, U5 and statewide U6 are released. The owner completed design and QA
+and considers the app ready for launch. U4, the official LPSC outcome follow-up,
+and U7 launch posts remain. Demo recording is separate submission work. The
+private pilot is follow-up work and verified parish propositions remain deferred.
+[Work](work.md) records receipts and the only active queue.
+
+The slice contracts below preserve the agreed scope. Their planning context
+and spend proposals do not assign completed work again or renew old allowances.
 
 ## Why this upgrade exists
 
-The owner's concern is launching to no interest. The current Home is three
-data-center stories over twelve local bodies whose accepted records are mostly
-procedural and 730 of 920 are limited. A first-time visitor has little reason
+At the September 12 planning checkpoint, the owner's concern was launching to
+no interest. Home had three data-center stories over twelve local bodies, with
+730 of 920 accepted records limited. A first-time visitor has little reason
 to stay, and the product has not shown a stranger why it beats a newspaper.
 
 The decision is to sharpen what already works rather than widen into datasets
@@ -66,12 +76,9 @@ target, and the product never frames a story as puncturing or confirming hype.
 | U6 | November 3 ballot measures explained from the ballot wording and Act text | U1 for placement | U2, U3, U5 | Small, per measure |
 | U7 | Launch content, demo sequence and social previews for the new surfaces | U1 through U6 | None | None |
 
-U1, U2 and U3 all touch Home. Run them on separate branches with one concern
-per PR, and rebase in the order U2, U1, U3 when they conflict. U5 and U6
-backend work can start in development immediately. U4 is calendar-bound.
-
-Slices do not replace the design and QA gate in [work](work.md#phase-2-global-design-and-full-qa).
-The founder pass covers the new surfaces after the slices land.
+U1, U2, U3, U5 and statewide U6 have shipped. Later changes still use one
+concern per PR. The [founder design and QA gate](work.md#founder-design-and-qa-sign-off)
+is complete. U4 follows the official document schedule.
 
 ## U1. Louisiana-first Home
 
@@ -198,9 +205,9 @@ names nine issues that must surface in their parish views.
 
 ### Scope
 
-- Selection: order Home issues by a deterministic combination of cited
-  importance score, presence of a next documented date or recent outcome, and
-  recency of the accepted version. Exclude from Home, not from Explore, issues
+- Selection: PR #252 orders Home issues by indexed accepted consequence score,
+  then accepted-version recency and descending slug. Candidate selection and
+  final display use the same ordering. Exclude from Home, not from Explore, issues
   whose current version has no supported consequence factor and no next date.
   Limited issues with a supported consequence stay eligible.
 - Card copy: add a one-line "why this matters" drawn only from cited
@@ -260,7 +267,8 @@ paused; this slice uses a named finite allowance, not monitoring.
 - Retrieval: one Firecrawl retrieval per new official document through the
   existing story intake path, retaining bytes, hashes and provenance. Reuse
   the seven existing Meta sources.
-- Publication: bundle 8 with exact excerpts, `MODEL_STRONG` draft, `MODEL_FAST`
+- Publication: extend the actual current bundle lineage with exact excerpts,
+  `MODEL_STRONG` draft, `MODEL_FAST`
   review, deterministic checks, owner approval of the exact hashes, and a
   material update event only if the accepted text changes substantively.
 - Delivery: verify the follower email, the private management link and one
@@ -277,7 +285,7 @@ Stop when the outcome publishes or the window closes on September 19.
 
 ### Acceptance
 
-- Either a reviewed version 5 with the official outcome document, followers
+- Either a reviewed successor version with the official outcome document, followers
   notified once, or a written record that no official document appeared and
   the public story still describes the outcome as undocumented.
 - No claim about a vote result without the document that records it.
@@ -294,9 +302,9 @@ local body.
 
 ### Facts
 
-The `louisiana` state jurisdiction exists as a candidate. LPSC hosts are
-registered for story sources. No LPSC root manifest, registry generation or
-gate evaluation exists. LPSC business and executive session agendas are long
+PR #226 shipped the LPSC root manifest and statewide coverage path. The
+September 14 production audit returned Supported for LPSC. Keep registry and
+gate evidence current rather than treating that dated pass as permanent. LPSC business and executive session agendas are long
 PDFs covering many dockets; inventory cost scales with pages.
 
 ### Scope
@@ -359,12 +367,13 @@ transfer to a surviving spouse), 2 (Act 273, millage rate adjustment), 3 (Act
 65 and older), 7 (Act 607, public funds for water service lines), 8 (Act 277,
 expropriation by foreign adversaries), 9 (Act 220 of 2025, income limit for
 the special assessment level) and 10 (Act 272, exemption for rehabilitated
-blighted property). Five of the ten concern property tax. Quote the ballot
+blighted property). Quote the ballot
 questions from the PDF, not from this summary. The Louisiana Legislature is a
-registered publisher; the Secretary of State is not yet. Legislative Fiscal
+registered publisher, as is the Secretary of State in the released measure path. Legislative Fiscal
 Office notes on legis.la.gov are official documents.
 
-`storyKey` is a literal union of the three launch stories. Stories carry
+`storyKey` accepts the three featured stories and ten code-owned measure keys.
+Stories carry
 import, review, immutable versions, Ask scope, follows, share metadata and
 update events, all of which a measure needs.
 
@@ -428,11 +437,12 @@ is exhausted.
   actual platforms before outreach.
 - No candidate, campaign, poll or endorsement content anywhere.
 
-### Owner decisions required
+### Scope disposition
 
-Publish all ten amendments or a subset; whether parish propositions are in the
-launch or follow it; confirmation that `PLAN.md` now allows ballot measure
-explanations while keeping candidates, finance and polls deferred.
+All ten statewide amendments shipped in PR #227. Parish propositions remain
+unpublished until their calling records and ballot wording pass review.
+`PLAN.md` permits measure explanations and excludes candidates, campaign finance
+and polls. No further statewide-measure scope decision blocks launch.
 
 ## U7. Launch content, demo and previews for the new surfaces
 
@@ -464,19 +474,19 @@ an accepted version, and previews render the current approved title and image.
 
 ## Sequence and calendar
 
-Dates are targets at the owner's pace, not proof.
+This replaces the original implementation calendar. Dates are targets, not
+completion evidence; [Work](work.md) owns current receipts.
 
 | Window | Focus | Exit |
 | --- | --- | --- |
-| September 13 through 15 | U1, U2, U3 on Home; U5 development compile; U6 backend and manifests; U4 pre-session copy check | Louisiana-first Home reviewed locally; LPSC gates evaluated in development; measure drafts reviewed |
-| September 16 through 17 | U4 session watch, retrieval and publication; U5 production compile; U6 publication | Outcome published or honestly undocumented; LPSC status known; amendments live |
-| September 17 through 19 | Founder design and QA over the new surfaces, private pilot, U7 drafts and previews | Launch gate passed |
-| September 18 through 20 | Public launch and outreach, bounded fixes | Live usage observed |
-| September 20 through 21 | Demo and submission | Submitted by September 21 with authorization |
+| Through September 16 | Implementation and founder design and QA | Complete, with owner sign-off |
+| September 16 through 19 | U4 official-outcome follow-up and U7 launch posts | Reviewed outcome or no-document checkpoint; actual post links |
+| After launch | Resident feedback, routine source reviews and bounded fixes | Record observed results |
+| By September 21 | Demo and submission | Submit with authorization; September 22 is contingency |
 
-If time compresses, protect U1, U2, U3 and U4 first, then U6 statewide
-amendments, then U5. Parish propositions are the first cut. Do not label a
-body supported or a measure current to hit a date.
+Protect the released scope while finishing U4 and the launch posts. Parish
+propositions remain later work. Do not label a body supported or a measure
+current to hit a date.
 
 ## Handoff rules for every slice
 
