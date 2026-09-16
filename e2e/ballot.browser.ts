@@ -72,6 +72,7 @@ test('statewide Home keeps three featured stories and parish Home retains the ba
 
 test('commission records link preserves the statewide body filter', async ({ page }) => {
   await page.goto('/?area=louisiana')
+  await page.locator('.pp-utility-details summary').click()
   await page.getByRole('link', { name: 'View commission records', exact: true }).click()
   await expect(page).toHaveURL(/body=Louisiana/)
   const cards = page.locator('.pp-explore-card')

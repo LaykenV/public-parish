@@ -51,7 +51,6 @@ export function ChooseAreaButton() {
           {...props}
           className="pp-home-choose-area"
           size="touch"
-          variant="ghost"
         >
           Choose a parish <ArrowUpRightIcon aria-hidden="true" />
         </Button>

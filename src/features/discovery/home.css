@@ -549,8 +549,7 @@
     gap: 0;
   }
 
-  .pp-home-issues-header .pp-home-issue-actions > *,
-  .pp-home-choose-area {
+  .pp-home-issues-header .pp-home-issue-actions > * {
     justify-content: start;
     gap: 0.375rem;
     min-height: 2.75rem;
@@ -562,8 +561,7 @@
     color: var(--primary);
   }
 
-  .pp-home-issue-actions svg,
-  .pp-home-choose-area svg {
+  .pp-home-issue-actions svg {
     width: 0.875rem;
     height: 0.875rem;
     flex: none;

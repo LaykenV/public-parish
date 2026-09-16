@@ -1,7 +1,7 @@
 import { AREA_SLUGS } from '../../../convex/follows/contracts'
 import { StatewideRoundup } from './statewide-section'
 import { BallotSection } from '../stories/ballot-page'
-import { ArrowUpRightIcon } from 'lucide-react'
+import { ArrowDownIcon, ArrowUpRightIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 
@@ -153,6 +153,7 @@ export function HomePage({
 
 function FirstVisitHero() {
   const desktop = useMediaQuery('(min-width: 48.001rem)')
+  const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   return (
     <section
       className="pp-home-hero"
@@ -167,8 +168,22 @@ function FirstVisitHero() {
           See the documents behind each decision and follow what happens next.
         </p>
         <div className="pp-home-hero-actions">
-          <Button render={<a href="#stories" />} size="touch">
-            Explore Louisiana stories <ArrowUpRightIcon aria-hidden="true" />
+          <Button
+            render={
+              <Link
+                from="/"
+                to="/"
+                search={(previous) => previous}
+                hash="stories"
+                hashScrollIntoView={{
+                  behavior: reducedMotion ? 'instant' : 'smooth',
+                  block: 'start',
+                }}
+              />
+            }
+            size="touch"
+          >
+            Explore Louisiana stories <ArrowDownIcon aria-hidden="true" />
           </Button>
         </div>
         <p className="pp-home-access">

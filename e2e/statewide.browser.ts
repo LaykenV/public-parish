@@ -68,9 +68,24 @@ for (const width of [320, 1280]) {
     await page.screenshot({
       path: testInfo.outputPath(`statewide-${width}.png`),
     })
-    await section
-      .getByRole('button', { name: 'Follow utility updates', exact: true })
-      .click()
+    const followButton = section.getByRole('button', {
+      name: 'Follow utility updates',
+      exact: true,
+    })
+    const recordsLink = section.getByRole('link', {
+      name: 'View commission records',
+      exact: true,
+    })
+    await expect(followButton).not.toBeVisible()
+    await expect(recordsLink).not.toBeVisible()
+    await section.locator('summary').click()
+    await expect(followButton).toBeVisible()
+    await expect(recordsLink).toBeVisible()
+    await section.locator('summary').click()
+    await expect(followButton).not.toBeVisible()
+    await expect(recordsLink).not.toBeVisible()
+    await section.locator('summary').click()
+    await followButton.click()
     const follow = page.getByRole('dialog', {
       name: 'Get updates about this government body',
       exact: true,
