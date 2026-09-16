@@ -42,6 +42,10 @@ group lists does not authorize posting or sending outreach.
 
 ## Channel priorities
 
+The [September 16 Facebook group report](facebook-launch-groups-2026-09-16.md)
+records 75 screened groups, posting restrictions and a proposed launch sequence.
+Check each group's current rules and participation approval before posting.
+
 | Channel | Purpose | First useful asset |
 | --- | --- | --- |
 | Personal Facebook | Launch to existing Louisiana friends and invite real use | Founder introduction, a relevant story link and short product recording |
