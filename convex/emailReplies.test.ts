@@ -12,7 +12,7 @@ import { components, internal } from './_generated/api'
 import type { DataModel, Id } from './_generated/dataModel'
 import type { AskAnswerResult } from './ask/contracts'
 import { agentmail } from './follows/agentmailClient'
-import { formatEmailReply } from './emailReplies/answer'
+import { formatEmailReply, formatEmailReplyContent } from './emailReplies/formatting'
 import {
   extractQuestion,
   MAX_EMAIL_QUESTION_LENGTH,
@@ -180,6 +180,7 @@ test('answer delivery queues one reply even when completion is replayed', async 
     answerMessageId: 'answer-message-1',
     kind: 'answer',
     text: 'The vote is scheduled.\n\nCited evidence\n- Minutes: /source/1',
+    replyContent: formatEmailReplyContent(answerResult('answer')),
   })
   const first = await t.run(async (ctx) => ctx.db.get(eventId))
   await t.mutation(internal.emailReplies.delivery.completeAnswer, {
@@ -198,8 +199,11 @@ test('answer delivery queues one reply even when completion is replayed', async 
   expect(reply).toHaveBeenCalledTimes(1)
   expect(reply.mock.calls[0][3]).toMatchObject({
     text: 'The vote is scheduled.\n\nCited evidence\n- Minutes: /source/1',
-    html: expect.stringContaining('The vote is scheduled.'),
+    html: expect.stringContaining('View evidence'),
   })
+  expect(reply.mock.calls[0][3].html).toContain('Page 2')
+  expect(reply.mock.calls[0][3].html).toContain('Council minutes')
+  expect(reply.mock.calls[0][3].html).not.toContain('- Minutes: /source/1')
   expect(first?.outboundId).toBeDefined()
   await expect(
     t.query(components.agentmail.lib.getOutboundStatus, {
@@ -326,6 +330,24 @@ test('email responses preserve grounded citations and the not-found contact path
     'Official government site: https://lafayettela.gov/council',
   )
   expect(reply).not.toContain('Cited evidence')
+})
+
+test('reply citations keep distinct excerpts of one document with readable labels', () => {
+  const answer = answerResult('answer')
+  const citation = { ...answer.citations[0], documentTitle: 'ViewFile?fileId=nDWn%2Fjuc%2BA%3D', section: 'Cost review' }
+  answer.answer = 'The record supports this [evidence-1, evidence-2].'
+  answer.citations = [citation, { ...citation, evidenceId: 'evidence-2', sourceHref: '/decisions/drainage?evidence=evidence-2', page: 3, excerpt: 'A separate condition applies.' }, citation]
+  const content = formatEmailReplyContent(answer)
+  expect(content.paragraphs).toEqual(['The record supports this [1, 2].'])
+  expect(content.citations).toHaveLength(2)
+  expect(content.citations.map(item => item.number)).toEqual([1, 2])
+  expect(content.citations[0]).toMatchObject({ title: 'Lafayette City Council', location: 'Page 2 · Cost review', excerpt: 'The vote is scheduled.' })
+  expect(content.citations[1]).toMatchObject({ location: 'Page 3 · Cost review', sourceHref: 'https://www.publicparish.com/decisions/drainage?evidence=evidence-2' })
+  const text = formatEmailReply(answer)
+  expect(text).not.toContain('ViewFile?')
+  expect(text).toContain('[2] Lafayette City Council:')
+  expect(text).toContain('A separate condition applies.')
+  expect(formatEmailReplyContent(answerResult('not_found'), 'https://example.gov/contact').citations).toEqual([])
 })
 
 async function seedReplyDelivery(

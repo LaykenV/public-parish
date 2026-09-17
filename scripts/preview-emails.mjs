@@ -105,10 +105,32 @@ const fixtures = {
     title: 'What the records say',
     preview: 'Sample evidence-based reply.',
     paragraphs: [
-      'This is where the answer appears with its citation numbers [1].',
-      'Cited evidence\n[1] Example document: https://www.publicparish.com/sources/design-preview\nOfficial document: https://example.gov/official-document',
-      'Public Parish answers only from published, checked evidence. Reply with another question about this alert to continue.',
+      'The commission can review construction costs. Quarterly reports and a later review are separate requirements [1, 2].',
     ],
+    citations: [
+      {
+        number: 1,
+        title: 'Louisiana Public Service Commission',
+        location: 'Page 22 · Reporting requirements',
+        excerpt:
+          'Sample evidence excerpt. The company must provide quarterly updates on construction schedules and costs.',
+        sourceHref: `${base.siteUrl}/stories/meta-richland#story-source-18`,
+        officialUrl:
+          'https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/ViewFile?fileId=design%2Fpreview',
+      },
+      {
+        number: 2,
+        title: 'Louisiana Public Service Commission',
+        location: 'Page 23 · Cost review',
+        excerpt:
+          'Sample evidence excerpt. Recoverable costs remain subject to review.',
+        sourceHref: `${base.siteUrl}/stories/meta-richland#story-source-19`,
+        officialUrl:
+          'https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/ViewFile?fileId=design%2Fpreview',
+      },
+    ],
+    closing:
+      'Public Parish answers only from published, checked evidence. Reply with another question about this alert to continue.',
   },
   coverage: {
     ...controls,
