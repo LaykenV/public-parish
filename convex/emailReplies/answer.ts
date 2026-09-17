@@ -5,6 +5,7 @@ import { v } from 'convex/values'
 import { api, internal } from '../_generated/api'
 import { env, internalAction } from '../_generated/server'
 import type { AskAnswerResult } from '../ask/contracts'
+import { formatEmailReply, formatEmailReplyContent } from './formatting'
 import { decryptPrivateText, deriveEmailReplyToken } from '../follows/secrets'
 
 export const prepareInbound = internalAction({
@@ -91,7 +92,12 @@ export const answerInbound = internalAction({
         attempt: claim.attempt,
         answerMessageId: answer.messageId,
         kind: answer.kind,
-        evidenceIds: answer.citations.map(citation => citation.evidenceId),
+        evidenceIds: answer.citations.map((citation) => citation.evidenceId),
+        replyContent: formatEmailReplyContent(
+          answer,
+          claim.officialContactUrl,
+          env.CONVEX_SITE_URL,
+        ),
         text: formatEmailReply(
           answer,
           claim.officialContactUrl,
@@ -108,48 +114,6 @@ export const answerInbound = internalAction({
     return null
   },
 })
-
-export function formatEmailReply(
-  answer: AskAnswerResult,
-  officialContactUrl?: string,
-  siteOrigin?: string,
-): string {
-  const citationNumbers = new Map(answer.citations.map((citation, index) => [citation.evidenceId, index + 1]))
-  const readable = answer.answer.replace(/\[([^\]\r\n]+)\]|\(([^)\r\n]+)\)/g, (reference, bracketed: string | undefined, parenthesized: string | undefined) => {
-    const ids = (bracketed ?? parenthesized ?? '').split(/[\s,]+/).filter(Boolean)
-    return ids.length && ids.every(id => citationNumbers.has(id)) ? `[${ids.map(id => citationNumbers.get(id)).join(', ')}]` : reference
-  })
-  const lines = [readable.trim()]
-  if (answer.kind === 'answer' && answer.citations.length > 0) {
-    lines.push('', 'Cited evidence')
-    const seen = new Set<string>()
-    for (const citation of answer.citations) {
-      const href = absoluteCitationHref(citation.sourceHref, siteOrigin)
-      if (seen.has(href)) continue
-      seen.add(href)
-      lines.push(`[${citationNumbers.get(citation.evidenceId)}] ${citation.documentTitle}: ${href}`, `Official document: ${citation.officialUrl}`)
-    }
-  }
-  if (answer.kind === 'not_found') {
-    lines.push(
-      '',
-      officialContactUrl
-        ? `Official government site: ${officialContactUrl}`
-        : 'Check the official source links in the alert above, or contact the government body that published them.',
-    )
-  }
-  lines.push(
-    '',
-    'Public Parish answers only from published, checked evidence. Reply with another question about this alert to continue.',
-  )
-  return lines.join('\n')
-}
-
-function absoluteCitationHref(href: string, siteOrigin?: string): string {
-  if (/^https?:\/\//.test(href) || !siteOrigin) return href
-  const path = href.startsWith('/') ? href : `/${href}`
-  return `${siteOrigin.replace(/\/$/, '')}${path}`
-}
 
 function classifyError(error: unknown): string {
   if (error instanceof Error && error.message) {

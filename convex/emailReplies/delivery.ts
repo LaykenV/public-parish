@@ -1,3 +1,4 @@
+import { emailReplyContent } from './formatting'
 import { renderEmail } from '../follows/emailTemplates'
 import { v } from 'convex/values'
 
@@ -16,6 +17,7 @@ export const completeAnswer = internalMutation({
     answerMessageId: v.string(),
     kind: v.union(v.literal('answer'), v.literal('not_found')),
     text: v.string(),
+    replyContent: v.optional(emailReplyContent),
     evidenceIds: v.optional(v.array(v.string())),
   },
   returns: v.null(),
@@ -71,7 +73,10 @@ export const completeAnswer = internalMutation({
               ? 'What the records say'
               : 'What the records do not establish',
           preview: 'A reply from Public Parish based on published evidence.',
-          paragraphs: args.text.split(/\n\n+/),
+          // Older in-flight completions can still supply only the text body.
+          paragraphs: args.replyContent?.paragraphs ?? args.text.split(/\n\n+/),
+          citations: args.replyContent?.citations,
+          closing: args.replyContent?.closing,
         }),
         labels: ['public-parish', 'grounded-reply'],
       },

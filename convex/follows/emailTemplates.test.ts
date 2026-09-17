@@ -60,3 +60,41 @@ test('reply prose retains citation numbers and links without executing generated
   expect(html).toContain('href="https://official.example/minutes?a=1&amp;b=2"')
   expect(html).toContain('&lt;img src=x&gt;')
 })
+
+test('reply evidence uses labeled links and escapes citation content', () => {
+  const officialUrl = 'https://official.example/ViewFile?fileId=encoded%2Fid'
+  const html = renderEmail({
+    ...base,
+    citations: [
+      {
+        number: 1,
+        title: 'Commission <record>',
+        location: 'Page 22',
+        excerpt: 'Costs must be reviewed. <img src=x onerror=bad()>',
+        sourceHref:
+          'https://www.publicparish.com/stories/example#story-source-18',
+        officialUrl,
+      },
+      {
+        number: 2,
+        title: 'Unsafe',
+        location: '',
+        excerpt: '',
+        sourceHref: 'javascript:bad()',
+        officialUrl: 'https://user:password@example.gov',
+      },
+    ],
+    closing: 'Reply with another question.',
+  })
+  expect(html).toContain('[1] Commission &lt;record&gt;')
+  expect(html).toContain('Page 22 · official.example')
+  expect(html).toContain('&lt;img src=x onerror=bad()&gt;')
+  expect(html).toContain(`href="${officialUrl}"`)
+  expect(html).toContain('>Official document</a>')
+  expect(html).toContain('>View evidence</a>')
+  expect(html).not.toContain(`>${officialUrl}`)
+  expect(html).not.toMatch(/href="(?:javascript:|https:\/\/user:)/)
+  expect(html.indexOf('Reply with another question.')).toBeGreaterThan(
+    html.indexOf('Cited evidence'),
+  )
+})

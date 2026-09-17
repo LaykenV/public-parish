@@ -12,6 +12,14 @@ const colors = {
 }
 
 type EmailLink = { label: string; href: string }
+type EmailCitation = {
+  number: number
+  title: string
+  location: string
+  excerpt: string
+  sourceHref: string
+  officialUrl: string
+}
 type EmailItem = {
   place: string
   title: string
@@ -30,6 +38,8 @@ export type EmailTemplate = {
   callout?: { title: string; text: string }
   action?: EmailLink
   sources?: string[]
+  citations?: EmailCitation[]
+  closing?: string
   items?: EmailItem[]
   replyHint?: string
   managementUrl?: string
@@ -95,6 +105,22 @@ function sourceLinks(sources: string[]): string {
         ? `${new URL(url).hostname.replace(/^www\./, '')} · Source ${index + 1}`
         : `Source ${index + 1} unavailable`
       return `<p style="margin:0 0 12px;font-size:14px;line-height:1.5;overflow-wrap:anywhere;word-break:break-word;">${link(label, href)}</p>`
+    })
+    .join('')
+}
+
+function citationBlocks(citations: EmailCitation[]): string {
+  return citations
+    .map((citation) => {
+      const url = safeUrl(citation.officialUrl)
+      const host = url ? new URL(url).hostname.replace(/^www\./, '') : ''
+      const detail = [citation.location, host].filter(Boolean).join(' · ')
+      return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;border:0;border-spacing:0;margin:0 0 18px;"><tr><td class="email-rule" style="padding:0 0 0 14px;border-left:3px solid ${colors.border};">
+<h3 style="margin:0 0 6px;font-size:15px;line-height:1.5;color:${colors.ink};">${link(`[${citation.number}] ${citation.title}`, citation.sourceHref, 'font-weight:bold;')}</h3>
+${detail ? `<p class="email-muted" style="margin:0 0 8px;font-size:12px;line-height:1.5;color:${colors.muted};">${escapeHtml(detail)}</p>` : ''}
+${citation.excerpt ? `<p class="email-copy" style="margin:0 0 8px;font-size:14px;line-height:1.6;color:${colors.body};">&quot;${escapeHtml(citation.excerpt)}&quot;</p>` : ''}
+<p style="margin:0;font-size:14px;line-height:1.8;">${link('View evidence', citation.sourceHref)} &nbsp; · &nbsp; ${link('Official document', citation.officialUrl)}</p>
+</td></tr></table>`
     })
     .join('')
 }
@@ -165,6 +191,8 @@ ${(options.details ?? []).map((text) => paragraph(text, 'font-size:14px;margin-b
 ${options.callout ? `<h2 style="font-size:16px;line-height:1.5;margin:24px 0 8px;">${escapeHtml(options.callout.title)}</h2>${paragraph(options.callout.text)}` : ''}
 ${action}${items}
 ${options.sources?.length ? `<h2 class="email-rule" style="margin:24px 0 16px;padding-top:20px;border-top:1px solid ${colors.border};font-size:15px;line-height:1.5;">Official sources</h2>${sourceLinks(options.sources)}` : ''}
+${options.citations?.length ? `<h2 class="email-rule" style="margin:24px 0 16px;padding-top:20px;border-top:1px solid ${colors.border};font-size:15px;line-height:1.5;">Cited evidence</h2>${citationBlocks(options.citations)}` : ''}
+${options.closing ? paragraph(options.closing, 'font-size:14px;margin:24px 0 0;') : ''}
 ${options.replyHint ? `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;border:0;border-spacing:0;margin-top:24px;"><tr><td class="email-callout" bgcolor="${colors.background}" style="padding:18px;border-radius:8px;background-color:${colors.background};"><h2 style="margin:0 0 6px;font-size:16px;line-height:1.5;">Have a question?</h2>${paragraph(options.replyHint, 'font-size:14px;margin:0;')}</td></tr></table>` : ''}
 </td></tr><tr><td class="email-footer" align="center" style="padding:20px 16px;text-align:center;font-size:12px;line-height:1.8;color:${colors.muted};">
 <p style="margin:0 0 10px;">${escapeHtml(options.footer ?? 'Free and nonpartisan. Built for Louisiana.')}<br>${link('Public Parish', site)}</p>
