@@ -1,3 +1,4 @@
+import { renderEmail } from '../follows/emailTemplates'
 import { v } from 'convex/values'
 
 import { env, internalMutation } from '../_generated/server'
@@ -62,6 +63,16 @@ export const completeAnswer = internalMutation({
       event.inboundMessageId,
       {
         text: args.text,
+        html: renderEmail({
+          siteUrl: env.CONVEX_SITE_URL,
+          eyebrow: 'Your question',
+          title:
+            args.kind === 'answer'
+              ? 'What the records say'
+              : 'What the records do not establish',
+          preview: 'A reply from Public Parish based on published evidence.',
+          paragraphs: args.text.split(/\n\n+/),
+        }),
         labels: ['public-parish', 'grounded-reply'],
       },
     )

@@ -1,3 +1,4 @@
+import { renderEmail } from './emailTemplates'
 import { storyPath } from '../stories/registry'
 import { recordConfirmedEvent } from '../analytics/civic'
 import { AgentMail } from '@agentmail/convex'
@@ -177,6 +178,7 @@ export const reserveImmediateDelivery = internalMutation({
         to: checkedRecipient(recipient),
         subject: projected.subject,
         text: projected.text,
+        html: projected.html,
         labels: ['public-parish', 'sourced-alert', 'immediate'],
       })
       await ctx.db.patch(deliveryId, {
@@ -614,6 +616,7 @@ async function enqueueWeeklyDelivery(
       to: checkedRecipient(recipient),
       subject: projected.subject,
       text: projected.text,
+      html: projected.html,
       labels: ['public-parish', 'sourced-alert', 'weekly'],
     })
     await ctx.db.patch(delivery._id, {
@@ -698,7 +701,7 @@ async function projectWeeklyEmail(
   entries: Array<Doc<'roundupEntries'>>,
   managementUrl: string,
   unsubscribeUrl?: string,
-): Promise<{ subject: string; text: string } | null> {
+): Promise<{ subject: string; text: string; html: string } | null> {
   const items: Array<{
     place: string
     title: string
@@ -768,6 +771,19 @@ async function projectWeeklyEmail(
   const message = {
     subject: `${items.length} ${items.length === 1 ? 'update' : 'updates'} in your Public Parish roundup`,
     text: lines.join('\n'),
+    html: renderEmail({
+      siteUrl: appUrl(''),
+      eyebrow: 'Your weekly roundup',
+      title: `${items.length} ${items.length === 1 ? 'update' : 'updates'} from your follows`,
+      preview:
+        'The latest published updates from the places and subjects you follow.',
+      items,
+      managementUrl,
+      unsubscribeUrl,
+      replyHint: emailRepliesAvailable()
+        ? 'Reply with a question about these updates. Answers use published evidence.'
+        : undefined,
+    }),
   }
   return entries.some(entry => entry.storyUpdateId) ? labelDevelopmentStoryMail(message) : message
 }
@@ -791,7 +807,7 @@ async function projectImmediateEmail(
   reference: UpdateReference,
   managementUrl: string,
   unsubscribeUrl?: string,
-): Promise<{ subject: string; text: string } | null> {
+): Promise<{ subject: string; text: string; html: string } | null> {
   if (reference.storyUpdateId) {
     const current = await currentStoryUpdate(ctx, reference.storyUpdateId)
     if (!current) return null
@@ -799,7 +815,29 @@ async function projectImmediateEmail(
     if (emailRepliesAvailable()) lines.push('Reply with a question about this story. Answers use its current accepted evidence.')
     lines.push(`Manage alerts: ${managementUrl}`)
     if (unsubscribeUrl) lines.push(`Stop all email notices: ${unsubscribeUrl}`)
-    return labelDevelopmentStoryMail({ subject: `Story update: ${current.version.payload.title.text}`, text: lines.join('\n') })
+    return labelDevelopmentStoryMail({
+      subject: `Story update: ${current.version.payload.title.text}`,
+      text: lines.join('\n'),
+      html: renderEmail({
+        siteUrl: appUrl(''),
+        eyebrow: 'Story update',
+        title: current.version.payload.title.text,
+        preview: current.version.payload.summary.text,
+        paragraphs: [current.version.payload.summary.text],
+        action: {
+          label: 'Read the update',
+          href: appUrl(storyPath(current.story.slug)),
+        },
+        sources: acceptedStorySpans(current.version).map(
+          (span) => span.officialUrl,
+        ),
+        managementUrl,
+        unsubscribeUrl,
+        replyHint: emailRepliesAvailable()
+          ? 'Reply to this email to ask about the story. Answers use its published evidence.'
+          : undefined,
+      }),
+    })
   }
   const change = reference.materialChangeId ? await ctx.db.get(reference.materialChangeId) : null
   const version = change
@@ -853,6 +891,38 @@ async function projectImmediateEmail(
   return {
     subject: `${change.classification === 'new_decision' ? 'New decision' : 'Decision update'}: ${version.payload.title}`,
     text: lines.join('\n'),
+    html: renderEmail({
+      siteUrl: appUrl(''),
+      eyebrow:
+        change.classification === 'new_decision'
+          ? 'New decision'
+          : 'Decision update',
+      title: version.payload.title,
+      preview: lines[0],
+      paragraphs:
+        version.payload.kind === 'full'
+          ? [version.payload.plainLanguageSummary]
+          : [],
+      details:
+        version.payload.kind === 'full'
+          ? [
+              `Current stage: ${version.payload.lifecycleState}`,
+              ...(version.payload.meetingAt
+                ? [`Meeting date: ${version.payload.meetingAt}`]
+                : []),
+            ]
+          : [],
+      callout: issueLink?.whyItMatters
+        ? { title: 'Why it matters', text: issueLink.whyItMatters }
+        : undefined,
+      action: { label: 'Read the update', href: appLink },
+      sources: officialUrls,
+      managementUrl,
+      unsubscribeUrl,
+      replyHint: emailRepliesAvailable()
+        ? 'Reply with a question about this alert. Answers use published evidence.'
+        : undefined,
+    }),
   }
 }
 

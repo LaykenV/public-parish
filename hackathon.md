@@ -2555,3 +2555,11 @@ or resident usage result is claimed. No app code or deployment changed.
 Added a standalone launch guide with the Meta opening, rehearsal controls,
 copyable posts and saved local notes. Checked its desktop and phone layout and
 browser controls with Chromium. The guide is local preparation, not a release.
+
+### 2026-09-17 - working tree, pelican email templates
+
+Added branded HTML to resident emails through the existing AgentMail paths,
+with the 3D pelican, source links and plain-text alternatives. Chromium previews
+fit at 320, 390 and 760 pixels. Typechecks, build and lint pass with 15 existing
+warnings. The full suite found one missing reply-fixture setting among 782 tests;
+after the fix, all 15 focused tests pass. No deployment or email was sent.
