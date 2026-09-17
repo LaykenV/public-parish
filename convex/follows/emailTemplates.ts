@@ -111,7 +111,7 @@ export function renderEmail(options: EmailTemplate): string {
   const site = safeUrl(base) ?? 'https://www.publicparish.com'
   const action =
     options.action && safeUrl(options.action.href)
-      ? `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="border:0;border-spacing:0;margin:4px 0 24px;"><tr><td style="padding:0;"><a class="email-button" href="${escapeHtml(options.action.href)}" style="display:inline-block;background-color:${colors.lavender};color:#4f2f89;border:1px solid ${colors.purple};border-radius:8px;padding:14px 22px;font-size:16px;line-height:22px;font-weight:bold;text-align:center;text-decoration:none;">${escapeHtml(options.action.label)} &rarr;</a></td></tr></table>`
+      ? `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="border:0;border-spacing:0;margin:4px 0 24px;"><tr><td style="padding:0;"><a class="email-button" href="${escapeHtml(options.action.href)}" style="display:inline-block;background-color:${colors.lavender};color:#4f2f89;border:1px solid ${colors.purple};border-radius:8px;padding:14px 22px;font-size:16px;line-height:22px;font-weight:bold;text-align:center;text-decoration:none;">${escapeHtml(options.action.label)}</a></td></tr></table>`
       : ''
   let place = ''
   const items = (options.items ?? [])
