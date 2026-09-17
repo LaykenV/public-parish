@@ -44,13 +44,20 @@ Public Parish pelican when viewed on its own.
 ## Email templates
 
 The shared HTML template in `convex/follows/emailTemplates.ts` uses the existing
-`apple-touch-icon.png` export for the 3D pelican masthead. It uses the site's
-lavender background and purple action color. All text remains readable when
+`brand/pelican-email.png` export for the 3D pelican masthead. This 192-pixel
+PNG keeps the transparent background of the approved master. It uses the site's
+lavender background and purple action color. The smaller masthead and inline
+layout styles preserve the reading width when email clients remove presentation
+attributes. Button labels use purple text on a pale fill, with an explicit dark
+palette for clients that support the color-scheme media query. All text remains readable when
 images are blocked. Every delivery retains its plain-text version.
 
 Run `node scripts/preview-emails.mjs` to generate local HTML and Chromium
 screenshots for story alerts, decisions, verification, roundups, replies and
 coverage notices. Output goes to the ignored `test-results/email-preview/`
-directory. Fixtures contain sample content and placeholder access links.
+directory. Fixtures contain sample content and placeholder access links. The script checks
+light and dark layouts, missing presentation attributes, and missing stylesheets
+at 320, 390 and 760 pixels. It asserts centering, background fills, transparent
+artwork, no horizontal overflow and button contrast with and without its fill.
 The script does not query Convex, send email or deploy. Browser previews do
 not certify Gmail or Outlook rendering.

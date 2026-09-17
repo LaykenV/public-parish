@@ -40,6 +40,10 @@ try {
       await resize(master, size, 'image/webp'),
     )
   }
+  await writeFile(
+    asset('brand/pelican-email.png'),
+    await resize(master, 192, 'image/png'),
+  )
   const favicon = await resize(mark, 32, 'image/png')
   await writeFile(asset('favicon-32.png'), favicon)
   // One PNG-backed 32px entry is supported by modern ICO consumers.

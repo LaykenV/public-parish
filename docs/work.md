@@ -170,3 +170,18 @@ warnings. The full test run passed 781 of 782 tests and exposed a missing site
 URL in the reply fixture. After correcting that fixture, all 15 focused reply,
 HTML safety and development-routing tests pass. No deployment or test email
 was sent. Actual Gmail and Outlook rendering remains unverified.
+
+## Email compatibility correction, September 17
+
+The owner reported a missing button fill and left-aligned desktop email, plus
+a pale square around the pelican in mobile dark mode. Removing presentation
+attributes from the previous template reproduced the desktop failure. Inline
+CSS now owns widths, centering and background fills. A smaller masthead uses
+a transparent PNG export of the approved pelican. The action uses purple text
+on a pale fill, with explicit dark colors in supporting clients.
+
+All 90 local preview variants passed, including missing attributes and missing
+stylesheets. Minimum measured button contrast was 8.34:1, including the check
+without a button fill. Both typechecks, 15 focused tests and focused lint passed.
+These browser checks do not emulate Gmail's automatic dark-mode recoloring.
+A follow-up release and actual inbox confirmation remain pending.

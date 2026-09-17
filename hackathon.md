@@ -2563,3 +2563,11 @@ with the 3D pelican, source links and plain-text alternatives. Chromium previews
 fit at 320, 390 and 760 pixels. Typechecks, build and lint pass with 15 existing
 warnings. The full suite found one missing reply-fixture setting among 782 tests;
 after the fix, all 15 focused tests pass. No deployment or email was sent.
+
+### 2026-09-17 - working tree, email compatibility correction
+
+Reproduced the owner's desktop email failure by removing presentation attributes.
+Added inline sizing, alignment and fills, a transparent pelican PNG and a smaller
+masthead. All 90 browser preview variants passed with button contrast at least
+8.34:1, including missing fills. Both typechecks, 15 focused tests and focused
+lint passed. Release and real inbox confirmation remain pending.
