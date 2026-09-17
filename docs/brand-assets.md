@@ -40,3 +40,17 @@ as its edit reference and this prompt:
 The UI keeps the name as live text and uses empty alt text for artwork beside
 an existing brand name or page heading. The asset's SVG accessible name is
 Public Parish pelican when viewed on its own.
+
+## Email templates
+
+The shared HTML template in `convex/follows/emailTemplates.ts` uses the existing
+`apple-touch-icon.png` export for the 3D pelican masthead. It uses the site's
+lavender background and purple action color. All text remains readable when
+images are blocked. Every delivery retains its plain-text version.
+
+Run `node scripts/preview-emails.mjs` to generate local HTML and Chromium
+screenshots for story alerts, decisions, verification, roundups, replies and
+coverage notices. Output goes to the ignored `test-results/email-preview/`
+directory. Fixtures contain sample content and placeholder access links.
+The script does not query Convex, send email or deploy. Browser previews do
+not certify Gmail or Outlook rendering.

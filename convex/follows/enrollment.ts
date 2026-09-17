@@ -1,3 +1,4 @@
+import { renderEmail } from './emailTemplates'
 import { recordConfirmedEvent } from '../analytics/civic'
 import { HOUR, MINUTE, RateLimiter } from '@convex-dev/rate-limiter'
 import type { OutboundId } from '@agentmail/convex'
@@ -6,7 +7,7 @@ import { ConvexError, v } from 'convex/values'
 import { components, internal } from '../_generated/api'
 import type { Doc, Id } from '../_generated/dataModel'
 import type { MutationCtx, QueryCtx } from '../_generated/server'
-import { action, internalMutation, mutation, query } from '../_generated/server'
+import { action, env, internalMutation, mutation, query } from '../_generated/server'
 import { requireUser } from '../auth/authorization'
 import { agentmail, updatesInboxId } from './agentmailClient'
 import { checkedRecipient } from './developmentRouting'
@@ -257,6 +258,19 @@ export const prepareEmailFollow = internalMutation({
       to: checkedRecipient(args.recipient),
       subject: 'Your Public Parish verification code',
       text: verificationEmailText(args.code),
+      html: renderEmail({
+        siteUrl: env.CONVEX_SITE_URL,
+        eyebrow: 'Email verification',
+        title: 'Confirm your email',
+        preview:
+          'Your code to follow Public Parish updates. Expires in 10 minutes.',
+        paragraphs: ['Use this code to follow civic updates from Public Parish.'],
+        code: args.code,
+        details: [
+          'This code expires in 10 minutes.',
+          'If you did not request it, ignore this message.',
+        ],
+      }),
       labels: ['public-parish', 'verification'],
     })
     await ctx.db.patch('emailVerificationChallenges', challengeDocumentId, {

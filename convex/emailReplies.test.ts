@@ -11,6 +11,7 @@ import { afterEach, expect, test, vi } from 'vitest'
 import { components, internal } from './_generated/api'
 import type { DataModel, Id } from './_generated/dataModel'
 import type { AskAnswerResult } from './ask/contracts'
+import { agentmail } from './follows/agentmailClient'
 import { formatEmailReply } from './emailReplies/answer'
 import {
   extractQuestion,
@@ -24,6 +25,7 @@ const modules = import.meta.glob('./**/*.ts')
 type TestConvex = TestConvexForDataModelAndIdentity<DataModel>
 
 function initTest(): TestConvex {
+  vi.stubEnv('CONVEX_SITE_URL', 'https://www.publicparish.com')
   vi.stubEnv('AGENTMAIL_API_KEY', 'agentmail-test-key')
   vi.stubEnv('AGENTMAIL_UPDATES_INBOX_ID', 'updates-test')
   vi.stubEnv('EMAIL_ADDRESS_HMAC_KEY', 'dGVzdC1obWFjLWtleQ==')
@@ -38,7 +40,7 @@ function initTest(): TestConvex {
   return t
 }
 
-afterEach(() => vi.unstubAllEnvs())
+afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks() })
 
 test('inbound email parsing keeps only the new bounded question', () => {
   expect(parseAddress('Resident <Resident@Example.com>')).toBe(
@@ -169,6 +171,7 @@ test('weekly replies can search every update in the roundup', async () => {
 })
 
 test('answer delivery queues one reply even when completion is replayed', async () => {
+  const reply = vi.spyOn(agentmail, 'replyToMessage')
   const t = initTest()
   const eventId = await seedRunningEvent(t, 1)
   await t.mutation(internal.emailReplies.delivery.completeAnswer, {
@@ -191,6 +194,11 @@ test('answer delivery queues one reply even when completion is replayed', async 
     state: 'answered',
     outboundId: first?.outboundId,
     answerMessageId: 'answer-message-1',
+  })
+  expect(reply).toHaveBeenCalledTimes(1)
+  expect(reply.mock.calls[0][3]).toMatchObject({
+    text: 'The vote is scheduled.\n\nCited evidence\n- Minutes: /source/1',
+    html: expect.stringContaining('The vote is scheduled.'),
   })
   expect(first?.outboundId).toBeDefined()
   await expect(

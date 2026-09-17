@@ -154,3 +154,19 @@ block. Read [PLAN](../PLAN.md), [architecture](architecture.md),
 [sources](sources.md), [design](design.md) and [operations](operations.md) before
 changing behavior. Record new work here with its actual receipt. Do not mark a
 post, official outcome, provider test or submission complete without evidence.
+
+## Email design, September 17 local work
+
+Added a shared HTML email template with the approved 3D pelican, lavender
+framing, purple action buttons and compact official-source links. Story and
+decision alerts, weekly roundups, follow and coverage verification, coverage
+notices and grounded replies include HTML alongside their existing plain text.
+Subscriber controls and development exercise labels remain present.
+
+`node scripts/preview-emails.mjs` generated six sample emails at 320, 390 and
+760 pixels without horizontal overflow. Inspected story, verification, roundup
+and reply screenshots. Typechecks, build and lint pass, with 15 existing lint
+warnings. The full test run passed 781 of 782 tests and exposed a missing site
+URL in the reply fixture. After correcting that fixture, all 15 focused reply,
+HTML safety and development-routing tests pass. No deployment or test email
+was sent. Actual Gmail and Outlook rendering remains unverified.

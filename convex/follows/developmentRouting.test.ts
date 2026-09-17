@@ -28,3 +28,13 @@ test('historical development messages identify the exercise without relabeling p
   vi.stubEnv('CONVEX_SITE_URL', 'https://befitting-flamingo-587.convex.site')
   expect(labelDevelopmentStoryMail(message)).toEqual(message)
 })
+
+test('development HTML shows the historical exercise warning as well as plain text', () => {
+  vi.stubEnv('CONVEX_SITE_URL', 'https://woozy-wren-227.convex.site')
+  const message = { subject: 'Story update', text: 'A test update', html: '<html><body><!-- email-notice --><h1>A test update</h1></body></html>' }
+  const labeled = labelDevelopmentStoryMail(message)
+  expect(labeled.html).toContain('not new government actions')
+  expect(labeled.html).toContain('<h1>A test update</h1>')
+  vi.stubEnv('CONVEX_SITE_URL', 'https://www.publicparish.com')
+  expect(labelDevelopmentStoryMail(message)).toEqual(message)
+})
