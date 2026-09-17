@@ -31,12 +31,11 @@ const fixtures = {
   story: {
     ...controls,
     eyebrow: 'Story update',
-    title:
-      "Meta's Richland Parish expansion and the September 16 utility agenda",
+    title: "Meta's $50 billion plan and the rules for its power supply",
     preview:
       'A design preview using the historical email supplied for this redesign.',
     paragraphs: [
-      "A revised Louisiana Public Service Commission agenda lists two procedural motions in docket U-37882 for its Sept. 16, 2026 business and executive session. Separately, Louisiana Economic Development announced in July that Meta was committing more than $50 billion to expand its Richland Parish data-center project; the announcement's employment figures are projections.",
+      'Meta announced a Richland Parish data center expansion exceeding $50 billion. The original power approval includes protections for other Entergy customers. A separate application seeks power resources for an adjacent campus, and the saved records do not establish the results of its September 16 procedural motions.',
     ],
     action: {
       label: 'Read the update',
@@ -123,37 +122,146 @@ const fixtures = {
     action: { label: 'See coverage', href: `${base.siteUrl}/coverage` },
   },
 }
+let checked = 0
+let minimumButtonContrast = Infinity
 const browser = await chromium.launch({ headless: true })
 try {
   const page = await browser.newPage()
-  await page.route(
-    'https://www.publicparish.com/apple-touch-icon.png',
-    (route) =>
-      route.fulfill({
-        path: resolve('public/apple-touch-icon.png'),
-        contentType: 'image/png',
-      }),
-  )
+  const localImage = `data:image/png;base64,${(await readFile(resolve('public/brand/pelican-email.png'))).toString('base64')}`
   for (const [name, fixture] of Object.entries(fixtures)) {
     const html = renderEmail({ ...base, ...fixture })
     await writeFile(`${output}/${name}.html`, html)
     for (const width of [760, 390, 320]) {
-      await page.setViewportSize({ width, height: 900 })
-      await page.setContent(html)
-      await page.locator('img').evaluate((image) => image.decode())
-      if (
-        await page.evaluate(
-          () => document.documentElement.scrollWidth > innerWidth,
+      for (const mode of [
+        'light',
+        'dark',
+        'stripped-light',
+        'stripped-dark',
+        'inline-only',
+      ]) {
+        const dark = mode.endsWith('dark')
+        await page.emulateMedia({ colorScheme: dark ? 'dark' : 'light' })
+        await page.setViewportSize({ width, height: 900 })
+        await page.setContent(
+          html.replace(`${base.siteUrl}/brand/pelican-email.png`, localImage),
         )
-      )
-        throw new Error(`${name} overflows at ${width}px`)
-      await page.screenshot({
-        path: `${output}/${name}-${width}.png`,
-        fullPage: true,
-      })
+        // A compatibility stress test, not an emulator of Gmail's sanitizer.
+        if (mode.startsWith('stripped') || mode === 'inline-only') {
+          await page.evaluate((inlineOnly) => {
+            document.querySelectorAll('*').forEach((element) => {
+              for (const attribute of [
+                'bgcolor',
+                'align',
+                'valign',
+                'width',
+                'height',
+                'border',
+                'cellpadding',
+                'cellspacing',
+              ])
+                element.removeAttribute(attribute)
+            })
+            if (inlineOnly)
+              document
+                .querySelectorAll('style')
+                .forEach((element) => element.remove())
+          }, mode === 'inline-only')
+        }
+        await page.locator('img').evaluate((image) => image.decode())
+        const result = await page.evaluate(
+          ({ dark, hasAction }) => {
+            const card = document.querySelector('.email-content')
+            const cardStyle = getComputedStyle(card)
+            const rect = card.getBoundingClientRect()
+            function rgb(color) {
+              return color
+                .match(/[\d.]+/g)
+                .slice(0, 3)
+                .map(Number)
+            }
+            function luminance(color) {
+              const linear = rgb(color).map((channel) => {
+                const value = channel / 255
+                return value <= 0.04045
+                  ? value / 12.92
+                  : ((value + 0.055) / 1.055) ** 2.4
+              })
+              return (
+                linear[0] * 0.2126 + linear[1] * 0.7152 + linear[2] * 0.0722
+              )
+            }
+            function contrast(foreground, background) {
+              const values = [
+                luminance(foreground),
+                luminance(background),
+              ].sort((a, b) => b - a)
+              return (values[0] + 0.05) / (values[1] + 0.05)
+            }
+            let buttonContrast = null
+            let buttonContrastWithoutFill = null
+            if (hasAction) {
+              const style = getComputedStyle(
+                document.querySelector('.email-button'),
+              )
+              buttonContrast = contrast(style.color, style.backgroundColor)
+              buttonContrastWithoutFill = contrast(
+                style.color,
+                cardStyle.backgroundColor,
+              )
+            }
+            const image = document.querySelector('img')
+            const canvas = document.createElement('canvas')
+            canvas.width = canvas.height = 192
+            const context = canvas.getContext('2d')
+            context.drawImage(image, 0, 0, 192, 192)
+            return {
+              overflow: document.documentElement.scrollWidth > innerWidth,
+              centered: Math.abs(rect.left - (innerWidth - rect.right)) < 2,
+              pageBackground: getComputedStyle(document.body).backgroundColor,
+              expectedPageBackground: dark
+                ? 'rgb(25, 23, 30)'
+                : 'rgb(247, 246, 250)',
+              background: cardStyle.backgroundColor,
+              expectedBackground: dark
+                ? 'rgb(36, 33, 43)'
+                : 'rgb(255, 255, 255)',
+              buttonContrast,
+              buttonContrastWithoutFill,
+              transparentImage: context.getImageData(0, 0, 1, 1).data[3] === 0,
+            }
+          },
+          { dark, hasAction: Boolean(fixture.action) },
+        )
+        if (
+          result.overflow ||
+          !result.centered ||
+          result.background !== result.expectedBackground ||
+          result.pageBackground !== result.expectedPageBackground ||
+          !result.transparentImage ||
+          (result.buttonContrast !== null &&
+            (result.buttonContrast < 4.5 ||
+              result.buttonContrastWithoutFill < 4.5))
+        )
+          throw new Error(
+            `${name} ${mode} at ${width}px: ${JSON.stringify(result)}`,
+          )
+        checked += 1
+        if (result.buttonContrast !== null)
+          minimumButtonContrast = Math.min(
+            minimumButtonContrast,
+            result.buttonContrast,
+            result.buttonContrastWithoutFill,
+          )
+        await page.screenshot({
+          path: `${output}/${name}-${width}-${mode}.png`,
+          fullPage: true,
+        })
+      }
     }
   }
 } finally {
   await browser.close()
 }
-console.log(`Email previews and screenshots: ${output}`)
+console.log(
+  `${checked} email previews passed. Minimum button contrast, including missing fills: ${minimumButtonContrast.toFixed(2)}:1. Screenshots: ${output}`,
+)
