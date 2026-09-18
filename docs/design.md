@@ -3,7 +3,8 @@
 This document owns the agreed information flow and the design-review process.
 The story functionality and evidence gate has passed. The owner completed the
 global design and founder QA pass on September 16, 2026 and approved the app
-for launch. The page contracts below govern later changes.
+for launch. Public launch followed on September 18, confirmed by the owner.
+The page contracts below govern later changes.
 [Work](work.md) owns the phase gate and QA ledger. The September 8 Home redesign shipped through PR 197 at `fbda95b`.
 CI browser checks and bounded production smoke passed for that release. The owner approved the follow-up below, released through PR 198 at `f7742d5`.
 Its 24 CI browser journeys, exact production workflow and independent smoke passed. [Design-system reference](design-system.html) records the existing

@@ -1,18 +1,19 @@
 # Launch upgrade plan
 
 Owner decision of September 12, 2026, amended September 13 after live UX review
-and September 16 after founder sign-off.
+September 16 after founder sign-off, and September 18 after public launch.
 This document owns the scope and slice contracts for the pre-launch upgrade. [Work](work.md) owns slice status and the
 pending queue. [PLAN](../PLAN.md) records the positioning decision. The slice contracts below govern later changes and still follow [AGENTS.md](../AGENTS.md), the evidence policy in
 [sources](sources.md) and the spending policy in [operations](operations.md).
 
-## September 16 disposition
+## September 18 disposition
 
-U1, U2, U3, U5 and statewide U6 are released. The owner completed design and QA
-and considers the app ready for launch. U4, the official LPSC outcome follow-up,
-and U7 launch posts remain. Demo recording is separate submission work. The
-private pilot is follow-up work and verified parish propositions remain deferred.
-[Work](work.md) records receipts and the only active queue.
+Public Parish is launched, confirmed by the owner. U1, U2, U3, U5 and statewide
+U6 are released. U7 launch posts and the final submission demo are complete.
+The owner closed the launch queue. U4's evidence procedure remains applicable
+to later source maintenance; this sign-off does not establish a September 16
+LPSC outcome. The private pilot is follow-up work and verified parish
+propositions remain deferred. [Work](work.md) owns receipts and the active queue.
 
 The slice contracts below preserve the agreed scope. Their planning context
 and spend proposals do not assign completed work again or renew old allowances.
@@ -472,20 +473,20 @@ checkable claims.
 Drafts exist for each channel with exact URLs, every factual sentence traces to
 an accepted version, and previews render the current approved title and image.
 
-## Sequence and calendar
+## Launch disposition and follow-up calendar
 
-This replaces the original implementation calendar. Dates are targets, not
-completion evidence; [Work](work.md) owns current receipts.
+The owner confirmed launch completion on September 18. Later dates are targets;
+[Work](work.md) owns current receipts and the active queue.
 
 | Window | Focus | Exit |
 | --- | --- | --- |
 | Through September 16 | Implementation and founder design and QA | Complete, with owner sign-off |
-| September 16 through 19 | U4 official-outcome follow-up and U7 launch posts | Reviewed outcome or no-document checkpoint; actual post links |
+| September 18 | Public launch and U7 posts | Complete by owner confirmation; public demo and social links retained |
 | After launch | Resident feedback, routine source reviews and bounded fixes | Record observed results |
-| By September 21 | Demo and submission | Submit with authorization; September 22 is contingency |
+| By September 21 | Submission handoff using the finished demo | Submit with authorization; September 22 is contingency |
 
-Protect the released scope while finishing U4 and the launch posts. Parish
-propositions remain later work. Do not label a body supported or a measure
+Protect the released scope during resident follow-up and source maintenance.
+Parish propositions remain later work. Do not label a body supported or a measure
 current to hit a date.
 
 ## Handoff rules for every slice

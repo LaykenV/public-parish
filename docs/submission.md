@@ -1,14 +1,13 @@
 # Hackathon submission
 
-Official requirements were rechecked September 16, 2026 against the
+Official requirements were rechecked September 18, 2026 against the
 [Convex All Gas Hackathon page](https://www.convex.dev/hackathons/all-gas).
 Recheck before submission. [Work](work.md) owns the delivery schedule and current
 readiness. The root [hackathon log](../hackathon.md) owns build history.
 
-The owner completed design and QA on September 16 and considers the product
-ready for launch. The remaining launch work is the LPSC outcome follow-up and
-launch posts. This document tracks the separate demo and submission artifacts;
-launch readiness does not mean the entry has been submitted.
+The owner confirmed public launch on September 18. Product work, founder QA,
+the final video and launch posts are complete. The existing artifacts are ready
+for submission handoff. Actual entry submission remains unconfirmed.
 
 ## Event and required artifacts
 
@@ -28,32 +27,38 @@ Use `https://befitting-flamingo-587.convex.site` as the qualifying app URL.
 `https://www.publicparish.com` is the resident-facing canonical domain. Verify
 both independently. The apex redirects and does not replace the qualifying host.
 
-## Demonstration plan
+## Finished demonstration
 
-Target approximately 2 minutes 45 seconds, leaving time below the limit. Use
-actual product interaction and legible captions. The owner may choose the best
-accepted source-change sequence, but the opening shows the Louisiana Home with
-Meta as the lead and SpaceX and Boyce visible as secondary stories. The ten
-statewide amendments are live. Use the September 16 Meta outcome if the
-[U4 follow-up](upgrade-u4-watch.md) produces accepted official evidence;
-otherwise retain the evidence limit and use a labeled replay of real source
-versions for the update demonstration.
+The [September 17 submission demo](demo/public-parish-launch-demo.mp4) is
+2:48.2, at 1920 x 1080 and 30 fps. [Captions](demo/public-parish-launch-demo.srt)
+and [export details](demo/README.md) are included. The public watch URL is
+https://www.youtube.com/watch?v=zuOhc5rGgsQ. The owner accepted this video as-is
+for submission. No new recording or edit is required.
 
-| Time | Product proof |
-| --- | --- |
-| 0:00 through 0:15 | State the resident problem and show the Louisiana Home |
-| 0:15 through 0:40 | Open the lead story, show its current explanation and limits |
-| 0:40 through 1:05 | Open a precise citation and the official source |
-| 1:05 through 1:30 | Ask a real question and inspect the cited answer |
-| 1:30 through 1:50 | Follow the story through an optional account or verified email |
-| 1:50 through 2:15 | Show an accepted material update, ideally the September 16 outcome, with the realtime page change and sourced email |
-| 2:15 through 2:30 | Show a grounded reply, then the ballot page or a parish focus with its local issues |
-| 2:30 through 2:45 | Name the actual integrations and public access |
+The owner's narration moves from Louisiana Home to Meta, the official source
+passage, story Ask and Follow, then the existing update and cited email reply.
+The closing section shows broader coverage, names Convex, Firecrawl, OpenAI
+through AI Gateway and AgentMail, and ends with both public app URLs.
 
-Use two real official source versions if meeting timing is unsuitable. Label a
-controlled replay explicitly. Do not describe a replay as a new government event
-or a controlled inbox as organic resident use. Do not manufacture a story change
-from cosmetic edits merely to trigger an email.
+The email is labeled as a previously received founder test. It does not claim
+that an update arrived during recording or demonstrate organic resident use.
+The source insert shows printed page 6 of the August 12 LPSC meeting minutes.
+The two recordings are joined, pauses trimmed and the closing thank-you removed.
+The [launch plan](launch-plan-2026-09-17.md) retains the rehearsal script.
+
+## Published social posts
+
+The owner confirmed these launch posts and supplied their public links on
+September 18. Verify the required sponsor mentions during final submission
+review; do not create replacement posts simply to collect receipts.
+
+- [X launch post](https://x.com/LLVarholdt/status/2100947546864578717)
+- [LinkedIn launch post](https://www.linkedin.com/feed/update/urn:li:activity:7506714084554383360/), with the demo in a comment
+- [Personal Facebook launch post](https://www.facebook.com/layken.varholdt.3/posts/pfbid02BVoz9bg6yM9po47N9rVoTMpoM7R8zctMQVD1M9z6o3p6Y693EHXwRQZVR9d6CLM6l)
+
+The first five Facebook group posts are complete by owner confirmation. Their
+individual permalinks and organic resident outcomes have not been recorded.
+[Work](work.md#launch-receipt-september-18) names the groups.
 
 ## Evidence to retain
 
@@ -67,8 +72,7 @@ The repository and live app were public at the September 7 inspection. The
 original local resident loop has prior controlled production evidence.
 Story capabilities have bounded development and production proof in
 [Work](work.md). The owner completed founder design and QA on September 16.
-Organic resident use, the final recording and submission require their own
-evidence. An installed component or green build is not runtime behavior.
+Organic resident use and submission require their own evidence. An installed component or green build is not runtime behavior.
 
 The organizer evaluates usefulness, Convex depth, actual sponsor work, public
 access, social engagement and the video demonstration. A credible entry shows
@@ -81,34 +85,35 @@ those things. This document does not assign a score or probability of winning.
 - [x] Complete founder design and QA. Owner sign-off received September 16.
   A private pilot is follow-up work, not a launch prerequisite.
 - [ ] Confirm story freshness and usable public-service allowances through judging.
-- [ ] After the final outcome update, check its affected source, Ask and delivery
-  paths. The completed founder QA pass covers the existing resident journeys.
-- [x] Update the root build log from repository evidence and the September 16
-  owner sign-off using the local hackathon skill. Refresh after the outcome
-  follow-up, posts and final recording.
-- [ ] Record and inspect the final video, below three minutes, with private data
-  removed and readable desktop or mobile interaction.
-- [ ] Publish the required X or LinkedIn post with all four sponsor tags after
-  authorization, and record the public link.
+- If a new outcome is published before judging, check its affected source, Ask
+  and delivery paths. A new government outcome is not required to submit the
+  completed demo. The founder QA pass covers the existing resident journeys.
+- [x] Update the root build log with the September 18 launch confirmation,
+  public demo and owner-supplied social links using the local hackathon skill.
+- [x] Record and inspect the final video, below three minutes, with private data
+  removed and readable desktop interaction. The September 17 export is 2:48.2.
+- [x] Publish on X and LinkedIn and retain the public links, owner confirmed
+  September 18. Check actual sponsor mentions with the final links below.
 - [ ] Verify the video, public repository, social and both app-origin links from
   a signed-out browser. The qualifying URL must work without an invitation.
 - [ ] Prepare the complete vibeapps.dev entry for owner review.
 - [ ] Submit only after authorization and retain the actual confirmation.
 
-No submission, public launch post or organic resident outcome is claimed
-by this documentation update. The older dated build and release evidence remains
+Launch and social publication are owner-confirmed. Actual submission and
+organic resident outcomes are not yet recorded. Older build and release evidence remains
 in [the archive](archive/README.md).
 
-## Current release proof and remaining presentation work
+## Current release proof and submission handoff
 
 The three LIMITED stories and ten LIMITED statewide amendments are published.
-Statewide commission coverage is deployed. PR #260 is the latest verified
-release, with its successful production workflow and smoke step linked from
-[Work](work.md#released-application). The September 12
-[controlled production email receipt](launch-release-2026-09-12.md#production-email-and-phone-proof)
+Statewide commission coverage is deployed. The September 18 check verified
+successful production workflow [35258378663](https://github.com/LaykenV/public-parish/actions/runs/35258378663)
+for `c873166d`, including release verification and workflow smoke. It includes
+email improvements through PR #263. See [Work](work.md#released-application).
+The September 12 [controlled production email receipt](launch-release-2026-09-12.md#production-email-and-phone-proof)
 records update delivery, a grounded reply and per-follow unsubscribe.
 
-The owner completed the founder design and QA pass on September 16. The final
-video and sponsor-tagged post links still need recording. Inspect final platform
-previews while preparing launch posts. Registration, eligibility and final entry
-confirmation remain submission checks; the QA sign-off does not assert them.
+The final video and launch posts are complete. Use their existing public links.
+Registration, eligibility, signed-out access, sponsor mentions and the final
+entry confirmation remain submission checks. These checks do not reopen the
+completed product, design, recording or launch work.

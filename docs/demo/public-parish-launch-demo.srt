@@ -1,0 +1,205 @@
+1
+00:00:00,000 --> 00:00:02,040
+Hey, judges. I'm Layken.
+
+2
+00:00:02,100 --> 00:00:05,290
+I'm from Louisiana, and I've been hearing
+about these big data centers
+
+3
+00:00:05,300 --> 00:00:08,300
+and SpaceX launch facilities proposed
+around the state.
+
+4
+00:00:08,720 --> 00:00:12,430
+I wanted to read more about this and found
+it hard to find sources that
+
+5
+00:00:12,440 --> 00:00:15,240
+I could trust. So I built Public Parish.
+
+6
+00:00:15,760 --> 00:00:19,810
+This is a free, open-source, nonpartisan
+tool for keeping track of
+
+7
+00:00:19,820 --> 00:00:21,160
+Louisiana government decisions.
+
+8
+00:00:21,940 --> 00:00:25,320
+I'd like to show the Meta $50 billion data
+center project.
+
+9
+00:00:25,780 --> 00:00:29,990
+Here on this page, we bring together what
+the established record is.
+
+10
+00:00:30,000 --> 00:00:32,500
+As well as the timeline of the project.
+
+11
+00:00:33,000 --> 00:00:37,630
+Everything here is built and generated on
+top of official
+
+12
+00:00:37,640 --> 00:00:42,290
+source documentation from councils,
+commissions, organizations related
+
+13
+00:00:42,300 --> 00:00:43,140
+to this project.
+
+14
+00:00:43,740 --> 00:00:46,000
+Everything stated here has citations.
+
+15
+00:00:46,720 --> 00:00:51,430
+We can open these, read the official
+source or even link back to
+
+16
+00:00:51,440 --> 00:00:54,680
+the PDFs put out by the Louisiana Public
+Service Commission.
+
+17
+00:00:56,280 --> 00:01:00,460
+Another cool thing we can do is ask about
+this story.
+
+18
+00:01:00,900 --> 00:01:05,150
+So if we go here and we ask a question,
+what happens if Meta ends its
+
+19
+00:01:05,160 --> 00:01:06,460
+service agreement early?
+
+20
+00:01:06,720 --> 00:01:10,610
+So what happens is our system is looking
+at all the official
+
+21
+00:01:10,620 --> 00:01:14,490
+documentation in our database, searching
+through them what is relevant
+
+22
+00:01:14,500 --> 00:01:18,080
+to your question, picking out the answer
+and writing it for you.
+
+23
+00:01:18,460 --> 00:01:22,560
+And again, everything here, this gives us
+an explanation and it's cited.
+
+24
+00:01:22,940 --> 00:01:26,250
+So we're able to open up the source and
+verify the claims in this
+
+25
+00:01:26,260 --> 00:01:30,640
+answer. Another thing we can do with this
+project is follow it through email.
+
+26
+00:01:31,260 --> 00:01:35,270
+So any material updates that come out
+related to the Meta data center
+
+27
+00:01:35,280 --> 00:01:38,220
+will be sent to you as an update through
+email.
+
+28
+00:01:38,620 --> 00:01:40,680
+Here's an update that I received recently.
+
+29
+00:01:41,160 --> 00:01:45,910
+Cool thing here is you can reply to the
+email and this uses the same
+
+30
+00:01:45,920 --> 00:01:50,390
+functionality as the chat inside the
+application and Public Parish
+
+31
+00:01:50,400 --> 00:01:55,050
+replies with the explanation as well as
+the cited sources
+
+32
+00:01:55,060 --> 00:01:57,360
+to verify the claim.
+
+33
+00:01:58,240 --> 00:02:01,670
+We're launching today with support for
+statewide stories as well as
+
+34
+00:02:01,680 --> 00:02:03,460
+three parishes here in Louisiana.
+
+35
+00:02:04,180 --> 00:02:08,400
+Users can select their home parish and
+keep up with anything happening locally.
+
+36
+00:02:09,100 --> 00:02:13,400
+View issues, ask questions, and follow
+anything here through email.
+
+37
+00:02:13,840 --> 00:02:18,070
+For the hackathon sponsors, Convex handles
+our database authentication
+
+38
+00:02:18,080 --> 00:02:22,530
+and workflows. Firecrawl is for scraping
+and monitoring
+
+39
+00:02:22,540 --> 00:02:25,900
+all of the official sources and documents.
+
+40
+00:02:26,360 --> 00:02:29,620
+OpenAI handles the reasoning, extraction,
+
+41
+00:02:30,400 --> 00:02:34,530
+and answers questions through the Convex
+AI Gateway and AgentMail
+
+42
+00:02:34,540 --> 00:02:38,970
+handles everything from sending out update
+emails as well as handling
+
+43
+00:02:38,980 --> 00:02:42,120
+the replies to user questions in email.
+
+44
+00:02:42,640 --> 00:02:44,900
+This is live today at publicparish.com.

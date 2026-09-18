@@ -241,11 +241,12 @@ charges, blockers, and the next bounded task. Never include secrets, resident
 messages or private application records. Agents do not post, email officials,
 merge, publish or change production merely because the tool can do it.
 
-## Routine launch review
+## Routine review after launch
 
-During launch, inspect paid allowances and expiry, selected source freshness,
+Public launch completed September 18. Through judging, inspect paid allowances
+and expiry, selected source freshness,
 story review dates, failed Ask calls, delivery problems and public routes. Keep
-public explanations accurate when checks pause. Triage launch blockers before
+public explanations accurate when checks pause. Triage resident failures before
 new content. [Work](work.md) records findings and completion evidence.
 
 The [historical runbook](archive/pre-stories-2026-09-07/docs/slice-9-operations-runbook.md)

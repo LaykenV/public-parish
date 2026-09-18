@@ -2,7 +2,9 @@
 
 Historical receipt. The September 16 owner sign-off closes founder design and
 QA. Later releases supersede the unfinished release tasks in this report.
-[Current work](work.md) owns the remaining LPSC follow-up and launch posts.
+Public launch, the submission video and launch posts were confirmed complete
+on September 18. [Current work](work.md) owns resident follow-up and submission
+handoff. The dated findings below remain historical evidence.
 Keep the dated evidence below; do not replay its work orders or allowances.
 
 September 14, 2026. Prepared against production commit

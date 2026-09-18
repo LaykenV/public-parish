@@ -1,9 +1,11 @@
 # Marketing and launch
 
-The owner completed the design and QA pass on September 16, 2026 and considers
-Public Parish ready for launch. The remaining launch work is the LPSC outcome
-follow-up and launch posts. [Work](work.md) owns current status. The founder's
-weekday Varholdt sales block remains protected.
+Public Parish launched on September 18, 2026. The owner confirmed personal
+Facebook, X, LinkedIn and the first five Facebook group posts are published.
+The [2:48 submission demo](https://www.youtube.com/watch?v=zuOhc5rGgsQ) is final.
+[Work](work.md#launch-receipt-september-18) owns the public links and completion
+receipt. The current task is resident follow-up and selective distribution.
+Protect the founder's weekday Varholdt sales block.
 
 ## Positioning
 
@@ -29,16 +31,16 @@ and local-coverage limits, including owner-triggered updates when applicable.
 [Launch upgrade](launch-upgrade.md) slice U7 owns the content drafts for the
 upgraded surfaces.
 
-## Launch gate
+## Launch complete
 
-The story functionality and founder design and QA gates are complete. The
-September 16 owner decision replaces the earlier private-pilot prerequisite.
-Resident feedback remains useful follow-up work, with no pilot result claimed.
+The owner closed launch on September 18 after the completed functionality,
+design and founder QA gates. Do not restart recording or launch announcements.
+Source maintenance continues under the existing evidence contract. No meeting
+outcome is established by the launch sign-off.
 
-Finish the LPSC source follow-up and prepare the launch posts. Inspect each
-post's actual platform preview and final link before publishing. Keep allowance
-and error checks in routine launch operation. Preparing drafts, recordings and
-group lists does not authorize posting or sending outreach.
+Inspect the actual preview and final link for each new post. Keep allowance and
+error checks in routine operation. This follow-up plan does not itself send,
+publish or authorize extra outreach.
 
 ## Channel priorities
 
@@ -46,11 +48,11 @@ The [September 16 Facebook group report](facebook-launch-groups-2026-09-16.md)
 records 75 screened groups, posting restrictions and a proposed launch sequence.
 Check each group's current rules and participation approval before posting.
 
-| Channel | Purpose | First useful asset |
+| Channel | Purpose | Asset and current use |
 | --- | --- | --- |
-| Personal Facebook | Launch to existing Louisiana friends and invite real use | Founder introduction, a relevant story link and short product recording |
+| Personal Facebook | Launch to existing Louisiana friends and invite real use | Published founder introduction; demo link in comments |
 | Local Louisiana Facebook groups | Reach communities already discussing the subject | A group-specific explanation and exact story link after checking rules |
-| X or LinkedIn | Required hackathon visibility and technical credibility | Short real workflow demo with organizer-requested sponsor tags |
+| X or LinkedIn | Required hackathon visibility and technical credibility | Published X and LinkedIn introductions; X demo upload and LinkedIn video comment |
 | TikTok or short video | Show the evidence interaction without a long explanation | Recut the same recording around one concrete reader question |
 | Reporters and newsletters | Offer a reusable source-backed public resource | A concise story page and its official-source trail |
 | Libraries and civic or neighborhood groups | Find useful resident sessions and sharing partners | A brief demo or permissioned QR card to one story |
@@ -67,34 +69,50 @@ selection or approve the product's findings. Never imply government endorsement
 from a reply. Source-problem feedback uses the same evidence review regardless
 of the sender's role.
 
-## Launch sequence
+## Follow-up through judging
 
-Use the launch window in the work plan. Adjust the order to readiness and group
-permission, not a claimed algorithmic best time.
+The first five group posts are complete. Respond before expanding the batch.
+Use real comments to decide what needs a better explanation; do not repeat a
+launch announcement merely because it received little attention.
 
-| Moment | Action | Destination and observation |
+| Window | Action | Evidence to retain |
 | --- | --- | --- |
-| Before posting | Finish the LPSC follow-up, draft assets, check previews and group rules | Use current accepted evidence and working links |
-| September 16 | Check official records for the two U-37882 procedural motions listed on the agenda. Publish a result only after source review | Meta story next-action section and Follow |
-| Launch day | Personal Facebook post and required X or LinkedIn demonstration | Louisiana Home or the story most relevant to the post; observe visits and actions |
-| Next day | A small set of permitted community posts | Meta, SpaceX or Boyce direct link matched to the community; the amendments page for statewide groups |
-| Following days | Publish another story explanation, one amendment explained from its Act, or a recurring evidence-backed answer | Sources, Ask and follow |
-| After a substantive update | Show what the new official record changed | Current story version, receipt and update path |
-| Before submission | Share the final short demo and permissioned usage evidence | Public qualifying app and repository |
+| September 18 and 19 | Reply to readers and inspect the first batch's results. Invite interested people to try one source or question | Actual actions, recurring confusion and permissioned feedback |
+| September 19 and 20 | If there is time to respond, post to three additional relevant groups with current permission | Group-specific post links and useful responses |
+| September 20 and 21 | Add at most two more groups if the first batches justify it. Share a useful sourced answer if one emerged | A different useful explanation, not another identical announcement |
+| By September 21 | Complete submission handoff using the finished demo and existing social posts | Actual submission URL and confirmation |
+| Through September 25 | Keep the app usable, answer readers and fix verified failures | Errors resolved, usable allowances and observed resident outcomes |
 
-Boyce can be the personal Rapides-focused post destination while Meta remains
-the homepage lead. The ten November 3 amendments give statewide groups a
-reason to visit that does not depend on a data-center story. Each new post
-should offer a different useful explanation or
-update. Do not repeat a launch announcement solely because the first one failed
-to gain attention. Preserve time each day to respond and fix problems.
+This is a target of eight to ten total groups, not a quota. Stop expansion if
+source links, Ask, follows or email fail, or if replies exceed available time.
+Avoid new features or a new video unless a concrete problem justifies the work.
+
+The next three candidates from the September 16 report are:
+
+| Group | Angle | Recorded condition |
+| --- | --- | --- |
+| [What's Happening in CenLA](https://www.facebook.com/groups/2257339361260542/) | Boyce story and official documents | Local news and new businesses allowed; one business post per 24 hours |
+| [Abbeville, Louisiana; Official discussion page](https://www.facebook.com/groups/2615789328760946/) | SpaceX evidence relevant to Vermilion Parish | Local news and discussions welcome; inspect current featured notices |
+| [Real Talk Baton Rouge](https://www.facebook.com/groups/78770774516/) | A free resource for covered East Baton Rouge decisions | Posts must inform or promote Baton Rouge; choose a current relevant local issue |
+
+Optional later candidates are [What's happening Vermilion Parish?](https://www.facebook.com/groups/1447101562135619/)
+and [Whatz Actually Goin On In Acadiana](https://www.facebook.com/groups/635637122175863/).
+These are dated fit observations, not fresh membership or posting approvals.
+Do not infer permission for Ask Lafayette, Vermilion Parish Updates or Rayville
+Connection, which had explicit promotion restrictions in the report.
+
+Keep the owner's approved group structure: open with the relevant local project,
+identify the Louisiana developer and global hackathon in the body, explain the
+source-backed reading and question flow, then link directly to the story. The
+full submission video is optional in a permitted comment. There is no need to
+produce a separate video for the next batch.
 
 ## Content package
 
-For each story, prepare one checked headline, lead image and credit, a direct
-share URL, short caption, and a 20- to 45-second product recording. Show an exact
-source opening or grounded question. Reuse footage across channels rather than
-running four unrelated content operations.
+For each new story post, use a checked headline, approved lead image and credit,
+a direct share URL and a short caption. A 20- to 45-second excerpt showing one
+source or grounded question is optional follow-up. Reuse the finished demo;
+a new recording is not required for distribution.
 
 All published factual copy must match the accepted story evidence. Distinguish
 announcements, proposed actions, executed agreements and outcomes. Avoid outrage,
@@ -121,12 +139,14 @@ resource can be relevant to a local community without inferring anyone's views.
 Use public organizations and public contact routes in repository notes. Keep
 private contact details and message histories outside public docs.
 
-| Organization or channel | Relevant story | Rules or contact permission | Asset ready | Authorized and sent | Result |
-| --- | --- | --- | --- | --- | --- |
-| Personal Facebook | Boyce or Meta-led Home | Owner channel | Pending | No | Not measured |
-| Louisiana groups | Match story to group | Check each group | Pending | No | Not measured |
-| X or LinkedIn | Full resident workflow | Owner channel | Pending | No | Not measured |
-| Local media and civic groups | Named relevant story | Public contact route | Pending | No | Not measured |
+| Organization or channel | Status as of September 18 | Receipt and next action |
+| --- | --- | --- |
+| Personal Facebook | Published, owner confirmed | [Post](https://www.facebook.com/layken.varholdt.3/posts/pfbid02BVoz9bg6yM9po47N9rVoTMpoM7R8zctMQVD1M9z6o3p6Y693EHXwRQZVR9d6CLM6l); respond to readers |
+| X | Published, owner confirmed | [Post](https://x.com/LLVarholdt/status/2100947546864578717); retain for submission |
+| LinkedIn | Published, owner confirmed | [Post](https://www.linkedin.com/feed/update/urn:li:activity:7506714084554383360/); demo shared through a comment |
+| First five Facebook groups | Published, owner confirmed | Named in [Work](work.md#launch-receipt-september-18); individual permalinks and results not recorded |
+| Next community batch | Proposed follow-up | Check current rules, then three groups with up to two later additions |
+| Local media and civic groups | Optional later outreach | No outreach receipt; no new campaign required before submission |
 
 ## Measurement
 

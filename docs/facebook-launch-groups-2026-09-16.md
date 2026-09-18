@@ -9,13 +9,28 @@ exception or prior participation. The remaining 14 are poor fits, ineligible, or
 in another state. Personal membership history and application answers are kept
 outside this public document.
 
-The founder completed design and QA on September 16. Use [work](work.md) for
-current launch status and the LPSC source follow-up, and [marketing](marketing.md)
-for positioning and publication requirements. This research does not establish
-posting permission, resident use, or conversion results. It does not authorize
-posts or administrator outreach.
+## September 18 launch receipt
 
-## Recommended launch sequence
+The owner confirmed the personal Facebook, X and LinkedIn posts and this first
+five-group batch are published:
+
+- [What's Up CenLa?](https://www.facebook.com/groups/424527697621256/)
+- [Vermilion Parish, Louisiana Updates & More](https://www.facebook.com/groups/1229028222156831/)
+- [All Things Monroe/West Monroe](https://www.facebook.com/groups/577425121624103/)
+- [What's Up In Acadiana?](https://www.facebook.com/groups/1112758832930962/)
+- [Lafayette Entrepreneurs & Small Businesses](https://www.facebook.com/groups/1866886660183175/)
+
+Individual group-post permalinks, moderation visibility and reader outcomes
+have not been recorded. The count is based on the owner's confirmation, not a
+new Facebook inspection. [Work](work.md#launch-receipt-september-18) owns the
+completion receipt and [marketing](marketing.md#follow-up-through-judging) owns
+the small second-batch recommendation. Do not repeat the first batch.
+
+The inventory and sequence below preserve the September 16 research. Current
+rules and participation approval must be checked before any new post. This
+report does not authorize additional posting or administrator outreach.
+
+## Original launch sequence, first batch complete
 
 Use video selectively and post in small batches. Start with a local decision and
 one specific claim supported by its document. Identify the builder relationship

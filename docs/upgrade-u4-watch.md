@@ -1,18 +1,18 @@
 # U4 official-outcome watch
 
-Updated September 16, 2026. This is a procedure, not a scheduled job.
-The active status remains in [work.md](work.md).
+Updated September 18, 2026. This is a source-maintenance procedure, not a
+scheduled job or an unmet launch gate. The owner confirmed public launch and
+closed the launch queue. [Work](work.md) owns current status.
 
-The owner completed design and QA and is waiting on this follow-up and launch
-posts. The last documented Meta version describes two U-37882 procedural motions
-listed for September 16 at 9 a.m. Central, with Follow beside the next action.
-The September 16 documentation update did not check new LPSC documents or
-accept an outcome. The agenda establishes scheduled items, not what happened.
+The last documented Meta version describes two U-37882 procedural motions
+listed for September 16 at 9 a.m. Central. Launch completion does not establish
+what happened at that meeting. This documentation update did not check new
+LPSC documents or accept an outcome. The agenda proves scheduled items only.
 
-Record today's actual source check before claiming an outcome or its absence.
-If no qualifying official document is available, record that checkpoint and
-keep the public outcome explicitly undocumented. Continue the bounded watch
-through September 19. The earlier September 15 launch target is superseded.
+For a future bounded source check, record the actual URLs and time before
+claiming an outcome or the absence of a document. The original watch was planned through
+September 19; that planning date does not prove a check occurred. Retain the
+public evidence limit until a qualifying source passes the procedure below.
 
 ## Official pages to check
 

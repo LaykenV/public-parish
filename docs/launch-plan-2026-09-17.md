@@ -1,16 +1,33 @@
 # September 17 launch plan and post drafts
 
-Prepared September 16, 2026 for the owner's Thursday launch. These are drafts
-and recording instructions. [Work](work.md) remains the only completion and
-pending-work tracker. No posts, video or submission have been published by this
-planning session.
+Launch completed September 18, 2026, confirmed by the owner. The submission
+video is accepted as-is and hosted on [YouTube](https://www.youtube.com/watch?v=zuOhc5rGgsQ).
+Personal Facebook, X, LinkedIn and the first five Facebook group posts are
+published. [Work](work.md#launch-receipt-september-18) holds their receipts.
+Actual hackathon submission is not yet confirmed.
 
-Open [the standalone browser guide](../launch-plan.html) for the final plan,
-large-text rehearsal view, copyable posts and a personal checklist. It works
-offline and saves progress in the current browser. Download notes before moving
-devices. Public receipts and repository status still belong in [Work](work.md).
+The original recording script, draft copy and run of show below are historical
+preparation, not instructions to record or post again. The final group posts
+open with the local project, mention the global hackathon in the body and link
+to the relevant story. Personal Facebook led with the owner's first-place win
+last year. LinkedIn uses a video comment rather than a native attachment.
 
-## Recommendation
+The [browser guide](../launch-plan.html) retains rehearsal and copy references.
+Its old checkboxes describe preparation, not today's launch status. Use
+[marketing](marketing.md#follow-up-through-judging) for the follow-up plan and
+[submission](submission.md) for the entry handoff.
+
+## Finished submission video
+
+The [finished demo](demo/public-parish-launch-demo.mp4) runs 2:48.2 at
+1920 x 1080 and 30 fps. The two recordings are joined, pauses trimmed and the
+closing thank-you removed. [Captions](demo/public-parish-launch-demo.srt) and
+[export details](demo/README.md) are included. The script below remains a
+rehearsal reference. The public watch URL is
+https://www.youtube.com/watch?v=zuOhc5rGgsQ. Launch posts are complete; the actual
+hackathon submission remains a separate action.
+
+## Original recording recommendation, completed
 
 Record one good product demo and reuse it. Aim for 2 minutes 40 seconds, with
 captions, clear audio and readable screen interaction. The owner confirmed X
@@ -33,12 +50,11 @@ placement. Requirements were checked against the
 
 ## The opening
 
-The owner's reason for building the app is specific. He heard the data center
-near Monroe would be the biggest in the world and did not know good sources to
-read more about it. Use that experience. Describe the superlative as something
-heard, not a verified project fact. Identify the project as Meta in Richland
-Parish when showing the story. Never put an unqualified "world's biggest data
-center" claim in the thumbnail, title or caption.
+Use the owner's September 17 retake as the basis for the spoken script. He
+starts with being from Louisiana, hearing about large data centers and the
+proposed SpaceX launch facility, and wanting sources he could trust. Keep that
+experience and his first-person delivery. The older Monroe hook remains in the
+social-post drafts below, but is not the opening for this recording.
 
 Suggested video title: **Public Parish: Follow Louisiana decisions back to the source**
 
@@ -46,59 +62,57 @@ Suggested thumbnail text: **What's actually in the public record?**
 
 ## One recording, about 2:40
 
-Use the real public app. Record in short sections so a missed click does not
-require another full take. Keep the browser large enough to read, hide unrelated
-tabs and notifications, and use a small face camera only if it is easy. Show the
-product during the opening. Add captions and trim waiting between actions.
-Watch the export once on a phone before posting.
+Record narration and clicks together in Recordly. These eight beats are timing
+checkpoints in one recording, not eight required video files. Speak normally.
+Shorten the page tour and repeated explanations before speaking faster. Show
+the product during the introduction, hide unrelated tabs and notifications, and
+keep Chrome on the same desktop throughout the take. Check audio with a short
+test first. Review the final export on a phone and confirm it is below 3:00.
 
 Before recording, check the current Ask balance and expiry, leaving capacity
-through September 25. Open both public app origins signed out, rehearse the
-exact question and locate the existing email receipt. This preparation does
-not change allowances or restart source monitoring. Do not delay recording for
-an unavailable LPSC outcome document. Use the controlled demonstration below.
+through September 25. Open both public origins signed out, rehearse the exact
+question and prepare the existing email thread with private details hidden.
+This preparation does not change allowances or restart source monitoring.
 
 | Time | Screen | Spoken draft |
 | --- | --- | --- |
-| 0:00 to 0:20 | Louisiana Home with the three stories visible, then open Meta | "I heard the data center near Monroe was going to be the biggest in the world. I wanted to read more, but I didn't know where to find good sources. So I built Public Parish." |
-| 0:20 to 0:40 | Meta story explanation and its evidence limit | "It's a free, open-source tool for understanding Louisiana government decisions. Here's the Meta project in Richland Parish. You can see what the official records establish, what's still unresolved, and what to look for next." |
-| 0:40 to 1:05 | Open a precise citation, then the official document | "You don't have to take the summary on trust. Open a citation to see the exact passage, then open the official source. Public Parish also keeps a saved copy of the evidence behind the explanation." |
-| 1:05 to 1:30 | Ask within the story, show the actual answer and open its citation | "I can ask a question about this story and inspect the sources behind the answer. Ask uses published evidence. If those records don't establish an answer, the app should say so." |
-| 1:30 to 1:55 | Follow control, then an actual previously delivered update and grounded reply | "I can follow the story by email. Here's an update and a sourced reply from a controlled test. When a reviewed update is published, followers can receive it and reply with a question. Story updates currently go through owner review." |
-| 1:55 to 2:05 | Brief view of amendments, then local issues | "There are also sourced ballot-amendment explanations and local decisions. You can read and ask questions without creating an account." |
-| 2:05 to 2:30 | Keep product visible with short sponsor labels, end on public Home | "Convex runs the database, workflows, accounts and live updates. Firecrawl retrieves official documents. OpenAI models extract and review evidence and answer questions through Convex AI Gateway. AgentMail sends updates and handles replies. Each integration supports that resident experience." |
-| 2:30 to 2:40 | Public URL and invitation | "Try publicparish.com. Pick a story, open a source, and tell me what you wanted to understand." |
+| 0:00 to 0:18 | Louisiana Home with the three stories visible. Speak while you control the cursor. Start opening Meta on the final sentence. | "Hey judges, I'm Layken. I'm from Louisiana, and I've been hearing about these big data centers and the proposed SpaceX launch facility. I wanted to read more, but struggled to find sources I could trust. So I built Public Parish." |
+| 0:18 to 0:35 | Open Meta in Richland Parish. Briefly show the summary and timeline, then go directly to Government actions. Skip the rendering description and the tour of each section. | "It's a free, open-source, nonpartisan tool for keeping track of Louisiana government decisions. I'd like to show you the Meta project in Richland Parish. This page brings the official records and timeline together." |
+| 0:35 to 1:05 | Show the August 12 subpoena vote, open its citation, then Open official source. In the LPSC meeting minutes, navigate to printed page 6, Exhibit 20, and hold on the actual passage. Check the printed page number, not just the PDF viewer counter. This vote concerns the later power case. | "Here, the commission voted three to one to cancel a subpoena in a later power case. But you don't have to trust our summary. This citation takes us to the source passage. I can open the official meeting minutes and verify the claim here. Public Parish also keeps a saved copy." |
+| 1:05 to 1:30 | Open Ask about this story and type: What happens if Meta ends its service agreement early? Record the real result, cut the wait with a visible Wait shortened label, then open one answer citation. Let viewers read it. Do not narrate the retrieval pipeline while waiting. | "Another cool thing is I can ask about this story. What happens if Meta ends its service agreement early? The answer uses published evidence. Here are the early-termination terms, with citations I can open and check. No account needed." |
+| 1:30 to 2:00 | Briefly open Follow, then switch to the existing Meta email thread. Show the received update, your question about who checks Entergy construction costs, and the cited reply about staff reporting and cost review. Keep Previously received / Founder test visible. Hide addresses and unrelated mail. No new send or reply is needed. | "I can also follow this story by email for reviewed, material updates. This is an update I received during a founder test. The cool thing is I can reply with a question. I asked who checks Entergy's construction costs, and Public Parish replied with an explanation and links to the evidence." |
+| 2:00 to 2:10 | Briefly show the ballot page and one covered parish view. Use prepared tabs. If switching takes too long, show one view while mentioning both. | "There are also local decisions and ballot-amendment explanations, with official sources and no recommendation on how to vote." |
+| 2:10 to 2:35 | Keep the product visible. Add simple text labels for Convex, Firecrawl, OpenAI / Convex AI Gateway, and AgentMail. Caption github.com/LaykenV/public-parish without spending time navigating there. | "Convex runs the database, auth, durable workflows and live updates. Firecrawl retrieves the official documents. OpenAI models extract evidence, review it with a separate model, and answer questions through Convex AI Gateway. AgentMail sends the updates and handles replies. The code is open source." |
+| 2:35 to 2:40 | Return to Home with publicparish.com large and readable. Caption the qualifying befitting-flamingo-587.convex.site URL underneath. Optional pelican movement fits inside this five-second close. | "You can try it at publicparish.com." |
 
-Rehearse the narration aloud. Shorten words before shrinking the evidence view.
-Use "What do the published records establish about this project, and what is
-still unresolved?" as the candidate Ask question. Confirm the actual response
-before recording. A source-specific question with a concise answer is better
-if rehearsal produces a long response.
+The draft has 284 spoken words. The 2:40 target includes time for clicking and
+reading, after trimming the actual Ask wait. Keep "Wait shortened" visible at
+the cut. Do not read the full answer or explain the retrieval pipeline while
+waiting. Keep the answer and its citation readable.
 
-The September 15 release receipt measured one weekly Ask at about 59 seconds.
-That is not a prediction for this question. Record the actual interaction, trim
-the wait and label the cut "Wait shortened". Do not imply instant answers.
-Keep the answer and its citation readable after the cut.
+For the subpoena example, open the August 12 LPSC meeting minutes at printed
+page 6, Exhibit 20. Verify the printed page and passage rather than assuming the
+PDF viewer counter matches. Describe the vote as a procedural action in the
+later power case, not approval of the project. Call this document meeting
+minutes, not a press release. Skip the project rendering description.
 
-For email, show an existing owner-controlled receipt with personal data hidden.
-Label it "Controlled test". The September 12 production receipt documents an
-update and grounded reply, but the recording still needs the actual artifact.
-If it is unavailable, show Follow and describe the behavior without pretending
-to show delivery. Do not send new test emails just to fill a shot.
+For email, show the existing Meta update, the owner's construction-cost question
+and the cited reply about staff reporting and cost review. Keep "Previously
+received / Founder test" visible. Hide addresses and unrelated mail. No live
+email, new reply or new government event is needed. An existing receipt is not
+a replay. Label a replay only if one actually occurs.
 
-If accepted September 16 outcome evidence and usable footage are ready, replace
-the controlled-test segment with that reviewed update and its actual receipt.
-Otherwise keep the current evidence limit and the existing demonstration.
-An agenda does not prove what happened at the meeting. Source checks were last
-recorded paused, so avoid claims of continuous automatic monitoring.
-Any source-version replay must use actual versions and an on-screen replay label.
+Keep all four sponsor roles and the public URL. Reserve the final 30 seconds
+for that close. The broader-coverage glimpse can be shortened if necessary.
+Avoid claims that every line is cited, that monitoring covers the entire web,
+or that every new document triggers email. Followers receive reviewed material
+story updates.
 
-If existing footage shows a real Convex-driven page update, use it during the
-update segment. Do not create or publish a cosmetic story revision to stage one.
-Source inspection and email replies deserve more screen time than a settings
-tour or a list of components.
+Finish the complete cut before adding effects. Allow 15 minutes for one purple
+citation highlight and an optional pelican close. Fit any animation inside the
+final five seconds. Use a still logo if animation would delay completion.
 
-## Copy-ready posts
+## Original post drafts, superseded by published launch posts
 
 The owner supplied the statement about last year's win. The drafts do not name
 the previous event, placement or project because those details were not supplied.
@@ -182,8 +196,8 @@ Try it: https://www.publicparish.com
 
 Code: https://github.com/LaykenV/public-parish
 
-Publication note: Attach the same demo. Adjust the controlled-demonstration
-sentence to match the final footage. A separate LinkedIn thread is unnecessary.
+Final publication choice: LinkedIn did not accept the attachment. The owner
+posted the written introduction and put the YouTube demo in a comment.
 
 ### Facebook group drafts
 
@@ -281,7 +295,7 @@ If a vertical version takes more than 15 minutes, defer it. A later 30- to
 No second script or filming session is required tomorrow. Use "link in bio"
 only if the account actually has that working link.
 
-## Tomorrow's run of show
+## Original September 17 run of show, completed
 
 Move these blocks around the existing 90-minute Varholdt sales block. The times
 are task budgets, not claims about when a platform will distribute posts.
@@ -308,7 +322,7 @@ without being signed in. Upload the same file natively where convenient. Keep
 the hosted URL for the Facebook comment and submission. Verify captions,
 thumbnail, actual story previews and final links in each composer.
 
-## Evidence and submission handoff
+## Submission reference
 
 Record actual post URLs and completion in [work](work.md), and follow the
 [submission checklist](submission.md). Do not create a second status queue here.

@@ -9,14 +9,16 @@ Vermilion Parish and the Boyce data center secondary. All three retain explicit
 LIMITED evidence status. Story functionality and targeted source work have passed
 their gate. Louisiana-first Home, place-qualified body labels, statewide LPSC
 coverage and ten November 3 amendment explanations are deployed. The owner
-completed the design and QA pass on September 16, 2026 and considers the app
-ready for launch. The remaining launch work is the September 16 LPSC outcome
-follow-up and launch posts.
+completed design and QA on September 16, 2026 and confirmed public launch on
+September 18. The final demo, personal Facebook, X, LinkedIn and first five
+Facebook group posts are complete. The hackathon entry is ready for submission
+handoff; actual submission has not been confirmed.
 See [current status and pending work](docs/work.md) for verified coverage,
-operating limits and the remaining launch gates.
+operating limits and resident follow-up.
 
 - [Public app](https://www.publicparish.com)
 - [Qualifying hackathon host](https://befitting-flamingo-587.convex.site)
+- [Submission demo, 2:48](https://www.youtube.com/watch?v=zuOhc5rGgsQ)
 - [Development host](https://woozy-wren-227.convex.site)
 
 ## Documentation
@@ -24,13 +26,13 @@ operating limits and the remaining launch gates.
 | Read this | For this question |
 | --- | --- |
 | [Business and product plan](PLAN.md) | Who is this for, what are we building, and why? |
-| [Current work](docs/work.md) | What is done, what is next, and what blocks launch? |
-| [Launch upgrade](docs/launch-upgrade.md) | What are the upgrade contracts and the remaining LPSC follow-up? |
+| [Current work](docs/work.md) | What launched, what is next, and what evidence supports it? |
+| [Launch upgrade](docs/launch-upgrade.md) | What scope shipped and which evidence contracts remain in force? |
 | [Architecture](docs/architecture.md) | How do the evidence pipeline and stories work? |
 | [Design](docs/design.md) | How should Home and each resident journey work? |
 | [Sources](docs/sources.md) | What can we publish and which bodies do we cover? |
 | [Operations](docs/operations.md) | How do we spend, process, recover and release safely? |
-| [Marketing](docs/marketing.md) | How will we launch, distribute and measure usefulness? |
+| [Marketing](docs/marketing.md) | How do we follow up, distribute and measure usefulness? |
 | [Submission](docs/submission.md) | What must the hackathon entry and demo prove? |
 | [Build log](hackathon.md) | What actually happened during the build? |
 | [Archive](docs/archive/README.md) | Where are the completed plans and dated release receipts? |

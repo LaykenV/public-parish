@@ -12,11 +12,19 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-16T21:43:50Z
+- **Last updated:** 2026-09-18T16:02:41Z
 
-The owner completed design and QA on September 16, 2026 and considers the app
-ready for launch. The LPSC outcome follow-up and launch posts remain.
-Demo video: not recorded yet. The final submission link remains pending.
+Public Parish launched September 18, 2026, confirmed by the owner after the
+completed design and founder QA pass. The final demo and launch posts are done.
+Demo video: [YouTube, 2:48](https://www.youtube.com/watch?v=zuOhc5rGgsQ), with
+[local master](docs/demo/public-parish-launch-demo.mp4) and
+[captions](docs/demo/public-parish-launch-demo.srt).
+Social posts: [X](https://x.com/LLVarholdt/status/2100947546864578717),
+[LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7506714084554383360/),
+[Facebook](https://www.facebook.com/layken.varholdt.3/posts/pfbid02BVoz9bg6yM9po47N9rVoTMpoM7R8zctMQVD1M9z6o3p6Y693EHXwRQZVR9d6CLM6l).
+The owner also confirmed the first five Facebook group posts. Actual submission
+and organic resident outcomes are not yet recorded. [Work](docs/work.md) owns
+launch receipts and follow-up.
 
 ## Log
 
@@ -2571,3 +2579,28 @@ Added inline sizing, alignment and fills, a transparent pelican PNG and a smalle
 masthead. All 90 browser preview variants passed with button contrast at least
 8.34:1, including missing fills. Both typechecks, 15 focused tests and focused
 lint passed. Release and real inbox confirmation remain pending.
+
+### 2026-09-17 - working tree, demo script from the recorded retake
+
+Rewrote the [launch guide](launch-plan.html) around the owner's actual narration
+and synchronized the written plan. The 2:40 target keeps the source passage,
+story Ask, existing founder-test email exchange and all four sponsor roles.
+Shortened the page tour and repeated explanations.
+
+
+### 2026-09-17 - working tree, finished submission video
+
+Joined the two recordings into a 2:48.2 demo with captions and the pelican close.
+Trimmed pauses and the closing thank-you. Inspected the official source insert,
+founder-test email label and address mask, sponsor credits and audio.
+Added the 1080p MP4 and captions under `docs/demo` and linked the launch guide.
+Public posting and hackathon submission remain pending.
+
+### 2026-09-18 - working tree, public launch and submission handoff
+
+Launched Public Parish. The owner accepted the public 2:48 demo and confirmed
+personal Facebook, X, LinkedIn and the first five Facebook group posts.
+Retained the supplied social links above and reconciled active docs with launch
+completion. Verified successful production workflow `35258378663` for `c873166d`,
+including workflow smoke and the email fixes through PR #263. No new deployment,
+independent smoke, government outcome or submission is claimed by this update.

@@ -1,6 +1,6 @@
 # Business and product plan
 
-Owner decisions updated September 16, 2026. Current delivery status and all
+Owner decisions updated September 18, 2026. Current delivery status and all
 unfinished work live in [the work plan](docs/work.md). Technical contracts live
 in [architecture](docs/architecture.md). The pre-launch upgrade slices live in
 [the launch upgrade plan](docs/launch-upgrade.md).
@@ -86,16 +86,17 @@ The featured story set stays at three. The upgrade does not add a fourth story.
 
 ## Delivery stage
 
-The three-story functional gate and launch implementation are complete. The
-owner completed the global design and founder QA pass on September 16 and
-considers the app ready for public launch. The remaining launch work is the
-September 16 LPSC official-outcome follow-up and launch posts. Preserve an
-explicit evidence limit if the official outcome is not yet documented.
+Public Parish launched on September 18, confirmed by the owner. The three-story
+functional gate, implementation, design and founder QA are complete. The owner
+accepted the final 2:48 submission video and published the personal Facebook,
+X, LinkedIn and first five Facebook group posts.
 
-A private resident pilot is follow-up work rather than a prerequisite for
-launch. Collect actual feedback during outreach and make bounded fixes. Record
-the final demo and submit the hackathon entry as separate artifact work.
-[Work](docs/work.md) owns the current queue and release receipts.
+The current work is resident feedback, a small second distribution batch,
+routine source maintenance and submission handoff. Preserve evidence limits
+when an official outcome is undocumented. Launch completion does not establish
+a new government outcome or an organic resident result. The actual hackathon
+submission still needs its confirmation. [Work](docs/work.md) owns the queue
+and receipts. No new recording or private pilot is required before submission.
 
 Functional verification remains required for later changes. Draft outreach and
 this documentation update do not authorize sending, posting or publication of
@@ -213,9 +214,15 @@ and poll data and a proposed money aggregate. The stance is to show what the
 documents establish and what remains unresolved, not to confirm or puncture an
 announcement. [The launch upgrade plan](docs/launch-upgrade.md) owns the slices.
 
-On September 16 the owner confirmed that the design and QA pass is complete
-and everything looks good. The owner considers Public Parish ready for launch,
-with the LPSC outcome follow-up and launch posts remaining. This decision
-supersedes the earlier private-pilot prerequisite. Demo recording and hackathon
-submission remain separate deliverables; no organic usage or submission is
-claimed by the sign-off.
+On September 16 the owner confirmed that design and QA were complete and
+considered Public Parish ready for launch. At that checkpoint, the queue still
+included the LPSC outcome follow-up and launch posts. This decision superseded
+the earlier private-pilot prerequisite. Demo recording and hackathon submission
+were separate deliverables. That sign-off established neither organic usage
+nor submission. The September 18 decision below supersedes this launch status.
+
+On September 18 the owner confirmed public launch, accepted the finished demo
+for submission and reported all planned launch posts published, including the
+first five Facebook groups. This supersedes the September 16 launch queue.
+Follow-up distribution and source maintenance continue after launch. The final
+hackathon submission remains a separate action until its confirmation exists.

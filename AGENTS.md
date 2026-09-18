@@ -9,12 +9,14 @@ artifacts. `docs/work.md` is the only active status and pending-work queue.
 
 ## Current launch stage
 
-The owner completed the global design and founder QA pass on September 16, 2026
-and considers the product ready for launch. The remaining launch work is the
-September 16 LPSC outcome follow-up and launch posts. A private pilot is follow-up
-work, not a launch prerequisite. Final demo and hackathon submission remain
-separate artifact tasks. Use `docs/work.md` for receipts and current status.
-Do not restart completed design, QA, PR or coverage work from a dated report.
+Public Parish launched on September 18, 2026, confirmed by the owner. Design,
+founder QA, the final 2:48 submission video, personal Facebook, X, LinkedIn and
+the first five Facebook group posts are complete. Use `docs/work.md` for the
+video link, launch receipt and current queue. Actual hackathon submission is
+still a separate action with no confirmation recorded. Focus on resident
+responses, bounded distribution, source maintenance and keeping the app usable
+through judging. Do not restart completed launch work from a dated report or
+infer a government outcome from the owner's launch sign-off.
 
 ## Product Contract
 
