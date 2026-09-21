@@ -126,26 +126,30 @@ New reproducible defects get their own entry here.
 
 ## Released application
 
-Latest verified production workflow is for `c873166d217f8d65f9ac736cec8a94d7d7e6bfe2`,
-[run 35258378663](https://github.com/LaykenV/public-parish/actions/runs/35258378663).
-The September 18 documentation check verified successful release validation,
-backend and frontend deployment, source configuration, Home index repair and
-workflow production smoke. It did not run a new independent production smoke.
+The September 21 application release is `1bf4d2ed73a8d948b3eb2757f3b811892d568760`,
+which includes the reviewed monitoring, Beaver Lake and receipt changes from
+PRs #264, #265 and #266. [Production workflow 35610443021](https://github.com/LaykenV/public-parish/actions/runs/35610443021)
+passed release verification, backend and frontend deployment, source
+configuration, Home indexing and workflow smoke. The production workflow is
+active again after the temporary reconciliation pause.
 
-The latest app fix is `d563bcb5`, [PR #263](https://github.com/LaykenV/public-parish/pull/263),
-which makes email reply citations readable. Its [deployment](https://github.com/LaykenV/public-parish/actions/runs/35243471354)
-passed. PR #262 email compatibility corrections also have a successful
-[deployment](https://github.com/LaykenV/public-parish/actions/runs/35236695643).
-The earlier product-release receipts below remain historical proof, not the
-latest deployment. Future authorized releases still need independent smoke.
+The [release receipt](https://github.com/LaykenV/public-parish/pull/266#issuecomment-5761979522)
+records successful independent `npm run smoke:production`, unchanged Beaver
+Lake publication with 23 citations and all 16 source downloads available, and
+desktop and mobile visual checks. The three featured stories and ten ballot
+explanations remain. Local verification passed 793 tests, both typechecks,
+build and lint with 15 existing warnings. Jev remains parked.
 
-Independent `npm run smoke:production` also passed on September 17 after the
-PR #263 workflow completed. The prior email release verified the transparent
-pelican PNG on both app origins. These are earlier receipts, not new checks
-for the September 18 workflow.
+These are receipts for the named application release. Later documentation-only
+pushes run the same production workflow and require verification of their
+exact commit and independent smoke. Do not treat this dated receipt as proof of a later run.
+The earlier product-release receipts below preserve their original context.
 
 | Released change | Merged PR | Successful production workflow |
 | --- | --- | --- |
+| Monitoring and Beaver Lake reconciliation | [#264](https://github.com/LaykenV/public-parish/pull/264), [#265](https://github.com/LaykenV/public-parish/pull/265), [#266](https://github.com/LaykenV/public-parish/pull/266) | [35610443021](https://github.com/LaykenV/public-parish/actions/runs/35610443021) |
+| Readable email reply citations | [#263](https://github.com/LaykenV/public-parish/pull/263) | [35243471354](https://github.com/LaykenV/public-parish/actions/runs/35243471354) |
+| Email layout and button compatibility | [#262](https://github.com/LaykenV/public-parish/pull/262) | [35236695643](https://github.com/LaykenV/public-parish/actions/runs/35236695643) |
 | Statewide commission coverage | [#226](https://github.com/LaykenV/public-parish/pull/226) | [34839377430](https://github.com/LaykenV/public-parish/actions/runs/34839377430) |
 | Ten November 3 amendments | [#227](https://github.com/LaykenV/public-parish/pull/227) | [34840513905](https://github.com/LaykenV/public-parish/actions/runs/34840513905) |
 | Faster Ask evidence selection | [#248](https://github.com/LaykenV/public-parish/pull/248) | [34980640214](https://github.com/LaykenV/public-parish/actions/runs/34980640214) |
@@ -365,10 +369,10 @@ Local verification passed all 793 tests, both typechecks, build and lint with
 15 existing warnings.
 The Jev Ask experiment remains parked and is excluded from this release.
 
-Both code PRs passed CI and both independent reviews before merge. Automatic
-production deployment was paused during reconciliation to avoid releasing an
-intermediate revision. After this documentation PR passes review and merges,
-restore the workflow and release the complete main commit. The
-[release comments](https://github.com/LaykenV/public-parish/pull/266)
-will record the final commit, exact workflow and independent production smoke. No new source publication, model spending
-allowance, or email delivery is part of this code reconciliation.
+All three PRs passed CI and both independent reviews on their final heads, then
+merged. Automatic production deployment was paused during reconciliation to
+avoid releasing an intermediate revision. The workflow was restored and the
+complete main commit `1bf4d2ed` was released. The [release receipt](https://github.com/LaykenV/public-parish/pull/266#issuecomment-5761979522)
+records workflow `35610443021` and successful independent production smoke.
+No new source publication, model spending allowance or email delivery was part
+of this code reconciliation.

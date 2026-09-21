@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-21T14:06:15Z
+- **Last updated:** 2026-09-21T14:37:45Z
 
 Public Parish launched September 18, 2026, confirmed by the owner after the
 completed design and founder QA pass. The final demo and launch posts are done.
@@ -2698,4 +2698,14 @@ both typechecks, build and lint with 15 existing warnings.
 [Monitoring PR #264](https://github.com/LaykenV/public-parish/pull/264) and
 [Beaver Lake PR #265](https://github.com/LaykenV/public-parish/pull/265) carry the
 code. Both passed CI and both reviews, then merged. Production deployment
-was paused during reconciliation; the final coordinated release is pending.
+was paused during reconciliation and restored for the complete release.
+
+### 2026-09-21 - 1bf4d2ed, coordinated production release
+
+Released PRs #264, #265 and #266 after CI and both reviews passed on their final
+heads. [Workflow 35610443021](https://github.com/LaykenV/public-parish/actions/runs/35610443021)
+passed, followed by independent production smoke recorded in the
+[release receipt](https://github.com/LaykenV/public-parish/pull/266#issuecomment-5761979522).
+Beaver Lake retained 23 citations and all 16 source downloads. Desktop and
+mobile checks passed. Jev remains parked. No new story publication or email
+was part of the release. Corrected the active documentation to record completion.

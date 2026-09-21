@@ -105,11 +105,14 @@ in [the archive](archive/README.md).
 
 ## Current release proof and submission handoff
 
-The three LIMITED stories and ten LIMITED statewide amendments are published.
-Statewide commission coverage is deployed. The September 18 check verified
-successful production workflow [35258378663](https://github.com/LaykenV/public-parish/actions/runs/35258378663)
-for `c873166d`, including release verification and workflow smoke. It includes
-email improvements through PR #263. See [Work](work.md#released-application).
+The three LIMITED featured stories and ten LIMITED statewide amendments are
+published. Statewide commission coverage and the separate Rapides Beaver Lake
+story are deployed. The September 21 application release `1bf4d2ed` includes
+reviewed monitoring and Beaver Lake changes through PR #266. Its [production
+workflow](https://github.com/LaykenV/public-parish/actions/runs/35610443021)
+passed, and the [release receipt](https://github.com/LaykenV/public-parish/pull/266#issuecomment-5761979522)
+records successful independent production smoke. See
+[Work](work.md#released-application).
 The September 12 [controlled production email receipt](launch-release-2026-09-12.md#production-email-and-phone-proof)
 records update delivery, a grounded reply and per-follow unsubscribe.
 
