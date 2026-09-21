@@ -1,5 +1,5 @@
 import { renderEmail } from './emailTemplates'
-import { storyPath } from '../stories/registry'
+import { storyPath, publicStoryGeography } from '../stories/registry'
 import { recordConfirmedEvent } from '../analytics/civic'
 import { AgentMail } from '@agentmail/convex'
 import type { AgentMailOptions, OutboundId, OutboundStatus } from '@agentmail/convex'
@@ -712,7 +712,7 @@ async function projectWeeklyEmail(
   for (const entry of entries) {
     if (entry.storyUpdateId) {
       const current = await currentStoryUpdate(ctx, entry.storyUpdateId)
-      if (current) items.push({ place: current.version.geography.join(' · '), title: current.version.payload.title.text, change: 'Approved story update', source: acceptedStorySpans(current.version)[0]?.officialUrl ?? '', href: appUrl(storyPath(current.story.slug)) })
+      if (current) items.push({ place: publicStoryGeography(current.story.storyKey, current.version.geography).join(' · '), title: current.version.payload.title.text, change: 'Approved story update', source: acceptedStorySpans(current.version)[0]?.officialUrl ?? '', href: appUrl(storyPath(current.story.slug)) })
       continue
     }
     const change = entry.materialChangeId ? await ctx.db.get(entry.materialChangeId) : null

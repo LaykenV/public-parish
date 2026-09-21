@@ -1,4 +1,4 @@
-import { LAUNCH_STORIES, STORY_REGISTRY } from './registry'
+import { LAUNCH_STORIES, STORY_REGISTRY, publicStoryGeography } from './registry'
 import { v } from 'convex/values'
 import { query } from '../_generated/server'
 import type { QueryCtx, MutationCtx } from '../_generated/server'
@@ -36,7 +36,7 @@ export async function resolvePublicStory(ctx: QueryCtx | MutationCtx, story: Doc
   const media = url && version.media ? { url, caption: version.media.caption, alt: version.media.alt, credit: version.media.credit, originalUrl: version.media.originalUrl,
     license: version.media.license, kind: version.media.kind, width: version.media.width, height: version.media.height } : null
   return { id: story._id, slug: story.slug, rank: story.rank, revision: version._id, mode: version.mode, payload: version.payload, evidence,
-    geography: version.geography, reviewedThrough: version.reviewedThrough, nextReviewAt: version.nextReviewAt, media, relatedRecords }
+    geography: publicStoryGeography(story.storyKey, version.geography), reviewedThrough: version.reviewedThrough, nextReviewAt: version.nextReviewAt, media, relatedRecords }
 }
 
 export const get = query({

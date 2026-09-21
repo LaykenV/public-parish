@@ -17,6 +17,8 @@ import { claimDeliveryChanges, validUpdateReference } from './follows/updateEven
 import { currentStoryUpdate, hasIndependentStoryChange, storyEvidenceChangeKey } from './stories/updates'
 import { storyAskCatalog } from './stories/askEvidence'
 import { hashAddress } from './follows/secrets'
+import { resolveFollowTarget } from './follows/targets'
+import { indexStory } from './stories/search'
 
 const modules = import.meta.glob('./**/*.ts')
 afterEach(() => vi.unstubAllEnvs())
@@ -232,6 +234,40 @@ test('owner approval freezes a version; replay creates no version or baseline ma
     expect((await ctx.db.get(storyId))?.currentVersionId).toBe(version)
     expect(await ctx.db.query('notificationDeliveries').collect()).toHaveLength(0)
     expect((await ctx.db.query('governmentBodies').first())?.publicStatus).toBe('candidate')
+  })
+})
+
+test('legacy SpaceX geography stays in history but public reading, follows, search and Ask use the supported parish', async () => {
+  const { t, owner, args, storyId } = await setup()
+  const versionId = await owner.mutation(api.stories.operations.approve, args)
+  const original = await t.query(api.stories.resident.get, { slug: 'applied-digital-boyce' })
+  const versionBefore = await t.run(ctx => ctx.db.get(versionId))
+  expect(original.story?.geography).toEqual(versionBefore?.geography)
+
+  // Model the existing immutable SpaceX metadata, without a provider call.
+  await t.run(async ctx => {
+    await ctx.db.patch(storyId, { storyKey: 'spacex-pecan-island', slug: 'spacex-pecan-island', rank: 1 })
+    await ctx.db.patch(versionId, { geography: ['Pecan Island, Vermilion Parish'] })
+    await indexStory(ctx, storyId)
+  })
+  const story = (await t.query(api.stories.resident.get, { slug: 'spacex-pecan-island' })).story!
+  expect(story.geography).toEqual(['Vermilion Parish'])
+  expect(story.revision).toBe(versionId)
+  expect(story.payload).toEqual(original.story?.payload)
+  expect(story.evidence).toEqual(original.story?.evidence)
+  expect((await t.query(api.stories.resident.featured, {}))[0].geography).toEqual(['Vermilion Parish'])
+  await t.run(async ctx => {
+    const target = await resolveFollowTarget(ctx, 'story', 'spacex-pecan-island')
+    expect(target.detail).toBe('Vermilion Parish')
+    const catalog = await storyAskCatalog(ctx, { kind: 'story', storySlug: 'spacex-pecan-island' })
+    expect(catalog.records[0].affectedPlaces).toEqual(['Vermilion Parish'])
+    const indexed = await ctx.db.query('publishedSearchEntries').withIndex('by_key', q => q.eq('key', 'story:spacex-pecan-island')).unique()
+    expect(indexed?.searchText).not.toContain('Pecan Island')
+    expect(indexed?.href).toBe('/stories/spacex-pecan-island')
+    expect((await ctx.db.get(versionId))?.geography).toEqual(['Pecan Island, Vermilion Parish'])
+    expect(await ctx.db.query('storyVersions').collect()).toHaveLength(1)
+    expect(await ctx.db.query('storyUpdateEvents').collect()).toHaveLength(0)
+    expect(await ctx.db.query('notificationDeliveries').collect()).toHaveLength(0)
   })
 })
 
