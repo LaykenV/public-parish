@@ -2,7 +2,7 @@ import type { QueryCtx } from '../_generated/server'
 import type { AskEvidence, AskRecordContext, AskScope } from '../ask/contracts'
 import type { Id } from '../_generated/dataModel'
 import { acceptedStorySpans, currentVersionEvidence } from './evidence'
-import { STORY_REGISTRY, storyPath } from './registry'
+import { STORY_REGISTRY, storyPath, publicStoryGeography } from './registry'
 import { normalizeForMatch } from '../extraction/textMatch'
 import { publicBodyLabel } from '../coverage/labels'
 
@@ -76,7 +76,7 @@ export async function storyAskCatalog(ctx: Pick<QueryCtx, 'db'>, scope: AskScope
     if (evidenceIds.length) records.push({ targetKind: 'story', recordKey: story.slug, sourceRecordId: story.storyKey,
       placeName: parish, placeSlug, bodyName: 'Official sources linked in this story', mode: version.mode,
       title: version.payload.title.text, recordType: 'reviewed_story', lifecycleState: null, summary: null,
-      meetingAt: null, meetingKey: null, affectedPlaces: version.geography, amounts: [], publicActions: [], issue: null,
+      meetingAt: null, meetingKey: null, affectedPlaces: publicStoryGeography(story.storyKey, version.geography), amounts: [], publicActions: [], issue: null,
       versions: [], changes: [], evidenceIds })
   }
   return { records, sources }

@@ -373,6 +373,12 @@ share queries resolve the current accepted version and recheck source retention
 and revisions. Ask includes only spans used by approved statements. The corpus
 deduplicates shared exact spans against atomic records and other stories.
 
+`publicStoryGeography` restricts SpaceX labels and Ask context to Vermilion
+Parish, matching the approved scope in PLAN.md. The frozen manifest contains
+the unsupported Pecan Island research location. This public projection
+preserves the immutable version and old URL. Follow details and weekly email
+use the same rule. [Work](work.md) records release status.
+
 `storyUpdateEvents` identifies substantive approved revisions. Existing fanout,
 delivery, roundup and reply records carry a typed story reference. A change-claim
 ledger deduplicates overlapping local and story follows by owner and cadence.

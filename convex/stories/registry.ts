@@ -35,3 +35,12 @@ export function storyPath(slug: string) {
 export function requiresStoryImage(slug: string) {
   return registeredStory(slug)?.kind === 'story' && slug !== 'beaver-lake-rapides'
 }
+
+export function publicStoryGeography(storyKey: string, geography: string[]) {
+  // The legacy SpaceX manifest names Pecan Island, but accepted evidence only
+  // establishes Vermilion Parish. Preserve the immutable version and URL while
+  // limiting public labels and Ask context to the approved scope in PLAN.md.
+  return storyKey === 'spacex-pecan-island'
+    ? [LAUNCH_STORIES[storyKey].parish]
+    : geography
+}

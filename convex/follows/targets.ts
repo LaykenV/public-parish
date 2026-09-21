@@ -10,6 +10,7 @@ import { TOPIC_SLUGS } from './contracts'
 import type { TopicSlug } from './contracts'
 import type { FollowTargetKind } from './enrollmentContracts'
 import { currentVersionEvidence } from '../stories/evidence'
+import { publicStoryGeography } from '../stories/registry'
 import { publicBodyLabel } from '../coverage/labels'
 
 type TargetCtx = Pick<QueryCtx | MutationCtx, 'db'>
@@ -73,8 +74,8 @@ export async function resolveFollowTarget(
   if (targetKind === 'story') {
     const story = await ctx.db.query('stories').withIndex('by_slug', q => q.eq('slug', targetKey)).unique()
     const version = story?.state === 'active' && story.currentVersionId ? await ctx.db.get(story.currentVersionId) : null
-    if (!version || version.mode === 'withheld' || !await currentVersionEvidence(ctx, version)) throw invalidTarget()
-    return { targetKind, targetKey, title: version.payload.title.text, detail: version.geography.join(' · ') }
+    if (!story || !version || version.mode === 'withheld' || !await currentVersionEvidence(ctx, version)) throw invalidTarget()
+    return { targetKind, targetKey, title: version.payload.title.text, detail: publicStoryGeography(story.storyKey, version.geography).join(' · ') }
   }
 
   if (targetKind === 'topic') {
