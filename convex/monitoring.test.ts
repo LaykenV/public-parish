@@ -65,7 +65,7 @@ async function monitoringFixture() {
     const userId = await ctx.db.insert('users', { email: 'owner@example.test', googleAccountId: 'owner', emailVerified: true, createdAt: 1, updatedAt: 1, lastSignedInAt: 1 })
     const compilerRunId = await ctx.db.insert('coverageCompilerRuns', { bodyKey: 'lafayette-city-council', jurisdictionSlug: 'lafayette-parish', rootManifestVersion: 'v1', compilerVersion: 'test', idempotencyKey: 'monitor-test', attempt: 1, state: 'succeeded', requestedByUserId: userId, startedAt: 1 })
     const proposalId = await ctx.db.insert('coverageRegistryProposals', { runId: compilerRunId, governmentBodyId: bodyId, registryId, bodyKey: 'lafayette-city-council', proposalVersion: 1, status: 'promoted', rootManifestVersion: 'v1', goldSetVersion: 'test', evaluatorVersion: 'test', proposedDomains: ['www.lafayettela.gov'], proposedSeedUrls: ['https://www.lafayettela.gov/agenda.pdf'], proposedSourceKinds: ['agenda'], diffHash: 'test', diffSummary: [], createdAt: 1 })
-    const policyId = await ctx.db.insert('sourceMonitoringPolicies', { registryId, proposalId, enabled: true, generation: 1, intervalHours: 24, documentsPerRun: 1, targetsPerRun: 1, dailyCallLimit: 10, startsAt: Date.now() - 86_400_000, activatedAt: Date.now(), baselineComplete: false, nextCheckAt: 0, failures: 0, createdAt: 1, updatedAt: 1 })
+    const policyId = await ctx.db.insert('sourceMonitoringPolicies', { registryId, proposalId, enabled: true, generation: 1, intervalHours: 24, documentsPerRun: 1, targetsPerRun: 1, dailyCallLimit: 10, startsAt: Date.parse('2026-09-01'), activatedAt: Date.now(), baselineComplete: false, nextCheckAt: 0, failures: 0, createdAt: 1, updatedAt: 1 })
     const runId = await ctx.db.insert('sourceMonitoringRuns', { policyId, registryId, generation: 1, registryGeneration: 1, state: 'running', baseline: true, documentsChecked: 0, targetsStarted: 0, startedAt: Date.now() })
     await ctx.db.patch(policyId, { activeRunId: runId })
     return { registryId, policyId, runId, bodyId, proposalId, userId }
@@ -100,6 +100,24 @@ test('old-meeting exclusion requires a matching printed date in the header', () 
   expect(inventoryContract({ ...old, meetingDate: '2026-08-04' }, text, 'Test Council', [], ['agenda'], startsAt)).toMatch(/printed date matching/)
   expect(inventoryContract(old, 'Current meeting header. '.repeat(100) + text, 'Test Council', [], ['agenda'], startsAt)).toMatch(/first 2000/)
   for (const dateExcerpt of ['2026-09-04', '09/04/2026', 'September 4, 2026']) expect(inventoryContract({ ...old, dateExcerpt }, `Test Council. ${dateExcerpt}`, 'Test Council', [], ['agenda'], startsAt)).toBeNull()
+})
+
+test('official Lafayette event dates exclude old pages before retrieval and classify existing documents', async () => {
+  const f = await monitoringFixture()
+  const target = await queuedTarget(f, 'old-calendar')
+  const url = 'https://events.lafayettela.gov/default/Detail/2026-08-10-1700-Parish-Planning-Commission/6cf05680-6c9f-4ff9-a046-b49d01369f25'
+  expect(officialMeetingDate(url)).toBe('2026-08-10')
+  expect(isBeforeSourceWindow(url, Date.parse('2026-09-11'))).toBe(true)
+  expect(isBeforeSourceWindow(url, Date.parse('2026-08-10T18:00:00Z'))).toBe(false)
+  for (const invalid of [url.replace('2026-08-10', '2026-02-30'), url.replace('events.lafayettela.gov', 'example.test'), url.replace('https:', 'http:'), url.replace('/default/Detail/', '/unrelated/')]) expect(officialMeetingDate(invalid)).toBeUndefined()
+  vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')
+  await f.t.run(async ctx => {
+    await ctx.db.patch(f.policyId, { startsAt: Date.parse('2026-09-11') })
+    await ctx.db.patch(target.documentId, { canonicalUrl: url })
+  })
+  expect(await f.t.withIdentity({ subject: f.userId }).mutation(api.monitoring.ledger.classifyOfficialMeetingDates, { policyId: f.policyId, paginationOpts: { numItems: 50, cursor: null } })).toMatchObject({ classified: 1, isDone: true })
+  expect((await f.t.run(ctx => ctx.db.get(target.documentId)))?.sourceMeetingDate).toBe('2026-08-10')
+  expect(await f.t.query(internal.monitoring.ledger.dueDocuments, { runId: f.runId })).toEqual([])
 })
 
 test('a failed document backs off so the next approved document can run', async () => {
@@ -296,6 +314,46 @@ async function queuedTarget(fixture: Awaited<ReturnType<typeof monitoringFixture
     return { targetId, documentId, pipelineRunId }
   })
 }
+
+test('a recent source window skips the old queue without hiding a current target behind it', async () => {
+  const f = await monitoringFixture()
+  rateLimiterTest.register(f.t)
+  const old = await queuedTarget(f, 'historical')
+  await f.t.run(async ctx => {
+    await ctx.db.patch(f.policyId, { startsAt: Date.parse('2026-09-18T12:00:00Z') })
+    const original = (await ctx.db.get(old.targetId))!
+    const { _id, _creationTime, ...fields } = original
+    for (let i = 0; i < 101; i++) await ctx.db.insert('documentInventoryTargets', { ...fields, targetKey: `historical-${i}` })
+  })
+  const current = await queuedTarget(f, 'current')
+  await f.t.run(ctx => ctx.db.patch(current.targetId, { meetingDate: '2026-09-18' }))
+  expect(await f.t.mutation(internal.monitoring.ledger.dispatchTargets, { runId: f.runId })).toEqual({ started: 1, processing: true })
+  expect((await f.t.run(ctx => ctx.db.get(current.targetId)))?.state).toBe('running')
+  expect(await f.t.run(ctx => ctx.db.get(old.targetId))).toMatchObject({ state: 'pending', meetingDate: '2026-09-04' })
+  expect((await f.t.run(ctx => ctx.db.get(old.pipelineRunId)))?.state).toBe('queued')
+})
+
+test('excluded historical targets preserve the daily cadence and can resume after an explicit window expansion', async () => {
+  const f = await monitoringFixture()
+  rateLimiterTest.register(f.t)
+  const old = await queuedTarget(f, 'deferred-history')
+  await f.t.run(async ctx => {
+    await ctx.db.patch(f.policyId, { startsAt: Date.parse('2026-09-18') })
+    await ctx.db.patch(old.documentId, { sourceMeetingDate: '2026-09-04' })
+  })
+  expect(await f.t.mutation(internal.monitoring.ledger.dispatchTargets, { runId: f.runId })).toEqual({ started: 0, processing: false })
+  const before = Date.now()
+  await f.t.mutation(internal.monitoring.ledger.finish, { runId: f.runId, state: 'completed', documentsChecked: 0, targetsStarted: 0 })
+  const policy = await f.t.run(ctx => ctx.db.get(f.policyId))
+  expect(policy).toMatchObject({ baselineComplete: true, failures: 0 })
+  expect(policy!.nextCheckAt).toBeGreaterThanOrEqual(before + DAY)
+  expect((await f.t.run(ctx => ctx.db.get(old.targetId)))?.state).toBe('pending')
+  await f.t.run(async ctx => {
+    await ctx.db.patch(f.policyId, { startsAt: Date.parse('2026-09-01'), activeRunId: f.runId })
+    await ctx.db.patch(f.runId, { state: 'running' })
+  })
+  expect(await f.t.mutation(internal.monitoring.ledger.dispatchTargets, { runId: f.runId })).toEqual({ started: 1, processing: true })
+})
 
 test('Pineville listing reclassification preserves history and excludes wrappers from evidence work', async () => {
   const f = await monitoringFixture()

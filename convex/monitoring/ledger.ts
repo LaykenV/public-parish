@@ -368,7 +368,8 @@ export const dispatchTargets = internalMutation({
     const { policy } = await assertMonitoringRun(ctx, args.runId)
     const running = await ctx.db.query('documentInventoryTargets').withIndex('by_policy_id_and_state', q => q.eq('policyId', policy._id).eq('state', 'running')).first()
     if (running) return { started: 0, processing: true }
-    const targets = await ctx.db.query('documentInventoryTargets').withIndex('by_policy_state_and_retry', q => q.eq('policyId', policy._id).eq('state', 'pending').lte('retryAt', Date.now())).take(100)
+    const startsOn = new Date(policy.startsAt).toISOString().slice(0, 10)
+    const targets = await ctx.db.query('documentInventoryTargets').withIndex('by_policy_state_and_retry', q => q.eq('policyId', policy._id).eq('state', 'pending').lte('retryAt', Date.now())).filter(q => q.gte(q.field('meetingDate'), startsOn)).take(100)
     let started = 0
     for (const target of targets) {
       if (started === policy.targetsPerRun) break
@@ -415,7 +416,8 @@ export const finish = internalMutation({
     await ctx.db.patch(run._id, { state: args.state, documentsChecked: args.documentsChecked, targetsStarted: args.targetsStarted, errorClass: args.errorClass, completedAt: now })
     if (policy?.activeRunId === run._id && policy.generation === run.generation) {
       const remaining = (await eligibleMonitoringDocuments(ctx, policy, { limit: 1, dueAt: run.startedAt })).length > 0
-      const pending = await ctx.db.query('documentInventoryTargets').withIndex('by_policy_id_and_state', q => q.eq('policyId', policy._id).eq('state', 'pending')).first()
+      const startsOn = new Date(policy.startsAt).toISOString().slice(0, 10)
+      const pending = await ctx.db.query('documentInventoryTargets').withIndex('by_policy_id_and_state', q => q.eq('policyId', policy._id).eq('state', 'pending')).filter(q => q.gte(q.field('meetingDate'), startsOn)).first()
       const unfinished = (await eligibleMonitoringDocuments(ctx, policy, { limit: 1, incompleteOnly: true })).length > 0
       const listingPending = Boolean(policy.discoveryPendingUrls?.length)
       const running = await ctx.db.query('documentInventoryTargets').withIndex('by_policy_id_and_state', q => q.eq('policyId', policy._id).eq('state', 'running')).first()

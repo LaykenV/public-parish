@@ -4,10 +4,15 @@ import { isPinevilleListing } from './pineville'
 export function officialMeetingDate(raw: string): string | undefined {
   let url: URL
   try { url = new URL(raw) } catch { return undefined }
-  if (url.protocol !== 'https:' || url.hostname !== 'www.brla.gov' || url.port || url.username || url.password) return undefined
-  const match = /^\/AgendaCenter\/ViewFile\/(?:Agenda|Minutes|ArchivedAgenda|ArchivedMinutes)\/_(\d{2})(\d{2})(20\d{2})-\d+\/?$/i.exec(url.pathname)
-  if (!match) return undefined
-  const date = `${match[3]}-${match[1]}-${match[2]}`
+  if (url.protocol !== 'https:' || url.port || url.username || url.password) return undefined
+  let date: string | undefined
+  if (url.hostname === 'www.brla.gov') {
+    const match = /^\/AgendaCenter\/ViewFile\/(?:Agenda|Minutes|ArchivedAgenda|ArchivedMinutes)\/_(\d{2})(\d{2})(20\d{2})-\d+\/?$/i.exec(url.pathname)
+    if (match) date = `${match[3]}-${match[1]}-${match[2]}`
+  } else if (isLafayetteEventAttachment(raw)) {
+    date = /^\/default\/Detail\/(20\d{2}-\d{2}-\d{2})-\d{4}-/i.exec(url.pathname)?.[1]
+  }
+  if (!date) return undefined
   const parsed = Date.parse(date)
   return Number.isFinite(parsed) && new Date(parsed).toISOString().slice(0, 10) === date ? date : undefined
 }
