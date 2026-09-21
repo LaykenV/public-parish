@@ -2,837 +2,554 @@
 
 - **Project:** Public Parish
 - **Event:** Convex All Gas Hackathon
-- **What it does:** Establishes a source-cited service for discovering, understanding, questioning, and following consequential Louisiana local-government decisions.
+- **What it does:** Helps Louisiana residents understand government decisions, inspect official evidence, ask grounded questions and follow updates.
 - **Live app:** https://befitting-flamingo-587.convex.site
 - **Repo:** https://github.com/LaykenV/public-parish
 - **Frontend:** Convex static hosting
 - **Convex deployment:** https://befitting-flamingo-587.convex.cloud
-- **Components:** `@convex-dev/static-hosting`, `@firecrawl/firecrawl-convex`, `@convex-dev/workflow`, `@convex-dev/rate-limiter`, `@convex-dev/agent`, `@convex-dev/auth`, `@agentmail/convex`
+- **Components:** `@convex-dev/static-hosting`, `@convex-dev/workflow`, `@convex-dev/rate-limiter`, `@convex-dev/agent`, `@convex-dev/auth`
 - **Convex features:** queries, mutations, internal actions, HTTP actions, realtime queries, file storage, crons, scheduled functions, durable workflows, authentication
-- **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
-- **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
-- **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-21T14:37:45Z
+- **Auth:** Convex Auth
+- **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, issue linking and story drafting; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
+- **Started:** 2026-08-27T17:09:16Z
+- **Last updated:** 2026-09-21T17:13:14Z
 
-Public Parish launched September 18, 2026, confirmed by the owner after the
-completed design and founder QA pass. The final demo and launch posts are done.
-Demo video: [YouTube, 2:48](https://www.youtube.com/watch?v=zuOhc5rGgsQ), with
-[local master](docs/demo/public-parish-launch-demo.mp4) and
-[captions](docs/demo/public-parish-launch-demo.srt).
-Social posts: [X](https://x.com/LLVarholdt/status/2100947546864578717),
-[LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7506714084554383360/),
-[Facebook](https://www.facebook.com/layken.varholdt.3/posts/pfbid02BVoz9bg6yM9po47N9rVoTMpoM7R8zctMQVD1M9z6o3p6Y693EHXwRQZVR9d6CLM6l).
-The owner also confirmed the first five Facebook group posts. Actual submission
-and organic resident outcomes are not yet recorded. [Work](docs/work.md) owns
-launch receipts and follow-up.
+## For judges
+
+Public Parish turns Louisiana government records into explanations residents
+can inspect, question and follow. Each published factual claim cites a retained
+source snapshot and a precise excerpt. Missing evidence leaves an explicit
+limitation or prevents publication. Reading and Ask require no account.
+
+- [Open the qualifying Convex app](https://befitting-flamingo-587.convex.site).
+  The same app is at [publicparish.com](https://www.publicparish.com).
+- [Watch the finished 2:48 demo](https://www.youtube.com/watch?v=zuOhc5rGgsQ).
+  The [master](docs/demo/public-parish-launch-demo.mp4) and
+  [captions](docs/demo/public-parish-launch-demo.srt) are in the repository.
+- Try the [Meta story](https://befitting-flamingo-587.convex.site/stories/meta-richland)
+  signed out. Open a citation and its saved document, then Ask,
+  "What must Entergy do with an early termination fee?" Inspect the answer's
+  citation. Following by email starts verification; Google sign-in is optional.
+- The [November 3 ballot guide](https://befitting-flamingo-587.convex.site/ballot)
+  explains ten statewide amendments using official wording and Acts.
+
+| Sponsor | Work in the app | Repository evidence |
+| --- | --- | --- |
+| Convex | Database, realtime queries, immutable publication records, file storage, scheduled monitoring, durable workflows, Agent threads, rate limits, Google auth and static hosting | [Components](convex/convex.config.ts), [schema](convex/schema.ts), [architecture](docs/architecture.md) |
+| Firecrawl | Official-source discovery, retrieval, rendering, PDF extraction and monitoring | [Retrieval](convex/operations/ingest.ts), [source contracts](docs/sources.md) |
+| OpenAI | Extraction and story drafting, separate model review, and source-grounded Ask through Convex AI Gateway | [Model roles and provider](docs/architecture.md#ai-roles-and-cost-admission), [AI code](convex/ai) |
+| AgentMail | Verification, sourced alerts and inbound email replies through the grounded Ask path | [Delivery](convex/follows/agentmailClient.ts), [replies](convex/emailReplies), [controlled production receipt](docs/launch-release-2026-09-12.md#production-email-and-phone-proof) |
+
+The Firecrawl and AgentMail Convex components are registered alongside the
+`@convex-dev/*` components listed in the required header. The frontend uses
+React and TanStack Start with static hosting. Components listed here run app
+work; package installation alone is not the evidence.
+
+The owner signed off design and QA September 16 and confirmed public launch
+September 18. The three featured stories cover Meta in Richland Parish, SpaceX
+in Vermilion Parish and the Boyce data center. Beaver Lake is a separate Rapides
+story. The published stories and ballot explanations retain LIMITED status.
+Parish coverage is bounded to the named bodies in [Sources](docs/sources.md);
+the live selector shows current availability.
+
+The [X launch](https://x.com/LLVarholdt/status/2100947546864578717),
+[LinkedIn launch](https://www.linkedin.com/feed/update/urn:li:activity:7506714084554383360/)
+and [personal Facebook launch](https://www.facebook.com/layken.varholdt.3/posts/pfbid02BVoz9bg6yM9po47N9rVoTMpoM7R8zctMQVD1M9z6o3p6Y693EHXwRQZVR9d6CLM6l)
+are published. The owner confirmed five Facebook group posts, Luma registration,
+personal eligibility and all four sponsor tags on X. Since the Friday launch,
+the owner reports 183 unique browsers, 197 visits, four returning browsers,
+two follows and five submitted questions in the app's analytics. Exclusion of
+founder activity is unconfirmed. Story source opens are not fully counted.
+These figures do not establish distinct residents or resident outcomes.
+
+The [September 21 audit](docs/submission-audit-2026-09-21.md) records passing
+verification, live-source checks and the remaining limits, including current
+source degradation and unverified third-party image rights. The actual
+vibeapps.dev submission is not yet recorded. [Submission copy](docs/submission-entry.md)
+and [the current checklist](docs/work.md) cover the handoff.
+
+## Reading this log
+
+The complete build history stays below, oldest to newest. Entries describe what
+was known at that session, including failed approaches and then-pending work.
+Later release receipts close those earlier states. Backfilled receipts say when
+they were added and identify their commits. They are not new deployments.
+The Started timestamp now matches the first retained commit, `96938c4`.
+
+The September 11 phone review, September 12 evidence fixes, September 13 through 15
+launch upgrade, September 16 QA, September 17 video and emails, September 18
+launch, and September 21 release reconciliation are all retained here.
+Jump to [September 11](#2026-09-11), [September 14](#2026-09-14),
+[September 17](#2026-09-17), [launch](#2026-09-18) or
+[the final audit](#2026-09-21).
+[docs/work.md](docs/work.md) holds current tasks and operating limits.
+[Dated reports and archived plans](docs/archive/README.md) retain detailed receipts.
 
 ## Log
 
-Current status and pending work are in [docs/work.md](docs/work.md). The entries
-below preserve their original release context and repository paths. Earlier
-plans are indexed in [the archive](docs/archive/README.md).
-
-### 2026-09-10 - 7cbd36c
-
-Released parallel PR reviews through PR #201. GLM 5.3 Flash and DeepSeek V4.1
-Flash each reviewed commit `6e9fbd3` with no key issues and posted separate
-summaries. GLM reused its comment across pushes. DeepSeek completed after setting
-low reasoning effort and preferring its own provider through OpenRouter.
-Full CI passed 686 tests. Production workflow `34490896584` and the independent
-production smoke passed for merge commit `7cbd36c`, including both public origins,
-the three stories, evidence links, images, sharing, and backend readiness.
-The hackathon skill remains absent pending transfer from the owner's Mac.
-
-### 2026-09-10 - Local PR review tooling
-
-Prepared parallel GLM 5.3 Flash and DeepSeek V4.1 Flash reviews with separate
-persistent summaries, commit checks, and bounded runs. Fifteen publisher tests
-and Actionlint pass. This is development tooling, with no change to the app's
-model roles or deployment. GitHub publication and live model verification remain
-pending in [docs/work.md](docs/work.md). The requested local
-`convex-hackathon-skill` was unavailable on this machine, so this entry records
-the repository evidence directly.
-
-### 2026-09-04 - 2fa1cff
-
-Replaced the launch slot template with exact official artifact fixtures and ran
-the complete development lifecycle. Seven bodies now pass gates 1 through 9
-with immutable retrieval, extraction, deterministic validation, independent
-review, publication, a missing-record probe, and paired agenda and minutes
-replay. Production then promoted Alexandria City Council, Pineville City
-Council, Rapides Parish Police Jury, Baton Rouge Metropolitan Council, and Baton
-Rouge Planning and Zoning Commission after each passed Gate 10 and all ten current Gate v3
-checks. Production workflows `33902515233` and `33902885913` passed for PRs #91
-and #92. Rapides and East Baton Rouge are supported. Lafayette stays validating
-because its planning commission, zoning board, and hearing examiner lack stable
-meeting-specific agenda and outcome records. The LCG body pages and schedule
-PDFs answer 200, but the event-detail host still answers 502.
-
-Connected the resident area selector to a public, realtime jurisdiction-status
-query. It enables a parish only when exactly one live jurisdiction row is
-`supported`; missing, duplicate, candidate, validating, degraded, and paused
-states remain unavailable. The selector therefore follows promotion instead of
-hard-coded fixture claims. This closes Implementation Slice 8. Routine scheduled
-source checks and automatic document-to-decision fanout are not deployed.
-
-### 2026-09-04 - 00a2f9c
-
-Stopped Chrome's unreliable `navigator.onLine` flag from showing an offline
-banner or blocking Ask while the served origin still answers. Connectivity
-events now confirm failure with a fresh same-origin request and recheck when a
-resident returns to the tab. Added regression cases for a reachable origin and
-Ask under a false browser flag (`src/features/discovery/hooks.ts`,
-`src/features/ask/live-adapter.ts`). PR #90 deployed through production workflow
-`33896198309`.
-
-### 2026-09-04 - b5583ed
-
-Released Implementation Slice 8 through PRs #85 through #88. The PR #87
-production attempt stopped before backend activation because Convex's deployment
-compiler rejected `Array.prototype.at`; PR #88 replaced that call with a
-supported lookup. Production workflow `33889157140` then verified the exact
-merge commit, deployed the backend and frontend, ran the guarded launch seed,
-and passed its smoke test. An independent `npm run smoke:production` passed both
-public origins, the canonical redirect, and production backend readiness. No
-coverage proposal was promoted, so resident-visible coverage did not change.
-
-### 2026-09-04 - 47d2c12
-
-Closed the Slice 8 review gaps before release. Post-deploy seed replay now
-preserves supported, degraded, paused, and ambiguous multi-registry state.
-Evaluator v2 names the checks it actually performs, rejected candidates cannot
-fill revision slots, and body promotion cannot clear an operator-set parish
-pause or degradation. A stale proposal cannot replace or control a newer live
-registry. The owner view and architecture now state that sample validation
-stores snapshots but does not run extraction, review, or publication
-(`convex/operations/seed.ts`, `convex/coverage/`, `docs/architecture.md`).
-
-### 2026-09-03 - cc056f3
-
-Built Implementation Slice 8 as three stacked development pull requests. PR
-#85 accepts only one of ten checked root manifests, verifies every redirect
-before paid work, records immutable stage attempts, and gives the owner a
-private realtime run ledger. PR #86 adds one bounded Firecrawl map, three
-official-domain searches, a 100-candidate ceiling, strict `MODEL_FAST`
-classification in batches of 20, complete provider-call evidence, and stop
-checks between paid calls. PR #87 freezes a registry proposal, validates a
-fixed representative sample through the immutable snapshot path, evaluates the
-ten coverage gates, and permits promotion only when the latest evaluation has
-ten passes. No override can turn a blocked proposal into supported coverage.
-
-The personal development deployment ran root verification, discovery,
-classification, snapshot validation, and gate evaluation for the nine target
-bodies. It did not run extraction, review, or publication. Every root passed
-before discovery spent provider credits. Every proposal remained blocked, and
-no resident-visible coverage state changed.
-
-| Body                                 | Samples retrieved | Gates passed |
-| ------------------------------------ | ----------------: | ------------ |
-| Lafayette Planning Commission        |            7 of 9 | 2, 3         |
-| Lafayette Board of Zoning Adjustment |            5 of 9 | 2, 3         |
-| Lafayette Hearing Examiner           |            5 of 9 | 2, 3         |
-| Youngsville City Council             |            2 of 7 | 2            |
-| Alexandria City Council              |            5 of 7 | 2, 3         |
-| Pineville City Council               |            4 of 7 | 2, 3         |
-| Rapides Parish Police Jury           |            6 of 7 | 2, 3         |
-| Baton Rouge Metropolitan Council     |            7 of 7 | 1, 2, 3      |
-| Baton Rouge Planning Commission      |            8 of 9 | 2, 3         |
-
-The results exposed real source limits instead of hiding them. Youngsville's
-current packet, agenda, and minutes returned unsuccessful target responses.
-Pineville's current minutes URL failed, its ordinance link redirected to an
-unapproved document host, and discovery found no revision candidate. The
-shared gate handled those failures, so no portal adapter or host exception was
-added. Baton Rouge Planning's earlier gate 7 result was re-evaluated after a
-logic correction and now fails because a retrieval error alone does not prove
-that the publication path produces a limited or withheld result.
-
-Browser testing signed into `/operations/coverage` with Google, returned to the
-private route, loaded all ten roots and live runs, and inspected the redacted
-representative-source health rows. The owner view exposes canonical URLs and
-error classes but no snapshot contents. Its stage timeline now names discovery,
-classification, sample validation, and gate evaluation separately. Production
-remains untouched. The stack still needs final pull-request review, an
-authorized merge, the exact production workflow, and independent production
-smoke before Slice 8 can be called live.
-
-### 2026-09-03 - d170fba
-
-Closed three Slice 7 review edges through PRs #81 through #83. Weekly roundup
-replies now search the complete published corpus instead of one representative
-follow. Private source-report receipts keep their terminal delivery result after
-AgentMail removes finalized payloads. Notification matching now stops for bodies
-and places outside supported or degraded coverage (`convex/emailReplies/`,
-`convex/sourceReports/`, `convex/follows/targets.ts`).
-
-The PR checks and production workflows `33797222889`, `33797505992`, and
-`33797772856` passed, followed by independent production smoke checks. A
-clearly labeled production source report reached `sent`, stored that result in
-the application five seconds after submission, and left the latest pipeline run
-unchanged. The controlled development replay remains the only alert-and-reply
-provider proof. No real production subscriber has completed that path yet.
-
-### 2026-09-03 - 41a6d59
-
-Built Slice 7D in two stacked code PRs. PR #78 accepts an alert reply only after
-it verifies the AgentMail inbox, original delivery thread, and enrolled sender.
-It reuses the 24-hour anonymous Ask path, its `MODEL_FAST` route, rate limits,
-published-evidence selector, citation checks, and evidence-not-found response.
-The reply ledger fences duplicate callbacks, concurrent preparation, model
-retries, and outbound delivery. A five-minute sweep recovers interrupted work.
-PR #79 connects the existing source-problem sheet to a separate private
-AgentMail inbox. It keeps the issue, decision, meeting, and selected Source
-route, applies browser and global limits, and never calls the evidence pipeline.
-
-The final reply head `c39eafe` passed Verify run `33781686493` and PR Agent run
-`33781686995`. PR #78 merged as `3f18c126`; production workflow `33786995126`
-and the independent production smoke passed. The final report tree added a
-45-second confirmation bound for unresolved AgentMail receipts, kept retries on
-the same receipt, and preserved honest uncertainty when provider metadata is no
-longer available. The clean report-only head `ec6d003` passed Verify run
-`33787335483` and PR Agent run `33787335475`.
-
-A controlled run on the personal development deployment sent an alert between
-two owned AgentMail inboxes and replied with a question about Johnston Street
-funding. The existing Ask action answered from the published issue evidence and
-returned $7,986,192 in grant funds plus a $2,001,498 local match, totaling
-$9,987,690. AgentMail delivered the answer with absolute development Source
-links. A second reply reused the same Ask thread and delivered another cited
-answer. The browser also opened a live published issue, preserved its selected
-Source in the report attachment, and showed the connected private form. A
-controlled report reached `sent`. Its application row contained hashes, the
-category, the Public Parish route, the outbound ID, and timestamps. It contained
-no report text or address. No pipeline run started after the report.
-
-The development-only probe function and its seeded user, follow, delivery, and
-reply records were removed after the test. The controlled provider email thread
-remains as delivery evidence. The production reports inbox setting was added to
-`befitting-flamingo-587`. PR #79 merged as `41a6d593`; production workflow
-`33788197489` and the independent production smoke passed. A live browser opened
-a published Pafford issue, selected Source `kh7be5xzdyvan21bqzhmctegnn8dqwjd`,
-and confirmed that the connected private form attached the exact Source-bearing
-route. The production availability query returned `available: true`.
-
-### 2026-09-03 - 6bafeaa
-
-PR #77 removed an empty development-fixture announcement from the live
-signed-out Following page. The fixture label remains available during fixture
-QA but no longer appears in the production accessibility tree when no fixture
-scenario exists. Verify and PR Agent passed on `4a60791`. Production workflow
-`33711607195` and the independent smoke passed after merge. A hard-reloaded
-browser confirmed the signed-out Google and email entry choices remained and
-`Fixture state:` was absent from the accessibility tree.
-
-### 2026-09-03 - 6db32a3
-
-Released Slice 7C through PRs #72 through #75. Accepted new decisions and
-material revisions now create durable follow matches, deduplicate immediate
-email per owner and change, link verified email subscribers to all their
-follows, and assemble Monday roundups from stored local-time windows and
-accepted evidence. The Following page now exposes live notification settings
-and recent delivery state (`convex/follows/`, `convex/crons.ts`,
-`src/features/following/`).
-
-A controlled development replay matched government body, place, issue, and
-topic follows, sent two immediate and two weekly messages through AgentMail,
-validated the official source, app, and management links, and created no
-duplicate on replay. Production workflows `33706796984`, `33707795958`,
-`33708562803`, and `33709247528` passed. Independent smoke passed the direct
-Convex host, canonical domain, apex redirect, and backend readiness after each
-merge. A signed-out production browser showed the real account entry page with
-no notification controls. The replay used no resident address.
-
-### 2026-09-02 - Slice 7C planning checkpoint
-
-Synchronized the current product, architecture, build, interface, and operator
-documents after the Slice 7B release. The 7C contract now sends at most one
-immediate email per owner and material change while keeping every matching
-follow in a separate ledger. Issue-target alerts wait for an accepted issue
-refresh. Weekly roundups run Monday at 7:00 AM in `America/Chicago` through a
-deduplicated local-time claim that preserves the hour across daylight-saving
-changes.
-
-PR #70 cleared the preflight defect as merge commit `1ece03d`. The deployed
-`place` resolver now accepts supported parishes and municipalities while an
-unsupported place still fails closed. Convex tests cover issue, topic, body,
-parish, and municipality targets. Pull-request checks, production workflow
-`33682483792`, and the independent production smoke passed. The notification
-match, delivery, roundup, and Google default-cadence records remain
-unimplemented. No sourced alert has been sent or claimed. Alert copy will not
-invite replies until Slice 7D's grounded inbound handler is live.
-
-### 2026-09-02 - 8fc4642
-
-Built the two-PR Slice 7B follow stack. The backend adds verified email
-subscribers, hashed challenges and access tokens, encrypted delivery addresses,
-Google-owned and email-owned follows, notification preferences, signed AgentMail
-webhooks, bounded rate limits, and cleanup for expired verification data and
-finalized component messages. The AgentMail component receives its declared
-environment through the host app and keeps remote maintenance functions private
-(`convex/follows/`, `convex/http.ts`, `convex/crons.ts`,
-`patches/@agentmail+convex+0.1.0.patch`).
-
-The resident follow sheet now sends and verifies real email codes, resumes a
-Google follow through a URL-safe one-time intent, and reports expiry, retry, and
-provider failures. The email management route loads one token-scoped follow,
-updates its cadence, rotates the token, and removes the follow. Signed-in Google
-users receive a reactive Following page with update and removal controls
-(`src/features/following/`, `src/features/auth/google-auth.ts`). A development
-browser completed enrollment, token rotation, old-token rejection, signed
-webhook idempotency, and a Google-owned follow through the full OAuth return.
-The signed-in Following page showed the new target, changed its cadence
-reactively, and restored the requested weekly setting before the test session
-signed out. A second development proof muted that weekly follow, kept weekly as
-its resume cadence, and restored weekly delivery. The email-only management
-fixture also changed from muted to following when its schedule-save action
-resumed delivery.
-
-PR #66 deployed the backend as `fdfebd8` through production workflow
-`33672529400`. The workflow and independent production smoke passed the direct
-Convex host, canonical `www` host, apex redirect, and backend readiness query.
-The updates inbox and two new cryptographic keys are configured in production.
-The AgentMail webhook is registered for outbound lifecycle events, and its
-provider-issued signing secret is configured without exposing it in repository
-history or logs.
-
-PR #67 deployed the resident enrollment and management interface as `8fc4642`
-through production workflow `33675616509`. Fresh PR checks ran against the
-merged backend before release. The workflow and a second independent production
-smoke passed both served hosts, the apex redirect, and backend readiness. A
-production browser loaded a published issue, opened the live follow sheet, and
-confirmed that a development fixture query could not replace production data.
-The complete email, token rotation, signed webhook, Google OAuth, and reactive
-management flows passed in development. A natural provider-signed production
-delivery callback was not forced during the read-only production browser proof.
-
-### 2026-09-02 - 8ea38af
-
-Hardened issue linking after real launch-data runs exposed two evidence gaps.
-PR #61 requires each issue claim to cite every excerpt needed for its complete
-wording. PR #63 accepts scaled currency such as `$1.2 million` without treating
-an unmarked quantity such as `1.2 million residents` as money. PR #64 moves the
-linker to prompt v1.5 and names every allowed dynamic fact path, including the
-required lifecycle fact, while excluding link relationship fields. The full,
-limited, or withheld publication policy stays unchanged (`convex/issues/`,
-`convex/extraction/textMatch.ts`, `convex/pipeline/state.ts`).
-
-### 2026-09-02 - f725094
-
-PR #58 deployed Google account sign-in and private saved areas and topics. It
-also published the resident privacy notice. The first production workflow
-stopped before deployment because the Convex auth config read the platform site
-URL through the unavailable Node `process` global. PR #59 replaced that access
-with Convex's generated typed environment value and merged as `f725094`.
-Production workflow `33587446687` then deployed the backend and frontend,
-seeded source configuration, and passed its smoke. The independent production
-smoke passed both served origins, the apex redirect, and the backend readiness
-query.
-
-A real Google sign-in completed on `https://www.publicparish.com`, returned to
-the saved areas and topics page, and signed out. A second sign-in started on the
-qualifying `https://befitting-flamingo-587.convex.site` origin, handed the flow
-to the canonical `www` origin, used the canonical callback, and returned signed
-in without a cross-origin flow error. The test account signed out after the
-proof. The privacy notice and its deletion contact rendered on both production
-origins. No saved area or topic was added during production testing.
-
-### 2026-09-01 - working tree
-
-Mounted the pinned Convex Auth v2 alpha core and Google OAuth for Slice 7A.
-Verified Google profiles create private users, and every saved-area or topic
-query derives ownership from the signed JWT subject. Indexed, idempotent
-mutations reject anonymous callers and unsupported launch targets. The resident
-account route now separates the live Google setup from the development follow
-and notification fixtures. A real development Google callback completed, saved
-Lafayette Parish, survived a reload, and removed the saved area after the proof.
-The production release and production callback proof remain pending
-(`convex/auth.ts`, `convex/auth/`, `convex/follows/savedSetup.ts`,
-`src/features/auth/`, `src/features/following/`). A public privacy notice now
-states the live account, Ask, analytics, provider, retention, and deletion
-boundaries required before publishing the dedicated Google consent screen
-(`src/routes/privacy.tsx`, `src/features/privacy/`).
-
-### 2026-09-01 - 13f735b
-
-PR #56 deployed the high-reasoning Luna selector and answer flow as `adc0a34`
-through production workflow `33560561545`. The selector sees the complete
-current catalog and every accepted excerpt in scope. Code expands its selected
-records, then the answer call receives their hash-checked normalized official
-documents. Broad or invalid selections use the full scope, while a valid
-not-found selection skips the answer call. App-wide request limits prevent
-anonymous session rotation from creating unlimited calls. Record, excerpt, and
-document-byte guards fail before model generation instead of truncating the
-prompt. Provider token use remains private telemetry, not an answer limit.
-
-PR #57 deployed the citation-display correction as `13f735b` through workflow
-`33562735003`. A controlled production corpus question selected both Lafayette
-surplus-pickup decisions and named Terrebonne Parish Consolidated Government
-from accepted evidence. Four Source controls opened official evidence, and the
-answer showed no raw internal evidence IDs. The exact issue Ask path and the
-production smoke passed again. One answer rendered Markdown emphasis markers as
-literal text, so that pre-demo display correction remains. This was test
-traffic, not resident adoption.
-
-### 2026-09-01 - 5679fa3
-
-Deployed the resident-facing issue index and For You replacement through PR
-#54 as `5679fa3`. Home reads the bounded accepted-issue and
-decision queries, shows Lafayette and Rapides timelines before compact atomic
-records, and keeps equal-weight issue cards because no resident-facing
-importance score is published. Explore now searches accepted issues before
-individual records. Primary navigation is Home, Explore, Ask, and Coverage.
-`/for-you` redirects to Home, `/issues` redirects to Home's issue section, and
-the cited issue detail routes remain stable. Development fixtures passed browser
-inspection at 375 and 1280 CSS pixels with no horizontal overflow.
-Production workflow `33533462706` and the independent production smoke passed
-(`src/features/discovery/home.tsx`, `src/features/discovery/explore.tsx`,
-`src/features/discovery/explore-model.ts`, `src/routes/for-you.tsx`,
-`src/routes/issues_.tsx`).
-
-Closed the Slice 5 data gate with two production issue builds. Terra linked
-the accepted records, Luna reviewed the proposed facts independently, and
-deterministic checks published full issue versions. The two builds used AI
-Gateway and cost an estimated $0.088413 combined. A live subscriber first
-received no Rapides millage issue, then received the accepted issue 10.8
-seconds later on the same connection.
-
-Added private evidence-scoped Ask threads for PR 6A. The browser keeps an opaque
-token while Convex stores its SHA-256 hash. Scheduled expiry detaches access
-after 24 hours. The Agent component owns threads and messages, while Public
-Parish authorizes each call and retrieves only bounded current citations. A
-development proof created a thread, saved one question, resumed its history,
-and returned the exact LOATF Source links. Model answers remain out of this PR.
-
-Built the stacked PR 6B answer path in the working tree. It pins
-`@convex-dev/ai-sdk-provider` 0.1.0 and AI SDK 7.0.34, calls `MODEL_FAST`
-through the Convex gateway, sends only bounded thread context and retrieved
-published evidence, and validates every returned evidence ID before the Agent
-component stores the assistant message. A private receipt and attempt ledger
-records route, model, tokens, latency, estimated cost, and bounded safe errors
-without copying resident questions or answers. Deterministic not-found answers
-skip the model call. The exact stacked answer head later reached the personal
-development deployment. A real `openai/gpt-5.6-luna` call returned a strict
-answer with current Lafayette citations. A follow-up first exposed retrieval
-that ignored its prior question. The corrected path combined that bounded prior
-question with the current turn and returned the same current pickup records.
-An unsupported volcano question returned not found without citations. PR #47
-later deployed this answer path as `9ae0467` through production workflow
-`33517184457`.
-
-Built the stacked PR 6C resident connection in the working tree. The real
-adapter keeps only opaque session and thread handles in browser storage, opens
-Agent history after refresh, and projects accepted citation records into the
-existing Source panel. It covers supported, not-found, expired, offline,
-cooldown, retryable, and terminal states. One mutation now claims one answer at
-a time, applies per-session request limits, and reserves 15,000 tokens against
-both a 30,000-token minute and a 150,000-token day before any model call. The
-same reservation counts against app-wide ceilings of 150,000 tokens per minute
-and 1,500,000 tokens per day, so rotating browser sessions cannot remove the
-production spend bound. The app-wide counter keeps the full reservation after
-an accepted claim, including no-evidence results. That trades some daily
-capacity for a simple hard ceiling.
-Successful attempts reconcile known usage. Unknown failed work and abandoned
-work consume the reservation. A no-evidence path releases it because that path
-skips the model. The CAPTCHA adapter remains inactive. Automated
-pull-request checks run in GitHub Actions. The exact stacked head reached the
-personal development deployment. At 375 pixels, a signed-out browser completed
-the real two-turn conversation, restored both turns from Agent history after a
-refresh, and opened exact citation records in the mobile Source drawer. Escape
-returned focus to the Source control. Browser storage contained only the opaque
-session token and thread handles, not question or answer text. The not-found and
-offline states passed, live status announced the completed answer with its
-source count, and the page had no horizontal overflow. At 1280 pixels the same
-source opened in the 320-pixel docked evidence rail.
-
-PR #45 deployed the private thread foundation as `c9ea441` through workflow
-`33515579521`. PR #49 deployed the final bounded Ask interface as `30dc267`
-through workflow `33518827257`. Exact head `e1cd4b1` adds app-wide minute and
-daily token ceilings that survive anonymous session rotation. A production
-issue-scoped test then completed two related cited turns. Both answers used the
-accepted `CO-022-2026` and `CO-023-2026` citations, and their Source controls
-opened the exact supporting minutes spans. An unsupported question first
-entered the safe retry state; its fenced retry returned evidence not found with
-no citations. After refresh, the issue thread remained in Recent on this device,
-and reopening it restored all three turns. Implementation Slice 6 is closed.
-
-### 2026-09-01 - bdc0195
-
-Connected accepted decision publications and exact citations to the finished
-resident decision and meeting routes. Discovery now opens the Public Parish
-record before the original source. A bounded development backfill grouped three
-meeting-bearing records, and the Aug. 25 Rapides view resolved two current full
-decisions from one accepted meeting time. The issue query stays closed when an
-issue points at superseded decision versions. PR #44 deployed through workflow
-`33463800155`; its workflow smoke and the independent production smoke passed.
-
-### 2026-09-01 - 070958e
-
-Removed the stale Lafayette board-vacancy projection from the production
-resident feed without deleting its decision record or linked publication
-evidence. The legacy record now has no current publication pointers. The
-production resident query returns 26 publications and exactly one
-board-vacancy card, under `CITY-BOARD-APPLICATIONS-2026-09-15`. This was a
-one-time data correction. It did not add a withdrawal workflow or resident
-correction product.
-
-### 2026-09-01 - 85d6947
-
-Deployed resident-interface Design Slice 8 through PR #43. Bounded return paths
-preserve Explore filters, record context, Ask scope, and Following context across
-route changes. Discovery and meeting links keep the matching development
-evidence scenario, and Coverage uses one written request vocabulary. The code
-handoff names the contract, readiness gate, fixture owner, and future API owner
-for every resident destination. GitHub Verify and PR-Agent passed on the final
-head. Production workflow `33454522729`, the independent production smoke, and a
-live fixture-boundary check passed (`src/features/resident-handoff/`,
-`docs/resident-interface-slice-8.md`).
-
-### 2026-08-31 - c180659
-
-Corrected the public coverage flow after a focused review. Successful request
-and private-report states now move keyboard focus into the next useful control
-or heading. Fixture parameters stay tied to active development scenarios, and
-the public method page names deterministic checks as the final publication
-gate. Automated validation is pending in pull-request CI
-(`src/features/coverage/`, `docs/resident-interface-slice-6.md`).
-
-### 2026-08-31 - d1bcdb8
-
-Deployed anonymous resident telemetry through PR #41. Pull-request verification
-passed, production workflow `33444625765` deployed the exact merge, and an
-independent production smoke passed both served origins, the canonical asset,
-the apex redirect, and the readiness query.
-
-A controlled browser check started from zero counters. Loading the canonical
-domain and the required `convex.site` origin, then selecting Lafayette on the
-clean origin, produced 2 unique browser identifiers, 2 visits, 1 activated
-visitor, and 1 Lafayette selection. One human tester created both identifiers
-because browser storage is origin-specific. These rows prove that production
-visit and activation writes reach the private report. They are controlled test
-traffic, not two users or evidence of resident adoption.
-
-### 2026-08-31 - 3393b19
-
-Added production-only anonymous visit and area-selection telemetry. Fixed event
-contracts update deduplicated browser, event, and aggregate rows in one Convex
-mutation. The private report separates unique browsers, 30-minute visits,
-activated visitors, 24-hour returns, and area counts. A bounded daily cleanup
-removes browser identifiers and events after 90 days. The browser sends a hash
-of a random local identifier, never resident content. A same-origin HTTP route
-keeps the write mutations internal, validates the exact payload, and applies
-per-browser and global limits. The counts remain unauthenticated product
-signals. Browsers that cannot persist the random identifier are excluded rather
-than recounted after each reload. Automated validation is pending in pull-request CI (`convex/analytics/`,
-`src/features/analytics/product-analytics.tsx`).
-
-### 2026-08-31 - dd5501e
-
-Deployed the repeatable launch-data promotion through production workflow
-`33435833908`; the independent production smoke passed the Convex origin,
-canonical domain, apex redirect, and readiness query. Seventeen included
-official PDFs matched their development hashes before extraction.
-
-The run published 26 launch records: 15 Lafayette, 9 Rapides, and 2 East Baton
-Rouge. Fifteen are full and 11 are limited. The Rapides negative control
-returned `not_found`, and replay reused all 27 successful extraction run IDs
-without new model calls. Three targets stayed out after repeat exact-citation
-validation failures. At promotion time, the resident query also exposed one
-older duplicate Lafayette board-vacancy card, which raised the public count to 27. The September 1 production-data correction above removed that stale
-projection while preserving its record and evidence
-(`docs/production-batches/launch-data-2026-08-31.v1.json`,
-`convex/operations/seed.ts`).
-
-### 2026-08-31 - 432645b
-
-PR #33 fixed review completion budgets for high reasoning effort, merged as
-`fd03192`, deployed to production, and passed the independent production smoke.
-PR #35 moved review findings onto exact fact paths or `null`; a development
-retry then published the previously blocked Rapides millage-election record as
-limited. It merged as `434c263`. Exact production workflow `33419095880` and an
-independent production smoke passed.
-
-PR #36 fixed displaced PDF superscript text that blocked a valid lifecycle
-citation. Extraction processor v1.17 restores the paired ordinal suffix without
-weakening changed-text checks; the Pafford EMS contract then validated,
-reviewed, and published limited. It merged as `432645b`. Production workflow
-`33419981241` timed out during its first static-file upload after deploying the
-backend. Attempt 2 completed the backend and frontend deploy, production seed,
-and workflow smoke. An independent production smoke also passed.
-
-The bounded data runs ingested four East Baton Rouge and four Rapides official
-PDFs, published seven limited records, retained two negative cases, and replayed
-without new snapshots or model calls. Production was not used for those data
-runs (`convex/extraction/textMatch.ts`, `convex/review/`,
-`convex/pipeline/state.ts`).
-
-### 2026-08-31 - Design Slice 7 review
-
-Implemented resident-interface Design Slice 7 for pull-request review. Shared
-route completion now updates the page title and focuses the new heading, which
-reads the page name once instead of twice. Loading actions keep their written
-label inside a mirrored spinner slot that holds the width and keeps the label
-centered. Discovery refreshes announce accepted updates, sheets focus their
-written Close control and return focus after a delay read from the
-`--dur-standard` motion token, Explore's search input stretches to fill its
-field, and reduced-motion rules cover resident transitions and spinners. A browser sweep
-checked 14 development routes at 320, 375, 414, 768, 1280, and 1440 CSS pixels.
-All 84 frames had one main region, a visible page heading, named visible form
-fields, full-size written controls, and no page-level horizontal overflow.
-Automated validation remains with pull-request CI
-(`src/features/resident-blueprint/`, `src/features/discovery/`,
-`src/components/ui/button.tsx`).
-
-### 2026-08-31 - 0853f69
-
-Implemented resident-interface Design Slice 6 against explicit development
-fixtures. Coverage now explains five written source-health states body by body,
-keeps accepted records distinct from complete coverage, records coverage demand
-without starting source work, explains the evidence method, and sends source
-problems through a private form. Production routes remain unavailable until
-their real coverage, request, and private-delivery paths pass their gates.
-Browser checks covered the request, email verification, duplicate, rate-limit,
-notice-delivery failure, follow, area-selector, and report paths from 320
-through 1440 CSS pixels without application overflow. Automated validation
-remains with the pull-request checks (`src/features/coverage/`,
-`src/routes/coverage*`, `src/routes/how-it-works.tsx`).
-
-### 2026-08-31 - adfe81e
-
-PR #31 deployed resident-interface Design Slice 5. Exact production workflow
-`33401768387` and the independent smoke passed the Convex host, canonical
-domain, apex redirect, asset delivery, and production readiness query. The
-deployed code keeps follows unavailable until Auth and AgentMail pass their
-integration gates.
-
-### 2026-08-31 - 9d6751d
-
-PR #31 review found that muting a target could discard a cadence change that
-the resident had not saved yet. The management sheet now owns one cadence draft
-per opening. Mute and resume leave that draft visible, while closing without
-saving discards it. The exact choose-weekly, mute, close, and reopen sequence
-was replayed in the browser without overflow or runtime warnings. GitHub Actions
-will rerun the automated gate after the fix is pushed.
-
-### 2026-08-31 - f0b46ec
-
-Implemented resident-interface Design Slice 5 against development-only typed
-fixtures. The new follow flow preserves the chosen cadence through equal Google
-and email-only paths, keeps the target, cadence, and destination visible, and
-does not show `Following` before the fixture confirms the action. Following,
-saved areas and topics, notification preferences, immediate and roundup email
-layouts, and scoped email-only management now replace their low-fidelity route
-blueprints.
-
-Production still has no Convex Auth or AgentMail follow integration. Routes
-without an explicit development fixture show an honest unavailable state and
-load no fixture subscription data. Browser checks covered 320, 375, 390, 1280,
-and 1440 CSS pixels without horizontal overflow. The email verification path,
-Google return, empty and degraded lists, frequency changes, mute, one-target
-unfollow with Undo, saved-area add and removal, and expired management links
-were exercised manually. The email management page also opens on the cadence
-saved by that subscription.
-Automated validation remains deferred to pull-request CI
-(`src/features/following/`, `src/routes/following*`,
-`src/routes/email.manage.$token.tsx`).
-
-### 2026-08-31 - ff36c1b
-
-PR #28 merged the Ask Public Parish interface as `ff36c1b`. Production workflow
-`33389489990` succeeded for that exact commit. This session did not repeat the
-independent production smoke.
-
-### 2026-08-30 - PR #28 review
-
-Implemented resident-interface Design Slice 4 (Ask Public Parish) and opened
-PR #28. The review record below predates the later `ff36c1b` merge.
-
-The route renders corpus, issue, and meeting scope behind a hard production
-availability gate: a two-question cited thread on the real CO-022-2026 and
-CO-023-2026 records, not-found, checking, expiry, cooldown, CAPTCHA, retryable
-and terminal provider failures, offline, recent same-device handles, and the
-shipped evidence viewer with multi-source claims. The private `q=` URL handoff
-is replaced by an in-memory draft that never enters a URL or history state.
-Eleven presentation scenarios load through a DEV-only dynamic import;
-production never requests the fixture module.
-
-The first `npm run verify` run passed on the branch with 194 tests across 23
-files, typecheck, the production build, prerender, and lint. A later ship review
-added focused Ask coverage for route privacy, scope restoration, in-memory draft
-consumption, citation accounting, production fixture gating, duplicate-submit
-protection, the compact thread composer, and named official contacts. GitHub
-Actions owns validation for the follow-up commit.
-
-The follow-up reviewer found that the existing scope-change confirmation was
-attached to a recent-list branch that could not run. Route scope changes could
-therefore clear an active thread without asking. The confirmation now intercepts
-the real route transition, keeps the current scope and conversation on cancel,
-and starts the new scope only after confirmation.
-
-The next reviews caught four related edge cases. Corpus scope identity dropped
-the selected public area, and canceling a cross-scope handoff discarded its
-draft. Corpus identities now retain the area key. Cancel restores the old route
-after saving the incoming draft to its in-memory scope handoff, and unrelated
-scope transitions no longer consume that draft. Opening a recent conversation
-now updates the public route to the conversation's scope instead of leaving the
-URL on the previous evidence scope.
-
-Four checked-in fixes came out of CI and review rather than from me reading the
-diff first. Verify caught a decision page still passing the old string scope,
-then seventeen lint errors in the new module. The reviewer then found two real
-defects: the record pages invited a question and dropped it at the unavailable
-gate, and the page cleared its own cooldown while the adapter kept refusing, so
-Send did nothing at all. A third finding about a stale closure in the expiry
-sweep was wrong and was dismissed with a written reason; the effect closes over
-the conversation object, so the field is read fresh on every tick.
-
-The adapter contract needed three additions the handoff did not specify:
-`subscribe` for the realtime channel a Convex backend will own,
-`resolveChallenge` for the abuse adapter, and `clearRecent` because the adapter
-owns same-device handle storage.
-
-No chat backend exists behind any of this. Ask stays in production navigation
-showing the honest unavailable state, and the record pages show that same
-message instead of a composer.
-
-### 2026-08-30 - 3a59e45
-
-PR #27 passed its first GitHub verification run. PR-Agent found an inherited-key
-crash in citation URL validation and three fixture rows whose destination did
-not match their displayed record. Citation lookup now requires an own property.
-The unsupported water-meter record link is gone, and the April meeting rows
-open matching routine records. New invariants cover inherited citation ids and
-meeting-row title mismatches. Revalidation is deferred to the next PR checks
-(`src/features/evidence/contracts.ts`, `src/features/evidence/record-fixtures.ts`).
-
-The next full-context review found two responsive defects. Accepted detail
-labels and values now stay together in the content column instead of entering
-the evidence gutter. The mobile drawer retains its last citation and size until
-the close transition finishes. Browser checks measured aligned definition rows
-at 1,280 pixels with no overflow and kept the excerpt visible during the
-390-pixel drawer exit. Automated revalidation remains with PR checks
-(`src/features/evidence/decision-page.tsx`,
-`src/features/evidence/evidence-surface.tsx`).
-
-The final full-context review found that static imports still placed the
-development evidence fixtures in the production JavaScript graph even though
-the runtime gate prevented rendering them. Route loaders now fetch the fixture
-modules through development-only dynamic imports. The production build can
-drop the fabricated excerpts entirely. Citation URLs opened without a click
-now record the first matching Source control as their focus-return target. The
-next PR checks own automated revalidation
-(`src/features/evidence/evidence-page.data.ts`,
-`src/features/evidence/evidence-surface.tsx`).
-
-PR #27 merged as `3a59e45`. GitHub verified typecheck, 194 tests across 23
-files, the client and server builds, prerender, and lint on the final branch
-head. PR-Agent reviewed that exact head with no major or security findings.
-Production workflow `33332573558` deployed the backend and frontend, seeded the
-source configuration, and passed its smoke. The independent production smoke
-then passed the direct Convex host, canonical domain, apex redirect, and backend
-readiness query.
-
-### 2026-08-30 - ac0cc55
-
-Implemented resident issue, atomic decision, meeting, and citation-level
-evidence pages against explicit development fixtures. Material claims open an
-exact official excerpt in a mobile Coss drawer or desktop evidence rail, keep
-the selected citation in the URL, and return focus to the opening Source
-control. Full, limited, delayed, historical, uncertain, before-minutes,
-after-minutes, and live-update states are covered. Production builds ignore the
-fixture parameters and render recovery pages because real detail queries are
-not connected. Runtime checks at 320, 390, and 1,440 pixels found no horizontal
-overflow. `npm run verify` passed typecheck, 194 tests across 23 files, the
-production builds, prerender, and lint. No deployment is claimed
-(`src/features/evidence/`, `docs/resident-interface-slice-3.md`).
-
-A review pass then hardened the evidence viewer. Closing the desktop panel
-returns focus to the opening Source control in an effect after the commit
-instead of inside a requestAnimationFrame, so the restore no longer depends on
-the browser painting a frame. Escape closes the panel, the Source controls
-aria-controls target exists while nothing is selected, and the live-update
-fixture matches the timeline entry it moves by its date instead of a
-hard-coded string. The open, close, Escape, focus-return, and deep-link paths
-were checked in the local browser. Suite re-validation is deferred to the pull
-request checks (`src/features/evidence/evidence-surface.tsx`,
-`src/features/evidence/evidence-model.ts`).
-
-### 2026-08-30 - 409a3e1
-
-Connected Home, For You, and Explore to current full and limited atomic
-publications through a bounded public Convex query. The query returns only
-accepted resident fields, hides withheld versions, and fails closed on stale
-publication pointers. Live cards identify themselves as published decision
-records and open the accepted official source. They do not invent issue
-ranking, topics, or consequence text. Explicit fixture URLs still drive
-development QA and remain disabled in production. The development deployment
-returned four accepted records. `npm run verify` passed typecheck, 169 tests
-across 21 files, the production builds, prerender, and lint. Production-preview
-checks at 390 and 1,440 pixels found no horizontal overflow, rendered four
-official-source links, and ignored fixture parameters. PR #26 merged this exact
-commit and the production release passed its workflow and independent smoke
-(`convex/resident/discovery.ts`, `src/features/discovery/`).
-
-### 2026-08-30 - b22e321
-
-Deployed the Slice 2 owner phone-review refinements through PR #25. Production
-workflow `33324166404` verified the merge, deployed the backend and frontend,
-seeded source configuration, and passed its smoke. The independent production
-smoke then passed the direct Convex host, canonical domain, apex redirect, and
-backend readiness query. A live 390-pixel check confirmed one-color Watching
-text, the Louisiana Coverage icon, 44-pixel Coverage actions, no fixture banner,
-and no fixture state at `?fixture=update`. The fixture URLs remain
-development-only. No production resident projection is claimed.
-
-### 2026-08-30 - 0eed59c
-
-Extended the production fixture gate to every scenario-derived state, including
-signed-in areas, update rows, degraded notices, empty scenarios, and section
-failures. A production preview at 390 pixels checked all 14 Home, For You, and
-Explore fixture scenarios. Each rendered zero fixture cards, update rows,
-failure states, fixture notices, and known fixture copy without horizontal
-overflow. Development checks still rendered the explicit update, signed-in, and
-section-failure scenarios. `npm run verify` passed typecheck, 163 tests across 19
-files, the production client and server builds, prerender, and lint. No
-deployment is claimed (`src/features/discovery/`).
-
-### 2026-08-30 - ee05d8d
-
-Closed a review finding that unlabeled fixtures could look like real civic
-records. Development builds now require an explicit `?fixture=` scenario before
-rendering fixture records. Production builds ignore fixture parameters and show
-an honest empty state until the resident projection is connected. A production
-preview at 390 pixels rendered zero fixture cards on Home, For You, and Explore,
-including URLs with `?fixture=update`. The same URLs still rendered the full QA
-states on the development server. `npm run verify` passed typecheck, 163 tests
-across 19 files, the production client and server builds, prerender, and lint.
-No deployment is claimed (`src/features/discovery/`).
-
-### 2026-08-30 - 6cd03da
-
-Refined the Slice 2 resident hierarchy after a phone review. Decision cards now
-use a ruled header, status pill, evidence footer, and the shared Coss primary
-and outline button treatments. "Watching" uses the main text color, and the
-Coverage navigation item uses the Louisiana outline instead of a shield.
-Resident pages no longer show fixture banners. The existing `?fixture=` query
-states remain silent QA controls and do not prove production data. Browser
-checks at 320, 375, 390, 414, 768, 1280, and 1440 pixels found no horizontal
-overflow. At 390 pixels, every tested standalone resident control measured 44
-pixels tall. `npm run verify` passed typecheck, 162 tests across 19 files, the
-production client and server builds, prerender, and lint. No backend, provider,
-production feed, or deployment is claimed
-(`src/features/discovery/`, `src/features/resident-blueprint/`).
-
-### 2026-08-30 - 64e3f72
-
-Completed a controlled Lafayette City Council production onboarding from eight
-official PDFs. Production now has full current publications for CO-062 as
-postponed, CO-069 as decided, and CO-072 as scheduled. Every published material
-field has an exact citation into an immutable snapshot. The board-vacancy item
-remains a limited source-only publication because the agenda does not support
-the required timezone offset for its deadline. PRs #15 through #23 deployed the
-retrieval, lifecycle, review, and Firecrawl formatting fixes that the batch
-exposed. No production issue build, importance assessment, or resident feed
-projection ran.
+<a id="2026-08-27"></a>
+
+### 2026-08-27 - 96938c4
+
+Initialized a fresh repository and completed the product grilling. Documented
+the agreed scope, resident experience, evidence policy, source plan,
+architecture, sponsor roles, four-week build order, demo, user-proof targets,
+and stop rules. Completed event registration and selected Convex AI Gateway,
+Convex Auth v2 alpha, and a two-tier GPT-5.6 model split for the implementation
+plan.
+Narrowed the plan before implementation by removing FAQ aggregation, the public
+correction workflow, public-triggered compiler runs, and cross-device chat
+history. Kept a private source-problem inbox, public coverage demand capture,
+the owner-triggered coverage compiler, weekly roundup emails, and per-issue share
+HTML.
+Confirmed that the Convex Professional plan satisfies the AI Gateway paid-team
+requirement. Revised the model assignment so that GPT-5.6 Terra performs record
+extraction, consequence factors, and issue linking, while GPT-5.6 Luna performs
+discovery classification, ranking, independent publication review, and chat.
+Dropped GPT-5.6 Sol from the plan entirely; two tiers cover the pipeline.
+Documented the roles `MODEL_STRONG` and `MODEL_FAST` with a single
+role-to-model table in `docs/architecture.md`, and set every stage that produces
+or clears a published claim to high reasoning.
+Scaffolded TanStack Start in SPA/static-prerender mode and created a Convex
+development deployment. Added the static-hosting component, a live readiness
+query and React subscription, a checked-in environment template, an MIT
+license, and a public GitHub remote (`package.json`, `vite.config.ts`, `convex/`,
+`src/`, `.env.example`, `LICENSE`).
+
+Installed Convex's generated AI guidance and pinned Convex Auth v2 alpha without
+configuring authentication. Verified an AI Gateway service token and confirmed
+that the planned Terra and Luna model IDs are available through the gateway's
+model-list endpoint; this was not an AI model call. Redeemed the official
+Firecrawl participant credit grant.
+
+Proved a clean dependency install, generated guidance status, three tests,
+typechecking, a production build, linting, a Convex cloud push, and a local
+"Convex connected" runtime. No public app deployment, Firecrawl ingestion,
+OpenAI model call, AgentMail integration, or authentication exists yet.
+
+Hardened the first public release by pinning every direct dependency, declaring
+the supported Node.js and npm majors, and making production builds reject a
+missing Convex URL. The deploy command now rebuilds before publishing. Generated
+agent guidance stays local and is reproducible through the documented install
+command (`package.json`, `package-lock.json`, `vite.config.ts`, `.gitignore`,
+`README.md`).
+
+Added a narrowly bounded plan for one static landing-page voter-information
+strip. It will link to the Louisiana Secretary of State and show a date verified
+against the official calendar. Candidate coverage, ballot matching, crawling,
+and model-generated election content remain out of scope (`PLAN.md`,
+`docs/product-spec.md`, `docs/build-plan.md`).
+
+Published the initial Phase 0 source commit to the public `main` branch. The app
+itself remains undeployed.
+
+### 2026-08-27 - dd12d01
+
+Established separate hosted development and production environments. The Phase
+0 shell passed its hosted development smoke before the matching Convex backend
+and static frontend were promoted to production. Renamed the product, GitHub
+repository, local remote, and Convex project to Public Parish and
+`public-parish`. GitHub redirects the former repository URL; the Convex
+deployment names and public URLs remain unchanged.
+
+Attached `https://www.publicparish.com` directly to the production Convex HTTP
+router and set it as the production `CONVEX_SITE_URL`. Added a redirect-only
+Vercel project for the bare domain so paths and query strings on
+`https://publicparish.com` permanently redirect to `www`; Vercel does not host
+the application frontend. Checked the isolated redirect configuration into
+`infra/apex-redirect`. Kept the required
+`https://befitting-flamingo-587.convex.site` origin public and functional.
+Documented why the redirect is needed and why it does not replace the
+hackathon's qualifying URL. The submission will use the public `convex.site`
+host; the custom domain remains an additional resident-facing entry point.
+
+Kept the team warning threshold at $20 per month and raised the hard disable
+threshold from $40 to $60 per month before real AI Gateway calls begin. The
+limit remains team-wide; model calls will also have application-level token,
+retry, batch, and chat budgets.
+
+Verified the custom-domain DNS and TLS certificate, the public root and direct
+SPA routes on both served production origins, the production-bound JavaScript
+asset, desktop and mobile layouts, and the live readiness query
+(`package.json`, `README.md`, `docs/`). Convex Auth v2 and Google OAuth remain
+planned but unconfigured. No Firecrawl ingestion, OpenAI model call, AgentMail
+integration, authentication, or resident evidence experience exists yet.
+
+<a id="2026-08-28"></a>
+
+### 2026-08-28 - 70ee961
+
+Built and deployed the Slice 1 source ledger and retrieval processor v2 to the
+personal development deployment `woozy-wren-227`. Production remained
+untouched. The schema holds jurisdictions, bodies, registries, per-source
+immutable snapshot chains, pipeline runs, and stage evidence. The processor
+checks requested and final URLs, requires a successful target status, hashes
+the raw artifact separately from normalized Markdown, reuses only the current
+source-chain head with the same raw hash, and cleans redundant or failed file
+uploads (`convex/schema.ts`, `convex/operations/ingest.ts`, `convex/sources/`,
+`convex/pipeline/`).
+
+The real Lafayette council hub created processor v2 snapshot
+`js7c4pvv6xx0x1p8d9hk3zw64s8danvf`. It stores 37,372 bytes of normalized
+Markdown and 131,799 bytes of raw HTML. The raw artifact hash starts
+`d02b2171…`; its separate normalized hash starts `53188bd7…`. An immediate
+repeat reused the same snapshot ID and version 2.
+
+Expanded the Lafayette registry from one seed to the council hub, council
+document search, and schedule/research pages. A bounded Firecrawl map found 19
+official council pages. The portal did not expose individual records to the
+map, so two official-domain-restricted Firecrawl searches found 50 ranked
+candidates, including stable `/obcouncil/api/Document/<id>/` records. The
+official portal query paired the April 21, 2026 Lafayette City Council agenda
+with its minutes.
+
+The first PDF spike revealed that Firecrawl's `rawHtml` is a rendered
+representation, not the original PDF. The processor now keeps Firecrawl's
+Markdown extraction and downloads the approved official PDF as the immutable
+raw artifact. That download checks redirects, status, and content type, stops
+after 60 seconds, and enforces a streamed 25 MB limit. The corrected agenda
+snapshot `js7facykrk86ep9rgf98ttj52n8dadh2` stores a 172,034-byte, two-page PDF
+and 4,274 bytes of Markdown. The corrected minutes snapshot
+`js76769zsap7fwv3e1j6r2tqbh8db1cv` stores a 160,754-byte, seven-page PDF and
+12,696 bytes of Markdown. Immediate repeats reused both version 2 snapshot IDs.
+The earlier version 1 PDF snapshots remain in development as transparent spike
+evidence and contain rendered HTML rather than the source PDFs.
+
+`npm run verify` passes typechecking, 30 tests, the production build, and lint.
+The Convex review found no public function, auth, query-scan, validator, or
+unbounded-result issue in this change. A hosted development build was uploaded
+to `https://woozy-wren-227.convex.site`; a direct GET and the live readiness
+query passed. PR review caught a PDF body-stream timeout that could escape the
+structured failure path after response headers arrived. The downloader now
+records that case as retryable, and a regression test fails the stream after
+its first chunk. A later review found that Firecrawl Markdown and the direct PDF
+download could straddle an agency file replacement. PDF ingestion now brackets
+a forced fresh Firecrawl scrape with official-file downloads and commits only
+when both raw hashes agree. A regression test changes the PDF between those
+downloads and proves that no mixed snapshot is created. The revised processor
+was pushed to the personal development deployment and ingested the agenda again.
+Both official downloads matched around the fresh Firecrawl scrape, and the run
+reused snapshot `js7facykrk86ep9rgf98ttj52n8dadh2` at version 2. The final
+fail-closed content-type and PDF-signature checks passed the same live dev run
+and reused that snapshot again.
+
+Added the hackathon release path in the working tree. Pull requests run the full
+verification command. A reviewed merge to `main` will deploy the matching
+backend and frontend, apply the idempotent registry seed, and run a production
+smoke. The smoke script checks the direct `convex.site` origin, the canonical
+custom domain, the path-preserving apex redirect, a built JavaScript asset, and
+the live readiness query. Its read-only HTTP checks pass against the current
+production shell. The new release workflow has since run: this work merged through PR #5
+(`70ee961`), deployed the production backend and frontend, and the production
+smoke passed, so Slice 1 is live in production. No AI model call, AgentMail
+integration, authentication, public evidence interface, or public pipeline
+function exists yet.
+
+### 2026-08-28 - 74ce97e
+
+Implemented Slice 2, the cited atomic decision. Registered `@convex-dev/workflow`
+0.4.6 and built `extractSnapshotV1`, a durable workflow that runs the pipeline
+steps prepare, extract, validate, and complete, with the model step on a bounded
+three-attempt retry and parallelism capped at two. The pipeline ledger gained
+`extract` and `validate` stages, a `manual_extraction` trigger, and a private
+evidence set of `aiCalls`, `extractions`, `decisionCandidates`,
+`candidateFacts`, and `validationFindings` tables. The internal starter is
+idempotent on a key that hashes prompt, schema, and processor versions plus
+registry, snapshot, and target record, and it records the workflow ID on the run.
+
+Built the strict extraction contract v1 (`convex/extraction/contractV1.ts`) with
+a JSON Schema `response_format` for OpenAI Structured Outputs, a matching Convex
+validator, constrained JSON Pointer fact paths, and bounded fields. Built the Convex AI
+Gateway provider boundary (`convex/ai/`) that mints the scoped token in the
+action, posts Chat Completions with `reasoning_effort: "high"` and `store:
+false`, classifies refusals, length cutoffs, malformed and schema-invalid
+responses, transient and permanent HTTP failures, and keeps a direct OpenAI
+adapter behind the same interface, disabled unless configuration explicitly
+enables it. Every vendor attempt is recorded with route, model role, usage,
+cached and reasoning tokens, and an estimated cost from the architecture price
+table.
+
+Validation is fail-closed: snapshot basis, normalization, truncation, stored
+hash and size, and official-domain checks run before any model call and again at
+validation. The validator re-verifies the stored text, requires every cited
+snapshot ID and excerpt to resolve inside normalized source text, gates page
+numbers behind a page map, checks section-before-excerpt ordering, parses
+Louisiana meeting dates and public-action deadlines as zoned ISO timestamps
+supported by the cited date and time, requires amounts to be finite nonnegative
+two-decimal values that appear as complete money tokens in the excerpt, blocks
+agenda evidence from producing decided outcomes or votes, and requires exactly
+one fact row for every non-null material leaf. Unknown paths, duplicate paths,
+blank excerpts, and fact values that do not equal the stored candidate fail
+validation. Passing validation moves the candidate to
+`deterministically_validated`, which means ready for independent review, not
+published. No public decision, citation, review, or publication table exists
+yet.
+
+Added 40 tests around a `CO-029-2026` fixture derived from the official agenda.
+The tests ingest stubbed PDF and Firecrawl responses through `convex-test`, then
+use stubbed Gateway responses to cover ordered stages, transient retry without
+a second run, exhausted retry budgets, `Retry-After` evidence, permanent HTTP
+errors, malformed envelopes, replay after persistence, key composition, exact
+amount and time checks, page-map offsets, public-action deadlines, fact binding,
+and fail-closed model and source errors. Direct mutation tests prove that a run
+cannot complete before both stages agree, a workflow crash writes failure
+evidence, target IDs cannot cross runs, and a validated candidate cannot flip to
+failed. `npm run verify` passes typecheck, 70 tests, build, and lint.
+
+A manual file-by-file review after the first pull request pass found and fixed
+several gaps. Validation now checks page maps against the original source-text
+offsets instead of whitespace-collapsed offsets. Date evidence must match
+seconds when the source states them, and amount matching rejects numeric text
+embedded in identifiers. Ledger mutations verify run, stage, extraction,
+candidate, snapshot, source kind, and target ownership before changing state.
+Workflow-level failures create a failed extraction row, and successful run
+completion requires both stages to point to the same validated or not-found
+extraction. Failed ledger handoffs delete any newly stored raw model response
+instead of leaving an orphaned blob. Those changes used processor `v1.3`, so
+runs made under the earlier validator could not be reused.
+
+Proved the Slice 2 exit gate on the personal development deployment with the
+real processor v2 agenda snapshot `js7facykrk86ep9rgf98ttj52n8dadh2`. Three
+scoped Convex AI Gateway calls used `openai/gpt-5.6-terra`. The first response
+invented fact-path syntax and the second joined a heading to a later record
+line. Deterministic validation rejected both, and those failures led to prompt
+versions `v1.1` and `v1.2`. The `v1.2` call completed in one model attempt with
+2,418 prompt tokens, 1,609 completion tokens, 431 reasoning tokens, and an
+estimated cost of $0.024144. It produced a private `CO-029-2026` proposal with
+nine fact rows. Every excerpt resolved to the stored snapshot, every fact value
+matched its candidate field, both workflow stages succeeded, and the candidate
+reached `deterministically_validated`. Repeating the starter returned the same
+successful run with `reused: true` and made no new model call. Production is
+untouched.
+
+After the hard-review fixes, processor `v1.3` ran the same immutable snapshot
+again as workflow `jd77cjr93ffka05sxygsmk9cvs8dae8x`, pipeline run
+`jd7fdefsdfnwqzqfje6j44t9zs8dap09`, extraction
+`k97163nwwnsfn09ma10wvgaass8da9y2`, and candidate
+`k5702garn0ve9czhxa51b9022x8damkw`. Terra completed in one attempt with 2,418
+prompt tokens, 1,691 completion tokens, 469 reasoning tokens, and an estimated
+cost of $0.020781. The request used 2,415 cached input tokens. Both stages
+referenced the same extraction, the candidate reached
+`deterministically_validated`, all nine fact rows persisted, and no validation
+finding existed. Repeating the starter returned `reused: true`; the run still
+had one AI call. Production remained untouched.
+
+A second independent review found that a date-only citation accepted a
+timestamp with nonzero seconds. Processor `v1.4` now requires exact midnight
+when the source gives a date without a time. The same review added direct test
+coverage for target-record mismatches, agenda evidence claiming an outcome, and
+citations tied to another snapshot. It also replaced an unexplained AI-call
+query limit with the retry-derived six-call ceiling, rejects a seventh call
+instead of leaving it unlinked, caps validation-stage error details at 500
+characters, removes the duplicate extraction-version re-export, and documents
+why ESLint rather than TypeScript checks first-party unused symbols.
+
+Processor `v1.4` then ran snapshot `js7facykrk86ep9rgf98ttj52n8dadh2`
+as workflow `jd7bpj99vzmfbse5sq4z7zrsy18dcawg`, pipeline run
+`jd73w9yar4s5hc0mh3swbhbce58dc9rf`, extraction
+`k977t7yxh9fbmzv8y1edcaccy18ddnra`, and candidate
+`k571jxydqzev299r67v2d0ew2d8ddmcd`. Terra completed in one attempt with 2,418
+prompt tokens, 2,103 completion tokens, 816 reasoning tokens, and an estimated
+cost of $0.030072. Both stages referenced the same extraction, all nine fact
+rows persisted, the candidate reached `deterministically_validated`, and the
+run had no validation finding. Repeating the starter returned `reused: true`
+with the same run and workflow IDs; the run still had one AI call. Production
+remained untouched.
+
+<a id="2026-08-29"></a>
+
+### 2026-08-29 - 8df651c
+
+Implemented Slice 3 as a separate `reviewAndPublishCandidateV1` durable
+workflow. A validated candidate now queues an exact candidate, snapshot, and
+fact set for a high-reasoning `MODEL_FAST` review. Luna receives the candidate
+and cited spans, not the full source document, and must return one check for
+every stored fact under strict JSON Schema. The contract rejects missing,
+duplicate, unknown, or mismatched checks. The review model cannot match the
+Terra extraction model. Deterministic source and input-hash checks run before
+and after the model step (`convex/review/`, `convex/publication/`,
+`convex/extraction/workflow.ts`).
+
+Added immutable review, check, finding, decision-record, publication-version,
+and citation evidence. The final policy derives full, limited, or withheld from
+the stored checks. Luna cannot repair fields or choose the public payload. A
+limited version contains only source record ID, title, registered body, and
+official-source metadata. A withheld version cannot replace the last full or
+limited current pointer. The starter is internal and idempotent on the exact
+candidate plus review, policy, and payload versions (`convex/schema.ts`,
+`convex/operations/publication.ts`).
+
+Fourteen Slice 3 tests cover full publication, incomplete-source limiting,
+core evidence withholding, dishonest verdict rejection, same-model rejection,
+exact-check enforcement, current-pointer preservation, and replay. They also
+prove that a limited finding on a core field withholds the record, duplicate
+checks fail at persistence and finalization, a late failure cannot reuse a
+successful review, a gateway response cannot substitute the extraction model,
+and replay repairs a successful extraction that has no publication run. The
+extraction workflow now completes the extraction and starts publication in one
+mutation, so a scheduling failure rolls back both changes. The full suite passes
+84 tests, typecheck, build, prerender, and lint.
+
+The original Slice 3 proof ran on personal development deployment
+`woozy-wren-227` and set `MODEL_FAST_ID` there to
+`openai/gpt-5.6-luna`. Run `jd75t07cb5m350nt3fyys67e8n8dckn5`
+reviewed candidate `k571jxydqzev299r67v2d0ew2d8ddmcd` through Convex AI
+Gateway in one 11.953-second call. It used 1,707 prompt tokens, 1,281 completion
+tokens, 641 reasoning tokens, and an estimated $0.001879. Luna rejected the
+`recordType` and `lifecycleState` excerpts while supporting the core identity.
+The deterministic policy wrote limited version
+`ks74a1k6nh3gc49f5bby3q7vcn8dc6kz` with only three core citations. Replaying
+the starter returned `reused: true`, kept one AI call, and created no second
+version. PR #12 merged the reviewed hardening as `8df651c`. Production workflow
+`33261235916` verified the release, deployed the backend and frontend, applied
+the registry seed, and passed its smoke. An independent production smoke then
+passed the direct `convex.site` host, canonical domain, apex redirect, and
+readiness query. No production extraction or model review was run.
+
+### 2026-08-29 - ed9aebd
+
+Reduced the desktop Louisiana field so it supports the headline without
+filling the right side of the hero. Fine-pointer devices keep the hero-wide
+tilt and low-rate flare. Touch-first devices render one static WebGPU frame with
+no pointer listeners or ambient loop. Browser checks passed at 1414 by 872 and
+390 by 844 with the WebGPU render ready and no horizontal overflow. No
+deployment was made for that landing-page refinement at the time. The later
+`8df651c` release carried it to production.
+
+### 2026-08-29 - 28ba0c3
+
+Selected Field Notes as the production landing page in `cf828ad`, then replaced
+its hero note stack with an interactive three-dimensional Louisiana relief built
+with vGPU and WebGPU. The relief now shares the hero's page plane instead of
+sitting inside a card. Pointer movement anywhere across the hero controls its
+tilt. The solid dark slab keeps three labeled static cobalt launch pins,
+perimeter light, floor radiance, and one traveling flare behind the silhouette.
+The flare has a visible core, halo, and rotating beam but no scanning line or
+marker pulses. Ambient draws run at a low rate only while visible, pointer
+settling briefly runs faster, and reduced-motion mode holds one static frame.
+The ray walk and render resolution are capped, and the component keeps a static
+SVG fallback (`src/features/landing/`).
+
+Added Coss UI Button and Badge primitives, Base UI behavior, and semantic design
+tokens. Replaced the placeholder mark with a path-based double-P SVG and recorded
+the selected logo, Inter and Geist Mono typography, tokens, and component rules
+in the design system (`src/components/ui/`, `public/brand-mark.svg`,
+`docs/design-system.html`). Browser checks passed at desktop, 390-pixel, and
+320-pixel widths with the WebGPU render ready, hero-wide tilt responding, all
+three pin labels in view, and no horizontal overflow. The
+marketing header now uses the live-text name without the mark. On mobile, the
+headline appears before the Louisiana field while the state remains visible in
+the first viewport. Supporting copy follows the field. Sequence labels use plain
+numbers without leading zeroes, and the connector stops at step 4.
+`npm run verify` passes typechecking, 70 tests, the production build and
+prerender, and lint. No deployment was made.
+
+### 2026-08-29 - 0b49718
+
+Reconciled the public record with the release history. Slice 2 merged through
+PR #6 as `74ce97e`; production workflow `33222925340` deployed the reviewed
+private extraction backend and passed smoke. The real Terra extraction and
+idempotent replay ran in the personal development deployment, not production.
+At that checkpoint, release `0b49718` also passed its production workflow. The
+Slice 2 backend was deployed, while publication and independent Luna review
+remained unbuilt.
+
+### 2026-08-29 - 1ad6a8a
+
+Implemented Phase 1 Slice 4 in the personal development deployment. Added
+immutable source-snapshot comparisons and publication material changes. The
+change classifier distinguishes normalized source edits from raw-only churn and
+records field-level amendments, date or amount changes, decisions,
+postponements, cancellations, public-action changes, information limits, and
+information expansion. Withheld publication versions do not create a public
+change or replace the last accepted pointer (`convex/changes/`, `convex/publication/`,
+`convex/sources/snapshots.ts`).
+
+Added the `buildIssueV1` durable workflow with separate link, review, rank, and
+publish stages. Terra proposes one issue only from exact published decision
+versions and citations. A concrete shared signal must appear in evidence from
+every record, and each link reason must cite its own record plus another. Luna
+then reviews every proposed fact from the cited excerpts. Deterministic code
+removes unsupported factors, assigns the fixed 100-point score, and writes a
+full, limited, or withheld immutable issue version. The backend keeps atomic
+decision records, exact issue links, review checks, importance assessments, raw
+model response evidence, and idempotent build keys (`convex/issues/`,
+`convex/operations/issues.ts`, `convex/schema.ts`).
+
+Proved the path with real Lafayette agenda and minutes records `CO-022-2026` and
+`CO-023-2026`. Extraction prompt v1.4 produced full minutes publications with
+supported vote and approved-outcome facts. Issue
+`n57071y9n25rrs09yaanb1hz918dd1fs` links both records through cited references
+to Terrebonne Parish Consolidated Government. Luna accepted one
+`public_assets` consequence factor, and rubric v1 assigned 5 of 100 points with
+14 percent factor completeness. The evidence query returns both publication
+histories, the scheduled-to-decided progression, and the earlier limited-to-full
+expansion.
+
+The proof failed closed twice before acceptance. The first linker response used
+a mismatched fact value, which led to exact fact-copy instructions and raw
+failure-response persistence. The next candidate named the asset topic without
+stating what the approved action authorized, so Luna withheld issue version 1.
+Prompt v1.2 required a cited consequence statement. Luna then passed every fact,
+and deterministic policy wrote full issue version 2. Replaying the input records
+in reverse order returned the same build with `reused: true` and created no new
+model call or issue version. The accepted issue build used one Terra and one Luna
+AI Gateway call at an estimated combined cost of $0.042153.
+
+Reviewing the real development history caught two noisy change labels. A
+trailing-period edit had been called an amendment, and a full-to-limited
+evidence downgrade had been called an amount change because the limited payload
+omitted an empty amounts array. The classifier now suppresses punctuation,
+casing, and whitespace-only text edits and labels evidence downgrades
+`information_limited`. The two stale development rows were recomputed from
+their immutable publication payloads. The temporary internal repair operation
+was removed after use.
+
+A later code review found three more correctness gaps. Lifecycle labels now
+require an actual state transition. Losing time precision stays quiet, while a
+newly supported date or clock-time change is public. A terminal issue-build
+failure no longer reserves the deterministic input key, so the same evidence
+can retry and a later success resumes normal replay. Deterministic link
+validation also rejects the government body's own name or home jurisdiction as
+the only shared signal. Issue-link prompt v1.3 states the same rule.
+
+`npm run verify` passes typechecking, 110 tests across 14 files, the production
+build and prerender, and lint. The final schema and functions are ready on the
+personal development deployment. No new model call, production deployment, or
+public interface change was made.
+
+### 2026-08-29 - c162543
+
+Deployed Phase 1 Slice 4 through PR #13. Production workflow `33273984552`
+verified the merge commit, deployed the backend and static frontend, applied the
+idempotent registry seed, and passed its smoke. The independent production smoke
+then passed the direct Convex host, canonical domain, apex redirect, and
+readiness query. Production now has the Slice 4 evidence engine. No production
+extraction, model review, or issue build ran, so the real issue proof remains in
+the personal development deployment.
+
+<a id="2026-08-30"></a>
+
+### 2026-08-30 - e169cdf
+
+Completed the Slice 5 resident-interface decision grill and wrote one master
+plan for the full frontend. It fixes the sitemap, page hierarchy, responsive
+shell, evidence interaction, state matrix, connected flows, and eight bounded
+design-agent assignments. The plan uses real development evidence for the main
+flow and labeled local fixtures for unfinished integrations. No API, deployment,
+or working public feature is claimed (`docs/resident-interface-plan.md`,
+`docs/product-spec.md`, `docs/architecture.md`, `docs/build-plan.md`).
+
+### 2026-08-30 - 3996bfc
+
+Split implementation Slices 6 through 9 into 15 dependency-ordered PR packets:
+three for anonymous Ask and four each for accounts and email, coverage expansion,
+and release work. Each packet delivers a complete vertical capability with named
+dependencies, exclusions, tests, and runtime proof. Planned chat uses
+`@convex-dev/agent` for durable threads with `MODEL_FAST` through Convex AI
+Gateway. No component, API, resident feature, provider call, commit, or
+deployment is claimed
+(`docs/post-slice-5-pr-plan.md`, `docs/architecture.md`).
 
 ### 2026-08-30 - 4e2ac67
 
@@ -980,461 +697,798 @@ Convex host, canonical domain, apex redirect, and readiness query. No API,
 provider call, production feed projection, or working civic action is claimed
 (`docs/resident-interface-slice-2.md`, `src/features/discovery/`).
 
-### 2026-08-30 - 3996bfc
+### 2026-08-30 - 64e3f72
 
-Split implementation Slices 6 through 9 into 15 dependency-ordered PR packets:
-three for anonymous Ask and four each for accounts and email, coverage expansion,
-and release work. Each packet delivers a complete vertical capability with named
-dependencies, exclusions, tests, and runtime proof. Planned chat uses
-`@convex-dev/agent` for durable threads with `MODEL_FAST` through Convex AI
-Gateway. No component, API, resident feature, provider call, commit, or
-deployment is claimed
-(`docs/post-slice-5-pr-plan.md`, `docs/architecture.md`).
+Completed a controlled Lafayette City Council production onboarding from eight
+official PDFs. Production now has full current publications for CO-062 as
+postponed, CO-069 as decided, and CO-072 as scheduled. Every published material
+field has an exact citation into an immutable snapshot. The board-vacancy item
+remains a limited source-only publication because the agenda does not support
+the required timezone offset for its deadline. PRs #15 through #23 deployed the
+retrieval, lifecycle, review, and Firecrawl formatting fixes that the batch
+exposed. No production issue build, importance assessment, or resident feed
+projection ran.
 
-### 2026-08-30 - e169cdf
+### 2026-08-30 - 6cd03da
 
-Completed the Slice 5 resident-interface decision grill and wrote one master
-plan for the full frontend. It fixes the sitemap, page hierarchy, responsive
-shell, evidence interaction, state matrix, connected flows, and eight bounded
-design-agent assignments. The plan uses real development evidence for the main
-flow and labeled local fixtures for unfinished integrations. No API, deployment,
-or working public feature is claimed (`docs/resident-interface-plan.md`,
-`docs/product-spec.md`, `docs/architecture.md`, `docs/build-plan.md`).
+Refined the Slice 2 resident hierarchy after a phone review. Decision cards now
+use a ruled header, status pill, evidence footer, and the shared Coss primary
+and outline button treatments. "Watching" uses the main text color, and the
+Coverage navigation item uses the Louisiana outline instead of a shield.
+Resident pages no longer show fixture banners. The existing `?fixture=` query
+states remain silent QA controls and do not prove production data. Browser
+checks at 320, 375, 390, 414, 768, 1280, and 1440 pixels found no horizontal
+overflow. At 390 pixels, every tested standalone resident control measured 44
+pixels tall. `npm run verify` passed typecheck, 162 tests across 19 files, the
+production client and server builds, prerender, and lint. No backend, provider,
+production feed, or deployment is claimed
+(`src/features/discovery/`, `src/features/resident-blueprint/`).
 
-### 2026-08-29 - c162543
+### 2026-08-30 - ee05d8d
 
-Deployed Phase 1 Slice 4 through PR #13. Production workflow `33273984552`
-verified the merge commit, deployed the backend and static frontend, applied the
-idempotent registry seed, and passed its smoke. The independent production smoke
-then passed the direct Convex host, canonical domain, apex redirect, and
-readiness query. Production now has the Slice 4 evidence engine. No production
-extraction, model review, or issue build ran, so the real issue proof remains in
-the personal development deployment.
+Closed a review finding that unlabeled fixtures could look like real civic
+records. Development builds now require an explicit `?fixture=` scenario before
+rendering fixture records. Production builds ignore fixture parameters and show
+an honest empty state until the resident projection is connected. A production
+preview at 390 pixels rendered zero fixture cards on Home, For You, and Explore,
+including URLs with `?fixture=update`. The same URLs still rendered the full QA
+states on the development server. `npm run verify` passed typecheck, 163 tests
+across 19 files, the production client and server builds, prerender, and lint.
+No deployment is claimed (`src/features/discovery/`).
 
-### 2026-08-29 - 1ad6a8a
+### 2026-08-30 - 0eed59c
 
-Implemented Phase 1 Slice 4 in the personal development deployment. Added
-immutable source-snapshot comparisons and publication material changes. The
-change classifier distinguishes normalized source edits from raw-only churn and
-records field-level amendments, date or amount changes, decisions,
-postponements, cancellations, public-action changes, information limits, and
-information expansion. Withheld publication versions do not create a public
-change or replace the last accepted pointer (`convex/changes/`, `convex/publication/`,
-`convex/sources/snapshots.ts`).
+Extended the production fixture gate to every scenario-derived state, including
+signed-in areas, update rows, degraded notices, empty scenarios, and section
+failures. A production preview at 390 pixels checked all 14 Home, For You, and
+Explore fixture scenarios. Each rendered zero fixture cards, update rows,
+failure states, fixture notices, and known fixture copy without horizontal
+overflow. Development checks still rendered the explicit update, signed-in, and
+section-failure scenarios. `npm run verify` passed typecheck, 163 tests across 19
+files, the production client and server builds, prerender, and lint. No
+deployment is claimed (`src/features/discovery/`).
 
-Added the `buildIssueV1` durable workflow with separate link, review, rank, and
-publish stages. Terra proposes one issue only from exact published decision
-versions and citations. A concrete shared signal must appear in evidence from
-every record, and each link reason must cite its own record plus another. Luna
-then reviews every proposed fact from the cited excerpts. Deterministic code
-removes unsupported factors, assigns the fixed 100-point score, and writes a
-full, limited, or withheld immutable issue version. The backend keeps atomic
-decision records, exact issue links, review checks, importance assessments, raw
-model response evidence, and idempotent build keys (`convex/issues/`,
-`convex/operations/issues.ts`, `convex/schema.ts`).
+### 2026-08-30 - b22e321
 
-Proved the path with real Lafayette agenda and minutes records `CO-022-2026` and
-`CO-023-2026`. Extraction prompt v1.4 produced full minutes publications with
-supported vote and approved-outcome facts. Issue
-`n57071y9n25rrs09yaanb1hz918dd1fs` links both records through cited references
-to Terrebonne Parish Consolidated Government. Luna accepted one
-`public_assets` consequence factor, and rubric v1 assigned 5 of 100 points with
-14 percent factor completeness. The evidence query returns both publication
-histories, the scheduled-to-decided progression, and the earlier limited-to-full
-expansion.
+Deployed the Slice 2 owner phone-review refinements through PR #25. Production
+workflow `33324166404` verified the merge, deployed the backend and frontend,
+seeded source configuration, and passed its smoke. The independent production
+smoke then passed the direct Convex host, canonical domain, apex redirect, and
+backend readiness query. A live 390-pixel check confirmed one-color Watching
+text, the Louisiana Coverage icon, 44-pixel Coverage actions, no fixture banner,
+and no fixture state at `?fixture=update`. The fixture URLs remain
+development-only. No production resident projection is claimed.
 
-The proof failed closed twice before acceptance. The first linker response used
-a mismatched fact value, which led to exact fact-copy instructions and raw
-failure-response persistence. The next candidate named the asset topic without
-stating what the approved action authorized, so Luna withheld issue version 1.
-Prompt v1.2 required a cited consequence statement. Luna then passed every fact,
-and deterministic policy wrote full issue version 2. Replaying the input records
-in reverse order returned the same build with `reused: true` and created no new
-model call or issue version. The accepted issue build used one Terra and one Luna
-AI Gateway call at an estimated combined cost of $0.042153.
+### 2026-08-30 - 409a3e1
 
-Reviewing the real development history caught two noisy change labels. A
-trailing-period edit had been called an amendment, and a full-to-limited
-evidence downgrade had been called an amount change because the limited payload
-omitted an empty amounts array. The classifier now suppresses punctuation,
-casing, and whitespace-only text edits and labels evidence downgrades
-`information_limited`. The two stale development rows were recomputed from
-their immutable publication payloads. The temporary internal repair operation
-was removed after use.
+Connected Home, For You, and Explore to current full and limited atomic
+publications through a bounded public Convex query. The query returns only
+accepted resident fields, hides withheld versions, and fails closed on stale
+publication pointers. Live cards identify themselves as published decision
+records and open the accepted official source. They do not invent issue
+ranking, topics, or consequence text. Explicit fixture URLs still drive
+development QA and remain disabled in production. The development deployment
+returned four accepted records. `npm run verify` passed typecheck, 169 tests
+across 21 files, the production builds, prerender, and lint. Production-preview
+checks at 390 and 1,440 pixels found no horizontal overflow, rendered four
+official-source links, and ignored fixture parameters. PR #26 merged this exact
+commit and the production release passed its workflow and independent smoke
+(`convex/resident/discovery.ts`, `src/features/discovery/`).
 
-A later code review found three more correctness gaps. Lifecycle labels now
-require an actual state transition. Losing time precision stays quiet, while a
-newly supported date or clock-time change is public. A terminal issue-build
-failure no longer reserves the deterministic input key, so the same evidence
-can retry and a later success resumes normal replay. Deterministic link
-validation also rejects the government body's own name or home jurisdiction as
-the only shared signal. Issue-link prompt v1.3 states the same rule.
+### 2026-08-30 - ac0cc55
 
-`npm run verify` passes typechecking, 110 tests across 14 files, the production
-build and prerender, and lint. The final schema and functions are ready on the
-personal development deployment. No new model call, production deployment, or
-public interface change was made.
+Implemented resident issue, atomic decision, meeting, and citation-level
+evidence pages against explicit development fixtures. Material claims open an
+exact official excerpt in a mobile Coss drawer or desktop evidence rail, keep
+the selected citation in the URL, and return focus to the opening Source
+control. Full, limited, delayed, historical, uncertain, before-minutes,
+after-minutes, and live-update states are covered. Production builds ignore the
+fixture parameters and render recovery pages because real detail queries are
+not connected. Runtime checks at 320, 390, and 1,440 pixels found no horizontal
+overflow. `npm run verify` passed typecheck, 194 tests across 23 files, the
+production builds, prerender, and lint. No deployment is claimed
+(`src/features/evidence/`, `docs/resident-interface-slice-3.md`).
 
-### 2026-08-29 - 0b49718
+A review pass then hardened the evidence viewer. Closing the desktop panel
+returns focus to the opening Source control in an effect after the commit
+instead of inside a requestAnimationFrame, so the restore no longer depends on
+the browser painting a frame. Escape closes the panel, the Source controls
+aria-controls target exists while nothing is selected, and the live-update
+fixture matches the timeline entry it moves by its date instead of a
+hard-coded string. The open, close, Escape, focus-return, and deep-link paths
+were checked in the local browser. Suite re-validation is deferred to the pull
+request checks (`src/features/evidence/evidence-surface.tsx`,
+`src/features/evidence/evidence-model.ts`).
 
-Reconciled the public record with the release history. Slice 2 merged through
-PR #6 as `74ce97e`; production workflow `33222925340` deployed the reviewed
-private extraction backend and passed smoke. The real Terra extraction and
-idempotent replay ran in the personal development deployment, not production.
-At that checkpoint, release `0b49718` also passed its production workflow. The
-Slice 2 backend was deployed, while publication and independent Luna review
-remained unbuilt.
+### 2026-08-30 - 3a59e45
 
-### 2026-08-29 - 28ba0c3
+PR #27 passed its first GitHub verification run. PR-Agent found an inherited-key
+crash in citation URL validation and three fixture rows whose destination did
+not match their displayed record. Citation lookup now requires an own property.
+The unsupported water-meter record link is gone, and the April meeting rows
+open matching routine records. New invariants cover inherited citation ids and
+meeting-row title mismatches. Revalidation is deferred to the next PR checks
+(`src/features/evidence/contracts.ts`, `src/features/evidence/record-fixtures.ts`).
 
-Selected Field Notes as the production landing page in `cf828ad`, then replaced
-its hero note stack with an interactive three-dimensional Louisiana relief built
-with vGPU and WebGPU. The relief now shares the hero's page plane instead of
-sitting inside a card. Pointer movement anywhere across the hero controls its
-tilt. The solid dark slab keeps three labeled static cobalt launch pins,
-perimeter light, floor radiance, and one traveling flare behind the silhouette.
-The flare has a visible core, halo, and rotating beam but no scanning line or
-marker pulses. Ambient draws run at a low rate only while visible, pointer
-settling briefly runs faster, and reduced-motion mode holds one static frame.
-The ray walk and render resolution are capped, and the component keeps a static
-SVG fallback (`src/features/landing/`).
+The next full-context review found two responsive defects. Accepted detail
+labels and values now stay together in the content column instead of entering
+the evidence gutter. The mobile drawer retains its last citation and size until
+the close transition finishes. Browser checks measured aligned definition rows
+at 1,280 pixels with no overflow and kept the excerpt visible during the
+390-pixel drawer exit. Automated revalidation remains with PR checks
+(`src/features/evidence/decision-page.tsx`,
+`src/features/evidence/evidence-surface.tsx`).
 
-Added Coss UI Button and Badge primitives, Base UI behavior, and semantic design
-tokens. Replaced the placeholder mark with a path-based double-P SVG and recorded
-the selected logo, Inter and Geist Mono typography, tokens, and component rules
-in the design system (`src/components/ui/`, `public/brand-mark.svg`,
-`docs/design-system.html`). Browser checks passed at desktop, 390-pixel, and
-320-pixel widths with the WebGPU render ready, hero-wide tilt responding, all
-three pin labels in view, and no horizontal overflow. The
-marketing header now uses the live-text name without the mark. On mobile, the
-headline appears before the Louisiana field while the state remains visible in
-the first viewport. Supporting copy follows the field. Sequence labels use plain
-numbers without leading zeroes, and the connector stops at step 4.
-`npm run verify` passes typechecking, 70 tests, the production build and
-prerender, and lint. No deployment was made.
+The final full-context review found that static imports still placed the
+development evidence fixtures in the production JavaScript graph even though
+the runtime gate prevented rendering them. Route loaders now fetch the fixture
+modules through development-only dynamic imports. The production build can
+drop the fabricated excerpts entirely. Citation URLs opened without a click
+now record the first matching Source control as their focus-return target. The
+next PR checks own automated revalidation
+(`src/features/evidence/evidence-page.data.ts`,
+`src/features/evidence/evidence-surface.tsx`).
 
-### 2026-08-29 - ed9aebd
+PR #27 merged as `3a59e45`. GitHub verified typecheck, 194 tests across 23
+files, the client and server builds, prerender, and lint on the final branch
+head. PR-Agent reviewed that exact head with no major or security findings.
+Production workflow `33332573558` deployed the backend and frontend, seeded the
+source configuration, and passed its smoke. The independent production smoke
+then passed the direct Convex host, canonical domain, apex redirect, and backend
+readiness query.
 
-Reduced the desktop Louisiana field so it supports the headline without
-filling the right side of the hero. Fine-pointer devices keep the hero-wide
-tilt and low-rate flare. Touch-first devices render one static WebGPU frame with
-no pointer listeners or ambient loop. Browser checks passed at 1414 by 872 and
-390 by 844 with the WebGPU render ready and no horizontal overflow. No
-deployment was made for that landing-page refinement at the time. The later
-`8df651c` release carried it to production.
+### 2026-08-30 - PR #28 review
 
-### 2026-08-29 - 8df651c
+Implemented resident-interface Design Slice 4 (Ask Public Parish) and opened
+PR #28. The review record below predates the later `ff36c1b` merge.
 
-Implemented Slice 3 as a separate `reviewAndPublishCandidateV1` durable
-workflow. A validated candidate now queues an exact candidate, snapshot, and
-fact set for a high-reasoning `MODEL_FAST` review. Luna receives the candidate
-and cited spans, not the full source document, and must return one check for
-every stored fact under strict JSON Schema. The contract rejects missing,
-duplicate, unknown, or mismatched checks. The review model cannot match the
-Terra extraction model. Deterministic source and input-hash checks run before
-and after the model step (`convex/review/`, `convex/publication/`,
-`convex/extraction/workflow.ts`).
+The route renders corpus, issue, and meeting scope behind a hard production
+availability gate: a two-question cited thread on the real CO-022-2026 and
+CO-023-2026 records, not-found, checking, expiry, cooldown, CAPTCHA, retryable
+and terminal provider failures, offline, recent same-device handles, and the
+shipped evidence viewer with multi-source claims. The private `q=` URL handoff
+is replaced by an in-memory draft that never enters a URL or history state.
+Eleven presentation scenarios load through a DEV-only dynamic import;
+production never requests the fixture module.
 
-Added immutable review, check, finding, decision-record, publication-version,
-and citation evidence. The final policy derives full, limited, or withheld from
-the stored checks. Luna cannot repair fields or choose the public payload. A
-limited version contains only source record ID, title, registered body, and
-official-source metadata. A withheld version cannot replace the last full or
-limited current pointer. The starter is internal and idempotent on the exact
-candidate plus review, policy, and payload versions (`convex/schema.ts`,
-`convex/operations/publication.ts`).
+The first `npm run verify` run passed on the branch with 194 tests across 23
+files, typecheck, the production build, prerender, and lint. A later ship review
+added focused Ask coverage for route privacy, scope restoration, in-memory draft
+consumption, citation accounting, production fixture gating, duplicate-submit
+protection, the compact thread composer, and named official contacts. GitHub
+Actions owns validation for the follow-up commit.
 
-Fourteen Slice 3 tests cover full publication, incomplete-source limiting,
-core evidence withholding, dishonest verdict rejection, same-model rejection,
-exact-check enforcement, current-pointer preservation, and replay. They also
-prove that a limited finding on a core field withholds the record, duplicate
-checks fail at persistence and finalization, a late failure cannot reuse a
-successful review, a gateway response cannot substitute the extraction model,
-and replay repairs a successful extraction that has no publication run. The
-extraction workflow now completes the extraction and starts publication in one
-mutation, so a scheduling failure rolls back both changes. The full suite passes
-84 tests, typecheck, build, prerender, and lint.
+The follow-up reviewer found that the existing scope-change confirmation was
+attached to a recent-list branch that could not run. Route scope changes could
+therefore clear an active thread without asking. The confirmation now intercepts
+the real route transition, keeps the current scope and conversation on cancel,
+and starts the new scope only after confirmation.
 
-The original Slice 3 proof ran on personal development deployment
-`woozy-wren-227` and set `MODEL_FAST_ID` there to
-`openai/gpt-5.6-luna`. Run `jd75t07cb5m350nt3fyys67e8n8dckn5`
-reviewed candidate `k571jxydqzev299r67v2d0ew2d8ddmcd` through Convex AI
-Gateway in one 11.953-second call. It used 1,707 prompt tokens, 1,281 completion
-tokens, 641 reasoning tokens, and an estimated $0.001879. Luna rejected the
-`recordType` and `lifecycleState` excerpts while supporting the core identity.
-The deterministic policy wrote limited version
-`ks74a1k6nh3gc49f5bby3q7vcn8dc6kz` with only three core citations. Replaying
-the starter returned `reused: true`, kept one AI call, and created no second
-version. PR #12 merged the reviewed hardening as `8df651c`. Production workflow
-`33261235916` verified the release, deployed the backend and frontend, applied
-the registry seed, and passed its smoke. An independent production smoke then
-passed the direct `convex.site` host, canonical domain, apex redirect, and
-readiness query. No production extraction or model review was run.
+The next reviews caught four related edge cases. Corpus scope identity dropped
+the selected public area, and canceling a cross-scope handoff discarded its
+draft. Corpus identities now retain the area key. Cancel restores the old route
+after saving the incoming draft to its in-memory scope handoff, and unrelated
+scope transitions no longer consume that draft. Opening a recent conversation
+now updates the public route to the conversation's scope instead of leaving the
+URL on the previous evidence scope.
 
-### 2026-08-28 - 74ce97e
+Four checked-in fixes came out of CI and review rather than from me reading the
+diff first. Verify caught a decision page still passing the old string scope,
+then seventeen lint errors in the new module. The reviewer then found two real
+defects: the record pages invited a question and dropped it at the unavailable
+gate, and the page cleared its own cooldown while the adapter kept refusing, so
+Send did nothing at all. A third finding about a stale closure in the expiry
+sweep was wrong and was dismissed with a written reason; the effect closes over
+the conversation object, so the field is read fresh on every tick.
 
-Implemented Slice 2, the cited atomic decision. Registered `@convex-dev/workflow`
-0.4.6 and built `extractSnapshotV1`, a durable workflow that runs the pipeline
-steps prepare, extract, validate, and complete, with the model step on a bounded
-three-attempt retry and parallelism capped at two. The pipeline ledger gained
-`extract` and `validate` stages, a `manual_extraction` trigger, and a private
-evidence set of `aiCalls`, `extractions`, `decisionCandidates`,
-`candidateFacts`, and `validationFindings` tables. The internal starter is
-idempotent on a key that hashes prompt, schema, and processor versions plus
-registry, snapshot, and target record, and it records the workflow ID on the run.
+The adapter contract needed three additions the handoff did not specify:
+`subscribe` for the realtime channel a Convex backend will own,
+`resolveChallenge` for the abuse adapter, and `clearRecent` because the adapter
+owns same-device handle storage.
 
-Built the strict extraction contract v1 (`convex/extraction/contractV1.ts`) with
-a JSON Schema `response_format` for OpenAI Structured Outputs, a matching Convex
-validator, constrained JSON Pointer fact paths, and bounded fields. Built the Convex AI
-Gateway provider boundary (`convex/ai/`) that mints the scoped token in the
-action, posts Chat Completions with `reasoning_effort: "high"` and `store:
-false`, classifies refusals, length cutoffs, malformed and schema-invalid
-responses, transient and permanent HTTP failures, and keeps a direct OpenAI
-adapter behind the same interface, disabled unless configuration explicitly
-enables it. Every vendor attempt is recorded with route, model role, usage,
-cached and reasoning tokens, and an estimated cost from the architecture price
-table.
+No chat backend exists behind any of this. Ask stays in production navigation
+showing the honest unavailable state, and the record pages show that same
+message instead of a composer.
 
-Validation is fail-closed: snapshot basis, normalization, truncation, stored
-hash and size, and official-domain checks run before any model call and again at
-validation. The validator re-verifies the stored text, requires every cited
-snapshot ID and excerpt to resolve inside normalized source text, gates page
-numbers behind a page map, checks section-before-excerpt ordering, parses
-Louisiana meeting dates and public-action deadlines as zoned ISO timestamps
-supported by the cited date and time, requires amounts to be finite nonnegative
-two-decimal values that appear as complete money tokens in the excerpt, blocks
-agenda evidence from producing decided outcomes or votes, and requires exactly
-one fact row for every non-null material leaf. Unknown paths, duplicate paths,
-blank excerpts, and fact values that do not equal the stored candidate fail
-validation. Passing validation moves the candidate to
-`deterministically_validated`, which means ready for independent review, not
-published. No public decision, citation, review, or publication table exists
-yet.
+<a id="2026-08-31"></a>
 
-Added 40 tests around a `CO-029-2026` fixture derived from the official agenda.
-The tests ingest stubbed PDF and Firecrawl responses through `convex-test`, then
-use stubbed Gateway responses to cover ordered stages, transient retry without
-a second run, exhausted retry budgets, `Retry-After` evidence, permanent HTTP
-errors, malformed envelopes, replay after persistence, key composition, exact
-amount and time checks, page-map offsets, public-action deadlines, fact binding,
-and fail-closed model and source errors. Direct mutation tests prove that a run
-cannot complete before both stages agree, a workflow crash writes failure
-evidence, target IDs cannot cross runs, and a validated candidate cannot flip to
-failed. `npm run verify` passes typecheck, 70 tests, build, and lint.
+### 2026-08-31 - ff36c1b
 
-A manual file-by-file review after the first pull request pass found and fixed
-several gaps. Validation now checks page maps against the original source-text
-offsets instead of whitespace-collapsed offsets. Date evidence must match
-seconds when the source states them, and amount matching rejects numeric text
-embedded in identifiers. Ledger mutations verify run, stage, extraction,
-candidate, snapshot, source kind, and target ownership before changing state.
-Workflow-level failures create a failed extraction row, and successful run
-completion requires both stages to point to the same validated or not-found
-extraction. Failed ledger handoffs delete any newly stored raw model response
-instead of leaving an orphaned blob. Those changes used processor `v1.3`, so
-runs made under the earlier validator could not be reused.
+PR #28 merged the Ask Public Parish interface as `ff36c1b`. Production workflow
+`33389489990` succeeded for that exact commit. This session did not repeat the
+independent production smoke.
 
-Proved the Slice 2 exit gate on the personal development deployment with the
-real processor v2 agenda snapshot `js7facykrk86ep9rgf98ttj52n8dadh2`. Three
-scoped Convex AI Gateway calls used `openai/gpt-5.6-terra`. The first response
-invented fact-path syntax and the second joined a heading to a later record
-line. Deterministic validation rejected both, and those failures led to prompt
-versions `v1.1` and `v1.2`. The `v1.2` call completed in one model attempt with
-2,418 prompt tokens, 1,609 completion tokens, 431 reasoning tokens, and an
-estimated cost of $0.024144. It produced a private `CO-029-2026` proposal with
-nine fact rows. Every excerpt resolved to the stored snapshot, every fact value
-matched its candidate field, both workflow stages succeeded, and the candidate
-reached `deterministically_validated`. Repeating the starter returned the same
-successful run with `reused: true` and made no new model call. Production is
-untouched.
+### 2026-08-31 - f0b46ec
 
-After the hard-review fixes, processor `v1.3` ran the same immutable snapshot
-again as workflow `jd77cjr93ffka05sxygsmk9cvs8dae8x`, pipeline run
-`jd7fdefsdfnwqzqfje6j44t9zs8dap09`, extraction
-`k97163nwwnsfn09ma10wvgaass8da9y2`, and candidate
-`k5702garn0ve9czhxa51b9022x8damkw`. Terra completed in one attempt with 2,418
-prompt tokens, 1,691 completion tokens, 469 reasoning tokens, and an estimated
-cost of $0.020781. The request used 2,415 cached input tokens. Both stages
-referenced the same extraction, the candidate reached
-`deterministically_validated`, all nine fact rows persisted, and no validation
-finding existed. Repeating the starter returned `reused: true`; the run still
-had one AI call. Production remained untouched.
+Implemented resident-interface Design Slice 5 against development-only typed
+fixtures. The new follow flow preserves the chosen cadence through equal Google
+and email-only paths, keeps the target, cadence, and destination visible, and
+does not show `Following` before the fixture confirms the action. Following,
+saved areas and topics, notification preferences, immediate and roundup email
+layouts, and scoped email-only management now replace their low-fidelity route
+blueprints.
 
-A second independent review found that a date-only citation accepted a
-timestamp with nonzero seconds. Processor `v1.4` now requires exact midnight
-when the source gives a date without a time. The same review added direct test
-coverage for target-record mismatches, agenda evidence claiming an outcome, and
-citations tied to another snapshot. It also replaced an unexplained AI-call
-query limit with the retry-derived six-call ceiling, rejects a seventh call
-instead of leaving it unlinked, caps validation-stage error details at 500
-characters, removes the duplicate extraction-version re-export, and documents
-why ESLint rather than TypeScript checks first-party unused symbols.
+Production still has no Convex Auth or AgentMail follow integration. Routes
+without an explicit development fixture show an honest unavailable state and
+load no fixture subscription data. Browser checks covered 320, 375, 390, 1280,
+and 1440 CSS pixels without horizontal overflow. The email verification path,
+Google return, empty and degraded lists, frequency changes, mute, one-target
+unfollow with Undo, saved-area add and removal, and expired management links
+were exercised manually. The email management page also opens on the cadence
+saved by that subscription.
+Automated validation remains deferred to pull-request CI
+(`src/features/following/`, `src/routes/following*`,
+`src/routes/email.manage.$token.tsx`).
 
-Processor `v1.4` then ran snapshot `js7facykrk86ep9rgf98ttj52n8dadh2`
-as workflow `jd7bpj99vzmfbse5sq4z7zrsy18dcawg`, pipeline run
-`jd73w9yar4s5hc0mh3swbhbce58dc9rf`, extraction
-`k977t7yxh9fbmzv8y1edcaccy18ddnra`, and candidate
-`k571jxydqzev299r67v2d0ew2d8ddmcd`. Terra completed in one attempt with 2,418
-prompt tokens, 2,103 completion tokens, 816 reasoning tokens, and an estimated
-cost of $0.030072. Both stages referenced the same extraction, all nine fact
-rows persisted, the candidate reached `deterministically_validated`, and the
-run had no validation finding. Repeating the starter returned `reused: true`
-with the same run and workflow IDs; the run still had one AI call. Production
-remained untouched.
+### 2026-08-31 - 9d6751d
 
-### 2026-08-28 - 70ee961
+PR #31 review found that muting a target could discard a cadence change that
+the resident had not saved yet. The management sheet now owns one cadence draft
+per opening. Mute and resume leave that draft visible, while closing without
+saving discards it. The exact choose-weekly, mute, close, and reopen sequence
+was replayed in the browser without overflow or runtime warnings. GitHub Actions
+will rerun the automated gate after the fix is pushed.
 
-Built and deployed the Slice 1 source ledger and retrieval processor v2 to the
-personal development deployment `woozy-wren-227`. Production remained
-untouched. The schema holds jurisdictions, bodies, registries, per-source
-immutable snapshot chains, pipeline runs, and stage evidence. The processor
-checks requested and final URLs, requires a successful target status, hashes
-the raw artifact separately from normalized Markdown, reuses only the current
-source-chain head with the same raw hash, and cleans redundant or failed file
-uploads (`convex/schema.ts`, `convex/operations/ingest.ts`, `convex/sources/`,
-`convex/pipeline/`).
+### 2026-08-31 - adfe81e
 
-The real Lafayette council hub created processor v2 snapshot
-`js7c4pvv6xx0x1p8d9hk3zw64s8danvf`. It stores 37,372 bytes of normalized
-Markdown and 131,799 bytes of raw HTML. The raw artifact hash starts
-`d02b2171…`; its separate normalized hash starts `53188bd7…`. An immediate
-repeat reused the same snapshot ID and version 2.
+PR #31 deployed resident-interface Design Slice 5. Exact production workflow
+`33401768387` and the independent smoke passed the Convex host, canonical
+domain, apex redirect, asset delivery, and production readiness query. The
+deployed code keeps follows unavailable until Auth and AgentMail pass their
+integration gates.
 
-Expanded the Lafayette registry from one seed to the council hub, council
-document search, and schedule/research pages. A bounded Firecrawl map found 19
-official council pages. The portal did not expose individual records to the
-map, so two official-domain-restricted Firecrawl searches found 50 ranked
-candidates, including stable `/obcouncil/api/Document/<id>/` records. The
-official portal query paired the April 21, 2026 Lafayette City Council agenda
-with its minutes.
+### 2026-08-31 - 0853f69
 
-The first PDF spike revealed that Firecrawl's `rawHtml` is a rendered
-representation, not the original PDF. The processor now keeps Firecrawl's
-Markdown extraction and downloads the approved official PDF as the immutable
-raw artifact. That download checks redirects, status, and content type, stops
-after 60 seconds, and enforces a streamed 25 MB limit. The corrected agenda
-snapshot `js7facykrk86ep9rgf98ttj52n8dadh2` stores a 172,034-byte, two-page PDF
-and 4,274 bytes of Markdown. The corrected minutes snapshot
-`js76769zsap7fwv3e1j6r2tqbh8db1cv` stores a 160,754-byte, seven-page PDF and
-12,696 bytes of Markdown. Immediate repeats reused both version 2 snapshot IDs.
-The earlier version 1 PDF snapshots remain in development as transparent spike
-evidence and contain rendered HTML rather than the source PDFs.
+Implemented resident-interface Design Slice 6 against explicit development
+fixtures. Coverage now explains five written source-health states body by body,
+keeps accepted records distinct from complete coverage, records coverage demand
+without starting source work, explains the evidence method, and sends source
+problems through a private form. Production routes remain unavailable until
+their real coverage, request, and private-delivery paths pass their gates.
+Browser checks covered the request, email verification, duplicate, rate-limit,
+notice-delivery failure, follow, area-selector, and report paths from 320
+through 1440 CSS pixels without application overflow. Automated validation
+remains with the pull-request checks (`src/features/coverage/`,
+`src/routes/coverage*`, `src/routes/how-it-works.tsx`).
 
-`npm run verify` passes typechecking, 30 tests, the production build, and lint.
-The Convex review found no public function, auth, query-scan, validator, or
-unbounded-result issue in this change. A hosted development build was uploaded
-to `https://woozy-wren-227.convex.site`; a direct GET and the live readiness
-query passed. PR review caught a PDF body-stream timeout that could escape the
-structured failure path after response headers arrived. The downloader now
-records that case as retryable, and a regression test fails the stream after
-its first chunk. A later review found that Firecrawl Markdown and the direct PDF
-download could straddle an agency file replacement. PDF ingestion now brackets
-a forced fresh Firecrawl scrape with official-file downloads and commits only
-when both raw hashes agree. A regression test changes the PDF between those
-downloads and proves that no mixed snapshot is created. The revised processor
-was pushed to the personal development deployment and ingested the agenda again.
-Both official downloads matched around the fresh Firecrawl scrape, and the run
-reused snapshot `js7facykrk86ep9rgf98ttj52n8dadh2` at version 2. The final
-fail-closed content-type and PDF-signature checks passed the same live dev run
-and reused that snapshot again.
+### 2026-08-31 - Design Slice 7 review
 
-Added the hackathon release path in the working tree. Pull requests run the full
-verification command. A reviewed merge to `main` will deploy the matching
-backend and frontend, apply the idempotent registry seed, and run a production
-smoke. The smoke script checks the direct `convex.site` origin, the canonical
-custom domain, the path-preserving apex redirect, a built JavaScript asset, and
-the live readiness query. Its read-only HTTP checks pass against the current
-production shell. The new release workflow has since run: this work merged through PR #5
-(`70ee961`), deployed the production backend and frontend, and the production
-smoke passed, so Slice 1 is live in production. No AI model call, AgentMail
-integration, authentication, public evidence interface, or public pipeline
-function exists yet.
+Implemented resident-interface Design Slice 7 for pull-request review. Shared
+route completion now updates the page title and focuses the new heading, which
+reads the page name once instead of twice. Loading actions keep their written
+label inside a mirrored spinner slot that holds the width and keeps the label
+centered. Discovery refreshes announce accepted updates, sheets focus their
+written Close control and return focus after a delay read from the
+`--dur-standard` motion token, Explore's search input stretches to fill its
+field, and reduced-motion rules cover resident transitions and spinners. A browser sweep
+checked 14 development routes at 320, 375, 414, 768, 1280, and 1440 CSS pixels.
+All 84 frames had one main region, a visible page heading, named visible form
+fields, full-size written controls, and no page-level horizontal overflow.
+Automated validation remains with pull-request CI
+(`src/features/resident-blueprint/`, `src/features/discovery/`,
+`src/components/ui/button.tsx`).
 
-### 2026-08-27 - dd12d01
+### 2026-08-31 - 432645b
 
-Established separate hosted development and production environments. The Phase
-0 shell passed its hosted development smoke before the matching Convex backend
-and static frontend were promoted to production. Renamed the product, GitHub
-repository, local remote, and Convex project to Public Parish and
-`public-parish`. GitHub redirects the former repository URL; the Convex
-deployment names and public URLs remain unchanged.
+PR #33 fixed review completion budgets for high reasoning effort, merged as
+`fd03192`, deployed to production, and passed the independent production smoke.
+PR #35 moved review findings onto exact fact paths or `null`; a development
+retry then published the previously blocked Rapides millage-election record as
+limited. It merged as `434c263`. Exact production workflow `33419095880` and an
+independent production smoke passed.
 
-Attached `https://www.publicparish.com` directly to the production Convex HTTP
-router and set it as the production `CONVEX_SITE_URL`. Added a redirect-only
-Vercel project for the bare domain so paths and query strings on
-`https://publicparish.com` permanently redirect to `www`; Vercel does not host
-the application frontend. Checked the isolated redirect configuration into
-`infra/apex-redirect`. Kept the required
-`https://befitting-flamingo-587.convex.site` origin public and functional.
-Documented why the redirect is needed and why it does not replace the
-hackathon's qualifying URL. The submission will use the public `convex.site`
-host; the custom domain remains an additional resident-facing entry point.
+PR #36 fixed displaced PDF superscript text that blocked a valid lifecycle
+citation. Extraction processor v1.17 restores the paired ordinal suffix without
+weakening changed-text checks; the Pafford EMS contract then validated,
+reviewed, and published limited. It merged as `432645b`. Production workflow
+`33419981241` timed out during its first static-file upload after deploying the
+backend. Attempt 2 completed the backend and frontend deploy, production seed,
+and workflow smoke. An independent production smoke also passed.
 
-Kept the team warning threshold at $20 per month and raised the hard disable
-threshold from $40 to $60 per month before real AI Gateway calls begin. The
-limit remains team-wide; model calls will also have application-level token,
-retry, batch, and chat budgets.
+The bounded data runs ingested four East Baton Rouge and four Rapides official
+PDFs, published seven limited records, retained two negative cases, and replayed
+without new snapshots or model calls. Production was not used for those data
+runs (`convex/extraction/textMatch.ts`, `convex/review/`,
+`convex/pipeline/state.ts`).
 
-Verified the custom-domain DNS and TLS certificate, the public root and direct
-SPA routes on both served production origins, the production-bound JavaScript
-asset, desktop and mobile layouts, and the live readiness query
-(`package.json`, `README.md`, `docs/`). Convex Auth v2 and Google OAuth remain
-planned but unconfigured. No Firecrawl ingestion, OpenAI model call, AgentMail
-integration, authentication, or resident evidence experience exists yet.
+### 2026-08-31 - dd5501e
 
-### 2026-08-27 - 96938c4
+Deployed the repeatable launch-data promotion through production workflow
+`33435833908`; the independent production smoke passed the Convex origin,
+canonical domain, apex redirect, and readiness query. Seventeen included
+official PDFs matched their development hashes before extraction.
 
-Initialized a fresh repository and completed the product grilling. Documented
-the agreed scope, resident experience, evidence policy, source plan,
-architecture, sponsor roles, four-week build order, demo, user-proof targets,
-and stop rules. Completed event registration and selected Convex AI Gateway,
-Convex Auth v2 alpha, and a two-tier GPT-5.6 model split for the implementation
-plan.
-Narrowed the plan before implementation by removing FAQ aggregation, the public
-correction workflow, public-triggered compiler runs, and cross-device chat
-history. Kept a private source-problem inbox, public coverage demand capture,
-the owner-triggered coverage compiler, weekly roundup emails, and per-issue share
-HTML.
-Confirmed that the Convex Professional plan satisfies the AI Gateway paid-team
-requirement. Revised the model assignment so that GPT-5.6 Terra performs record
-extraction, consequence factors, and issue linking, while GPT-5.6 Luna performs
-discovery classification, ranking, independent publication review, and chat.
-Dropped GPT-5.6 Sol from the plan entirely; two tiers cover the pipeline.
-Documented the roles `MODEL_STRONG` and `MODEL_FAST` with a single
-role-to-model table in `docs/architecture.md`, and set every stage that produces
-or clears a published claim to high reasoning.
-Scaffolded TanStack Start in SPA/static-prerender mode and created a Convex
-development deployment. Added the static-hosting component, a live readiness
-query and React subscription, a checked-in environment template, an MIT
-license, and a public GitHub remote (`package.json`, `vite.config.ts`, `convex/`,
-`src/`, `.env.example`, `LICENSE`).
+The run published 26 launch records: 15 Lafayette, 9 Rapides, and 2 East Baton
+Rouge. Fifteen are full and 11 are limited. The Rapides negative control
+returned `not_found`, and replay reused all 27 successful extraction run IDs
+without new model calls. Three targets stayed out after repeat exact-citation
+validation failures. At promotion time, the resident query also exposed one
+older duplicate Lafayette board-vacancy card, which raised the public count to 27. The September 1 production-data correction above removed that stale
+projection while preserving its record and evidence
+(`docs/production-batches/launch-data-2026-08-31.v1.json`,
+`convex/operations/seed.ts`).
 
-Installed Convex's generated AI guidance and pinned Convex Auth v2 alpha without
-configuring authentication. Verified an AI Gateway service token and confirmed
-that the planned Terra and Luna model IDs are available through the gateway's
-model-list endpoint; this was not an AI model call. Redeemed the official
-Firecrawl participant credit grant.
+### 2026-08-31 - 3393b19
 
-Proved a clean dependency install, generated guidance status, three tests,
-typechecking, a production build, linting, a Convex cloud push, and a local
-"Convex connected" runtime. No public app deployment, Firecrawl ingestion,
-OpenAI model call, AgentMail integration, or authentication exists yet.
+Added production-only anonymous visit and area-selection telemetry. Fixed event
+contracts update deduplicated browser, event, and aggregate rows in one Convex
+mutation. The private report separates unique browsers, 30-minute visits,
+activated visitors, 24-hour returns, and area counts. A bounded daily cleanup
+removes browser identifiers and events after 90 days. The browser sends a hash
+of a random local identifier, never resident content. A same-origin HTTP route
+keeps the write mutations internal, validates the exact payload, and applies
+per-browser and global limits. The counts remain unauthenticated product
+signals. Browsers that cannot persist the random identifier are excluded rather
+than recounted after each reload. Automated validation is pending in pull-request CI (`convex/analytics/`,
+`src/features/analytics/product-analytics.tsx`).
 
-Hardened the first public release by pinning every direct dependency, declaring
-the supported Node.js and npm majors, and making production builds reject a
-missing Convex URL. The deploy command now rebuilds before publishing. Generated
-agent guidance stays local and is reproducible through the documented install
-command (`package.json`, `package-lock.json`, `vite.config.ts`, `.gitignore`,
-`README.md`).
+### 2026-08-31 - d1bcdb8
 
-Added a narrowly bounded plan for one static landing-page voter-information
-strip. It will link to the Louisiana Secretary of State and show a date verified
-against the official calendar. Candidate coverage, ballot matching, crawling,
-and model-generated election content remain out of scope (`PLAN.md`,
-`docs/product-spec.md`, `docs/build-plan.md`).
+Deployed anonymous resident telemetry through PR #41. Pull-request verification
+passed, production workflow `33444625765` deployed the exact merge, and an
+independent production smoke passed both served origins, the canonical asset,
+the apex redirect, and the readiness query.
 
-Published the initial Phase 0 source commit to the public `main` branch. The app
-itself remains undeployed.
+A controlled browser check started from zero counters. Loading the canonical
+domain and the required `convex.site` origin, then selecting Lafayette on the
+clean origin, produced 2 unique browser identifiers, 2 visits, 1 activated
+visitor, and 1 Lafayette selection. One human tester created both identifiers
+because browser storage is origin-specific. These rows prove that production
+visit and activation writes reach the private report. They are controlled test
+traffic, not two users or evidence of resident adoption.
+
+### 2026-08-31 - c180659
+
+Corrected the public coverage flow after a focused review. Successful request
+and private-report states now move keyboard focus into the next useful control
+or heading. Fixture parameters stay tied to active development scenarios, and
+the public method page names deterministic checks as the final publication
+gate. Automated validation is pending in pull-request CI
+(`src/features/coverage/`, `docs/resident-interface-slice-6.md`).
+
+<a id="2026-09-01"></a>
+
+### 2026-09-01 - 85d6947
+
+Deployed resident-interface Design Slice 8 through PR #43. Bounded return paths
+preserve Explore filters, record context, Ask scope, and Following context across
+route changes. Discovery and meeting links keep the matching development
+evidence scenario, and Coverage uses one written request vocabulary. The code
+handoff names the contract, readiness gate, fixture owner, and future API owner
+for every resident destination. GitHub Verify and PR-Agent passed on the final
+head. Production workflow `33454522729`, the independent production smoke, and a
+live fixture-boundary check passed (`src/features/resident-handoff/`,
+`docs/resident-interface-slice-8.md`).
+
+### 2026-09-01 - 070958e
+
+Removed the stale Lafayette board-vacancy projection from the production
+resident feed without deleting its decision record or linked publication
+evidence. The legacy record now has no current publication pointers. The
+production resident query returns 26 publications and exactly one
+board-vacancy card, under `CITY-BOARD-APPLICATIONS-2026-09-15`. This was a
+one-time data correction. It did not add a withdrawal workflow or resident
+correction product.
+
+### 2026-09-01 - bdc0195
+
+Connected accepted decision publications and exact citations to the finished
+resident decision and meeting routes. Discovery now opens the Public Parish
+record before the original source. A bounded development backfill grouped three
+meeting-bearing records, and the Aug. 25 Rapides view resolved two current full
+decisions from one accepted meeting time. The issue query stays closed when an
+issue points at superseded decision versions. PR #44 deployed through workflow
+`33463800155`; its workflow smoke and the independent production smoke passed.
+
+### 2026-09-01 - 5679fa3
+
+Deployed the resident-facing issue index and For You replacement through PR
+#54 as `5679fa3`. Home reads the bounded accepted-issue and
+decision queries, shows Lafayette and Rapides timelines before compact atomic
+records, and keeps equal-weight issue cards because no resident-facing
+importance score is published. Explore now searches accepted issues before
+individual records. Primary navigation is Home, Explore, Ask, and Coverage.
+`/for-you` redirects to Home, `/issues` redirects to Home's issue section, and
+the cited issue detail routes remain stable. Development fixtures passed browser
+inspection at 375 and 1280 CSS pixels with no horizontal overflow.
+Production workflow `33533462706` and the independent production smoke passed
+(`src/features/discovery/home.tsx`, `src/features/discovery/explore.tsx`,
+`src/features/discovery/explore-model.ts`, `src/routes/for-you.tsx`,
+`src/routes/issues_.tsx`).
+
+Closed the Slice 5 data gate with two production issue builds. Terra linked
+the accepted records, Luna reviewed the proposed facts independently, and
+deterministic checks published full issue versions. The two builds used AI
+Gateway and cost an estimated $0.088413 combined. A live subscriber first
+received no Rapides millage issue, then received the accepted issue 10.8
+seconds later on the same connection.
+
+Added private evidence-scoped Ask threads for PR 6A. The browser keeps an opaque
+token while Convex stores its SHA-256 hash. Scheduled expiry detaches access
+after 24 hours. The Agent component owns threads and messages, while Public
+Parish authorizes each call and retrieves only bounded current citations. A
+development proof created a thread, saved one question, resumed its history,
+and returned the exact LOATF Source links. Model answers remain out of this PR.
+
+Built the stacked PR 6B answer path in the working tree. It pins
+`@convex-dev/ai-sdk-provider` 0.1.0 and AI SDK 7.0.34, calls `MODEL_FAST`
+through the Convex gateway, sends only bounded thread context and retrieved
+published evidence, and validates every returned evidence ID before the Agent
+component stores the assistant message. A private receipt and attempt ledger
+records route, model, tokens, latency, estimated cost, and bounded safe errors
+without copying resident questions or answers. Deterministic not-found answers
+skip the model call. The exact stacked answer head later reached the personal
+development deployment. A real `openai/gpt-5.6-luna` call returned a strict
+answer with current Lafayette citations. A follow-up first exposed retrieval
+that ignored its prior question. The corrected path combined that bounded prior
+question with the current turn and returned the same current pickup records.
+An unsupported volcano question returned not found without citations. PR #47
+later deployed this answer path as `9ae0467` through production workflow
+`33517184457`.
+
+Built the stacked PR 6C resident connection in the working tree. The real
+adapter keeps only opaque session and thread handles in browser storage, opens
+Agent history after refresh, and projects accepted citation records into the
+existing Source panel. It covers supported, not-found, expired, offline,
+cooldown, retryable, and terminal states. One mutation now claims one answer at
+a time, applies per-session request limits, and reserves 15,000 tokens against
+both a 30,000-token minute and a 150,000-token day before any model call. The
+same reservation counts against app-wide ceilings of 150,000 tokens per minute
+and 1,500,000 tokens per day, so rotating browser sessions cannot remove the
+production spend bound. The app-wide counter keeps the full reservation after
+an accepted claim, including no-evidence results. That trades some daily
+capacity for a simple hard ceiling.
+Successful attempts reconcile known usage. Unknown failed work and abandoned
+work consume the reservation. A no-evidence path releases it because that path
+skips the model. The CAPTCHA adapter remains inactive. Automated
+pull-request checks run in GitHub Actions. The exact stacked head reached the
+personal development deployment. At 375 pixels, a signed-out browser completed
+the real two-turn conversation, restored both turns from Agent history after a
+refresh, and opened exact citation records in the mobile Source drawer. Escape
+returned focus to the Source control. Browser storage contained only the opaque
+session token and thread handles, not question or answer text. The not-found and
+offline states passed, live status announced the completed answer with its
+source count, and the page had no horizontal overflow. At 1280 pixels the same
+source opened in the 320-pixel docked evidence rail.
+
+PR #45 deployed the private thread foundation as `c9ea441` through workflow
+`33515579521`. PR #49 deployed the final bounded Ask interface as `30dc267`
+through workflow `33518827257`. Exact head `e1cd4b1` adds app-wide minute and
+daily token ceilings that survive anonymous session rotation. A production
+issue-scoped test then completed two related cited turns. Both answers used the
+accepted `CO-022-2026` and `CO-023-2026` citations, and their Source controls
+opened the exact supporting minutes spans. An unsupported question first
+entered the safe retry state; its fenced retry returned evidence not found with
+no citations. After refresh, the issue thread remained in Recent on this device,
+and reopening it restored all three turns. Implementation Slice 6 is closed.
+
+### 2026-09-01 - 13f735b
+
+PR #56 deployed the high-reasoning Luna selector and answer flow as `adc0a34`
+through production workflow `33560561545`. The selector sees the complete
+current catalog and every accepted excerpt in scope. Code expands its selected
+records, then the answer call receives their hash-checked normalized official
+documents. Broad or invalid selections use the full scope, while a valid
+not-found selection skips the answer call. App-wide request limits prevent
+anonymous session rotation from creating unlimited calls. Record, excerpt, and
+document-byte guards fail before model generation instead of truncating the
+prompt. Provider token use remains private telemetry, not an answer limit.
+
+PR #57 deployed the citation-display correction as `13f735b` through workflow
+`33562735003`. A controlled production corpus question selected both Lafayette
+surplus-pickup decisions and named Terrebonne Parish Consolidated Government
+from accepted evidence. Four Source controls opened official evidence, and the
+answer showed no raw internal evidence IDs. The exact issue Ask path and the
+production smoke passed again. One answer rendered Markdown emphasis markers as
+literal text, so that pre-demo display correction remains. This was test
+traffic, not resident adoption.
+
+### 2026-09-01 - working tree
+
+Mounted the pinned Convex Auth v2 alpha core and Google OAuth for Slice 7A.
+Verified Google profiles create private users, and every saved-area or topic
+query derives ownership from the signed JWT subject. Indexed, idempotent
+mutations reject anonymous callers and unsupported launch targets. The resident
+account route now separates the live Google setup from the development follow
+and notification fixtures. A real development Google callback completed, saved
+Lafayette Parish, survived a reload, and removed the saved area after the proof.
+The production release and production callback proof remain pending
+(`convex/auth.ts`, `convex/auth/`, `convex/follows/savedSetup.ts`,
+`src/features/auth/`, `src/features/following/`). A public privacy notice now
+states the live account, Ask, analytics, provider, retention, and deletion
+boundaries required before publishing the dedicated Google consent screen
+(`src/routes/privacy.tsx`, `src/features/privacy/`).
+
+<a id="2026-09-02"></a>
+
+### 2026-09-02 - f725094
+
+PR #58 deployed Google account sign-in and private saved areas and topics. It
+also published the resident privacy notice. The first production workflow
+stopped before deployment because the Convex auth config read the platform site
+URL through the unavailable Node `process` global. PR #59 replaced that access
+with Convex's generated typed environment value and merged as `f725094`.
+Production workflow `33587446687` then deployed the backend and frontend,
+seeded source configuration, and passed its smoke. The independent production
+smoke passed both served origins, the apex redirect, and the backend readiness
+query.
+
+A real Google sign-in completed on `https://www.publicparish.com`, returned to
+the saved areas and topics page, and signed out. A second sign-in started on the
+qualifying `https://befitting-flamingo-587.convex.site` origin, handed the flow
+to the canonical `www` origin, used the canonical callback, and returned signed
+in without a cross-origin flow error. The test account signed out after the
+proof. The privacy notice and its deletion contact rendered on both production
+origins. No saved area or topic was added during production testing.
+
+### 2026-09-02 - 8ea38af
+
+Hardened issue linking after real launch-data runs exposed two evidence gaps.
+PR #61 requires each issue claim to cite every excerpt needed for its complete
+wording. PR #63 accepts scaled currency such as `$1.2 million` without treating
+an unmarked quantity such as `1.2 million residents` as money. PR #64 moves the
+linker to prompt v1.5 and names every allowed dynamic fact path, including the
+required lifecycle fact, while excluding link relationship fields. The full,
+limited, or withheld publication policy stays unchanged (`convex/issues/`,
+`convex/extraction/textMatch.ts`, `convex/pipeline/state.ts`).
+
+### 2026-09-02 - 8fc4642
+
+Built the two-PR Slice 7B follow stack. The backend adds verified email
+subscribers, hashed challenges and access tokens, encrypted delivery addresses,
+Google-owned and email-owned follows, notification preferences, signed AgentMail
+webhooks, bounded rate limits, and cleanup for expired verification data and
+finalized component messages. The AgentMail component receives its declared
+environment through the host app and keeps remote maintenance functions private
+(`convex/follows/`, `convex/http.ts`, `convex/crons.ts`,
+`patches/@agentmail+convex+0.1.0.patch`).
+
+The resident follow sheet now sends and verifies real email codes, resumes a
+Google follow through a URL-safe one-time intent, and reports expiry, retry, and
+provider failures. The email management route loads one token-scoped follow,
+updates its cadence, rotates the token, and removes the follow. Signed-in Google
+users receive a reactive Following page with update and removal controls
+(`src/features/following/`, `src/features/auth/google-auth.ts`). A development
+browser completed enrollment, token rotation, old-token rejection, signed
+webhook idempotency, and a Google-owned follow through the full OAuth return.
+The signed-in Following page showed the new target, changed its cadence
+reactively, and restored the requested weekly setting before the test session
+signed out. A second development proof muted that weekly follow, kept weekly as
+its resume cadence, and restored weekly delivery. The email-only management
+fixture also changed from muted to following when its schedule-save action
+resumed delivery.
+
+PR #66 deployed the backend as `fdfebd8` through production workflow
+`33672529400`. The workflow and independent production smoke passed the direct
+Convex host, canonical `www` host, apex redirect, and backend readiness query.
+The updates inbox and two new cryptographic keys are configured in production.
+The AgentMail webhook is registered for outbound lifecycle events, and its
+provider-issued signing secret is configured without exposing it in repository
+history or logs.
+
+PR #67 deployed the resident enrollment and management interface as `8fc4642`
+through production workflow `33675616509`. Fresh PR checks ran against the
+merged backend before release. The workflow and a second independent production
+smoke passed both served hosts, the apex redirect, and backend readiness. A
+production browser loaded a published issue, opened the live follow sheet, and
+confirmed that a development fixture query could not replace production data.
+The complete email, token rotation, signed webhook, Google OAuth, and reactive
+management flows passed in development. A natural provider-signed production
+delivery callback was not forced during the read-only production browser proof.
+
+### 2026-09-02 - Slice 7C planning checkpoint
+
+Synchronized the current product, architecture, build, interface, and operator
+documents after the Slice 7B release. The 7C contract now sends at most one
+immediate email per owner and material change while keeping every matching
+follow in a separate ledger. Issue-target alerts wait for an accepted issue
+refresh. Weekly roundups run Monday at 7:00 AM in `America/Chicago` through a
+deduplicated local-time claim that preserves the hour across daylight-saving
+changes.
+
+PR #70 cleared the preflight defect as merge commit `1ece03d`. The deployed
+`place` resolver now accepts supported parishes and municipalities while an
+unsupported place still fails closed. Convex tests cover issue, topic, body,
+parish, and municipality targets. Pull-request checks, production workflow
+`33682483792`, and the independent production smoke passed. The notification
+match, delivery, roundup, and Google default-cadence records remain
+unimplemented. No sourced alert has been sent or claimed. Alert copy will not
+invite replies until Slice 7D's grounded inbound handler is live.
+
+<a id="2026-09-03"></a>
+
+### 2026-09-03 - 6db32a3
+
+Released Slice 7C through PRs #72 through #75. Accepted new decisions and
+material revisions now create durable follow matches, deduplicate immediate
+email per owner and change, link verified email subscribers to all their
+follows, and assemble Monday roundups from stored local-time windows and
+accepted evidence. The Following page now exposes live notification settings
+and recent delivery state (`convex/follows/`, `convex/crons.ts`,
+`src/features/following/`).
+
+A controlled development replay matched government body, place, issue, and
+topic follows, sent two immediate and two weekly messages through AgentMail,
+validated the official source, app, and management links, and created no
+duplicate on replay. Production workflows `33706796984`, `33707795958`,
+`33708562803`, and `33709247528` passed. Independent smoke passed the direct
+Convex host, canonical domain, apex redirect, and backend readiness after each
+merge. A signed-out production browser showed the real account entry page with
+no notification controls. The replay used no resident address.
+
+### 2026-09-03 - 6bafeaa
+
+PR #77 removed an empty development-fixture announcement from the live
+signed-out Following page. The fixture label remains available during fixture
+QA but no longer appears in the production accessibility tree when no fixture
+scenario exists. Verify and PR Agent passed on `4a60791`. Production workflow
+`33711607195` and the independent smoke passed after merge. A hard-reloaded
+browser confirmed the signed-out Google and email entry choices remained and
+`Fixture state:` was absent from the accessibility tree.
+
+### 2026-09-03 - 41a6d59
+
+Built Slice 7D in two stacked code PRs. PR #78 accepts an alert reply only after
+it verifies the AgentMail inbox, original delivery thread, and enrolled sender.
+It reuses the 24-hour anonymous Ask path, its `MODEL_FAST` route, rate limits,
+published-evidence selector, citation checks, and evidence-not-found response.
+The reply ledger fences duplicate callbacks, concurrent preparation, model
+retries, and outbound delivery. A five-minute sweep recovers interrupted work.
+PR #79 connects the existing source-problem sheet to a separate private
+AgentMail inbox. It keeps the issue, decision, meeting, and selected Source
+route, applies browser and global limits, and never calls the evidence pipeline.
+
+The final reply head `c39eafe` passed Verify run `33781686493` and PR Agent run
+`33781686995`. PR #78 merged as `3f18c126`; production workflow `33786995126`
+and the independent production smoke passed. The final report tree added a
+45-second confirmation bound for unresolved AgentMail receipts, kept retries on
+the same receipt, and preserved honest uncertainty when provider metadata is no
+longer available. The clean report-only head `ec6d003` passed Verify run
+`33787335483` and PR Agent run `33787335475`.
+
+A controlled run on the personal development deployment sent an alert between
+two owned AgentMail inboxes and replied with a question about Johnston Street
+funding. The existing Ask action answered from the published issue evidence and
+returned $7,986,192 in grant funds plus a $2,001,498 local match, totaling
+$9,987,690. AgentMail delivered the answer with absolute development Source
+links. A second reply reused the same Ask thread and delivered another cited
+answer. The browser also opened a live published issue, preserved its selected
+Source in the report attachment, and showed the connected private form. A
+controlled report reached `sent`. Its application row contained hashes, the
+category, the Public Parish route, the outbound ID, and timestamps. It contained
+no report text or address. No pipeline run started after the report.
+
+The development-only probe function and its seeded user, follow, delivery, and
+reply records were removed after the test. The controlled provider email thread
+remains as delivery evidence. The production reports inbox setting was added to
+`befitting-flamingo-587`. PR #79 merged as `41a6d593`; production workflow
+`33788197489` and the independent production smoke passed. A live browser opened
+a published Pafford issue, selected Source `kh7be5xzdyvan21bqzhmctegnn8dqwjd`,
+and confirmed that the connected private form attached the exact Source-bearing
+route. The production availability query returned `available: true`.
+
+### 2026-09-03 - d170fba
+
+Closed three Slice 7 review edges through PRs #81 through #83. Weekly roundup
+replies now search the complete published corpus instead of one representative
+follow. Private source-report receipts keep their terminal delivery result after
+AgentMail removes finalized payloads. Notification matching now stops for bodies
+and places outside supported or degraded coverage (`convex/emailReplies/`,
+`convex/sourceReports/`, `convex/follows/targets.ts`).
+
+The PR checks and production workflows `33797222889`, `33797505992`, and
+`33797772856` passed, followed by independent production smoke checks. A
+clearly labeled production source report reached `sent`, stored that result in
+the application five seconds after submission, and left the latest pipeline run
+unchanged. The controlled development replay remains the only alert-and-reply
+provider proof. No real production subscriber has completed that path yet.
+
+### 2026-09-03 - cc056f3
+
+Built Implementation Slice 8 as three stacked development pull requests. PR
+#85 accepts only one of ten checked root manifests, verifies every redirect
+before paid work, records immutable stage attempts, and gives the owner a
+private realtime run ledger. PR #86 adds one bounded Firecrawl map, three
+official-domain searches, a 100-candidate ceiling, strict `MODEL_FAST`
+classification in batches of 20, complete provider-call evidence, and stop
+checks between paid calls. PR #87 freezes a registry proposal, validates a
+fixed representative sample through the immutable snapshot path, evaluates the
+ten coverage gates, and permits promotion only when the latest evaluation has
+ten passes. No override can turn a blocked proposal into supported coverage.
+
+The personal development deployment ran root verification, discovery,
+classification, snapshot validation, and gate evaluation for the nine target
+bodies. It did not run extraction, review, or publication. Every root passed
+before discovery spent provider credits. Every proposal remained blocked, and
+no resident-visible coverage state changed.
+
+| Body                                 | Samples retrieved | Gates passed |
+| ------------------------------------ | ----------------: | ------------ |
+| Lafayette Planning Commission        |            7 of 9 | 2, 3         |
+| Lafayette Board of Zoning Adjustment |            5 of 9 | 2, 3         |
+| Lafayette Hearing Examiner           |            5 of 9 | 2, 3         |
+| Youngsville City Council             |            2 of 7 | 2            |
+| Alexandria City Council              |            5 of 7 | 2, 3         |
+| Pineville City Council               |            4 of 7 | 2, 3         |
+| Rapides Parish Police Jury           |            6 of 7 | 2, 3         |
+| Baton Rouge Metropolitan Council     |            7 of 7 | 1, 2, 3      |
+| Baton Rouge Planning Commission      |            8 of 9 | 2, 3         |
+
+The results exposed real source limits instead of hiding them. Youngsville's
+current packet, agenda, and minutes returned unsuccessful target responses.
+Pineville's current minutes URL failed, its ordinance link redirected to an
+unapproved document host, and discovery found no revision candidate. The
+shared gate handled those failures, so no portal adapter or host exception was
+added. Baton Rouge Planning's earlier gate 7 result was re-evaluated after a
+logic correction and now fails because a retrieval error alone does not prove
+that the publication path produces a limited or withheld result.
+
+Browser testing signed into `/operations/coverage` with Google, returned to the
+private route, loaded all ten roots and live runs, and inspected the redacted
+representative-source health rows. The owner view exposes canonical URLs and
+error classes but no snapshot contents. Its stage timeline now names discovery,
+classification, sample validation, and gate evaluation separately. Production
+remains untouched. The stack still needs final pull-request review, an
+authorized merge, the exact production workflow, and independent production
+smoke before Slice 8 can be called live.
+
+<a id="2026-09-04"></a>
+
+### 2026-09-04 - 47d2c12
+
+Closed the Slice 8 review gaps before release. Post-deploy seed replay now
+preserves supported, degraded, paused, and ambiguous multi-registry state.
+Evaluator v2 names the checks it actually performs, rejected candidates cannot
+fill revision slots, and body promotion cannot clear an operator-set parish
+pause or degradation. A stale proposal cannot replace or control a newer live
+registry. The owner view and architecture now state that sample validation
+stores snapshots but does not run extraction, review, or publication
+(`convex/operations/seed.ts`, `convex/coverage/`, `docs/architecture.md`).
+
+### 2026-09-04 - b5583ed
+
+Released Implementation Slice 8 through PRs #85 through #88. The PR #87
+production attempt stopped before backend activation because Convex's deployment
+compiler rejected `Array.prototype.at`; PR #88 replaced that call with a
+supported lookup. Production workflow `33889157140` then verified the exact
+merge commit, deployed the backend and frontend, ran the guarded launch seed,
+and passed its smoke test. An independent `npm run smoke:production` passed both
+public origins, the canonical redirect, and production backend readiness. No
+coverage proposal was promoted, so resident-visible coverage did not change.
+
+### 2026-09-04 - 00a2f9c
+
+Stopped Chrome's unreliable `navigator.onLine` flag from showing an offline
+banner or blocking Ask while the served origin still answers. Connectivity
+events now confirm failure with a fresh same-origin request and recheck when a
+resident returns to the tab. Added regression cases for a reachable origin and
+Ask under a false browser flag (`src/features/discovery/hooks.ts`,
+`src/features/ask/live-adapter.ts`). PR #90 deployed through production workflow
+`33896198309`.
+
+### 2026-09-04 - 2fa1cff
+
+Replaced the launch slot template with exact official artifact fixtures and ran
+the complete development lifecycle. Seven bodies now pass gates 1 through 9
+with immutable retrieval, extraction, deterministic validation, independent
+review, publication, a missing-record probe, and paired agenda and minutes
+replay. Production then promoted Alexandria City Council, Pineville City
+Council, Rapides Parish Police Jury, Baton Rouge Metropolitan Council, and Baton
+Rouge Planning and Zoning Commission after each passed Gate 10 and all ten current Gate v3
+checks. Production workflows `33902515233` and `33902885913` passed for PRs #91
+and #92. Rapides and East Baton Rouge are supported. Lafayette stays validating
+because its planning commission, zoning board, and hearing examiner lack stable
+meeting-specific agenda and outcome records. The LCG body pages and schedule
+PDFs answer 200, but the event-detail host still answers 502.
+
+Connected the resident area selector to a public, realtime jurisdiction-status
+query. It enables a parish only when exactly one live jurisdiction row is
+`supported`; missing, duplicate, candidate, validating, degraded, and paused
+states remain unavailable. The selector therefore follows promotion instead of
+hard-coded fixture claims. This closes Implementation Slice 8. Routine scheduled
+source checks and automatic document-to-decision fanout are not deployed.
+
+<a id="2026-09-05"></a>
 
 ### 2026-09-05 - dbb7984
 
@@ -1448,7 +1502,6 @@ versions without changing stored evidence. Browser and controlled provider
 certification continue. The PRs remain open and production is unchanged. See
 `docs/slice-9-development-certification.md` for proof and remaining checks.
 
-
 ### 2026-09-05 - working tree
 
 The combined development build passed 455 application tests and eight desktop
@@ -1460,7 +1513,6 @@ versions. Corrected callback typing, readable email references, search result pa
 concurrent extension retries, and outcome visibility counting. PDF continuation is paused at the
 500-admission limit; final-head CI and reviews continue. AI Gateway is verified
 and direct fallback stays disabled. No production merge or source activation.
-
 
 ### 2026-09-05 - 186d936 and final certification
 
@@ -1482,7 +1534,6 @@ The final application code at 7d2ed31 passed 457 application tests and eight
 browser checks in Verify 33949802588. Its CI artifact is served on development
 as hosting deployment 48bd933b-b4dd-40fe-8e1d-349f6785a597. No local automated
 validation ran.
-
 
 ### 2026-09-05 - 3882fa5
 
@@ -1507,7 +1558,6 @@ midday includes meetings dated that day. The regression covers the previous,
 current, and next calendar day. Development runs the combined code at 0da2d88
 with monitoring paused. The latest PR checks record this final regression.
 
-
 ### 2026-09-05 - 48dedf3
 
 Released final Build Slice 9 through PRs #93 to #99 and the narrow replay repair
@@ -1521,7 +1571,6 @@ Lafayette's three planning bodies remain validating. See
 `docs/slice-9-production-certification.md` for proof and limits. Resident benefit,
 the timed demo, and submission remain separate from build completion.
 
-
 ### 2026-09-05 - f289503
 
 Added a versioned permission for Lafayette's official event-document path while
@@ -1531,7 +1580,6 @@ The planning bodies remain unvalidated. Exact City and Parish commission
 identities and working agenda/outcome pairs are still required. Added a path
 restriction regression for CI; development deployment and production release of
 this repair follow PR checks.
-
 
 ### 2026-09-05 - working tree
 
@@ -1559,6 +1607,7 @@ incomplete documents cannot block the queue, and budget pauses preserve retries.
 Added scheduler and limiter regressions for PR checks. Daily limits and evidence
 gates remain unchanged. Development and production proof follow review.
 
+<a id="2026-09-06"></a>
 
 ### 2026-09-06 - 4b8927b
 
@@ -1570,7 +1619,6 @@ item with six citations; production proved the exhausted-budget pause without
 consuming attempts. The build is complete. Catch-up, broader activation, full
 Lafayette certification, resident proof, the demo, and submission remain open.
 `docs/build-status.md` records those boundaries and links the dated evidence.
-
 
 ### 2026-09-06 - 55a9158
 
@@ -1603,7 +1651,6 @@ not a final manual browser click. The source-operations report records the
 case-level results, dates, budgets, and remaining work. No resident benefit or
 hackathon submission is claimed.
 
-
 ### 2026-09-06 - working tree
 
 Repairing the empty parish homepage by selecting government bodies before
@@ -1615,6 +1662,8 @@ Repairing access to already-published evidence during coverage interruptions.
 The selector keeps such parishes selectable with a limitation notice, while
 parish recovery no longer skips degraded status. Explicit pauses remain.
 Automated validation is delegated to GitHub Actions; source processing stays off.
+
+<a id="2026-09-07"></a>
 
 ### 2026-09-07 - working tree
 
@@ -1634,7 +1683,6 @@ Youngsville's old packet can take its meeting date from a hash-checked stored
 accessible agenda with the same official meeting ID. This avoids repeated PDF
 retrieval outside the current source window. It preserves unfinished inventory
 and records the date's snapshot. No model call or coverage promotion is involved.
-
 
 ### 2026-09-07 - 4c42d12
 
@@ -1659,7 +1707,6 @@ pending decision targets, nine failed targets, separate issue-proposal work,
 and the unresolved need for newer Youngsville documents. Full catch-up,
 sustained automatic processing, founder QA, and launch are not claimed complete.
 
-
 ### 2026-09-07 - working tree
 
 Activated nonrenewing production allowances within the owner's $10 total
@@ -1672,7 +1719,6 @@ Ask. The team cap did not increase. Other body policies remain paused, 172 targe
 remain pending, and Youngsville still lacks newer official documents. The
 [bounded catch-up checkpoint](docs/archive/pre-stories-2026-09-07/docs/bounded-catchup-2026-09-07.md) records failures,
 withheld timelines, and the remaining work before full catch-up can be claimed.
-
 
 ### 2026-09-07 - working tree documentation review
 
@@ -1712,7 +1758,6 @@ official documents were retrieved with one bounded rate-limit retry. Corrected
 manifests, real drafting, owner approvals and mail round trips remain pending.
 No story publication, production deployment or resident delivery is claimed.
 
-
 ### 2026-09-07 - 61c9fec
 
 Published all three reviewed launch stories in development, with Meta first on
@@ -1722,6 +1767,7 @@ Retained artifact and draft promotion reuse saved work while requiring target
 review and approval. CI passed; no local suite or production promotion ran.
 The founder design and full QA campaign remains separate.
 
+<a id="2026-09-08"></a>
 
 ### 2026-09-08 - decf363
 
@@ -1881,7 +1927,6 @@ sections, cards, reading text and actions. A bounded 390-pixel Chrome inspection
 showed the wider card and compact height. Final touch and viewport QA remain
 pending, with automated checks deferred to PR CI.
 
-
 ### 2026-09-08 - fbda95b
 
 Released the Home design pass through PR 197, including equal-height mobile
@@ -1901,6 +1946,7 @@ Removed the open-menu X background and refined Home decision rows with separate
 meeting dates, larger titles and neutral lifecycle badges. Documented Home fixture
 URLs. Static review passed; automated checks await PR CI and visual QA remains pending.
 
+<a id="2026-09-09"></a>
 
 ### 2026-09-09 - f7742d5
 
@@ -1909,7 +1955,6 @@ Released the owner-approved Home polish through PR 198. The latest PR head passe
 visibility check in the area-selection test. Review found no major issues.
 Production workflow 34307373914 and independent production smoke passed for the
 merge commit on both public origins. No paid Ask or provider-mail check was repeated.
-
 
 ### 2026-09-09 - working tree, resident design pass
 
@@ -1924,7 +1969,6 @@ Local Google sign-in did not complete, so protected owner views remain unverifie
 No commit, deployment, paid source work or provider email was performed. The
 [morning report](docs/design-morning-report-2026-09-09.md) records the evidence;
 [docs/work.md](docs/work.md) retains the pending checks.
-
 
 ### 2026-09-09 - working tree, owner mobile corrections
 
@@ -1949,6 +1993,29 @@ source cards. The final revision awaits PR checks and authorized release.
 Applied the owner-selected warm limestone material to the Louisiana relief,
 using the exact shader colors from the local comparison. Matched the SVG
 fallback to the same warm neutral finish. PR validation and release are pending.
+
+<a id="2026-09-10"></a>
+
+### 2026-09-10 - Local PR review tooling
+
+Prepared parallel GLM 5.3 Flash and DeepSeek V4.1 Flash reviews with separate
+persistent summaries, commit checks, and bounded runs. Fifteen publisher tests
+and Actionlint pass. This is development tooling, with no change to the app's
+model roles or deployment. GitHub publication and live model verification remain
+pending in [docs/work.md](docs/work.md). The requested local
+`convex-hackathon-skill` was unavailable on this machine, so this entry records
+the repository evidence directly.
+
+### 2026-09-10 - 7cbd36c
+
+Released parallel PR reviews through PR #201. GLM 5.3 Flash and DeepSeek V4.1
+Flash each reviewed commit `6e9fbd3` with no key issues and posted separate
+summaries. GLM reused its comment across pushes. DeepSeek completed after setting
+low reasoning effort and preferring its own provider through OpenRouter.
+Full CI passed 686 tests. Production workflow `34490896584` and the independent
+production smoke passed for merge commit `7cbd36c`, including both public origins,
+the three stories, evidence links, images, sharing, and backend readiness.
+The hackathon skill remains absent pending transfer from the owner's Mac.
 
 ### 2026-09-10 - working tree, DeepSeek high reasoning
 
@@ -1983,6 +2050,8 @@ Added a translucent blurred background at the top of the page while preserving
 the shared scrolled treatment and existing control sizes. Build and Chromium/WebKit
 visual checks passed at desktop and mobile widths. PR and development checks are pending.
 
+<a id="2026-09-11"></a>
+
 ### 2026-09-11 - working tree, resident reading and Ask
 
 Applied the owner's review across Home, stories, issues, decisions, meetings,
@@ -1993,8 +2062,7 @@ excerpt exposed horizontal drawer overflow, now constrained and wrapped.
 Local checks passed 685 application tests and 66 browser journeys. PR review
 and the development upload remain pending.
 
-
-## September 11, owner phone review corrections
+### 2026-09-11 - working tree, owner phone review corrections
 
 The owner supplied before-and-after iPhone screenshots showing chat leaving the
 visible screen when the keyboard opened. The follow-up replaces keyboard
@@ -2003,8 +2071,7 @@ It also fixes touch timeline arrows and route heading outlines and simplifies
 Account follow controls. This entry records implementation; final CI and dev
 upload receipts belong in PR #205 after validation.
 
-
-## September 11, full-screen conversation revision
+### 2026-09-11 - working tree, full-screen conversation revision
 
 The owner supplied T3 Code reference screenshots after rejecting the resized
 chat drawer. The new mobile conversation covers the reading page, has one
@@ -2014,7 +2081,7 @@ Public Parish retains its own browser implementation. Draft, source and
 keyboard tests passed locally. Final CI and development receipts remain in
 PR #205; native iPhone confirmation remains with the owner.
 
-## September 11, Safari underlay and empty chat layout
+### 2026-09-11 - working tree, Safari underlay and empty chat layout
 
 Owner screenshots showed article pixels through Safari keyboard controls despite
 the full-screen chat backdrop. The follow-up hides the reading document without
@@ -2023,7 +2090,7 @@ messages retain the bottom composer. Regression checks cover document visibility
 reading focus restoration and keyboard bounds. Native iPhone confirmation remains
 pending; CI and development receipts belong in PR #205.
 
-### September 11, working tree, mobile design review
+### 2026-09-11 - working tree, mobile design review
 
 Reviewed PR #207 and retained its compact header, bottom composer and visual
 viewport bounds. Corrected loading-title CSS and hidden navigation focus in
@@ -2033,7 +2100,7 @@ action row, compact follow cards, grouped meeting source documents, Explore
 loading text and Account at the bottom of the mobile menu. Validation and dev
 upload receipts will be recorded on PR #207. No production release is included.
 
-## September 11, chat keyboard and device history follow-up
+### 2026-09-11 - working tree, chat keyboard and device history follow-up
 
 The owner reported that standalone Ask still panned away on iPhone while the
 floating chat worked. PR #207 now freezes the reading document during phone
@@ -2049,7 +2116,7 @@ menu-to-Ask keyboard bounds, reduced-motion dots, reopened chat drafts and
 nested source drawers. Native iPhone acceptance and updated dev deployment
 remain pending. No backend or production changes were made.
 
-## September 11, keyboard regression after the body-position change
+### 2026-09-11 - working tree, keyboard regression after the body-position change
 
 The owner's next iPhone recording showed both chat entry points moving out of
 view when the keyboard opened. The previous browser pass did not certify native
@@ -2083,6 +2150,17 @@ selection focus and hash-link scrolling. A local build and 18 targeted Chromium
 and WebKit checks passed after those fixes. Source-query scroll preservation and
 the Ask shell selector then passed all 56 local presentation checks. No deployment yet.
 
+<a id="2026-09-12"></a>
+
+### 2026-09-12 - b287c40, reading and mobile release reconciliation
+
+Backfilled September 21 from Git history. The September 11 reading and phone
+iterations shipped in PRs #205 and #207. App-wide loading and owner operations
+followed in PRs #208 and #209, reaching main after midnight UTC September 12.
+The failed keyboard approaches above remain part of the design record. These
+merged commits close their local-development status, not every device test.
+See the [September 12 release receipt](docs/launch-release-2026-09-12.md).
+
 ### 2026-09-12 - working tree
 
 Matched private coverage and story operations to the approved resident UI.
@@ -2103,6 +2181,17 @@ PR 213 repaired a dated-evidence attribution found during live Ask testing. Its
 production workflow, independent smoke and exact question rerun passed. All source
 monitoring remains paused. The release receipt records costs and remaining launch
 gates. Convex actions and review records preserve the existing evidence pipeline.
+
+<a id="2026-09-13"></a>
+
+### 2026-09-13 - c29df56, Louisiana-first Home release reconciliation
+
+Backfilled September 21 from PRs #215 through #219. Adopted the bounded launch
+upgrade, made Louisiana the default Home, qualified government-body labels by
+place, added parish and body focus, and ranked current issues by consequences
+with a cited reason. Git records these merges early September 13 UTC. The
+subsequent owner reviews below refine the released navigation and layout.
+See [the upgrade contract](docs/launch-upgrade.md).
 
 ### 2026-09-13 - launch upgrade review repairs
 U1 through U3 now include public body labels, selectable cities, shareable Home
@@ -2218,6 +2307,8 @@ Eight hosted browser checks and direct desktop and mobile Ask checks passed.
 All 70 hosted code files matched the artifact. The preview is ready for owner
 testing. The PR remains open and production is unchanged.
 
+<a id="2026-09-14"></a>
+
 ### 2026-09-14 - working tree, useful Explore cards
 
 After owner review, added a default that leads with published stories and
@@ -2244,7 +2335,6 @@ the same plain-link styling as View Statewide Stories. Both typechecks, build,
 targeted lint, 42 unit tests and twelve Home browser checks passed. This
 follow-up is local and has not been committed or deployed.
 
-
 ### 2026-09-14 - working tree, statewide decisions and ballot guide in development
 
 Published ten reviewed November 3 amendment explanations in development through
@@ -2260,6 +2350,16 @@ skip after the documented reruns. The
 [morning report](docs/upgrade-morning-report.md) records the complete receipts,
 remaining QA and production gates. Work is uncommitted and production is unchanged.
 
+### 2026-09-14 - 60e1d2d, statewide evidence reached production
+
+Backfilled September 21 from the retained release receipts. Published bounded
+Louisiana Public Service Commission coverage in [PR #226](https://github.com/LaykenV/public-parish/pull/226)
+and all ten November 3 amendment explanations in [PR #227](https://github.com/LaykenV/public-parish/pull/227).
+Production workflows [34839377430](https://github.com/LaykenV/public-parish/actions/runs/34839377430)
+and [34840513905](https://github.com/LaykenV/public-parish/actions/runs/34840513905)
+passed. Each amendment retains official ballot wording and its enrolled Act;
+the app does not recommend a vote. This closes the earlier development-only
+status. The [launch audit](docs/launch-audit-2026-09-14.md) records the limits.
 
 ### 2026-09-14 - working tree, statewide reading and utility roundup
 
@@ -2271,7 +2371,6 @@ reader failure before the fix. Validation passed 742 application tests, both typ
 64 targeted browser cases after the documented test corrections. PR #228 is
 in review.
 The original release checks missed statewide detail navigation.
-
 
 ### 2026-09-14 - working tree, Home story and ballot cards
 
@@ -2345,6 +2444,15 @@ passed 744 tests, typechecks, build and lint with 15 existing warnings. Reading
 checks passed 63 browser cases with one intentional skip. Before and after
 screenshots were inspected. PR review and production release are pending.
 
+### 2026-09-14 - 0c0d24c, statewide and resident reading release reconciliation
+
+Backfilled September 21 from PRs #228 through #236. Shipped the utility roundup,
+story-shaped statewide cards, Elections hub, approved pelican identity, parish
+selection from the Louisiana illustration, public-domain issue sharing and
+desktop reading changes. Issues and decisions now use the story reading layout.
+The working-tree entries above describe the individual owner reviews. The
+[code-freeze receipt](docs/code-freeze-2026-09-14.md) records the later verification.
+
 ### 2026-09-14 - 7d2b467, code-freeze corrections
 Released fixes for anonymous Ask write limits, email management-token revocation,
 ballot links and metadata, Google follow failures, next-action copy and unknown-page
@@ -2357,6 +2465,8 @@ and three Firecrawl credits. All five PRs passed both reviews and CI. Combined
 production workflow `34903301247`, independent smoke and 56 live browser checks
 passed.
 See [the correction receipt](docs/code-freeze-2026-09-14.md).
+
+<a id="2026-09-15"></a>
 
 ### 2026-09-15 - working tree, mobile citation drawers
 Reproduced the owner's bottom gap in WebKit and corrected the shared viewport
@@ -2443,7 +2553,6 @@ lint passed with 15 existing warnings. Production remains unchanged; the
 smaller development corpus does not establish production latency. Details and
 release work are in [docs/work.md](docs/work.md).
 
-
 ### 2026-09-15 - working tree
 
 Removed the utilities illustration caption, made shared Follow buttons primary
@@ -2453,6 +2562,15 @@ checks covered filtering, utilities and Follow on current reading pages; an old
 issue URL in the existing Follow test was unavailable. Reviewed statewide ranking
 without changing it. Local changes only. Details are in [docs/work.md](docs/work.md).
 
+### 2026-09-15 - 0496797, production Ask measurement
+
+Backfilled September 21 from [PR #248's release receipt](https://github.com/LaykenV/public-parish/pull/248#issuecomment-5681951034).
+Completed the production evidence-search index backfill and measured the weekly
+question at 58.766 seconds, compared with 169.022 seconds before. This is one
+observed comparison, not a latency guarantee. Production workflow
+[34980640214](https://github.com/LaykenV/public-parish/actions/runs/34980640214)
+and independent production smoke passed. The earlier development timings remain
+separate evidence; the production repair is complete.
 
 ### 2026-09-15 - working tree, consequence-first Home
 
@@ -2464,7 +2582,6 @@ The release repair copies existing scores in bounded transactions without
 new evidence versions or alerts. Added ranking and repair regressions.
 The owner authorized PR review and production shipment; release checks are pending.
 
-
 ### 2026-09-15 - working tree, local issue readability
 
 Audited five published issues against accepted citations and prepared source-backed
@@ -2473,7 +2590,6 @@ plain wording and separate context for report updates and broader contracts.
 All 775 tests, both typechecks, build and lint passed with 15 existing warnings.
 The [audit](docs/readability-audit-2026-09-15.md) records evidence gaps and browser
 inspection. No model-quality evaluation, accepted-content change or release yet.
-
 
 ### 2026-09-15 - working tree, Ask layout and loading
 
@@ -2492,7 +2608,6 @@ status shimmer to four seconds. All 778 tests, both typechecks, build and lint
 passed with 15 existing warnings. Nine Chromium and WebKit checks passed with
 one desktop-only skip. Inspected the desktop conversation screenshot. PR review
 and the authorized production release are pending.
-
 
 ### 2026-09-15 - working tree, centered Ask conversation
 
@@ -2513,7 +2628,6 @@ All 778 tests, both typechecks, build and lint pass with 15 existing warnings.
 All 58 focused Chromium/WebKit checks pass; phone and desktop screenshots were
 inspected. PR review and the authorized production release remain pending.
 
-
 ### 2026-09-15 - working tree, remove the hero scroll button
 
 Removed the redundant story-scroll button after the owner's review of PR #257.
@@ -2521,7 +2635,6 @@ The introduction leads directly into the stories. Parish setup stays below
 statewide content. Adjusted the existing browser journey and design contract.
 Build, targeted lint and 12 Chromium/WebKit checks passed. Inspected phone and
 desktop screenshots. PR checks and the follow-up release are pending.
-
 
 ### 2026-09-15 - working tree, restore the purple story button
 
@@ -2541,6 +2654,19 @@ existing warnings. All 78 focused Chromium/WebKit checks passed. Inspected
 before and after screenshots and verified both motion settings in each browser.
 PR review and the authorized production release remain pending.
 
+<a id="2026-09-16"></a>
+
+### 2026-09-16 - 9f7d2a1, final resident UI release reconciliation
+
+Backfilled September 21 from PRs #249 through #260, ending September 16 UTC.
+Shipped primary Follow actions, clearable Explore filters, consequence-first
+Home ordering, plainer drafting prompts and the centered full-screen Ask layout.
+The homepage button went through owner rejection and restoration before the
+final actions and scrolling release. [Workflow 35038848675](https://github.com/LaykenV/public-parish/actions/runs/35038848675)
+passed for that final release. Prompt changes do not rewrite accepted records
+or prove model-quality gains. The [readability audit](docs/readability-audit-2026-09-15.md)
+retains unresolved evidence and evaluation follow-ups.
+
 ### 2026-09-16 - working tree, launch readiness documentation
 
 Recorded the owner's completed design and QA pass and launch-ready decision.
@@ -2551,6 +2677,15 @@ merged. The #248 release receipt also proves its production index backfill and
 weekly-answer measurement. Reconciled active docs and archived the old work queue. The LPSC outcome
 follow-up and launch posts remain; demo and submission are separate artifact work.
 No new independent smoke, source outcome, post, pilot or submission is claimed.
+
+### 2026-09-16 - 33fad94, distribution research
+
+Screened 75 Facebook groups for location, relevance and posting rules. The
+[dated report](docs/facebook-launch-groups-2026-09-16.md) identifies 46 candidates,
+15 requiring an exception or prior participation and 14 poor fits. Prepared a
+small first batch and a response-first follow-up plan. Research did not mean
+posts were published or members were reached. The September 18 entry records
+the owner's eventual five-group posting confirmation.
 
 ### 2026-09-16 - working tree, launch video and post preparation
 
@@ -2563,6 +2698,8 @@ or resident usage result is claimed. No app code or deployment changed.
 Added a standalone launch guide with the Meta opening, rehearsal controls,
 copyable posts and saved local notes. Checked its desktop and phone layout and
 browser controls with Chromium. The guide is local preparation, not a release.
+
+<a id="2026-09-17"></a>
 
 ### 2026-09-17 - working tree
 
@@ -2604,31 +2741,6 @@ masthead. All 90 browser preview variants passed with button contrast at least
 8.34:1, including missing fills. Both typechecks, 15 focused tests and focused
 lint passed. Release and real inbox confirmation remain pending.
 
-### 2026-09-17 - working tree, demo script from the recorded retake
-
-Rewrote the [launch guide](launch-plan.html) around the owner's actual narration
-and synchronized the written plan. The 2:40 target keeps the source passage,
-story Ask, existing founder-test email exchange and all four sponsor roles.
-Shortened the page tour and repeated explanations.
-
-
-### 2026-09-17 - working tree, finished submission video
-
-Joined the two recordings into a 2:48.2 demo with captions and the pelican close.
-Trimmed pauses and the closing thank-you. Inspected the official source insert,
-founder-test email label and address mask, sponsor credits and audio.
-Added the 1080p MP4 and captions under `docs/demo` and linked the launch guide.
-Public posting and hackathon submission remain pending.
-
-### 2026-09-18 - working tree, public launch and submission handoff
-
-Launched Public Parish. The owner accepted the public 2:48 demo and confirmed
-personal Facebook, X, LinkedIn and the first five Facebook group posts.
-Retained the supplied social links above and reconciled active docs with launch
-completion. Verified successful production workflow `35258378663` for `c873166d`,
-including workflow smoke and the email fixes through PR #263. No new deployment,
-independent smoke, government outcome or submission is claimed by this update.
-
 ### 2026-09-17 - f278f99
 
 Shipped the email compatibility correction and removed the uneven action arrow
@@ -2658,6 +2770,31 @@ The owner then requested another Meta alert. The current template resend reached
 delivered status in the existing tracked thread. Question-answer citation layout
 confirmation remains pending a new reply.
 
+### 2026-09-17 - working tree, demo script from the recorded retake
+
+Rewrote the [launch guide](launch-plan.html) around the owner's actual narration
+and synchronized the written plan. The 2:40 target keeps the source passage,
+story Ask, existing founder-test email exchange and all four sponsor roles.
+Shortened the page tour and repeated explanations.
+
+### 2026-09-17 - working tree, finished submission video
+
+Joined the two recordings into a 2:48.2 demo with captions and the pelican close.
+Trimmed pauses and the closing thank-you. Inspected the official source insert,
+founder-test email label and address mask, sponsor credits and audio.
+Added the 1080p MP4 and captions under `docs/demo` and linked the launch guide.
+Public posting and hackathon submission remain pending.
+
+<a id="2026-09-18"></a>
+
+### 2026-09-18 - working tree, public launch and submission handoff
+
+Launched Public Parish. The owner accepted the public 2:48 demo and confirmed
+personal Facebook, X, LinkedIn and the first five Facebook group posts.
+Retained the supplied social links above and reconciled active docs with launch
+completion. Verified successful production workflow `35258378663` for `c873166d`,
+including workflow smoke and the email fixes through PR #263. No new deployment,
+independent smoke, government outcome or submission is claimed by this update.
 
 ### 2026-09-18 - working tree, recent-source monitoring setup
 
@@ -2676,7 +2813,6 @@ passed 62 focused tests and both typechecks, deployed the correction, and classi
 the retained calendar entries before restoring source spending. Production smoke
 passed after both deployments. The deployed changes remain uncommitted locally.
 
-
 ### 2026-09-18 - working tree, Beaver Lake Rapides story
 
 Published Beaver Lake with 16 retained official sources and exact citations through
@@ -2687,6 +2823,8 @@ permit-letter evidence. Full validation passed 793 tests, typechecks, build and
 lint. Production smoke, source downloads, Rapides search, mobile layout and Ask
 checks passed. Estimated processing cost was $1.44 under the owner's $8 ceiling.
 See the [source and release dossier](docs/beaver-lake-research-2026-09-18.md).
+
+<a id="2026-09-21"></a>
 
 ### 2026-09-21 - working tree, production release reconciliation
 
@@ -2709,3 +2847,55 @@ passed, followed by independent production smoke recorded in the
 Beaver Lake retained 23 citations and all 16 source downloads. Desktop and
 mobile checks passed. Jev remains parked. No new story publication or email
 was part of the release. Corrected the active documentation to record completion.
+
+### 2026-09-21 - 7a64f2f, latest committed release checked
+
+The documentation reconciliation reached main as `7a64f2f`. Its exact
+[production workflow](https://github.com/LaykenV/public-parish/actions/runs/35613500565)
+passed. The submission audit ran independent production smoke against both
+public origins and checked the accepted source downloads. This supplements
+the `1bf4d2ed` application release receipt; it does not assert deployment of
+the uncommitted submission cleanup below.
+
+### 2026-09-21 - working tree, submission audit
+
+Recorded the [submission audit](docs/submission-audit-2026-09-21.md) and updated
+the handoff checks. Full local verification passed 793 tests, both typechecks,
+build and lint with 15 warnings. Independent production smoke and one controlled
+Ask passed. The owner reported 183 browsers, 197 visits, four returning browsers,
+two follows and five questions since launch. Story evidence opens are not fully
+instrumented. The audit records current source degradation, overdue reviews,
+the SpaceX geography mismatch and unverified rendering rights. No code release,
+email, social post or hackathon submission was made.
+
+Completed the requested cleanup after reading the hackathon skill and its
+format reference. Preserved every original dated entry, normalized six embedded
+September 11 sessions, ordered the complete log chronologically and added eight
+release or research receipts. Corrected the Started timestamp against the first
+retained commit and restricted the required Components header to registered
+`@convex-dev/*` packages. Firecrawl and AgentMail remain documented in sponsor
+proof. Added the judge introduction, day links, exact form copy and two inspected
+product screenshots. Shortened the active checklist and retained its link targets.
+
+Prepared a code correction that limits the SpaceX location label to the approved
+Vermilion Parish scope in reading, Follow, weekly email and Ask context. It
+preserves the immutable source and publication history and old URL. The regression
+covers public reading, follows, Ask, search and unchanged version history.
+Full local verification passed 794 tests across 103 files, both typechecks,
+build and lint with the same 15 warnings. This code is not deployed. Kept the
+existing images and accepted video; reuse rights remain unverified. Story
+analytics and source-health maintenance remain explicit follow-up work.
+No commit, push, deployment, email, post or submission occurred in this cleanup.
+
+### 2026-09-21 - ae417c9, supported SpaceX location released
+
+The owner authorized the prepared accuracy fix and submission-documentation
+release. Shipped [PR #267](https://github.com/LaykenV/public-parish/pull/267) after
+CI and both independent reviewers passed its exact head with no issues.
+Reading, Follow, weekly email and Ask context now use Vermilion Parish instead
+of the unsupported Pecan Island research label. The immutable version, URL and
+15 accepted excerpts remain. [Production workflow 35630017027](https://github.com/LaykenV/public-parish/actions/runs/35630017027) and
+independent production smoke passed. Both public origins and phone reading
+show the corrected label. The [release receipt](https://github.com/LaykenV/public-parish/pull/267#issuecomment-5764505314) retains these checks.
+No source publication, email, social post or hackathon submission was made.
+The separate documentation PR prepares the complete log and form handoff.

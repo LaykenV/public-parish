@@ -11,15 +11,19 @@ their gate. Louisiana-first Home, place-qualified body labels, statewide LPSC
 coverage and ten November 3 amendment explanations are deployed. The owner
 completed design and QA on September 16, 2026 and confirmed public launch on
 September 18. The final demo, personal Facebook, X, LinkedIn and first five
-Facebook group posts are complete. The hackathon entry is ready for submission
-handoff; actual submission has not been confirmed.
+Facebook group posts are complete. The entry copy, screenshots and complete
+build log are prepared. The SpaceX location correction is released and verified.
+The remaining submission action is the vibeapps.dev entry.
 See [current status and pending work](docs/work.md) for verified coverage,
 operating limits and resident follow-up.
+The [September 21 submission audit](docs/submission-audit-2026-09-21.md) records
+verification, the completed correction and the remaining operating limits.
 
 - [Public app](https://www.publicparish.com)
 - [Qualifying hackathon host](https://befitting-flamingo-587.convex.site)
 - [Submission demo, 2:48](https://www.youtube.com/watch?v=zuOhc5rGgsQ)
-- [Development host](https://woozy-wren-227.convex.site)
+- [For judges and complete build history](hackathon.md#for-judges)
+- [Prepared submission entry](docs/submission-entry.md)
 
 ## Documentation
 
@@ -52,6 +56,9 @@ Use Node.js 22 and npm 11. Install dependencies with `npm ci`. A fresh Convex
 setup uses `npx convex ai-files install` and `npx convex dev --once` to initialize
 the personal development environment. Never commit its generated credentials.
 
+The shared [development host](https://woozy-wren-227.convex.site) is separate
+from the public production app linked above.
+
 `npm run dev` serves Vite at `http://localhost:3000` and syncs the backend to the
 shared personal Convex development deployment. The backend is remote, not local.
 Switching a worktree does not create a separate backend or database. Coordinate
@@ -68,6 +75,10 @@ workflow and run independent production smoke after an authorized release.
 
 ## License
 
-MIT. See [LICENSE](LICENSE). This is a fresh application created for the
+The application code is MIT licensed. See [LICENSE](LICENSE). The third-party
+story renderings retain their individual provenance and rights disclosures;
+the code license does not grant reuse rights to them.
+
+This is a fresh application created for the
 [Convex All Gas Hackathon](https://www.convex.dev/hackathons/all-gas). Earlier
 civic work contributed evidence principles, not a reused submission codebase.
