@@ -55,12 +55,36 @@ weaken citations, or activate all policies to increase a publication count.
 
 ## Allowances and production settings
 
-The [September 14 code-freeze receipt](code-freeze-2026-09-14.md) supersedes the
-September 8 allowance snapshot. Its closing state has source policies paused
-and source AI spending disabled. Public Ask has a separate finite allowance
-through the end of September 25 Central. Read current settings and remaining
-balances before spending. Dated receipts are not today's budget, and the
-September 16 launch sign-off changes no settings.
+The owner authorized $20 of fresh model capacity each for Ask and recent source
+monitoring on September 18. The configured total ceilings are $21.454589 for Ask
+and $25.043045 for sources, including prior charges. Both expire at midnight
+starting October 3 Central, covering October 2. Ask, source spending and all
+thirteen monitoring policies are enabled after the authorized September 18
+backend deployment. This supersedes the September 14 allowance snapshot.
+
+The active monitoring window begins September 11, 2026, including later-posted
+minutes for the September 16 LPSC meeting. Each policy has a 24-hour interval,
+one document and one decision target per run, and fifteen processing calls per
+day. The global limit is 120 calls per day. Incomplete work may schedule another
+run before the normal interval; the daily admission limits still apply. These
+limits cover the twelve parish bodies and the LPSC's approved agendas and minutes.
+They do not automate curated story or ballot review.
+
+First-run verification preserved all 157 pending pre-window decision targets.
+The first dispatched target was dated September 21. Initial retrievals exposed
+undated historical Lafayette event pages; source spending was paused while the
+official URL-date parser was extended and all 22 retained dated calendar entries
+were classified. The correction was deployed and spending restored under the
+same ceiling. Source retrieval remains paced at four requests per minute; pacing
+deferrals and incomplete checks are not proof of fresh coverage. Check the run
+ledger and actual remaining allowance before changing limits.
+
+Historical catch-up stays deferred through the hackathon. Changing the window
+must exclude existing old queued targets from dispatch and baseline-completion
+checks, while preserving those targets for a later authorized expansion. Review
+cheaper model options after the hackathon before resuming catch-up. The current
+model roles and independent review remain unchanged. Read current balances before
+spending; a dated receipt is not today's remaining budget.
 
 Paid AI and monitoring admissions require `AI_SPENDING_GUARD_ENABLED=true`.
 An absent or disabled guard pauses paid work even if an allowance is funded.
@@ -222,6 +246,14 @@ changes. State that consequence before obtaining any needed release approval.
 Watch the exact head and workflow, then run the required independent
 `npm run smoke:production` after an authorized release. Never infer live feature
 or data correctness solely from green CI.
+
+Production code releases must use a clean, committed revision that passed PR
+checks and review. Use the production workflow for backend and frontend together.
+Do not upload production code from a dirty working tree, even when a source
+publication is authorized. Source publication and code deployment are separate
+actions. If production already contains uncommitted code, preserve it, reconcile
+all dependent changes through PRs, and release the complete reviewed revision.
+Do not deploy an intermediate revision that removes another live correction.
 
 Use meaningful bounded live verification for the changed behavior. Report which
 environment, source versions, routes and provider paths passed. Keep development

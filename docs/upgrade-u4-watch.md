@@ -14,13 +14,18 @@ claiming an outcome or the absence of a document. The original watch was planned
 September 19; that planning date does not prove a check occurred. Retain the
 public evidence limit until a qualifying source passes the procedure below.
 
+The late September 16 research check found no outcome document in the official
+agenda page or docket inventory. See the [morning report](meta-morning-report-2026-09-17.md)
+for that checkpoint and the separate story-enrichment receipts.
+
 ## Official pages to check
 
 | Source | What to inspect |
 | --- | --- |
 | [LPSC business sessions](https://lpsc.louisiana.gov/Agenda) | A new results or minutes link for September 16. At the September 14 check the latest linked minutes were August 12 |
 | [Revised September 16 agenda](https://lpsc.louisiana.gov/docs/agenda/Sept_16_2026_Agenda_Revised.pdf) | A further revision, withdrawal or deferral of either U-37882 motion |
-| [Accepted U-37882 order detail](https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/DocumentDetails?documentId=176967) | Follow the official docket navigation and inspect newly filed orders |
+| [U-37882 scheduling-order detail](https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/DocumentDetails?documentId=180141) | Follow the official docket navigation and inspect newly filed orders. Document 176967 is the original U-37425 order, not this proceeding |
+| [U-37882 docket](https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/DocketDetails?docketId=32728) | Inspect current filings and document identities, including both inventory pages |
 | [Retained May scheduling order](https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/ViewFile?fileId=vuPR4bwXjsw%3D) | Keep its December 16 consideration date attributed to this order unless a later source changes it |
 
 An audio or video recording can identify a document to seek. It cannot replace
@@ -28,12 +33,25 @@ an accepted official outcome document in this slice. The August 12 minutes
 record an earlier procedural event. They do not establish what happens to the
 two September 16 motions.
 
+## September 16 checkpoint
+
+At 10:08 p.m. Central, the business-session page still linked August 12 as its
+latest minutes and transcript. U-37882 had 112 document entries, with September
+10 correspondence as its newest filing. Its order search returned the May 14
+scheduling order. Both inventory pages were retained. No September 16 outcome
+appeared in these checked records. This does not establish that no action occurred.
+
+The story-enrichment retrieval exceeded the announced Firecrawl limit. The
+44-page original order cost 88 credits across two verification passes, and the
+Corps listing cost one. Paid retrieval stopped at 89 credits. Do not restart
+paid retrieval using the old 10-credit allowance as though it remained unused.
+
 ## After the session
 
 1. Record check time, exact URL and document identity. Check again through
    September 19 if no official outcome document appears. Do not enable a cron.
 2. Retrieve only the new relevant official document through the shared
-   Firecrawl intake. Reuse the seven current Meta sources. Retain raw bytes,
+   Firecrawl intake. Reuse the eight current Meta sources. Retain raw bytes,
    normalized text, hashes, page mapping and exact excerpts for each motion.
 3. Extend the current manifest lineage. Confirm the actual current production
    bundle before assigning a new version. Draft and independently review the
@@ -48,7 +66,8 @@ two September 16 motions.
 6. If no qualifying document appears by September 19, record the URLs and
    check times. Keep the public outcome undocumented. Do not invent a result.
 
-The named U4 limit remains $2 model use and 10 Firecrawl credits, with one
-retry after diagnosing its cause. Recheck the spending guard before a future
-run. The earlier overnight development tranche is historical and does not
-establish today's available allowance.
+The named U4 limit was $2 model use and 10 Firecrawl credits, with one retry
+after diagnosing its cause. The September 16 enrichment exceeded the retrieval
+limit, as recorded above. Further paid work needs a fresh finite allowance and
+a check of the spending guard. The earlier overnight development tranche is
+historical and does not establish today's available allowance.
