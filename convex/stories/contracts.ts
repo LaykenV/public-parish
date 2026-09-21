@@ -3,7 +3,7 @@ import { v } from 'convex/values'
 
 export const MAX_STORY_BUILD_RETRIES = 2
 
-export const storyKey = v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce'), v.literal('2026-amendment-1'), v.literal('2026-amendment-2'), v.literal('2026-amendment-3'), v.literal('2026-amendment-4'), v.literal('2026-amendment-5'), v.literal('2026-amendment-6'), v.literal('2026-amendment-7'), v.literal('2026-amendment-8'), v.literal('2026-amendment-9'), v.literal('2026-amendment-10'))
+export const storyKey = v.union(v.literal('meta-richland'), v.literal('spacex-pecan-island'), v.literal('applied-digital-boyce'), v.literal('beaver-lake-rapides'), v.literal('2026-amendment-1'), v.literal('2026-amendment-2'), v.literal('2026-amendment-3'), v.literal('2026-amendment-4'), v.literal('2026-amendment-5'), v.literal('2026-amendment-6'), v.literal('2026-amendment-7'), v.literal('2026-amendment-8'), v.literal('2026-amendment-9'), v.literal('2026-amendment-10'))
 export const storyMode = v.union(v.literal('full'), v.literal('limited'), v.literal('withheld'))
 export const sourceBinding = v.object({ sourceKey: v.string(), snapshotId: v.id('sourceSnapshots') })
 export const storySpan = v.object({

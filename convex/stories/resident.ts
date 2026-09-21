@@ -55,7 +55,7 @@ export const get = query({
 export const featured = query({
   args: {}, returns: v.array(publicStory),
   handler: async ctx => {
-    const records = await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(13)
+    const records = await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(Object.keys(STORY_REGISTRY).length)
     const stories = []
     for (const record of records) { if (!Object.prototype.hasOwnProperty.call(LAUNCH_STORIES, record.storyKey)) continue; const story = await resolvePublicStory(ctx, record); if (story) stories.push(story) }
     return stories
@@ -65,7 +65,7 @@ export const featured = query({
 export const ballotMeasures = query({
   args: {}, returns: v.array(publicStory),
   handler: async ctx => {
-    const records = await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(13)
+    const records = await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(Object.keys(STORY_REGISTRY).length)
     const measures = []
     for (const record of records) {
       if (STORY_REGISTRY[record.storyKey].kind !== 'ballot_measure') continue

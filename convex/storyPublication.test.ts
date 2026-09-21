@@ -843,3 +843,60 @@ test('alt text corrections retain image bytes and require a new independent revi
     })
   } finally { vi.useRealTimers() }
 })
+
+test.each(['beaver-lake-rapides', 'meta-richland', 'spacex-pecan-island', 'applied-digital-boyce'] as const)('image approval requirement remains scoped for %s', async storyKey => {
+  const { t, owner, buildId, storyId, args } = await setup()
+  const { STORY_REGISTRY } = await import('./stories/registry')
+  const entry = STORY_REGISTRY[storyKey]
+  const reviewHash = await t.run(async ctx => {
+    const build = (await ctx.db.get(buildId))!
+    const imported = (await ctx.db.get(build.importId))!
+    const manifest = JSON.parse(imported.manifestJson) as StoryManifest
+    manifest.contractVersion = '2.0.0'
+    manifest.story = { ...manifest.story, storyKey, slug: storyKey, rank: entry.rank, placement: entry.placement,
+      geography: [{ ...manifest.story.geography[0], parish: entry.parish }] }
+    await ctx.db.patch(imported._id, { storyKey, contractVersion: '2.0.0', manifestJson: JSON.stringify(manifest) })
+    await ctx.db.patch(storyId, { storyKey, slug: storyKey, rank: entry.rank })
+    const review = { ...build.review!, checks: build.review!.checks.filter(check => !check.path.startsWith('/media/')) }
+    const nextReviewHash = await hashStoryValue(review)
+    await ctx.db.patch(buildId, { media: null, review, reviewHash: nextReviewHash })
+    return nextReviewHash
+  })
+  if (storyKey !== 'beaver-lake-rapides') {
+    await expect(owner.mutation(api.stories.operations.approve, { ...args, reviewHash })).rejects.toThrow('approved image')
+    return
+  }
+  await owner.mutation(api.stories.operations.approve, { ...args, reviewHash })
+  const result = await t.query(api.stories.resident.get, { slug: storyKey })
+  expect(result.state).toBe('active')
+  expect(result.story?.media).toBeNull()
+  expect(await t.query(api.stories.resident.featured, {})).toEqual([])
+  const catalog = await t.run(ctx => storyAskCatalog(ctx, { kind: 'story', storySlug: storyKey }))
+  expect(catalog.records[0]).toMatchObject({ recordKey: storyKey, placeSlug: 'rapides-parish' })
+  await owner.mutation(api.follows.enrollment.createGoogleFollow, { targetKind: 'story', targetKey: storyKey, cadence: 'both' })
+  expect(await owner.query(api.follows.enrollment.currentGoogleFollows, {})).toHaveLength(1)
+  const indexed = await t.run(ctx => ctx.db.query('publishedSearchEntries').withIndex('by_key', q => q.eq('key', `story:${storyKey}`)).unique())
+  expect(indexed).toMatchObject({ placeSlug: 'rapides-parish' })
+})
+
+test('all ballot measures remain listed when the nonfeatured Rapides story is active', async () => {
+  const { t, owner, args } = await setup()
+  const versionId = await owner.mutation(api.stories.operations.approve, args)
+  const { STORY_REGISTRY } = await import('./stories/registry')
+  await t.run(async ctx => {
+    const { _id, _creationTime, ...version } = (await ctx.db.get(versionId))!
+    for (const [key, entry] of Object.entries(STORY_REGISTRY)) {
+      if (key === 'applied-digital-boyce') continue
+      const storyKey = key as keyof typeof STORY_REGISTRY
+      const storyId = await ctx.db.insert('stories', { storyKey, slug: key, rank: entry.rank, state: 'active', generation: 1, createdAt: 1, updatedAt: 1 })
+      const currentVersionId = await ctx.db.insert('storyVersions', { ...version, storyId })
+      await ctx.db.patch(storyId, { currentVersionId })
+    }
+  })
+  expect((await t.query(api.stories.resident.ballotMeasures, {})).map(story => story.slug)).toEqual(
+    Array.from({ length: 10 }, (_, i) => `2026-amendment-${i + 1}`),
+  )
+  expect((await t.query(api.stories.resident.featured, {})).map(story => story.slug)).toEqual([
+    'meta-richland', 'spacex-pecan-island', 'applied-digital-boyce',
+  ])
+})

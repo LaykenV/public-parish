@@ -1,6 +1,6 @@
 import { ballotQuestion } from './ballot'
 import schemaV2 from '../../docs/story-manifests/import-contract-v2.json'
-import { STORY_REGISTRY } from './registry'
+import { requiresStoryImage, STORY_REGISTRY } from './registry'
 import schema from '../../docs/story-manifests/import-contract-v1.json'
 import type { StoryManifest } from './manifestTypes'
 
@@ -165,7 +165,7 @@ export function researchBlockers(manifest: StoryManifest): string[] {
     if (source.retrieval.completeness !== 'complete') blockers.push(`${source.sourceKey}: complete artifact required.`)
     if (source.retrieval.method === 'manual_file' && source.retrieval.failureEvidence.length < 2) blockers.push(`${source.sourceKey}: repeated retrieval failure documentation required.`)
   }
-  if (STORY_REGISTRY[manifest.story.storyKey].kind === 'story' && !manifest.media.length) blockers.push('An approved story image is missing.')
+  if (requiresStoryImage(manifest.story.storyKey) && !manifest.media.length) blockers.push('An approved story image is missing.')
   for (const media of manifest.media) if (media.permission.status === 'unresolved') blockers.push(`${media.mediaKey}: image permission unresolved.`)
   return blockers
 }

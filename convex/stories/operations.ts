@@ -1,5 +1,5 @@
 import { checkBallotDraft } from './ballot'
-import { STORY_REGISTRY } from './registry'
+import { requiresStoryImage } from './registry'
 import { indexStory } from './search'
 import { recordStoryUpdate } from './updates'
 import { v } from 'convex/values'
@@ -54,7 +54,7 @@ export const approve = mutation({
     const mode = build.review.verdict === 'fail' ? 'withheld' : build.review.verdict === 'limited' || manifest.research.knownUnknowns.length ? 'limited' : 'full'
     const previous = story.currentVersionId ? await ctx.db.get(story.currentVersionId) : null
     if (previous && (!build.review.changeAssessment || build.review.changeAssessment.previousDraftHash !== previous.draftHash || build.review.changeAssessment.kind === 'baseline')) throw new Error('An exact previous-version change review is required')
-    if (mode !== 'withheld' && STORY_REGISTRY[story.storyKey].kind === 'story' && !build.media) throw new Error('An approved image is required for launch publication')
+    if (mode !== 'withheld' && requiresStoryImage(story.storyKey) && !build.media) throw new Error('An approved image is required for launch publication')
     const latest = await ctx.db.query('storyVersions').withIndex('by_story_id_and_version', q => q.eq('storyId', story._id)).order('desc').first()
     const versionId = await ctx.db.insert('storyVersions', {
       storyId: story._id, buildId: build._id, version: (latest?.version ?? 0) + 1,

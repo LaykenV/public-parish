@@ -51,3 +51,15 @@ test.each(['javascript:alert(1)', 'data:text/html,unsafe', 'https://secret@examp
   expect(() => parseStoryManifest(JSON.stringify({ ...example, media: [media] }))).toThrow('HTTPS')
   expect(() => parseStoryManifest(JSON.stringify({ ...example, media: [{ ...media, permission: { ...media.permission, evidenceUrl: 'https://example.org/license' } }] }))).not.toThrow()
 })
+
+test('Beaver Lake accepts only its reviewed Rapides placement through contract 2', () => {
+  const bundle = { ...structuredClone(example), contractVersion: '2.0.0', story: {
+    ...structuredClone(example.story), storyKey: 'beaver-lake-rapides', slug: 'beaver-lake-rapides', rank: 3,
+  } }
+  const manifest = parseStoryManifest(JSON.stringify(bundle))
+  expect(researchBlockers(manifest)).not.toContain('An approved story image is missing.')
+  expect(() => parseStoryManifest(JSON.stringify({ ...bundle, contractVersion: '1.0.0' }))).toThrow('unsupported value')
+  expect(() => parseStoryManifest(JSON.stringify({ ...bundle, story: { ...bundle.story, rank: 0, placement: 'lead' } }))).toThrow('placement mismatch')
+  expect(() => parseStoryManifest(JSON.stringify({ ...bundle, story: { ...bundle.story, geography: [{ ...bundle.story.geography[0], parish: 'Louisiana' }] } }))).toThrow('placement mismatch')
+  expect(researchBlockers(parseStoryManifest(JSON.stringify(example)))).toContain('An approved story image is missing.')
+})

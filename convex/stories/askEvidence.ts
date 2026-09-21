@@ -35,7 +35,7 @@ export async function storyAskCatalog(ctx: Pick<QueryCtx, 'db'>, scope: AskScope
   if (scope.kind !== 'story' && scope.kind !== 'corpus') return { records: [], sources: [] }
   const candidates = scope.kind === 'story'
     ? [await ctx.db.query('stories').withIndex('by_slug', q => q.eq('slug', scope.storySlug)).unique()]
-    : await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(13)
+    : await ctx.db.query('stories').withIndex('by_state_and_rank', q => q.eq('state', 'active')).take(Object.keys(STORY_REGISTRY).length)
   const records: AskRecordContext[] = []
   const sources: StoryEvidence[] = []
   const seen = new Set<string>()

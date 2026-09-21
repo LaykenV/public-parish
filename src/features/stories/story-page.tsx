@@ -1,4 +1,4 @@
-import { registeredStory, storyPath } from '../../../convex/stories/registry'
+import { registeredStory, requiresStoryImage, storyPath } from '../../../convex/stories/registry'
 import { MobileAsk } from '../ask/mobile-ask'
 import {
   ArrowLeftIcon,
@@ -182,6 +182,7 @@ export function StoryPage({ slug }: { slug: string }) {
     )
   const story = result.story
   const measure = registeredStory(story.slug)?.kind === 'ballot_measure'
+  const parishStory = story.slug === 'beaver-lake-rapides'
   const selectedEvidence = selectedSource?.evidence
   const selectSource = (index: number, triggerId: string) => {
     setSelectedSource({ index, evidence: story.evidence[index] })
@@ -196,8 +197,8 @@ export function StoryPage({ slug }: { slug: string }) {
         returnTo={storyPath(story.slug)}
       />
 
-      <Link className="pp-story-back" to={measure ? "/ballot" : "/"}>
-        <ArrowLeftIcon aria-hidden="true" /> {measure ? "All ballot measures" : "All featured stories"}
+      <Link className="pp-story-back" to={parishStory ? "/explore" : measure ? "/ballot" : "/"} search={parishStory ? { place: 'Rapides Parish' } : undefined}>
+        <ArrowLeftIcon aria-hidden="true" /> {parishStory ? "Rapides Parish" : measure ? "All ballot measures" : "All featured stories"}
       </Link>
       <header className="pp-story-head">
         <p className="pp-story-place">{story.geography.join(' · ')}</p>
@@ -245,7 +246,7 @@ export function StoryPage({ slug }: { slug: string }) {
           />
         </div>
       </header>
-      {!measure || story.media ? <StoryImage key={story.media?.url} media={story.media} /> : null}
+      {requiresStoryImage(story.slug) || story.media ? <StoryImage key={story.media?.url} media={story.media} /> : null}
       <nav className="pp-story-jump" aria-label="In this story">
         <a href="#story-timeline">Timeline</a>
         <a href="#story-next-action">Next action</a>

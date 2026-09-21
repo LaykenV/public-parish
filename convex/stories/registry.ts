@@ -12,6 +12,7 @@ const measure = (number: number) => ({
 })
 export const STORY_REGISTRY = {
   ...LAUNCH_STORIES,
+  'beaver-lake-rapides': { kind: 'story', rank: 3, placement: 'secondary', parish: 'Rapides Parish' },
   '2026-amendment-1': measure(1),
   '2026-amendment-2': measure(2),
   '2026-amendment-3': measure(3),
@@ -29,4 +30,8 @@ export function registeredStory(slug: string) {
 }
 export function storyPath(slug: string) {
   return `${registeredStory(slug)?.kind === 'ballot_measure' ? '/ballot' : '/stories'}/${slug}`
+}
+
+export function requiresStoryImage(slug: string) {
+  return registeredStory(slug)?.kind === 'story' && slug !== 'beaver-lake-rapides'
 }

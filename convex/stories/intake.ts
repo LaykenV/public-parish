@@ -8,9 +8,13 @@ import { parseStoryManifest } from './manifest'
 import type { StoryManifest } from './manifestTypes'
 import { isRegisteredSourceUrl } from '../sources/domains'
 
-// These are official publishers for the three approved launch stories. Adding
+// These are reviewed official publishers for owner-approved stories. Adding
 // a publisher requires code review. A research manifest cannot register a host.
 const PUBLISHERS: Partial<Record<string, { name: string; root: string; domains: string[]; jurisdiction: string }>> = {
+  'louisiana-board-of-commerce-and-industry': { name: 'Louisiana Board of Commerce and Industry', root: 'https://www.opportunitylouisiana.gov/', domains: ['opportunitylouisiana.gov', 'wwwcfprd.doa.louisiana.gov'], jurisdiction: 'louisiana' },
+  'louisiana-department-of-environmental-quality': { name: 'Louisiana Department of Environmental Quality', root: 'https://deq.louisiana.gov/', domains: ['deq.louisiana.gov'], jurisdiction: 'louisiana' },
+  'red-river-waterway-commission': { name: 'Red River Waterway Commission', root: 'https://redriverwaterway.com/', domains: ['redriverwaterway.com'], jurisdiction: 'louisiana' },
+  'central-louisiana-regional-port': { name: 'Central Louisiana Regional Port', root: 'https://clrport.com/', domains: ['clrport.com', 'wwwcfprd.doa.louisiana.gov'], jurisdiction: 'rapides-parish' },
   'louisiana-secretary-of-state': { name: 'Louisiana Secretary of State', root: 'https://www.sos.la.gov/', domains: ['sos.la.gov'], jurisdiction: 'louisiana' },
   'louisiana-economic-development': { name: 'Louisiana Economic Development', root: 'https://www.opportunitylouisiana.gov/', domains: ['opportunitylouisiana.gov'], jurisdiction: 'louisiana' },
   'louisiana-public-service-commission': { name: 'Louisiana Public Service Commission', root: 'https://lpsc.louisiana.gov/', domains: ['lpsc.louisiana.gov', 'lpscpubvalence.lpsc.louisiana.gov'], jurisdiction: 'louisiana' },
