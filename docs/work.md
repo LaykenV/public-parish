@@ -358,6 +358,11 @@ The September 18 monitoring and Beaver Lake deployments uploaded working-tree
 code before it was committed. The source receipts above record those deployments,
 but the current main branch does not include their code. The owner authorized
 separate reviewed PRs and a coordinated production release on September 21.
+[PR #264](https://github.com/LaykenV/public-parish/pull/264) captures monitoring,
+[PR #265](https://github.com/LaykenV/public-parish/pull/265) captures Beaver Lake,
+and [PR #266](https://github.com/LaykenV/public-parish/pull/266) retains the receipts.
+Local verification passed all 793 tests, both typechecks, build and lint with
+15 existing warnings.
 The Jev Ask experiment remains parked and is excluded from this release.
 
 Keep automatic production deployment paused only while merging the green PRs,
