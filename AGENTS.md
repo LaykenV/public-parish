@@ -146,6 +146,9 @@ not replace the first-dollar plan.
 - PR-Agent runs `/describe` and `/review` on PR open, and `/review` on push
   (see `pr-agent.md`). The `file-pr` and `babysit-pr` skills carry the full
   procedure; these rules apply even when the skills do not fire.
+- Release production code through reviewed, committed changes and the production
+  workflow. Never deploy production code from a dirty working tree. A request
+  to publish story data does not waive the code review and commit requirement.
 - Merging to `main` deploys the production backend and frontend. The merge
   question must say that plainly. After an authorized merge, babysit the exact
   production workflow run and execute `npm run smoke:production` before calling

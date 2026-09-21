@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-18T16:02:41Z
+- **Last updated:** 2026-09-18T17:10:32Z
 
 Public Parish launched September 18, 2026, confirmed by the owner after the
 completed design and founder QA pass. The final demo and launch posts are done.
@@ -2564,6 +2564,17 @@ Added a standalone launch guide with the Meta opening, rehearsal controls,
 copyable posts and saved local notes. Checked its desktop and phone layout and
 browser controls with Chromium. The guide is local preparation, not a release.
 
+### 2026-09-17 - working tree
+
+Updated the live Meta story with the full original utility order, eight official
+sources and 27 exact excerpts. Fresh independent review passed all 29 final
+text and media checks. Production smoke, saved-file hash checks and desktop/phone
+source inspection passed. A browser Ask demo answered the early-termination-fee
+question in 12.4 seconds. The September 16 outcome remains undocumented, and
+a broader Ask answer omitted a legal qualifier. The [morning report](docs/meta-morning-report-2026-09-17.md)
+records those limits, unpublished permit leads, the 89-credit retrieval overrun
+and restored spending settings. No code deployment, commit or email was made.
+
 ### 2026-09-17 - working tree, pelican email templates
 
 Added branded HTML to resident emails through the existing AgentMail paths,
@@ -2571,6 +2582,19 @@ with the 3D pelican, source links and plain-text alternatives. Chromium previews
 fit at 320, 390 and 760 pixels. Typechecks, build and lint pass with 15 existing
 warnings. The full suite found one missing reply-fixture setting among 782 tests;
 after the fix, all 15 focused tests pass. No deployment or email was sent.
+
+### 2026-09-17 - b69b13e
+
+Shipped the pelican email templates in [PR #261](https://github.com/LaykenV/public-parish/pull/261).
+All 103 test files and both automated reviews passed. The exact
+[production workflow](https://github.com/LaykenV/public-parish/actions/runs/35234097652)
+and independent production smoke passed on both app origins. No test email was
+sent; Gmail and Outlook inbox rendering remains unverified.
+
+The owner later requested the current Meta update in the new email design.
+AgentMail reported delivery of one copy using the shared HTML template and
+eight source links. No active Meta follows existed, so this requested message
+did not change subscriptions or create a follower notification event.
 
 ### 2026-09-17 - working tree, email compatibility correction
 
@@ -2604,3 +2628,70 @@ Retained the supplied social links above and reconciled active docs with launch
 completion. Verified successful production workflow `35258378663` for `c873166d`,
 including workflow smoke and the email fixes through PR #263. No new deployment,
 independent smoke, government outcome or submission is claimed by this update.
+
+### 2026-09-17 - f278f99
+
+Shipped the email compatibility correction and removed the uneven action arrow
+in [PR #262](https://github.com/LaykenV/public-parish/pull/262). CI and both reviews
+passed. The exact [production workflow](https://github.com/LaykenV/public-parish/actions/runs/35236695643),
+independent production smoke and live PNG hash checks passed on both app origins.
+Actual inbox rendering remains unverified; no test email was sent.
+
+After a preview reply was ignored as `unknown_thread`, the owner authorized
+a Meta follow and a tracked alert. The normal notification pipeline delivered
+one alert with its thread recorded and reply instructions present. A new inbound
+reply is still needed to verify the full round trip. The story stayed unchanged.
+
+### 2026-09-17 - d563bcb
+
+Shipped readable question-reply citations in
+[PR #263](https://github.com/LaykenV/public-parish/pull/263). Numbered blocks show
+page and section details, short evidence excerpts and labeled source links.
+The Convex reply action passes structured content to the existing delivery
+mutation; evidence and subscription checks remain. Typechecks, 13 focused tests,
+lint and 90 previews passed. CI, both reviews, the exact
+[production workflow](https://github.com/LaykenV/public-parish/actions/runs/35243471354)
+and independent production smoke passed. No test email was sent. The sender
+name remains AgentMail at the owner's request.
+
+The owner then requested another Meta alert. The current template resend reached
+delivered status in the existing tracked thread. Question-answer citation layout
+confirmation remains pending a new reply.
+
+
+### 2026-09-18 - working tree, recent-source monitoring setup
+
+The owner authorized separate fresh Ask and source-model allowances through
+October 2, with historical catch-up deferred until after the hackathon. Staged
+a recent-source window and conservative processing limits for the thirteen
+approved bodies. Corrected queued-target dispatch and baseline checks to respect
+the source window without deleting historical work. Added regressions for old
+queues, same-day inclusion, daily cadence and later catch-up. All 786 tests, both
+typechecks and the build passed; lint has fifteen existing warnings and no errors.
+The owner then authorized production deployment and activation. All thirteen
+policies and both allowances are active. First checks preserved the historical
+decision queue and started a September 21 target. Initial retrievals found old
+Lafayette calendar pages without stored dates. Added official URL-date recognition,
+passed 62 focused tests and both typechecks, deployed the correction, and classified
+the retained calendar entries before restoring source spending. Production smoke
+passed after both deployments. The deployed changes remain uncommitted locally.
+
+
+### 2026-09-18 - working tree, Beaver Lake Rapides story
+
+Published Beaver Lake with 16 retained official sources and exact citations through
+the existing Convex story workflow, independent review and evidence gates. Kept
+the statewide featured set and ten ballot explanations intact. The story separates
+public authorizations from spending and identifies the missing land-option and
+permit-letter evidence. Full validation passed 793 tests, typechecks, build and
+lint. Production smoke, source downloads, Rapides search, mobile layout and Ask
+checks passed. Estimated processing cost was $1.44 under the owner's $8 ceiling.
+See the [source and release dossier](docs/beaver-lake-research-2026-09-18.md).
+
+### 2026-09-21 - working tree, production release reconciliation
+
+Separated the previously uncommitted monitoring and Beaver Lake code into
+reviewable changes and retained the September 17 and 18 source and release
+receipts. Production code must now go through a committed, reviewed revision.
+The Jev experiment remains parked. CI, review and the coordinated production
+release are pending; this entry does not claim a new deployment.
