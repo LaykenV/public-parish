@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth with Google OAuth, verified on the development, production custom-domain, and qualifying `convex.site` flows
 - **AI models:** `openai/gpt-5.6-terra` for `MODEL_STRONG` extraction, consequence factors, and issue linking; `openai/gpt-5.6-luna` for `MODEL_FAST` coverage discovery classification, independent review, and Ask through Convex AI Gateway
 - **Started:** 2026-08-27T04:38:41Z
-- **Last updated:** 2026-09-21T13:58:51Z
+- **Last updated:** 2026-09-21T14:06:15Z
 
 Public Parish launched September 18, 2026, confirmed by the owner after the
 completed design and founder QA pass. The final demo and launch posts are done.
@@ -2697,4 +2697,5 @@ The Jev experiment remains parked. Local verification passed all 793 tests,
 both typechecks, build and lint with 15 existing warnings.
 [Monitoring PR #264](https://github.com/LaykenV/public-parish/pull/264) and
 [Beaver Lake PR #265](https://github.com/LaykenV/public-parish/pull/265) carry the
-code. Review and the coordinated production release remain pending.
+code. Both passed CI and both reviews, then merged. Production deployment
+was paused during reconciliation; the final coordinated release is pending.

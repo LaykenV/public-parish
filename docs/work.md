@@ -202,8 +202,8 @@ These are maintenance references after the completed launch, not new launch gate
   incomplete source checks, remaining model capacity and Firecrawl credits.
   Keep the September 11 source cutoff and current daily limits unless the owner
   authorizes a change.
-- Complete the September 21 release reconciliation below before deploying a
-  revision that could remove the monitoring or Beaver Lake corrections.
+- Keep production releases tied to the committed monitoring and Beaver Lake
+  corrections from the September 21 reconciliation below.
 - After the hackathon, evaluate cheaper models with the existing extraction and
   independent-review gates before authorizing historical catch-up. Do not switch
   models or widen the source window automatically.
@@ -356,7 +356,7 @@ confirmation after a new reply.
 
 The September 18 monitoring and Beaver Lake deployments uploaded working-tree
 code before it was committed. The source receipts above record those deployments,
-but the current main branch does not include their code. The owner authorized
+and PRs #264 and #265 now capture their code on main. The owner authorized
 separate reviewed PRs and a coordinated production release on September 21.
 [PR #264](https://github.com/LaykenV/public-parish/pull/264) captures monitoring,
 [PR #265](https://github.com/LaykenV/public-parish/pull/265) captures Beaver Lake,
@@ -365,9 +365,10 @@ Local verification passed all 793 tests, both typechecks, build and lint with
 15 existing warnings.
 The Jev Ask experiment remains parked and is excluded from this release.
 
-Keep automatic production deployment paused only while merging the green PRs,
-restore the workflow, then run it against the final main commit containing both
-code changes and these receipts. Verify that exact workflow and independent
-production smoke before reporting completion. Record the final commit and runtime
-results in the PR release comments. No new source publication, model spending
+Both code PRs passed CI and both independent reviews before merge. Automatic
+production deployment was paused during reconciliation to avoid releasing an
+intermediate revision. After this documentation PR passes review and merges,
+restore the workflow and release the complete main commit. The
+[release comments](https://github.com/LaykenV/public-parish/pull/266)
+will record the final commit, exact workflow and independent production smoke. No new source publication, model spending
 allowance, or email delivery is part of this code reconciliation.
