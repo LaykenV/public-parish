@@ -36,97 +36,99 @@ remains a source-maintenance reference, not an unmet launch gate.
 
 ## Next actions through submission and judging
 
-- [ ] Finish the hackathon handoff and submit with owner authorization. Use the
-  existing video and social links. Confirm registration, eligibility, sponsor
-  mentions and signed-out access to the repository, video and both app origins.
-  Submit by September 21 if possible, before the September 22 deadline at
-  2 p.m. Central. Retain the real entry URL and confirmation.
-- [ ] Answer comments and useful questions from the first batch before expanding.
-  Record actual source opens, questions, follows and permissioned feedback where
-  available. Posting and browser counts are not proof of resident benefit.
-- [ ] Consider three additional relevant Facebook groups after reviewing the
-  first batch, then up to two more if there is time to respond. Use the
-  [marketing follow-up plan](marketing.md#follow-up-through-judging), check current
-  group rules and avoid repeating posts in the first five groups.
-- [ ] Keep public Ask, source links and delivery paths usable through September
-  25. Check errors and finite allowances. Review dated source checkpoints during
-  routine maintenance and publish only supported changes. No broad backfill,
-  new feature campaign or production-setting change is authorized by this plan.
+- [x] Read the hackathon skill, preserve the complete root build log, put it in
+  chronological order and reconcile the September 11 through 21 release history.
+  Add the judge introduction and [form copy](submission-entry.md).
+- [x] Release the SpaceX location correction through [PR #267](https://github.com/LaykenV/public-parish/pull/267).
+  Both reviews and CI passed. The exact [production workflow](https://github.com/LaykenV/public-parish/actions/runs/35630017027)
+  and independent smoke passed for `ae417c9`. Both public origins display
+  Vermilion Parish. The published version and its 15 accepted excerpts remain.
+  See the [release receipt](https://github.com/LaykenV/public-parish/pull/267#issuecomment-5764505314).
+- [ ] Submit the entry and retain its public URL and confirmation. Registration,
+  personal eligibility and all four X sponsor tags are owner-confirmed.
+  Signed-out repository, video and app checks passed September 21. Target today,
+  before September 22 at 2 p.m. Central. Actual submission is not yet authorized.
+- [ ] Answer existing comments before expanding distribution. Further posts are
+  optional; use the [follow-up copy](submission-entry.md#optional-follow-up-after-submission)
+  only when it adds a useful reason to return. Do not repeat the first five groups.
+- [ ] Keep Ask, sources and email paths usable through September 25. Diagnose
+  incomplete source checks within existing limits and review the dated source
+  checkpoints. Preserve visible coverage limitations if a source cannot recover.
+  No broad backfill or production-setting change is queued.
+
+The owner asked to keep the existing images if practical. They remain unchanged
+with their existing provenance disclosures. Reuse rights are unverified, and
+the owner exception is not a license. No infringement has been established by
+this audit. The video remains accepted as finished.
+
+### September 21 audit receipt
+
+The owner reports 183 unique browsers, 197 visits, four returning browsers,
+two follows and five submitted questions since the September 18 launch.
+Founder-activity exclusions were not confirmed. The reported zero evidence
+opens cannot measure story engagement because the story drawer omits those
+events. These are initial usage signals, not verified resident outcomes.
+
+The audit checked main `7a64f2f` and its successful
+[production workflow](https://github.com/LaykenV/public-parish/actions/runs/35613500565).
+Baseline verification passed 793 tests, both typechecks, build and lint with
+15 warnings. Independent production smoke passed. All 52 distinct saved source
+URLs answered HEAD requests. A controlled Ask question and desktop and phone
+source views passed inspection. The question is audit activity.
+The [audit report](submission-audit-2026-09-21.md) records verification limits
+and the final disposition of each finding.
+
+The local cleanup then passed 794 tests across 103 files, both typechecks,
+build and lint with the same 15 warnings. The new regression checks the SpaceX
+label in reading, Follow, Ask and search while preserving its version history.
+The owner then authorized review and release. PR #267, production workflow
+`35630017027`, independent smoke and the direct location check passed.
+The [release receipt](https://github.com/LaykenV/public-parish/pull/267#issuecomment-5764505314) records the live result.
 
 ## Beaver Lake publication, September 18
 
-The owner authorized research, processing and production publication with an $8
-ceiling. [The Rapides story](https://www.publicparish.com/stories/beaver-lake-rapides)
-is live with 23 exact citations across 16 official source snapshots. The
-[research dossier](beaver-lake-research-2026-09-18.md) records each source and gap.
-Estimated processing cost was $1.44, including 267 retrieval credits and model
-usage. Prior spending ceilings and expiries were restored without erasing charges.
+[Beaver Lake](https://www.publicparish.com/stories/beaver-lake-rapides) is live
+with 23 citations across 16 official snapshots. Estimated processing cost was
+$1.44 under the owner's $8 ceiling. The [research dossier](beaver-lake-research-2026-09-18.md)
+and [build log](../hackathon.md#2026-09-18) retain publication, source and test
+receipts. It remains separate from the three featured stories.
 
-The story distinguishes permit application withdrawals, public authorizations
-and conditional funding from completed spending. It does not establish a new
-tenant, the reported land option, or current disposition of public commitments.
-The clerk's $20 access fee exceeded the task budget. Full permit letters remain
-outside the retained evidence. The three featured stories remain unchanged.
-
-Full validation passed 793 tests plus typechecks, build and lint. Production smoke,
-all 16 snapshot downloads, Rapides search, mobile layout and source-grounded Ask
-checks passed. The September 18 deployment used uncommitted code; the September 21
-release reconciliation below captures it for review. No follow subscription or email was sent.
-
-- [ ] Review Beaver Lake by September 25 for the recorded land option, named
-  replacement project, site-specific FastSites agreement, actual payments and
-  current industrial tax exemption status. Retain new official evidence before
-  publishing a stronger conclusion.
+- [ ] Review by September 25 for the recorded land option, replacement project,
+  site-specific FastSites agreement, actual payments and current industrial tax
+  exemption status. Full permit letters remain outside accepted evidence.
+  Do not turn public authorizations into a claim of completed spending.
 
 ## Meta demo evidence update
 
-The owner's overnight research request authorized an update to the live Meta
-story. The [morning report](meta-morning-report-2026-09-17.md) records the research,
-publication and demo checks. The story now has eight retained official sources
-and 27 exact excerpts. The full original utility order adds customer protections,
-guarantees, early termination requirements and cost-review conditions. A revised
-explanation preserves the distinction between the original approval and the
-later application. It retains the existing image and passed fresh independent
-review of text and media. It remains LIMITED.
-
-No September 16 outcome was established. The late September 16 check found
-August 12 as the latest linked minutes and transcript, and no newer outcome
-in the U-37882 docket inventory. The official outcome remains undocumented.
-This historical enrichment used baseline publication and sent no story-update
-email.
-
-Research found a Corps expansion notice with a September 29 comment deadline,
-LDEQ permit leads and an August utility progress report. These are not accepted
-app evidence. Follow-up requires the normal source and review gates. The
-progress report also has an inconsistent original-budget total.
-
-The full-order retrieval cost 88 Firecrawl credits across two verification
-passes, plus one credit for the Corps listing. That exceeded the announced
-10-credit limit. Paid retrieval stopped. Source-model spending returned to its
-prior disabled setting without an allowance increase. See the morning report
-for final charges and verification receipts.
+The live LIMITED story has eight retained official sources and 27 exact
+excerpts following the September 17 update. Fresh review covered text and the
+retained image. The [morning report](meta-morning-report-2026-09-17.md) and
+[build log](../hackathon.md#2026-09-17) retain publication, source checks,
+spending overrun and the broader Ask qualifier issue. No September 16 outcome
+has been established. The September 21 session-page check still found August 12
+as the latest linked minutes and transcript. Unaccepted permit leads remain
+maintenance work below, not published evidence.
 
 ## Founder design and QA sign-off
 
-- [x] Complete the three-story functionality and evidence gate.
-- [x] Ship the Louisiana-first Home, parish controls, statewide commission
-  coverage and ten statewide amendment explanations.
-- [x] Complete the founder's global design and QA pass. Owner sign-off received
-  September 16, 2026. No remaining design or QA launch blocker was reported.
-- [x] Reconcile the old PR queue against GitHub. No open Public Parish PRs at
-  the September 16 check. Ask speed, ranking, readability and layout changes
-  are merged, with successful production workflows.
-
-The owner sign-off closes the overall review gate. It does not assert a separate
-screen-reader, device, platform-preview or provider test for which no receipt
-exists. Historical QA-001 through QA-005 are superseded as launch tasks by the
-released corrections and this sign-off. Their original observations remain in
-[the archived ledger](archive/work-through-2026-09-15.md#qa-ledger).
-New reproducible defects get their own entry here.
+The owner signed off the three-story functionality, Louisiana-first Home,
+statewide commission coverage, ten amendment explanations and global design
+and QA on September 16. This closes the launch gate. It does not assert a
+separate device, screen-reader or provider test without a receipt.
+The [September 16 log](../hackathon.md#2026-09-16) and
+[archived QA ledger](archive/work-through-2026-09-15.md#qa-ledger) preserve the
+iterations. Record new reproducible defects here.
 
 ## Released application
 
-The September 21 application release is `1bf4d2ed73a8d948b3eb2757f3b811892d568760`,
+The latest application-code release is `ae417c9b9c28ee213657d519de7161db98fd0742`
+through PR #267. [Production workflow 35630017027](https://github.com/LaykenV/public-parish/actions/runs/35630017027)
+and independent smoke passed. The [release receipt](https://github.com/LaykenV/public-parish/pull/267#issuecomment-5764505314) records
+the live SpaceX label on both origins, with its publication revision and 15
+accepted excerpts retained. The submission-documentation PR follows this
+application release and must have its own exact deployment and smoke receipt.
+
+The earlier September 21 application release was `1bf4d2ed73a8d948b3eb2757f3b811892d568760`,
 which includes the reviewed monitoring, Beaver Lake and receipt changes from
 PRs #264, #265 and #266. [Production workflow 35610443021](https://github.com/LaykenV/public-parish/actions/runs/35610443021)
 passed release verification, backend and frontend deployment, source
@@ -147,6 +149,7 @@ The earlier product-release receipts below preserve their original context.
 
 | Released change | Merged PR | Successful production workflow |
 | --- | --- | --- |
+| SpaceX supported location | [#267](https://github.com/LaykenV/public-parish/pull/267) | [35630017027](https://github.com/LaykenV/public-parish/actions/runs/35630017027) |
 | Monitoring and Beaver Lake reconciliation | [#264](https://github.com/LaykenV/public-parish/pull/264), [#265](https://github.com/LaykenV/public-parish/pull/265), [#266](https://github.com/LaykenV/public-parish/pull/266) | [35610443021](https://github.com/LaykenV/public-parish/actions/runs/35610443021) |
 | Readable email reply citations | [#263](https://github.com/LaykenV/public-parish/pull/263) | [35243471354](https://github.com/LaykenV/public-parish/actions/runs/35243471354) |
 | Email layout and button compatibility | [#262](https://github.com/LaykenV/public-parish/pull/262) | [35236695643](https://github.com/LaykenV/public-parish/actions/runs/35236695643) |
@@ -170,209 +173,108 @@ record independent production smoke for those exact releases.
 
 ## Published evidence and operating limits
 
-The [September 14 audit](launch-audit-2026-09-14.md#current-content-and-operation)
-verified the three LIMITED featured stories, ten LIMITED statewide amendments,
-and Supported coverage for the twelve named parish bodies and LPSC. The
-[code-freeze receipt](code-freeze-2026-09-14.md) records subsequent source reviews
-and corrections. Supported means the named coverage gates passed; it does not
-mean complete archives or automatic monitoring.
+The three featured stories, ten amendments and Beaver Lake remain published
+with explicit limitations. At the September 21 audit, eight of thirteen bodies
+were Degraded, all seven Lafayette bodies and Alexandria City Council. The live
+selector reports Lafayette and Rapides as limited and East Baton Rouge as
+available. Saved accepted records remain readable. The September 14 Supported
+receipt is historical; it is not the current health report.
+
+Ask and source-model allowances were enabled with about $19.90 and $18.87
+remaining before the audit's controlled Ask. Both expire October 3 at 05:00 UTC,
+covering October 2 Central. This does not verify Firecrawl credit balance or
+Convex billing headroom. Thirteen monitoring policies retain the September 11
+source cutoff, 24-hour interval, one document and target per run, fifteen calls
+per body per day and a global 120-call daily ceiling. Recent incomplete runs
+include budget and provider-rate deferrals. See [the audit](submission-audit-2026-09-21.md#diagnose-source-health-and-close-overdue-reviews)
+and [operations](operations.md) before diagnosing or changing limits.
 
 The [September 12 production receipt](launch-release-2026-09-12.md#production-email-and-phone-proof)
-records controlled verification-code receipt, a Meta material-update email,
-management access, a grounded inbound reply and response, per-follow unsubscribe,
-and the owner's phone check. Older blanket "production email untested" notes
-are superseded. Those receipts do not establish organic usage or a new round trip
-today.
-
-The September 18 owner authorization adds $20 of fresh capacity each to Ask and
-source AI, expiring after October 2 Central. Ask is active. Thirteen source
-policies, including LPSC, have an active September 11 start date, 24-hour intervals,
-one document and target per run, fifteen calls per body per day and a global
-120-call daily limit. The owner authorized production deployment of the
-queued-target date-window correction and activation on September 18. All thirteen
-policies and source spending are now enabled. All 157 pre-window pending targets
-remained unchanged in the first-run audit; the first dispatched decision was
-dated September 21. A follow-up correction classified 22 official Lafayette
-calendar URLs to exclude old event pages before retrieval. Both production smoke
-runs passed. Historical targets remain preserved for later catch-up. Follow
-[operations](operations.md) for the exact
-ceilings, current activation status and stop rules.
+records verification, update delivery, a grounded reply, management access,
+per-follow unsubscribe and the owner phone check. September 17 emails were
+delivered in the recorded follow-up tests; a new reply and real inbox layout
+confirmation remain unverified. No new email round trip ran in this audit.
 
 ## Ongoing maintenance and later improvements
 
-These are maintenance references after the completed launch, not new launch gates.
+These are follow-up tasks after launch, not a new feature cycle before submission.
 
-- Review source and Ask usage on September 19, including retrieval pacing,
-  incomplete source checks, remaining model capacity and Firecrawl credits.
-  Keep the September 11 source cutoff and current daily limits unless the owner
-  authorizes a change.
-- Keep production releases tied to the committed monitoring and Beaver Lake
-  corrections from the September 21 reconciliation below.
-- After the hackathon, evaluate cheaper models with the existing extraction and
-  independent-review gates before authorizing historical catch-up. Do not switch
-  models or widen the source window automatically.
-
-- Check Ask allowance, failed resident journeys and delivery errors during launch.
-  Reconcile the dated amendment and SpaceX/Boyce source-review checkpoints
-  against actual receipts before claiming a fresh review.
-- Follow up the [Meta research leads](meta-morning-report-2026-09-17.md#important-findings-outside-the-published-evidence).
-  Prioritize the September 29 Corps deadline. Register and review the actual
-  publishers, retrieve the full notice and permit records, and resolve the
-  quarterly report's budget inconsistency before publishing new claims. Further
-  paid retrieval needs a fresh finite allowance after this session's overrun.
-- Collect permissioned resident feedback after launch. A private pilot and the
-  resident-use targets are follow-up goals, not prerequisites under the
-  September 16 owner decision. No pilot or organic outcome is claimed yet.
-- Preserve the [readability audit](readability-audit-2026-09-15.md) follow-ups.
-  Evaluate drafts on its five saved inputs before claiming model-quality gains;
-  resolve the Lena-Flatwoods stage mismatch through bounded evidence review;
-  capture the library-tax hearing line during the next named source update.
-- Watch production Ask latency during real use. PR #248 already completed the
-  production search backfill and weekly-question measurement. Do not replay
-  that repair or benchmark from an old pending checkbox.
-- Preserve legal qualifiers in Ask paraphrases. The September 17 Meta check
-  found a broad customer-protection answer that omitted "material" when
-  describing a transmission-cost condition. Its cited excerpt and the story
-  retain the qualifier. The narrower early-termination-fee demo question passed.
-  The [morning report](meta-morning-report-2026-09-17.md#live-verification) records
-  both observations. No prompt or application-code fix was deployed.
-- Keep parish propositions unpublished until their ballot wording and calling
-  records pass the same evidence checks. No archive-completion batch, new story,
-  body expansion or general redesign is queued for launch.
+- Diagnose degraded source policies and provider pacing within current limits.
+  The September 21 audit replaces the missed September 19 status check; it does
+  not establish recovery. Reconcile elapsed Meta, SpaceX, Boyce and amendment
+  review dates against new official evidence. Keep missing-outcome disclosures.
+- Follow the [Meta research leads](meta-morning-report-2026-09-17.md#important-findings-outside-the-published-evidence),
+  especially the September 29 Corps deadline. Retrieve and review the actual
+  permits and resolve the utility progress report's budget inconsistency before
+  adding claims. Further paid retrieval needs a finite allowance after the
+  September 17 overrun.
+- Repair story and ballot evidence-open telemetry before using that counter to
+  evaluate distribution. Do not reconstruct missing historic events or call
+  browser identifiers distinct residents. Collect permissioned feedback.
+- Preserve the [readability audit](readability-audit-2026-09-15.md) follow-ups,
+  including its saved model-evaluation inputs, Lena-Flatwoods stage mismatch and
+  the library-tax hearing line. The September 17 broader Meta Ask omitted
+  "material" from a transmission-cost condition. A narrower answer passing does
+  not close that issue.
+- Watch Ask latency in real use. PR #248's production index backfill and benchmark
+  are complete; do not replay them from an old checkbox. Confirm the latest
+  email citation layout when the owner next replies to the tracked test email.
+- After judging, evaluate cheaper models before historical catch-up. Do not
+  widen coverage, switch models or publish parish propositions without the
+  existing source and independent-review gates. Preserve image provenance until
+  reuse permission or a replacement is documented.
 
 ## Hackathon artifacts
 
-Public launch is complete. Actual hackathon submission is not yet confirmed. The
-[submission checklist](submission.md#submission-checklist) owns artifact details.
-
-- [x] Record, edit and inspect the [final demo](demo/public-parish-launch-demo.mp4).
-  The September 17 export is 2:48.2, 1080p at 30 fps, with
-  [captions](demo/public-parish-launch-demo.srt). It joins the two recordings,
-  trims pauses and the closing thank-you, and labels the existing founder-test
-  email. Source passage, email privacy, sponsor credits, audio and closing card
-  were inspected. See [export details](demo/README.md).
-- [x] Retain the published video and owner-supplied X, LinkedIn and personal
-  Facebook links in the launch receipt above. Final sponsor-tag and signed-out
-  access checks remain part of submission handoff, not a request to post again.
-- [ ] Submit the public repository, qualifying app and video through vibeapps.dev
-  after owner authorization. Target September 21; deadline September 22 at noon
-  Pacific, 2 p.m. Central. Keep the public app usable through judging.
-- [x] Reconcile documentation and the root build log with the September 18
-  launch confirmation, finished public demo, social links and latest workflow.
+- [x] Retain the accepted [2:48 video](https://www.youtube.com/watch?v=zuOhc5rGgsQ),
+  [master](demo/public-parish-launch-demo.mp4), [captions](demo/public-parish-launch-demo.srt)
+  and [export details](demo/README.md). The founder-test email is labeled.
+- [x] Retain launch links, confirmed X sponsor mentions, registration and
+  eligibility. Signed-out app, repo and video checks passed September 21.
+- [x] Prepare [the form copy](submission-entry.md), [screenshots](submission-assets/README.md)
+  and the complete chronological [build log](../hackathon.md).
+- [ ] Retain the actual vibeapps.dev entry URL after authorized submission.
 
 ## History and handoff
 
-[Work history through September 15](archive/work-through-2026-09-15.md) preserves
-prior tasks, test results, budgets and the QA ledger. Dated reports and
-[hackathon.md](../hackathon.md) preserve what was known at each session. Their
-unchecked boxes and earlier "pending" sentences are historical, not extra launch
-gates or grants to replay work.
+[hackathon.md](../hackathon.md) contains the complete build narrative.
+[Work history through September 15](archive/work-through-2026-09-15.md) and dated
+reports retain detailed receipts. Earlier "pending" sentences describe their
+session; this file alone owns current work.
 
 Keep the three-story scope, evidence gates and weekday 90-minute Varholdt sales
-block. Read [PLAN](../PLAN.md), [architecture](architecture.md),
-[sources](sources.md), [design](design.md) and [operations](operations.md) before
-changing behavior. Record new work here with its actual receipt. Do not mark a
-post, official outcome, provider test or submission complete without evidence.
+block. Read [PLAN](../PLAN.md), [architecture](architecture.md), [sources](sources.md),
+[design](design.md) and [operations](operations.md) before changing behavior.
+Do not mark a post, official outcome, provider test or submission complete
+without evidence.
 
 ## Email design, released September 17
 
-Added a shared HTML email template with the approved 3D pelican, lavender
-framing, purple action buttons and compact official-source links. Story and
-decision alerts, weekly roundups, follow and coverage verification, coverage
-notices and grounded replies include HTML alongside their existing plain text.
-Subscriber controls and development exercise labels remain present.
-
-`node scripts/preview-emails.mjs` generated six sample emails at 320, 390 and
-760 pixels without horizontal overflow. Inspected story, verification, roundup
-and reply screenshots. Typechecks, build and lint pass, with 15 existing lint
-warnings. The full test run passed 781 of 782 tests and exposed a missing site
-URL in the reply fixture. After correcting that fixture, all 15 focused reply,
-HTML safety and development-routing tests pass. The subsequent PR CI passed
-all 103 test files. Both review models reported no issues. PR #261 merged as
-`b69b13e`, and its exact production workflow and independent production smoke
-passed. No test email was sent during that release.
-
-The owner subsequently requested the current Meta update using the new design.
-The production check found no active Meta follows, so a one-off copy went to
-the owner account through AgentMail using the shared HTML template and eight
-official-source links. AgentMail reported delivered. The browser preview loaded
-the pelican without horizontal overflow. No subscription, story revision or
-follower notification event changed. Actual Gmail and Outlook rendering remains
-unverified until the owner checks the received email.
+Released as `b69b13e`. The [September 17 build log](../hackathon.md#2026-09-17)
+retains design previews, the fixture failure and repair, CI, production smoke
+and the subsequently requested one-off delivery. Inbox rendering is not certified.
 
 ## Email compatibility correction, September 17
 
-The owner reported a missing button fill and left-aligned desktop email, plus
-a pale square around the pelican in mobile dark mode. Removing presentation
-attributes from the previous template reproduced the desktop failure. Inline
-CSS now owns widths, centering and background fills. A smaller masthead uses
-a transparent PNG export of the approved pelican. The action uses purple text
-on a pale fill, with explicit dark colors in supporting clients.
-
-All 90 local preview variants passed, including missing attributes and missing
-stylesheets. Minimum measured button contrast was 8.34:1, including the check
-without a button fill. Both typechecks, 15 focused tests and focused lint passed.
-These browser checks do not emulate Gmail's automatic dark-mode recoloring.
-The owner then requested removal of the uneven text arrow; action buttons now
-use their label alone. PR #262 merged as `f278f99` after CI and both reviews
-passed. Its exact production workflow and independent smoke passed. Both app
-origins serve the expected 36,732-byte transparent PNG. The owner subsequently
-requested another Meta email. One copy went to the same owner account using
-the updated template, and AgentMail reported delivered. Actual inbox rendering
-confirmation remains pending.
+Released as `f278f99`. The [September 17 build log](../hackathon.md#2026-09-17)
+retains the reproduced owner failure, 90 preview variants, transparent PNG,
+contrast result and verified release. Real inbox confirmation remains open.
 
 ## Tracked Meta alert recovery, September 17
 
-The owner's reply to the design preview arrived but the app ignored it as
-`unknown_thread`. The owner then authorized a Meta follow and a tracked alert.
-Immediate alerts are active on that account. Recovery added the missing event
-for the unchanged, independently reviewed story revision and its notification
-job. The normal matcher created one match and one delivery. AgentMail and the
-application both report delivered, with the email thread recorded.
-
-The sent HTML has the current design and reply instructions. The original
-ignored reply does not retry automatically. A new reply to the tracked email
-is still needed to verify the complete reply round trip. No application code
-was deployed, and no source-model allowance changed.
+The [September 17 build log](../hackathon.md#2026-09-17) records the ignored preview
+reply, owner-authorized follow and delivered tracked alert. A new reply to that
+tracked thread is needed; the ignored preview does not retry automatically.
 
 ## Question reply citations, released September 17
 
-PR #263 replaced raw citation filenames and visible download URLs in HTML
-question replies with numbered evidence blocks. Each block shows a readable
-label, available page or section, a short excerpt and labeled links to the
-evidence and official document. Distinct excerpts remain separate, and plain
-text retains working URLs. Existing evidence and subscription checks remain.
-
-Both typechecks, 13 focused tests, focused lint and 90 local email previews
-passed. CI and both reviews passed on `e33b4df`. The release merged as
-`d563bcb`; its exact production workflow and independent production smoke
-passed. No test email was sent for this change. Real inbox confirmation of the
-new citation layout remains pending. The owner chose to leave the AgentMail
-sender name unchanged after the provider refused the requested name update.
-
-At the owner's request, resent the Meta alert with the current template in its
-existing tracked thread. AgentMail reported delivered, and the returned thread
-matched the application's delivery record. This resend preserves reply routing.
-The new citation layout appears in question answers and still needs inbox
-confirmation after a new reply.
+Released as `d563bcb`. The [September 17 build log](../hackathon.md#2026-09-17)
+records the citation layout, verification and tracked-thread resend. The owner
+kept the AgentMail sender name. Latest citation layout confirmation needs a reply.
 
 ## Production release reconciliation, September 21
 
-The September 18 monitoring and Beaver Lake deployments uploaded working-tree
-code before it was committed. The source receipts above record those deployments,
-and PRs #264 and #265 now capture their code on main. The owner authorized
-separate reviewed PRs and a coordinated production release on September 21.
-[PR #264](https://github.com/LaykenV/public-parish/pull/264) captures monitoring,
-[PR #265](https://github.com/LaykenV/public-parish/pull/265) captures Beaver Lake,
-and [PR #266](https://github.com/LaykenV/public-parish/pull/266) retains the receipts.
-Local verification passed all 793 tests, both typechecks, build and lint with
-15 existing warnings.
-The Jev Ask experiment remains parked and is excluded from this release.
-
-All three PRs passed CI and both independent reviews on their final heads, then
-merged. Automatic production deployment was paused during reconciliation to
-avoid releasing an intermediate revision. The workflow was restored and the
-complete main commit `1bf4d2ed` was released. The [release receipt](https://github.com/LaykenV/public-parish/pull/266#issuecomment-5761979522)
-records workflow `35610443021` and successful independent production smoke.
-No new source publication, model spending allowance or email delivery was part
-of this code reconciliation.
+Completed through PRs #264, #265 and #266. The [September 21 build log](../hackathon.md#2026-09-21)
+records the earlier working-tree deployments, review, temporary workflow pause,
+restoration and successful coordinated release. No new source publication,
+model allowance or email delivery was part of that reconciliation.

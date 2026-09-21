@@ -1,13 +1,16 @@
 # Hackathon submission
 
-Official requirements were rechecked September 18, 2026 against the
+Official requirements were rechecked September 21, 2026 against the
 [Convex All Gas Hackathon page](https://www.convex.dev/hackathons/all-gas).
 Recheck before submission. [Work](work.md) owns the delivery schedule and current
 readiness. The root [hackathon log](../hackathon.md) owns build history.
 
 The owner confirmed public launch on September 18. Product work, founder QA,
-the final video and launch posts are complete. The existing artifacts are ready
-for submission handoff. Actual entry submission remains unconfirmed.
+the final video and launch posts are complete. The
+[September 21 audit](submission-audit-2026-09-21.md) verifies the artifacts and
+records the released accuracy correction, current operating limits and completed
+documentation pass. [The form copy](submission-entry.md) and screenshots are
+prepared. The correction is released and verified; actual entry submission remains.
 
 ## Event and required artifacts
 
@@ -49,8 +52,9 @@ The [launch plan](launch-plan-2026-09-17.md) retains the rehearsal script.
 ## Published social posts
 
 The owner confirmed these launch posts and supplied their public links on
-September 18. Verify the required sponsor mentions during final submission
-review; do not create replacement posts simply to collect receipts.
+September 18. On September 21 the owner confirmed all four required sponsor
+mentions on X. Automated X inspection was blocked. Do not create replacement
+posts simply to collect receipts.
 
 - [X launch post](https://x.com/LLVarholdt/status/2100947546864578717)
 - [LinkedIn launch post](https://www.linkedin.com/feed/update/urn:li:activity:7506714084554383360/), with the demo in a comment
@@ -68,7 +72,7 @@ controlled delivery and reply receipts, permissioned usage evidence, demo URL
 and public social links. Keep private payloads and identifying details out of
 public artifacts.
 
-The repository and live app were public at the September 7 inspection. The
+The repository and live app passed signed-out checks September 21. The
 original local resident loop has prior controlled production evidence.
 Story capabilities have bounded development and production proof in
 [Work](work.md). The owner completed founder design and QA on September 16.
@@ -80,23 +84,38 @@ those things. This document does not assign a score or probability of winning.
 
 ## Submission checklist
 
-- [ ] Confirm registration and eligibility against the current organizer rules.
+- [x] Confirm registration and personal eligibility against the current organizer
+  rules. Owner confirmed both September 21. Repository history starts August 27.
 - [x] Close the three-story functional gate in the work plan.
 - [x] Complete founder design and QA. Owner sign-off received September 16.
   A private pilot is follow-up work, not a launch prerequisite.
-- [ ] Confirm story freshness and usable public-service allowances through judging.
-- If a new outcome is published before judging, check its affected source, Ask
+- [x] Check current allowances and source status. The September 21 audit found
+  Ask and source-model capacity through October 2, degraded body monitoring and
+  elapsed curated review checkpoints. Keep those limitations visible and work
+  through the bounded maintenance queue. No universal freshness claim is made.
+  If a new outcome is published before judging, check its affected source, Ask
   and delivery paths. A new government outcome is not required to submit the
   completed demo. The founder QA pass covers the existing resident journeys.
-- [x] Update the root build log with the September 18 launch confirmation,
-  public demo and owner-supplied social links using the local hackathon skill.
+- [x] Reconcile the complete root build log using the local hackathon skill.
+  Preserve chronological history through September 21, add release receipts
+  and a judge introduction, and retain the final demo and social links.
 - [x] Record and inspect the final video, below three minutes, with private data
   removed and readable desktop interaction. The September 17 export is 2:48.2.
 - [x] Publish on X and LinkedIn and retain the public links, owner confirmed
-  September 18. Check actual sponsor mentions with the final links below.
-- [ ] Verify the video, public repository, social and both app-origin links from
-  a signed-out browser. The qualifying URL must work without an invitation.
-- [ ] Prepare the complete vibeapps.dev entry for owner review.
+  September 18. The owner confirmed all four X sponsor tags September 21.
+- [x] Verify the video, public repository and both app-origin links from a
+  signed-out browser. Passed September 21; video duration is 168.221 seconds.
+  LinkedIn is publicly readable. X blocked automated inspection; its publication
+  and tags remain owner-confirmed.
+- [x] Release the SpaceX location correction through PR #267. Both reviews, CI,
+  the exact [production workflow](https://github.com/LaykenV/public-parish/actions/runs/35630017027) and independent smoke passed.
+  Both public origins show Vermilion Parish. Local verification passed 794 tests,
+  both typechecks, build and lint with 15 existing warnings.
+- [x] Complete the documentation pass and retain image provenance disclosures.
+  Existing images and video remain. Image reuse rights are still unverified;
+  no permission claim or infringement finding is made by this audit.
+- [x] Prepare [the complete entry](submission-entry.md) and
+  [screenshots](submission-assets/README.md) for owner review.
 - [ ] Submit only after authorization and retain the actual confirmation.
 
 Launch and social publication are owner-confirmed. Actual submission and
@@ -117,6 +136,9 @@ The September 12 [controlled production email receipt](launch-release-2026-09-12
 records update delivery, a grounded reply and per-follow unsubscribe.
 
 The final video and launch posts are complete. Use their existing public links.
-Registration, eligibility, signed-out access, sponsor mentions and the final
-entry confirmation remain submission checks. These checks do not reopen the
-completed product, design, recording or launch work.
+The September 21 audit records the owner's registration, personal eligibility
+and X-tag confirmations, plus signed-out repository, video and app checks.
+The SpaceX correction is released as `ae417c9`, with its
+[deployment and live checks](https://github.com/LaykenV/public-parish/pull/267#issuecomment-5764505314) recorded. Source-health maintenance and
+the actual entry confirmation remain open. The complete root build log and
+entry copy are prepared. Completed design, recording and launch work stays closed.
