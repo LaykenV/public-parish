@@ -1,158 +1,107 @@
-# Public Parish Agent Instructions
+# Public Parish
 
-Read `PLAN.md`, `docs/work.md`, `docs/architecture.md`, `docs/sources.md`,
-`docs/design.md`, and `docs/operations.md` before changing product behavior or
-scope. Read `docs/launch-upgrade.md` before taking an upgrade slice. Read
-`docs/marketing.md` for distribution and `docs/submission.md` for hackathon
-artifacts. `docs/work.md` is the only active status and pending-work queue.
-`docs/archive/` preserves history, not current instructions.
+A free, open-source, nonpartisan civic app for Louisiana. Residents find
+local-government decisions that matter, read the official evidence, ask
+questions grounded in it, follow an issue, and see what happened.
 
-## Current launch stage
+It launched September 18, 2026. `docs/work.md` is the only status and work
+queue. Read it first. Read `PLAN.md` and the matching doc before changing
+product behavior: `architecture.md`, `sources.md`, `design.md`,
+`operations.md`, `launch-upgrade.md`, `marketing.md`, or `submission.md` in
+`docs/`. `docs/archive/` and dated reports are history, not instructions.
 
-Public Parish launched on September 18, 2026, confirmed by the owner. Design,
-founder QA, the final 2:48 submission video, personal Facebook, X, LinkedIn and
-the first five Facebook group posts are complete. Use `docs/work.md` for the
-video link, launch receipt and current queue. Actual hackathon submission is
-still a separate action with no confirmation recorded. Focus on resident
-responses, bounded distribution, source maintenance and keeping the app usable
-through judging. Do not restart completed launch work from a dated report or
-infer a government outcome from the owner's launch sign-off.
+## Evidence and neutrality
 
-## Product Contract
+- Every published factual claim resolves to an immutable source snapshot and
+  a precise citation. Missing evidence means a limited card or nothing, never
+  a guess.
+- Keep atomic government decisions and source snapshots. Issue timelines are a
+  view over them.
+- Don't take sides. Explain consequence, process, evidence, deadlines, and
+  what residents can do. Ballot measures quote the official wording and the
+  Act and never recommend a vote.
+- Chat answers only from published, validated evidence.
+- Don't claim a feature, model, deployment, or user result until the repo or
+  runtime proves it. Don't infer a government outcome from my launch sign-off.
+- The public app works without an invitation.
+- Never put secrets, private messages, user records, home addresses, or raw
+  app data in public docs or logs.
 
-- Public Parish is a free, open-source, nonpartisan Louisiana civic application.
-- It helps residents discover consequential local-government decisions, inspect
-  the official evidence, ask source-grounded questions, follow an issue, and
-  learn what happened.
-- The launch coverage is Lafayette Parish, Rapides Parish, and East Baton Rouge
-  Parish as defined in `docs/sources.md`. Do not label a place supported until it
-  passes the same publication and coverage gates.
-- Preserve atomic government decisions and source snapshots. Issue timelines are
-  a view over those records, not a replacement for them.
-- Every published factual claim must resolve to an immutable source snapshot and
-  a precise citation. Missing evidence produces a limited card or no publication,
-  never a guess.
-- The product does not take sides on a decision. Explain consequence, process,
-  evidence, deadlines, and public actions without advocacy framing.
+## Coverage
 
-## Implementation Contract
+Supported places are defined in `docs/sources.md`. A body or parish is
+supported only after it passes the same ten coverage gates. Public labels use
+a display field because `governmentBodies.name` is an identity value.
+Owner-curated stories go through the same evidence pipeline and never make an
+unsupported body or parish look supported.
 
-- The three-story functionality and evidence gate and the founder design and
-  QA gate are complete. Preserve their evidence contracts during launch updates.
-- Preserve the shared evidence pipeline when adding owner-curated stories. Story
-  publication must not promote an unsupported body or parish.
-- Use TanStack Start in SPA/static-prerender mode, Convex for the backend and
-  realtime state, and Convex static hosting at `convex.site`.
-- Keep route files thin, put route-level data contracts in `.data.ts` modules,
-  and organize Convex functions by domain.
-- Put external side effects in Convex actions. Keep HTTP routing small and
-  explicit.
-- Firecrawl performs discovery, retrieval, rendering, PDF/OCR extraction, and
-  change detection. Add a source-specific adapter only after a repeated,
-  documented failure.
-- OpenAI calls run from Convex actions through Convex AI Gateway. Refer to
-  models by role and keep the only role-to-model table in
-  `docs/architecture.md`. `MODEL_STRONG` runs record extraction, consequence
-  factors, issue linking, and story drafting. `MODEL_FAST` runs discovery
-  classification, independent review, and chat. Code computes importance scores.
-  The reviewer never runs on the extraction model. Send strict JSON Schema through the Chat Completions `response_format` field.
-  Deterministic validation runs after extraction and review.
-- Keep direct OpenAI access behind the same provider interface as a documented
-  fallback if AI Gateway is unavailable. The submitted app should use AI
-  Gateway when the paid Convex team supports it.
-- Chat can only answer from published, validated Public Parish evidence.
-- Use the pinned Convex Auth v2 alpha for Google account sign-in. Do not add
-  Convex Auth v1 or custom email authentication.
-- Accounts are optional for reading and chat. Google sign-in exists for saved
-  areas and managed follows. AgentMail can verify a
-  separate email-only alert subscription without creating an account.
-- Never expose secrets, private messages, user records, exact home addresses, or
-  raw application data in public docs or logs.
+The homepage has three stories: Meta in Richland Parish as the lead, SpaceX
+in Vermilion Parish, and the Boyce data center. Don't add or swap one without
+me. Home behavior is specified in `docs/launch-upgrade.md`.
 
-## Scope Control
+Out of scope until the core resident loop is reliable and used: maps, public
+discussion, testimony generation, records-request automation, procurement,
+video transcription, a staff portal, candidates, campaign finance, polls,
+spending dashboards, FAQ aggregation, a public corrections workflow,
+public-triggered or live coverage compiling, and cross-device chat history.
+Keep the simple source-problem report, the coverage-request form, and the
+owner-run coverage compiler. Weekly roundup emails and per-issue share HTML
+are still in scope.
 
-The approved launch adds three homepage stories: Meta in Richland Parish as the
-lead, SpaceX in Vermilion Parish and the Boyce data center as secondary stories.
-All three and story-scoped Ask, follows, updates, replies, sharing, source review
-and images passed the functional gate before the completed design and QA pass. Louisiana is the
-default Home. Show the hero only before any saved area selection. Returning to
-Louisiana restores statewide stories without restoring the hero. Featured
-stories appear only in the Louisiana view. Parish Home begins with local issues
-and body filters. The area selector lists Louisiana and parishes only. Do not
-add a fourth story or replace this set without an owner decision.
+## Stack
 
-The September 12 launch upgrade in `docs/launch-upgrade.md` adds Louisiana-first
-Home, place-qualified body labels with parish selection and Home body filters,
-consequence-first issue selection, the September 16 LPSC outcome work on Meta,
-bounded Louisiana Public Service Commission coverage, and sourced November 3
-ballot-measure explanations. Ballot measures quote the official ballot wording
-and the Act and never recommend a vote. Candidates, campaign finance, polls,
-statistics profiles, spending dashboards and money aggregates stay out. A body
-becomes supported only through the same ten coverage gates; `governmentBodies.name`
-is an identity value, so public labels use a separate display field.
+- TanStack Start in SPA/static-prerender mode. Convex for backend, realtime,
+  and static hosting at `convex.site`.
+- Thin route files. Route data contracts go in `.data.ts` modules. Convex
+  functions are organized by domain.
+- External side effects run in Convex actions. Keep HTTP routing small.
+- Firecrawl does discovery, retrieval, rendering, PDF/OCR, and change
+  detection. Write a source-specific adapter only after a repeated, documented
+  failure.
+- OpenAI calls go through Convex AI Gateway from actions, behind the provider
+  interface that also allows direct OpenAI as a fallback. Refer to models by
+  role. The only role-to-model table is in `docs/architecture.md`. The
+  reviewer never runs on the extraction model. Code computes importance
+  scores, not a model. Send strict JSON Schema in
+  `response_format`, then run deterministic validation.
+- Google sign-in uses the pinned Convex Auth v2 alpha. No Auth v1 or custom
+  email auth. Accounts are optional for reading and chat. AgentMail verifies
+  email-only alert subscriptions without an account.
 
-The owner permits additional targeted hackathon spending under
-`docs/operations.md`. The old catch-up maximum is not the remaining project
-budget. Retain finite task limits and stop rules; do not restart broad backfill
-or change production settings from a documentation instruction.
+## Spending and time
 
-Do not add maps, public discussion, testimony generation, public-records request
-automation, a procurement product, video transcription, or a government staff
-portal before the core resident loop is complete, reliable, and used.
+Targeted spending is allowed under `docs/operations.md`. Keep task limits and
+stop rules. Don't restart broad backfills or change production settings
+because a doc says to.
 
-The hackathon build also excludes FAQ aggregation, a dedicated public
-corrections workflow, public-triggered coverage compilation, live public
-compiler progress, and cross-device chat history. Keep a simple source-problem
-reporting path, a public coverage-request form that records demand, and an
-owner-triggered internal coverage compiler. Weekly roundup emails and per-issue
-share HTML remain in scope after the core resident loop works.
+Protect my weekday 90-minute Varholdt sales block. This project doesn't
+replace it.
 
-Protect the founder's weekday 90-minute Varholdt sales block. Hackathon work does
-not replace the first-dollar plan.
+Keep `hackathon.md` current and evidence-based. Run the local
+`convex-hackathon-skill` after meaningful sessions. Before submitting, test
+the public URL, source links, live updates, the email path, and the demo.
+Don't restart finished launch work because a dated report lists it.
 
-## Hackathon Discipline
+## Validation
 
-- Keep the root `hackathon.md` evidence-based and current. Invoke the local
-  `convex-hackathon-skill` after meaningful work sessions.
-- Do not claim a component, model, feature, deployment, or user result until
-  repository or runtime evidence proves it.
-- Keep the public app usable without an invitation.
-- Test the direct public URL, source links, live updates, email path, and
-  under-three-minute demo before submission.
-- Never commit, push, deploy, publish, or submit unless the user asks for that
-  action.
-
-## Local validation
-
-- Run tests, typechecks, builds, and linters locally as needed. Use
-  `npm run verify` for the full validation suite. GitHub Actions repeats these
-  checks on the pull request.
-- Review code and diffs as well. Report which checks ran and any failures or
-  checks left pending.
-- After an authorized production merge, `npm run smoke:production` remains
-  required. It checks the live deployment and does not run the local test suite.
+`npm run verify` runs the full suite locally. CI runs it again on the PR.
+Report what ran and what's still pending.
 
 ## Pull requests
 
-- One concern per PR. If the description needs "also", split it into another PR.
-- Real PRs, never drafts.
-- Titles: conventional prefix plus the user-facing why, never an inventory of
-  files touched. Bodies: problem first, then the fix. No file changelog.
-- Keep changes simple and concise. Ship the smallest change that makes the
-  behavior obvious.
-- Review feedback never grows a PR past its original goal. Verify every bot
-  finding against source before changing code; dismiss false positives with a
-  written reason and resolve the thread.
-- PR-Agent runs `/describe` and `/review` on PR open, and `/review` on push
-  (see `pr-agent.md`). The `file-pr` and `babysit-pr` skills carry the full
-  procedure; these rules apply even when the skills do not fire.
-- Release production code through reviewed, committed changes and the production
-  workflow. Never deploy production code from a dirty working tree. A request
-  to publish story data does not waive the code review and commit requirement.
-- Merging to `main` deploys the production backend and frontend. The merge
-  question must say that plainly. After an authorized merge, babysit the exact
-  production workflow run and execute `npm run smoke:production` before calling
-  the release ready.
+- Commit, push, deploy, publish, or submit only when I ask.
+- One concern per PR. Real PRs, never drafts. Title is a conventional prefix
+  plus the user-facing why. Body is the problem, then the fix.
+- PR-Agent runs `/describe` and `/review` when a PR opens and `/review` on
+  each push. Small PRs take two or three minutes. Large ones take six to nine.
+  See `pr-agent.md`.
+- Review feedback never grows a PR past its goal. Check every bot finding
+  against the code. Dismiss false positives with a reason and resolve them.
+- Merging to `main` deploys the production backend and frontend. Say so when
+  asking to merge. After a merge, watch that exact production workflow run,
+  then run `npm run smoke:production`.
+- Never deploy production from a dirty tree. Publishing story data still
+  needs a reviewed, committed change.
 
 <!-- convex-ai-start -->
 
