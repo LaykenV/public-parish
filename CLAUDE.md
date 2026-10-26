@@ -1,13 +1,4 @@
-AGENTS.md at the repo root is standing law in every session, not optional
-guidance. Read and follow it before any work.
-
 @AGENTS.md
-
-Start from `docs/work.md` for current status. The owner confirmed public launch
-on September 18, 2026. Design, QA, the submission video and launch posts are
-complete. Resident follow-up and submission handoff are the current work.
-Active contracts are indexed in `README.md`. Archived slice plans are
-historical evidence, not unfinished assignments.
 
 <!-- convex-ai-start -->
 
