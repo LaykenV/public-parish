@@ -92,9 +92,10 @@ Report what ran and what's still pending.
 - Commit, push, deploy, publish, or submit only when I ask.
 - One concern per PR. Real PRs, never drafts. Title is a conventional prefix
   plus the user-facing why. Body is the problem, then the fix.
-- PR-Agent runs `/describe` and `/review` when a PR opens and `/review` on
-  each push. Small PRs take two or three minutes. Large ones take six to nine.
-  See `pr-agent.md`.
+- Two PR-Agent reviewers run on every push through the shared
+  `LaykenV/pr-review` workflow. Small PRs take two or three minutes. Large ones
+  take six to nine. `/describe` runs only when someone comments it. See
+  `pr-agent.md`.
 - Review feedback never grows a PR past its goal. Check every bot finding
   against the code. Dismiss false positives with a reason and resolve them.
 - Merging to `main` deploys the production backend and frontend. Say so when
@@ -102,6 +103,22 @@ Report what ran and what's still pending.
   then run `npm run smoke:production`.
 - Never deploy production from a dirty tree. Publishing story data still
   needs a reviewed, committed change.
+
+## Review guidelines
+
+Every reviewer reads this section: PR-Agent, Codex, sol-loop, and council.
+
+- Flag any published factual claim that doesn't resolve to a source snapshot
+  and a precise citation.
+- Flag copy that takes a side on a decision or recommends a vote.
+- Flag secrets, private messages, user records, home addresses, or raw app
+  data reaching logs, public docs, or the client.
+- Flag Convex functions without argument and return validators, external side
+  effects outside actions, and unauthenticated mutations that can spend money.
+- Flag model calls that skip the provider interface, and a reviewer that runs
+  on the extraction model.
+- Style, extra tests, rare edge cases, and small perf costs are nits. Don't
+  suggest growing the PR past its goal.
 
 <!-- convex-ai-start -->
 
