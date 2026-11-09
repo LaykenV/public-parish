@@ -97,12 +97,14 @@ the code change first is safe: the ledger prices whichever model the env
 names, and production still names `openai/gpt-5.6-terra` and
 `openai/gpt-5.6-luna` until step 4.
 
-Owner functions need an identity. Set `OWNER_USER_ID` to the owner's `users`
-document ID from the Convex dashboard. Do not paste it into docs or logs.
+Owner functions need an identity. Each deployment has its own `users` table,
+so look up the owner's `users` document ID on each deployment's Convex
+dashboard. Do not paste either ID into docs or logs.
 
 ```sh
-OWNER="{\"subject\":\"$OWNER_USER_ID\"}"
 DEV=woozy-wren-227
+DEV_OWNER="{\"subject\":\"$DEV_OWNER_USER_ID\"}"
+PROD_OWNER="{\"subject\":\"$PROD_OWNER_USER_ID\"}"
 ```
 
 1. Name yourself the operator for the shared development deployment, then sync
@@ -115,8 +117,8 @@ DEV=woozy-wren-227
    npx convex env set --deployment $DEV MODEL_FAST_ID openai/gpt-6-luna
    npx convex env set --deployment $DEV AI_SPENDING_GUARD_ENABLED true
    npx convex run --deployment $DEV system/aiGateway:checkModels '{"modelIds":["openai/gpt-6.1-terra","openai/gpt-6-luna"]}'
-   npx convex run --deployment $DEV --identity "$OWNER" ai/spendingLedger:status '{}'
-   npx convex run --deployment $DEV --identity "$OWNER" ai/spendingLedger:configure "{\"scope\":\"sources\",\"allowanceUsd\":<charged + 0.10>,\"expiresAt\":$(( ($(date +%s) + 86400) * 1000 )),\"enabled\":true}"
+   npx convex run --deployment $DEV --identity "$DEV_OWNER" ai/spendingLedger:status '{}'
+   npx convex run --deployment $DEV --identity "$DEV_OWNER" ai/spendingLedger:configure "{\"scope\":\"sources\",\"allowanceUsd\":<charged + 0.10>,\"expiresAt\":$(( ($(date +%s) + 86400) * 1000 )),\"enabled\":true}"
    ```
 
    `checkModels` must list both IDs as available.
@@ -140,9 +142,9 @@ DEV=woozy-wren-227
    read the file, then reapply each one with only `intervalHours` changed:
 
    ```sh
-   npx convex run --prod --identity "$OWNER" monitoring/ledger:policies '{"paginationOpts":{"numItems":50,"cursor":null}}' > policies.json
+   npx convex run --prod --identity "$PROD_OWNER" monitoring/ledger:policies '{"paginationOpts":{"numItems":50,"cursor":null}}' > policies.json
    jq -c '.page[] | {proposalId, enabled, intervalHours: 168, documentsPerRun, targetsPerRun, dailyCallLimit, startsAt}' policies.json |
-     while read -r args; do npx convex run --prod --identity "$OWNER" monitoring/ledger:configure "$args"; done
+     while read -r args; do npx convex run --prod --identity "$PROD_OWNER" monitoring/ledger:configure "$args"; done
    ```
 
    Reapplying a policy schedules one check right away. The unchanged
@@ -151,10 +153,10 @@ DEV=woozy-wren-227
    ceiling to the charge plus the monthly amount, expiring in 30 days:
 
    ```sh
-   npx convex run --prod --identity "$OWNER" ai/spendingLedger:status '{}'
+   npx convex run --prod --identity "$PROD_OWNER" ai/spendingLedger:status '{}'
    EXPIRES=$(( ($(date +%s) + 30 * 86400) * 1000 ))
-   npx convex run --prod --identity "$OWNER" ai/spendingLedger:configure "{\"scope\":\"sources\",\"allowanceUsd\":<sources charged + 10>,\"expiresAt\":$EXPIRES,\"enabled\":true}"
-   npx convex run --prod --identity "$OWNER" ai/spendingLedger:configure "{\"scope\":\"ask\",\"allowanceUsd\":<ask charged + 5>,\"expiresAt\":$EXPIRES,\"enabled\":true}"
+   npx convex run --prod --identity "$PROD_OWNER" ai/spendingLedger:configure "{\"scope\":\"sources\",\"allowanceUsd\":<sources charged + 10>,\"expiresAt\":$EXPIRES,\"enabled\":true}"
+   npx convex run --prod --identity "$PROD_OWNER" ai/spendingLedger:configure "{\"scope\":\"ask\",\"allowanceUsd\":<ask charged + 5>,\"expiresAt\":$EXPIRES,\"enabled\":true}"
    ```
 
 7. Check the ledger after the first weekly checks and a few Ask questions. Run
