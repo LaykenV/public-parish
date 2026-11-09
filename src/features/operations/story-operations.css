@@ -185,7 +185,12 @@
   margin-top: 0.25rem;
   color: var(--muted-foreground);
 }
-.story-selection:hover,
+@media (hover: hover) and (pointer: fine) {
+  .story-selection:hover {
+    background: var(--secondary);
+    border-color: var(--primary);
+  }
+}
 .story-selection[aria-pressed='true'] {
   background: var(--secondary);
   border-color: var(--primary);

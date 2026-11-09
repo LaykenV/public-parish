@@ -23,7 +23,9 @@ type SheetProps = {
 }
 
 const SHEET_DESKTOP_QUERY = '(min-width: 64.0625rem)'
-const SHEET_EXIT_FALLBACK_MS = 420
+// Matches --dur-drawer in styles.css. A flick can end sooner. Focus still
+// returns after the full duration.
+const SHEET_EXIT_FALLBACK_MS = 500
 
 // Keep focus return in step with the drawer slide or desktop fade.
 export function sheetExitDelay(): number {

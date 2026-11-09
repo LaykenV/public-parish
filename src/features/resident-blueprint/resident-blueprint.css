@@ -397,7 +397,14 @@
   text-decoration: none;
 }
 
-.resident-menu-links a:hover,
+@media (hover: hover) and (pointer: fine) {
+  .resident-menu-links a:hover {
+    color: var(--primary);
+    background: var(--accent);
+  }
+}
+
+.resident-menu-links a:active,
 .resident-menu-links a[aria-current='page'] {
   color: var(--primary);
   background: var(--accent);
@@ -687,8 +694,10 @@
   text-decoration: none;
 }
 
-.blueprint-action:hover {
-  background: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .blueprint-action:hover {
+    background: var(--accent);
+  }
 }
 
 .blueprint-action-primary {
@@ -697,8 +706,10 @@
   background: var(--primary);
 }
 
-.blueprint-action-primary:hover {
-  background: color-mix(in srgb, var(--primary) 90%, white);
+@media (hover: hover) and (pointer: fine) {
+  .blueprint-action-primary:hover {
+    background: color-mix(in srgb, var(--primary) 90%, white);
+  }
 }
 
 .blueprint-action-text {

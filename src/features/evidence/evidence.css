@@ -1175,9 +1175,11 @@
   cursor: pointer;
 }
 
-.ev-panel-close:hover {
-  background: var(--accent);
-  color: var(--foreground);
+@media (hover: hover) and (pointer: fine) {
+  .ev-panel-close:hover {
+    background: var(--accent);
+    color: var(--foreground);
+  }
 }
 
 .ev-panel-close svg {
@@ -1325,9 +1327,11 @@
   background: var(--primary);
 }
 
-.ev-source-action-primary:hover {
-  border-color: var(--primary-hover);
-  background: var(--primary-hover);
+@media (hover: hover) and (pointer: fine) {
+  .ev-source-action-primary:hover {
+    border-color: var(--primary-hover);
+    background: var(--primary-hover);
+  }
 }
 
 .ev-source-action-host {
@@ -1341,9 +1345,11 @@
   background: var(--card);
 }
 
-.ev-source-action-saved:hover {
-  border-color: var(--primary);
-  background: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .ev-source-action-saved:hover {
+    border-color: var(--primary);
+    background: var(--accent);
+  }
 }
 
 .ev-source-unavailable {
@@ -1547,7 +1553,9 @@
   vertical-align: baseline;
   cursor: pointer;
 }
-.pp-source-control:hover { background: var(--accent); border-color: var(--pp-border-hover); }
+@media (hover: hover) and (pointer: fine) {
+  .pp-source-control:hover { background: var(--accent); border-color: var(--pp-border-hover); }
+}
 .ev-claim { min-width: 0; }
 .ev-timeline-entry { display: block; }
 .ev-timeline-entry::before { content: none; }
