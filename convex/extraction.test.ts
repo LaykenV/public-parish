@@ -35,7 +35,7 @@ const AGENDA_URL =
 const GATEWAY_URL = 'https://ai-gateway.convex.dev/v1/chat/completions'
 const DIRECT_URL = 'https://api.openai.com/v1/chat/completions'
 const TARGET_RECORD_ID = 'CO-029-2026'
-const MODEL_ID = 'openai/gpt-5.6-terra'
+const MODEL_ID = 'openai/gpt-6.1-terra'
 
 const AGENDA_PDF_BYTES = new TextEncoder().encode(
   '%PDF-1.7 Lafayette City Council agenda April 21 2026',
@@ -2073,7 +2073,7 @@ test('the AI Gateway falling back to direct OpenAI still validates the candidate
       status: 503,
       body: JSON.stringify({ error: { code: 'upstream_error' } }),
     },
-    { content: goldContent(snapshotId), model: 'gpt-5.6-terra' },
+    { content: goldContent(snapshotId), model: 'gpt-6.1-terra' },
   )
 
   const start = await startExtraction(t, registryId, snapshotId)
@@ -2086,7 +2086,7 @@ test('the AI Gateway falling back to direct OpenAI still validates the candidate
     aiCalls.map((call) => [call.route, call.status, call.modelId]),
   ).toEqual([
     ['ai_gateway', 'gateway_unavailable', MODEL_ID],
-    ['direct_openai', 'success', 'gpt-5.6-terra'],
+    ['direct_openai', 'success', 'gpt-6.1-terra'],
   ])
 })
 

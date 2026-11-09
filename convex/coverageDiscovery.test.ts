@@ -220,7 +220,7 @@ test('a thrown classifier failure keeps the route of every attempted call', asyn
     failure.attempts = [
       {
         route: 'ai_gateway',
-        modelId: 'openai/gpt-5.6-luna',
+        modelId: 'openai/gpt-6-luna',
         status: 'failed',
         httpStatus: 503,
         latencyMs: 10,
@@ -232,7 +232,7 @@ test('a thrown classifier failure keeps the route of every attempted call', asyn
       },
       {
         route: 'direct_openai',
-        modelId: 'gpt-5.6-luna',
+        modelId: 'gpt-6-luna',
         status: 'failed',
         httpStatus: 502,
         latencyMs: 15,
@@ -426,7 +426,7 @@ function stubSuccessfulProviders() {
       result: {
         kind: 'success',
         route: 'direct_openai',
-        modelId: 'openai/gpt-5.6-luna',
+        modelId: 'openai/gpt-6-luna',
         requestId: 'request-1',
         finishReason: 'stop',
         content,
@@ -443,7 +443,7 @@ function stubSuccessfulProviders() {
       attempts: [
         {
           route: 'ai_gateway',
-          modelId: 'openai/gpt-5.6-luna',
+          modelId: 'openai/gpt-6-luna',
           status: 'failed',
           httpStatus: 503,
           latencyMs: 20,
@@ -455,7 +455,7 @@ function stubSuccessfulProviders() {
         },
         {
           route: 'direct_openai',
-          modelId: 'openai/gpt-5.6-luna',
+          modelId: 'openai/gpt-6-luna',
           status: 'success',
           httpStatus: 200,
           latencyMs: 42,

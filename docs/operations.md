@@ -7,22 +7,19 @@ or start unrelated source processing.
 
 ## Spending policy
 
-The owner approved additional targeted spending for the remaining hackathon
-period on September 7. The previous hard cap followed an excessive backfill run;
-it is not a total ceiling for the rest of the project. Do not turn the remaining
-pending or limited records into a mandate to complete the archive.
+The September 7 approval for extra hackathon spending has ended. Routine paid
+work now runs inside the monthly [maintenance budget](#maintenance-budget). Do
+not turn the remaining pending or limited records into a mandate to complete
+the archive.
 
-Eligible spending produces a concrete launch result:
+Eligible spending produces a concrete result:
 
 - Missing evidence, reviewed versions and useful updates for Meta, SpaceX or Boyce.
 - A correction needed for an accurate public claim or usable resident journey.
 - Bounded story, Ask, follow, reply, sharing and release verification.
-- Public Ask and selected source maintenance during launch and judging.
-- A necessary submission or source-change demonstration using real evidence.
-- The named tranches in [launch upgrade](launch-upgrade.md) slices U4, U5 and
-  U6: the September 16 LPSC outcome, the bounded LPSC coverage compile and the
-  November 3 measure drafts. The plan proposes amounts; the owner configures
-  each allowance through the spending guard before a run.
+- Public Ask and weekly source checks.
+
+Work beyond the monthly budget needs its own owner-funded allowance.
 
 Before a paid batch, name the deliverable, source and date scope, existing stored
 inputs, expected provider use, a finite allowance and the stop condition. Include
@@ -53,38 +50,117 @@ weaken citations, or activate all policies to increase a publication count.
 | Stop | Completion, ceiling, bounded retries and failure to escalate |
 | Evidence | Accepted output, observed behavior, provider ledger and residual gaps |
 
-## Allowances and production settings
+## Maintenance budget
 
-The owner authorized $20 of fresh model capacity each for Ask and recent source
-monitoring on September 18. The configured total ceilings are $21.454589 for Ask
-and $25.043045 for sources, including prior charges. Both expire at midnight
-starting October 3 Central, covering October 2. Ask, source spending and all
-thirteen monitoring policies are enabled after the authorized September 18
-backend deployment. This supersedes the September 14 allowance snapshot.
+Public Parish makes no money. From November 2026 it runs on a small monthly
+model budget that the owner funds by hand:
 
-The active monitoring window begins September 11, 2026, including later-posted
-minutes for the September 16 LPSC meeting. Each policy has a 24-hour interval,
-one document and one decision target per run, and fifteen processing calls per
-day. The global limit is 120 calls per day. Incomplete work may schedule another
-run before the normal interval; the daily admission limits still apply. These
-limits cover the twelve parish bodies and the LPSC's approved agendas and minutes.
-They do not automate curated story or ballot review.
+| Scope | Monthly allowance |
+| --- | --- |
+| Sources | $10 |
+| Ask | $5 |
 
-First-run verification preserved all 157 pending pre-window decision targets.
-The first dispatched target was dated September 21. Initial retrievals exposed
-undated historical Lafayette event pages; source spending was paused while the
-official URL-date parser was extended and all 22 retained dated calendar entries
-were classified. The correction was deployed and spending restored under the
-same ceiling. Source retrieval remains paced at four requests per minute; pacing
-deferrals and incomplete checks are not proof of fresh coverage. Check the run
-ledger and actual remaining allowance before changing limits.
+Each allowance expires and never renews by itself. When one runs out or
+expires, paid work in that scope stops until the owner funds the next month.
+`allowanceUsd` is a total ceiling that includes prior charges, so a new month
+sets it to the current charge plus the monthly amount.
 
-Historical catch-up stays deferred through the hackathon. Changing the window
-must exclude existing old queued targets from dispatch and baseline-completion
-checks, while preserving those targets for a later authorized expansion. Review
-cheaper model options after the hackathon before resuming catch-up. The current
-model roles and independent review remain unchanged. Read current balances before
-spending; a dated receipt is not today's remaining budget.
+All monitoring policies check weekly, every 168 hours, which is the maximum
+the policy allows. Keep each policy's document, target and daily call limits
+and its September 11, 2026 source window. Historical catch-up stays off.
+Changing a window can restart discovery.
+
+The model ledger caps estimated model spend only. These bills are outside it
+and need a manual audit against each provider's account: the Convex plan,
+Firecrawl, AgentMail and the publicparish.com domain. No amounts are recorded
+here.
+
+### Model review, November 9, 2026
+
+Both roles move to the GPT-6 generation, which halves model cost. Prices per
+1M tokens from OpenAI's developer pricing page:
+
+| Model | Input | Cached input | Output | Over 272K input tokens |
+| --- | --- | --- | --- | --- |
+| `openai/gpt-6.1-terra` | $1.00 | $0.05 | $5.00 | $2.00 / $0.10 / $7.50 |
+| `openai/gpt-6-luna` | $0.10 | $0.01 | $0.50 | $0.20 / $0.02 / $0.75 |
+
+Meta's Muse Ember (`muse-ember-1.0`, released November 9, 2026) was
+considered and not adopted. It is not on Convex AI Gateway, its reported price
+matches GPT-6 Luna, and its strict JSON Schema support is unconfirmed. Revisit
+it when it reaches the gateway.
+
+### Switching to the GPT-6 models
+
+The owner runs these steps by hand, in order. No agent has run them. Merging
+the code change first is safe: the ledger prices whichever model the env
+names, and production still names `openai/gpt-5.6-terra` and
+`openai/gpt-5.6-luna` until step 4.
+
+Owner functions need an identity. Set `OWNER_USER_ID` to the owner's `users`
+document ID from the Convex dashboard. Do not paste it into docs or logs.
+
+```sh
+OWNER="{\"subject\":\"$OWNER_USER_ID\"}"
+DEV=woozy-wren-227
+```
+
+1. Name yourself the operator for the shared development deployment, then sync
+   merged `main` to it as described in
+   [source stop, resume and diagnosis](#source-stop-resume-and-diagnosis).
+2. Point development at the new models and fund a tiny source allowance there:
+
+   ```sh
+   npx convex env set --deployment $DEV MODEL_STRONG_ID openai/gpt-6.1-terra
+   npx convex env set --deployment $DEV MODEL_FAST_ID openai/gpt-6-luna
+   npx convex env set --deployment $DEV AI_SPENDING_GUARD_ENABLED true
+   npx convex run --deployment $DEV system/aiGateway:checkModels '{"modelIds":["openai/gpt-6.1-terra","openai/gpt-6-luna"]}'
+   npx convex run --deployment $DEV --identity "$OWNER" ai/spendingLedger:status '{}'
+   npx convex run --deployment $DEV --identity "$OWNER" ai/spendingLedger:configure "{\"scope\":\"sources\",\"allowanceUsd\":<charged + 0.10>,\"expiresAt\":$(( ($(date +%s) + 86400) * 1000 )),\"enabled\":true}"
+   ```
+
+   `checkModels` must list both IDs as available.
+3. Run one strict-JSON-Schema call per new model. Each must return
+   `"outcome": "success"`, `"route": "ai_gateway"` and the expected model.
+
+   ```sh
+   npx convex run --deployment $DEV operations/developmentProof:gatewayModelProbe '{"role":"MODEL_STRONG"}'
+   npx convex run --deployment $DEV operations/developmentProof:gatewayModelProbe '{"role":"MODEL_FAST"}'
+   ```
+
+   If either fails, stop here. Do not change production.
+4. Only after both probes pass, point production at the new models:
+
+   ```sh
+   npx convex env set --prod MODEL_STRONG_ID openai/gpt-6.1-terra
+   npx convex env set --prod MODEL_FAST_ID openai/gpt-6-luna
+   ```
+
+5. Move every production policy to a weekly check. Save the current policies,
+   read the file, then reapply each one with only `intervalHours` changed:
+
+   ```sh
+   npx convex run --prod --identity "$OWNER" monitoring/ledger:policies '{"paginationOpts":{"numItems":50,"cursor":null}}' > policies.json
+   jq -c '.page[] | {proposalId, enabled, intervalHours: 168, documentsPerRun, targetsPerRun, dailyCallLimit, startsAt}' policies.json |
+     while read -r args; do npx convex run --prod --identity "$OWNER" monitoring/ledger:configure "$args"; done
+   ```
+
+   Reapplying a policy schedules one check right away. The unchanged
+   `startsAt` keeps discovery state and keeps historical catch-up off.
+6. Fund this month's allowances. Read the current charges, then set each
+   ceiling to the charge plus the monthly amount, expiring in 30 days:
+
+   ```sh
+   npx convex run --prod --identity "$OWNER" ai/spendingLedger:status '{}'
+   EXPIRES=$(( ($(date +%s) + 30 * 86400) * 1000 ))
+   npx convex run --prod --identity "$OWNER" ai/spendingLedger:configure "{\"scope\":\"sources\",\"allowanceUsd\":<sources charged + 10>,\"expiresAt\":$EXPIRES,\"enabled\":true}"
+   npx convex run --prod --identity "$OWNER" ai/spendingLedger:configure "{\"scope\":\"ask\",\"allowanceUsd\":<ask charged + 5>,\"expiresAt\":$EXPIRES,\"enabled\":true}"
+   ```
+
+7. Check the ledger after the first weekly checks and a few Ask questions. Run
+   `ai/spendingLedger:status` again and open provider usage at
+   `/operations/coverage`. New rows should name the GPT-6 model IDs, and
+   charges should be about half of earlier calls of the same size.
 
 Paid AI and monitoring admissions require `AI_SPENDING_GUARD_ENABLED=true`.
 An absent or disabled guard pauses paid work even if an allowance is funded.
@@ -96,11 +172,9 @@ deliberately before enabling paid work. Expiry never renews automatically.
 Reconfiguration preserves prior charges. Unknown usage retains its reservation.
 The model-cost ledger does not cap Firecrawl, Convex, storage or email invoices.
 
-Plan finite funded operation through at least the September 25 judging window.
 Reserve usable Ask capacity separately from source work so a backfill cannot
-consume the public experience's allowance. Choose thresholds from measured
-bounded calls, not an invented per-resident average. Review costs daily during
-launch and after each paid research batch.
+consume the public experience's allowance. Review costs when funding each month
+and after each paid research batch.
 
 AI Gateway remains the verified provider. Direct OpenAI fallback stays disabled.
 A free Grok Bot trial covers neither downstream model calls nor retrieval and
