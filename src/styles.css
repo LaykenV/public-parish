@@ -121,7 +121,13 @@ html {
 .pp-source-control:active,
 .ask-screen-back:active,
 .ask-suggestion:active,
-.blueprint-action:active {
+.blueprint-action:active,
+.pp-search-clear:active,
+.pp-filter-clear:active,
+.ev-panel-close:active,
+.account-sign-out:active,
+.coverage-ops-run:active,
+.story-selection:active {
   scale: 0.97;
 }
 
@@ -133,7 +139,13 @@ html {
   .pp-source-control,
   .ask-screen-back,
   .ask-suggestion,
-  .blueprint-action {
+  .blueprint-action,
+  .pp-search-clear,
+  .pp-filter-clear,
+  .ev-panel-close,
+  .account-sign-out,
+  .coverage-ops-run,
+  .story-selection {
     transition: scale var(--dur-instant) var(--ease-out);
   }
 }

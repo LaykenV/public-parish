@@ -404,6 +404,7 @@
   }
 }
 
+.resident-menu-links a:active,
 .resident-menu-links a[aria-current='page'] {
   color: var(--primary);
   background: var(--accent);
