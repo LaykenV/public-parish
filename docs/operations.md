@@ -78,7 +78,11 @@ here.
 ### Model review, November 9, 2026
 
 Both roles move to the GPT-6 generation, which halves model cost. Prices per
-1M tokens from OpenAI's developer pricing page:
+1M tokens, read on November 9, 2026 from OpenAI's
+[pricing page](https://developers.openai.com/api/docs/pricing) and the
+[GPT-6.1 Terra](https://developers.openai.com/api/docs/models/gpt-6.1-terra)
+and [GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna)
+model pages. Read them again before changing a rate in `convex/ai/types.ts`:
 
 | Model | Input | Cached input | Output | Over 272K input tokens |
 | --- | --- | --- | --- | --- |
@@ -86,9 +90,11 @@ Both roles move to the GPT-6 generation, which halves model cost. Prices per
 | `openai/gpt-6-luna` | $0.10 | $0.01 | $0.50 | $0.20 / $0.02 / $0.75 |
 
 Meta's Muse Ember (`muse-ember-1.0`, released November 9, 2026) was
-considered and not adopted. It is not on Convex AI Gateway, its reported price
-matches GPT-6 Luna, and its strict JSON Schema support is unconfirmed. Revisit
-it when it reaches the gateway.
+considered and not adopted. It is not on Convex AI Gateway's
+[model list](https://docs.convex.dev/ai-gateway/models.md). Meta's
+[announcement](https://research.meta.ai/blog/muse-ember) gives a price that
+matches GPT-6 Luna and does not mention strict JSON Schema support. Nobody
+tested it here. Revisit it when it reaches the gateway.
 
 ### Switching to the GPT-6 models
 
