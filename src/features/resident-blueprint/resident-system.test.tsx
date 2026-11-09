@@ -141,7 +141,7 @@ describe('resident interface Slice 7 system', () => {
     )
     expect(evidenceSurfaceSource).toContain('restoreFocus()')
     expect(evidenceSurfaceSource).toContain('sheetExitDelay()')
-    expect(sheetSource).toContain('SHEET_EXIT_FALLBACK_MS = 420')
+    expect(sheetSource).toContain('SHEET_EXIT_FALLBACK_MS = 500')
     expect(sheetSource).not.toMatch(/FALLBACK_MS = 300|DELAY_MS = 300/)
   })
 })

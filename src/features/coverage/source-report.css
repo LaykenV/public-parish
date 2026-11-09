@@ -92,10 +92,12 @@
   line-height: 1.5;
 }
 
-.source-report-field input:hover,
-.source-report-field select:hover,
-.source-report-field textarea:hover {
-  background: var(--muted);
+@media (hover: hover) and (pointer: fine) {
+  .source-report-field input:hover,
+  .source-report-field select:hover,
+  .source-report-field textarea:hover {
+    background: var(--muted);
+  }
 }
 
 .source-report-field input:focus-visible,

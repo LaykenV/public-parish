@@ -1471,7 +1471,9 @@
 .account-identity-details strong { font-size: 0.9375rem; font-weight: 600; overflow-wrap: anywhere; }
 .account-identity-email { color: var(--muted-foreground); font-size: 0.8125rem; overflow-wrap: anywhere; }
 .account-sign-out { color: var(--primary); border-color: #ded5ed; box-shadow: none; }
-.account-sign-out:hover { background: #f4f0fa; }
+@media (hover: hover) and (pointer: fine) {
+  .account-sign-out:hover { background: #f4f0fa; }
+}
 .account-identity-error { grid-column: 1 / -1; margin: 0; font-size: 0.875rem; color: var(--destructive); }
 @media (max-width: 480px) {
   .account-identity { grid-template-columns: 48px minmax(0, 1fr); gap: 0.8rem 1rem; }

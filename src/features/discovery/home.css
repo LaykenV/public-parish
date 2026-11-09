@@ -311,7 +311,13 @@
   padding: 1.125rem;
 }
 
-.pp-home-decisions .pp-decision-row:hover {
+@media (hover: hover) and (pointer: fine) {
+  .pp-home-decisions .pp-decision-row:hover {
+    background: color-mix(in srgb, var(--accent) 40%, var(--card));
+  }
+}
+
+.pp-home-decisions .pp-decision-row:active {
   background: color-mix(in srgb, var(--accent) 40%, var(--card));
 }
 
