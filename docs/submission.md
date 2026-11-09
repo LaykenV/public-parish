@@ -62,7 +62,7 @@ posts simply to collect receipts.
 
 The first five Facebook group posts are complete by owner confirmation. Their
 individual permalinks and organic resident outcomes have not been recorded.
-[Work](work.md#launch-receipt-september-18) names the groups.
+[Work](archive/work-through-2026-11-09.md#launch-receipt-september-18) names the groups.
 
 ## Evidence to retain
 
@@ -131,7 +131,7 @@ reviewed monitoring and Beaver Lake changes through PR #266. Its [production
 workflow](https://github.com/LaykenV/public-parish/actions/runs/35610443021)
 passed, and the [release receipt](https://github.com/LaykenV/public-parish/pull/266#issuecomment-5761979522)
 records successful independent production smoke. See
-[Work](work.md#released-application).
+[Work](archive/work-through-2026-11-09.md#released-application).
 The September 12 [controlled production email receipt](launch-release-2026-09-12.md#production-email-and-phone-proof)
 records update delivery, a grounded reply and per-follow unsubscribe.
 

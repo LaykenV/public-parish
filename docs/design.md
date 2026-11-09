@@ -26,7 +26,7 @@ slice contracts; [Work](work.md) records release status.
 | Ballot | "On the November 3 ballot": all published statewide amendments | Compact preview of two statewide amendments, with a link to the full guide |
 | Local content | Issues across covered parishes | Issues in the focus, with a desktop body dialog and mobile filter drawer |
 | Records | Latest decision records | Latest decision records for the focus |
-| Footer | Brand, site links and compact dated voter information linking to the ballot page | Same footer |
+| Footer | Brand, site links, compact dated voter information linking to the ballot page, and the "A Varholdt Labs project" credit linking to varholdt.com | Same footer |
 
 Hero body copy: "See the documents behind each decision and follow what
 happens next." Keep "Free to read and ask questions. No account needed."

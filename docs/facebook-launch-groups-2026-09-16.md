@@ -22,7 +22,7 @@ five-group batch are published:
 
 Individual group-post permalinks, moderation visibility and reader outcomes
 have not been recorded. The count is based on the owner's confirmation, not a
-new Facebook inspection. [Work](work.md#launch-receipt-september-18) owns the
+new Facebook inspection. [Work](archive/work-through-2026-11-09.md#launch-receipt-september-18) owns the
 completion receipt and [marketing](marketing.md#follow-up-through-judging) owns
 the small second-batch recommendation. Do not repeat the first batch.
 

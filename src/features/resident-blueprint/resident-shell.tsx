@@ -319,6 +319,17 @@ export function ResidentShell({ children }: { children: ReactNode }) {
             </nav>
             <VoterFooter />
             <p>Official evidence is public. Resident activity stays private.</p>
+            <p>
+              A{' '}
+              <a
+                href="https://www.varholdt.com"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Varholdt Labs
+              </a>{' '}
+              project
+            </p>
           </div>
         </footer>
       </ResidentLoadingContent>

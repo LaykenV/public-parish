@@ -140,6 +140,18 @@ describe('resident coverage interface', () => {
     )
   })
 
+  it('says who runs Public Parish before the technical details', () => {
+    const html = renderToStaticMarkup(<HowItWorksPage />)
+    const owner = html.indexOf('Who runs this')
+    expect(owner).toBeGreaterThan(-1)
+    expect(owner).toBeLessThan(html.indexOf('Technical details'))
+    expect(html).toContain('Varholdt Labs (Varholdt AI LLC)')
+    expect(html).toContain('open source under the MIT')
+    expect(html).toContain(
+      'not affiliated with any government body, candidate or',
+    )
+  })
+
   it('keeps private reporting factual and preserves the attached record', () => {
     expect(reportSource).toContain('Report sent privately')
     expect(reportSource).toContain('Reports are never posted publicly.')

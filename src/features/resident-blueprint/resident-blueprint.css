@@ -609,6 +609,12 @@
   line-height: 1.55;
 }
 
+.resident-footer p a {
+  color: var(--foreground);
+  font-weight: 600;
+  text-underline-offset: 0.2em;
+}
+
 .blueprint-main {
   width: min(100% - 1.5rem, 80rem);
   margin-inline: auto;

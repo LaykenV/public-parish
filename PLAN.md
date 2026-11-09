@@ -1,6 +1,6 @@
 # Business and product plan
 
-Owner decisions updated September 18, 2026. Current delivery status and all
+Owner decisions updated November 9, 2026. Current status and all
 unfinished work live in [the work plan](docs/work.md). Technical contracts live
 in [architecture](docs/architecture.md). The pre-launch upgrade slices live in
 [the launch upgrade plan](docs/launch-upgrade.md).
@@ -8,7 +8,8 @@ in [architecture](docs/architecture.md). The pre-launch upgrade slices live in
 ## Purpose
 
 Public Parish is a free, open-source, nonpartisan Louisiana civic application.
-It helps residents understand consequential government decisions, inspect the
+Varholdt Labs (Varholdt AI LLC) builds, maintains and pays for it. It is not
+affiliated with any government body, candidate or campaign. It helps residents understand consequential government decisions, inspect the
 official evidence, ask questions, follow a subject, and learn what changed.
 
 Government records are scattered across agendas, minutes, permits, notices,
@@ -86,21 +87,26 @@ The featured story set stays at three. The upgrade does not add a fourth story.
 
 ## Delivery stage
 
-Public Parish launched on September 18, confirmed by the owner. The three-story
-functional gate, implementation, design and founder QA are complete. The owner
-accepted the final 2:48 submission video and published the personal Facebook,
-X, LinkedIn and first five Facebook group posts.
+Public Parish launched on September 18, confirmed by the owner. It is now in
+maintenance mode. The work is keeping what is published accurate and the
+resident loop working, not new features.
 
-The current work is resident feedback, a small second distribution batch,
-routine source maintenance and submission handoff. Preserve evidence limits
-when an official outcome is undocumented. Launch completion does not establish
-a new government outcome or an organic resident result. The actual hackathon
-submission still needs its confirmation. [Work](docs/work.md) owns the queue
-and receipts. No new recording or private pilot is required before submission.
+Supported now means:
 
-Functional verification remains required for later changes. Draft outreach and
-this documentation update do not authorize sending, posting or publication of
-an unreviewed government claim.
+- Weekly source checks for the supported bodies, under a small monthly model
+  budget the owner funds by hand. [Operations](docs/operations.md) has the
+  amounts and limits.
+- Ask, follows and email updates keep working. Breakage there comes first.
+- No new body, parish or story without the ten coverage gates and an owner
+  decision.
+
+Launch completion does not establish a new government outcome or an organic
+resident result. The hackathon submission result is not recorded in this
+repository. [Work](docs/work.md) owns the queue and receipts.
+
+Functional verification remains required for later changes. A documentation
+update does not authorize sending, posting or publication of an unreviewed
+government claim.
 
 ## Trust contract
 
@@ -120,27 +126,23 @@ an unreviewed government claim.
 
 ## Spending and business boundaries
 
-The owner permits additional targeted spending over the remaining hackathon
-period when it improves the three stories, resident reliability, design and QA
-proof, launch operation, or the submission. The earlier $10 catch-up maximum was
-a containment measure after an excessive backfill run. It is not the total budget
-for the rest of the project.
+The app makes no money. Routine paid work stays inside the monthly maintenance
+budget in [operations](docs/operations.md). Allowances expire and never renew
+by themselves. Work beyond the budget needs its own finite allowance and stop
+condition from the owner.
 
 This is not permission for unlimited scraping, archive completion, all-body
-reactivation, or repeated retries without diagnosis. The [operations policy](docs/operations.md)
+reactivation, or repeated retries without diagnosis. The operations policy
 requires finite task allowances, expected benefit, reuse of stored evidence,
-provider-cost accounting, and stop conditions. No new numeric allowance or
-production setting is established by this documentation change.
+provider-cost accounting, and stop conditions.
 
-Public Parish remains a bounded civic-service experiment and a public technical
-case study. Protect the weekday 90-minute Varholdt sales block. Resident use and
-hackathon attention do not count as commercial leads, paid diagnostics, proposals,
-or deposits. Prize money is uncertain and cannot be treated as revenue.
+Public Parish is a bounded civic service and a public technical case study.
+Protect the weekday 90-minute Varholdt sales block. Resident use does not count
+as commercial leads, paid diagnostics, proposals, or deposits.
 
-The app stays free and open source during the hackathon. There is no paid civic
-tier, advertising product, paid placement, or sale of resident data in scope.
-After judging, compare resident usefulness, operating cost, and maintenance time
-before deciding its ongoing pace. Do not promise perpetual statewide service.
+The app stays free and open source under the MIT license. There is no paid
+civic tier, advertising product, paid placement, or sale of resident data in
+scope. Do not promise perpetual statewide service.
 
 ## Evidence of success
 
@@ -149,10 +151,8 @@ questions, several return visits, and a sourced update somebody finds useful.
 These are working targets, not measured results or conditions for inventing
 activity. Keep anonymous browser counts separate from known residents.
 
-A persuasive demo shows an understandable story, an exact receipt, a grounded
-question, a follow, and an evidence-backed update. Sponsor integrations must do
-real work. [Marketing](docs/marketing.md) owns distribution and measurement;
-[submission](docs/submission.md) owns organizer requirements and demo artifacts.
+[Marketing](docs/marketing.md) owns distribution and measurement. The
+hackathon [submission](docs/submission.md) notes are history.
 
 ## Deferred scope
 
@@ -226,3 +226,8 @@ for submission and reported all planned launch posts published, including the
 first five Facebook groups. This supersedes the September 16 launch queue.
 Follow-up distribution and source maintenance continue after launch. The final
 hackathon submission remains a separate action until its confirmation exists.
+
+On November 9 the owner moved Public Parish to low-cost maintenance as a
+Varholdt Labs project. Weekly source checks under a small monthly budget,
+working Ask and email, and the ten coverage gates define support. Hackathon
+rules are retired. This supersedes the September 18 delivery queue.
