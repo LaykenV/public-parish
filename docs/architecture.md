@@ -189,8 +189,12 @@ facts without acting as current configuration.
 
 | Role | Gateway model ID | Work |
 | --- | --- | --- |
-| `MODEL_STRONG` | `openai/gpt-5.6-terra` | Record extraction, document inventory, consequence factors, issue linking, story drafting |
-| `MODEL_FAST` | `openai/gpt-5.6-luna` | Discovery classification, independent review, Ask selection and answers, story review |
+| `MODEL_STRONG` | `openai/gpt-6.1-terra` | Record extraction, document inventory, consequence factors, issue linking, story drafting |
+| `MODEL_FAST` | `openai/gpt-6-luna` | Discovery classification, independent review, Ask selection and answers, story review |
+
+`MODEL_STRONG_ID` and `MODEL_FAST_ID` set the IDs at runtime. Until the owner
+runs the [model switch checklist](operations.md#switching-to-the-gpt-6-models),
+production still sets `openai/gpt-5.6-terra` and `openai/gpt-5.6-luna`.
 
 Use strict JSON Schema in Chat Completions `response_format`. Generation and
 publication review run with the configured high reasoning effort; short discovery
@@ -208,6 +212,11 @@ and cannot choose tools, domains, or publication policy.
 Paid model requests require the spending guard to be active. Separate source
 and Ask allowances reserve a conservative input estimate plus the output bound
 before each model request.
+`MODEL_COST_USD_PER_1M_TOKENS` in `convex/ai/types.ts` prices each gateway
+model ID, so reservations and settlement charge the model the env names. A
+prompt over 272K input tokens uses the long-context rate for the whole request.
+An ID missing from that table is charged at the highest known rate. Add a row
+before configuring a new model.
 Known usage settles once. Failed calls or unknown usage retain the reservation.
 Retries need admission, and changing a ceiling does not erase charges. Allowances
 expire and never replenish automatically. These are estimated model-cost limits,

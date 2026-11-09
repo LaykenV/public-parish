@@ -7,7 +7,8 @@ import { currentStoryUpdate } from '../stories/updates'
 import type { MutationCtx } from '../_generated/server'
 import type { Doc, Id } from '../_generated/dataModel'
 import { recordMaterialChange } from '../changes/material'
-import { completeStructuredDirectFallback } from '../ai/provider'
+import { completeStructured, completeStructuredDirectFallback } from '../ai/provider'
+import { modelRoles } from '../ai/types'
 import { decryptAddress, hashAddress } from '../follows/secrets'
 import { loadTimelineMembers } from '../issues/membership'
 import { coverageLinkDeployment } from '../coverage/gates'
@@ -164,6 +165,22 @@ export const directFallbackProbe = internalAction({
       responseValidator: v.object({ status: v.literal('ready') }), contractCheck: () => null,
     })
     if (result.outcome !== 'success') throw new Error('Development fallback probe did not produce valid structured output.')
+    return { outcome: result.outcome, route: result.result.route, model: result.result.modelId, tokens: result.result.usage.totalTokens }
+  },
+})
+
+// One bounded strict-schema call through Convex AI Gateway for the model the
+// role currently names. Run it after changing a model ID on development.
+export const gatewayModelProbe = internalAction({
+  args: { role: modelRoles }, returns: v.object({ outcome: v.string(), route: v.string(), model: v.string(), tokens: v.union(v.number(), v.null()) }),
+  handler: async (ctx, args) => {
+    requireDevelopment()
+    const result = await completeStructured({
+      ctx,
+      request: { role: args.role, reasoningEffort: 'low', maxCompletionTokens: 200, schemaName: 'development_gateway_probe', jsonSchema: { type: 'object', additionalProperties: false, required: ['status'], properties: { status: { type: 'string', enum: ['ready'] } } }, messages: [{ role: 'user', content: 'Return status ready. This checks the development model route and makes no civic claim.' }] },
+      responseValidator: v.object({ status: v.literal('ready') }), contractCheck: () => null,
+    })
+    if (result.outcome !== 'success' || result.result.route !== 'ai_gateway') throw new Error('Development gateway probe did not produce valid structured output.')
     return { outcome: result.outcome, route: result.result.route, model: result.result.modelId, tokens: result.result.usage.totalTokens }
   },
 })

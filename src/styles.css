@@ -98,11 +98,56 @@
   --dur-fast: 160ms;
   --dur-standard: 240ms;
   --dur-deliberate: 520ms;
+  --dur-drawer: 500ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Controls give their own press feedback, so drop the browser's tap flash. */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Press feedback for feature controls. The shared Button has its own. The
+   scale property leaves each control's transform alone. */
+.pp-sheet-close:active,
+.pp-pill:active,
+.pp-rail-arrow:active,
+.ev-source-action:active,
+.pp-source-control:active,
+.ask-screen-back:active,
+.ask-suggestion:active,
+.blueprint-action:active,
+.pp-search-clear:active,
+.pp-filter-clear:active,
+.ev-panel-close:active,
+.account-sign-out:active,
+.coverage-ops-run:active,
+.story-selection:active {
+  scale: 0.97;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pp-sheet-close,
+  .pp-pill,
+  .pp-rail-arrow,
+  .ev-source-action,
+  .pp-source-control,
+  .ask-screen-back,
+  .ask-suggestion,
+  .blueprint-action,
+  .pp-search-clear,
+  .pp-filter-clear,
+  .ev-panel-close,
+  .account-sign-out,
+  .coverage-ops-run,
+  .story-selection {
+    transition: scale var(--dur-instant) var(--ease-out);
+  }
 }
 
 html,

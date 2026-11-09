@@ -536,7 +536,13 @@
   background: var(--card);
   box-shadow: var(--pp-shadow-card);
 }
-.pp-ballot[data-home] .pp-ballot-grid li:is(:hover, :focus-within) {
+@media (hover: hover) and (pointer: fine) {
+  .pp-ballot[data-home] .pp-ballot-grid li:hover {
+    border-color: var(--primary);
+    background: var(--section);
+  }
+}
+.pp-ballot[data-home] .pp-ballot-grid li:focus-within {
   border-color: var(--primary);
   background: var(--section);
 }

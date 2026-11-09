@@ -187,9 +187,10 @@
   cursor: pointer;
 }
 
-.coverage-ops-run:hover,
-.coverage-ops-run[aria-current='true'] {
-  background: var(--card);
+@media (hover: hover) and (pointer: fine) {
+  .coverage-ops-run:hover {
+    background: var(--card);
+  }
 }
 .coverage-ops-run[aria-current='true'] {
   background: var(--secondary);

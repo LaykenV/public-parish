@@ -339,8 +339,10 @@
   font-weight: 400;
 }
 
-.coverage-field input:hover {
-  background: var(--muted);
+@media (hover: hover) and (pointer: fine) {
+  .coverage-field input:hover {
+    background: var(--muted);
+  }
 }
 
 .coverage-field input:focus-visible {

@@ -387,8 +387,10 @@ Use compact numbered source buttons after claims on every screen. Keep the
 exact quotation, original document link and available saved story artifact in
 a drawer. Opening or closing a source must retain the page and conversation
 scroll positions. Desktop sources slide in from the right; phone sources rise
-from the bottom. Use the header menu's 420ms cubic easing, preserve swipe close
-on phones and remove transitions for reduced motion. Keep explicit close buttons.
+from the bottom. Phone drawers move over 500ms on the sheet curve
+`cubic-bezier(0.32, 0.72, 0, 1)`, and a fast flick closes them sooner. Preserve
+swipe close on phones and remove transitions for reduced motion. Keep explicit
+close buttons.
 
 Timelines use a single column on phones with the date above each event, readable
 status and a separate decision link. Pills never inherit metadata separator dots.
@@ -542,7 +544,7 @@ brand artwork and does not represent official source evidence.
 
 Desktop dialogs use a 100 ms opacity fade, including area selection, Explore
 filters and source panels. Keep their position fixed through opening and closing,
-and return focus after the fade. Mobile retains its existing drawer motion.
+and return focus after the fade. Mobile drawers use the 500ms sheet curve.
 Reduced motion disables the transitions.
 
 Issue and decision pages open Ask through a button in the desktop status actions.
