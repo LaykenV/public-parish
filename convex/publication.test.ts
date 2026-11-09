@@ -31,8 +31,8 @@ import { sha256HexOfBytes, sha256HexOfText } from './sources/hashing'
 
 const modules = import.meta.glob('./**/*.ts')
 const GATEWAY_URL = 'https://ai-gateway.convex.dev/v1/chat/completions'
-const TERRA_MODEL = 'openai/gpt-5.6-terra'
-const LUNA_MODEL = 'openai/gpt-5.6-luna'
+const TERRA_MODEL = 'openai/gpt-6.1-terra'
+const LUNA_MODEL = 'openai/gpt-6-luna'
 const OFFICIAL_URL = 'https://www.lafayettela.gov/agenda/CO-029-2026'
 const SOURCE_TEXT = `Lafayette City Council
 CO-029-2026

@@ -636,7 +636,7 @@ test('records unknown provider usage without preempting later answers', async ()
     receiptId: claim.receiptId,
     answerAttempt: claim.attempt,
     route: 'ai_gateway',
-    modelId: 'openai/gpt-5.6-luna',
+    modelId: 'openai/gpt-6-luna',
     promptVersion: 'ask-answer-v10-calendar-scope',
     schemaVersion: 'ask-answer-v3',
     attempt: 1,
@@ -830,7 +830,7 @@ test('fences a stale answer after its lease is retried', async () => {
       receiptId: first.receiptId,
       answerAttempt: first.attempt,
       route: 'ai_gateway',
-      modelId: 'openai/gpt-5.6-luna',
+      modelId: 'openai/gpt-6-luna',
       promptVersion: 'ask-answer-v10-calendar-scope',
       schemaVersion: 'ask-answer-v3',
       attempt: 1,
@@ -999,7 +999,7 @@ test('lets the selector abstain after reviewing the full scope', async () => {
 function gatewayResult(output: unknown) {
   return {
     output,
-    modelId: 'openai/gpt-5.6-luna',
+    modelId: 'openai/gpt-6-luna',
     requestId: 'ask-test-request',
     usage: {
       promptTokens: 10,
