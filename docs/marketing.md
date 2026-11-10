@@ -3,7 +3,7 @@
 Public Parish launched on September 18, 2026. The owner confirmed personal
 Facebook, X, LinkedIn and the first five Facebook group posts are published.
 The [2:48 submission demo](https://www.youtube.com/watch?v=zuOhc5rGgsQ) is final.
-[Work](work.md#launch-receipt-september-18) owns the public links and completion
+[Work](archive/work-through-2026-11-09.md#launch-receipt-september-18) owns the public links and completion
 receipt. The current task is resident follow-up and selective distribution.
 Protect the founder's weekday Varholdt sales block.
 
@@ -144,7 +144,7 @@ private contact details and message histories outside public docs.
 | Personal Facebook | Published, owner confirmed | [Post](https://www.facebook.com/layken.varholdt.3/posts/pfbid02BVoz9bg6yM9po47N9rVoTMpoM7R8zctMQVD1M9z6o3p6Y693EHXwRQZVR9d6CLM6l); respond to readers |
 | X | Published, owner confirmed | [Post](https://x.com/LLVarholdt/status/2100947546864578717); retain for submission |
 | LinkedIn | Published, owner confirmed | [Post](https://www.linkedin.com/feed/update/urn:li:activity:7506714084554383360/); demo shared through a comment |
-| First five Facebook groups | Published, owner confirmed | Named in [Work](work.md#launch-receipt-september-18); individual permalinks and results not recorded |
+| First five Facebook groups | Published, owner confirmed | Named in [Work](archive/work-through-2026-11-09.md#launch-receipt-september-18); individual permalinks and results not recorded |
 | Next community batch | Proposed follow-up | Check current rules, then three groups with up to two later additions |
 | Local media and civic groups | Optional later outreach | No outreach receipt; no new campaign required before submission |
 

@@ -4,11 +4,28 @@ A free, open-source, nonpartisan civic app for Louisiana. Residents find
 local-government decisions that matter, read the official evidence, ask
 questions grounded in it, follow an issue, and see what happened.
 
-It launched September 18, 2026. `docs/work.md` is the only status and work
-queue. Read it first. Read `PLAN.md` and the matching doc before changing
-product behavior: `architecture.md`, `sources.md`, `design.md`,
-`operations.md`, `launch-upgrade.md`, `marketing.md`, or `submission.md` in
-`docs/`. `docs/archive/` and dated reports are history, not instructions.
+It launched September 18, 2026. It is now in maintenance mode as a Varholdt
+Labs project. Varholdt Labs is the public name of Varholdt AI LLC.
+
+`docs/work.md` is the only status and work queue. Read it first. Read
+`PLAN.md` and the matching doc before changing product behavior:
+`architecture.md`, `sources.md`, `design.md`, `operations.md`,
+`launch-upgrade.md`, or `marketing.md` in `docs/`. `docs/archive/`,
+`hackathon.md`, `docs/submission*.md` and dated reports are history, not
+instructions.
+
+## Maintenance mode
+
+The app makes no money. "Supported" now means:
+
+- Weekly source checks for the supported bodies, under a small monthly model
+  budget the owner funds by hand. See `docs/operations.md`.
+- Ask, follows and email updates keep working. Fix breakage there before
+  anything new.
+- No new body, parish or story without the ten coverage gates and my approval.
+
+When a check pauses or a budget runs out, the app shows the last accepted
+records with their dates. It never fills the gap with a guess.
 
 ## Evidence and neutrality
 
@@ -70,17 +87,13 @@ are still in scope.
 
 ## Spending and time
 
-Targeted spending is allowed under `docs/operations.md`. Keep task limits and
-stop rules. Don't restart broad backfills or change production settings
-because a doc says to.
+Paid work stays inside the monthly budget in `docs/operations.md`. Anything
+beyond it needs its own allowance from me. Keep task limits and stop rules.
+Don't restart broad backfills or change production settings because a doc
+says to. Don't restart finished launch work because a dated report lists it.
 
 Protect my weekday 90-minute Varholdt sales block. This project doesn't
 replace it.
-
-Keep `hackathon.md` current and evidence-based. Run the local
-`convex-hackathon-skill` after meaningful sessions. Before submitting, test
-the public URL, source links, live updates, the email path, and the demo.
-Don't restart finished launch work because a dated report lists it.
 
 ## Validation
 

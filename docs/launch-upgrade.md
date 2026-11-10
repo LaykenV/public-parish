@@ -78,7 +78,7 @@ target, and the product never frames a story as puncturing or confirming hype.
 | U7 | Launch content, demo sequence and social previews for the new surfaces | U1 through U6 | None | None |
 
 U1, U2, U3, U5 and statewide U6 have shipped. Later changes still use one
-concern per PR. The [founder design and QA gate](work.md#founder-design-and-qa-sign-off)
+concern per PR. The [founder design and QA gate](archive/work-through-2026-11-09.md#founder-design-and-qa-sign-off)
 is complete. U4 follows the official document schedule.
 
 ## U1. Louisiana-first Home

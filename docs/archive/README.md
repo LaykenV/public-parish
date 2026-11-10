@@ -20,6 +20,13 @@ queue and QA ledger. The September 16 owner sign-off and GitHub reconciliation
 supersede its unchecked launch and release tasks. [Current work](../work.md)
 contains the remaining tasks; do not infer an open PR from historical prose.
 
+## Launch and hackathon queue through November 9
+
+[The archived launch queue](work-through-2026-11-09.md) preserves the launch
+receipts, release table, September 21 audit and the hackathon checklist. Its
+open boxes are not current work. The hackathon submission result was never
+recorded there. [Current work](../work.md) owns the maintenance queue.
+
 ## Before the story launch plan
 
 - [PLAN.md](pre-stories-2026-09-07/PLAN.md)

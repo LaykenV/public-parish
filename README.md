@@ -6,39 +6,38 @@ and receive sourced updates.
 
 Three reviewed Louisiana stories are live: Meta as the lead, with SpaceX in
 Vermilion Parish and the Boyce data center secondary. All three retain explicit
-LIMITED evidence status. Story functionality and targeted source work have passed
-their gate. Louisiana-first Home, place-qualified body labels, statewide LPSC
-coverage and ten November 3 amendment explanations are deployed. The owner
-completed design and QA on September 16, 2026 and confirmed public launch on
-September 18. The final demo, personal Facebook, X, LinkedIn and first five
-Facebook group posts are complete. The entry copy, screenshots and complete
-build log are prepared. The SpaceX location correction is released and verified.
-The remaining submission action is the vibeapps.dev entry.
-See [current status and pending work](docs/work.md) for verified coverage,
-operating limits and resident follow-up.
-The [September 21 submission audit](docs/submission-audit-2026-09-21.md) records
-verification, the completed correction and the remaining operating limits.
+LIMITED evidence status. Louisiana-first Home, statewide LPSC coverage and ten
+November 3 amendment explanations are deployed. Public Parish launched on
+September 18, 2026 and is now in maintenance mode. See
+[current work](docs/work.md) for what that means and what is still open.
 
 - [Public app](https://www.publicparish.com)
-- [Qualifying hackathon host](https://befitting-flamingo-587.convex.site)
-- [Submission demo, 2:48](https://www.youtube.com/watch?v=zuOhc5rGgsQ)
-- [For judges and complete build history](hackathon.md#for-judges)
-- [Prepared submission entry](docs/submission-entry.md)
+- [Hackathon host](https://befitting-flamingo-587.convex.site)
+- [Demo video, 2:48](https://www.youtube.com/watch?v=zuOhc5rGgsQ)
+- [Build history](hackathon.md)
+
+## Maintainer
+
+Public Parish is a [Varholdt Labs](https://www.varholdt.com) project.
+Varholdt Labs (Varholdt AI LLC) builds, maintains and pays for it. Layken
+Varholdt runs it from Lafayette, Louisiana. The app is free and the code is
+open source under the MIT license. It is not affiliated with any government
+body, candidate or campaign.
 
 ## Documentation
 
 | Read this | For this question |
 | --- | --- |
 | [Business and product plan](PLAN.md) | Who is this for, what are we building, and why? |
-| [Current work](docs/work.md) | What launched, what is next, and what evidence supports it? |
+| [Current work](docs/work.md) | What does maintenance cover and what is still open? |
 | [Launch upgrade](docs/launch-upgrade.md) | What scope shipped and which evidence contracts remain in force? |
 | [Architecture](docs/architecture.md) | How do the evidence pipeline and stories work? |
 | [Design](docs/design.md) | How should Home and each resident journey work? |
 | [Sources](docs/sources.md) | What can we publish and which bodies do we cover? |
 | [Operations](docs/operations.md) | How do we spend, process, recover and release safely? |
 | [Marketing](docs/marketing.md) | How do we follow up, distribute and measure usefulness? |
-| [Submission](docs/submission.md) | What must the hackathon entry and demo prove? |
-| [Build log](hackathon.md) | What actually happened during the build? |
+| [Submission](docs/submission.md) | History: what the hackathon entry and demo had to prove |
+| [Build log](hackathon.md) | History: what happened during the build |
 | [Archive](docs/archive/README.md) | Where are the completed plans and dated release receipts? |
 
 Each active document owns its subject. Keep task status in the work plan rather

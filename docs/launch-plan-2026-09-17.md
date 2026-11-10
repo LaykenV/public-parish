@@ -3,7 +3,7 @@
 Launch completed September 18, 2026, confirmed by the owner. The submission
 video is accepted as-is and hosted on [YouTube](https://www.youtube.com/watch?v=zuOhc5rGgsQ).
 Personal Facebook, X, LinkedIn and the first five Facebook group posts are
-published. [Work](work.md#launch-receipt-september-18) holds their receipts.
+published. [Work](archive/work-through-2026-11-09.md#launch-receipt-september-18) holds their receipts.
 Actual hackathon submission is not yet confirmed.
 
 The original recording script, draft copy and run of show below are historical

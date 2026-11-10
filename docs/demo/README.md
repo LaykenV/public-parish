@@ -15,6 +15,6 @@ example is a founder test, not evidence of organic resident use.
 
 X, LinkedIn, personal Facebook and the first five group posts are complete by
 owner confirmation. LinkedIn uses the video in a comment. See
-[launch receipts](../work.md#launch-receipt-september-18) and the
+[launch receipts](../archive/work-through-2026-11-09.md#launch-receipt-september-18) and the
 [submission checklist](../submission.md). The actual hackathon entry still
 needs its confirmation. No new recording or alternate cut is required.

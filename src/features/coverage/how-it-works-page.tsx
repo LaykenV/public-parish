@@ -177,6 +177,24 @@ export function HowItWorksPage() {
         </div>
       </section>
 
+      <section
+        aria-labelledby="method-owner-title"
+        className="method-corrections"
+      >
+        <div>
+          <h2 id="method-owner-title">Who runs this</h2>
+          <p>
+            Varholdt Labs (Varholdt AI LLC) builds, maintains and pays for
+            Public Parish. Layken Varholdt runs it from Lafayette, Louisiana.
+          </p>
+          <p>
+            Public Parish is free. Its code is open source under the MIT
+            license. It is not affiliated with any government body, candidate or
+            campaign.
+          </p>
+        </div>
+      </section>
+
       <details className="method-technical">
         <summary>
           <Code2Icon aria-hidden="true" />

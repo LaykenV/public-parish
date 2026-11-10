@@ -124,7 +124,7 @@ labels and place context; identity fields do not change. The area selector
 lists Louisiana and parishes, with body filters on Home. The `louisiana`
 jurisdiction has type `state`; statewide bodies follow the same coverage
 lifecycle as parish bodies. U5 shipped in PR #226. Dated production coverage
-proof is in [Work](work.md#published-evidence-and-operating-limits).
+proof is in [Work](archive/work-through-2026-11-09.md#published-evidence-and-operating-limits).
 
 Public queries return only accepted resident projections. Internal pipeline
 functions never become client-callable to simplify an importer. Owner operations
