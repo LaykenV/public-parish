@@ -11,7 +11,7 @@ for (const width of [320, 1280]) {
       await expect(measures.nth(number - 1).getByRole('link', { name: `Read Amendment ${number}`, exact: true })).toHaveAttribute('href', `/ballot/2026-amendment-${number}`)
     }
     await expect(page.getByText('No parish propositions have been verified for this guide. This is not a complete sample ballot.')).toBeVisible()
-    await expect(page.getByRole('link', { name: 'See official election results', exact: true })).toHaveAttribute('href', 'https://voterportal.sos.la.gov/graphical')
+    await expect(page.getByRole('link', { name: 'See results at the Secretary of State', exact: true })).toHaveAttribute('href', 'https://voterportal.sos.la.gov/graphical')
     await expect(page.getByText('Public Parish has not published the results of this election.')).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   })

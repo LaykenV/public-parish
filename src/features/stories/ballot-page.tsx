@@ -17,7 +17,7 @@ export function BallotNotice() {
         target="_blank"
         rel="noreferrer"
       >
-        See official results at the Secretary of State.
+        See election results at the Secretary of State.
       </a>
     </p>
   )
@@ -137,7 +137,7 @@ export function BallotPage() {
           <h2 id="voter-tools-title">Results</h2>
           <p>
             Public Parish has not published the results of this election. The
-            Louisiana Secretary of State publishes the official results.
+            Louisiana Secretary of State publishes election results.
           </p>
           <a
             className="pp-story-read"
@@ -145,11 +145,11 @@ export function BallotPage() {
             target="_blank"
             rel="noreferrer"
           >
-            See official election results{' '}
+            See results at the Secretary of State{' '}
             <ArrowUpRightIcon aria-hidden="true" />
           </a>
           <p className="pp-story-meta">
-            Official results link checked November 9, 2026.
+            Results link checked November 9, 2026.
           </p>
         </aside>
       </header>

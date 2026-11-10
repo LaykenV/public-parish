@@ -286,7 +286,7 @@ previously accepted readable evidence.
 Ballot-measure pages use the shared story reading, Ask, Follow and Share
 patterns and quote the official ballot question first. After an election they
 carry the notice that the election was held and that Public Parish has not
-published the results, with a link to the Secretary of State's official
+published the results, with a link to the Secretary of State's election
 results. Do not build a candidate
 comparison, voting recommendation, poll display or prediction interface.
 
@@ -501,7 +501,7 @@ The November 3, 2026 election has been held. On November 9 the owner asked to
 stop promoting it. Elections is out of the navigation, Home shows no ballot
 cards and the footer has no voter block. `/ballot` and the amendment pages stay
 reachable by link, in past tense, with a link to the Secretary of State's
-official results. Public Parish states no result. The rest of this section and
+results page. Public Parish states no result. The rest of this section and
 the ballot card notes above record the pre-election design, for the next
 election.
 
