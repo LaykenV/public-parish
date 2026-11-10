@@ -1,6 +1,6 @@
 # Current work
 
-Updated November 9, 2026. This is the only active status and work queue.
+Updated November 10, 2026. This is the only active status and work queue.
 
 Public Parish launched on September 18, 2026. It is now in maintenance mode as
 a Varholdt Labs project. Varholdt Labs is the public name of Varholdt AI LLC.
@@ -22,38 +22,70 @@ accepted records with their dates and limitations.
 
 ## Last recorded state
 
-The latest operating receipt in this repository is the
-[September 21 audit](submission-audit-2026-09-21.md). At that point eight of
-thirteen bodies were Degraded. The Ask and source allowances were set to
-expire October 3 at 05:00 UTC, and monitoring policies checked every 24 hours.
-No later receipt is recorded. Read live state with the owner tools before
+Recorded November 10, 2026. Read live state with the owner tools before
 assuming any of this still holds.
 
-The three featured stories, ten amendment explanations and Beaver Lake remain
-published with their recorded limitations. The latest application release
-recorded here is `ae417c9` through
-[PR #267](https://github.com/LaykenV/public-parish/pull/267).
+- Production runs `openai/gpt-6.1-terra` and `openai/gpt-6-luna`. Both passed
+  a strict-JSON-Schema probe on development before the switch.
+- The monthly allowances were funded on November 10 with $10 of room for
+  sources and $5 for Ask. Both expire December 10 at about 00:02 UTC and do
+  not renew.
+- All thirteen monitoring policies check weekly. One had finished its first
+  full pass on November 10. The rest were catching up.
+- From September 19 to October 3 the Firecrawl account had no credits. Those
+  HTTP 402 responses produced the high failure counts on six policies. The
+  plan is 1,000 credits a month and renews on the 16th.
+- Meta was published as `xd783vzec7vkzpg9w25g72wxdx8hz1qc`, reviewed through
+  November 9, with the Public Service Commission's September 16 minutes. Next
+  review December 17.
+- Beaver Lake was published as `xd77k9rfvf5tp1x06p31fa9nc58hzrd2`, reviewed
+  through November 9, with the Central Louisiana Regional Port's September 30
+  minutes. Next review January 15, 2027.
+- SpaceX and Boyce were reviewed against official documents through October
+  22. Neither had a substantive change.
+- The latest application release recorded here is `2be3dc4` through
+  [PR #279](https://github.com/LaykenV/public-parish/pull/279).
 
 ## Open items
 
 None of these are done.
 
-- [ ] Ballot pages state no result. Home, the navigation and the footer no
-  longer promote the November 3 election, and `/ballot` reads in past tense
-  with a link to the Secretary of State's results. Add outcomes only from
-  official Louisiana Secretary of State results for November 3, with
-  citations, and keep the no-recommendation rule.
-- [ ] List Public Parish on varholdt.com. That site lives in a different
-  repository.
-- [ ] Fund the monthly allowances and move every monitoring policy to weekly
-  checks, as [operations](operations.md) describes. Only the owner does this.
-- [ ] Diagnose degraded source policies within the monthly budget. Keep
-  missing-outcome disclosures until new official evidence passes review.
-- [ ] Review overdue story dates against new official evidence: Meta, SpaceX,
-  Boyce and Beaver Lake. Beaver Lake's review was due September 25. Follow the
+- [ ] Fund the next month's allowances before December 10, or paid work
+  stops. Only the owner does this.
+- [ ] Watch Firecrawl credits. The catch-up burst used 336 credits in its
+  first hour. If steady use stays above 1,000 a month, choose between a larger
+  plan and fetching less.
+- [ ] Ballot pages state no result. On November 10 the Secretary of State
+  still marked the November 3 results unofficial. Add outcomes only from
+  official results, with citations, and keep the no-recommendation rule. The
+  ten amendment summaries still read in future tense until then.
+- [ ] `events.lafayettela.gov` answers direct downloads with HTTP 403. Four
+  Lafayette bodies get only documents hosted on `www.lafayettela.gov`. The
+  owner decided not to work around the block. Full coverage needs the city to
+  allow the fetches.
+- [ ] Three Pineville listing pages redirect to `library.municode.com`, which
+  answers automated requests with a bot check. They are set aside after three
+  failures in a pass and tried again the next week.
+- [ ] Baton Rouge Metropolitan Council discovery spends calls on
+  "PreviousVersions" pages for meetings before the window, because the
+  `_MMDDYYYY` date in those URLs is not recognized.
+- [ ] Six East Baton Rouge Planning and Zoning decisions failed after three
+  attempts. The cause is not diagnosed.
+- [ ] Meta's limitations list the permit set, incentive agreement and tax
+  rebates twice. Remove the repeat at the December 17 review.
+- [ ] Weekly monitoring fetches the same September 16 commission minutes the
+  Meta story cites. If a fetch returns different text, the story moves to
+  "needs review" and leaves Home. Check after each commission run.
+- [ ] Next story reviews: SpaceX should look for the September 16 Vermilion
+  Police Jury minutes. Boyce should check the November England Authority
+  minutes. Follow the
   [Meta research leads](meta-morning-report-2026-09-17.md#important-findings-outside-the-published-evidence)
   before adding claims. Do not turn public authorizations into a claim of
   completed spending.
+- [ ] The follow and email path has not been tested end to end since the
+  model switch. It needs a recipient the owner authorizes.
+- [ ] Audit the fixed bills the model ledger does not cap: Convex, Firecrawl,
+  AgentMail and the domain.
 - [ ] Repair story and ballot evidence-open telemetry before using that counter.
 - [ ] Keep the [readability audit](readability-audit-2026-09-15.md) follow-ups,
   including the broader Meta Ask that dropped "material" from a
