@@ -224,6 +224,23 @@ test('a bounded listing pass preserves its next page and does not finish the bas
   expect(policy?.failures).toBe(0)
 })
 
+test('a listing page that keeps failing is set aside so discovery can finish', async () => {
+  const { t, runId, policyId } = await monitoringFixture()
+  const blocked = 'https://www.lafayettela.gov/2026-meetings/page-2'
+  const visited = ['https://www.lafayettela.gov/2026-meetings']
+  for (const attempt of [1, 2]) {
+    expect(await t.mutation(internal.monitoring.ledger.saveDiscoveryProgress, { runId, pending: [blocked], visited, failedUrl: blocked })).toEqual([])
+    const policy = await t.run(ctx => ctx.db.get(policyId))
+    expect(policy?.discoveryPendingUrls).toEqual([blocked])
+    expect(policy?.discoveryListingFailures).toEqual([{ url: blocked, count: attempt }])
+  }
+  expect(await t.mutation(internal.monitoring.ledger.saveDiscoveryProgress, { runId, pending: [blocked], visited, failedUrl: blocked })).toEqual([blocked])
+  const policy = await t.run(ctx => ctx.db.get(policyId))
+  expect(policy?.discoveryPendingUrls).toBeUndefined()
+  expect(policy?.discoveryListingFailures).toBeUndefined()
+  expect(policy?.nextDiscoveryAt).toBeGreaterThan(Date.now())
+})
+
 test('later inventory sections keep a complete motion separate from date-only header context', () => {
   const header = 'Council. September 4, 2026. Unrelated property hearing.'
   const motion = 'On motion to approve drainage repairs ' + 'with official terms '.repeat(40)

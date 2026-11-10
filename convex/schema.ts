@@ -681,6 +681,7 @@ export default defineSchema({
     developmentAdmissionGrant: v.optional(v.object({ windowStart: v.number(), admissions: v.number(), consumedBefore: v.number(), grantedAt: v.number() })),
     nextDiscoveryAt: v.optional(v.number()),
     discoveryPendingUrls: v.optional(v.array(v.string())), discoveryVisitedUrls: v.optional(v.array(v.string())),
+    discoveryListingFailures: v.optional(v.array(v.object({ url: v.string(), count: v.number() }))),
     registryId: v.id('sourceRegistries'),
     proposalId: v.id('coverageRegistryProposals'),
     enabled: v.boolean(), generation: v.number(),

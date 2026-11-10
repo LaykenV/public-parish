@@ -136,7 +136,7 @@ export async function configurePolicy(ctx: MutationCtx, args: { proposalId: Id<'
       await limiter.limit(ctx, 'calls', { key: existing._id, count: used, config: { kind: 'fixed window', rate: args.dailyCallLimit, period: DAY, start: current.ts }, throws: true })
     }
     const sourceWindowChanged = existing.startsAt !== args.startsAt || existing.proposalId !== args.proposalId
-    await ctx.db.patch(existing._id, { ...fields, ...(sourceWindowChanged ? { discoveryPendingUrls: undefined, discoveryVisitedUrls: undefined, nextDiscoveryAt: undefined, baselineComplete: false } : {}) })
+    await ctx.db.patch(existing._id, { ...fields, ...(sourceWindowChanged ? { discoveryPendingUrls: undefined, discoveryVisitedUrls: undefined, discoveryListingFailures: undefined, nextDiscoveryAt: undefined, baselineComplete: false } : {}) })
     return existing._id
   }
   return await ctx.db.insert('sourceMonitoringPolicies', { ...fields, activatedAt: now, baselineComplete: false, failures: 0, createdAt: now })
@@ -246,14 +246,22 @@ export const addDocuments = internalMutation({
     return count
   },
 })
+const LISTING_FAILURE_LIMIT = 3
 export const saveDiscoveryProgress = internalMutation({
-  args: { runId: v.id('sourceMonitoringRuns'), pending: v.array(v.string()), visited: v.array(v.string()) }, returns: v.null(),
+  args: { runId: v.id('sourceMonitoringRuns'), pending: v.array(v.string()), visited: v.array(v.string()), failedUrl: v.optional(v.string()) }, returns: v.array(v.string()),
   handler: async (ctx, args) => {
     const { policy, proposal } = await assertMonitoringRun(ctx, args.runId)
+    // A listing page that fails LISTING_FAILURE_LIMIT times in one discovery
+    // pass is set aside until the next pass. A publisher's bot check must not
+    // hold the baseline open or spend a retrieval on every run.
+    const counts = new Map((policy.discoveryListingFailures ?? []).map(item => [item.url, item.count]))
+    if (args.failedUrl) counts.set(args.failedUrl, (counts.get(args.failedUrl) ?? 0) + 1)
+    const setAside = args.pending.filter(url => (counts.get(url) ?? 0) >= LISTING_FAILURE_LIMIT)
+    args = { ...args, pending: args.pending.filter(url => !setAside.includes(url)) }
     const manifest = resolveRootManifest(proposal.bodyKey, proposal.rootManifestVersion)
     if (!manifest || args.pending.length + args.visited.length > 500 || [...args.pending, ...args.visited].some(url => url.length > 1500 || !monitoringListingAllowed(manifest, url, policy.startsAt, Date.now()) || isBeforeSourceWindow(url, policy.startsAt))) throw new Error('monitoring_listing_capacity')
-    await ctx.db.patch(policy._id, { discoveryPendingUrls: args.pending.length ? args.pending : undefined, discoveryVisitedUrls: args.pending.length ? args.visited : undefined, nextDiscoveryAt: args.pending.length ? undefined : Date.now() + policy.intervalHours * 3_600_000 })
-    return null
+    await ctx.db.patch(policy._id, { discoveryPendingUrls: args.pending.length ? args.pending : undefined, discoveryVisitedUrls: args.pending.length ? args.visited : undefined, discoveryListingFailures: args.pending.length && counts.size ? [...counts].slice(0, 500).map(([url, count]) => ({ url, count })) : undefined, nextDiscoveryAt: args.pending.length ? undefined : Date.now() + policy.intervalHours * 3_600_000 })
+    return setAside
   },
 })
 export const dueDocuments = internalQuery({
@@ -633,7 +641,7 @@ export const reclassifyPinevilleListings = mutation({
       await ctx.db.patch(document._id, { discoveryOnly: true })
       classified++
     }
-    await ctx.db.patch(policy._id, { discoveryPendingUrls: undefined, discoveryVisitedUrls: undefined, nextDiscoveryAt: undefined, baselineComplete: false, nextCheckAt: Date.now(), updatedAt: Date.now() })
+    await ctx.db.patch(policy._id, { discoveryPendingUrls: undefined, discoveryVisitedUrls: undefined, discoveryListingFailures: undefined, nextDiscoveryAt: undefined, baselineComplete: false, nextCheckAt: Date.now(), updatedAt: Date.now() })
     return { classified, continueCursor: page.continueCursor, isDone: page.isDone }
   },
 })
