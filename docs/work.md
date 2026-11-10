@@ -38,11 +38,11 @@ recorded here is `ae417c9` through
 
 None of these are done.
 
-- [ ] Ballot pages need a post-election state. The ballot page still says
-  "Understand the amendments before you vote", and the footer still calls
-  November 3 the next statewide election. Add outcomes only from official
-  Louisiana Secretary of State results for November 3, with citations, and
-  keep the no-recommendation rule.
+- [ ] Ballot pages state no result. Home, the navigation and the footer no
+  longer promote the November 3 election, and `/ballot` reads in past tense
+  with a link to the Secretary of State's results. Add outcomes only from
+  official Louisiana Secretary of State results for November 3, with
+  citations, and keep the no-recommendation rule.
 - [ ] List Public Parish on varholdt.com. That site lives in a different
   repository.
 - [ ] Fund the monthly allowances and move every monitoring policy to weekly

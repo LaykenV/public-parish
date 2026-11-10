@@ -10,51 +10,30 @@ import './elections.css'
 export function BallotNotice() {
   return (
     <p>
-      Your ballot depends on your precinct.{' '}
+      This election was held on November 3, 2026. Public Parish has not
+      published the results.{' '}
       <a
-        href="https://voterportal.sos.la.gov/"
+        href="https://voterportal.sos.la.gov/graphical"
         target="_blank"
         rel="noreferrer"
       >
-        Check your sample ballot at the Secretary of State.
+        See election results at the Secretary of State.
       </a>
     </p>
   )
 }
 
-export function BallotSection({
-  home = false,
-  compact = false,
-}: {
-  home?: boolean
-  compact?: boolean
-}) {
+export function BallotSection() {
   const measures = useBallotMeasures()
-  if (home && !measures?.length) return null
-  const visibleMeasures = home && compact ? measures?.slice(0, 2) : measures
   return (
-    <section
-      className="pp-section pp-ballot"
-      data-home={home || undefined}
-      data-compact={(home && compact) || undefined}
-      aria-labelledby="ballot-title"
-    >
+    <section className="pp-section pp-ballot" aria-labelledby="ballot-title">
       <header>
-        <h2 id="ballot-title">
-          {home ? 'On the November 3 ballot' : 'Statewide amendments'}
-        </h2>
+        <h2 id="ballot-title">Statewide amendments</h2>
         <p>
-          Proposed Louisiana constitutional amendments for the November 3, 2026
-          election. Read the ballot question and what the official Act would
-          change.
+          Proposed Louisiana constitutional amendments that were on the
+          November 3, 2026 ballot. Read the ballot question and what the
+          official Act would change.
         </p>
-        {home && compact && measures ? (
-          <p className="pp-story-meta">
-            Previewing {visibleMeasures?.length} of {measures.length} statewide
-            amendments.
-          </p>
-        ) : null}
-        {home ? <BallotNotice /> : null}
       </header>
       {measures === undefined ? (
         <PageLoading />
@@ -65,7 +44,7 @@ export function BallotSection({
         </p>
       ) : (
         <ol className="pp-ballot-grid">
-          {visibleMeasures?.map((measure) => {
+          {measures.map((measure) => {
             const entry = registeredStory(measure.slug)
             const number =
               entry?.kind === 'ballot_measure' ? entry.measureNumber : undefined
@@ -98,7 +77,7 @@ export function BallotSection({
                       {title}
                     </Link>
                   </h3>
-                  {!home ? <p>{measure.payload.summary.text}</p> : null}
+                  <p>{measure.payload.summary.text}</p>
                   <p className="pp-story-meta pp-ballot-reviewed">
                     Reviewed through {formatDate(measure.reviewedThrough)}.
                     {measure.mode === 'limited'
@@ -119,18 +98,10 @@ export function BallotSection({
           })}
         </ol>
       )}
-      {!home ? (
-        <p>
-          No parish propositions have been verified for this guide. This is not
-          a complete sample ballot.
-        </p>
-      ) : (
-        <p className="pp-ballot-guide-link">
-          <Link className="pp-story-read" to="/ballot">
-            Read the ballot guide <ArrowUpRightIcon aria-hidden="true" />
-          </Link>
-        </p>
-      )}
+      <p>
+        No parish propositions have been verified for this guide. This is not
+        a complete sample ballot.
+      </p>
     </section>
   )
 }
@@ -143,9 +114,8 @@ export function BallotPage() {
           <p className="pp-story-place">Elections in Louisiana</p>
           <h1>The November 3 election</h1>
           <p className="pp-election-lede">
-            Understand the amendments before you vote. Read each ballot
-            question, see what the official Act would change and open the
-            documents behind it.
+            This election has been held. These pages keep each ballot question,
+            what the official Act would change and the documents behind it.
           </p>
           <div className="pp-election-date">
             <time dateTime="2026-11-03">November 3, 2026</time>
@@ -164,31 +134,22 @@ export function BallotPage() {
           className="pp-election-voter"
           aria-labelledby="voter-tools-title"
         >
-          <h2 id="voter-tools-title">Before you vote</h2>
+          <h2 id="voter-tools-title">Results</h2>
           <p>
-            Your ballot depends on your precinct. Use the Louisiana Secretary of
-            State's tools for your own voting information.
+            Public Parish has not published the results of this election. The
+            Louisiana Secretary of State publishes election results.
           </p>
           <a
             className="pp-story-read"
-            href="https://voterportal.sos.la.gov/"
+            href="https://voterportal.sos.la.gov/graphical"
             target="_blank"
             rel="noreferrer"
           >
-            Check registration and sample ballot{' '}
-            <ArrowUpRightIcon aria-hidden="true" />
-          </a>
-          <a
-            className="pp-story-read"
-            href="https://www.sos.la.gov/elections-voting/voter-registration-faqs"
-            target="_blank"
-            rel="noreferrer"
-          >
-            How to register or update your registration{' '}
+            See results at the Secretary of State{' '}
             <ArrowUpRightIcon aria-hidden="true" />
           </a>
           <p className="pp-story-meta">
-            Official voter links checked September 14, 2026.
+            Results link checked November 9, 2026.
           </p>
         </aside>
       </header>

@@ -1,8 +1,6 @@
 import { Dialog } from '@base-ui/react/dialog'
 import { ResidentLoadingContent, usePageLoading } from './resident-loading'
-import { VoterFooter } from './voter-footer'
 import {
-  VoteIcon,
   CircleUserRoundIcon,
   HouseIcon,
   MapPinIcon,
@@ -42,14 +40,13 @@ const PRIMARY_NAVIGATION: NavigationItem[] = [
   { href: '/', icon: HouseIcon, label: 'Home' },
   { href: '/explore', icon: SearchIcon, label: 'Explore' },
   { href: '/ask', icon: MessageCircleQuestionIcon, label: 'Ask' },
-  { href: '/ballot', icon: VoteIcon, label: 'Elections' },
   { href: '/coverage', icon: LouisianaIcon, label: 'Coverage' },
 ]
 
 const STATIC_ROUTE_LABELS: Record<string, string> = {
   '/': 'Home',
   '/ask': 'Ask Public Parish',
-  '/ballot': 'Elections',
+  '/ballot': 'November 3 ballot guide',
   '/coverage': 'Coverage',
   '/coverage/request': 'Request coverage',
   '/explore': 'Explore',
@@ -317,7 +314,6 @@ export function ResidentShell({ children }: { children: ReactNode }) {
                 Source code
               </a>
             </nav>
-            <VoterFooter />
             <p>Official evidence is public. Resident activity stays private.</p>
             <p>
               A{' '}
