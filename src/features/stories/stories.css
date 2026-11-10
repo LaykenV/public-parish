@@ -525,32 +525,6 @@
 }
 
 
-.pp-ballot[data-home] .pp-ballot-grid {
-  gap: 1.25rem;
-  margin-block: 1.75rem 1rem;
-}
-.pp-ballot[data-home] .pp-ballot-grid li {
-  padding: clamp(1.125rem, 2.5vw, 1.5rem);
-  border-color: var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--card);
-  box-shadow: var(--pp-shadow-card);
-}
-@media (hover: hover) and (pointer: fine) {
-  .pp-ballot[data-home] .pp-ballot-grid li:hover {
-    border-color: var(--primary);
-    background: var(--section);
-  }
-}
-.pp-ballot[data-home] .pp-ballot-grid li:focus-within {
-  border-color: var(--primary);
-  background: var(--section);
-}
-.pp-ballot[data-home] article {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
 .pp-ballot-card-top {
   display: flex;
   align-items: center;
@@ -569,29 +543,6 @@
   margin: 0;
   line-height: 1.5;
 }
-.pp-ballot[data-home] h3 {
-  margin: 0 0 0.75rem;
-  font-size: var(--pp-text-card-title);
-  font-weight: 650;
-  line-height: 1.35;
-  letter-spacing: -0.025em;
-  overflow-wrap: anywhere;
-}
-.pp-ballot[data-home] h3 a {
-  color: var(--foreground);
-  text-decoration: none;
-}
-.pp-ballot[data-home] h3 a:hover {
-  color: var(--primary);
-  text-decoration: underline;
-}
-.pp-ballot[data-home] .pp-ballot-reviewed {
-  margin-block: auto 0.25rem;
-  padding-top: 0.5rem;
-}
 .pp-ballot-card-read {
   align-self: start;
-}
-.pp-ballot-guide-link {
-  margin-top: 0.5rem;
 }

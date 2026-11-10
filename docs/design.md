@@ -23,10 +23,9 @@ slice contracts; [Work](work.md) records release status.
 | --- | --- | --- |
 | Introduction | Before any saved selection, hero: "Understand what Louisiana's government is deciding." with Explore Louisiana stories at left and the 3D Louisiana at right. Returning visitors begin at Across Louisiana | No hero. The issues card contains the navigation links and body filters. On phones, the links stack beside Filters |
 | First content | Across Louisiana: Meta lead, SpaceX and Boyce secondary, plus one utility roundup linking individual commission cases | Local issues and body filters. Featured stories are omitted |
-| Ballot | "On the November 3 ballot": all published statewide amendments | Compact preview of two statewide amendments, with a link to the full guide |
 | Local content | Issues across covered parishes | Issues in the focus, with a desktop body dialog and mobile filter drawer |
 | Records | Latest decision records | Latest decision records for the focus |
-| Footer | Brand, site links, compact dated voter information linking to the ballot page, and the "A Varholdt Labs project" credit linking to varholdt.com | Same footer |
+| Footer | Brand, site links, and the "A Varholdt Labs project" credit linking to varholdt.com | Same footer |
 
 Hero body copy: "See the documents behind each decision and follow what
 happens next." Keep "Free to read and ask questions. No account needed."
@@ -284,11 +283,11 @@ expired anonymous thread, signed-out and signed-in controls, lost connectivity,
 changed coverage, and email recovery. A paid-service failure must not erase
 previously accepted readable evidence.
 
-Keep small verified voter information with outbound official links and a link
-to the published ballot page. Ballot-measure pages use the shared story
-reading, Ask, Follow and Share patterns and quote the official ballot question
-first. They carry the notice that a resident's ballot depends on their precinct
-with a link to the Secretary of State sample ballot. Do not build a candidate
+Ballot-measure pages use the shared story reading, Ask, Follow and Share
+patterns and quote the official ballot question first. After an election they
+carry the notice that the election was held and that Public Parish has not
+published the results, with a link to the Secretary of State's official
+results. Do not build a candidate
 comparison, voting recommendation, poll display or prediction interface.
 
 ## Owner corrections after story publication
@@ -497,6 +496,14 @@ Read the ballot guide link uses that same arrow treatment. The full guide keeps
 its existing explanations and source access.
 
 ## Elections hub and parish preview
+
+The November 3, 2026 election has been held. On November 9 the owner asked to
+stop promoting it. Elections is out of the navigation, Home shows no ballot
+cards and the footer has no voter block. `/ballot` and the amendment pages stay
+reachable by link, in past tense, with a link to the Secretary of State's
+official results. Public Parish states no result. The rest of this section and
+the ballot card notes above record the pre-election design, for the next
+election.
 
 The owner approved Elections in the desktop and mobile navigation on September
 14. It opens `/ballot` and stays highlighted on amendment pages. Clicking it

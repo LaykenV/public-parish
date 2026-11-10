@@ -1,6 +1,5 @@
 import { AREA_SLUGS } from '../../../convex/follows/contracts'
 import { StatewideRoundup } from './statewide-section'
-import { BallotSection } from '../stories/ballot-page'
 import { ArrowDownIcon, ArrowUpRightIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
@@ -117,7 +116,6 @@ export function HomePage({
           </ResidentSectionBoundary>
         </FeaturedStories>
       ) : null}
-      {!fixturesEnabled && showStories ? <BallotSection home /> : null}
       <div id="local-content">
         {!selected ? (
           <div className="pp-home-area-prompt">
@@ -138,7 +136,6 @@ export function HomePage({
           />
         </ResidentSectionBoundary>
       </div>
-      {!fixturesEnabled && !showStories ? <BallotSection home compact /> : null}
       <ResidentSectionBoundary label="Decision records" resetKey={resetKey}>
         <LocalDecisionRecords
           city={cityFocus}
