@@ -246,10 +246,11 @@ does not certify every source artifact or sustained unattended progress.
 
 A Firecrawl 402 means the shared Firecrawl team is out of credits. Monitoring
 records it as `monitoring_provider_credits`, keeps the failure count, opens no
-incident and tries again a day later. From September 19 to October 3, 2026,
-about 1,000 of these 402s were counted as source failures. They are most of
-the failure counts recorded on November 10 and most of the open coverage
-incidents. A 402 is not evidence that a government source moved or broke.
+incident and tries again a day later. Before this rule, monitoring counted
+each 402 as a source failure, so a credit shortage raised failure counts and
+opened coverage incidents. A 402 is not evidence that a government source
+moved or broke. Check the provider call errors before treating a high failure
+count as a source problem.
 
 Retry a failed decision only after identifying the exact reason and a plausible
 repair. Unchanged missing evidence stays limited or withheld. A newer processor
