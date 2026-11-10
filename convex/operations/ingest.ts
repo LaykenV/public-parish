@@ -1,4 +1,4 @@
-import { isProviderRateLimit, reserveMonitoringRetrieval } from '../monitoring/providerPacing'
+import { providerPause, reserveMonitoringRetrieval } from '../monitoring/providerPacing'
 import { FirecrawlClient } from '@firecrawl/firecrawl-convex'
 import type { FirecrawlDocument } from '@firecrawl/firecrawl-convex'
 import { ConvexError, v } from 'convex/values'
@@ -547,7 +547,7 @@ async function ingestSeedUrl(
       cleanupFailures.length === 0
         ? classified.errorDetail
         : `${classified.errorDetail}; storage cleanup failed ${cleanupFailures.length} time(s)`
-    const monitoringControl = monitorRunId && (isProviderRateLimit(error) ? 'monitoring_provider_rate_limit' : ['monitoring_stopped', 'monitoring_daily_limit', 'monitoring_provider_rate_limit'].find(code => String(error).includes(code)))
+    const monitoringControl = monitorRunId && (providerPause(error) ?? ['monitoring_stopped', 'monitoring_daily_limit', 'monitoring_provider_rate_limit', 'monitoring_provider_credits'].find(code => String(error).includes(code)))
     return await failOutcome(
       monitoringControl || classified.errorClass,
       errorDetail,

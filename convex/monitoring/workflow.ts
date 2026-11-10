@@ -49,7 +49,7 @@ export const checkSources = extractionWorkflowManager.define({
           await step.runMutation(internal.monitoring.ledger.deferDocument, { ...args, documentId: document._id, reason: 'monitoring_ai_gateway_unavailable' })
           throw error
         }
-        if (String(error).includes('monitoring_stopped') || String(error).includes('monitoring_daily_limit') || String(error).includes('monitoring_provider_rate_limit')) throw error
+        if (['monitoring_stopped', 'monitoring_daily_limit', 'monitoring_provider_rate_limit', 'monitoring_provider_credits'].some(code => String(error).includes(code))) throw error
         incomplete = true
         await step.runMutation(internal.monitoring.ledger.deferDocument, { ...args, documentId: document._id })
       }
@@ -63,7 +63,8 @@ export const checkSources = extractionWorkflowManager.define({
     const providerPaused = String(error).includes('monitoring_provider_rate_limit')
     const gatewayPaused = String(error).includes('monitoring_ai_gateway_unavailable')
     const budgetPaused = String(error).includes('monitoring_daily_limit')
-    await step.runMutation(internal.monitoring.ledger.finish, { ...args, state: stopped ? 'stopped' : 'incomplete', errorClass: stopped ? 'monitoring_stopped' : budgetPaused ? 'monitoring_daily_limit' : providerPaused ? 'monitoring_provider_rate_limit' : gatewayPaused ? 'monitoring_ai_gateway_unavailable' : 'source_check_incomplete', documentsChecked, targetsStarted })
+    const creditsPaused = String(error).includes('monitoring_provider_credits')
+    await step.runMutation(internal.monitoring.ledger.finish, { ...args, state: stopped ? 'stopped' : 'incomplete', errorClass: stopped ? 'monitoring_stopped' : budgetPaused ? 'monitoring_daily_limit' : providerPaused ? 'monitoring_provider_rate_limit' : creditsPaused ? 'monitoring_provider_credits' : gatewayPaused ? 'monitoring_ai_gateway_unavailable' : 'source_check_incomplete', documentsChecked, targetsStarted })
   }
   return null
 })
