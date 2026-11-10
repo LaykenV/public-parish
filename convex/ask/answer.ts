@@ -1007,6 +1007,9 @@ function validateModelAnswer(
 
 export function removeInlineEvidenceIds(text: string, evidenceIds: string[]) {
   for (const id of evidenceIds) text = text.split(`[${id}]`).join('')
+  // A model sometimes writes a bracketed note that names the schema field,
+  // such as "[citations in evidenceIds]". It is never resident-facing text.
+  text = text.replace(/\[[^\]\n]*\bevidenceIds\b[^\]\n]*\]/g, '')
   return text.replace(/[ \t]+([.,;!?])/g, '$1').replace(/[ \t]+$/gm, '').trim()
 }
 
