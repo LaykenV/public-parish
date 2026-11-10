@@ -244,6 +244,13 @@ until the full document inventory passes. Ready target processing precedes new
 retrieval. Source backlog and issue backlog are separate. A run marked complete
 does not certify every source artifact or sustained unattended progress.
 
+A Firecrawl 402 means the shared Firecrawl team is out of credits. Monitoring
+records it as `monitoring_provider_credits`, keeps the failure count, opens no
+incident and tries again a day later. From September 19 to October 3, 2026,
+about 1,000 of these 402s were counted as source failures. They are most of
+the failure counts recorded on November 10 and most of the open coverage
+incidents. A 402 is not evidence that a government source moved or broke.
+
 Retry a failed decision only after identifying the exact reason and a plausible
 repair. Unchanged missing evidence stays limited or withheld. A newer processor
 version is not proof that rerunning a whole corpus will help.

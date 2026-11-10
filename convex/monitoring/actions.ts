@@ -1,4 +1,4 @@
-import { isProviderRateLimit, reserveMonitoringRetrieval } from './providerPacing'
+import { providerPause, reserveMonitoringRetrieval } from './providerPacing'
 import { FirecrawlClient } from '@firecrawl/firecrawl-convex'
 import { v } from 'convex/values'
 import { components, internal } from '../_generated/api'
@@ -79,7 +79,8 @@ export const discover = internalAction({
         visited.delete(url)
         failed.push(url)
         failures++
-        if (isProviderRateLimit(error)) throw new Error('monitoring_provider_rate_limit')
+        const pause = providerPause(error)
+        if (pause) throw new Error(pause)
       } finally {
         await ctx.runMutation(internal.monitoring.ledger.recordCall, { ...args, operation: 'listing', provider: 'firecrawl', status, creditsUsed, errorDetail, latencyMs: Date.now() - started })
         await ctx.runMutation(internal.monitoring.ledger.saveDiscoveryProgress, { ...args, pending: [...listingUrls, ...failed], visited: [...visited] })
