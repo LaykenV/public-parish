@@ -752,3 +752,28 @@ test('resident source status follows the policy and deployment switch without ch
   vi.stubEnv('SOURCE_MONITORING_ENABLED', 'false')
   expect(await paused()).toBe(true)
 })
+
+test('a new snapshot stays due until its inventory finishes, so a paused inventory resumes on the next run', async () => {
+  const f = await monitoringFixture()
+  await f.t.run(ctx => ctx.db.patch(f.policyId, { intervalHours: 168 }))
+  const { documentId, snapshotId } = await f.t.run(async ctx => {
+    const url = 'https://www.lafayettela.gov/long-agenda.pdf'
+    const storageId = await ctx.storage.store(new Blob([text]))
+    const snapshot = await ctx.db.insert('sourceSnapshots', { registryId: f.registryId, canonicalUrl: url, retrievedUrl: url, contentHash: 'long', contentHashBasis: 'raw_artifact_v2', normalizedContentHash: 'long-normalized', contentType: 'application/pdf', retrievalTime: 1, version: 1, normalizedStorageId: storageId, normalizedContentType: 'text/plain', normalizedByteLength: text.length, rawStorageId: storageId, rawContentType: 'application/pdf', rawByteLength: text.length, truncation: { truncated: false }, firecrawlMetadata: {} })
+    const document = await ctx.db.insert('monitoredDocuments', { registryId: f.registryId, policyId: f.policyId, canonicalUrl: url, nextCheckAt: 0, firstSeenAt: 1, notificationEligible: false, inventoryComplete: false })
+    return { documentId: document, snapshotId: snapshot }
+  })
+  expect(await f.t.mutation(internal.monitoring.ledger.setSnapshot, { runId: f.runId, documentId, snapshotId })).toBe(false)
+  // A daily limit stops the inventory here, after the first of two chunks.
+  await f.t.mutation(internal.monitoring.ledger.saveInventory, { runId: f.runId, documentId, chunk: 0, chunks: 2, inventory })
+  const paused = await f.t.run(ctx => ctx.db.get(documentId))
+  expect(paused).toMatchObject({ completedChunks: 1, inventoryComplete: false })
+  expect(paused!.nextCheckAt).toBeLessThanOrEqual(Date.now())
+  const next = await f.t.run(ctx => ctx.db.insert('sourceMonitoringRuns', { policyId: f.policyId, registryId: f.registryId, generation: 1, registryGeneration: 1, state: 'running', baseline: true, documentsChecked: 0, targetsStarted: 0, startedAt: Date.now() + 900_000 }))
+  await f.t.run(ctx => ctx.db.patch(f.policyId, { activeRunId: next }))
+  expect((await f.t.query(internal.monitoring.ledger.dueDocuments, { runId: next })).map(d => d._id)).toContain(documentId)
+  await f.t.mutation(internal.monitoring.ledger.saveInventory, { runId: next, documentId, chunk: 1, chunks: 2, inventory: { ...inventory, targets: [] } })
+  const done = await f.t.run(ctx => ctx.db.get(documentId))
+  expect(done?.inventoryComplete).toBe(true)
+  expect(done!.nextCheckAt - Date.now()).toBeGreaterThan(167 * 3_600_000)
+})

@@ -308,7 +308,10 @@ export const setSnapshot = internalMutation({
     if (!document || document.policyId !== policy._id || !snapshot || snapshot.registryId !== policy.registryId || snapshot.canonicalUrl !== document.canonicalUrl || snapshot.truncation.truncated || snapshot.contentHashBasis !== 'raw_artifact_v2') throw new Error('Monitoring snapshot mismatch.')
     const sameContent = document.normalizedHash === snapshot.normalizedContentHash && document.inventoryVersion === MONITOR_VERSION
     const reused = sameContent && document.inventoryComplete
-    await ctx.db.patch(document._id, { snapshotId: sameContent ? document.snapshotId : snapshot._id, sourceMeetingDate: sameContent ? document.sourceMeetingDate : officialMeetingDate(document.canonicalUrl), notificationEligible: sameContent ? document.notificationEligible : policy.baselineComplete, normalizedHash: snapshot.normalizedContentHash, inventoryVersion: MONITOR_VERSION, inventoryComplete: reused, refreshSnapshot: undefined, completedChunks: sameContent ? document.completedChunks : 0, lastCheckedAt: Date.now(), nextCheckAt: Date.now() + policy.intervalHours * 3_600_000, errorClass: undefined })
+    // A snapshot that still needs inventory stays due. If a daily limit stops
+    // the inventory partway, the next run continues it instead of waiting a
+    // full check interval. saveInventory schedules the next check on the last chunk.
+    await ctx.db.patch(document._id, { snapshotId: sameContent ? document.snapshotId : snapshot._id, sourceMeetingDate: sameContent ? document.sourceMeetingDate : officialMeetingDate(document.canonicalUrl), notificationEligible: sameContent ? document.notificationEligible : policy.baselineComplete, normalizedHash: snapshot.normalizedContentHash, inventoryVersion: MONITOR_VERSION, inventoryComplete: reused, refreshSnapshot: undefined, completedChunks: sameContent ? document.completedChunks : 0, lastCheckedAt: Date.now(), nextCheckAt: reused ? Date.now() + policy.intervalHours * 3_600_000 : Date.now(), errorClass: undefined })
     await ctx.db.patch(policy._id, { lastRetrievalAt: Date.now() })
     return reused
   },
