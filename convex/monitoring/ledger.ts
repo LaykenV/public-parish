@@ -427,8 +427,10 @@ export const finish = internalMutation({
       const healthy = args.state === 'completed' && !overdue
       const providerPaused = args.errorClass === 'monitoring_provider_rate_limit'
       const gatewayPaused = args.errorClass === 'monitoring_ai_gateway_unavailable'
-      const budgetPaused = args.errorClass === 'monitoring_daily_limit' || providerPaused || gatewayPaused
-      const nextCheckAt = providerPaused ? now + 60_000 : gatewayPaused ? now + 900_000 : budgetPaused ? (await processingBudget(ctx, policy)).retryAt : now + (remaining || pending || running || listingPending || !healthy ? 900_000 : policy.intervalHours * 3_600_000)
+      // Out of Firecrawl credits: wait a day for the owner to add credits or for the plan to renew.
+      const creditsPaused = args.errorClass === 'monitoring_provider_credits'
+      const budgetPaused = args.errorClass === 'monitoring_daily_limit' || providerPaused || gatewayPaused || creditsPaused
+      const nextCheckAt = providerPaused ? now + 60_000 : gatewayPaused ? now + 900_000 : creditsPaused ? now + DAY_MS : budgetPaused ? (await processingBudget(ctx, policy)).retryAt : now + (remaining || pending || running || listingPending || !healthy ? 900_000 : policy.intervalHours * 3_600_000)
       await ctx.db.patch(policy._id, { activeRunId: undefined, baselineComplete: policy.baselineComplete || (healthy && !remaining && !unfinished && !pending && !running && !listingPending), nextCheckAt, failures: healthy ? 0 : budgetPaused || args.state === 'stopped' ? policy.failures : policy.failures + 1, ...(healthy && !remaining && !unfinished && !pending && !running && !listingPending ? { lastCompletedAt: now } : {}), updatedAt: now })
       if (providerPaused || gatewayPaused) await ctx.scheduler.runAt(nextCheckAt, internal.monitoring.ledger.wake, { policyId: policy._id, generation: policy.generation })
       if (!healthy && !budgetPaused && args.state !== 'stopped') await recordIncident(ctx, policy.registryId, overdue ? 'expected_artifact_missing' : args.errorClass ?? 'monitoring_failed')

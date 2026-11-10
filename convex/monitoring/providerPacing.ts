@@ -8,6 +8,17 @@ export function isProviderRateLimit(error: unknown): boolean {
   return /Firecrawl \/v2\/scrape failed \(429\):/i.test(String(error))
 }
 
+export function isProviderCreditExhausted(error: unknown): boolean {
+  // Firecrawl answers 402 when the shared team runs out of credits. That is a
+  // provider budget pause, not a failure of the government source.
+  return /Firecrawl \/v2\/scrape failed \(402\):/i.test(String(error))
+}
+
+/** Maps a Firecrawl account limit to the monitoring pause it should cause. */
+export function providerPause(error: unknown): 'monitoring_provider_rate_limit' | 'monitoring_provider_credits' | null {
+  return isProviderRateLimit(error) ? 'monitoring_provider_rate_limit' : isProviderCreditExhausted(error) ? 'monitoring_provider_credits' : null
+}
+
 export async function reserveMonitoringRetrieval(ctx: ActionCtx, runId: Id<'sourceMonitoringRuns'>) {
   const waitMs = await ctx.runMutation(internal.monitoring.ledger.reserveRetrievalSlot, { runId })
   // This short wait preserves the first PDF download while pacing its required

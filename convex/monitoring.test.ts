@@ -541,7 +541,7 @@ test('source requests reserve bounded paced slots without spending daily admissi
   await expect(t.mutation(internal.monitoring.ledger.reserveRetrievalSlot, { runId })).rejects.toThrow('monitoring_stopped')
 })
 
-test.each([['monitoring_provider_rate_limit', 60_000], ['monitoring_ai_gateway_unavailable', 900_000]] as const)('%s schedules a bounded continuation without degrading the source', async (errorClass, delay) => {
+test.each([['monitoring_provider_rate_limit', 60_000], ['monitoring_ai_gateway_unavailable', 900_000], ['monitoring_provider_credits', DAY]] as const)('%s schedules a bounded continuation without degrading the source', async (errorClass, delay) => {
   const { t, runId, policyId, registryId } = await monitoringFixture()
   await t.mutation(internal.monitoring.ledger.finish, { runId, state: 'incomplete', documentsChecked: 0, targetsStarted: 0, errorClass })
   const policy = await t.run(ctx => ctx.db.get(policyId))
