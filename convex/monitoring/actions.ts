@@ -49,6 +49,7 @@ export const discover = internalAction({
       let status = 'failed'
       let creditsUsed: number | undefined
       let errorDetail: string | undefined
+      let failedUrl: string | undefined
       try {
         const page = await firecrawl.scrape(ctx, url, { formats: ['links'], onlyMainContent: false, skipTlsVerification: false })
         const metadata = page.metadata
@@ -81,9 +82,11 @@ export const discover = internalAction({
         failures++
         const pause = providerPause(error)
         if (pause) throw new Error(pause)
+        failedUrl = url
       } finally {
         await ctx.runMutation(internal.monitoring.ledger.recordCall, { ...args, operation: 'listing', provider: 'firecrawl', status, creditsUsed, errorDetail, latencyMs: Date.now() - started })
-        await ctx.runMutation(internal.monitoring.ledger.saveDiscoveryProgress, { ...args, pending: [...listingUrls, ...failed], visited: [...visited] })
+        const setAside = await ctx.runMutation(internal.monitoring.ledger.saveDiscoveryProgress, { ...args, pending: [...listingUrls, ...failed], visited: [...visited], failedUrl })
+        for (const dropped of setAside) if (failed.includes(dropped)) failed.splice(failed.indexOf(dropped), 1)
       }
     }
     if (listingUrls.length && failures === 0) throw new Error('monitoring_provider_rate_limit')
