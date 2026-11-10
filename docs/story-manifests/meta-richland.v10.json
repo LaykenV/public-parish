@@ -1,0 +1,1030 @@
+{
+  "contractVersion": "1.0.0",
+  "bundleVersion": 10,
+  "bundleKey": "meta-richland-research-v1",
+  "supersedesBundleSha256": "7ce9b3b5443223d7d0dc2b0313436c66f430dcfbf50114d1aaf98e1888f7a7e4",
+  "purpose": "research",
+  "story": {
+    "storyKey": "meta-richland",
+    "slug": "meta-richland",
+    "placement": "lead",
+    "rank": 0,
+    "geography": [
+      {
+        "placeName": "Holly Ridge and former Franklin Farm site",
+        "parish": "Richland Parish",
+        "state": "Louisiana",
+        "precisionNotes": "Original project location is between Rayville and Delhi. Expanded parcel boundaries are not documented in this bundle. Never relabel the site Monroe."
+      }
+    ],
+    "topics": [
+      "data-centers",
+      "utility-proceedings",
+      "tax-incentives"
+    ]
+  },
+  "sources": [
+    {
+      "sourceKey": "meta-led-20241204",
+      "bodyKey": "louisiana-economic-development",
+      "bodyName": "Louisiana Economic Development",
+      "title": "Meta selects northeast Louisiana as site of $10 billion AI optimized data center",
+      "url": "https://www.opportunitylouisiana.gov/news/meta-selects-northeast-louisiana-as-site-of-10-billion-artificial-intelligence-optimized-data-center-governor-jeff-landry-calls-investment-a-new-chapter-for-state",
+      "finalUrl": "https://www.opportunitylouisiana.gov/news/meta-selects-northeast-louisiana-as-site-of-10-billion-artificial-intelligence-optimized-data-center-governor-jeff-landry-calls-investment-a-new-chapter-for-state",
+      "documentType": "announcement",
+      "documentDate": "2024-12-04",
+      "datePrecision": "day",
+      "rawArtifact": {
+        "uri": "reviewed-meta-v3/artifacts/meta-led-20241204/meta-led-20241204-raw.artifact",
+        "sha256": "75038d6aaa2846d0b43eedb3411d703f170f0dc092f3ad8cf7cf111fd3f5f85b",
+        "bytes": 359633,
+        "contentType": "text/html"
+      },
+      "normalizedArtifact": {
+        "uri": "reviewed-meta-v3/artifacts/meta-led-20241204/meta-led-20241204-normalized.txt",
+        "sha256": "c47f91ed895909c4dbb04c5b9b4b71c2aba3dd016df2e2d2f0c3d4c7bd9278b2",
+        "bytes": 39606,
+        "contentType": "text/markdown"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-07T19:50:18.601000+00:00",
+        "providerReference": "01a07d6b-dea8-7727-8b8d-c6a2fabefe95",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Exact saved Firecrawl raw and normalized artifacts reused. Snapshot js75sayxprjmk8gqmt2t5pt4cs8dy9kw. Provider reports no truncation. No saved normalized page map; page locators withheld.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "meta-led-20260713",
+      "bodyKey": "louisiana-economic-development",
+      "bodyName": "Louisiana Economic Development",
+      "title": "Meta commits more than $50 billion for North Louisiana project",
+      "url": "https://www.opportunitylouisiana.gov/news/meta-commits-more-than-50-billion-for-north-louisiana-project-becoming-one-of-the-largest-data-centers-in-history",
+      "finalUrl": "https://www.opportunitylouisiana.gov/news/meta-commits-more-than-50-billion-for-north-louisiana-project-becoming-one-of-the-largest-data-centers-in-history",
+      "documentType": "announcement",
+      "documentDate": "2026-07-13",
+      "datePrecision": "day",
+      "rawArtifact": {
+        "uri": "reviewed-meta-v3/artifacts/meta-led-20260713/meta-led-20260713-raw.artifact",
+        "sha256": "1d2bd45a1bba35701563393a02d11693ef0d13a70cbbf2d6be06d4882b7fd59b",
+        "bytes": 366821,
+        "contentType": "text/html"
+      },
+      "normalizedArtifact": {
+        "uri": "reviewed-meta-v3/artifacts/meta-led-20260713/meta-led-20260713-normalized.txt",
+        "sha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+        "bytes": 41331,
+        "contentType": "text/markdown"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-07T19:50:22.615000+00:00",
+        "providerReference": "01a07d6b-ef50-7554-8668-4e8e5b2503f9",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Exact saved Firecrawl raw and normalized artifacts reused. Snapshot js7b0f87bkwttkdbadytjdpqk58dy818. Provider reports no truncation. No saved normalized page map; page locators withheld.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "meta-lpsc-order-index",
+      "bodyKey": "louisiana-public-service-commission",
+      "bodyName": "Louisiana Public Service Commission",
+      "title": "LPSC Order U-37425 document detail and synopsis",
+      "url": "https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/DocumentDetails?documentId=176967",
+      "finalUrl": "https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/DocumentDetails?documentId=176967",
+      "documentType": "other_official_record",
+      "documentDate": "2025-08-29",
+      "datePrecision": "day",
+      "rawArtifact": {
+        "uri": "reviewed-meta-v3/artifacts/meta-lpsc-order-index/meta-lpsc-order-index-raw.artifact",
+        "sha256": "7df60bf67441d66ddc547141adfb47972e7cf0829456e81bdf4b30b3d1278f06",
+        "bytes": 23994,
+        "contentType": "text/html"
+      },
+      "normalizedArtifact": {
+        "uri": "reviewed-meta-v3/artifacts/meta-lpsc-order-index/meta-lpsc-order-index-normalized.txt",
+        "sha256": "a9576d5e5f80e2fa1f8348f40ec7c66e0c8f84164e01e00bab96226074d6347d",
+        "bytes": 1549,
+        "contentType": "text/markdown"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-07T19:50:26.478000+00:00",
+        "providerReference": "01a07d6b-fed1-76ab-937e-4bcccc46750d",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Exact saved Firecrawl raw and normalized artifacts reused. Snapshot js7ebxj4p83x1ey15s9e40npa18dz8ew. Provider reports no truncation. No saved normalized page map; page locators withheld.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "meta-lpsc-schedule-20260514",
+      "bodyKey": "louisiana-public-service-commission",
+      "bodyName": "Louisiana Public Service Commission",
+      "title": "LPSC Order U-37882, procedural schedule",
+      "url": "https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/ViewFile?fileId=vuPR4bwXjsw%3D",
+      "finalUrl": "https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/ViewFile?fileId=vuPR4bwXjsw%3D",
+      "documentType": "utility_proceeding",
+      "documentDate": "2026-05-14",
+      "datePrecision": "day",
+      "rawArtifact": {
+        "uri": "reviewed-meta-v3/artifacts/meta-lpsc-schedule-20260514/meta-lpsc-schedule-20260514-raw.artifact",
+        "sha256": "297902fbedd3b7593767d62b35c7fa51acedbb9db0a1515ea07126914e0e2f91",
+        "bytes": 132423,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "reviewed-meta-v3/artifacts/meta-lpsc-schedule-20260514/meta-lpsc-schedule-20260514-normalized.txt",
+        "sha256": "12f235becb5bf01a6135f657b85e99d9583027615e278b1c64099b4ec6a48c78",
+        "bytes": 6660,
+        "contentType": "text/markdown"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-07T21:17:55.926000+00:00",
+        "providerReference": "01a07dbc-1cdf-7085-9345-2251adb4b5e9",
+        "redirectChain": [],
+        "failureEvidence": [
+          "Prior saved normalization ended its section-I sentence at Administrative Hear. Its immutable predecessor snapshot remains retained. Agent 1 repaired extraction through forced Firecrawl OCR; the raw official PDF did not change."
+        ],
+        "completeness": "complete",
+        "completenessNotes": "Reused saved Firecrawl OCR snapshot js7ft1ynyw794qdv93y8dzhgw98dyxba, version 2. Resumed independent research review visually compared every raw page against the complete normalized text. All substantive paragraphs, both footnotes, operative directions, date and printed signature names survive. Repeated page footers and graphical seal/signature strokes are not transcribed. No normalized page map is supplied. This is complete order text, not complete docket coverage or expansion approval.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "meta-lpsc-minutes-20260812",
+      "bodyKey": "louisiana-public-service-commission",
+      "bodyName": "Louisiana Public Service Commission",
+      "title": "LPSC minutes of August 12, 2026, Exhibit 20, U-37882",
+      "url": "https://lpsc.louisiana.gov/docs/minutes/August_12_2026_Minutes.pdf",
+      "finalUrl": "https://lpsc.louisiana.gov/docs/minutes/August_12_2026_Minutes.pdf",
+      "documentType": "minutes",
+      "documentDate": "2026-08-12",
+      "datePrecision": "day",
+      "rawArtifact": {
+        "uri": "overnight-20260908/meta-richland/meta-lpsc-20260812.pdf",
+        "sha256": "88d2782697862022b5aff15d3cafac4c67c70e663c606ac0007cb0796186eb4c",
+        "bytes": 174519,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "overnight-20260908/meta-richland/meta-lpsc-20260812.txt",
+        "sha256": "3ce2b70dc3300a8036479914842bb1a507a0e55778f714272805bbba666dcd73",
+        "bytes": 25006,
+        "contentType": "text/markdown"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-08T03:38:01.113000+00:00",
+        "providerReference": "01a07f18-1577-7119-8e51-48aa8be39aec",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Normal Firecrawl fast PDF intake retained all nine pages and 29 exhibits; no truncation reported. Exact raw and normalized byte hashes match the saved development snapshot. Printed page is described in section; no normalized page map is claimed.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "meta-lpsc-minutes-20250820",
+      "bodyKey": "louisiana-public-service-commission",
+      "bodyName": "Louisiana Public Service Commission",
+      "title": "LPSC minutes of August 20, 2025, settlement approval",
+      "url": "https://lpsc.louisiana.gov/docs/minutes/August-20-2025-Minutes.pdf",
+      "finalUrl": "https://lpsc.louisiana.gov/docs/minutes/August-20-2025-Minutes.pdf",
+      "documentType": "minutes",
+      "documentDate": "2025-08-20",
+      "datePrecision": "day",
+      "rawArtifact": {
+        "uri": "catchup-20260908/meta-richland/meta-20250820.pdf",
+        "sha256": "25637d0f17ee89e0accac1d472d1b0ddf7573dc1f8555328af2dd911efa9cb72",
+        "bytes": 118157,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "catchup-20260908/meta-richland/meta-20250820.txt",
+        "sha256": "6173582380a0bcc983fd05c84c9fcf31e6733c8375a534ac85f574b1a8a2c1d8",
+        "bytes": 21310,
+        "contentType": "text/markdown"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-08T14:16:55.417000+00:00",
+        "providerReference": "01a08161-0450-7001-a61a-a143a5cbede3",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Retained full Firecrawl raw and normalized artifacts with matching hashes. All pages present. No normalized page map, so numeric page locators are withheld.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "meta-lpsc-agenda-20260916",
+      "bodyKey": "louisiana-public-service-commission",
+      "bodyName": "Louisiana Public Service Commission",
+      "title": "LPSC September 16, 2026 revised business and executive session agenda",
+      "url": "https://lpsc.louisiana.gov/docs/agenda/Sept_16_2026_Agenda_Revised.pdf",
+      "finalUrl": "https://lpsc.louisiana.gov/docs/agenda/Sept_16_2026_Agenda_Revised.pdf",
+      "documentType": "agenda",
+      "documentDate": "2026-09-16",
+      "datePrecision": "day",
+      "rawArtifact": {
+        "uri": "launch-20260912/meta-lpsc-agenda-20260916.pdf",
+        "sha256": "9bb281a7029f94384bb92e1821dea7e9a0a8035ac11516d3b1a090fb27367efd",
+        "bytes": 78695,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "launch-20260912/meta-lpsc-agenda-20260916.txt",
+        "sha256": "7ffa21c14e8894f0cd5268fb1c0715122517059a33b36e4b6259aac3364d22e5",
+        "bytes": 6111,
+        "contentType": "text/markdown"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-12T06:43:02.430000+00:00",
+        "providerReference": "01a0945a-e863-7528-8d66-229ffe122620",
+        "redirectChain": [],
+        "failureEvidence": [
+          "Initial provider retrieval returned HTTP 404 while direct official retrieval succeeded. One bounded fresh fast PDF retry succeeded."
+        ],
+        "completeness": "complete",
+        "completenessNotes": "Compared all three raw PDF pages with retained normalized text. All 14 exhibits, meeting date, time and room survive. No truncation. Printed page numbers appear in the section descriptions; no normalized page map is claimed.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "meta-lpsc-full-order-20250829",
+      "bodyKey": "louisiana-public-service-commission",
+      "bodyName": "Louisiana Public Service Commission",
+      "title": "LPSC Order U-37425 with public Attachment A, August 29, 2025",
+      "url": "https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/ViewFile?fileId=nDWn%2Fjuc2%2BA%3D",
+      "finalUrl": "https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/ViewFile?fileId=nDWn%2Fjuc2%2BA%3D",
+      "documentType": "utility_proceeding",
+      "documentDate": "2025-08-29",
+      "datePrecision": "day",
+      "rawArtifact": {
+        "uri": "meta-launch-20260917/full-order.pdf",
+        "sha256": "9185ef7e4130785574b53f0a0cff7216390428399d2aaac0265eebb7da838aaf",
+        "bytes": 2456110,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "meta-launch-20260917/full-order.txt",
+        "sha256": "3ab2d487f4016b563254c64f959cd21a307f77e1db59794db9851df2545106e9",
+        "bytes": 97224,
+        "contentType": "text/markdown"
+      },
+      "retrieval": {
+        "method": "existing_snapshot",
+        "retrievedAt": "2026-09-17T02:59:06.149000+00:00",
+        "providerReference": "01a0ad4d-a9d5-76d7-b673-e11b4ac697f0",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "All 44 PDF pages retained. The complete normalized output includes the order, public settlement and attachments through Rider GZ. No normalized page map is claimed. Section locators identify printed order pages. Confidential Attachment B is not part of the public file.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    },
+    {
+      "sourceKey": "meta-lpsc-minutes-20260916",
+      "bodyKey": "louisiana-public-service-commission",
+      "bodyName": "Louisiana Public Service Commission",
+      "title": "LPSC September 16, 2026 business and executive session minutes",
+      "url": "https://lpsc.louisiana.gov/docs/minutes/September_16_2026_Min.pdf",
+      "finalUrl": "https://lpsc.louisiana.gov/docs/minutes/September_16_2026_Min.pdf",
+      "documentType": "minutes",
+      "documentDate": "2026-09-16",
+      "datePrecision": "day",
+      "rawArtifact": {
+        "uri": "maintenance-20261110/meta-lpsc-minutes-20260916.pdf",
+        "sha256": "ab5c7445ed3f9cb5122a0aad3bb8a3952f1984924de014dac5d0fc051aa3d9d9",
+        "bytes": 155609,
+        "contentType": "application/pdf"
+      },
+      "normalizedArtifact": {
+        "uri": "maintenance-20261110/meta-lpsc-minutes-20260916.md",
+        "sha256": "8b62c31ee425d111b424990383055c6688adf700879b7ec3422ec05ca9a29496",
+        "bytes": 13551,
+        "contentType": "text/markdown"
+      },
+      "retrieval": {
+        "method": "firecrawl",
+        "retrievedAt": "2026-11-10T01:28:48.198000+00:00",
+        "providerReference": "01a1c312-6bcb-767e-b9f8-c4cb9deb6955",
+        "redirectChain": [],
+        "failureEvidence": [],
+        "completeness": "complete",
+        "completenessNotes": "Firecrawl retrieval through the shared pipeline on the development deployment. Compared all six raw PDF pages with the normalized text: the header, Exhibits 1 through 14, the adjournment and the next-session notice are present. No truncation. Printed page numbers are not mapped.",
+        "pageMap": []
+      },
+      "existingPublicationReferences": []
+    }
+  ],
+  "research": {
+    "proposedTitle": "Meta's $50 billion plan and the rules for its power supply",
+    "proposedSummary": "Meta announced a larger Richland Parish campus. The original utility approval includes specific protections for other customers, while a separate expansion application remains a distinct proceeding. Explain the original order in plain language and distinguish announced savings from measured bills. Report the September 16 procedural outcome from the official minutes: the commission vacated the August 6 ruling, accepted the stipulation and deemed the motion for immediate review moot. Say that this did not decide the application. Attribute the December 16 date to the May scheduling order. Use the supported local business, school and water context with clear attribution.",
+    "claims": [
+      {
+        "claimKey": "meta-original",
+        "text": "LED announced the original $10 billion AI data-center plan in Richland Parish on December 4, 2024.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20241204",
+            "normalizedSha256": "c47f91ed895909c4dbb04c5b9b4b71c2aba3dd016df2e2d2f0c3d4c7bd9278b2",
+            "start": 6927,
+            "end": 7772,
+            "excerpt": "December 4, 2024 • [News Release](https://www.opportunitylouisiana.gov/news/category/news-release)\n\n# Meta Selects Northeast Louisiana as Site of $10 Billion Artificial Intelligence Optimized Data Center; Governor Jeff Landry Calls Investment ‘A New Chapter’ for State\n\n- ##### **Project is expected to result in 500 or more direct new jobs, more than 1,000 indirect jobs and 5,000 construction workers at peak.**\n\n- ##### **Expansive technology campus will occupy 4 million square feet on the 2,250-acre former Franklin Farm mega site.**\n\n- ##### **Entergy worked with Meta to address energy needs, and Meta will match its electricity use with 100% clean and renewable energy.**\n\n\nRICHLAND PARISH, La. – Facebook and Instagram parent company Meta announced it will build a $10 billion artificial intelligence data center in northeast Louisiana,",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-location",
+        "text": "The original announcement places the former Franklin Farm site between Rayville and Delhi in Richland Parish, about 30 miles east of Monroe.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20241204",
+            "normalizedSha256": "c47f91ed895909c4dbb04c5b9b4b71c2aba3dd016df2e2d2f0c3d4c7bd9278b2",
+            "start": 7956,
+            "end": 8421,
+            "excerpt": "Meta projects the data center will support 500 or more direct new jobs in Richland Parish. LED estimates the project will result in the creation of more than 1,000 indirect jobs, for a total of more than 1,500 potential new jobs in the Northeast Region. The company estimates 5,000 construction workers at peak of construction on the 2,250-acre former Franklin Farm megasite that sits between the municipalities of Rayville and Delhi, about 30 miles east of Monroe.",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-expanded",
+        "text": "LED reported on July 13, 2026 that Meta announced a commitment exceeding $50 billion, nearly 10 million square feet and 5 gigawatts of IT capacity in Richland Parish.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20260713",
+            "normalizedSha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+            "start": 7464,
+            "end": 7666,
+            "excerpt": "HOLLY RIDGE, La. – Meta announced it is committing more than $50 billion to its Richland Parish Data Center project, expanding the campus to nearly 10 million square feet and 5 gigawatts of IT capacity.",
+            "page": null,
+            "section": "Source text"
+          },
+          {
+            "sourceKey": "meta-led-20260713",
+            "normalizedSha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+            "start": 6878,
+            "end": 6891,
+            "excerpt": "July 13, 2026",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-jobs-projection",
+        "text": "The July announcement projects 7,500 peak construction jobs and approximately 1,000 operational jobs. These are projections, not a verified employment count.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20260713",
+            "normalizedSha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+            "start": 9305,
+            "end": 9594,
+            "excerpt": "The project is expected to support 7,500 construction jobs at peak construction and approximately 1,000 operational jobs. Louisiana Economic Development estimates the project will result in an additional 1,900 indirect new jobs for over 2,900 new job opportunities in the Northeast Region.",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-original-tax",
+        "text": "The original LED announcement expected Meta to use the Act 730 data-center equipment incentive and Quality Jobs program; this does not prove an executed project agreement or realized rebate.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20241204",
+            "normalizedSha256": "c47f91ed895909c4dbb04c5b9b4b71c2aba3dd016df2e2d2f0c3d4c7bd9278b2",
+            "start": 13772,
+            "end": 14075,
+            "excerpt": "The company is expected to take advantage of a new Louisiana incentive program, established by Act 730, that offers qualifying projects a state and local sales and use tax rebate on the purchase or lease of data center equipment. Meta is also expected to participate in the state’s Quality Jobs program.",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-utility-approved",
+        "text": "The LPSC official synopsis says Order U-37425 accepted a settlement approving generation and transmission resources subject to conditions.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-order-index",
+            "normalizedSha256": "a9576d5e5f80e2fa1f8348f40ec7c66e0c8f84164e01e00bab96226074d6347d",
+            "start": 1089,
+            "end": 1402,
+            "excerpt": "Order No. U-37425 accepts the settlement entered into by Entergy Louisiana, LPSC Staff, Sierra Club, Walmart, and Southern Renewable Energy Association, approving the generation and transmission resources proposed in connection with service to a customer project in North Louisiana, subject to certain conditions.",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-expansion-proceeding",
+        "text": "The May 14 order concerns requested generation and transmission certification for Evest LLC in Richland Parish adjacent to the Laidley facility; it is a procedural order.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-schedule-20260514",
+            "normalizedSha256": "12f235becb5bf01a6135f657b85e99d9583027615e278b1c64099b4ec6a48c78",
+            "start": 333,
+            "end": 710,
+            "excerpt": "On March 25, 2026, Entergy Louisiana LLC (“ELL” or the “Company”) filed its application seeking certification of generation and transmission resources needed to serve a substantial new load proposed for Evest LLC, a customer seeking to locate a large hyperscale data center in Richland Parish, adjacent to the facility currently being developed by Laidley, LLC (“Application”).",
+            "page": null,
+            "section": "Source text"
+          },
+          {
+            "sourceKey": "meta-lpsc-schedule-20260514",
+            "normalizedSha256": "12f235becb5bf01a6135f657b85e99d9583027615e278b1c64099b4ec6a48c78",
+            "start": 6253,
+            "end": 6265,
+            "excerpt": "May 14, 2026",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-next-consideration",
+        "text": "The May 14, 2026 LPSC order directs a schedule for consideration of the application at the December 16, 2026 Business and Executive Session. Recheck the current agenda before attending.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-schedule-20260514",
+            "normalizedSha256": "12f235becb5bf01a6135f657b85e99d9583027615e278b1c64099b4ec6a48c78",
+            "start": 5726,
+            "end": 5949,
+            "excerpt": "1. The Administrative Hearings Division shall establish a procedural schedule in LPSC Docket No. U-37882 that provides for Commission consideration of the Application at the December 16, 2026 Business and Executive Session.",
+            "page": null,
+            "section": "Operative order"
+          },
+          {
+            "sourceKey": "meta-lpsc-schedule-20260514",
+            "normalizedSha256": "12f235becb5bf01a6135f657b85e99d9583027615e278b1c64099b4ec6a48c78",
+            "start": 6253,
+            "end": 6265,
+            "excerpt": "May 14, 2026",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-supplier-step",
+        "text": "LED identifies SourceLouisiana.com as the registration route for businesses seeking project subcontracting opportunities, without guaranteeing a contract.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20260713",
+            "normalizedSha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+            "start": 10457,
+            "end": 11015,
+            "excerpt": "This commitment to Louisiana also extends to the state’s business community. The company has designated Source Louisiana as its primary portal for subcontracting opportunities on the project, helping connect local companies to its growing supplier network. Launched last year, the free platform gives in-state companies greater visibility into major project opportunities by showcasing their services, certifications and capacity. Interested businesses can register at [SourceLouisiana.com (opens external page in a new window)](http://sourcelouisiana.com/).",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-utility-projection",
+        "text": "The July LED release describes a recent utility agreement for seven gas generating plants and other resources, with projected customer savings. The announcement alone does not certify those resources.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20260713",
+            "normalizedSha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+            "start": 14982,
+            "end": 15934,
+            "excerpt": "As the project scope grows, Meta and power company Entergy Louisiana are continuing and expanding their commitment to investing in the communities where they operate. The companies’ [recent agreement (opens external page in a new window)](https://www.entergy.com/news/entergy-louisiana-announces-a-new-agreement-with-meta-that-will-deliver-an-additional-2b-in-customer-savings) will fund seven new natural gas-fueled generating plants, three grid-scale batteries, potential nuclear development, including a project to increase the output of Entergy Louisiana’s Waterford 3 nuclear facility and other purchased power, and is expected to deliver more than $2 billion in savings for Entergy Louisiana customers, far exceeding the $650 million [previously announced (opens external page in a new window)](https://www.entergy.com/news/entergy-louisiana-breaks-ground-on-new-state-of-the-art-generation-facilities-to-power-reliability-growth-and-innovation).",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-subpoena-vacated",
+        "text": "The LPSC August 12, 2026 minutes record a 3:1 vote in U-37882 to reverse the tribunal ruling and vacate the subpoena, rendering the motion to quash moot. This was a subpoena decision, not approval of the generation and transmission application.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-minutes-20260812",
+            "normalizedSha256": "3ce2b70dc3300a8036479914842bb1a507a0e55778f714272805bbba666dcd73",
+            "start": 15893,
+            "end": 16732,
+            "excerpt": "Ex. 20 \nU-37882 - Entergy Louisiana, LLC, ex parte. In re: Application for certification of generation \nand transmission resources and for other relief. \nIn  re: Discussion  and  possible  vote  on Meta Platforms, Inc.’s Motion for Immediate \nReview of Interlocutory Ruling. \nChairman Skrmetta moved to defer this item to the September Business and Executive Session, \nwith  Commissioner  Lewis  objecting.  After  discussion,  Chairman  Skrmetta  withdrew  his \nmotion to defer.  \n.   \nAfter discussion, on motion of Vice Chairman Coussan, seconded by Chairman Skrmetta, with \nCommissioner   Francis   concurring,   Commissioner   Lewis   opposing, and   Commissioner \nCampbell  absent,  the  Commission  voted  to  reverse  the Tribunal’s  ruling  and  vacate  the \nsubpoena, rendering the motion to quash moot.  The motion passed 3:1. \n",
+            "page": null,
+            "section": "Exhibit 20, printed page 6"
+          },
+          {
+            "sourceKey": "meta-lpsc-minutes-20260812",
+            "normalizedSha256": "3ce2b70dc3300a8036479914842bb1a507a0e55778f714272805bbba666dcd73",
+            "start": 86,
+            "end": 114,
+            "excerpt": "MINUTES FROM AUGUST 12, 2026",
+            "page": null,
+            "section": "Exhibit 20, printed page 6"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-original-settlement-link",
+        "text": "The August 20, 2025 LPSC minutes identify the U-37425 settlement as supporting Meta's data center in Holly Ridge and record a 4:1 vote to accept the settlement filed August 7, 2025. This connects the original utility approval to Meta and is distinct from the later U-37882 application.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-minutes-20250820",
+            "normalizedSha256": "6173582380a0bcc983fd05c84c9fcf31e6733c8375a534ac85f574b1a8a2c1d8",
+            "start": 5296,
+            "end": 7760,
+            "excerpt": "Ex. 5 \nU-37425 - Entergy Louisiana, LLC, ex parte. In re: Application for approval of generation and \ntransmission resources in connection with service to a single customer for a project in North \nLouisiana. \nIn re: Discussion and possible vote on approval of Settlement pursuant to Rule 57. \n \nOn  motion  of Vice  Chairman  Skrmetta,  seconded  by Chairman  Francis, and  unanimously \nadopted,  the  Commission  voted  to exercise  its  original  and  primary  jurisdiction  pursuant  to \nRule 57. \n \nCommissioner  Campbell  made  the  following  motion:   Next  year  will  mark  my  50\nth\n year  in \npublic service.  Whether in the Senate or this Commission, my focus has been on providing \nopportunities for people to lift themselves out of poverty.  In the Senate, I created the Louisiana \nEducational  Excellence  Fund  to  improve  education  using  money  from  the  state  tobacco \nsettlement.  Today, this Commission has an opportunity to enable a transformational economic \ndevelopment project in one of the poorest regions in Louisiana.  There are no quick fixes to \npoverty,  but  when  a  great  opportunity  comes  along  to  provide  stimulus  and  jobs  to  the \ncommunity, we need to carefully consider it.  I want to commend the LPSC Staff for working \nwith  Entergy  and  other  parties  to  bring  a  settlement  to  the  Commission  that  authorizes  the \nconstruction of generation and transmission to support Meta’s data center in Holly Ridge, \n\n -3-  Minutes  of August  20,  2025  B&amp;E \nLouisiana,  while  imposing  numerous  protective  conditions  to  mitigate  the  risk  that  other \nelectric customers throughout Louisiana will be adversely impacted.  I recognize that not all \nparties joined the settlement, but it says a lot that the settlement is supported by the utility, the \nLPSC  Staff,  an  environmental  group,  a  sophisticated  large  commercial  customer,  and  a \nrenewable energy organization. \n \nI  move  that we accept Staff’s recommendation and approve the settlement entered into by \nEntergy  Louisiana,  LPSC  Staff,  Sierra  Club,  Walmart,  and  Southern  Renewable  Energy \nAssociation. \n \nAfter discussion, on motion of Commissioner Campbell, seconded by Chairman Francis, with \nVice  Chairman  Skrmetta and  Commissioner Coussan  concurring, and  Commissioner  Lewis \nobjecting, the Commission voted to accept the Settlement Agreement filed into the record on \nAugust 7, 2025.  The motion passed 4:1. \n \n",
+            "page": null,
+            "section": "Exhibit 5, printed pages 2 and 3"
+          },
+          {
+            "sourceKey": "meta-lpsc-minutes-20250820",
+            "normalizedSha256": "6173582380a0bcc983fd05c84c9fcf31e6733c8375a534ac85f574b1a8a2c1d8",
+            "start": 50,
+            "end": 754,
+            "excerpt": "LOUISIANA PUBLIC SERVICE COMMISSION \nMINUTES FROM AUGUST 20, 2025 \nOPEN SESSION \n \nMINUTES   OF AUGUST   20, 2025 OPEN   SESSION   OF   THE   LOUISIANA   PUBLIC   SERVICE \nCOMMISSION HELD IN PLAQUEMINE, LOUISIANA.  PRESENT WERE CHAIRMAN MIKE FRANCIS, \nVICE  CHAIRMAN ERIC  SKRMETTA, COMMISSIONER FOSTER CAMPBELL, COMMISSIONER \nDAVANTE   LEWIS, COMMISSIONER JEAN-PAUL   COUSSAN, AND   EXECUTIVE   SECRETARY \nBRANDON FREY.   \n \nOpen Session of August 20, 2025, convening at 10:24 a.m., and adjourning at 3:44 p.m., Carl F. Grant Civic \nCenter,  24700  J.  Gerard  Berret  Blvd., Plaquemine,  Louisiana,  with  the  above-name  members  of  the \nCommission and Executive Secretary Brandon Frey present.  \n \n",
+            "page": null,
+            "section": "Meeting header"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-september-session",
+        "text": "The revised LPSC agenda schedules a business and executive session for September 16, 2026 at 9:00 AM in the Galvez Building, first-floor Natchez Room.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-agenda-20260916",
+            "normalizedSha256": "7ffa21c14e8894f0cd5268fb1c0715122517059a33b36e4b6259aac3364d22e5",
+            "start": 84,
+            "end": 233,
+            "excerpt": "LOUISIANA PUBLIC SERVICE COMMISSION \nAGENDA \nBUSINESS AND EXECUTIVE SESSION \nSEPTEMBER 16, 2026, 9:00 AM \nGALVEZ BUILDING, 1ST FLOOR NATCHEZ ROOM \n \n",
+            "page": null,
+            "section": "Meeting heading, printed page 1"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-september-motions",
+        "text": "Exhibit 9 lists discussion and possible votes in U-37882 on a joint motion by Entergy Louisiana, the Alliance for Affordable Energy and Union of Concerned Scientists to vacate the August 6, 2026 ruling under Rule 57, and on a motion for immediate review of an interlocutory ruling. The agenda does not record an outcome.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-agenda-20260916",
+            "normalizedSha256": "7ffa21c14e8894f0cd5268fb1c0715122517059a33b36e4b6259aac3364d22e5",
+            "start": 3174,
+            "end": 3658,
+            "excerpt": "Ex. 9 U-37882 - Entergy   Louisiana,   LLC,   ex   parte.   In   re:   Application   for \ncertification of generation and transmission resources and for other relief. \nIn re: Discussion and possible vote on Joint Motion of Entergy Louisiana, \nLLC,  the  Alliance  for  Affordable  Energy,  and  Union  of  Concerned \nScientists to vacate the August 6, 2026 Ruling, pursuant to Rule 57.  \nIn re: Discussion and possible vote on Motion for Immediate Review of \nInterlocutory Ruling. \n \n",
+            "page": null,
+            "section": "Exhibit 9, printed page 2"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-original-order-identity",
+        "text": "The original utility order identifies Laidley LLC as Meta Platforms subsidiary and the customer for the Richland Parish project.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-full-order-20250829",
+            "normalizedSha256": "3ab2d487f4016b563254c64f959cd21a307f77e1db59794db9851df2545106e9",
+            "start": 393,
+            "end": 1132,
+            "excerpt": "On October 30, 2024, Entergy Louisiana, LLC (“ELL” or the “Company”) filed with the\nLouisiana Public Service Commission (“LPSC” or “Commission”) its Application for Approval\nof Generation and Transmission Resources Proposed in Connection with Service to a Significant\nCustomer Project in North Louisiana, Including Proposed Rider, and Request for Timely\nTreatment (“Application”), in which the Company asked for, among other things, approval by the\nCommission for the Company to construct the generation and transmission resources needed to\nserve significant new load associated with a data center being developed by Meta Platforms, Inc.,\nthrough its subsidiary, Laidley LLC (the “Customer”), in Richland Parish, Louisiana (the\n“Project”).",
+            "page": null,
+            "section": "Order page 1, project and customer identity"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-original-cost-review",
+        "text": "The original order makes generator cost recovery subject to later review of actual costs and requires Entergy to provide quarterly construction schedule and cost updates.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-full-order-20250829",
+            "normalizedSha256": "3ab2d487f4016b563254c64f959cd21a307f77e1db59794db9851df2545106e9",
+            "start": 15014,
+            "end": 15740,
+            "excerpt": "The retail revenue requirement associated with the Planned Generators (to be determined\nat the time each is proposed to be included in rates and subject to change in a prudence\nreview of their actual costs) is deemed eligible for recovery in the first billing cycle of the\nmonth following commercial operation of each of the Planned Generators through the\napplicable mechanisms of the Company’s then-effective Formula Rate Plan (“FRP”).\nEntergy has a continuing obligation to prudently manage the construction of the Planned\nGenerators and will provide quarterly updates to Commission Staff on the status of the\nconstruction of the Planned Generators, including the schedule, costs, and other critical\nassociated activities.",
+            "page": null,
+            "section": "Order page 6, rate recovery and construction monitoring"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-original-contract-boundary",
+        "text": "Commission Staff explicitly did not recommend approval of the electric service agreement and related agreements; the Commission retains oversight of how Entergy manages them.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-full-order-20250829",
+            "normalizedSha256": "3ab2d487f4016b563254c64f959cd21a307f77e1db59794db9851df2545106e9",
+            "start": 18178,
+            "end": 18722,
+            "excerpt": "Staff explicitly is not expressing approval of, or recommending that the Commission\napprove, the ESA and the Related Agreements.  The Parties reserve all rights afforded by\napplicable law and the Commission retains fully its authority consistent with applicable\nlaw regarding prudence as it relates to the ESA and Related Agreements, including but not\nlimited to ELL’s management of the ESA and the Related Agreements and any ELL\ndecision to amend or to cancel any or all of those agreements or any provision of any or all\nof those agreements.",
+            "page": null,
+            "section": "Order page 6, contract oversight"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-original-guarantee",
+        "text": "The original order requires Entergy to obtain and enforce parent guarantees and other security. If the customer terminates early, Entergy must seek to make use of excess capacity and seek approval for how to use the early termination fee after receiving it.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-full-order-20250829",
+            "normalizedSha256": "3ab2d487f4016b563254c64f959cd21a307f77e1db59794db9851df2545106e9",
+            "start": 19080,
+            "end": 19703,
+            "excerpt": "ELL will ensure that all Parent Guaranty agreements are obtained and fully executed and\nwill timely and prudently enforce its rights with respect to the Parent Guaranty agreements\nand other collateral security, including but not limited to the Credit Insurance.\nIn the event the Customer terminates its ESA, ELL will prudently seek to maximize the\nvalue of any excess capacity that may result from the termination and, following receipt of\nthe Early Termination Fee in the event of early termination, make a filing with the\nCommission for approval of the manner in which ELL proposes to utilize the Early\nTermination Fee.",
+            "page": null,
+            "section": "Order page 7, parent guarantees and early termination"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-original-grid-protection",
+        "text": "The original order says material transmission upgrades required solely because of the project must not be included in other customers rates. This is a specific cost rule, not a promise that household bills cannot change.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-full-order-20250829",
+            "normalizedSha256": "3ab2d487f4016b563254c64f959cd21a307f77e1db59794db9851df2545106e9",
+            "start": 20483,
+            "end": 20931,
+            "excerpt": "ELL will conduct appropriate analyses regarding the interplay between the Customer’s\nProject and ELL’s transmission system and will install power quality monitoring\nequipment on the substation serving the Customer’s Project.  To the extent material\nupgrades are required to the transmission system solely as a result of the Customer&#39;s\nProject, the costs of those upgrades will not be included in the rates of customers other\nthan the Customer.",
+            "page": null,
+            "section": "Order page 7, project-specific transmission upgrades"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-local-contracts",
+        "text": "LED reported in July 2026 that Meta had contracted more than $1.6 billion with Louisiana businesses. This is a reported contract value, not verified money paid out.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20260713",
+            "normalizedSha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+            "start": 9596,
+            "end": 9797,
+            "excerpt": "Since construction began, Meta has prioritized working with Louisiana companies, already contracting more than $1.6 billion with local businesses and supporting workforce development across the region.",
+            "page": null,
+            "section": "Creating Jobs and Local Opportunities"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-school-revenue",
+        "text": "LED reported that construction-related sales tax revenue enabled supplemental payments to Richland Parish teachers and staff. This release does not establish the amount paid to an individual teacher.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20260713",
+            "normalizedSha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+            "start": 13254,
+            "end": 13716,
+            "excerpt": "The project’s economic impact is also reaching local classrooms. Increased sales tax revenues generated during construction have enabled Richland Parish Schools to provide record supplemental payments to teachers and staff, strengthening the district’s ability to attract and retain educators while investing in student success. Meta is paying tens of millions of dollars in taxes every year supporting local schools, roads, law enforcement, and public services.",
+            "page": null,
+            "section": "Delivering Community Impact"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-water-commitment",
+        "text": "LED reported a plan to return 100% of facility water consumption to local watersheds and invest in restoration and water infrastructure. This announcement does not establish actual withdrawals, a water allocation or project permits.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20260713",
+            "normalizedSha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+            "start": 17392,
+            "end": 17617,
+            "excerpt": "The company is further advancing sustainability efforts, with plans to return 100% of the facility’s water consumption to local watersheds and invest in wetland restoration and water infrastructure projects across the region.",
+            "page": null,
+            "section": "Strengthening Infrastructure and Enhancing Sustainability"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-bill-assistance-commitment",
+        "text": "LED reported a $215 million commitment to bill assistance and residential energy efficiency over the utility agreement, and a commitment to fund up to 2.5 GW of renewable energy. These are attributed commitments, not verified completed spending.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20260713",
+            "normalizedSha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+            "start": 16121,
+            "end": 16406,
+            "excerpt": "Meta is expanding its support for Entergy’s affordability initiatives, contributing $215 million to its The Power to Care bill assistance program and residential energy efficiency programs over the course of the agreement and committing to fund up to 2.5 GW of clean, renewable energy.",
+            "page": null,
+            "section": "Strengthening Infrastructure and Enhancing Sustainability"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-september-outcome",
+        "text": "On September 16, 2026, the LPSC unanimously voted in docket U-37882 to grant the joint motion and accept the September 4 stipulation, vacate the August 6, 2026 ruling of the administrative law judge, and deem Entergy Louisiana's pending motion for immediate review moot. The second agenda item, the motion for immediate review, was pulled as moot.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-minutes-20260916",
+            "normalizedSha256": "8b62c31ee425d111b424990383055c6688adf700879b7ec3422ec05ca9a29496",
+            "start": 38,
+            "end": 82,
+            "excerpt": "MINUTES FROM SEPTEMBER 16, 2026 OPEN SESSION",
+            "page": null,
+            "section": "Minutes heading"
+          },
+          {
+            "sourceKey": "meta-lpsc-minutes-20260916",
+            "normalizedSha256": "8b62c31ee425d111b424990383055c6688adf700879b7ec3422ec05ca9a29496",
+            "start": 6324,
+            "end": 6467,
+            "excerpt": "U-37882 - Entergy Louisiana, LLC, ex parte. In re: Application for certification of generation and transmission resources and for other relief.",
+            "page": null,
+            "section": "Exhibit 9 docket identity"
+          },
+          {
+            "sourceKey": "meta-lpsc-minutes-20260916",
+            "normalizedSha256": "8b62c31ee425d111b424990383055c6688adf700879b7ec3422ec05ca9a29496",
+            "start": 7189,
+            "end": 7405,
+            "excerpt": "I move that we: 1) Grant the Motion and accept the Stipulation filed into the record on September 4, 2026; 2) Vacate the August 6, 2026 Ruling from the ALJ; and 3) Deem ELL’s pending Motion for Immediate Review moot.",
+            "page": null,
+            "section": "Exhibit 9 motion text"
+          },
+          {
+            "sourceKey": "meta-lpsc-minutes-20260916",
+            "normalizedSha256": "8b62c31ee425d111b424990383055c6688adf700879b7ec3422ec05ca9a29496",
+            "start": 7424,
+            "end": 7568,
+            "excerpt": "on motion of Chairman Skrmetta, seconded by Commissioner Lewis, and unanimously adopted, the Commission voted accept Chairman Skrmetta’s motion.",
+            "page": null,
+            "section": "Exhibit 9 vote"
+          },
+          {
+            "sourceKey": "meta-lpsc-minutes-20260916",
+            "normalizedSha256": "8b62c31ee425d111b424990383055c6688adf700879b7ec3422ec05ca9a29496",
+            "start": 7809,
+            "end": 7948,
+            "excerpt": "In re: Discussion and possible vote on Motion for Immediate Review of Interlocutory Ruling. PULLED (Rendered moot in light of Joint Motion)",
+            "page": null,
+            "section": "Exhibit 9 second item"
+          }
+        ]
+      },
+      {
+        "claimKey": "meta-september-procedural",
+        "text": "These September 16 votes resolved procedural motions in the expansion docket. The minutes do not record a commission decision on the underlying application for generation and transmission resources.",
+        "supports": [
+          {
+            "sourceKey": "meta-lpsc-minutes-20260916",
+            "normalizedSha256": "8b62c31ee425d111b424990383055c6688adf700879b7ec3422ec05ca9a29496",
+            "start": 6468,
+            "end": 6674,
+            "excerpt": "In re: Discussion and possible vote on Joint Motion of Entergy Louisiana, LLC, the Alliance for Affordable Energy, and Union of Concerned Scientists to vacate the August 6, 2026 Ruling, pursuant to Rule 57.",
+            "page": null,
+            "section": "Exhibit 9 agenda item"
+          },
+          {
+            "sourceKey": "meta-lpsc-minutes-20260916",
+            "normalizedSha256": "8b62c31ee425d111b424990383055c6688adf700879b7ec3422ec05ca9a29496",
+            "start": 2468,
+            "end": 2559,
+            "excerpt": "the Commission voted to exercise its original and primary jurisdiction pursuant to Rule 57.",
+            "page": null,
+            "section": "Exhibit 9 Rule 57 vote"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "relationshipKey": "meta-original-expanded",
+        "fromSourceKey": "meta-led-20241204",
+        "toSourceKey": "meta-led-20260713",
+        "kind": "related",
+        "description": "Two separately dated announcements for the same Richland Parish project. The later release expands announced scale; it does not rewrite the historic release. Candidate controlled replay, not a fabricated same-URL change.",
+        "supports": [
+          {
+            "sourceKey": "meta-led-20241204",
+            "normalizedSha256": "c47f91ed895909c4dbb04c5b9b4b71c2aba3dd016df2e2d2f0c3d4c7bd9278b2",
+            "start": 6927,
+            "end": 7772,
+            "excerpt": "December 4, 2024 • [News Release](https://www.opportunitylouisiana.gov/news/category/news-release)\n\n# Meta Selects Northeast Louisiana as Site of $10 Billion Artificial Intelligence Optimized Data Center; Governor Jeff Landry Calls Investment ‘A New Chapter’ for State\n\n- ##### **Project is expected to result in 500 or more direct new jobs, more than 1,000 indirect jobs and 5,000 construction workers at peak.**\n\n- ##### **Expansive technology campus will occupy 4 million square feet on the 2,250-acre former Franklin Farm mega site.**\n\n- ##### **Entergy worked with Meta to address energy needs, and Meta will match its electricity use with 100% clean and renewable energy.**\n\n\nRICHLAND PARISH, La. – Facebook and Instagram parent company Meta announced it will build a $10 billion artificial intelligence data center in northeast Louisiana,",
+            "page": null,
+            "section": "Source text"
+          },
+          {
+            "sourceKey": "meta-led-20260713",
+            "normalizedSha256": "c2dec674d3fc1d4a1aa5c104dc54d16b1a25a5b5c1b8a97611a7eeafdf6924a5",
+            "start": 7464,
+            "end": 7666,
+            "excerpt": "HOLLY RIDGE, La. – Meta announced it is committing more than $50 billion to its Richland Parish Data Center project, expanding the campus to nearly 10 million square feet and 5 gigawatts of IT capacity.",
+            "page": null,
+            "section": "Source text"
+          }
+        ]
+      }
+    ],
+    "timeline": [
+      {
+        "eventKey": "original-announcement",
+        "date": "2024-12-04",
+        "datePrecision": "day",
+        "claimKeys": [
+          "meta-original",
+          "meta-location"
+        ]
+      },
+      {
+        "eventKey": "original-settlement-vote",
+        "date": "2025-08-20",
+        "datePrecision": "day",
+        "claimKeys": [
+          "meta-original-settlement-link"
+        ]
+      },
+      {
+        "eventKey": "utility-order",
+        "date": "2025-08-29",
+        "datePrecision": "day",
+        "claimKeys": [
+          "meta-utility-approved"
+        ]
+      },
+      {
+        "eventKey": "expansion-process",
+        "date": "2026-05-14",
+        "datePrecision": "day",
+        "claimKeys": [
+          "meta-expansion-proceeding",
+          "meta-next-consideration"
+        ]
+      },
+      {
+        "eventKey": "expansion-announcement",
+        "date": "2026-07-13",
+        "datePrecision": "day",
+        "claimKeys": [
+          "meta-expanded",
+          "meta-jobs-projection"
+        ]
+      },
+      {
+        "eventKey": "subpoena-decision",
+        "date": "2026-08-12",
+        "datePrecision": "day",
+        "claimKeys": [
+          "meta-subpoena-vacated"
+        ]
+      },
+      {
+        "eventKey": "scheduled-consideration",
+        "date": "2026-12-16",
+        "datePrecision": "day",
+        "claimKeys": [
+          "meta-next-consideration"
+        ]
+      },
+      {
+        "eventKey": "meta-september-procedural-session",
+        "date": "2026-09-16",
+        "datePrecision": "day",
+        "claimKeys": [
+          "meta-september-session",
+          "meta-september-motions",
+          "meta-september-outcome",
+          "meta-september-procedural"
+        ]
+      }
+    ],
+    "knownUnknowns": [
+      "The May order names December 16 for consideration. The retained evidence, including the September 16 minutes, does not establish whether a later scheduling record changes that date.",
+      "The evidence does not establish actual household bill savings, a final measured employment count, construction completion or payment of every announced commitment.",
+      "The evidence does not include the confidential settlement terms, a complete project permit set, an executed incentive agreement or realized tax rebates.",
+      "The evidence does not establish the campus water withdrawal allocation or measured water use. The announced watershed commitment is not a permit.",
+      "Army Corps and LDEQ permit leads located during research have not passed this story publication workflow. Their current status is not established."
+    ],
+    "nextActionClaimKeys": [
+      "meta-next-consideration"
+    ],
+    "reviewedThrough": "2026-11-09",
+    "nextReviewAt": "2026-12-17",
+    "reviewResponsibility": "Owner review of official LPSC records after the December 16, 2026 Business and Executive Session, by December 17, 2026. Source checks are manual.",
+    "supportedQuestions": [
+      {
+        "question": "Where is the Meta project, and what scale did the state announce?",
+        "claimKeys": [
+          "meta-location",
+          "meta-expanded"
+        ]
+      },
+      {
+        "question": "What has the utility commission approved, and what decision is scheduled next?",
+        "claimKeys": [
+          "meta-utility-approved",
+          "meta-expansion-proceeding",
+          "meta-next-consideration"
+        ]
+      },
+      {
+        "question": "Are the announced jobs already filled?",
+        "claimKeys": [
+          "meta-jobs-projection"
+        ]
+      },
+      {
+        "question": "What did the LPSC decide about the Meta subpoena on August 12?",
+        "claimKeys": [
+          "meta-subpoena-vacated"
+        ]
+      },
+      {
+        "question": "Does an official record connect the original utility approval to Meta?",
+        "claimKeys": [
+          "meta-original-settlement-link"
+        ]
+      },
+      {
+        "question": "What did the LPSC decide on September 16 in the Meta expansion docket?",
+        "claimKeys": [
+          "meta-september-session",
+          "meta-september-motions",
+          "meta-september-outcome",
+          "meta-september-procedural"
+        ]
+      },
+      {
+        "question": "What protections does the original power order give other electricity customers?",
+        "claimKeys": [
+          "meta-original-cost-review",
+          "meta-original-contract-boundary",
+          "meta-original-guarantee",
+          "meta-original-grid-protection"
+        ]
+      },
+      {
+        "question": "What does the state say about water and local benefits?",
+        "claimKeys": [
+          "meta-water-commitment",
+          "meta-local-contracts",
+          "meta-school-revenue"
+        ]
+      }
+    ],
+    "unsupportedQuestions": [
+      {
+        "question": "Exactly how much will my household electricity bill change?",
+        "reason": "No household tariff calculation or realized bill outcome is in the accepted research. Expected behavior: return not-found for this fact, cite only accepted relevant evidence for context, and do not search the open web or infer an answer."
+      },
+      {
+        "question": "Has every expansion permit been issued?",
+        "reason": "No complete permit set has been obtained. Expected behavior: return not-found for this fact, cite only accepted relevant evidence for context, and do not search the open web or infer an answer."
+      },
+      {
+        "question": "Did the August subpoena vote approve the full data-center expansion?",
+        "reason": "The minutes resolve the subpoena issue. No final underlying application approval is supplied. Distinguish the procedural ruling and refuse an unsupported approval claim."
+      },
+      {
+        "question": "Did the September 16 vote approve the data-center expansion?",
+        "reason": "The September 16 minutes record procedural rulings in U-37882. No decision on the underlying application is supplied. Distinguish the procedural ruling and refuse an unsupported approval claim."
+      }
+    ]
+  },
+  "media": [
+    {
+      "mediaKey": "meta-order-detail",
+      "artifact": {
+        "uri": "reviewed-meta-v3/media/meta-order-detail.png",
+        "sha256": "ef22b54a19e33fb6c37224bb29cbaeceb681b246388fdcf8160fcba1124cc3b7",
+        "bytes": 229458,
+        "contentType": "image/png"
+      },
+      "originalUrl": "https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/ViewFile?fileId=vuPR4bwXjsw%3D",
+      "credit": "Louisiana Public Service Commission",
+      "permission": {
+        "status": "public_domain",
+        "license": "Government edicts doctrine, U.S. Copyright Office Compendium 313.6(C)(2)",
+        "evidenceUrl": "https://www.copyright.gov/comp3/chap300/ch300-copyrightable-authorship.pdf",
+        "notes": "Unaltered rendering of an official administrative order or enacted statute. Rights analysis applies to the legal text, not to unrelated government photos or agency branding. Credit does not imply endorsement. Preserve the complete page with contain fit; proposed crop is none. No project photograph is represented."
+      },
+      "kind": "document_detail",
+      "caption": "Page 3 of the May 14, 2026 LPSC procedural order sets December 16 consideration of U-37882.",
+      "alt": "Official order page with the schedule direction and commission signatures.",
+      "width": 972,
+      "height": 1600,
+      "captionClaimKeys": [
+        "meta-next-consideration"
+      ]
+    }
+  ],
+  "additionalRetrieval": []
+}
