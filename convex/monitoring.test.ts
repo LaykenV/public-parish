@@ -587,6 +587,41 @@ test('official Baton Rouge meeting dates exclude only meetings before the approv
   ]) expect(officialMeetingDate(url)).toBeUndefined()
 })
 
+test('Baton Rouge version-history pages for meetings before the window are skipped', () => {
+  const startsAt = Date.parse('2026-08-07T18:30:00Z')
+  // Shapes from the live Metropolitan Council listing on 2026-11-10.
+  expect(isBeforeSourceWindow('https://www.brla.gov/AgendaCenter/PreviousVersions/_01052026-2284', startsAt)).toBe(true)
+  expect(isBeforeSourceWindow('https://www.brla.gov/AgendaCenter/PreviousVersions/_08062026-2400', startsAt)).toBe(true)
+  expect(isBeforeSourceWindow('https://www.brla.gov/AgendaCenter/PreviousVersions/_08072026-2420', startsAt)).toBe(false)
+  expect(isBeforeSourceWindow('https://www.brla.gov/AgendaCenter/PreviousVersions/_11102026-2479', startsAt)).toBe(false)
+  for (const url of [
+    'https://www.brla.gov/AgendaCenter/PreviousVersions/_02302026-2400',
+    'https://www.brla.gov/AgendaCenter/PreviousVersions/_01052026',
+    'https://www.brla.gov/AgendaCenter/PreviousVersions/x_01052026-2284',
+    'https://www.brla.gov/Other/PreviousVersions/_01052026-2284',
+    'https://example.test/AgendaCenter/PreviousVersions/_01052026-2284',
+  ]) expect(isBeforeSourceWindow(url, startsAt)).toBe(false)
+  // A listing date never becomes a document meeting date.
+  expect(officialMeetingDate('https://www.brla.gov/AgendaCenter/PreviousVersions/_01052026-2284')).toBeUndefined()
+})
+
+test('a stored discovery pass drops version-history pages that are now before the window', async () => {
+  const { t, runId, policyId, proposalId } = await monitoringFixture()
+  rateLimiterTest.register(t)
+  const root = 'https://www.brla.gov/AgendaCenter/Metropolitan-Council-3'
+  const old = 'https://www.brla.gov/AgendaCenter/PreviousVersions/_01052026-2284'
+  await t.run(async ctx => {
+    await ctx.db.patch(proposalId, { bodyKey: 'ebr-metropolitan-council' })
+    await ctx.db.patch(policyId, { startsAt: Date.parse('2026-08-07'), discoveryPendingUrls: [old], discoveryVisitedUrls: [root, 'https://www.brla.gov/AgendaCenter/PreviousVersions/_02112026-2316'] })
+  })
+  // No provider component is installed in this fixture. A scrape would fail.
+  expect(await t.action(internal.monitoring.actions.discover, { runId })).toBe(true)
+  expect(await t.run(ctx => ctx.db.query('monitoringProviderCalls').take(10))).toHaveLength(0)
+  const policy = await t.run(ctx => ctx.db.get(policyId))
+  expect(policy?.discoveryPendingUrls).toBeUndefined()
+  expect(policy?.nextDiscoveryAt).toBeGreaterThan(Date.now())
+})
+
 test('classifying existing meeting dates preserves inventory history and follows changed source windows', async () => {
   const f = await monitoringFixture()
   vi.stubEnv('ADMIN_EMAIL', 'owner@example.test')

@@ -35,10 +35,14 @@ export const discover = internalAction({
     const roots = [...new Set(calendars.length ? calendars : [manifest.approvedRootUrl, ...manifest.identityEvidenceUrls, ...registry.seedUrls.filter(url => !isDocumentUrl(url))])].filter(url => monitoringListingAllowed(manifest, url, policy.startsAt, Date.now()) && !isBeforeSourceWindow(url, policy.startsAt))
     if (roots.length > 25) throw new Error('monitoring_seed_limit')
     const resumed = Boolean(policy.discoveryPendingUrls?.length)
-    const listingUrls = [...(resumed ? policy.discoveryPendingUrls! : roots)]
+    // A stored pass can hold URLs saved before the window rule recognized
+    // them. Drop them here, or saveDiscoveryProgress rejects every save.
+    const inWindow = (url: string) => !isBeforeSourceWindow(url, policy.startsAt)
+    const listingUrls = resumed ? policy.discoveryPendingUrls!.filter(inWindow) : [...roots]
     let failures = 0
     const failed: string[] = []
-    const visited = new Set<string>(resumed ? policy.discoveryVisitedUrls : [])
+    const visited = new Set<string>(resumed ? (policy.discoveryVisitedUrls ?? []).filter(inWindow) : [])
+    if (resumed && !listingUrls.length) await ctx.runMutation(internal.monitoring.ledger.saveDiscoveryProgress, { ...args, pending: [], visited: [...visited] })
     // Checkpoint each result and yield after three requests. Pacing can wait
     // up to 45 seconds per request; ten requests would crowd the action limit.
     for (let listing = 0; listing < 3 && listingUrls.length; listing++) {
