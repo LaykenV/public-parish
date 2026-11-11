@@ -2319,3 +2319,55 @@ test('encoded apostrophe citations retain exact source offsets and reject change
   expect(locateSourceExcerpt("Company&amp;#x27;s billing", "Company's billing")).toBeNull()
   expect(locateSourceExcerpt("A &amp; B&#39;s budget is $5.", "A & B's budget is $5.")).not.toBeNull()
 })
+test('partial bold heading citations match across a wrapped agenda line', () => {
+  const cases = [
+    {
+      source: 'Items.\n**4. PA-6-26 17590 Florida Boulevard** To amend the Comprehensive Land Use Plan from\nAgricultural/Rural to Commercial\n',
+      excerpt: 'PA-6-26 17590 Florida Boulevard** To amend the Comprehensive Land Use Plan from Agricultural/Rural to Commercial',
+      visible: 'PA-6-26 17590 Florida Boulevard To amend the Comprehensive Land Use Plan from Agricultural/Rural to Commercial',
+    },
+    {
+      source: '**6. Case 30-26 536 West Irene Road** To rezone from Rural to Heavy Industrial (M2) on\nproperty located on the north side of West Irene Road, west of Samuels Road,\nand more.',
+      excerpt: 'Case 30-26 536 West Irene Road** To rezone from Rural to Heavy Industrial (M2) on property located on the north side of West Irene Road, west of Samuels Road,',
+      visible: 'Case 30-26 536 West Irene Road To rezone from Rural to Heavy Industrial (M2) on property located on the north side of West Irene Road, west of Samuels Road,',
+    },
+    {
+      source: '**4. Case 27-26 3680 and 3696 Dalton Street** To rezone from Single Family Residential (A2) \nto Neighborhood Commercial (NC)\n',
+      excerpt: 'Case 27-26 3680 and 3696 Dalton Street** To rezone from Single Family Residential (A2) to Neighborhood Commercial (NC)',
+      visible: 'Case 27-26 3680 and 3696 Dalton Street To rezone from Single Family Residential (A2) to Neighborhood Commercial (NC)',
+    },
+    ...[
+      '**16. CUP-4-26 Voices of Mercy Outreach Ministries (5100-5200 and 5165 Monarch Avenue**\n**and 5190 Peerless Street) (Deferred by the Planning Director April 20 and** **Councilmember Hurst June 15)** Proposed religious and educational institution on property ...',
+      '**16. CUP-4-26 Voices of Mercy Outreach Ministries (5100-5200 and 5165 Monarch Avenue**\n**and 5190 Peerless Street) (Deferred by the Planning Director April 20 and**\n**Councilmember Hurst June 15)** Proposed religious and educational institution on property ...',
+    ].map((source) => ({
+      source,
+      excerpt: 'Voices of Mercy Outreach Ministries (5100-5200 and 5165 Monarch Avenue** **and 5190 Peerless Street) (Deferred by the Planning Director April 20 and** **Councilmember Hurst June 15)** Proposed religious and educational institution',
+      visible: 'Voices of Mercy Outreach Ministries (5100-5200 and 5165 Monarch Avenue and 5190 Peerless Street) (Deferred by the Planning Director April 20 and Councilmember Hurst June 15) Proposed religious and educational institution',
+    })),
+  ]
+  for (const { source, excerpt, visible } of cases) {
+    const normalized = normalizeForMatch(source)
+    const location = locateSourceExcerpt(source, excerpt)
+    expect(location).not.toBeNull()
+    expect(normalized.slice(location!.startOffset, location!.endOffset)).toBe(visible)
+    expect(locateSourceExcerpt(source, excerpt, normalized)).toEqual(location)
+  }
+})
+
+test('wrapped partial bold citations still reject changed text and unproved markers', () => {
+  const source = '**4. PA-6-26 17590 Florida Boulevard** To amend the Comprehensive Land Use Plan from\nAgricultural/Rural to Commercial\n'
+  const excerpt = 'PA-6-26 17590 Florida Boulevard** To amend the Comprehensive Land Use Plan from Agricultural/Rural to Commercial'
+  expect(locateSourceExcerpt(source, excerpt.replace('Commercial', 'Industrial'))).toBeNull()
+  expect(locateSourceExcerpt(source, excerpt.replace('Agricultural/Rural', 'Agricultural'))).toBeNull()
+  expect(locateSourceExcerpt(source, excerpt.replace('Comprehensive', 'comprehensive'))).toBeNull()
+  expect(locateSourceExcerpt(source, excerpt.replace('from Agricultural', 'fromAgricultural'))).toBeNull()
+  expect(locateSourceExcerpt(source, excerpt.replace('Boulevard', 'Boule vard'))).toBeNull()
+  // The source prints no bold, so it cannot prove the excerpt's marker balanced.
+  const plain = '4. PA-6-26 17590 Florida Boulevard To amend the Comprehensive Land Use Plan from\nAgricultural/Rural to Commercial\n'
+  expect(locateSourceExcerpt(plain, excerpt)).toBeNull()
+  // A source bold pair that the excerpt cuts on the wrong side proves nothing.
+  expect(locateSourceExcerpt(source, '**PA-6-26 17590 Florida Boulevard To amend the Comprehensive Land Use Plan from Agricultural/Rural to Commercial')).toBeNull()
+  // Markers must sit where the source prints them.
+  expect(locateSourceExcerpt(source, 'PA-6-26 17590 Florida** Boulevard To amend the Comprehensive Land Use Plan from Agricultural/Rural to Commercial')).toBeNull()
+  expect(locateSourceExcerpt(source, 'PA-6-26 17590 Florida Boulevard To amend** the Comprehensive Land Use Plan from Agricultural/Rural to Commercial')).toBeNull()
+})
