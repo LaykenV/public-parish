@@ -50,7 +50,8 @@ assuming any of this still holds.
   that release were never counted, so the earlier zero is a gap, not a
   measurement.
 - The latest application release recorded here is `0b2d0e6` through
-  [PR #282](https://github.com/LaykenV/public-parish/pull/282).
+  [PR #282](https://github.com/LaykenV/public-parish/pull/282). It merged
+  last and includes #281 and #283.
 
 ## Open items
 
@@ -99,20 +100,28 @@ None of these are done.
   Meta story cites. If a fetch returns different text, the story moves to
   "needs review" and leaves Home. Check after each commission run.
 - [ ] Boyce needs a story update. The England Authority posted a form of
-  PILOT lease with APLD AEX-01 LLC for introduction on its October 22 agenda
-  and its November 9 special meeting packet. The form has a payment schedule
+  PILOT lease with APLD AEX-01 LLC for introduction on its
+  [October 22 agenda](https://englandairpark.org/wp-content/uploads/2026/10/Notice-and-Agenda-FINAL-10.22.2026-public-page.pdf)
+  and its
+  [November 9 special meeting packet](https://englandairpark.org/wp-content/uploads/2026/11/1.1a-Notice-and-Agenda-11.9.2026.pdf). The form has a payment schedule
   and payments for the Town of Boyce marked subject to final negotiations. No
   adoption is recorded, and no October 22 or November 9 minutes were posted on
   November 10. Publish these as proposed terms only, and wait for the minutes
   before saying anything was approved.
-- [ ] SpaceX had no substantive change on November 10. The September 16
-  Vermilion Police Jury minutes only approve planning a visit to SpaceX in
-  Brownsville. The jury's own notice gives a September 24 town hall, so the
-  published limitation about a missing town-hall date is stale. A November 4
-  committee agenda lists an executive session on a lawsuit that names the
+- [ ] SpaceX had no substantive change on November 10. The
+  [September 16 Vermilion Police Jury minutes](https://www.vppj.org/PDFforms/minutes/2026/PJ%20Minutes%2009-16-26.pdf)
+  only approve planning a visit to SpaceX in Brownsville. The jury's own
+  [notice](https://www.vppj.org/PDFforms/Notices/SpaceX_Community_Town_Hall_September_24.pdf)
+  gives a September 24 town hall, so the published limitation about a missing
+  town-hall date is stale. A
+  [November 4 committee agenda](https://www.vppj.org/PDFforms/Agendas/Agendas%202026/11.Nov2026/CR%20CH%20PR%20PW%20FC%20Agendas%20Website%2011-04-26.pdf)
+  lists an executive session on a lawsuit that names the
   Industrial Development Board and the Police Jury. The agenda does not say
   what the suit is about, and news reports are leads only. Look for the
   board's records and the court filing.
+- [ ] These links are leads for the next review. No snapshot of these
+  documents was saved, so a story update fetches them again through the
+  normal intake.
 - [ ] Production shows SpaceX and Boyce as reviewed through September 14 with
   a next review of September 18. The October 22 review did not move those
   dates.
