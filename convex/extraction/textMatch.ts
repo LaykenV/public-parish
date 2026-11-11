@@ -83,22 +83,27 @@ export function locateSourceExcerpt(
     if (match) return { startOffset: match.index, endOffset: match.index + match[0].length }
   }
 
-  const literalStart = source.indexOf(excerpt)
-  if (literalStart < 0) return null
+  // A quote can write a source line break as a space. Only whitespace runs may
+  // differ here. Every other character must match the source contiguously.
+  const words = excerpt.trim().split(/\s+/).map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  const literal = new RegExp(words.join('\\s+')).exec(source)
+  if (!literal) return null
+  const literalStart = literal.index
+  const quoted = literal[0]
   // Only remove markers that the complete source proves are balanced bold
   // formatting. A partial quote can contain just one side of that formatting.
   const removed = new Set<number>()
   for (const match of source.matchAll(/(?<!\S)\*\*(\S(?:[^\r\n]*?\S)?)\*\*(?!\S)/g)) {
     for (const marker of [match.index, match.index + match[0].length - 2]) {
       const relative = marker - literalStart
-      if (relative >= 0 && relative + 2 <= excerpt.length) {
+      if (relative >= 0 && relative + 2 <= quoted.length) {
         removed.add(relative)
         removed.add(relative + 1)
       }
     }
   }
   if (!removed.size) return null
-  const visible = excerpt.split('').filter((_character, index) => !removed.has(index)).join('')
+  const visible = quoted.split('').filter((_character, index) => !removed.has(index)).join('')
   normalizedExcerpt = normalizeForMatch(visible)
   if (!normalizedExcerpt) return null
   startOffset = normalizedSource.indexOf(normalizedExcerpt)
