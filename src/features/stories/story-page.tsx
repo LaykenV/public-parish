@@ -12,6 +12,7 @@ import { Sheet } from '../discovery/sheet'
 import { Link } from '@tanstack/react-router'
 import { ResidentSectionBoundary } from '../resident-blueprint/resident-recovery'
 import { SourceActions } from '../evidence/source-actions'
+import { recordCivicEvent } from '../analytics/product-analytics'
 import { formatDate } from '../discovery/format'
 import { Button } from '../../components/ui/button'
 import { ShareButton } from '../discovery/share'
@@ -188,6 +189,7 @@ export function StoryPage({ slug }: { slug: string }) {
     setSelectedSource({ index, evidence: story.evidence[index] })
     setSourceTrigger(triggerId)
     setSourceOpen(true)
+    recordCivicEvent('evidence_opened')
   }
   return (
     <main className="pp-page pp-story-detail" id="resident-main">
@@ -360,7 +362,7 @@ export function StoryPage({ slug }: { slug: string }) {
         size="tall"
         triggerId={sourceTrigger}
         footer={selectedEvidence ? (
-          <SourceActions officialUrl={selectedEvidence.officialUrl} snapshotUrl={selectedEvidence.snapshotUrl ?? null} />
+          <SourceActions officialUrl={selectedEvidence.officialUrl} snapshotUrl={selectedEvidence.snapshotUrl ?? null} onOfficialOpen={() => recordCivicEvent('official_source_opened')} />
         ) : undefined}
       >
         {selectedEvidence ? (
