@@ -42,9 +42,15 @@ assuming any of this still holds.
   through November 9, with the Central Louisiana Regional Port's September 30
   minutes. Next review January 15, 2027.
 - SpaceX and Boyce were reviewed against official documents through October
-  22. Neither had a substantive change.
-- The latest application release recorded here is `2be3dc4` through
-  [PR #279](https://github.com/LaykenV/public-parish/pull/279).
+  22, and that review found no substantive change. A November 10 check found
+  newer documents for both. The open items below replace that conclusion.
+- Story and ballot pages send source-open and official-link-open events
+  since [PR #281](https://github.com/LaykenV/public-parish/pull/281) deployed
+  on November 10. Production counts have not been checked yet. Opens before
+  that release were never counted, so the earlier zero is a gap, not a
+  measurement.
+- The latest application release recorded here is `0b2d0e6` through
+  [PR #282](https://github.com/LaykenV/public-parish/pull/282).
 
 ## Open items
 
@@ -66,27 +72,63 @@ None of these are done.
 - [ ] Three Pineville listing pages redirect to `library.municode.com`, which
   answers automated requests with a bot check. They are set aside after three
   failures in a pass and tried again the next week.
-- [ ] Baton Rouge Metropolitan Council discovery spends calls on
-  "PreviousVersions" pages for meetings before the window, because the
-  `_MMDDYYYY` date in those URLs is not recognized.
-- [ ] Six East Baton Rouge Planning and Zoning decisions failed after three
-  attempts. The cause is not diagnosed.
+- [ ] Twelve targets are failed in production: nine East Baton Rouge
+  Planning and Zoning and three Metropolitan Council. All twelve failed
+  deterministic validation, not retrieval. Five Planning and Zoning targets
+  failed only `citation_not_found`.
+  [PR #283](https://github.com/LaykenV/public-parish/pull/283) fixes the cause
+  read in three of them: a quote that starts inside a bold agenda heading and
+  crosses a line break. The quotes for the other two were not read. Failed
+  targets stay failed until the owner retries them with
+  `monitoring/ledger:retryTarget`, which spends the sources allowance.
+- [ ] Two Planning and Zoning agenda items, CUP-4-26 and CUP-2-26, fail
+  `agenda_outcome_unsupported` on each agenda snapshot, four targets so far.
+  The agenda itself prints a withdrawal or a deferral, and the rule lets no
+  agenda produce an outcome. Each new snapshot spends up to three extraction
+  attempts on them. The owner decides whether the rule changes.
+- [ ] The three failed Metropolitan Council targets ran on processor v1.19 in
+  September with `citation_not_found`. Their cause on the current version is
+  not confirmed.
+- [ ] After the first Metropolitan Council run on
+  [PR #282](https://github.com/LaykenV/public-parish/pull/282), check that the
+  saved discovery pass closed. On November 10 it held 23 version-history pages
+  for meetings before the window.
 - [ ] Meta's limitations list the permit set, incentive agreement and tax
   rebates twice. Remove the repeat at the December 17 review.
 - [ ] Weekly monitoring fetches the same September 16 commission minutes the
   Meta story cites. If a fetch returns different text, the story moves to
   "needs review" and leaves Home. Check after each commission run.
-- [ ] Next story reviews: SpaceX should look for the September 16 Vermilion
-  Police Jury minutes. Boyce should check the November England Authority
-  minutes. Follow the
+- [ ] Boyce needs a story update. The England Authority posted a form of
+  PILOT lease with APLD AEX-01 LLC for introduction on its October 22 agenda
+  and its November 9 special meeting packet. The form has a payment schedule
+  and payments for the Town of Boyce marked subject to final negotiations. No
+  adoption is recorded, and no October 22 or November 9 minutes were posted on
+  November 10. Publish these as proposed terms only, and wait for the minutes
+  before saying anything was approved.
+- [ ] SpaceX had no substantive change on November 10. The September 16
+  Vermilion Police Jury minutes only approve planning a visit to SpaceX in
+  Brownsville. The jury's own notice gives a September 24 town hall, so the
+  published limitation about a missing town-hall date is stale. A November 4
+  committee agenda lists an executive session on a lawsuit that names the
+  Industrial Development Board and the Police Jury. The agenda does not say
+  what the suit is about, and news reports are leads only. Look for the
+  board's records and the court filing.
+- [ ] Production shows SpaceX and Boyce as reviewed through September 14 with
+  a next review of September 18. The October 22 review did not move those
+  dates.
+- [ ] Follow the
   [Meta research leads](meta-morning-report-2026-09-17.md#important-findings-outside-the-published-evidence)
-  before adding claims. Do not turn public authorizations into a claim of
-  completed spending.
+  before adding story claims. Do not turn public authorizations into a claim
+  of completed spending.
 - [ ] The follow and email path has not been tested end to end since the
   model switch. It needs a recipient the owner authorizes.
 - [ ] Audit the fixed bills the model ledger does not cap: Convex, Firecrawl,
   AgentMail and the domain.
-- [ ] Repair story and ballot evidence-open telemetry before using that counter.
+- [ ] Read the evidence-open counter after a week of real traffic. No test
+  event was sent to production.
+- [ ] `convex/emailReplies.test.ts` and `convex/issues.test.ts` each failed
+  once under full-suite load on November 10 and passed when run alone. Not
+  diagnosed.
 - [ ] Keep the [readability audit](readability-audit-2026-09-15.md) follow-ups,
   including the broader Meta Ask that dropped "material" from a
   transmission-cost condition.
